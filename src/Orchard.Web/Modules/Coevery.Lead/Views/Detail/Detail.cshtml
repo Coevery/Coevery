@@ -1,0 +1,40 @@
+﻿<div class="span12 widget">
+    <div class="widget-header">
+        <span class="title">Detail Page</span>
+    </div>
+    <div class="widget-content form-container">
+        <form name="myForm" class="form-horizontal" ng-submit="save()">
+            <div class="control-group">
+                <label class="control-label" for="inputTopic">Topic</label>
+                <div class="controls">
+                    <input type="text" class="span12" ng-model="item.Topic" name="topic" id="inputTopic" required>
+                    <span class="text-error" ng-show="!myForm.topic.$valid">Required!</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFirstName">FirstName</label>
+                <div class="controls">
+                    <input type="text" class="span12" ng-model="item.FirstName" name="firstName" id="inputFirstName" required>
+                    <span class="text-error" ng-show="!myForm.firstName.$valid">Required!</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputLastName">LastName</label>
+                <div class="controls">
+                    <input type="text" class="span12" ng-model="item.LastName" name="lastName" id="inputLastName" required>
+                    <span class="text-error" ng-show="!myForm.lastName.$valid">Required!</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputStatus">Status</label>
+                <div class="controls">
+                    <input type="number" class="span12" ng-change="change()" ng-model="item.StatusCode" id="inputStatus">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" ng-disabled="!myForm.$valid" type="submit">Save</button>
+                <button class="btn" ng-click="exit()">Exit</button>
+            </div>
+        </form>
+    </div>
+</div>

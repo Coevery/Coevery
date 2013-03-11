@@ -1,0 +1,25 @@
+﻿<div class="span12 widget">
+    <div class="widget-header">
+        <span class="title">List Page</span>
+    </div>
+    <div class="widget-content table-container dataTables_wrapper">
+        <div class="dt_header">
+            <div class="btn-group">
+                <button class="btn" ng-click="add()">
+                    <i class="icol-add"></i> Add
+                </button>
+                <button class="btn" ng-click="edit()">
+                    <i class="icol-page-white-edit"></i> Edit
+                </button>
+                <button class="btn" ng-click="delete()">
+                    <i class="icol-cross"></i> Delete
+                </button>
+                <button class="btn" ng-click="getAllLeads()">
+                    <i class="icol-arrow-refresh"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+    </div>
+</div>

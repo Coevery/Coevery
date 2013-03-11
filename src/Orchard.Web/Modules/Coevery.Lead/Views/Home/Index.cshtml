@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Leads";
+
+    Style.Require("pnotify");
+    Style.Require("ngGrid");
+    Style.Require("LeadMain");
+    Script.Require("jQuery");
+    Script.Require("pnotify");
+    Script.Require("angular");
+    Script.Require("angularResource");
+    Script.Require("ngGrid");
+    Script.Require("LeadMain");
+    Script.Require("LeadLogger");
+    Script.Require("LeadContext");
+    Script.Require("LeadController");
+    Script.Require("LeadDetailController");
+}
+
+<div id="main-header" class="page-header">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div ng-app="lead" id="main-content" class="ng-cloak">
+    <div class="row-fluid">
+        <div ng-view></div>
+    </div>
+</div>
