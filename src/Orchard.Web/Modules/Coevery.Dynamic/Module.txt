@@ -1,0 +1,9 @@
+Name: Dynamic
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coevery.codeplex.com
+Version: 1.3
+OrchardVersion: 1.3
+Description: Description for the module
+FeatureDescription: Description for feature Coevery.Dynamic.
+Category: Dynamic
