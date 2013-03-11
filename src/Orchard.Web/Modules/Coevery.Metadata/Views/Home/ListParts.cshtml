@@ -1,0 +1,12 @@
+@model Coevery.Metadata.ViewModels.ListContentPartsViewModel
+
+@{ Layout.Title = T("Content Parts").ToString(); }
+
+<div class="manage">
+    @Html.ActionLink(T("Create new part").ToString(), "CreatePart", new{Controller="Admin",Area="Orchard.ContentTypes"}, new { @class = "button primaryAction" })
+</div>
+@Html.UnorderedList(
+    Model.Parts,
+    (t,i) => Html.DisplayFor(m => t),
+    "contentItems"
+    )

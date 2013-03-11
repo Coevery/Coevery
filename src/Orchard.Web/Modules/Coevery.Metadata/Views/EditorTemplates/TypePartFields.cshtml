@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Coevery.Metadata.ViewModels.EditPartFieldViewModel>
+@if (Model.Any()) {
+    foreach (var field in Model) {
+        var f = field;
+        @Html.EditorFor(m => f, "TypePartField", f.Prefix) }
+}
