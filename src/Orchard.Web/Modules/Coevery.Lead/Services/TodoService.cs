@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using Coevery.Leads.Models;
+﻿using Coevery.Leads.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

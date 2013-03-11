@@ -1,6 +1,6 @@
 ﻿lead.controller('LeadCtrl', function ($scope, logger, $location, Lead) {
     $scope.mySelections = [];
-
+    
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,
@@ -23,6 +23,7 @@
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
             Lead.delete({ leadId: $scope.mySelections[0].LeadId }, function () {
+                $scope.mySelections.pop();
                 $scope.getAllLeads();
                 logger.success("Delete the lead successful.");
             }, function () {
