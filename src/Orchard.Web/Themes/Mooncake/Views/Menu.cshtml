@@ -1,0 +1,70 @@
+﻿@using System.Web.Routing;
+@using Orchard.Utility.Extensions;
+
+<ul class="menu">
+    @foreach(var firstLevelMenuItem in Model) {
+        IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
+
+        string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
+
+        var firstLevelTag = Tag(firstLevelMenuItem, "li");
+        if (firstLevelMenuItem.Selected)
+        {
+            firstLevelMenuItem.Classes.Add("active");
+        }
+        
+        @firstLevelTag.StartElement
+            <span title="@firstLevelMenuItem.Text">
+                <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
+				<span class="nav-title">@firstLevelMenuItem.Text</span>
+            </span>
+        if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild)
+        {
+                <ul class="inner-nav">
+                @foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
+                {
+                    string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
+                    var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
+
+                    if (secondLevelMenuItem.Selected)
+                    {
+                        secondLevelMenuItem.Classes.Add("active");
+                    }
+
+                    var secondLevelTag = Tag(secondLevelMenuItem, "li");
+                    var secondLevelUrl = secondLevelMenuItem.Href;
+                    if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
+                    {
+                        secondLevelUrl = firstOfTheThird.Href;
+                    }                    
+                    @secondLevelTag.StartElement
+                    <a href="@secondLevelUrl">
+                        <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
+                        @secondLevelMenuItem.Text
+                    </a>
+                    @secondLevelTag.EndElement
+                }
+                </ul>
+        }
+       @firstLevelTag.EndElement
+    }
+    <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled"><span></span></span></li>
+</ul>
+@using (Script.Foot())
+{
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $(".menu li:first").addClass("active");
+            $(".menu>li:not(:last)").click(function() {
+                var $li = $(this);
+                if ($li.hasClass("active")) {
+                    return;
+                }
+                $(".menu>li.active").removeClass("active");
+                $li.addClass("active");
+            });
+        });
+        //]]>
+    </script>
+}
