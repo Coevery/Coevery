@@ -30,8 +30,6 @@ namespace Orchard.Tests.Modules.Leads
             builder.RegisterType<TodoService>().As<ITodoService>();
             builder.RegisterType<TodoController>().SingleInstance();
             builder.RegisterType<TodoListController>().SingleInstance();
-       
-        
             builder.RegisterType<Repository<TodoListRecord>>().As<IRepository<TodoListRecord>>();
             builder.RegisterType<Repository<TodoItemRecord>>().As<IRepository<TodoItemRecord>>();
         }
