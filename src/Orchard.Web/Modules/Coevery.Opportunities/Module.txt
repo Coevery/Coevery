@@ -1,4 +1,4 @@
-Name: Opportunity
+Name: Opportunities
 AntiForgery: enabled
 Author: The Coevery Team
 Website: http://coevery.codeplex.com

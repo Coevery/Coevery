@@ -109,9 +109,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations.cs" />
     <Compile Include="Models\OpportunityDto.cs" />
     <Compile Include="Models\OpportunityRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceManifest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -312,7 +314,9 @@
     <Content Include="Scripts\ng-grid-2.0.0.debug.js" />
     <Content Include="Scripts\ng-grid-2.0.0.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

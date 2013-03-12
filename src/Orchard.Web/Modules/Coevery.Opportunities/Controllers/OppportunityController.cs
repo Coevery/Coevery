@@ -9,17 +9,17 @@ using Orchard.Data;
 
 namespace Coevery.Opportunities.Controllers
 {
-    public class OppportunityController : ApiController
+    public class OpportunityController : ApiController
     {
         private IRepository<OpportunityRecord> _opportunityRepository;
 
-        public OppportunityController(IRepository<OpportunityRecord> opportunityRepository)
+        public OpportunityController(IRepository<OpportunityRecord> opportunityRepository)
         {
             _opportunityRepository = opportunityRepository;
         }
 
         // GET api/opportunities/opportunity
-        public IEnumerable<OpportunityDto> GetOpportunities()
+        public IEnumerable<OpportunityDto> GetOpportunity()
         {
             var reDtos = new List<OpportunityDto>();
             var re = _opportunityRepository.Table.ToList();

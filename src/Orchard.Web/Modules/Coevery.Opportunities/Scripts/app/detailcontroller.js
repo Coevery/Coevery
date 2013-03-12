@@ -1,4 +1,4 @@
-﻿opportunity.controller('opportunityDetailCtrl', function ($scope, logger, $location, $routeParams, opportunity) {
+﻿opportunity.controller('OpportunityDetailCtrl', function ($scope, logger, $location, $routeParams, opportunity) {
     var id = $routeParams.opportunityId;
     var isNew = id > 0 ? false : true;
 

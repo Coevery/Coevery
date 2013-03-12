@@ -3,7 +3,7 @@
 opportunity.config(function ($routeProvider) {
     $routeProvider.
         when('/List', { controller: 'opportunityCtrl', templateUrl: '/OrchardLocal/opportunities/List' }).
-        when('/Detail', { controller: 'opportunityDetailCtrl', templateUrl: '/OrchardLocal/Opportunities/Detail' }).
-        when('/Detail/:opportunityId', { controller: 'opportunityDetailCtrl', templateUrl: '/OrchardLocal/Opportunities/Detail' }).
+        when('/Detail', { controller: 'OpportunityDetailCtrl', templateUrl: '/OrchardLocal/Opportunities/Detail' }).
+        when('/Detail/:opportunityId', { controller: 'OpportunityDetailCtrl', templateUrl: '/OrchardLocal/Opportunities/Detail' }).
         otherwise({ redirectTo: '/' });
 });

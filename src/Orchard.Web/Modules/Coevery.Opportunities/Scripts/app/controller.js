@@ -13,16 +13,15 @@
         enableColumnReordering: true,
         //enableCellEdit: true,
         columnDefs: [
-            { field: 'opportunityId', displayName: 'Id' },
-            { field: 'Topic', displayName: 'Topic' },
-            { field: 'StatusCode', displayName: 'Status' },
-            { field: 'FirstName', displayName: 'FirstName' },
-            { field: 'LastName', displayName: 'LastName' }]
+            { field: 'OpportunityId', displayName: 'Id' },
+            { field: 'Name', displayName: 'Name' },
+            { field: 'Description', displayName: 'Description' },
+            { field: 'SourceLeadId', displayName: 'SourceLeadId' }]
     };
 
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
-            opportunity.delete({ opportunityId: $scope.mySelections[0].opportunityId }, function () {
+            opportunity.delete({ opportunityId: $scope.mySelections[0].OpportunityId }, function () {
                 $scope.mySelections.pop();
                 $scope.getOpportunities();
                 logger.success("Delete the opportunity successful.");
@@ -38,7 +37,7 @@
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $location.path('Detail/' + $scope.mySelections[0].opportunityId);
+            $location.path('Detail/' + $scope.mySelections[0].OpportunityId);
         }
     };
 

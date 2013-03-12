@@ -9,14 +9,19 @@ namespace Coevery.Opportunities.Models
     {
         public int OpportunityId { get; set; }
         public string Name { get; set; }
-        public int LeadSourceId { get; set; }
+        public int SourceLeadId { get; set; }
         public string Description { get; set; }
+
+        public OpportunityDto()
+        {
+            
+        }
 
         public OpportunityDto(OpportunityRecord opportunity)
         {
             this.OpportunityId = opportunity.Id;
             this.Description = opportunity.Description;
-            this.LeadSourceId = opportunity.LeadSourceId;
+            this.SourceLeadId = opportunity.LeadSourceId;
             this.Name = opportunity.Name;
         }
 
@@ -26,7 +31,7 @@ namespace Coevery.Opportunities.Models
             {
                 Description = this.Description,
                 Id = this.OpportunityId,
-                LeadSourceId = this.LeadSourceId,
+                LeadSourceId = this.SourceLeadId,
                 Name = this.Name
             };
         }
