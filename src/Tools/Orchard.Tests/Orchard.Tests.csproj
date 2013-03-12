@@ -99,7 +99,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Orchard\Orchard.csproj">
       <Project>{33B1BC8D-E292-4972-A363-22056B207156}</Project>
-      <Name>Orchard</Name>
+      <Name>Orchard %28Tools\Orchard%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
