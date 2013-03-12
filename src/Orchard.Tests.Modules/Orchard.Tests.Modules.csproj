@@ -199,10 +199,6 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Orchard.Web\Modules\Coevery.Lead\Coevery.Leads.csproj">
-      <Project>{162a25b1-d2ca-472d-8563-e54b1599cb24}</Project>
-      <Name>Coevery.Leads</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Orchard.Web\Modules\Lucene\Lucene.csproj">
       <Project>{D5D447D7-EF8E-43A6-B9A4-3B025DD9F45D}</Project>
       <Name>Lucene</Name>
