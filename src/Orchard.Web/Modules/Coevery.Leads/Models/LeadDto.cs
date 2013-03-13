@@ -48,7 +48,10 @@ namespace Coevery.Leads.Models
         public object RecordId
         {
             get { return this.LeadId; }
-            set { this.LeadId = (int)value; }
+            set
+            {
+                this.LeadId = Convert.ToInt32(value);
+            }
         }
     }
 }
