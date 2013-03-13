@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Orchard.WebApi.Common;
 
 namespace Coevery.Leads.Models
 {
-    public class LeadDto
+    public class LeadDto:IDto<LeadRecord>
     {
         public LeadDto() { }
 
@@ -41,6 +42,13 @@ namespace Coevery.Leads.Models
                 LastName = LastName,
                 StatusCode = StatusCode
             };
+        }
+
+
+        public object RecordId
+        {
+            get { return this.LeadId; }
+            set { this.LeadId = (int)value; }
         }
     }
 }
