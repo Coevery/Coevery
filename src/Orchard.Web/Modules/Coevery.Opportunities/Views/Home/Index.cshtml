@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Opportunities";
+
+    Style.Require("pnotify");
+    Style.Require("ngGrid");
+    Style.Require("opportunityMain");
+    Script.Require("jQuery");
+    Script.Require("pnotify");
+    Script.Require("angular");
+    Script.Require("angularResource");
+    Script.Require("ngGrid");
+    Script.Require("opportunityMain");
+    Script.Require("opportunityLogger");
+    Script.Require("opportunityContext");
+    Script.Require("opportunityController");
+    Script.Require("opportunityDetailController");
+}
+
+<header id="main-header" class="page-header">
+    <h1>@ViewBag.Title</h1>
+</header>
+
+<section ng-app="opportunity" id="main-content" class="ng-cloak" ng-view>
+</section>
