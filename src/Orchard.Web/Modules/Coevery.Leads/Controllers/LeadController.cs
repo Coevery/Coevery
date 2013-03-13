@@ -17,30 +17,5 @@ namespace Coevery.Leads.Controllers
         {
             
         }
-       
-        public IEnumerable<LeadDto> GetLeads() 
-        {
-            return GetRecords();
-        }
-        
-        public LeadDto GetLead(int id)
-        {
-            return GetRecord(id);
-        }
-        
-        public HttpResponseMessage PutLead(int id, LeadDto leadDto) 
-        {
-            return PutRecord(id, leadDto);
-        }
-       
-        public HttpResponseMessage PostLead(LeadDto leadDto)
-        {
-            return PostRecord(leadDto);
-        }
-      
-        public HttpResponseMessage DeleteLead(int id) 
-        {
-            return DeleteRecord(id);
-        }
     }
 }
