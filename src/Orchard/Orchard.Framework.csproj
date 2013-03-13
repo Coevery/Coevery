@@ -108,6 +108,7 @@
     <Reference Include="System.Net.Http">
       <HintPath>..\..\lib\aspnetwebapi\System.Net.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -561,6 +562,8 @@
     <Compile Include="Wcf\OrchardServiceHostFactory.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyResolver.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyScope.cs" />
+    <Compile Include="WebApi\Common\IDto.cs" />
+    <Compile Include="WebApi\Common\RecordController.cs" />
     <Compile Include="WebApi\DefaultOrchardWebApiHttpControllerSelector.cs" />
     <Compile Include="WebApi\DefaultOrchardWebApiHttpHttpControllerActivator.cs" />
     <Compile Include="WebApi\Extensions\RouteExtension.cs" />

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Orchard.WebApi.Common;
 
 namespace Coevery.Opportunities.Models
 {
-    public class OpportunityDto
+    public class OpportunityDto:IDto<OpportunityRecord>
     {
         public int OpportunityId { get; set; }
         public string Name { get; set; }
@@ -34,6 +35,13 @@ namespace Coevery.Opportunities.Models
                 LeadSourceId = this.SourceLeadId,
                 Name = this.Name
             };
+        }
+
+
+        public object RecordId
+        {
+            get { return this.OpportunityId; }
+            set { this.OpportunityId = (int)value; }
         }
     }
 }

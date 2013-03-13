@@ -138,7 +138,8 @@ namespace Orchard.Environment.ShellBuilders {
         }
 
         private static bool IsHttpController(Type type) {
-            return typeof(IHttpController).IsAssignableFrom(type);
+
+            return typeof(IHttpController).IsAssignableFrom(type) && type.IsAbstract == false;
         }
 
         private static ControllerBlueprint BuildController(Type type, Feature feature) {
