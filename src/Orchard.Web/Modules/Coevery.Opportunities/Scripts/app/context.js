@@ -2,6 +2,6 @@
 {
     return $resource(
         '/OrchardLocal/api/opportunities/opportunity/:opportunityId',
-        { opportunityId: '@opportunityId' },
+        { opportunityId: '@OpportunityId' },
         { update: { method: 'PUT' } });
 });

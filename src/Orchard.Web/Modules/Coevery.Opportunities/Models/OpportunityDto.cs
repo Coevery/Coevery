@@ -37,11 +37,13 @@ namespace Coevery.Opportunities.Models
             };
         }
 
-
         public object RecordId
         {
             get { return this.OpportunityId; }
-            set { this.OpportunityId = (int)value; }
+            set
+            {
+                this.OpportunityId = Convert.ToInt32(value);
+            }
         }
     }
 }
