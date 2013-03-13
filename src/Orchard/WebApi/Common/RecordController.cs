@@ -21,7 +21,7 @@ namespace Orchard.WebApi.Common
         }
 
         // GET api/leads/lead
-        protected IEnumerable<TRecordDtoType> GetRecords()
+        public virtual IEnumerable<TRecordDtoType> GetRecords()
         {
             var reDtos = new List<TRecordDtoType>();
             var re = _recordRepository.Table.ToList();
@@ -30,7 +30,7 @@ namespace Orchard.WebApi.Common
         }
 
         // GET api/leads/lead/5
-        protected TRecordDtoType GetRecord(int id)
+        public virtual TRecordDtoType GetRecord(int id)
         {
             var record = _recordRepository.Get(id);
             if (record == null)
@@ -42,7 +42,7 @@ namespace Orchard.WebApi.Common
         }
 
         // PUT api/leads/lead/5
-        protected HttpResponseMessage PutRecord(int id, TRecordDtoType recordDto)
+        public virtual HttpResponseMessage PutRecord(int id, TRecordDtoType recordDto)
         {
             if (!ModelState.IsValid)
             {
@@ -70,7 +70,7 @@ namespace Orchard.WebApi.Common
         }
 
         // POST api/leads/lead
-        protected HttpResponseMessage PostRecord(TRecordDtoType recordDtoDto)
+        public virtual HttpResponseMessage PostRecord(TRecordDtoType recordDtoDto)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace Orchard.WebApi.Common
         }
 
         // DELETE api/leads/lead/5
-        protected HttpResponseMessage DeleteRecord(int id)
+        public virtual HttpResponseMessage DeleteRecord(int id)
         {
             var record = _recordRepository.Get(id);
             if (record == null)
