@@ -10,9 +10,10 @@ namespace Coevery.Leads
             manifest.DefineStyle("ngGrid").SetUrl("ng-grid.css");
             manifest.DefineStyle("LeadMain").SetUrl("todo.css");
             manifest.DefineStyle("pnotify").SetUrl("jquery.pnotify.css");
-
+            manifest.DefineScript("localize").SetUrl("localize.js");
             manifest.DefineScript("angular").SetUrl("angular.js");
             manifest.DefineScript("angularResource").SetUrl("angular-resource.js");
+            
             manifest.DefineScript("ngGrid").SetUrl("ng-grid-2.0.0.debug.js");
             manifest.DefineScript("LeadMain").SetUrl("app/main.js");
             manifest.DefineScript("LeadLogger").SetUrl("app/logger.js");
@@ -20,6 +21,7 @@ namespace Coevery.Leads
             manifest.DefineScript("LeadController").SetUrl("app/controller.js");
             manifest.DefineScript("LeadDetailController").SetUrl("app/detailcontroller.js");
             manifest.DefineScript("pnotify").SetUrl("jquery.pnotify.min.js");
+           
         }
     }
 }

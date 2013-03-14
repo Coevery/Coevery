@@ -121,6 +121,9 @@
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\app\controller.js" />
     <Content Include="Scripts\app\detailcontroller.js" />
+    <Content Include="Scripts\i18n\resources-locale_default.js" />
+    <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
+    <Content Include="Scripts\localize.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
     <Content Include="Scripts\i18n\angular-locale_am-et.js" />
@@ -376,7 +379,6 @@
     <Content Include="Views\List\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
