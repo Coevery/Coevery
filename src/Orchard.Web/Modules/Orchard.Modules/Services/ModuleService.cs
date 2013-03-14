@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Orchard.Caching;
+using Orchard.ContentManagement;
+using Orchard.Core.Navigation.Models;
+using Orchard.Core.Navigation.Services;
 using Orchard.Environment.Extensions;
 using Orchard.Environment.Extensions.Models;
 using Orchard.Environment.Descriptor;
@@ -18,6 +21,8 @@ namespace Orchard.Modules.Services {
         private readonly IExtensionManager _extensionManager;
         private readonly IShellDescriptorManager _shellDescriptorManager;
         private readonly ICacheManager _cacheManager;
+        private readonly IContentManager _contentManager;
+        private readonly IMenuService _menuService;
 
         public ModuleService(
                 IFeatureManager featureManager,
@@ -25,7 +30,10 @@ namespace Orchard.Modules.Services {
                 IVirtualPathProvider virtualPathProvider,
                 IExtensionManager extensionManager,
                 IShellDescriptorManager shellDescriptorManager,
-                ICacheManager cacheManager) {
+                ICacheManager cacheManager,
+                IContentManager contentManager,
+                IMenuService menuService)
+        {
 
             Services = orchardServices;
 
@@ -40,10 +48,66 @@ namespace Orchard.Modules.Services {
             }
 
             T = NullLocalizer.Instance;
+            _contentManager = contentManager;
+            _menuService = menuService;
         }
 
         public Localizer T { get; set; }
         public IOrchardServices Services { get; set; }
+
+        private void CreateMenuForFeature(FeatureDescriptor feature)
+        {
+            var menu = _menuService.GetMenu("Main Menu");
+            //if Main Menu not exist,will not create menuitem for featrure.
+            if (menu == null) return;
+            var menuPart = _contentManager.Query<MenuItemPart>()
+                                          .Where<MenuItemPartRecord>(x => x.FeatureId == feature.Id)
+                                          .List().SingleOrDefault();
+            ContentItem menuItem = null;
+            if (menuPart == null)
+            {
+                menuItem = _contentManager.Create("MenuItem");
+            }
+            else
+            {
+                menuItem = menuPart.ContentItem;
+            }
+            var categoryMenu= _contentManager.Query<MenuPart>()
+                                             .Where<MenuPartRecord>(t => t.MenuText == feature.Category)
+                                             .List().FirstOrDefault();
+            string menuPosition = "1";
+            if (categoryMenu == null)
+            {
+                Services.Notifier.Warning(T(" category Menu for {0} was not found,menu was created  top level", feature.Name));
+            }
+            else
+            {
+                menuPosition = categoryMenu.MenuPosition + ".1";
+            }
+
+            menuItem.As<MenuPart>().MenuPosition = menuPosition;
+            menuItem.As<MenuPart>().MenuText = feature.Name;
+            menuItem.As<MenuPart>().Menu = menu.ContentItem;
+            string urlTemp = "~/{0}/Home#/List";
+            menuItem.As<MenuItemPart>().Url = string.Format(urlTemp, feature.Name);
+            menuItem.As<MenuItemPart>().FeatureId = feature.Id;
+        }
+
+        private void RemoveMenuForFeature(FeatureDescriptor feature)
+        {
+            var menu = _menuService.GetMenu("Main Menu");
+            //if Main Menu not exist,will not create menuitem for featrure.
+            if (menu == null) return;
+
+            var menuPart = _contentManager.Query<MenuPart>()
+                                          .Join<MenuItemPartRecord>()
+                                          .Where<MenuItemPartRecord>(x => x.FeatureId == feature.Id)
+                                          .List().SingleOrDefault();
+            if (menuPart != null)
+            {
+                _menuService.Delete(menuPart);
+            }
+        }
 
         /// <summary>
         /// Retrieves an enumeration of the available features together with its state (enabled / disabled).
@@ -71,9 +135,13 @@ namespace Orchard.Modules.Services {
         /// <param name="featureIds">The IDs for the features to be enabled.</param>
         /// <param name="force">Boolean parameter indicating if the feature should enable it's dependencies if required or fail otherwise.</param>
         public void EnableFeatures(IEnumerable<string> featureIds, bool force) {
-            foreach (string featureId in _featureManager.EnableFeatures(featureIds, force)) {
-                var featureName = _featureManager.GetAvailableFeatures().First(f => f.Id.Equals(featureId, StringComparison.OrdinalIgnoreCase)).Name;
-                Services.Notifier.Information(T("{0} was enabled", featureName));
+            foreach (string featureId in _featureManager.EnableFeatures(featureIds, force)) 
+            {
+                var feature = _featureManager.GetAvailableFeatures().First(f => f.Id.Equals(featureId, StringComparison.OrdinalIgnoreCase));
+                Services.Notifier.Information(T("{0} was enabled", feature.Name));
+
+                //Add MenuItem
+                this.CreateMenuForFeature(feature);
             }
         }
 
@@ -92,8 +160,10 @@ namespace Orchard.Modules.Services {
         /// <param name="force">Boolean parameter indicating if the feature should disable the features which depend on it if required or fail otherwise.</param>
         public void DisableFeatures(IEnumerable<string> featureIds, bool force) {
             foreach (string featureId in _featureManager.DisableFeatures(featureIds, force)) {
-                var featureName = _featureManager.GetAvailableFeatures().Where(f => f.Id == featureId).First().Name;
-                Services.Notifier.Information(T("{0} was disabled", featureName));
+                var feature = _featureManager.GetAvailableFeatures().Where(f => f.Id == featureId).First();
+
+                this.RemoveMenuForFeature(feature);
+                Services.Notifier.Information(T("{0} was disabled", feature.Name));
             }
         }
 
