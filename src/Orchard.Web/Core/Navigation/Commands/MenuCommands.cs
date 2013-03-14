@@ -27,9 +27,12 @@ namespace Orchard.Core.Navigation.Commands {
         [OrchardSwitch]
         public string MenuName { get; set; }
 
+        [OrchardSwitch]
+        public string FeatureId { get; set; }
+
         [CommandName("menuitem create")]
-        [CommandHelp("menuitem create /MenuPosition:<position> /MenuText:<text> /Url:<url> /MenuName:<name>\r\n\t" + "Creates a new menu item")]
-        [OrchardSwitches("MenuPosition,MenuText,Url,MenuName")]
+        [CommandHelp("menuitem create /MenuPosition:<position> /MenuText:<text> /Url:<url> /MenuName:<name> /FeatureId:<feature>\r\n\t" + "Creates a new menu item")]
+        [OrchardSwitches("MenuPosition,MenuText,Url,MenuName,FeatureId")]
         public void Create() {
             // flushes before doing a query in case a previous command created the menu
             _contentManager.Flush();
@@ -46,6 +49,7 @@ namespace Orchard.Core.Navigation.Commands {
             menuItem.As<MenuPart>().MenuText = T(MenuText).ToString();
             menuItem.As<MenuPart>().Menu = menu.ContentItem;
             menuItem.As<MenuItemPart>().Url = Url;
+            menuItem.As<MenuItemPart>().FeatureId = FeatureId;
 
             Context.Output.WriteLine(T("Menu item created successfully.").Text);
         }

@@ -211,5 +211,13 @@ namespace Orchard.Core.Navigation {
 
             return 4;
         }
+
+        public int UpdateFrom4()
+        {
+            SchemaBuilder.AlterTable("MenuItemPartRecord",
+                                     table => table.AddColumn<string>("FeatureId"));
+
+            return 5;
+        }
     }
 }
