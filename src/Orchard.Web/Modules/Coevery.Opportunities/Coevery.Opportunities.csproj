@@ -102,10 +102,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\DetailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OppportunityController.cs" />
-    <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\OpportunityDto.cs" />
     <Compile Include="Models\OpportunityRecord.cs" />
