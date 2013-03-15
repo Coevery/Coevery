@@ -3,10 +3,23 @@ using Orchard.Themes;
 
 namespace Coevery.Opportunities.Controllers
 {
-    [Themed]
+    
     public class HomeController : Controller
     {
+        [Themed]
         public ActionResult Index(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        public ActionResult List(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        public ActionResult Detail(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
