@@ -64,6 +64,21 @@ namespace Orchard.Modules.Services {
                                           .Where<MenuItemPartRecord>(x => x.FeatureId == feature.Id)
                                           .List().SingleOrDefault();
             ContentItem menuItem = null;
+           
+            var categoryMenu= _contentManager.Query<MenuPart>()
+                                             .Where<MenuPartRecord>(t => t.MenuText == feature.Category)
+                                             .List().FirstOrDefault();
+            string menuPosition = "1";
+            if (categoryMenu == null)
+            {
+                Services.Notifier.Warning(T(" category Menu for {0} was not found,menu was not created", feature.Name));
+                return;
+            }
+            else
+            {
+                menuPosition = categoryMenu.MenuPosition + ".1";
+            }
+
             if (menuPart == null)
             {
                 menuItem = _contentManager.Create("MenuItem");
@@ -71,18 +86,6 @@ namespace Orchard.Modules.Services {
             else
             {
                 menuItem = menuPart.ContentItem;
-            }
-            var categoryMenu= _contentManager.Query<MenuPart>()
-                                             .Where<MenuPartRecord>(t => t.MenuText == feature.Category)
-                                             .List().FirstOrDefault();
-            string menuPosition = "1";
-            if (categoryMenu == null)
-            {
-                Services.Notifier.Warning(T(" category Menu for {0} was not found,menu was created  top level", feature.Name));
-            }
-            else
-            {
-                menuPosition = categoryMenu.MenuPosition + ".1";
             }
 
             menuItem.As<MenuPart>().MenuPosition = menuPosition;
