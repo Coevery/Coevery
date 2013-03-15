@@ -106,9 +106,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OppportunityController.cs" />
     <Compile Include="Controllers\ListController.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\OpportunityDto.cs" />
     <Compile Include="Models\OpportunityRecord.cs" />
@@ -118,8 +115,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
-    <Content Include="Global.asax" />
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\app\controller.js" />
