@@ -1,4 +1,4 @@
-﻿opportunity.controller('opportunityCtrl', function ($scope, logger, $location, opportunity) {
+﻿opportunity.controller('OpportunityCtrl', function ($scope, logger, $location, opportunity) {
     $scope.mySelections = [];
     
     $scope.gridOptions = {
