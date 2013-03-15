@@ -64,7 +64,6 @@ namespace Orchard.Modules.Services {
                                           .Where<MenuItemPartRecord>(x => x.FeatureId == feature.Id)
                                           .List().SingleOrDefault();
             ContentItem menuItem = null;
-           
             var categoryMenu= _contentManager.Query<MenuPart>()
                                              .Where<MenuPartRecord>(t => t.MenuText == feature.Category)
                                              .List().FirstOrDefault();
