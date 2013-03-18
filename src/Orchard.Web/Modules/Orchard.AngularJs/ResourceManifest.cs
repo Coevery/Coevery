@@ -12,6 +12,7 @@ namespace Orchard.jQuery {
             manifest.DefineScript("angularResource").SetUrl("angular-resource.js");
             manifest.DefineScript("ngGrid").SetUrl("ng-grid-2.0.0.debug.js");
             manifest.DefineScript("pnotify").SetUrl("jquery.pnotify.min.js");
+          
         }
     }
 }
