@@ -1,0 +1,46 @@
+Name: Helpful Libraries
+AntiForgery: enabled
+Author: Piedone
+Website: http://helpfullibraries.codeplex.com
+Version: 1.8
+OrchardVersion: 1.6
+Description: Libraries that can be handy when developing for Orchard
+Features:
+    Piedone.HelpfulLibraries:
+		Description: Base of Helpful Libraries
+        Category: Developer
+	Piedone.HelpfulLibraries.Contents:
+		Name: Contents Libraries
+        Description: These libraries help dealing with content items
+		Category: Developer
+		Dependencies: Piedone.HelpfulLibraries, Orchard.Projections, Orchard.Forms, Orchard.Tokens, Common
+	Piedone.HelpfulLibraries.DependencyInjection:
+		Name: Dependency Injection Libraries
+        Description: These libraries aid dependency injection
+		Category: Developer
+		Dependencies: Piedone.HelpfulLibraries
+	Piedone.HelpfulLibraries.Serialization:
+		Name: Serialization Libraries
+        Description: These libraries help the serialization and deserialization of objects
+		Category: Developer
+		Dependencies: Piedone.HelpfulLibraries
+	Piedone.HelpfulLibraries.ServiceValidation:
+		Name: Service Validation Libraries
+        Description: These libraries help collecting and returning validation errors in service classes
+		Category: Developer
+		Dependencies: Piedone.HelpfulLibraries
+	Piedone.HelpfulLibraries.Tasks:
+		Name: Tasks Libraries
+        Description: These libraries help dealing with units of tasks and related issues: locking caching and reliable task locking as well as System.Threading.Tasks in an Orchard environment
+		Category: Developer
+		Dependencies: Piedone.HelpfulLibraries, Piedone.HelpfulLibraries.DependencyInjection
+	Piedone.HelpfulLibraries.Tasks.Jobs:
+		Name: Tasks Libraries: Jobs
+        Description: Orchard job management
+		Category: Developer
+		Dependencies: Piedone.HelpfulLibraries.Tasks
+	Piedone.HelpfulLibraries.Utilities:
+		Name: Utilities
+        Description: These are various utilities that aid module development
+		Category: Developer
+		Dependencies: Piedone.HelpfulLibraries

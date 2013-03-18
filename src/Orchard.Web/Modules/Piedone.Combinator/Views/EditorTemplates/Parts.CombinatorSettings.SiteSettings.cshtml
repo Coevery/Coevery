@@ -1,0 +1,111 @@
+﻿@model Piedone.Combinator.Models.CombinatorSettingsPart
+@{
+    Script.Require("jQuery").AtHead();
+}
+@using (Script.Head())
+{
+    <script type="text/javascript">
+        (function ($) {
+            // Doing this with JS is not a nice solution but it seems there is no other way to make a POST to the action
+            $.extend({
+                combinator: {
+                    emptyCache: function () {
+                        $("#button\\.EmptyCache").attr("disabled", "disabled");
+                        var url = '@Url.Action("EmptyCache", new { Controller = "CombinatorAdmin", Area = "Piedone.Combinator" })';
+                        var postData = { __RequestVerificationToken: "@Html.AntiForgeryTokenValueOrchard()" };
+                        $.post(url, postData, function (response) {
+                            location.reload();
+                        });
+                    }
+                }
+            });
+        })(jQuery);
+    </script>
+}
+<h1>
+    @T("Combinator Settings")
+</h1>
+<span class="hint">@T("There are currently {0} combined resource files cached.", Model.CacheFileCount)</span>
+<fieldset>
+    <legend>@T("General Settings")</legend>
+    <ol>
+        <li>
+            @Html.LabelFor(m => m.CombinationExcludeRegex, T("Exclude from combination"))
+            @Html.TextBoxFor(m => m.CombinationExcludeRegex, new { @class = "textMedium" })
+            @Html.ValidationMessageFor(m => m.CombinationExcludeRegex)
+            <span class="hint">@T("Files matched won't be processed in any way. Please provide a valid regular expression. Note that the full public urls of all resources will be checked against this regex. The match is case-sensitive. Regex.IsMatch() is used internally, so look at it for how to use. Example (without quotes): \"\\.min|jQuery\" will exclude all resources whose name contains \".min\" or \"jQuery\".")</span>
+        </li>
+        <li>
+            @Html.EditorFor(m => m.CombineCDNResources)
+            <label for="@Html.FieldIdFor(m => m.CombineCDNResources)" class="forcheckbox">@T("Combine CDN Resources")</label>
+            @Html.ValidationMessageFor(m => m.CombineCDNResources)
+            <span class="hint">@T("If checked, remote resources from CDNs will be also combined. Most of the time this defeats the purpose of CDNs but if the site fetches resources from many sources, for your targeted visitors it may be faster to serve them all combined from your site. Always measure the difference!")</span>
+        </li>
+    </ol>
+</fieldset>
+<fieldset>
+    <legend>@T("Minification Settings")</legend>
+    <ol>
+        <li>
+            @Html.EditorFor(m => m.MinifyResources)
+            <label for="@Html.FieldIdFor(m => m.MinifyResources)" class="forcheckbox">@T("Minify resources")</label>
+            @Html.ValidationMessageFor(m => m.MinifyResources)
+        </li>
+        <li>
+            @Html.LabelFor(m => m.MinificationExcludeRegex, T("Exclude from minification"))
+            @Html.TextBoxFor(m => m.MinificationExcludeRegex, new { @class = "textMedium" })
+            @Html.ValidationMessageFor(m => m.MinificationExcludeRegex)
+            <span class="hint">@T("Contents of matched files won't be minified. The same rules apply as with the combination exclusion regex.")</span>
+        </li>
+    </ol>
+</fieldset>
+<fieldset>
+    <legend>@T("Image Embedding Settings")</legend>
+    <ol>
+        <li>
+            <span class="checkbox-and-label">
+                @Html.EditorFor(m => m.EmbedCssImages)
+                <label for="@Html.FieldIdFor(m => m.EmbedCssImages)" class="forcheckbox">@T("Embed images in stylesheets")</label>
+                @Html.ValidationMessageFor(m => m.EmbedCssImages)
+            </span>
+            <span>
+                @Html.LabelFor(m => m.EmbeddedImagesMaxSizeKB, T("Maximal size of images to embed (in KBs)"))
+                @Html.TextBoxFor(m => m.EmbeddedImagesMaxSizeKB, new { @class = "text text-small" })
+                @Html.ValidationMessageFor(m => m.EmbeddedImagesMaxSizeKB)
+            </span>
+            <span class="hint">
+                @T("If checked, images referenced in stylesheets (e.g. as background with an url()) that are smaller than the specified size will be embedded as data urls in the css.")<br>
+                @T("Note that Internet explorer fully supports data urls only since version 9. Prior to version 8 it doesn't support data urls at all and version 8 has a limitation of 32KB per url. Since data urls are ~1/3 bigger than the original images this feature is advised only if you have many small images and if none of your images is bigger than ~24KB if you want to support IE 8. Also keep in mind that the bigger the stylesheet, the longer the client has to wait before seeing styled content.")
+            </span>
+         </li>
+         <li>
+            @Html.LabelFor(m => m.EmbedCssImagesStylesheetExcludeRegex, T("Exclude from embedding"))
+            @Html.TextBoxFor(m => m.EmbedCssImagesStylesheetExcludeRegex, new { @class = "textMedium" })
+            @Html.ValidationMessageFor(m => m.EmbedCssImagesStylesheetExcludeRegex)
+            <span class="hint">@T("Images of matched stylesheets won't be embedded. The same rules apply as with the combination exclusion regex. You can use this feature to exclude conditional stylesheets that are only for browsers prior to IE 8, so that for those clients the original images are presented.")</span>
+        </li>
+    </ol>
+</fieldset>
+<fieldset>
+    <legend>@T("Resource Sets")</legend>
+    <ol>
+        <li>
+            @Html.LabelFor(m => m.ResourceSetRegexes, T("Define one per line"))
+            @Html.TextAreaFor(m => m.ResourceSetRegexes, new { @class = "textMedium" })
+            @Html.ValidationMessageFor(m => m.ResourceSetRegexes)
+            <span class="hint">@T("You can define sets of resources that will be not combined with other resources. This way some resources that are common for a majority of pages can be combined to an individual resource for better client-side caching. The technique is useful when there are resources common for many pages and many pages include own resources. There should be one set defined per line as a regular expression, same rules apply as with the combination exclusion regex. WARNING: sets only work correctly if the resources in the end are included after each other.")</span>
+        </li>
+    </ol>
+</fieldset>
+<fieldset>
+    <legend>@T("Usage on the admin site")</legend>
+    @Html.EditorFor(m => m.EnableForAdmin)
+    <label for="@Html.FieldIdFor(m => m.EnableForAdmin)" class="forcheckbox">@T("Enable for the admin site")</label>
+    @Html.ValidationMessageFor(m => m.EnableForAdmin)
+    <span class="hint">@T("Warning: WYSISWYG editors typically can't be combined, so exclude them from combination. The exclude filter \"TinyMce\" is usually enough with the default installation.")</span>
+</fieldset>
+<fieldset>
+    <legend>@T("Cache Control")</legend>
+    <button type="button" id="button.EmptyCache" name="button.EmptyCache" value="EmptyCache"
+        onclick="$.combinator.emptyCache(); return false;">@T("Empty cache")</button>
+</fieldset>
