@@ -22,7 +22,7 @@ namespace Coevery.Opportunities.Models
         {
             this.OpportunityId = opportunity.Id;
             this.Description = opportunity.Description;
-            this.SourceLeadId = opportunity.LeadSourceId;
+            this.SourceLeadId = opportunity.SourceLeadId;
             this.Name = opportunity.Name;
         }
 
@@ -32,7 +32,7 @@ namespace Coevery.Opportunities.Models
             {
                 Description = this.Description,
                 Id = this.OpportunityId,
-                LeadSourceId = this.SourceLeadId,
+                SourceLeadId = this.SourceLeadId,
                 Name = this.Name
             };
         }

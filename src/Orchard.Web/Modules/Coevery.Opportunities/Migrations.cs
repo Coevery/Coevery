@@ -13,7 +13,7 @@ namespace Coevery.Opportunities
                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                    .Column<string>("Name")
                    .Column<string>("Description")
-                   .Column<int>("LeadSourceId")
+                   .Column<int>("SourceLeadId")
                );
 
             return 1;
