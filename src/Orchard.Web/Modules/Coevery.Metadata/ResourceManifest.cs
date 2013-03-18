@@ -4,7 +4,7 @@ namespace Coevery.Metadata {
     public class ResourceManifest : IResourceManifestProvider {
         public void BuildManifests(ResourceManifestBuilder builder) {
             var manifest = builder.Add();
-            manifest.DefineStyle("ContentTypesAdmin").SetUrl("orchard-contenttypes-admin.css");
+            //manifest.DefineStyle("ContentTypesAdmin").SetUrl("orchard-contenttypes-admin.css");
             manifest.DefineScript("localize").SetUrl("localize.js");
 
 

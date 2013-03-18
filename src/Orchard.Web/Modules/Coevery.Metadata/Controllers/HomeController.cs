@@ -21,7 +21,7 @@ using Orchard.Utility.Extensions;
 using Orchard.Themes;
 
 namespace Coevery.Metadata.Controllers {
-    [Themed]
+
     public class HomeController : Controller, IUpdateModel {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -49,14 +49,27 @@ namespace Coevery.Metadata.Controllers {
         public IOrchardServices Services { get; private set; }
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
-        public ActionResult Index() { return List(); }
+
+        [Themed]
+        public ActionResult Index()
+        {
+            return View();
+        }
 
         #region Types
 
-        public ActionResult List() {
-            return View("List", new ListContentTypesViewModel {
-                Types = _contentDefinitionService.GetTypes()
-            });
+        public ActionResult List()
+        {
+            //return View("List", new ListContentTypesViewModel
+            //{
+            //    Types = _contentDefinitionService.GetTypes()
+            //});
+            return View();
+        }
+
+        public ActionResult Detail()
+        {
+            return View();
         }
 
         public ActionResult Create() {

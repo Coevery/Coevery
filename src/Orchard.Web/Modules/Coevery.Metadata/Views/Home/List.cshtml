@@ -1,45 +1,27 @@
+<div class="row-fluid">
+    <section class="span12 widget">
+        <header class="widget-header">
+            <span class="title">@T("Metadata")</span>
+        </header>
+        <section class="widget-content table-container dataTables_wrapper">
+            <section class="dt_header">
+                <section class="btn-group">
+                    <button class="btn" ng-click="add()">
+                        <i class="icol-add"></i> @T("Add")
+                    </button>
+                    <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
+                        <i class="icol-page-white-edit"></i>@T("Edit") 
+                    </button>
+                    <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
+                        <i class="icol-cross"></i>@T("Delete")  
+                    </button>
+                    <button class="btn" ng-click="getAllMetadata()">
+                        <i class="icol-arrow-refresh"></i> @T("Refresh")  
+                    </button>
+                </section>
+            </section>
 
-@model Coevery.Metadata.ViewModels.ListContentTypesViewModel
-@{
-    ViewBag.Title = T("Metadata");
-    
-    Style.Require("pnotify");
-    Style.Require("ngGrid");
-    Style.Require("TodoStyle");
-    Script.Require("jQuery").UseCdn();
-    Script.Require("pnotify");
-    Script.Require("angular").UseCdn();
-    Script.Require("localize");
-    Script.Require("angularResource");
-    Script.Require("ngGrid");
-
-    Script.Require("MetadataApp");
-    Script.Require("MetadataLogger");
-    Script.Require("MetadataContext");
-    Script.Require("MetadataController");
-    Script.Require("MetadataDetailController");
-    Script.Require("MetadataModel");
-
-}
-
-<header id="main-header" class="page-header">
-    <h1>@ViewBag.Title</h1>
-</header>
-
-<section ng-app="Metadata" id="main-content" class="ng-cloak" ng-view>
-</section>
-
-@*@{
-    Style.Require("ContentTypesAdmin");
-    Layout.Title = T("Manage Content Types").ToString();
-}
-
-<div class="manage">
-    @Html.ActionLink(T("Create new type").ToString(), "Create", new{ Controller="Home", Area="Coevery.Metadata"}, new { @class = "button primaryAction" })
+            <section class="gridStyle" ng-grid="gridOptions"></section>
+        </section>
+    </section>
 </div>
-@Html.UnorderedList(
-    Model.Types,
-    (t,i) => Html.DisplayFor(m => t),
-    "contentItems"
-    )*@
-
