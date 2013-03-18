@@ -9,6 +9,6 @@
     </div>
     <div class="related">@if (creatable) {
         @Html.ActionLink(T("List Items").ToString(), "List", new {area = "Contents", id = Model.Name})@T(" | ")}
-        @Html.ActionLink(T("Edit").ToString(), "Edit", new {area = "Orchard.ContentTypes", id = Model.Name})
+        @Html.ActionLink(T("Edit").ToString(), "Edit", new {Controller="Home", Area="Coevery.Metadata", id = Model.Name})
     </div>
 </div>

@@ -117,6 +117,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
+    <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\context.js" />
+    <Content Include="Scripts\app\logger.js" />
+    <Content Include="Scripts\controllers\detailcontroller.js" />
+    <Content Include="Scripts\controllers\listcontroller.js" />
+    <Content Include="Scripts\localize.js" />
+    <Content Include="Scripts\models\Metadata.js" />
     <Content Include="Styles\Images\move.gif" />
     <Content Include="Styles\orchard-contenttypes-admin.css" />
     <Content Include="Views\Home\AddFieldTo.cshtml" />
@@ -178,6 +185,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\i18n\" />
+    <Folder Include="Scripts\services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
