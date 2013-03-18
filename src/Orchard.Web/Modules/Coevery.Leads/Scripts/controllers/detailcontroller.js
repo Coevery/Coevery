@@ -24,7 +24,7 @@
     };
 
     $scope.exit = function () {
-        $location.path('List');
+        $location.path('');
     };
 
     if (!isNew) {

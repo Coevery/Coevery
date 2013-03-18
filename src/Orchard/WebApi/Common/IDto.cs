@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Orchard.ContentManagement;
 
 namespace Orchard.WebApi.Common
 {
-    public interface IDto<RecordType> where RecordType:class 
+    public interface IDto<TContentType> where TContentType : ContentPart 
     {
-        RecordType ToEntity();
-        object RecordId { get; set; }
+        void UpdateEntity(TContentType entity);
+        int ContentId { get; set; }
     }
 }

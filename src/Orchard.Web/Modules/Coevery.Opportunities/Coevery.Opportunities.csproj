@@ -104,7 +104,10 @@
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OppportunityController.cs" />
+    <Compile Include="Drivers\OpportunityDriver.cs" />
+    <Compile Include="Handlers\OpportunityHandler.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Models\Opportunity.cs" />
     <Compile Include="Models\OpportunityDto.cs" />
     <Compile Include="Models\OpportunityRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -160,6 +163,9 @@
       <Project>{9916839c-39fc-4ceb-a5af-89ca7e87119f}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content.Edit-Opportunity.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

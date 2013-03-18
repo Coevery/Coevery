@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Orchard.WebApi.Common;
 
 namespace Coevery.Opportunities.Models
 {
-    public class OpportunityDto:IDto<OpportunityRecord>
+    public class OpportunityDto : IDto<Opportunity>
     {
         public int OpportunityId { get; set; }
         public string Name { get; set; }
@@ -15,35 +12,28 @@ namespace Coevery.Opportunities.Models
 
         public OpportunityDto()
         {
-            
+
         }
 
-        public OpportunityDto(OpportunityRecord opportunity)
+        public OpportunityDto(Opportunity opportunity)
         {
-            this.OpportunityId = opportunity.Id;
-            this.Description = opportunity.Description;
-            this.SourceLeadId = opportunity.SourceLeadId;
-            this.Name = opportunity.Name;
+            OpportunityId = opportunity.Id;
+            Description = opportunity.Description;
+            SourceLeadId = opportunity.SourceLeadId;
+            Name = opportunity.Name;
         }
 
-        public OpportunityRecord ToEntity()
+        public void UpdateEntity(Opportunity opportunity)
         {
-            return new OpportunityRecord()
-            {
-                Description = this.Description,
-                Id = this.OpportunityId,
-                SourceLeadId = this.SourceLeadId,
-                Name = this.Name
-            };
+            opportunity.Name = Name;
+            opportunity.SourceLeadId = SourceLeadId;
+            opportunity.Description = Description;
         }
 
-        public object RecordId
+        public int ContentId
         {
-            get { return this.OpportunityId; }
-            set
-            {
-                this.OpportunityId = Convert.ToInt32(value);
-            }
+            get { return OpportunityId; }
+            set { OpportunityId = value; }
         }
     }
 }

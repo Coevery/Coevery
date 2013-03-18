@@ -81,7 +81,10 @@
     <Compile Include="Controllers\LeadController.cs" />
     <Compile Include="Controllers\TodoController.cs" />
     <Compile Include="Controllers\TodoListController.cs" />
+    <Compile Include="Drivers\LeadDriver.cs" />
+    <Compile Include="Handlers\LeadHandler.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Models\Lead.cs" />
     <Compile Include="Models\LeadDto.cs" />
     <Compile Include="Models\LeadRecord.cs" />
     <Compile Include="Models\TodoItemDto.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="ResourceManifest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Routes.cs" />
     <Compile Include="Services\TodoService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +141,13 @@
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
       <Name>Orchard.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
+      <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
+      <Name>Orchard.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content.Edit-Lead.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

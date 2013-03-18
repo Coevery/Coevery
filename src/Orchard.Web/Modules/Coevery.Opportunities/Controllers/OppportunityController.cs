@@ -5,18 +5,20 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Opportunities.Models;
+using Orchard;
+using Orchard.ContentManagement;
 using Orchard.Data;
 using Orchard.WebApi.Common;
 
 namespace Coevery.Opportunities.Controllers
 {
-    public class OpportunityController : RecordController<OpportunityRecord, OpportunityDto>
+    public class OpportunityController : ContentController<Opportunity, OpportunityDto>
     {
-        public OpportunityController(IRepository<OpportunityRecord> opportunityRepository)
-            :base(opportunityRepository)
+        public OpportunityController(IOrchardServices services, IContentManager contentManager)
+            : base(services, contentManager)
         {
         }
 
-     
+
     }
 }

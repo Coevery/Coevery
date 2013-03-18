@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Orchard.ContentManagement;
 using Orchard.Themes;
 
 namespace Coevery.Opportunities.Controllers
@@ -6,6 +7,13 @@ namespace Coevery.Opportunities.Controllers
     
     public class HomeController : Controller
     {
+        private readonly IContentManager _contentManager;
+
+        public HomeController(IContentManager contentManager)
+        {
+            _contentManager = contentManager;
+        }
+
         [Themed]
         public ActionResult Index(string returnUrl)
         {
@@ -21,8 +29,12 @@ namespace Coevery.Opportunities.Controllers
 
         public ActionResult Detail(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            var id = "Opportunity";
+            var contentItem = _contentManager.New(id);
+
+            dynamic model = _contentManager.BuildEditor(contentItem);
+
+            return View((object)model);
         }
     }
 }

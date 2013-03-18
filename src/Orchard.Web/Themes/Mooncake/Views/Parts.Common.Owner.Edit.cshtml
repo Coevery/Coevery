@@ -1,0 +1,9 @@
+﻿@model Orchard.Core.Common.OwnerEditor.OwnerEditorViewModel
+
+<section class="control-group">
+    <label class="control-label" for="inputOwner">Owner</label>
+    <div class="controls">
+        <input type="text" class="span12" ng-init="item.Owner='@Model.Owner'" ng-model="item.Owner" name="owner" id="inputOwner" required>
+        <span class="text-error" ng-show="!myForm.owner.$valid">Required!</span>
+    </div>
+</section>

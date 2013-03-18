@@ -562,8 +562,8 @@
     <Compile Include="Wcf\OrchardServiceHostFactory.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyResolver.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyScope.cs" />
+    <Compile Include="WebApi\Common\ContentController.cs" />
     <Compile Include="WebApi\Common\IDto.cs" />
-    <Compile Include="WebApi\Common\RecordController.cs" />
     <Compile Include="WebApi\DefaultOrchardWebApiHttpControllerSelector.cs" />
     <Compile Include="WebApi\DefaultOrchardWebApiHttpHttpControllerActivator.cs" />
     <Compile Include="WebApi\Extensions\RouteExtension.cs" />

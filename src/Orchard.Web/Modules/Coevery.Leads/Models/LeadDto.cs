@@ -7,11 +7,11 @@ using Orchard.WebApi.Common;
 
 namespace Coevery.Leads.Models
 {
-    public class LeadDto:IDto<LeadRecord>
+    public class LeadDto : IDto<Lead>
     {
         public LeadDto() { }
 
-        public LeadDto(LeadRecord item)
+        public LeadDto(Lead item)
         {
             LeadId = item.Id;
             Topic = item.Topic;
@@ -32,26 +32,18 @@ namespace Coevery.Leads.Models
 
         public int StatusCode { get; set; }
 
-        public LeadRecord ToEntity()
+        public void UpdateEntity(Lead lead)
         {
-            return new LeadRecord
-            {
-                Id = LeadId,
-                Topic = Topic,
-                FirstName = FirstName,
-                LastName = LastName,
-                StatusCode = StatusCode
-            };
+            lead.Topic = Topic;
+            lead.FirstName = FirstName;
+            lead.LastName = LastName;
+            lead.StatusCode = StatusCode;
         }
 
-
-        public object RecordId
+        public int ContentId
         {
-            get { return this.LeadId; }
-            set
-            {
-                this.LeadId = Convert.ToInt32(value);
-            }
+            get { return LeadId; }
+            set { LeadId = value; }
         }
     }
 }

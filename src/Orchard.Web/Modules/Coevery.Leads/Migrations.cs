@@ -1,12 +1,11 @@
-﻿
-
+﻿using Orchard.ContentManagement.MetaData;
+using Orchard.Core.Contents.Extensions;
 using Orchard.Data.Migration;
 
 namespace Coevery.Leads
 {
     public class Migrations : DataMigrationImpl
     {
-
         public int Create()
         {
             SchemaBuilder.CreateTable("TodoListRecord",
@@ -26,16 +25,41 @@ namespace Coevery.Leads
 
             SchemaBuilder.CreateTable("LeadRecord",
                table => table
-                   .Column<int>("Id", column => column.PrimaryKey().Identity())
+                   .ContentPartRecord()
                    .Column<string>("Topic")
                    .Column<string>("FirstName")
                    .Column<string>("LastName")
                    .Column<int>("StatusCode")
                );
 
-            return 5;
+            ContentDefinitionManager.AlterPartDefinition("Lead",
+                cfg => cfg
+                    .WithField("Topic", builder => builder
+                        .WithDisplayName("Topic")
+                        .OfType("TextField")
+                        .WithSetting("TextFieldSettings.Required", "True"))
+                    .WithField("FirstName", builder => builder
+                        .WithDisplayName("FirstName")
+                        .OfType("TextField")
+                        .WithSetting("TextFieldSettings.Required", "True"))
+                    .WithField("LastName", builder => builder
+                        .WithDisplayName("LastName")
+                        .OfType("TextField")
+                        .WithSetting("TextFieldSettings.Required", "True"))
+                    .WithField("StatusCode", builder => builder
+                        .WithDisplayName("Status")
+                        .OfType("TextField"))
+                    .Attachable()
+                );
+
+            ContentDefinitionManager.AlterTypeDefinition("Lead",
+               cfg => cfg
+                   .WithPart("Lead")
+                   .WithPart("LocalizationPart")
+                   .Creatable()
+               );
+
+            return 1;
         }
-
-
     }
 }

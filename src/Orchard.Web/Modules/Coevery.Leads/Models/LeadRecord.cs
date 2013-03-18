@@ -1,21 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
+﻿using Orchard.ContentManagement.Records;
 
 namespace Coevery.Leads.Models
 {
-    public class LeadRecord
+    public class LeadRecord : ContentPartRecord
     {
-        [Key]
-        public virtual Int32 Id { get; set; }
-
-        [Required]
         public virtual string Topic { get; set; }
-        [Required]
         public virtual string FirstName { get; set; }
-        [Required]
         public virtual string LastName { get; set; }
-
         public virtual int StatusCode { get; set; }
     }
 }
