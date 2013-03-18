@@ -2,7 +2,7 @@
 
 metadata.config(function ($routeProvider) {
     $routeProvider.
-        when('/List', { controller: 'MetadataCtrl', templateUrl: '/OrchardLocal/Metadata/Home/List' }).
+        when('/List', { controller: 'MetadataCtrl', templateUrl: '/OrchardLocal/Metadata/Home/MetadataList' }).
         when('/Detail', { controller: 'MetadataDetailCtrl', templateUrl: '/OrchardLocal/Metadata/Home/Detail' }).
         //when('/Detail/:leadId', { controller: 'LeadDetailCtrl', templateUrl: '/OrchardLocal/Leads/Home/Detail' }).
         otherwise({ redirectTo: '/' });

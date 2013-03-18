@@ -87,6 +87,7 @@
     <Compile Include="Extensions\MetadataExtensions.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Routes.cs" />
     <Compile Include="Services\ContentTypePlacementStrategy.cs" />
     <Compile Include="Services\IPlacementService.cs" />
     <Compile Include="Services\PlacementService.cs" />
@@ -187,7 +188,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\MetadataList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Web.config" />
