@@ -101,11 +101,12 @@
     <Content Include="lib\angular\angular.min.js" />
     <Content Include="lib\angular\version.txt" />
     <Content Include="Module.txt" />
+    <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
-    <Content Include="Scripts\app\controller.js" />
-    <Content Include="Scripts\app\detailcontroller.js" />
+    <Content Include="Scripts\controllers\detailcontroller.js" />
+    <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\app\logger.js" />
-    <Content Include="Scripts\app\main.js" />
+    <Content Include="Scripts\models\Lead.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -124,6 +125,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
+    <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
