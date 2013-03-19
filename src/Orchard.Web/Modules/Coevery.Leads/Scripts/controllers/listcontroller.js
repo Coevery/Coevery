@@ -1,4 +1,4 @@
-﻿lead.controller('LeadCtrl', function($scope, logger, $location, Lead) {
+﻿lead.controller('LeadCtrl', function($scope, logger, $location,localize, Lead) {
     $scope.mySelections = [];
 
     $scope.gridOptions = {
@@ -15,6 +15,14 @@
         columnDefs: leadColumnDefs
     };
 
+
+    $scope.$on("localizeResourcesUpdates", function () {
+        for (var colIndex = 0; colIndex < $scope.gridOptions.$gridScope.columns.length; colIndex++) {
+            $scope.gridOptions.$gridScope.columns[colIndex].displayName
+                = localize.getLocalizedString($scope.gridOptions.$gridScope.columns[colIndex].field);
+        }
+    });
+    
     $scope.delete = function() {
         if ($scope.mySelections.length > 0) {
             Lead.delete({ leadId: $scope.mySelections[0].LeadId }, function() {
