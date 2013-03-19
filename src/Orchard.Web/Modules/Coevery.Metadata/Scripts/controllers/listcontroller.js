@@ -1,4 +1,4 @@
-﻿lead.controller('MetadataCtrl', function ($scope, logger, $location, Metadata) {
+﻿metadata.controller('MetadataCtrl', function ($scope, logger, $location, metadata) {
     $scope.mySelections = [];
     
     $scope.gridOptions = {
@@ -17,9 +17,9 @@
 
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
-            Metadata.delete({ leadId: $scope.mySelections[0].Name }, function () {
+            metadata.delete({ leadId: $scope.mySelections[0].Name }, function () {
                 $scope.mySelections.pop();
-                $scope.getAllLeads();
+                $scope.getAllMetadata();
                 logger.success("Delete the lead successful.");
             }, function () {
                 logger.error("Failed to delete the lead.");
@@ -33,17 +33,17 @@
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $location.path('Detail/' + $scope.mySelections[0].LeadId);
+            $location.path($scope.mySelections[0].Name);
         }
     };
 
-    //$scope.getAllLeads = function () {
-    //    var leads = Metadata.query(function () {
-    //        $scope.myData = leads;
-    //    }, function() {
-    //        logger.error("Failed to fetched leads.");
-    //    });
-    //};
+    $scope.getAllMetadata = function () {
+        var metadatas = metadata.query(function () {
+            $scope.myData = metadatas;
+        }, function() {
+            logger.error("Failed to fetched Metadata.");
+        });
+    };
 
-    //$scope.getAllLeads();
+    $scope.getAllMetadata();
 });

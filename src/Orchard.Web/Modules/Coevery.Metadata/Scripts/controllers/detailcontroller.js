@@ -1,6 +1,6 @@
-﻿lead.controller('LeadDetailCtrl', function ($scope, logger, $location, $routeParams, Lead) {
-    var id = $routeParams.leadId;
-    var isNew = id > 0 ? false : true;
+﻿metadata.controller('MetadataDetailCtrl', function ($scope, logger, $location, $routeParams, metadata) {
+    var name = $routeParams.name;
+    var isNew = name? false : true;
 
     $scope.save = function () {
         if (isNew) {
@@ -28,12 +28,12 @@
     };
 
     if (!isNew) {
-        var lead = Lead.get({ leadId: id }, function () {
-            $scope.item = lead;
+        var metaData = metadata.get({ name: name }, function () {
+            $scope.item = metaData;
         }, function () {
-            logger.error("The lead does not exist.");
+            logger.error("The metadata does not exist.");
         });
     } else {
-        $scope.item = new Lead();
+        $scope.item = new metadata();
     }
 });

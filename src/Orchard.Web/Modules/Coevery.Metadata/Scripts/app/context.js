@@ -1,6 +1,6 @@
-﻿metadata.factory('Metadata', function ($resource) {
+﻿metadata.factory('metadata', function ($resource) {
     return $resource(
-        '/OrchardLocal/api/leads/lead/:leadId',
-        { leadId: '@LeadId' },
+        '/OrchardLocal/api/metadata/metadata/:Name',
+        { Name: '@Name' },
         { update: { method: 'PUT' } });
 });
