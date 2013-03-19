@@ -5,10 +5,12 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Metadata.ViewModels {
-    public class EditTypeViewDto  {
+    public class FieldViewModelDto
+    {
         public string Name { get; set; }
         public string DisplayName { get; set; }
-        public List<FieldViewModelDto> Fields { get; set; }
+        public string FieldTypeName { get; set; }
+        public string ParentName { get; set; }
     }
 
 }

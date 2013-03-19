@@ -8,7 +8,7 @@ namespace Coevery.Leads
         {
             var manifest = builder.Add();
 
-            manifest.DefineScript("localize").SetUrl("localize.js");
+            manifest.DefineScript("LeadLocalize").SetUrl("LeadLocalize.js");
             manifest.DefineScript("LeadMain").SetUrl("app/app.js");
             manifest.DefineScript("LeadLogger").SetUrl("app/logger.js");
             manifest.DefineScript("LeadContext").SetUrl("app/context.js");
