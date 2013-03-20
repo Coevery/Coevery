@@ -1,6 +1,7 @@
-﻿function LeadCtrl($scope, logger, $state, localize, Lead) {
+﻿function LeadCtrl($scope, logger, $state, localize, $resource) {
+    var Lead = LeadContext($resource);
     $scope.mySelections = [];
-
+    
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,
@@ -35,13 +36,13 @@
         }
     };
 
-    $scope.add = function() {
-        $state.transitionTo('leadCreate');
+    $scope.add = function () {
+        $state.transitionTo('Create', { Moudle: 'Leads' });
     };
 
     $scope.edit = function() {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('leadDetail', { leadId: $scope.mySelections[0].LeadId });
+            $state.transitionTo('Detail', { Moudle: 'Leads', Id: $scope.mySelections[0].LeadId });
         }
     };
 

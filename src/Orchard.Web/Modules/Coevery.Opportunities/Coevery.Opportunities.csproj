@@ -117,11 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
-    <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
-    <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\models\opportunity.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -144,9 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\List.cshtml" />

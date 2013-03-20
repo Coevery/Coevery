@@ -1,5 +1,6 @@
-﻿function LeadDetailCtrl($scope, logger, $state, $stateParams, Lead) {
-    var id = $stateParams.leadId;
+﻿function LeadDetailCtrl($scope, logger, $state, $stateParams, $resource) {
+    var Lead = LeadContext($resource);
+    var id = $stateParams.Id;
     var isNew = id ? false : true;
 
     $scope.save = function() {
@@ -24,7 +25,7 @@
     };
 
     $scope.exit = function() {
-        $state.transitionTo('leadList');
+        $state.transitionTo('List', { Moudle: 'Leads' });
     };
 
     if (!isNew) {

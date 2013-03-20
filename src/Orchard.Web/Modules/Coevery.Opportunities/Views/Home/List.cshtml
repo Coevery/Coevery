@@ -1,4 +1,5 @@
 ﻿@{
+    Script.Require("OpportunityContext");
     Script.Require("OpportunityController");
     Script.Require("OpportuntityModel");
 }
@@ -8,7 +9,7 @@
     <h1>Opportunity</h1>
 </header>
 
-<section id="main-content">
+<section id="main-content" ng-controller="OpportunityCtrl">
     <div class="row-fluid">
         <section class="span12 widget">
             <header class="widget-header">

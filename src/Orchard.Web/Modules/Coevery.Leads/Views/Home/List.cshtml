@@ -1,5 +1,5 @@
 ﻿@{
-    //Script.Require("LeadContext");
+    Script.Require("LeadContext");
     Script.Require("LeadController");
     Script.Require("LeadModel");
 }
@@ -9,7 +9,7 @@
     <h1>Lead</h1>
 </header>
 
-<section id="main-content">
+<section id="main-content" ng-controller="LeadCtrl">
     <div class="row-fluid">
         <section class="span12 widget">
             <header class="widget-header">
