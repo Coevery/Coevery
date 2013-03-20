@@ -1,5 +1,6 @@
-﻿function OpportunityDetailCtrl($scope, logger, $state, $stateParams, opportunity) {
-    var id = $stateParams.opportunityId;
+﻿function OpportunityDetailCtrl($scope, logger, $state, $stateParams, $resource) {
+    var Opportunity = OpportunityContext($resource);
+    var id = $stateParams.Id;
     var isNew = id ? false : true;
 
     $scope.save = function() {
@@ -24,16 +25,16 @@
     };
 
     $scope.exit = function() {
-        $state.transitionTo('opportunityList');
+        $state.transitionTo('List', { Moudle: 'Opportunities' });
     };
 
     if (!isNew) {
-        var opportunity = opportunity.get({ opportunityId: id }, function() {
+        var opportunity = Opportunity.get({ opportunityId: id }, function () {
             $scope.item = opportunity;
         }, function() {
             logger.error("The opportunity does not exist.");
         });
     } else {
-        $scope.item = new opportunity();
+        $scope.item = new Opportunity();
     }
 }

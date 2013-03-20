@@ -14,13 +14,6 @@ namespace Coevery.Opportunities.Controllers
             _contentManager = contentManager;
         }
 
-        [Themed]
-        public ActionResult Index(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
         public ActionResult List(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;

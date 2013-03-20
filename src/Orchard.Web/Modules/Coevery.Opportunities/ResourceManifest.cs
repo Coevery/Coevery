@@ -7,12 +7,10 @@ namespace Coevery.Opportunities
         public void BuildManifests(ResourceManifestBuilder builder)
         {
             var manifest = builder.Add();
-            manifest.DefineScript("OpportunityMain").SetUrl("app/app.js");
             manifest.DefineScript("OpportunityContext").SetUrl("app/context.js");
             manifest.DefineScript("OpportunityController").SetUrl("controllers/listcontroller.js");
             manifest.DefineScript("OpportunityDetailController").SetUrl("controllers/detailcontroller.js");
             manifest.DefineScript("OpportuntityModel").SetUrl("models/opportunity.js");
-            manifest.DefineScript("OpportunityLogger").SetUrl("app/logger.js");
         }
     }
 }

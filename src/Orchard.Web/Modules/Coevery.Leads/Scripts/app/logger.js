@@ -1,18 +1,10 @@
-﻿/* logger: display color-coded messages in "toasts" and to console */
-
-// create and add logger service to the Ng injector
-coevery.factory('logger', function ($window) {
-
-    // This logger wraps the toastr logger and also logs to console
-    // toastr.js is library by John Papa that shows messages in pop up toast.
-    // https://github.com/CodeSeven/toastr
-
+﻿coevery.factory('logger', function ($window) {
     var logger = {
         error: error,
         info: info,
         success: success,
         notice: notice,
-        log: log // straight to console; bypass toast
+        log: log
     };
 
     function error(message) {
@@ -23,6 +15,7 @@ coevery.factory('logger', function ($window) {
         });
         log("Error: " + message);
     };
+    
     function info(message) {
         $.pnotify({
             title: 'Information',
@@ -31,6 +24,7 @@ coevery.factory('logger', function ($window) {
         });
         log("Info: " + message);
     };
+    
     function success(message) {
         $.pnotify({
             title: 'Success',
@@ -39,6 +33,7 @@ coevery.factory('logger', function ($window) {
         });
         log("Success: " + message);
     };
+    
     function notice(message) {
         $.pnotify({
             title: 'Notice',
