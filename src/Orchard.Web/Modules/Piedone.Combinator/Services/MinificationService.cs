@@ -1,7 +1,5 @@
 ﻿
-
 using Microsoft.Ajax.Utilities;
-using Yahoo.Yui.Compressor;
 
 namespace Piedone.Combinator.Services
 {
@@ -12,17 +10,10 @@ namespace Piedone.Combinator.Services
     {
         public string MinifyCss(string css) {
             return new Minifier().MinifyStyleSheet(css);
-
         }
 
         public string MinifyJavaScript(string javaScript) {
-            return javaScript;
-            //return new Minifier().MinifyJavaScript(javaScript);
-        }
-
-        public string MinifyYahooJavaScript(string javaScript) {
-            return javaScript;
-            //return new JavaScriptCompressor().Compress(javaScript);
+            return new Minifier().MinifyJavaScript(javaScript);
         }
     }
 }
