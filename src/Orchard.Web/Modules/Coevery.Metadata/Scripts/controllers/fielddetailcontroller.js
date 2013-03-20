@@ -9,6 +9,8 @@
         if (isNew) {
             $scope.item.$save(function (u, putResponseHeaders) {
                 isNew = false;
+                $scope.NameDisabled = true;
+                $scope.FieldTypeNameDisabled = true;
                 logger.success("Create the field successful.");
             }, function () {
                 logger.error("Failed to create the field.");
@@ -26,16 +28,36 @@
         $location.path('FieldList/' + parentname);
     };
     if (!isNew) {
-        var fielddata = field.get({ name: name, parentname: parentname }, function () {
-            $scope.inputNameEable = true;
-            $scope.item = fielddata;
+        $scope.NameDisabled = true;
+        $scope.FieldTypeNameDisabled = true;
+        var editfielddata = field.get({ name: name, parentname: parentname }, function () {
+            $scope.item = editfielddata;
+            var isExsits = false;
+            for (var i = 0; i < editfielddata.FieldTypes.length; i++) {
+                if (editfielddata.FieldTypeName.Name == editfielddata.FieldTypes[i].Name) {
+                    $scope.item.FieldTypeName = editfielddata.FieldTypes[i];
+                    isExsits = true;
+                    break;
+                }
+            }
+            if (!isExsits) $scope.item.FieldTypeName = null;
         }, function () {
             logger.error("The metadata does not exist.");
         });
     } else {
-        $scope.inputNameEable = false;
-        $scope.item = new field();
-        $scope.item.ParentName = parentname;
+        $scope.NameDisabled = false;
+        $scope.FieldTypeNameDisabled = false;
+        var addfielddata = field.get({parentname: parentname }, function () {
+            $scope.item = addfielddata;
+            if (addfielddata.FieldTypes.length > 0) {
+                $scope.item.FieldTypeName = addfielddata.FieldTypes[0];
+            }
+        }, function () {
+            $scope.item = new field();
+            $scope.item.ParentName = parentname;
+        });
+       
+        
     }
     
 });

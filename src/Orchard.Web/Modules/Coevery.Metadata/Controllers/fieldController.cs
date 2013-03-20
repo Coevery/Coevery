@@ -34,13 +34,27 @@ namespace Coevery.Metadata.Controllers
 
         
         // GET api/metadata/field/name
+        public virtual FieldViewModelDto Get(string parentname)
+        {
+            var fieldModel = new FieldViewModelDto() { ParentName = parentname };
+            fieldModel.FieldTypes = new List<FieldTypeDto>();
+            _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName).Select(c => c.FieldTypeName).ToList().ForEach(c => {
+                fieldModel.FieldTypes.Add(new FieldTypeDto(){Name = c});
+            });
+            return fieldModel;
+        }
+
         public virtual FieldViewModelDto Get(string name,string parentname)
         {
             var partViewModel = _contentDefinitionService.GetPart(parentname);
             var fieldViewModel = partViewModel.Fields.FirstOrDefault(x => x.Name == name);
+            var fieldModel = Get(parentname);
             if (fieldViewModel == null)
-                return new FieldViewModelDto();
-            return new FieldViewModelDto() { DisplayName = fieldViewModel.DisplayName, Name = fieldViewModel.Name, ParentName = parentname };
+                return fieldModel;
+            fieldModel.DisplayName = fieldViewModel.DisplayName;
+            fieldModel.Name = fieldViewModel.Name;
+            fieldModel.FieldTypeName = new FieldTypeDto() {Name = fieldViewModel.FieldDefinition.Name};
+            return fieldModel;
         }
 
         // PUT api/metadata/field/name
@@ -126,7 +140,8 @@ namespace Coevery.Metadata.Controllers
             if (!ModelState.IsValid) {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
-            _contentDefinitionService.AddFieldToPart(fieldModel.Name, fieldModel.DisplayName, fieldModel.FieldTypeName, partViewModel.Name);
+            string fieldTypeName = fieldModel.FieldTypeName == null ? null : fieldModel.FieldTypeName.Name;
+            _contentDefinitionService.AddFieldToPart(fieldModel.Name, fieldModel.DisplayName, fieldTypeName, partViewModel.Name);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

@@ -7,6 +7,7 @@
         if (isNew) {
             $scope.item.$save(function (u, putResponseHeaders) {
                 isNew = false;
+                $scope.NameDisabled = true;
                 logger.success("Create the metadata successful.");
             }, function () {
                 logger.error("Failed to create the metadata.");
@@ -29,13 +30,13 @@
     };
     if (!isNew) {
         var metaData = metadata.get({ name: name }, function () {
-            $scope.inputNameEable = true;
+            $scope.NameDisabled = true;
             $scope.item = metaData;
         }, function () {
             logger.error("The metadata does not exist.");
         });
     } else {
-        $scope.inputNameEable = false;
+        $scope.NameDisabled = false;
         $scope.item = new metadata();
     }
 });

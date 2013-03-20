@@ -3,7 +3,8 @@
     var name = $routeParams.name;
 
     $scope.mySelections = [];
-    var fieldColumnDefs = [{ field: 'DisplayName', displayName: 'DisplayName' }];
+    var fieldColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') },
+                           { field: 'FieldTypeDisplayName', displayName: localize.getLocalizedString('FieldTypeDisplayName') }];
     
     $scope.gridOptions = {
         data: 'myData',
