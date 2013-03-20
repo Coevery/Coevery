@@ -58,8 +58,8 @@
     menu create /MenuName:"Main Menu"
 
     menuitem create /MenuName:"Main Menu" /MenuText:"Sales" /MenuPosition:"2" /Url:"~"
-    menuitem create /MenuName:"Main Menu" /MenuText:"Leads" /MenuPosition:"2.1" /Url:"~/Lead" /FeatureId:"Coevery.Leads"
-    menuitem create /MenuName:"Main Menu" /MenuText:"Opportunities" /MenuPosition:"2.2" /Url:"~/Opportunities/Home#/List" /FeatureId:"Coevery.Opportunities"
+    menuitem create /MenuName:"Main Menu" /MenuText:"Leads" /MenuPosition:"2.1" /Url:"~/Coevery#/Lead" /FeatureId:"Coevery.Leads"
+    menuitem create /MenuName:"Main Menu" /MenuText:"Opportunities" /MenuPosition:"2.2" /Url:"~/Coevery#/Opportunity" /FeatureId:"Coevery.Opportunities"
 
     widget create MenuWidget /Title:"MenuWidget" /Zone:"Navigation"  /Layer:"Default" /MenuName:"Main Menu"
     page create /Slug:"welcome-to-Coevery" /Title:"Welcome to Coevery!" /Path:"welcome-to-coevery" /Homepage:true /Publish:true /Text:"Welcome To Coevery!" /MenuText:"Home" /MenuName:"Main Menu"

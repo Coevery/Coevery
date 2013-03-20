@@ -1,4 +1,4 @@
-﻿lead.factory('Lead', function ($resource) {
+﻿coevery.factory('Lead', function ($resource) {
     return $resource(
         '/OrchardLocal/api/leads/lead/:leadId',
         { leadId: '@LeadId' },

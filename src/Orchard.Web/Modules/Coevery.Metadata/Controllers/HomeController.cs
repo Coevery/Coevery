@@ -72,6 +72,17 @@ namespace Coevery.Metadata.Controllers {
             return View();
         }
 
+        public ActionResult FieldList()
+        {
+            return View();
+        }
+
+
+        public ActionResult Field()
+        {
+            return View();
+        }
+
         public ActionResult Create() {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
                 return new HttpUnauthorizedResult();

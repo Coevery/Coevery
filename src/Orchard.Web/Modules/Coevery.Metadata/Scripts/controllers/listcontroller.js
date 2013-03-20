@@ -1,4 +1,4 @@
-﻿metadata.controller('MetadataCtrl', function ($scope, logger, $location, metadata) {
+﻿metadata.controller('MetadataCtrl', function ($scope, logger, $location,localize, metadata) {
     $scope.mySelections = [];
     
     $scope.gridOptions = {
@@ -15,25 +15,37 @@
         columnDefs:metadataColumnDefs
     };
 
+
+    $scope.$on("localizeResourcesUpdates", function () {
+        for (var colIndex = 0; colIndex < $scope.gridOptions.$gridScope.columns.length; colIndex++) {
+            $scope.gridOptions.$gridScope.columns[colIndex].displayName
+                = localize.getLocalizedString($scope.gridOptions.$gridScope.columns[colIndex].field);
+        }
+    });
+    
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
-            metadata.delete({ leadId: $scope.mySelections[0].Name }, function () {
+            metadata.delete({ name: $scope.mySelections[0].Name }, function () {
                 $scope.mySelections.pop();
                 $scope.getAllMetadata();
-                logger.success("Delete the lead successful.");
+                logger.success("Delete the metadata successful.");
             }, function () {
-                logger.error("Failed to delete the lead.");
+                logger.error("Failed to delete the metadata.");
             });
         }
     };
 
     $scope.add = function () {
-        $location.path('Detail');
+        $location.path('Create');
+    };
+    
+    $scope.OpenFieldList = function () {
+        $location.path('FieldList/' + $scope.mySelections[0].Name);
     };
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $location.path($scope.mySelections[0].Name);
+            $location.path('Edit/'+$scope.mySelections[0].Name);
         }
     };
 

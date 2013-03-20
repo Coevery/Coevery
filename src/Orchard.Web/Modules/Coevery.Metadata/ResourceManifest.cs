@@ -5,7 +5,7 @@ namespace Coevery.Metadata {
         public void BuildManifests(ResourceManifestBuilder builder) {
             var manifest = builder.Add();
             //manifest.DefineStyle("ContentTypesAdmin").SetUrl("orchard-contenttypes-admin.css");
-            manifest.DefineScript("localize").SetUrl("localize.js");
+            manifest.DefineScript("MetadataLocalize").SetUrl("MetadataLocalize.js");
 
 
             manifest.DefineScript("angular").SetUrl("angular.js")
@@ -16,6 +16,8 @@ namespace Coevery.Metadata {
             manifest.DefineScript("MetadataContext").SetUrl("app/context.js");
             manifest.DefineScript("MetadataController").SetUrl("controllers/listcontroller.js");
             manifest.DefineScript("MetadataDetailController").SetUrl("controllers/detailcontroller.js");
+            manifest.DefineScript("FieldCtrl").SetUrl("controllers/fieldlistcontroller.js");
+            manifest.DefineScript("FieldDetailCtrl").SetUrl("controllers/fielddetailcontroller.js");
             manifest.DefineScript("MetadataModel").SetUrl("models/Metadata.js");
         }
     }

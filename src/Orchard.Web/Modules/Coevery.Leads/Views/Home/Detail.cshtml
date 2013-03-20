@@ -1,1 +1,15 @@
-﻿@Display(Model)
+﻿@{
+    Script.Require("LeadDetailController");
+    Script.Require("LeadModel");
+}
+@Display.FootScripts()
+
+<header id="main-header" class="page-header">
+    <h1>Lead</h1>
+</header>
+
+<section id="main-content">
+    <section>
+        @Display(Model)
+    </section>
+</section>

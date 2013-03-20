@@ -1,7 +1,7 @@
 ﻿/* logger: display color-coded messages in "toasts" and to console */
 
 // create and add logger service to the Ng injector
-lead.factory('logger', function ($window) {
+coevery.factory('logger', function ($window) {
 
     // This logger wraps the toastr logger and also logs to console
     // toastr.js is library by John Papa that shows messages in pop up toast.
