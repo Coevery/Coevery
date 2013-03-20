@@ -53,7 +53,7 @@ namespace Coevery.Metadata.Controllers
 
             if (metadataType.Fields != null)
             metadataType.Fields.ToList().ForEach(c => {
-                metadata.Fields.Add(new FieldViewModelDto(){DisplayName =c.DisplayName,Name = c.Name});
+                metadata.Fields.Add(new FieldViewModelDto(){DisplayName =c.DisplayName,Name = c.Name, FieldTypeDisplayName = c.FieldDefinition.Name});
             });
             
             return metadata;
@@ -79,6 +79,7 @@ namespace Coevery.Metadata.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
+            
             _contentDefinitionService.AlterType(typeViewModel, this);
             return Request.CreateResponse(HttpStatusCode.OK);
         }

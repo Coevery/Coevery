@@ -5,11 +5,18 @@
         </header>
         <section class="widget-content form-container">
             <form name="myForm" class="form-horizontal" ng-submit="save()">
-                 <section class="control-group">
+                <section class="control-group">
                     <label class="control-label" for="inputName">Name</label>
                     <div class="controls">
-                        <input type="text" ng-disabled="inputNameEable" class="span12" ng-model="item.Name" name="Name" id="inputName" required>
+                        <input type="text" ng-disabled="NameDisabled" class="span12" ng-model="item.Name" name="Name" id="inputName" required>
                         <span class="text-error" ng-show="!myForm.Name.$valid">Required!</span>
+                    </div>
+                </section>
+                 <section class="control-group">
+                    <label class="control-label" for="selectFieldTypeName">FieldType</label>
+                    <div class="controls">
+                        <select  class="span12" ng-model="item.FieldTypeName" ng-disabled="FieldTypeNameDisabled" name="FieldTypeName" ng-options="c.Name for c in item.FieldTypes" id="selectFieldTypeName">
+                        </select>
                     </div>
                 </section>
                 <section class="control-group">
@@ -19,6 +26,7 @@
                         <span class="text-error" ng-show="!myForm.DisplayName.$valid">Required!</span>
                     </div>
                 </section>
+                
                 <section class="form-actions">
                     <input type="submit" value="Save" class="btn btn-primary" ng-disabled="!myForm.$valid">
                     <input type="button" value="Exit" class="btn" ng-click="exit()"/>
