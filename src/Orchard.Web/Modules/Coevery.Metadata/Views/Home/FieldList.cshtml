@@ -1,0 +1,53 @@
+﻿<div class="row-fluid">
+    <section class="span12 widget">
+        <header class="widget-header">
+            <span class="title">Metadata</span>
+        </header>
+        <section class="widget-content form-container">
+            <form name="myForm" class="form-horizontal">
+                <section class="control-group">
+                    <label class="control-label" for="inputName">Name</label>
+                    <div class="controls">
+                        <input type="text" disabled="disabled" class="span12" ng-model="item.Name" name="Name" id="inputName">
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label" for="inputDisplayName">DisplayName</label>
+                    <div class="controls">
+                        <input type="text" disabled="disabled" class="span12" ng-model="item.DisplayName" name="DisplayName" id="inputDisplayName">
+                    </div>
+                </section>
+            </form>
+        </section>
+    </section>
+</div>
+<div class="row-fluid">
+    <section class="span12 widget">
+        <header class="widget-header">
+            <span class="title">Fields</span>
+        </header>
+        <section class="widget-content table-container dataTables_wrapper">
+            <section class="dt_header">
+                <section class="btn-group">
+                    <button class="btn" ng-click="add()">
+                        <i class="icol-add"></i>@T("Add")
+                    </button>
+                    <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
+                        <i class="icol-page-white-edit"></i>@T("Edit")
+                    </button>
+                    <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
+                        <i class="icol-cross"></i>@T("Delete")
+                    </button>
+                    <button class="btn" ng-click="getAllField()">
+                        <i class="icol-arrow-refresh"></i>@T("Refresh")
+                    </button>
+                    <button class="btn" ng-click="exit()">
+                        <i class="icol-arrow-refresh"></i>@T("Exit")
+                    </button>
+                </section>
+            </section>
+            <section class="gridStyle" ng-grid="gridOptions"></section>
+        </section>
+    </section>
+</div>
+

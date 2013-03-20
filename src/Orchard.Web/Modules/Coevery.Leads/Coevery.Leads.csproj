@@ -112,7 +112,7 @@
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\i18n\resources-locale_default.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
-    <Content Include="Scripts\localize.js" />
+    <Content Include="Scripts\LeadLocalize.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\models\Lead.js" />
     <Content Include="Web.config">

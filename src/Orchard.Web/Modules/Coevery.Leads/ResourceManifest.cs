@@ -8,7 +8,7 @@ namespace Coevery.Leads
         {
             var manifest = builder.Add();
 
-            manifest.DefineScript("localize").SetUrl("localize.js");
+            manifest.DefineScript("LeadLocalize").SetUrl("LeadLocalize.js");
             manifest.DefineScript("CoeveryApp").SetUrl("app/app.js");
             manifest.DefineScript("Logger").SetUrl("app/logger.js");
             manifest.DefineScript("states").SetUrl("angular-ui-states.js");

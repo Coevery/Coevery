@@ -2,10 +2,20 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection;
+using NHibernate;
+using NHibernate.Cfg;
+using NHibernate.Mapping;
 using Orchard.ContentManagement.Records;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
 using Orchard.Data;
+using NHibernate.Dialect;
+using Orchard.Data.Providers;
+using Orchard.Environment.Configuration;
+using Orchard.Environment.Descriptor.Models;
+using Orchard.Environment.Extensions;
+using Orchard.Environment.ShellBuilders;
 
 namespace Coevery.Dynamic.Services
 {
@@ -14,11 +24,17 @@ namespace Coevery.Dynamic.Services
         private readonly IDataMigrationInterpreter _interpreter;
         private readonly SchemaBuilder _schemaBuilder;
         private readonly ISessionLocator _sessionLocator;
+        private readonly ISessionFactoryHolder _sessionFactoryHolder;
 
-        public DefaultTableSchemaManager(IDataMigrationInterpreter interpreter, ISessionLocator sessionLocator) {
+        public DefaultTableSchemaManager(IDataMigrationInterpreter interpreter, 
+            ISessionLocator sessionLocator,
+             ISessionFactoryHolder sessionFactoryHolder
+            )
+        {
             _interpreter = interpreter;
             _sessionLocator = sessionLocator;
             _schemaBuilder = new SchemaBuilder(_interpreter);
+            _sessionFactoryHolder = sessionFactoryHolder;
         }
 
         public void UpdateSchema(IEnumerable<DynamicTypeDefinition> typeDefinitions, Func<string, string> format)
@@ -27,7 +43,8 @@ namespace Coevery.Dynamic.Services
             var session = _sessionLocator.For(typeof (ContentItemRecord));
             var connection = session.Connection;
 
-            var tableNames = GetDatabaseTables(connection, new SqlPseudoProvider());
+            var tableNames = GetDatabaseTables(session, new SqlPseudoProvider());
+            //var tableNames = GetDatabaseTables();
             foreach (var definition in typeDefinitions) {
                 var tableName = String.Concat(format(definition.Name));
                 var exists = tableNames.Any(t => t.Equals(tableName, StringComparison.OrdinalIgnoreCase));
@@ -43,24 +60,30 @@ namespace Coevery.Dynamic.Services
                                 table.Column(field.Name, dbType);
                             }
                         }
+                       
                     });
                 }
             }
         }
 
-        private static IEnumerable<string> GetDatabaseTables(IDbConnection connection, IPseudoProvider provider)
+        private IEnumerable<string> GetDatabaseTables()
         {
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = provider.StoreSchemaTablesQuery;
+            var parameters = _sessionFactoryHolder.GetSessionFactoryParameters();
+            var tabels = parameters.RecordDescriptors.Select(t => t.TableName).ToList();
+            return tabels;
 
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read()) {
-                        yield return reader["Name"] as string;
-                    }
-                }
+        }
+
+        private static IEnumerable<string> GetDatabaseTables(ISession session, IPseudoProvider provider)
+        {
+            var query = session.CreateSQLQuery(provider.StoreSchemaTablesQuery);
+            var reObjs = query.List();
+            List<string> tables = new List<string>();
+            foreach (var re in reObjs)
+            {
+                tables.Add(re.ToString());
             }
+            return tables;
         }
 
         private interface IPseudoProvider
@@ -73,7 +96,7 @@ namespace Coevery.Dynamic.Services
         {
             public string StoreSchemaTablesQuery
             {
-                get { return "SELECT TABLE_SCHEMA SchemaName, TABLE_NAME Name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'"; }
+                get { return "SELECT  TABLE_NAME Name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'"; }
             }
 
             public bool SupportsSchemas
@@ -86,7 +109,7 @@ namespace Coevery.Dynamic.Services
         {
             public string StoreSchemaTablesQuery
             {
-                get { return "SELECT TABLE_SCHEMA SchemaName, TABLE_NAME Name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'TABLE'"; }
+                get { return "SELECT TABLE_NAME Name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'TABLE'"; }
             }
 
             public bool SupportsSchemas
