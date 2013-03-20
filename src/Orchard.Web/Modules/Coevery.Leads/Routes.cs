@@ -14,7 +14,7 @@ namespace Coevery.Leads {
             return new[] {
                 new RouteDescriptor {
                     Route = new Route(
-                        "Lead",
+                        "Coevery",
                         new RouteValueDictionary {
                             {"area", "Coevery.Leads"},
                             {"controller", "Home"},

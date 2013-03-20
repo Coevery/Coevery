@@ -105,6 +105,7 @@
     <Content Include="lib\angular\angular.min.js" />
     <Content Include="lib\angular\version.txt" />
     <Content Include="Module.txt" />
+    <Content Include="Scripts\angular-ui-states.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />

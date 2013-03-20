@@ -1,6 +1,5 @@
-﻿lead.controller('LeadCtrl', function($scope, logger, $location, Lead) {
+﻿function LeadCtrl($scope, logger, $state, Lead) {
     $scope.mySelections = [];
-
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,
@@ -28,12 +27,12 @@
     };
 
     $scope.add = function() {
-        $location.path('Create');
+        $state.transitionTo('leadCreate');
     };
 
     $scope.edit = function() {
         if ($scope.mySelections.length > 0) {
-            $location.path($scope.mySelections[0].LeadId.toString());
+            $state.transitionTo('leadDetail', { leadId: $scope.mySelections[0].LeadId });
         }
     };
 
@@ -46,4 +45,4 @@
     };
 
     $scope.getAllLeads();
-});
+}

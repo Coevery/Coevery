@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Orchard.ContentManagement;
+using Orchard.DisplayManagement;
 using Orchard.Themes;
 
 namespace Coevery.Leads.Controllers
@@ -8,10 +9,12 @@ namespace Coevery.Leads.Controllers
     public class HomeController : Controller
     {
         private readonly IContentManager _contentManager;
+        private readonly dynamic _shapeFactory;
 
-        public HomeController(IContentManager contentManager)
-        {
+        public HomeController(IContentManager contentManager,
+            IShapeFactory shapeFactory) {
             _contentManager = contentManager;
+            _shapeFactory = shapeFactory;
         }
 
         [Themed]
