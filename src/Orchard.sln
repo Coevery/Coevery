@@ -162,7 +162,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coevery.Leads", "Orchard.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coevery.Opportunities", "Orchard.Web\Modules\Coevery.Opportunities\Coevery.Opportunities.csproj", "{B7D156F8-3EAF-49D0-B4D0-4354CD0000B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.AngularJs", "Orchard.Web\Modules\Orchard.AngularJs\Orchard.AngularJs.csproj", "{E8024E69-A92A-4264-8FD3-9878C689837C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.AngularJS", "Orchard.Web\Modules\Orchard.AngularJs\Orchard.AngularJS.csproj", "{E8024E69-A92A-4264-8FD3-9878C689837C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Piedone.HelpfulLibraries", "Orchard.Web\Modules\Piedone.HelpfulLibraries\Piedone.HelpfulLibraries.csproj", "{EA61AD10-39D6-41A9-B12B-227F50C54158}"
 EndProject

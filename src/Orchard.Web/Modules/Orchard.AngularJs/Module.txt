@@ -1,5 +1,5 @@
-﻿Name: AngularJs
-Path: Orchard.AngularJs
+﻿Name: AngularJS
+Path: Orchard.AngularJS
 AntiForgery: enabled
 Author: The Orchard Team
 Website: http://orchardproject.net
