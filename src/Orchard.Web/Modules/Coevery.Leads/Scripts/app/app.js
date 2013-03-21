@@ -4,6 +4,11 @@ coevery.config(function ($stateProvider) {
     function enterMenu($stateParams) {
         var currentMenu = 'nav li>a[href$="' + $stateParams.Moudle + '"]';
         $(currentMenu).parent().addClass('active');
+        var childs = $(currentMenu).parent().parent().parent().parent().children();
+        for (var childIndex = 0; childIndex < childs.length; childIndex++) {
+            childs[childIndex].className = '';
+        }
+        $(currentMenu).parent().parent().parent().addClass('active');
     }
 
     function exitMenu($stateParams) {
@@ -35,7 +40,7 @@ coevery.config(function ($stateProvider) {
             onExit: exitMenu
         }).
         state('Detail', {
-            url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9]+}',
+            url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
             templateUrl: detailUrl,
             onEnter: enterMenu,
             onExit: exitMenu
