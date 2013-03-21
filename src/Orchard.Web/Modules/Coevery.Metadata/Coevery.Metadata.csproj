@@ -222,9 +222,6 @@
     <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Home\Field.cshtml" />
   </ItemGroup>
   <PropertyGroup>

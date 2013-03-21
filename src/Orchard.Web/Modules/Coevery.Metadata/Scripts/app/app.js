@@ -1,12 +1,23 @@
-﻿var metadata = angular.module('metadata', ['localization','ngGrid', 'ngResource']).value('$anchorScroll', angular.noop);
-
-metadata.config(function ($routeProvider) {
-    $routeProvider.
-        when('', { controller: 'MetadataCtrl', templateUrl: '/OrchardLocal/Metadata/Home/List' }).
-        when('/Create', { controller: 'MetadataDetailCtrl', templateUrl: '/OrchardLocal/Metadata/Home/Detail' }).
-        when('/FieldList/CreateField/:name', { controller: 'FieldDetailCtrl', templateUrl: '/OrchardLocal/Metadata/Home/Field' }).
-        when('/FieldList/EditField/:name', { controller: 'FieldDetailCtrl', templateUrl: '/OrchardLocal/Metadata/Home/Field' }).
-        when('/FieldList/:name', { controller: 'FieldCtrl', templateUrl: '/OrchardLocal/Metadata/Home/FieldList' }).
-        when('/Edit/:name', { controller: 'MetadataDetailCtrl', templateUrl: '/OrchardLocal/Metadata/Home/Detail' }).
-        otherwise({ redirectTo: '/' });
+﻿
+coevery.config(function ($stateProvider) {
+    
+    function fieldListUrl($stateParams) {
+        var url = '/OrchardLocal/Metadata/Home/FieldList';
+        return url;
+    }
+    
+    function fieldUrl($stateParams) {
+        var url = '/OrchardLocal/Metadata/Home/Field';
+        return url;
+    }
+    
+    $stateProvider.
+        state('FieldList', {
+            url: '/{Moudle:[a-zA-Z]+}/FieldList/{name:[0-9]+}',
+            templateUrl: fieldListUrl
+        }).
+        state('ManageField', {
+            url: '/{Moudle:[a-zA-Z]+}/ManageField/{params:[*]+}',
+            templateUrl: fieldUrl
+        });
 });

@@ -1,5 +1,6 @@
-﻿metadata.controller('MetadataDetailCtrl', function ($scope, logger, $location, $routeParams, metadata) {
-    var name = $routeParams.name;
+﻿function MetadataDetailCtrl($scope, logger, $state, $stateParams, $resource) {
+    var name = $stateParams.Id;
+    var metadata = MetadataContext($resource);
     var isNew = (name || name == '') ? false : true;
     
     
@@ -26,7 +27,7 @@
     };
 
     $scope.exit = function () {
-        $location.path('');
+        $state.transitionTo('List', { Moudle: 'Metadata' });
     };
     if (!isNew) {
         var metaData = metadata.get({ name: name }, function () {
@@ -39,4 +40,4 @@
         $scope.NameDisabled = false;
         $scope.item = new metadata();
     }
-});
+}

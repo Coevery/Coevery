@@ -1,4 +1,32 @@
-﻿<div class="row-fluid">
+﻿@{
+    Script.Require("MetadataContext");
+    Script.Require("FieldCtrl");
+}
+@Display.FootScripts()
+
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Admin</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Metata</a>
+        </li>
+        <li>
+            <a href="#">Fields</a>
+        </li>
+        <li>
+            <a href="#">Detail</a>
+        </li>
+    </ul>
+</header>
+<section id="main-content" ng-controller="FieldCtrl">
+<div class="row-fluid">
     <section class="span12 widget">
         <header class="widget-header">
             <span class="title">Metadata</span>
@@ -50,4 +78,4 @@
         </section>
     </section>
 </div>
-
+</section>

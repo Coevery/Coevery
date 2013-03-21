@@ -1,10 +1,10 @@
-﻿metadata.controller('FieldDetailCtrl', function ($scope, logger, $location, $routeParams, field) {
-    var name = $routeParams.name;
-    var params = $scope.$eval(name);
+﻿function FieldDetailCtrl($scope, logger, $state, $stateParams, $resource) {
+    var paramsstr = $stateParams.params;
+    var params = $scope.$eval(paramsstr);
     var parentname = params[0].parentname;
-    name = params[0].name;
+    var name = params[0].name;
     var isNew = (name || name == '') ? false : true;
-    
+    var field = FieldContext($resource);
     $scope.save = function () {
         if (isNew) {
             $scope.item.$save(function (u, putResponseHeaders) {
@@ -25,7 +25,7 @@
     };
 
     $scope.exit = function () {
-        $location.path('FieldList/' + parentname);
+        $state.transitionTo('FieldList', { Moudle: 'Metadata', name: parentname });
     };
     if (!isNew) {
         $scope.NameDisabled = true;
@@ -60,4 +60,4 @@
         
     }
     
-});
+}
