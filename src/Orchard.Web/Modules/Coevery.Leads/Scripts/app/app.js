@@ -1,43 +1,25 @@
-﻿var coevery = angular.module('coevery', ['localization', 'ngGrid', 'ngResource', 'ui.compat']).value('$anchorScroll', angular.noop);
+﻿
+var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization', 'ui.compat'])
+    .value('$anchorScroll', angular.noop)
+    .config(["$stateProvider", function($stateProvider) {
 
-coevery.config(function ($stateProvider) {
-    function enterMenu($stateParams) {
-        var currentMenu = 'nav li>a[href$="' + $stateParams.Moudle + '"]';
-        $(currentMenu).parent().addClass('active');
-    }
-
-    function exitMenu($stateParams) {
-        var currentMenu = 'nav li>a[href$="' + $stateParams.Moudle + '"]';
-        $(currentMenu).parent().removeClass('active');
-    }
-
-    function listUrl($stateParams) {
-        var url = '/OrchardLocal/' + $stateParams.Moudle + '/Home/List';
-        return url;
-    }
-    
-    function detailUrl($stateParams) {
-        var url = '/OrchardLocal/' + $stateParams.Moudle + '/Home/Detail';
-        return url;
-    }
-
-    $stateProvider.
-        state('List', {
-            url: '/{Moudle:[a-zA-Z]+}',
-            templateUrl: listUrl,
-            onEnter: enterMenu,
-            onExit: exitMenu
-        }).
-        state('Create', {
-            url: '/{Moudle:[a-zA-Z]+}/Create',
-            templateUrl: detailUrl,
-            onEnter: enterMenu,
-            onExit: exitMenu
-        }).
-        state('Detail', {
-            url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9]+}',
-            templateUrl: detailUrl,
-            onEnter: enterMenu,
-            onExit: exitMenu
-        });
-});
+        $stateProvider
+            .state('List', {
+                url: '/{Moudle:[a-zA-Z]+}',
+                templateUrl: function(params) {
+                    return '/OrchardLocal/' + params.Moudle + '/Home/List';
+                }
+            })
+            .state('Create', {
+                url: '/{Moudle:[a-zA-Z]+}/Create',
+                templateUrl: function(params) {
+                    return '/OrchardLocal/' + params.Moudle + '/Home/Detail';
+                }
+            }).
+            state('Detail', {
+                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9]+}',
+                templateUrl: function(params) {
+                    return '/OrchardLocal/' + params.Moudle + '/Home/Detail';
+                }
+            });
+    }]);

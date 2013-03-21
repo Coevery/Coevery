@@ -19,6 +19,10 @@ namespace Orchard.AngularJS
             manifest.DefineScript("pnotify").SetUrl("jquery.pnotify.min.js", "jquery.pnotify.js").SetVersion("1.2.2");
             manifest.DefineStyle("pnotify_Icons").SetUrl("jquery.pnotify.icons.css");
             manifest.DefineStyle("pnotify").SetUrl("jquery.pnotify.css").SetDependencies("pnotify_Icons");
+
+            manifest.DefineScript("angular_UI_States").SetUrl("angular-ui-states.min.js", "angular-ui-states.js").SetVersion("0.0.1");
+
+            manifest.DefineScript("angular_Localize").SetUrl("localize.js").SetDependencies("angular");
         }
     }
 }

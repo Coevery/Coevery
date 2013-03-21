@@ -105,16 +105,13 @@
     <Content Include="lib\angular\angular.min.js" />
     <Content Include="lib\angular\version.txt" />
     <Content Include="Module.txt" />
-    <Content Include="Scripts\angular-ui-states.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\i18n\resources-locale_default.js" />
+    <Content Include="Scripts\i18n\resources-locale_en-us.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
-    <Content Include="Scripts\LeadLocalize.js" />
     <Content Include="Scripts\app\logger.js" />
-    <Content Include="Scripts\models\Lead.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -132,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
+    <Folder Include="Scripts\models\" />
     <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>

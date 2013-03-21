@@ -1,4 +1,5 @@
-﻿[
+﻿var lang =
+[
     {
         "key": "LeadId",
         "value": "LeadId"
@@ -19,4 +20,4 @@
         "key": "LastName",
         "value": "LastName"
     }
-]
+];

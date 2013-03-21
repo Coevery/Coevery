@@ -1,4 +1,4 @@
-﻿[
+﻿var lang = [
     {
         "key": "LeadId",
         "value": "潜在客户ID"
@@ -19,4 +19,4 @@
         "key": "LastName",
         "value": "名"
     }
-]
+];
