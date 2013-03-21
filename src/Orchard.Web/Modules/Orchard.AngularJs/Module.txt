@@ -7,4 +7,5 @@ Version: 1.6
 OrchardVersion: 1.4
 Description: The AngularJs module contains the AngularJs and related script libraries.
 FeatureDescription: A common location for AngularJs and related script libraries.
+Dependencies: Orchard.jQuery
 Category: Core
