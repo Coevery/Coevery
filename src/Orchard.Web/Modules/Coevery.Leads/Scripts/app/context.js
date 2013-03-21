@@ -7,7 +7,7 @@
 
 function LeadContext($resource) {
     return $resource(
-        '/OrchardLocal/api/leads/lead/:leadId',
+        'api/leads/lead/:leadId',
         { leadId: '@LeadId' },
         { update: { method: 'PUT' } });
 }

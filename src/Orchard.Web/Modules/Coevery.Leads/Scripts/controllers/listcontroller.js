@@ -1,7 +1,8 @@
 ﻿LeadCtrl.$inject = ['$scope', 'logger', '$state', 'localize', '$resource'];
 
 function LeadCtrl($scope, logger, $state, localize, $resource) {
-    var Lead = LeadContext($resource);
+    var lead = LeadContext($resource);
+
     $scope.mySelections = [];
 
     $scope.gridOptions = {
@@ -24,7 +25,7 @@ function LeadCtrl($scope, logger, $state, localize, $resource) {
 
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
-            Lead.delete({ leadId: $scope.mySelections[0].LeadId }, function () {
+            lead.delete({ leadId: $scope.mySelections[0].LeadId }, function () {
                 $scope.mySelections.pop();
                 $scope.getAllLeads();
                 logger.success('Delete the lead successful.');
@@ -45,7 +46,7 @@ function LeadCtrl($scope, logger, $state, localize, $resource) {
     };
 
     $scope.getAllLeads = function () {
-        var leads = Lead.query(function () {
+        var leads = lead.query(function () {
             $scope.myData = leads;
         }, function () {
             logger.error("Failed to fetched leads.");
