@@ -99,21 +99,19 @@
     <Compile Include="Services\TodoService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\angular\angular-loader.js" />
-    <Content Include="lib\angular\angular-loader.min.js" />
-    <Content Include="lib\angular\angular.js" />
-    <Content Include="lib\angular\angular.min.js" />
-    <Content Include="lib\angular\version.txt" />
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\i18n\resources-locale_default.js" />
+    <Content Include="Scripts\i18n\resources-locale_en-us.js" />
+    <Content Include="Scripts\formdesigner\ContextMenu.js" />
+    <Content Include="Scripts\formdesigner\jsutils.js" />
+    <Content Include="Scripts\formdesigner\Linq.js" />
+    <Content Include="Scripts\formdesigner\main.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
-    <Content Include="Scripts\localize.js" />
     <Content Include="Scripts\app\logger.js" />
-    <Content Include="Scripts\models\Lead.js" />
+    <Content Include="Styles\module.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -131,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
+    <Folder Include="Scripts\models\" />
     <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +149,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content.Edit-Lead.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Dynamic.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Tab.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Row.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Cell.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Control.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

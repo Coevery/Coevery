@@ -1,27 +1,21 @@
 ﻿@{
-    ViewBag.Title = "Leads";
-
     Style.Require("pnotify");
     Style.Require("ngGrid");
-    Style.Require("TodoStyle");
+    Style.Include("module.css");
+    
     Script.Require("jQuery");
     Script.Require("pnotify");
     Script.Require("angular");
     Script.Require("angularResource");
+    
+    Script.Require("angular_UI_States");
     Script.Require("ngGrid");
-    Script.Require("localize");
-    Script.Require("LeadMain");
-    Script.Require("LeadLogger");
-    Script.Require("LeadContext");
-    Script.Require("LeadController");
-    Script.Require("LeadDetailController");
-    Script.Require("LeadModel");
-
+    Script.Include("i18n/resources-locale_" + WorkContext.CurrentCulture + ".js");
+    Script.Require("angular_Localize");
+    Script.Require("CoeveryApp");
+    Script.Require("Logger");
 }
 
-<header id="main-header" class="page-header">
-    <h1>@ViewBag.Title</h1>
-</header>
-
-<section ng-app="lead" id="main-content" class="ng-cloak" ng-view>
+<section ng-app="coevery" class="ng-cloak" ui-view>
 </section>
+

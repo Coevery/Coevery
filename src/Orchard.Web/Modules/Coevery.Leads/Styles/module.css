@@ -1,0 +1,9 @@
+﻿.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    height: 300px;
+    background-color: #fff;
+}
+
+ .ng-cloak {
+     display: none;
+ }

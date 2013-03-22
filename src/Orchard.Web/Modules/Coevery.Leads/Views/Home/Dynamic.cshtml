@@ -1,0 +1,91 @@
+﻿@{
+    Script.Require("jQuery");
+    Script.Require("jQueryUI");
+    Script.Require("FormDesignerJsutils");
+    Script.Require("FormDesignerLinq");
+    Script.Require("FormDesignerContextMenu");
+    Script.Require("FormDesignerMain");
+}
+<style>
+    .form-horizontal .row-fluid .control-group {
+        border-top: 0;
+    }
+
+    .form-horizontal .row-fluid {
+        border-top: 1px solid #ccc;
+    }
+
+    .form-label {
+        text-align: left;
+        padding-top: 5px;
+    }
+
+    .smallText {
+        font-size: 1em;
+        line-height: 1.4em;
+    }
+    /*Form Designer*/
+    .sort-placeholder {
+        list-style: none;
+        background-color: white;
+        height: 24px;
+        width: 100%;
+        padding: 5px 5px 5px 5px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border: 1px dashed gray;
+    }
+
+    .cell.drop-over {
+        border: 1px dashed gray;
+        border-top-color: transparent;
+    }
+
+    .drop-over .drop-highlight {
+        width: 100%;
+        height: 2px;
+        background-color: red;
+        top: -1px;
+        position: absolute;
+    }
+</style>
+<header id="main-header" class="page-header">
+    <h1>Form Designer</h1>
+</header>
+
+<section id="main-content">
+    <div class="row-fluid">
+        <div id="form-designer" class="span8">
+            @Display(Model)
+        </div>
+        <div class="span4">
+            <section id="toolboxes" class="widget">
+                <header class="widget-header">
+                    <span class="title">Tools</span>
+                </header>
+                <section class="widget-content form-container">
+                    <fieldset>
+                        <legend>Tabs</legend>
+                        <p class="alert alert-info" data-key="tab">Tab</p>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Rows</legend>
+                        <p class="alert alert-info" data-key="row1">One Columns</p>
+                        <p class="alert alert-info" data-key="row2">Two Columns</p>
+                        <p class="alert alert-info" data-key="row3">Three Columns</p>
+                        <p class="alert alert-info" data-key="row4">Four Columns</p>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Form Tools</legend>
+                        <p class="alert alert-info" data-key="form-text">Textbox</p>
+                        <p class="alert alert-info" data-key="form-radio">Radio List</p>
+                        <p class="alert alert-info" data-key="form-checkbox">Checkbox List</p>
+                        <p class="alert alert-info" data-key="form-select">Dropdown List</p>
+                        <p class="alert alert-info" data-key="form-textarea">Textarea</p>
+                    </fieldset>
+                </section>
+            </section>
+        </div>
+    </div>
+</section>

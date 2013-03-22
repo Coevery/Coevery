@@ -1,6 +1,7 @@
-﻿opportunity.controller('OpportunityCtrl', function ($scope, logger, $location, opportunity) {
+﻿function OpportunityCtrl($scope, logger, $state, $resource) {
+    var Opportunity = OpportunityContext($resource);
     $scope.mySelections = [];
-    
+
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,
@@ -15,30 +16,30 @@
         columnDefs: opportunityColumDefs
     };
 
-    $scope.delete = function () {
+    $scope.delete = function() {
         if ($scope.mySelections.length > 0) {
-            opportunity.delete({ opportunityId: $scope.mySelections[0].OpportunityId }, function () {
+            Opportunity.delete({ opportunityId: $scope.mySelections[0].OpportunityId }, function () {
                 $scope.mySelections.pop();
                 $scope.getOpportunities();
                 logger.success("Delete the opportunity successful.");
-            }, function () {
+            }, function() {
                 logger.error("Failed to delete the opportunity.");
             });
         }
     };
 
-    $scope.add = function () {
-        $location.path('Detail');
+    $scope.add = function() {
+        $state.transitionTo('Create', { Moudle: 'Opportunities' });
     };
 
-    $scope.edit = function () {
+    $scope.edit = function() {
         if ($scope.mySelections.length > 0) {
-            $location.path('Detail/' + $scope.mySelections[0].OpportunityId);
+            $state.transitionTo('Detail', { Moudle: 'Opportunities', Id: $scope.mySelections[0].OpportunityId });
         }
     };
 
-    $scope.getOpportunities = function () {
-        var opportunitys = opportunity.query(function () {
+    $scope.getOpportunities = function() {
+        var opportunitys = Opportunity.query(function () {
             $scope.myData = opportunitys;
         }, function() {
             logger.error("Failed to fetched opportunitys.");
@@ -46,4 +47,4 @@
     };
 
     $scope.getOpportunities();
-});
+}
