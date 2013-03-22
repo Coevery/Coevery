@@ -1,4 +1,5 @@
 ﻿function MetadataCtrl($scope, logger, $state, localize, $resource) {
+    
     $scope.mySelections = [];
     var metadata = MetadataContext($resource);
     var metadataColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') }];
@@ -15,14 +16,6 @@
         //enableCellEdit: true,
         columnDefs: metadataColumnDefs
     };
-
-
-    $scope.$on("localizeResourcesUpdates", function() {
-        for (var colIndex = 0; colIndex < $scope.gridOptions.$gridScope.columns.length; colIndex++) {
-            $scope.gridOptions.$gridScope.columns[colIndex].displayName
-                = localize.getLocalizedString($scope.gridOptions.$gridScope.columns[colIndex].field);
-        }
-    });
 
     $scope.delete = function() {
         if ($scope.mySelections.length > 0) {

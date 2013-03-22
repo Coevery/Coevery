@@ -204,7 +204,7 @@
     background-color: #fff;
 }
 .ngRow.selected {
-    background-color: rgb(201, 221, 225);
+    background-color: rgb(234, 249, 255);
 }
 .ngRow.canSelect {
     cursor: pointer;

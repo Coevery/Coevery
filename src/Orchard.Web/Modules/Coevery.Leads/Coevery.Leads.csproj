@@ -125,8 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
-    <Folder Include="Scripts\models\" />
-    <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

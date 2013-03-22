@@ -48,7 +48,7 @@
         }
        @firstLevelTag.EndElement
     }
-    <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled"><span></span></span></li>
+    <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled" onclick="ToggleButtonClick()"><span></span></span></li>
 </ul>
 @using (Script.Foot())
 {
@@ -65,6 +65,15 @@
                 $li.addClass("active");
             });
         });
+        function ToggleButtonClick() {
+            if (!!$('#sidebar #navigation .menu >li.active:first .inner-nav').length) {
+                $('#content')
+                    .toggleClass('sidebar-minimized')
+                    .end()
+                    .toggleClass('toggled');
+                $('#sidebar-toggle').toggleClass('toggled', $('#content').hasClass('sidebar-minimized'));
+            }
+        }
         //]]>
     </script>
 }

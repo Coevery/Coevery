@@ -2,7 +2,7 @@
     
     Script.Require("MetadataContext");
     Script.Require("MetadataController");
-    
+    Script.Require("MetadataApp");
 }
 @Display.FootScripts()
 
@@ -23,7 +23,7 @@
     <h1>@T("Metadata") <span>Metadata List</span></h1>
 </header>
 
-<section id="main-content" ng-controller="MetadataCtrl">
+<section id="main-content" ng-controller="MetadataCtrl" ng-app="metadataApp" ui-view>
     <div class="row-fluid">
         <section class="span12 widget">
             <header class="widget-header">
