@@ -145,15 +145,12 @@
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
-    <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\controllers\fielddetailcontroller.js" />
     <Content Include="Scripts\controllers\fieldlistcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\i18n\resources-locale_default.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
-    <Content Include="Scripts\MetadataLocalize.js" />
-    <Content Include="Scripts\models\Metadata.js" />
     <Content Include="Styles\Images\move.gif" />
     <Content Include="Styles\orchard-contenttypes-admin.css" />
     <Content Include="Views\Home\FieldList.cshtml" />
@@ -218,9 +215,7 @@
   <ItemGroup>
     <Content Include="Scripts\Web.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\Home\Field.cshtml" />
   </ItemGroup>
