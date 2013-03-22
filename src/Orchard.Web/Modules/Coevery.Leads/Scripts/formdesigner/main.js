@@ -254,10 +254,8 @@ Tab.prototype.registerEvent = function () {
         receive: function (e, ui) {
             var item = $(ui.item);
             if (ui.sender != null) {
-                var sender = ui.sender;
-                var t = tabElem;
-                var senderId = sender.attr("id");
-                var senderTab = tab.parent.findItem(ui.sender.attr("id"));
+                var sender = $(ui.sender).parents('.tab:first');
+                var senderTab = tab.parent.findItem(sender.attr("id"));
                 if (senderTab != null) {
                     var insertIndex = $("#" + tab.id + " form.entry").children(":not(.sort-placeholder)").index(item);
                     var id = item.attr("id");
@@ -266,7 +264,6 @@ Tab.prototype.registerEvent = function () {
                     tab.controls.Insert(ctrl, insertIndex);
                 }
             }
-            $("#" + tab.id + " form.entry").remove(".sort-placeholder");
         },
         beforeStop: function (event, ui) {
             var item = $(ui.item);
