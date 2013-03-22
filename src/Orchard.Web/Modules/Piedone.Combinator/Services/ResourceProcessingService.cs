@@ -135,13 +135,7 @@ namespace Piedone.Combinator.Services
             }
             else if (resource.Type == ResourceType.JavaScript)
             {
-                if (resource.RelativeVirtualPath.ToLower().Contains("jquery")) {
-                    resource.Content = _minificationService.MinifyYahooJavaScript(resource.Content);
-                }
-                else {
-                    resource.Content = _minificationService.MinifyJavaScript(resource.Content);
-                }
-                
+                resource.Content = _minificationService.MinifyJavaScript(resource.Content);
             }
         }
     }

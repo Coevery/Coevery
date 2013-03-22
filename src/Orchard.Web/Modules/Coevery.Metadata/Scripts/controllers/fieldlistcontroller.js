@@ -1,7 +1,8 @@
-﻿metadata.controller('FieldCtrl', function ($scope, logger, $location, $routeParams, localize, metadata, field) {
+﻿function FieldCtrl($scope, logger, $state, $stateParams, localize, $resource) {
     
-    var name = $routeParams.name;
-
+    var name = $stateParams.name;
+    var field = FieldContext($resource);
+    var metadata = MetadataContext($resource);
     $scope.mySelections = [];
     var fieldColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') },
                            { field: 'FieldTypeDisplayName', displayName: localize.getLocalizedString('FieldTypeDisplayName') }];
@@ -36,22 +37,21 @@
     };
 
     $scope.exit = function () {
-        $location.path('');
+        $state.transitionTo('List', { Moudle: 'Metadata' });
     };
     
     $scope.add = function () {
         var params = '[{parentname:"' + name + '"}]';
-        $location.path('FieldList/CreateField/' + params);
+        $state.transitionTo('ManageField', { Moudle: 'Metadata', params: params });
     };
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
             var params = '[{parentname:"' + name + '",name:"' + $scope.mySelections[0].Name + '"}]';
-            $location.path('FieldList/EditField/' + params);
+            $state.transitionTo('ManageField', { Moudle: 'Metadata', params: params});
         }
     };
 
-    
     
     $scope.getAllField = function () {
         var metaData = metadata.get({ name: name }, function () {
@@ -62,4 +62,4 @@
         });
     };
     $scope.getAllField();
-});
+}

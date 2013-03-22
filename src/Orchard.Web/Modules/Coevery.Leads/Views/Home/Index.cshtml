@@ -1,14 +1,17 @@
 ﻿@{
     Style.Require("pnotify");
     Style.Require("ngGrid");
-    Style.Require("TodoStyle");
+    Style.Include("module.css");
+    
     Script.Require("jQuery");
     Script.Require("pnotify");
     Script.Require("angular");
     Script.Require("angularResource");
-    Script.Require("states");
+    
+    Script.Require("angular_UI_States");
     Script.Require("ngGrid");
-    Script.Require("LeadLocalize");
+    Script.Include("i18n/resources-locale_" + WorkContext.CurrentCulture + ".js");
+    Script.Require("angular_Localize");
     Script.Require("CoeveryApp");
     Script.Require("Logger");
 }

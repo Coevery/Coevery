@@ -9,13 +9,10 @@
     <Version>1.0</Version>
   </Recipe>
 
-  <Feature enable="Coevery.Opportunities,Coevery.Leads,Orchard.Blogs,Orchard.Comments,Orchard.Tags,
-                   Orchard.Alias,Orchard.Autoroute,XmlRpc,Orchard.Blogs.RemotePublishing,Orchard.ContentPicker, 
-                   TinyMce,Orchard.Media,Orchard.MediaPicker,Orchard.PublishLater,
-                   Orchard.jQuery,Orchard.AngularJs,Orchard.Widgets,Orchard.Widgets.PageLayerHinting,
-                   Orchard.Scripting,Orchard.Scripting.Lightweight,
-                   PackagingServices,Orchard.Packaging,Orchard.Warmup,
-                   Mooncake" />
+  <Feature enable="Coevery.Opportunities,Coevery.Leads,
+                   Orchard.Alias,Orchard.Autoroute,Orchard.ContentPicker, 
+                   Orchard.Media,Orchard.MediaPicker,Orchard.jQuery,Orchard.AngularJS,
+                   Orchard.Widgets,Orchard.Scripting,Orchard.Scripting.Lightweight" />
 
   <Metadata>
     <Types>
