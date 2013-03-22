@@ -1,6 +1,6 @@
 ﻿function FieldCtrl($scope, logger, $state, $stateParams, localize, $resource) {
     
-    var name = $stateParams.name;
+    var name = $stateParams.Id;
     var field = FieldContext($resource);
     var metadata = MetadataContext($resource);
     $scope.mySelections = [];

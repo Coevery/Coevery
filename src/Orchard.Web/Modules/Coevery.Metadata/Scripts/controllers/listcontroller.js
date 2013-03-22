@@ -34,7 +34,7 @@
     };
 
     $scope.OpenFieldList = function() {
-        $state.transitionTo('FieldList', { Moudle: 'Metadata', name: $scope.mySelections[0].Name });
+        $state.transitionTo('SubView', { Moudle: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
     };
 
     $scope.edit = function() {

@@ -105,8 +105,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.cs" />
+    <Compile Include="Controllers\FieldViewTemplateController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\MetadataController.cs" />
+    <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -153,15 +155,13 @@
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
     <Content Include="Styles\Images\move.gif" />
     <Content Include="Styles\orchard-contenttypes-admin.css" />
-    <Content Include="Views\Home\FieldList.cshtml" />
+    <Content Include="Views\FieldViewTemplate\List.cshtml" />
     <Content Include="Views\Home\AddPartsTo.cshtml" />
     <Content Include="Views\Home\CreatePart.cshtml" />
     <Content Include="Views\Home\RemoveFieldFrom.cshtml" />
     <Content Include="Views\Home\RemovePartFrom.cshtml" />
     <Content Include="Views\Home\Create.cshtml" />
     <Content Include="Views\Home\EditPart.cshtml" />
-    <Content Include="Views\Home\Detail.cshtml" />
-    <Content Include="Views\Home\List.cshtml" />
     <Content Include="Views\DisplayTemplates\EditTypeViewModel.cshtml" />
     <Content Include="Views\DisplayTemplates\EditPartViewModel.cshtml" />
     <Content Include="Views\DisplayTemplates\Field.cshtml" />
@@ -217,7 +217,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Views\Home\Field.cshtml" />
+    <Content Include="Views\FieldViewTemplate\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ViewTemplate\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ViewTemplate\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
