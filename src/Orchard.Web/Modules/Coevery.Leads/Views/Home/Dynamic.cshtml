@@ -7,6 +7,9 @@
     Script.Require("FormDesignerMain");
 }
 <style>
+    form.entry {
+        min-height: 20px;
+    }
     .form-horizontal .row-fluid .control-group {
         border-top: 0;
     }
@@ -37,18 +40,83 @@
         border: 1px dashed gray;
     }
 
-    .cell.drop-over {
+    .cell {
         border: 1px dashed gray;
         border-top-color: transparent;
     }
 
-    .drop-over .drop-highlight {
-        width: 100%;
-        height: 2px;
-        background-color: red;
-        top: -1px;
-        position: absolute;
+    .drop-highlight {
+        /*width: 100%;
+        height: 2px;*/
+        /*background-color: red;*/
+        /*top: -1px;
+        position: absolute;*/
+        border-top: 1px solid red;
     }
+
+    /*
+ * right click context menu
+ */
+    .context-menu {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+        .context-menu ul {
+            list-style-type: none;
+            float: left;
+            border: 1px solid #979797;
+            background: #f1f1f1 url(../../Images/line.png) 24px 0 repeat-y;
+            padding: 2px;
+            -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.6);
+            box-shadow: 2px 2px 2px rgba(0,0,0,.6);
+        }
+
+            .context-menu ul li {
+                clear: both;
+                height: 24px;
+                cursor: default;
+                line-height: 24px;
+                white-space: nowrap;
+                padding: 0 30px;
+            }
+
+                .context-menu ul li.sub {
+                    background-repeat: no-repeat;
+                    background-position: right 9px;
+                    background-image: url(../../Images/arrow.png);
+                }
+
+                .context-menu ul li:hover {
+                    background-color: #f1f3f6;
+                    border-radius: 3px;
+                    border: 1px solid #aecff7;
+                    height: 22px;
+                    line-height: 22px;
+                    background-position: right -8px;
+                    padding: 0 29px;
+                }
+
+                .context-menu ul li.disable {
+                    color: gray;
+                    cursor: default;
+                }
+
+                    .context-menu ul li.disable:hover {
+                        background-color: transparent;
+                        border: 1px solid transparent;
+                    }
+
+                    .context-menu ul li.disable.active {
+                        border-color: transparent;
+                        background: none;
+                    }
+
+            .context-menu ul ul {
+                display: none;
+                position: absolute;
+            }
 </style>
 <header id="main-header" class="page-header">
     <h1>Form Designer</h1>

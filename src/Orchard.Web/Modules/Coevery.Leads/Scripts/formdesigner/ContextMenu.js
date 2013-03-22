@@ -1,17 +1,17 @@
 ﻿
 
-var ContextMenu = function(id) {
+var ContextMenu = function (id) {
     this.id = id == undefined ? "contextMenu" + new Date().getTime() : id;
     this.items = new Array();
     this.initialized = false;
     this.currentSender = null;
 };
 
-ContextMenu.prototype.hide = function() {
+ContextMenu.prototype.hide = function () {
     $("#" + this.id).hide();
 };
 
-ContextMenu.prototype.show = function(e, sender) {
+ContextMenu.prototype.show = function (e, sender) {
     var obj = this;
     obj.currentSender = sender;
     if (this.initialized == false) {
@@ -20,10 +20,10 @@ ContextMenu.prototype.show = function(e, sender) {
         this.initialized = true;
     }
     var $menu = $("#" + this.id);
-    $menu.css("top", e.clientY);
-    $menu.css("left", e.clientX);
+    $menu.css("top", e.pageY);
+    $menu.css("left", e.pageX - 25);
     $menu.css("z-index", 101);
-    
+
     var docSize = {
         width: document.documentElement.offsetWidth,
         height: document.documentElement.offsetHeight
@@ -36,9 +36,9 @@ ContextMenu.prototype.show = function(e, sender) {
     $menu[0].offsetTop > maxHeight && ($menu.css("top", maxHeight));
     $menu[0].offsetLeft > maxWidth && ($menu.css("left", maxWidth));
 
-    $menu.find("li").each(function() {
+    $menu.find("li").each(function () {
         var $li = $(this);
-        if($li.data("data").disabled) {
+        if ($li.data("data").disabled) {
             $li.addClass("disable");
         }
         else {
@@ -68,7 +68,7 @@ ContextMenu.prototype.show = function(e, sender) {
             }
         });
 
-        function addItemsToUl(ul,items) {
+        function addItemsToUl(ul, items) {
             var $list = $(ul);
             $(items).each(function () {
                 var item = this;
@@ -94,7 +94,7 @@ ContextMenu.prototype.show = function(e, sender) {
     }
 };
 
-var MenuItem = function() {
+var MenuItem = function () {
     this.text = "";
     this.operation = "";
     this.action = null;
