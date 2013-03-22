@@ -17,7 +17,7 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                 }
             }).
             state('Detail', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9]+}',
+                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
                 templateUrl: function(params) {
                     return '/OrchardLocal/' + params.Moudle + '/Home/Detail';
                 }
