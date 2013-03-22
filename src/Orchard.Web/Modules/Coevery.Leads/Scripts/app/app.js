@@ -28,4 +28,9 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                     return params.Moudle + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }
             });
-    }]);
+    }])
+    .run(
+      ['$rootScope', '$state', '$stateParams',
+      function ($rootScope, $state, $stateParams) {
+          $rootScope.$state = $state;
+      }]);
