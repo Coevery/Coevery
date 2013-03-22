@@ -30,7 +30,7 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
             });
     }])
     .run(
-      ['$rootScope', '$state', '$stateParams',
-      function ($rootScope, $state, $stateParams) {
-          $rootScope.$state = $state;
-      }]);
+        ['$rootScope', '$state', '$stateParams',
+            function($rootScope, $state, $stateParams) {
+                $rootScope.$state = $state;
+            }]);
