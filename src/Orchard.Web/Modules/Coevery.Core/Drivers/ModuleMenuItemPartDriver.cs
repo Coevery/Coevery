@@ -31,7 +31,7 @@ namespace Coevery.Core.Drivers {
         public Localizer T { get; set; }
 
         protected override DriverResult Editor(ModuleMenuItemPart part, dynamic shapeHelper) {
-            return ContentShape("Parts.ModuleMenuItem.Edit",
+            return ContentShape("Parts_ModuleMenuItem_Edit",
                                 () => {
                                     var model = new ModuleMenuItemEditViewModel() {
                                         ContentItemId = part.Content == null ? -1 : part.Content.Id,
