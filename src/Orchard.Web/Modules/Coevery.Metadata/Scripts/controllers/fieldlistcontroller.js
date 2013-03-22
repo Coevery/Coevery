@@ -1,6 +1,6 @@
 ﻿function FieldCtrl($scope, logger, $state, $stateParams, localize, $resource) {
     
-    var name = $stateParams.name;
+    var name = $stateParams.Id;
     var field = FieldContext($resource);
     var metadata = MetadataContext($resource);
     $scope.mySelections = [];
@@ -17,13 +17,6 @@
         columnDefs: fieldColumnDefs
     };
 
-    $scope.$on("localizeResourcesUpdates", function () {
-        for (var colIndex = 0; colIndex < $scope.gridOptions.$gridScope.columns.length; colIndex++) {
-            $scope.gridOptions.$gridScope.columns[colIndex].displayName
-                = localize.getLocalizedString($scope.gridOptions.$gridScope.columns[colIndex].field);
-        }
-    });
-    
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
             field.delete({ name: $scope.mySelections[0].Name, parentname: name }, function () {

@@ -6,6 +6,7 @@ using System.Reflection;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping;
+using NHibernate.Tool.hbm2ddl;
 using Orchard.ContentManagement.Records;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
@@ -39,31 +40,34 @@ namespace Coevery.Dynamic.Services
 
         public void UpdateSchema(IEnumerable<DynamicTypeDefinition> typeDefinitions, Func<string, string> format)
         {
-            format = format ?? (s => s ?? String.Empty);
-            var session = _sessionLocator.For(typeof (ContentItemRecord));
-            var connection = session.Connection;
+            //format = format ?? (s => s ?? String.Empty);
+            //var session = _sessionLocator.For(typeof (ContentItemRecord));
+            //var connection = session.Connection;
 
-            var tableNames = GetDatabaseTables(session, new SqlPseudoProvider());
+            ////var tableNames = GetDatabaseTables(session, new SqlPseudoProvider());
             //var tableNames = GetDatabaseTables();
-            foreach (var definition in typeDefinitions) {
-                var tableName = String.Concat(format(definition.Name));
-                var exists = tableNames.Any(t => t.Equals(tableName, StringComparison.OrdinalIgnoreCase));
-                if (!exists) {
-                    _schemaBuilder.CreateTable(tableName, table => {
-                        foreach (var field in definition.Fields) {
-                            var dbType = SchemaUtils.ToDbType(field.Type);
-                            var isPrimaryKey = field.Name.Equals("Id", StringComparison.OrdinalIgnoreCase);
-                            if (isPrimaryKey) {
-                                table.Column(field.Name, dbType, column => column.PrimaryKey());
-                            }
-                            else {
-                                table.Column(field.Name, dbType);
-                            }
-                        }
+            //foreach (var definition in typeDefinitions) {
+            //    var tableName = String.Concat(format(definition.Name));
+            //    var exists = tableNames.Any(t => t.Equals(tableName, StringComparison.OrdinalIgnoreCase));
+            //    if (!exists) {
+            //        _schemaBuilder.CreateTable(tableName, table => {
+            //            foreach (var field in definition.Fields) {
+            //                var dbType = SchemaUtils.ToDbType(field.Type);
+            //                var isPrimaryKey = field.Name.Equals("Id", StringComparison.OrdinalIgnoreCase);
+            //                if (isPrimaryKey) {
+            //                    table.Column(field.Name, dbType, column => column.PrimaryKey());
+            //                }
+            //                else {
+            //                    table.Column(field.Name, dbType);
+            //                }
+            //            }
                        
-                    });
-                }
-            }
+            //        });
+            //    }
+            //}
+            var configuration = _sessionFactoryHolder.GetConfiguration();
+            new SchemaUpdate(configuration).Execute(false, true);
+
         }
 
         private IEnumerable<string> GetDatabaseTables()

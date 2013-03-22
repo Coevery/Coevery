@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{162A25B1-D2CA-472D-8563-E54B1599CB24}</ProjectGuid>
+    <ProjectGuid>{9F68EB9E-D609-4DFA-85B6-1F642DB80E6D}</ProjectGuid>
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -75,46 +75,20 @@
     </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LeadController.cs" />
-    <Compile Include="Controllers\ViewTemplateController.cs" />
-    <Compile Include="Controllers\TodoController.cs" />
-    <Compile Include="Controllers\TodoListController.cs" />
-    <Compile Include="Drivers\LeadDriver.cs" />
-    <Compile Include="Handlers\LeadHandler.cs" />
+    <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
+    <Compile Include="Handlers\ModuleMenuItemPartHandler.cs" />
     <Compile Include="Migrations.cs" />
-    <Compile Include="Models\Lead.cs" />
-    <Compile Include="Models\LeadDto.cs" />
-    <Compile Include="Models\LeadRecord.cs" />
-    <Compile Include="Models\TodoItemDto.cs" />
-    <Compile Include="Models\TodoListDto.cs" />
-    <Compile Include="Models\TodoListRecord.cs" />
-    <Compile Include="Models\TodoItemRecord.cs" />
+    <Compile Include="Models\ModuleMenuItemPart.cs" />
+    <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceManifest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Routes.cs" />
-    <Compile Include="Services\TodoService.cs" />
+    <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\ModuleMenuItemEditViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\arrow.png" />
-    <Content Include="Images\line.png" />
     <Content Include="Module.txt" />
-    <Content Include="Scripts\app\app.js" />
-    <Content Include="Scripts\app\context.js" />
-    <Content Include="Scripts\controllers\detailcontroller.js" />
-    <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\i18n\resources-locale_en-us.js" />
-    <Content Include="Scripts\formdesigner\ContextMenu.js" />
-    <Content Include="Scripts\formdesigner\jsutils.js" />
-    <Content Include="Scripts\formdesigner\Linq.js" />
-    <Content Include="Scripts\formdesigner\main.js" />
-    <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
-    <Content Include="Scripts\app\logger.js" />
-    <Content Include="Styles\module.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -125,18 +99,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\Web.config" />
-    <Content Include="Views\ViewTemplate\Detail.cshtml" />
-    <Content Include="Views\ViewTemplate\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
@@ -149,30 +114,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Content.Edit-Lead.cshtml" />
+    <Content Include="Views\Content-Menu.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Styles\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Views\EditorTemplates\Parts.ModuleMenuItem.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Dynamic.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts.FormDesigner.Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts.FormDesigner.Tab.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts.FormDesigner.Row.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts.FormDesigner.Cell.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts.FormDesigner.Control.cshtml" />
+    <Content Include="Placement.info" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

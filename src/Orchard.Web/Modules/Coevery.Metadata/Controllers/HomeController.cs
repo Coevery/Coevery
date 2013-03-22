@@ -58,31 +58,6 @@ namespace Coevery.Metadata.Controllers {
 
         #region Types
 
-        public ActionResult List()
-        {
-            //return View("List", new ListContentTypesViewModel
-            //{
-            //    Types = _contentDefinitionService.GetTypes()
-            //});
-            return View();
-        }
-
-        public ActionResult Detail()
-        {
-            return View();
-        }
-
-        public ActionResult FieldList()
-        {
-            return View();
-        }
-
-
-        public ActionResult Field()
-        {
-            return View();
-        }
-
         public ActionResult Create() {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
                 return new HttpUnauthorizedResult();

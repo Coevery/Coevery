@@ -1,26 +1,27 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 using Orchard.ContentManagement;
-using Orchard.Themes;
 
-namespace Coevery.Opportunities.Controllers
+namespace Coevery.Leads.Controllers
 {
-    
-    public class HomeController : Controller
+    public class ViewTemplateController : Controller
     {
         private readonly IContentManager _contentManager;
 
-        public HomeController(IContentManager contentManager)
+        public ViewTemplateController(IContentManager contentManager)
         {
             _contentManager = contentManager;
         }
 
-        public ActionResult List(string returnUrl)
+        public ActionResult List()
         {
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
-        public ActionResult Detail(string returnUrl)
+        public ActionResult Detail()
         {
             var id = "Opportunity";
             var contentItem = _contentManager.New(id);

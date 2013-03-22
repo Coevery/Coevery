@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Coevery.Dynamic.Services;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Environment;
@@ -27,6 +28,7 @@ namespace Coevery.Dynamic
         public virtual Feature Feature { get; set; }
 
         void IOrchardShellEvents.Activated() {
+
             var typeDefinitions = _contentDefinitionManager.ListTypeDefinitions();
 
             var typeNames = typeDefinitions.Select(ctd => ctd.Name);
@@ -45,9 +47,17 @@ namespace Coevery.Dynamic
                 }).ToList();
 
             if (userContentParts.Any()) {
-                _tableSchemaManager.UpdateSchema(userContentParts, FormatTableName);
+                try
+                {
+                    _tableSchemaManager.UpdateSchema(userContentParts, FormatTableName);
 
-                _assemblyBuilder.Build(userContentParts);
+                    _assemblyBuilder.Build(userContentParts);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+              
             }
         }
 
@@ -58,7 +68,7 @@ namespace Coevery.Dynamic
             var dataTablePrefix = "";
             if (!string.IsNullOrEmpty(_shellSettings.DataTablePrefix))
                 dataTablePrefix = _shellSettings.DataTablePrefix + "_";
-            return dataTablePrefix + extensionName + '_' + name;
+            return dataTablePrefix + extensionName + '_' + name + "PartRecord";
         }
 
         void IOrchardShellEvents.Terminating() {}

@@ -1,1 +1,0 @@
-﻿var metadataColumnDefs = [{ field: 'DisplayName', displayName: 'DisplayName' }];

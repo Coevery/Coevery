@@ -20,6 +20,7 @@
         "key": "LastName",
         "value": "LastName"
     },
+    /* Metadata*/
     {
         "key": "DisplayName",
         "value": "DisplayName"
@@ -27,5 +28,22 @@
     {
         "key": "FieldTypeDisplayName",
         "value": "Field Type"
+    },
+    /*Opportunityies*/
+    {
+        "key": "OpportunityId",
+        "value": "Opportunity Id"
+    },
+    {
+        "key": "Name",
+        "value": "Name"
+    },
+    {
+        "key": "Description",
+        "value": "Description"
+    },
+    {
+        "key": "SourceLeadId",
+        "value": "Source Lead"
     }
 ];

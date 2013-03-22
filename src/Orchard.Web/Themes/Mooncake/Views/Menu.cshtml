@@ -1,4 +1,5 @@
 ﻿@using System.Web.Routing;
+@using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
 
 <ul class="menu">
@@ -6,49 +7,35 @@
         IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
 
         string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
-
-        var firstLevelTag = Tag(firstLevelMenuItem, "li");
-        if (firstLevelMenuItem.Selected)
-        {
-            firstLevelMenuItem.Classes.Add("active");
-        }
-        
-        @firstLevelTag.StartElement
+        <li>
             <span title="@firstLevelMenuItem.Text">
                 <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
 				<span class="nav-title">@firstLevelMenuItem.Text</span>
             </span>
-        if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild)
+        @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild)
         {
                 <ul class="inner-nav">
                 @foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
                 {
                     string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
                     var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
-
-                    if (secondLevelMenuItem.Selected)
-                    {
-                        secondLevelMenuItem.Classes.Add("active");
-                    }
-
-                    var secondLevelTag = Tag(secondLevelMenuItem, "li");
                     var secondLevelUrl = secondLevelMenuItem.Href;
                     if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
                     {
                         secondLevelUrl = firstOfTheThird.Href;
                     }                    
-                    @secondLevelTag.StartElement
+                    <li ng-class="{ active: $state.params.Moudle == '@secondLevelMenuItem.Text.TextHint'}">
                     <a href="@secondLevelUrl">
                         <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
                         @secondLevelMenuItem.Text
                     </a>
-                    @secondLevelTag.EndElement
+                    </li>
                 }
                 </ul>
         }
-       @firstLevelTag.EndElement
+       </li>
     }
-    <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled"><span></span></span></li>
+    <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled" onclick="ToggleButtonClick()"><span></span></span></li>
 </ul>
 @using (Script.Foot())
 {
@@ -65,6 +52,15 @@
                 $li.addClass("active");
             });
         });
+        function ToggleButtonClick() {
+            if (!!$('#sidebar #navigation .menu >li.active:first .inner-nav').length) {
+                $('#content')
+                    .toggleClass('sidebar-minimized')
+                    .end()
+                    .toggleClass('toggled');
+                $('#sidebar-toggle').toggleClass('toggled', $('#content').hasClass('sidebar-minimized'));
+            }
+        }
         //]]>
     </script>
 }
