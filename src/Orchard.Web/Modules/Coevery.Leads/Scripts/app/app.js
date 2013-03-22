@@ -22,4 +22,9 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                     return '/OrchardLocal/' + params.Moudle + '/Home/Detail';
                 }
             });
-    }]);
+    }])
+    .run(
+      ['$rootScope', '$state', '$stateParams',
+      function ($rootScope, $state, $stateParams) {
+          $rootScope.$state = $state;
+      }]);
