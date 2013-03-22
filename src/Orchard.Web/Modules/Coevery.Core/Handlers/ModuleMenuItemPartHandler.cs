@@ -14,7 +14,7 @@ namespace Coevery.Core.Handlers {
             Filters.Add(new ActivatingFilter<ModuleMenuItemPart>("ModuleMenuItem"));
             Filters.Add(StorageFilter.For(repository));
 
-            OnLoading<ModuleMenuItemPart>((context, part) => part._content.Loader(p => contentManager.Get(part.Record.ModuleMenuItemRecord.Id)));
+            //OnLoading<ModuleMenuItemPart>((context, part) => part..Loader(p => contentManager.Get(part.Record.ContentTypeRecored.Id)));
         }
 
         protected override void GetItemMetadata(GetContentItemMetadataContext context) {
@@ -30,11 +30,11 @@ namespace Coevery.Core.Handlers {
             if(moduleMenuItemPart != null) {
 
                 // if the content doesn't exist anymore
-                if(moduleMenuItemPart.Content == null) {
+                if(moduleMenuItemPart.Record.ContentTypeRecord == null) {
                     return;
                 }
 
-                context.Metadata.DisplayRouteValues = _contentManager.GetItemMetadata(moduleMenuItemPart.Content).DisplayRouteValues;
+               // context.Metadata.DisplayRouteValues = _contentManager.GetItemMetadata(moduleMenuItemPart.Content).DisplayRouteValues;
             }
         }
     }

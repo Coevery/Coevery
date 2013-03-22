@@ -7,7 +7,7 @@ namespace Coevery.Core {
             SchemaBuilder.CreateTable("ModuleMenuItemPartRecord",
                 table => table
                     .ContentPartRecord()
-                    .Column<int>("ModuleMenuItemRecord_id")
+                    .Column<int>("ContentTypeRecord_id")
                 );
 
             ContentDefinitionManager.AlterTypeDefinition("ModuleMenuItem", cfg => cfg

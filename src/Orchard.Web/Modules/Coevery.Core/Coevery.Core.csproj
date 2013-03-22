@@ -79,7 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
-    <Compile Include="Handlers\ModuleMenuItemPartHandler.cs" />
+    <Compile Include="Handlers\ModuleMenuItemPartHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ModuleMenuItemPart.cs" />
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />

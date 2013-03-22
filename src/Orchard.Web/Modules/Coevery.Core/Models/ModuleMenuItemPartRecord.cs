@@ -2,6 +2,6 @@
 
 namespace Coevery.Core.Models {
     public class ModuleMenuItemPartRecord : ContentPartRecord {
-        public virtual ContentItemRecord ModuleMenuItemRecord { get; set; }
+        public virtual ContentTypeRecord ContentTypeRecord { get; set; }
     }
 }
