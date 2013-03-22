@@ -110,6 +110,10 @@
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
+    <Content Include="Scripts\formdesigner\ContextMenu.js" />
+    <Content Include="Scripts\formdesigner\jsutils.js" />
+    <Content Include="Scripts\formdesigner\Linq.js" />
+    <Content Include="Scripts\formdesigner\main.js" />
     <Content Include="Scripts\i18n\resources-locale_default.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
     <Content Include="Scripts\LeadLocalize.js" />
@@ -151,6 +155,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content.Edit-Lead.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Dynamic.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Tab.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Row.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Cell.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.FormDesigner.Control.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -17,6 +17,11 @@ namespace Coevery.Leads
             manifest.DefineScript("LeadController").SetUrl("controllers/listcontroller.js");
             manifest.DefineScript("LeadDetailController").SetUrl("controllers/detailcontroller.js");
             manifest.DefineScript("LeadModel").SetUrl("models/lead.js");
+
+            manifest.DefineScript("FormDesignerMain").SetUrl("formdesigner/main.js");
+            manifest.DefineScript("FormDesignerContextMenu").SetUrl("formdesigner/ContextMenu.js");
+            manifest.DefineScript("FormDesignerJsutils").SetUrl("formdesigner/jsutils.js");
+            manifest.DefineScript("FormDesignerLinq").SetUrl("formdesigner/Linq.js");
         }
     }
 }
