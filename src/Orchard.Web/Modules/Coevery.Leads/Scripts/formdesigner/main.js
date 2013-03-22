@@ -1,16 +1,16 @@
 ﻿'use strict';
 
 var formElementTemplate = {
-    text: '<div id="{0}" class="cf ctrl" data-key="form-text"><label class="form-label span3">{1}</label> \
+    text: '<div id="{0}" data-key="form-text"><label class="form-label span3">{1}</label> \
              <div class="controls-row span9"><input type="text" class="span12"/></div></div>',
-    radio: '<div id="{0}" class="cf ctrl" data-key="form-radio"><label class="form-label span3">{1}</label> \
+    radio: '<div id="{0}" data-key="form-radio"><label class="form-label span3">{1}</label> \
              <div class="controls-row span9"><label class="radio span6"><input type="radio" name="radioOptions"' +
         ' checked/>option1</label><label class="radio span6"><input type="radio" name="radioOptions"/>option2</label></div></div>',
-    checkbox: '<div id="{0}" class="cf ctrl" data-key="form-checkbox"><label class="form-label span3">{1}</label> \
+    checkbox: '<div id="{0}" data-key="form-checkbox"><label class="form-label span3">{1}</label> \
              <div class="controls-row span9"><label class="checkbox span12"><input type="checkbox" />option1</label></div></div>',
-    select: '<div id="{0}" class="cf ctrl" data-key="form-select"><label class="form-label span3">{1}</label> \
+    select: '<div id="{0}" data-key="form-select"><label class="form-label span3">{1}</label> \
              <div class="controls-row span9"><select class="span12"><option>option1</option><option>option2</option><option>option3</option></select></div></div>',
-    textarea: '<div id="{0}" class="cf ctrl" data-key="form-textarea"><label class="form-label span3">{1}</label> \
+    textarea: '<div id="{0}" data-key="form-textarea"><label class="form-label span3">{1}</label> \
              <div class="controls-row span9"><textarea class="span12"></textarea></div></div>'
 };
 
@@ -60,8 +60,8 @@ Control.prototype.init = function (parent) {
         for (var i = 0; i < controls.length; i++) {
             if (controls[i].id == this.id) {
                 if (i == 0) {
-                    var formEnter = $(parentElem + ' .enter:first');
-                    formEnter.prepend(dom);
+                    var entry = $(parentElem + ' .entry:first');
+                    entry.prepend(dom);
                 } else {
                     $("#" + controls[i - 1].id).after(dom);
                 }
@@ -162,7 +162,7 @@ function Form(tab) {
 Form.prototype = new Control();
 Form.prototype.constructor = Form;
 Form.prototype.buildDom = function () {
-    var formDom = $('<div id="' + this.id + '" class="form"><div class="enter"></div></div>');
+    var formDom = $('<div id="' + this.id + '" class="form"><div class="entry"></div></div>');
     //var headerHtml = '<h3 class="form-title"><label>' + this.title + '</label><input type="text" class="text-editor" /></h3>';
     //formDom.append($(headerHtml));
     return formDom;
@@ -189,12 +189,12 @@ Form.prototype.registerEvent = function () {
     //    form.title = $(this).val();
     //});
 
-    $("#" + form.id).sortable({
-        items: "div.tab:not(.placeholder)",
+    $("#" + form.id + ">.entry").sortable({
+        items: "div.tab:not(.sort-placeholder)",
         placeholder: "sort-placeholder",
         beforeStop: function (event, ui) {
             var item = ui.item;
-            var insertIndex = $("#" + this.id + " .enter").children(":not(.sort-placeholder)").index(item);
+            var insertIndex = $("#" + form.id + ">.entry").children(":not(.sort-placeholder)").index(item);
             if (item.length > 0 && item.is("p")) {
                 var newtab = new Tab(new Row(1));
                 form.addControl(newtab, insertIndex);
@@ -241,32 +241,36 @@ Tab.prototype.constructor = Tab;
 Tab.prototype.buildDom = function () {
     var tabDom = $('<div class="row-fluid tab" id="' + this.id +
         '"><section class="span12 widget"><header class="widget-header"><span class="title">&nbsp;</span>' +
-        '</header><section class="widget-content form-container"><form class="form-horizontal enter"></form></section></section></div>');
+        '</header><section class="widget-content form-container"><form class="form-horizontal entry"></form></section></section></div>');
     return tabDom;
 };
 Tab.prototype.registerEvent = function () {
     var tab = this;
     var tabElem = "#" + this.id;
-    $(tabElem).sortable({
-        items: "div.row1:not(.placeholder)",
+    $(tabElem + " form.entry").sortable({
+        items: "div.row1:not(.sort-placeholder)",
         placeholder: "sort-placeholder",
-        connectWith: ".tab",
+        connectWith: ".tab form.entry",
         receive: function (e, ui) {
             var item = $(ui.item);
             if (ui.sender != null) {
+                var sender = ui.sender;
+                var t = tabElem;
+                var senderId = sender.attr("id");
                 var senderTab = tab.parent.findItem(ui.sender.attr("id"));
                 if (senderTab != null) {
-                    var insertIndex = $("#" + tab.id + " .enter").children(":not(.sort-placeholder)").index(item);
+                    var insertIndex = $("#" + tab.id + " form.entry").children(":not(.sort-placeholder)").index(item);
                     var id = item.attr("id");
                     var ctrl = senderTab.findItem(id);
                     senderTab.controls.Remove(ctrl);
                     tab.controls.Insert(ctrl, insertIndex);
                 }
             }
+            $("#" + tab.id + " form.entry").remove(".sort-placeholder");
         },
         beforeStop: function (event, ui) {
             var item = $(ui.item);
-            var insertIndex = $("#" + this.id + " .enter").children(":not(.sort-placeholder)").index(item);
+            var insertIndex = $("#" + tab.id + " form.entry").children(":not(.sort-placeholder)").index(item);
             if (item.length > 0 && item.is("p")) {
                 var key = item.data("key");
                 var colCount = parseInt(key.match(/\d/));
@@ -279,32 +283,31 @@ Tab.prototype.registerEvent = function () {
                 tab.controls.Remove(ctrl);
                 tab.controls.Insert(ctrl, insertIndex);
             }
-
         }
     });
 
-    $(tabElem + " h4.form-title input").keyup(function (e) {
-        tab.title = $(this).val();
-    });
+    //$(tabElem + " h4.form-title input").keyup(function (e) {
+    //    tab.title = $(this).val();
+    //});
 
-    var deleteElem = $(tabElem + " > .delete");
-    $(tabElem).hover(function (e) {
-        deleteElem.removeClass("del-red").addClass("del-gray").fadeIn("normal");
-    }, function (e) {
-        deleteElem.fadeOut("normal");
-    });
-    deleteElem.hover(function (e) {
-        deleteElem.removeClass("del-gray").addClass("del-red");
-    }, function (e) {
-        deleteElem.removeClass("del-red").addClass("del-gray");
-    });
+    //var deleteElem = $(tabElem + " > .delete");
+    //$(tabElem).hover(function (e) {
+    //    deleteElem.removeClass("del-red").addClass("del-gray").fadeIn("normal");
+    //}, function (e) {
+    //    deleteElem.fadeOut("normal");
+    //});
+    //deleteElem.hover(function (e) {
+    //    deleteElem.removeClass("del-gray").addClass("del-red");
+    //}, function (e) {
+    //    deleteElem.removeClass("del-red").addClass("del-gray");
+    //});
 
-    deleteElem.click(function (e) {
-        tab.remove();
-    });
+    //deleteElem.click(function (e) {
+    //    tab.remove();
+    //});
 };
 Tab.prototype.createChild = function () {
-    return new Row(0);
+    return new Row(1);
 };
 
 /*
@@ -312,7 +315,7 @@ Tab.prototype.createChild = function () {
  */
 function Row(colCount) {
     Control.call(this);
-    this.colCount = parseInt(colCount) >= 0 ? colCount : 1;
+    this.colCount = colCount > 0 ? colCount : 1;
     this.controls = [];
     for (var i = 0; i < this.colCount; i++) {
         this.controls.push(new Cell(1));
@@ -322,8 +325,7 @@ function Row(colCount) {
 Row.prototype = new Control();
 Row.prototype.constructor = Row;
 Row.prototype.buildDom = function () {
-    var rowDom = $('<div id="' + this.id + '" class="row-fluid row1 cf2"><div class="enter"></div></div>');
-    rowDom.addClass("c" + this.colCount);
+    var rowDom = $('<div id="' + this.id + '" class="row-fluid row1"><div class="entry"></div></div>');
     return rowDom;
 };
 Row.prototype.registerEvent = function () {
@@ -340,26 +342,21 @@ Row.prototype.hasFormControls = function () {
 };
 Row.prototype.setHeight = function () {
     var cells = this.controls;
-    //var height = $("#" + this.id).height();
     var maxHeight = 0;
     cells.Each(function (i, item) {
+        var itemElem = $("#" + item.id);
+        itemElem[0].style.removeProperty("height");
         if (item.controls.length > 0) {
-            var tempHeight = $("#" + item.controls[0].id).height();
+            var tempHeight = itemElem.height();
             maxHeight = tempHeight > maxHeight ? tempHeight : maxHeight;
         }
     });
-    //if ($("#" + row.id).height() < height) {
     cells.Each(function (i, item) {
-        if (item.controls.length == 0 || $("#" + item.controls[0].id).height() <= maxHeight) {
-            $("#" + item.id).height(maxHeight);
-        }
+        $("#" + item.id).height(maxHeight);
     });
-    //}
 };
 Row.prototype.updateColCount = function (colCount) {
-    var oldClass = "c" + this.colCount;
     this.colCount = colCount;
-    $("#" + this.id).removeClass(oldClass).addClass("c" + colCount);
 };
 Row.prototype.toXml = function () {
     var obj = this;
@@ -372,22 +369,23 @@ Row.prototype.updateFrom = function (obj) {
     this.colCount = obj.ColCount;
 };
 Row.prototype.createChild = function () {
-    return new Cell();
+    return new Cell(1);
 };
 /*
  * Cell class
  */
 function Cell(colCount) {
     Control.call(this);
-    this.colCount = colCount == undefined ? 1 : colCount;
+    this.colCount = colCount > 0 ? colCount : 1;
+    this.width = 12;
     this.controls = [];
     this.type = "Cell";
 }
 Cell.prototype = new Control();
 Cell.prototype.constructor = Cell;
 Cell.prototype.buildDom = function () {
-    var colClass = "col" + this.colCount;
-    var cellDom = $('<div id="' + this.id + '" class="cell span12 ' + colClass + '"><section class="control-group enter"></section></div>');
+    this.width = 12 / this.parent.colCount * this.colCount;
+    var cellDom = $('<div id="' + this.id + '" class="cell span' + this.width + '"><section class="control-group entry"></section></div>');
     return cellDom;
 };
 Cell.prototype.registerEvent = function () {
@@ -397,17 +395,13 @@ Cell.prototype.registerEvent = function () {
         accept: "[data-key^=form]",
         tolerance: "pointer",
         over: function (event, ui) {
-            $(this).addClass("drop-over");
-            $(this).find(".drop-highlight").remove();
-            $(this).prepend("<div class='drop-highlight' style='z-index: " + (zIndex - 1) + "'></div>");
+            $(this).addClass("drop-highlight");
         },
         out: function (event, ui) {
-            $(this).removeClass("drop-over");
-            $(this).find(".drop-highlight").remove();
+            $(this).removeClass("drop-highlight");
         },
         drop: function (event, ui) {
-            $(this).removeClass("drop-over");
-            $(this).find(".drop-highlight").remove();
+            $(this).removeClass("drop-highlight");
 
             var existItem = cell.controls[0];
             var form = cell.parent.parent.parent;
@@ -427,7 +421,7 @@ Cell.prototype.registerEvent = function () {
                     //else remove the dragItem's cell.
                     //dragItem.parent.removeControls(true);
                     originalCell = dragItem.parent;
-                    $("#" + originalCell.id + " .enter").html("");
+                    $("#" + originalCell.id + ">.entry").html("");
                 }
             } else {
                 //add new control
@@ -443,58 +437,20 @@ Cell.prototype.registerEvent = function () {
                 }
             }
 
-            var dragColCount = !!dragItem.parent ? dragItem.parent.colCount : 1;
             var ctrls = cell.parent.controls;
 
             if (cell.controls.length == 0) {
                 cell.addControl(dragItem);
             } else {
                 var row = cell.parent;
-                var newRow = new Row(row.colCount > 0 ? row.colCount : 1);
+                var newRow = new Row(row.colCount);
                 row.addPrev(newRow);
                 var index = ctrls.indexOf(cell);
-                var newDropIndex = 0;
-                for (var i = 0; i < ctrls.length; i++) {
-                    if (i <= index) {
-                        newDropIndex += ctrls[i].colCount;
-                    } else {
-                        break;
-                    }
-                }
-                newDropIndex--;
-                ctrls = newRow.controls;
 
-                if (ctrls.length == 1 || ctrls[newDropIndex].colCount >= dragColCount) {
-                    ctrls[newDropIndex].addControl(dragItem);
-                } else {
-                    var emptyColStatus = ctrls[newDropIndex].getEmptyColCount();
-                    var startIndex = emptyColStatus.index;
-                    var cColCount = 0;
-                    if (emptyColStatus.emptyColCount >= dragColCount) {
-                        for (var i = emptyColStatus.index; i <= emptyColStatus.endIndex; i++) {
-                            cColCount += ctrls[i].colCount;
-                            if (cColCount >= dragColCount) {
-                                break;
-                            }
-                        }
-                        if (cColCount < dragColCount) {
-                            for (var j = emptyColStatus.index - 1; j >= emptyColStatus.startIndex; j--) {
-                                cColCount += ctrls[j].colCount;
-                                startIndex = j;
-                                if (cColCount >= dragColCount) {
-                                    break;
-                                }
-                            }
-                        }
-                        while (true) {
-                            ctrls[startIndex].merge(cellMergeDirection.right);
-                            if (ctrls[startIndex].colCount >= dragColCount) {
-                                break;
-                            }
-                        }
-                        ctrls[startIndex].addControl(dragItem);
-                    }
+                for (var i = 1; i < cell.colCount; i++) {
+                    newRow.controls[index].merge(cellMergeDirection.right);
                 }
+                newRow.controls[index].addControl(dragItem);
             }
             if (originalCell != null) {
                 originalCell.removeControls();
@@ -563,19 +519,19 @@ Cell.prototype.registerEvent = function () {
     });
 
 };
-Cell.prototype.removeControls = function (keepRow) {
+Cell.prototype.removeControls = function () {
     this.controls.Clear();
-    var cell = this;
-    var cellDom = $("#" + this.id);
-    cellDom.html("");
+    var cellEntry = $("#" + this.id + ">.entry");
+    cellEntry.html("");
 
-    //cell.parent.setHeight();
-    return cell;
+    this.parent.setHeight();
+    return this;
 };
 Cell.prototype.changeColCount = function (newColCount) {
-    var colClass = "col" + this.colCount;
-    $("#" + this.id).removeClass(colClass).addClass("col" + newColCount);
+    var newWidth = 12 / this.parent.colCount * newColCount;
+    $("#" + this.id).removeClass("span" + this.width).addClass("span" + newWidth);
     this.colCount = newColCount;
+    this.width = newWidth;
 };
 Cell.prototype.menuSwitch = function () {
     var ret = {};
@@ -607,111 +563,59 @@ Cell.prototype.split = function () {
     }
     var parentColCount = 0;
     var rowControls = this.parent.controls.length;
-    if (this.parent.colCount == 1) {
-        parentColCount = 2;
-    }
-    else if (this.parent.colCount == 2) {
-        if (rowControls < 2) {
+
+    switch (this.parent.colCount) {
+        case 1:
             parentColCount = 2;
-        } else {
-            parentColCount = 4;
-        }
-    } else if (this.parent.colCount == 4) {
-        if (rowControls < 2) {
-            parentColCount = 2;
-        }
-        else {
-            parentColCount = 4;
-        }
-    } else {
-        parentColCount = this.parent.colCount;
+            break;
+        case 2:
+        case 4:
+            parentColCount = rowControls < 2 ? 2 : 4;
+            break;
+        default:
+            parentColCount = this.parent.colCount;
+            break;
     }
 
-    var formCtrl = this.controls[0];
-    if (formCtrl) {
-        this.removeControls(true);
-    }
-
-    this.changeColCount(1);
+    var oldColCount = this.colCount;
     this.parent.updateColCount(parentColCount);
+    this.changeColCount(1);
 
     if (parentColCount == 4 && rowControls == 2) {
-        if (parentColCount == 4 && this.colCount == 3) {
+        if (oldColCount == 3) {
             this.addNext(new Cell(1));
+        } else {
+            var index = this.parent.controls.indexOf(this) == 0 ? 1 : 0;
+            this.parent.controls[index].changeColCount(2);
         }
-        else {
-            var index = this.parent.controls.indexOf(this);
-            if (index == 0) {
-                this.parent.controls[1].changeColCount(2);
-            } else {
-                this.parent.controls[0].changeColCount(2);
-            }
-        }
-    }
-    else if (parentColCount == 3 && rowControls == 1) {
+    } else if (parentColCount == 3 && rowControls == 1) {
         this.addNext(new Cell(1));
     }
     this.addNext(new Cell(1));
-
-    if (formCtrl) {
-        this.addControl(formCtrl);
-    }
+    this.parent.setHeight();
 };
 Cell.prototype.merge = function (direction) {
-    var ctrls = this.parent.controls;
+    var row = this.parent;
+    var ctrls = row.controls;
     var index = ctrls.indexOf(this);
 
     var mergeCell = cellMergeDirection.left == direction ? ctrls[index - 1] : ctrls[index + 1];
 
     var colCount = this.colCount + mergeCell.colCount;
+    if (row.colCount == colCount) {
+        row.updateColCount(1);
+        colCount = 1;
+    }
 
     var formCtrl = this.controls.length > 0 ? this.controls[0] : mergeCell.controls[0];
     if (formCtrl) {
         this.controls.Clear();
-        var cell = this;
-        var cellDom = $("#" + this.id);
-        cellDom.html("");
+        var cellEntry = $("#" + this.id + ">.entry");
+        cellEntry.html("");
         this.addControl(formCtrl);
     }
     mergeCell.remove(true);
     this.changeColCount(colCount);
-};
-//获取当前cell附近的空着的colCount: 从左边开始的空起的colCount，从右边开始的空起的colCount，从
-Cell.prototype.getEmptyColCount = function () {
-    var cells = this.parent.controls;
-    var index = cells.indexOf(this);
-    var ret = {
-        emptyColCount: 0,
-        startIndex: 0,
-        index: index,
-        endIndex: cells.length - 1
-    };
-    var tempColCount = 0;
-    var firstEnter = true;
-    for (var i = 0; i < cells.length; i++) {
-        if (cells[i].controls.length > 0) {
-            if (i < index) {
-                ret.emptyColCount = 0;
-                firstEnter = true;
-            } else if (i == index) {
-                ret.emptyColCount = 0;
-                break;
-            } else {
-                break;
-            }
-        } else {
-            if (firstEnter) {
-                firstEnter = false;
-                ret.startIndex = i;
-            }
-            ret.endIndex = i;
-            ret.emptyColCount += cells[i].colCount;
-        }
-    }
-    return ret;
-};
-Cell.prototype.getWidth = function () {
-    return $("#" + this.id).width();
 };
 Cell.prototype.canMergeRight = function () {
     var index = this.parent.controls.indexOf(this);
@@ -800,12 +704,7 @@ FormControl.prototype.registerDrag = function () {
 
 };
 FormControl.prototype.onInit = function () {
-    var formTitle = $("#" + this.id + " .form-title");
-    var formElem = $("#" + this.id + " .form-elem");
-    var cellWidth = this.parent.getWidth();
-    formElem.outerWidth(cellWidth - formTitle.outerWidth() - 1);
-
-    //this.parent.parent.setHeight();
+    this.parent.parent.setHeight();
 };
 FormControl.prototype.registerEvent = function () {
     this.registerDrag();
@@ -899,7 +798,7 @@ function initToolbox() {
     $("#toolboxes fieldset p[data-key=tab]").draggable({
         helper: getCloneElem,
         revert: "invalid",
-        connectToSortable: ".form",
+        connectToSortable: ".form>.entry",
         start: function (event, ui) {
             setZIndex(ui.helper);
         }
@@ -908,7 +807,7 @@ function initToolbox() {
     $("#toolboxes fieldset p[data-key^=row]").draggable({
         helper: getCloneElem,
         revert: "invalid",
-        connectToSortable: ".tab",
+        connectToSortable: ".tab form.entry",
         start: function (event, ui) {
             setZIndex(ui.helper);
         }
