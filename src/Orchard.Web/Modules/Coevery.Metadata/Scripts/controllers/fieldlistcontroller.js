@@ -34,14 +34,12 @@
     };
     
     $scope.add = function () {
-        var params = '[{parentname:"' + name + '"}]';
-        $state.transitionTo('ManageField', { Moudle: 'Metadata', params: params });
+        $state.transitionTo('SubCreate', { Moudle: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail' });
     };
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            var params = '[{parentname:"' + name + '",name:"' + $scope.mySelections[0].Name + '"}]';
-            $state.transitionTo('ManageField', { Moudle: 'Metadata', params: params});
+            $state.transitionTo('SubDetail', { Moudle: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail', SubId: $scope.mySelections[0].Name });
         }
     };
 
