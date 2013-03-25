@@ -50,6 +50,14 @@
       <Private>True</Private>
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\nhibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Linq, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\CRM\WebCode\Orchard\lib\nhibernate.linq\NHibernate.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
@@ -109,13 +117,20 @@
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
+    <Compile Include="DynamicAssemblyBuilder.cs" />
+    <Compile Include="DynamicFieldDefinition.cs" />
+    <Compile Include="DynamicTypeDefinition.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Services\ContentTypePlacementStrategy.cs" />
+    <Compile Include="Services\DefaultTableSchemaManager.cs" />
     <Compile Include="Services\IPlacementService.cs" />
+    <Compile Include="Services\ITableSchemaManager.cs" />
     <Compile Include="Services\PlacementService.cs" />
+    <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
+    <Compile Include="Settings\DynamicTypeSettings.cs" />
     <Compile Include="Settings\EditorEvents.cs" />
     <Compile Include="Settings\PlacementSettings.cs" />
     <Compile Include="ViewModels\AddPartsViewModel.cs" />
@@ -126,6 +141,7 @@
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
     <Compile Include="ViewModels\ContentTypeSettingsViewModel.cs" />
+    <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
     <Compile Include="ViewModels\FieldViewModelDto.cs" />
     <Compile Include="ViewModels\EditTypeViewModelDto.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
@@ -215,7 +231,9 @@
   <ItemGroup>
     <Content Include="Scripts\Web.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\DynamicTypeSettingsViewModel.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FieldViewTemplate\Detail.cshtml" />
   </ItemGroup>
