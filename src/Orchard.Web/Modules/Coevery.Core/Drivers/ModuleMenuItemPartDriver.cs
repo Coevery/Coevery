@@ -9,6 +9,7 @@ using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.Records;
 using Orchard.Core.Navigation;
+using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 using Orchard.Localization;
 using Orchard.Security;
@@ -20,13 +21,13 @@ namespace Coevery.Core.Drivers {
         private readonly IContentManager _contentManager;
         private readonly IAuthorizationService _authorizationService;
         private readonly IWorkContextAccessor _workContextAccessor;
-        private readonly IRepository<ContentTypeRecord> _contentTypeRepository;
+        private readonly IRepository<ContentTypeDefinitionRecord> _contentTypeRepository;
 
         public ModuleMenuItemPartDriver(
             IContentManager contentManager,
             IAuthorizationService authorizationService, 
             IWorkContextAccessor workContextAccessor,
-            IRepository<ContentTypeRecord> contentTypeRepository)
+            IRepository<ContentTypeDefinitionRecord> contentTypeRepository)
         {
             _contentManager = contentManager;
             _authorizationService = authorizationService;
@@ -43,14 +44,14 @@ namespace Coevery.Core.Drivers {
             var contentTypes = _contentTypeRepository.Table.ToList();
             var selectLists = contentTypes.Select(t => new SelectListItem
             {
-                Selected = part.Record.ContentTypeRecord != null && part.Record.ContentTypeRecord.Id.Equals(t.Id),
+                Selected = part.Record.ContentTypeDefinitionRecord != null && part.Record.ContentTypeDefinitionRecord.Id.Equals(t.Id),
                 Text = t.Name,
                 Value = t.Id.ToString()
             });
             return ContentShape("Parts_ModuleMenuItem_Edit",
                                 () => {
                                     var model = new ModuleMenuItemEditViewModel() {
-                                        ContenTypeId = part.Record.ContentTypeRecord == null ? -1 : part.Record.ContentTypeRecord.Id,
+                                        ContenTypeId = part.Record.ContentTypeDefinitionRecord == null ? -1 : part.Record.ContentTypeDefinitionRecord.Id,
                                         Part = part,
                                         ContentTypes = selectLists
                                     };
@@ -76,7 +77,7 @@ namespace Coevery.Core.Drivers {
                 else
                 {
                     //part.Record = part.
-                    part.Record.ContentTypeRecord = contentTypeRecord;
+                    part.Record.ContentTypeDefinitionRecord = contentTypeRecord;
                 }
             }
 

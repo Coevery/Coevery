@@ -30,7 +30,7 @@ namespace Coevery.Core.Handlers {
             if(moduleMenuItemPart != null) {
 
                 // if the content doesn't exist anymore
-                if(moduleMenuItemPart.Record.ContentTypeRecord == null) {
+                if(moduleMenuItemPart.Record.ContentTypeDefinitionRecord == null) {
                     return;
                 }
 
