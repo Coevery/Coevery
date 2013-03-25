@@ -1,7 +1,14 @@
-﻿function OpportunityCtrl($scope, logger, $state, $resource) {
+﻿function OpportunityCtrl($scope, logger, $state,localize, $resource) {
     var Opportunity = OpportunityContext($resource);
     $scope.mySelections = [];
 
+
+    var opportunityColumDefs = [
+            { field: 'OpportunityId', displayName: localize.getLocalizedString('OpportunityId') },
+            { field: 'Name', displayName: localize.getLocalizedString('Name') },
+            { field: 'Description', displayName: localize.getLocalizedString('Description') },
+            { field: 'SourceLeadId', displayName: localize.getLocalizedString('SourceLeadId') }];
+    
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,

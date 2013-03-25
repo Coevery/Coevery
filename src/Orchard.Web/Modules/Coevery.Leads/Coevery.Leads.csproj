@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeadController.cs" />
+    <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="Controllers\TodoController.cs" />
     <Compile Include="Controllers\TodoListController.cs" />
     <Compile Include="Drivers\LeadDriver.cs" />
@@ -99,6 +100,8 @@
     <Compile Include="Services\TodoService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\arrow.png" />
+    <Content Include="Images\line.png" />
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
@@ -124,13 +127,11 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\Web.config" />
-    <Content Include="Views\Home\Detail.cshtml" />
-    <Content Include="Views\Home\List.cshtml" />
+    <Content Include="Views\ViewTemplate\Detail.cshtml" />
+    <Content Include="Views\ViewTemplate\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
-    <Folder Include="Scripts\models\" />
-    <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

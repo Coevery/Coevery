@@ -102,8 +102,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OppportunityController.cs" />
+    <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="Drivers\OpportunityDriver.cs" />
     <Compile Include="Handlers\OpportunityHandler.cs" />
     <Compile Include="Migrations.cs" />
@@ -120,7 +120,6 @@
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
-    <Content Include="Scripts\models\opportunity.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -135,16 +134,15 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
-    <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Detail.cshtml" />
+    <Content Include="Views\ViewTemplate\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\List.cshtml" />
+    <Content Include="Views\ViewTemplate\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />

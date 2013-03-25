@@ -19,6 +19,7 @@
         "key": "LastName",
         "value": "名"
     },
+    /*Metadata*/
     {
         "key": "DisplayName",
         "value": "显示名称"
@@ -26,5 +27,22 @@
     {
         "key": "FieldTypeDisplayName",
         "value": "类型"
+    },
+    /*Opportunityies*/
+    {
+        "key": "OpportunityId",
+        "value": "商业机遇 Id"
+    },
+    {
+        "key": "Name",
+        "value": "名称"
+    },
+    {
+        "key": "Description",
+        "value": "描述"
+    },
+    {
+        "key": "SourceLeadId",
+        "value": "来源"
     }
 ];
