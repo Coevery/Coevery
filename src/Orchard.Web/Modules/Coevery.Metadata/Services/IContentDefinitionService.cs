@@ -27,5 +27,7 @@ namespace Coevery.Metadata.Services {
         void AddFieldToPart(string fieldName, string fieldTypeName, string partName);
         void AddFieldToPart(string fieldName, string displayName, string fieldTypeName, string partName);
         void RemoveFieldFromPart(string fieldName, string partName);
+
+        bool GenerateType(string name);
     }
 }

@@ -346,5 +346,12 @@ namespace Coevery.Metadata.Services {
                 _thunk.AddModelError(_prefix(key), errorMessage);
             }
         }
+
+
+        public bool GenerateType(string name)
+        {
+
+            return true;
+        }
     }
 }
