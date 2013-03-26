@@ -1,9 +1,7 @@
 ﻿function FieldDetailCtrl($scope, logger, $state, $stateParams, $resource) {
-    var paramsstr = $stateParams.params;
-    var params = $scope.$eval(paramsstr);
-    var parentname = params[0].parentname;
-    var name = params[0].name;
-    var isNew = (name || name == '') ? false : true;
+    var parentname = $stateParams.Id;
+    var name = $stateParams.SubId;
+    var isNew = name? false : true;
     var field = FieldContext($resource);
     $scope.save = function () {
         if (isNew) {
@@ -25,7 +23,7 @@
     };
 
     $scope.exit = function () {
-        $state.transitionTo('FieldList', { Moudle: 'Metadata', name: parentname });
+        $state.transitionTo('SubList', { Moudle: 'Metadata', Id: $stateParams.Id, SubModule: 'Field', View: 'List' });
     };
     if (!isNew) {
         $scope.NameDisabled = true;
