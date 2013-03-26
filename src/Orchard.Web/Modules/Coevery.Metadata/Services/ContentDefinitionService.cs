@@ -387,7 +387,7 @@ namespace Coevery.Metadata.Services {
                 try
                 {
                    var types = _dynamicAssemblyBuilder.Build(userContentParts);
-                    _tableSchemaManager.UpdateSchema(userContentParts, FormatTableName,types);
+                    _tableSchemaManager.UpdateSchema(FormatTableName,types);
                 }
                 catch (Exception)
                 {
