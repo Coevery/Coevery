@@ -10,6 +10,11 @@ namespace Coevery.Metadata {
             manifest.DefineScript("MetadataDetailController").SetUrl("controllers/detailcontroller.js");
             manifest.DefineScript("FieldCtrl").SetUrl("controllers/fieldlistcontroller.js");
             manifest.DefineScript("FieldDetailCtrl").SetUrl("controllers/fielddetailcontroller.js");
+
+            manifest.DefineScript("FormDesignerMain").SetUrl("formdesigner/main.js");
+            manifest.DefineScript("FormDesignerContextMenu").SetUrl("formdesigner/ContextMenu.js");
+            manifest.DefineScript("FormDesignerJsutils").SetUrl("formdesigner/jsutils.js");
+            manifest.DefineScript("FormDesignerLinq").SetUrl("formdesigner/Linq.js");
         }
     }
 }
