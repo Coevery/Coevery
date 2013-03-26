@@ -8,6 +8,7 @@ using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Contents.Extensions;
+using Orchard.Environment.Configuration;
 using Orchard.Localization;
 using Orchard.Utility.Extensions;
 
@@ -17,19 +18,29 @@ namespace Coevery.Metadata.Services {
         private readonly IEnumerable<IContentPartDriver> _contentPartDrivers;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+        private readonly ITableSchemaManager _tableSchemaManager;
+        private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
+        private readonly ShellSettings _shellSettings;
 
         public ContentDefinitionService(
                 IOrchardServices services,
                 IContentDefinitionManager contentDefinitionManager,
                 IEnumerable<IContentPartDriver> contentPartDrivers,
                 IEnumerable<IContentFieldDriver> contentFieldDrivers,
-                IContentDefinitionEditorEvents contentDefinitionEditorEvents)
+                IContentDefinitionEditorEvents contentDefinitionEditorEvents,
+                ITableSchemaManager tableSchemaManager,
+                IDynamicAssemblyBuilder dynamicAssemblyBuilder,
+                ShellSettings shellSettings)
         {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             _contentPartDrivers = contentPartDrivers;
             _contentFieldDrivers = contentFieldDrivers;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
+            _tableSchemaManager = tableSchemaManager;
+            _shellSettings = shellSettings;
+
             T = NullLocalizer.Instance;
         }
 
@@ -90,7 +101,9 @@ namespace Coevery.Metadata.Services {
             var contentTypeDefinition = new ContentTypeDefinition(name, displayName);
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
             _contentDefinitionManager.AlterTypeDefinition(name,
-                cfg => cfg.Creatable().Draftable());
+                cfg => cfg.Creatable()
+                    .Draftable()
+                    .WithPart(name));
 
             return contentTypeDefinition;
         }
@@ -350,8 +363,49 @@ namespace Coevery.Metadata.Services {
 
         public bool GenerateType(string name)
         {
+            var typeDefinitions = _contentDefinitionManager.ListTypeDefinitions();
 
+            var typeNames = typeDefinitions.Select(ctd => ctd.Name);
+
+            // user-defined parts
+            // except for those parts with the same name as a type (implicit type's part or a mistake)
+            var userContentParts = _contentDefinitionManager
+                .ListPartDefinitions()
+                .Where(cpd => typeNames.Contains(cpd.Name))
+                .Select(cpd => new DynamicTypeDefinition
+                {
+                    Name = cpd.Name,
+                    Fields = cpd.Fields.Select(f => new DynamicFieldDefinition
+                    {
+                        Name = f.Name,
+                        Type = typeof(string)
+                    }).Union(new[] { new DynamicFieldDefinition { Name = "Id", Type = typeof(int) } })
+                }).ToList();
+
+            if (userContentParts.Any())
+            {
+                try
+                {
+                   var types = _dynamicAssemblyBuilder.Build(userContentParts);
+                    _tableSchemaManager.UpdateSchema(userContentParts, FormatTableName,types);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+            }
             return true;
+        }
+
+         private string FormatTableName(string name) {
+            var extensionId = "Coevery_DynamicTypes";
+            var extensionName = extensionId.Replace('.', '_');
+
+            var dataTablePrefix = "";
+            if (!string.IsNullOrEmpty(_shellSettings.DataTablePrefix))
+                dataTablePrefix = _shellSettings.DataTablePrefix + "_";
+            return dataTablePrefix + extensionName + '_' + name;
         }
     }
 }

@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using Coevery.Dynamic;
+using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
 using Orchard.Data;
+using Orchard.Data.Providers;
+using Orchard.Environment.ShellBuilders.Models;
 
 namespace Coevery.Metadata.Services
 {
@@ -16,46 +19,45 @@ namespace Coevery.Metadata.Services
         private readonly SchemaBuilder _schemaBuilder;
         private readonly ISessionLocator _sessionLocator;
         private readonly ISessionFactoryHolder _sessionFactoryHolder;
+        private readonly IDataServicesProviderFactory _dataServiceProviderFactory;
 
-        public DefaultTableSchemaManager(IDataMigrationInterpreter interpreter, 
+        public DefaultTableSchemaManager(IDataMigrationInterpreter interpreter,
             ISessionLocator sessionLocator,
-             ISessionFactoryHolder sessionFactoryHolder
-            )
+             ISessionFactoryHolder sessionFactoryHolder,
+            IDataServicesProviderFactory dataServiceProviderFactory)
         {
             _interpreter = interpreter;
             _sessionLocator = sessionLocator;
             _schemaBuilder = new SchemaBuilder(_interpreter);
             _sessionFactoryHolder = sessionFactoryHolder;
+            _dataServiceProviderFactory = dataServiceProviderFactory;
         }
 
-        public void UpdateSchema(IEnumerable<DynamicTypeDefinition> typeDefinitions, Func<string, string> format)
+        public void UpdateSchema(IEnumerable<DynamicTypeDefinition> typeDefinitions, Func<string, string> format, IEnumerable<Type> types)
         {
-            //format = format ?? (s => s ?? String.Empty);
-            //var session = _sessionLocator.For(typeof (ContentItemRecord));
-            //var connection = session.Connection;
 
-            ////var tableNames = GetDatabaseTables(session, new SqlPseudoProvider());
-            //var tableNames = GetDatabaseTables();
-            //foreach (var definition in typeDefinitions) {
-            //    var tableName = String.Concat(format(definition.Name));
-            //    var exists = tableNames.Any(t => t.Equals(tableName, StringComparison.OrdinalIgnoreCase));
-            //    if (!exists) {
-            //        _schemaBuilder.CreateTable(tableName, table => {
-            //            foreach (var field in definition.Fields) {
-            //                var dbType = SchemaUtils.ToDbType(field.Type);
-            //                var isPrimaryKey = field.Name.Equals("Id", StringComparison.OrdinalIgnoreCase);
-            //                if (isPrimaryKey) {
-            //                    table.Column(field.Name, dbType, column => column.PrimaryKey());
-            //                }
-            //                else {
-            //                    table.Column(field.Name, dbType);
-            //                }
-            //            }
-                       
-            //        });
-            //    }
-            //}
-            var configuration = _sessionFactoryHolder.GetConfiguration();
+            
+            var recordBlueprints = types.Select(t => new RecordBlueprint {TableName = format(t.Name), Type = t}).ToList();
+            var persistenceModel = AbstractDataServicesProvider.CreatePersistenceModel(recordBlueprints);
+            var dataServiceProvider = this._dataServiceProviderFactory.CreateProvider(this._sessionFactoryHolder.GetSessionFactoryParameters());
+            var persistenceConfigurer = dataServiceProvider.GetPersistenceConfigurer(true);
+
+            //var persistenceConfigurer = new 
+            var configuration = Fluently.Configure()
+                    .Database(persistenceConfigurer)
+                    .Mappings(m => m.AutoMappings.Add(persistenceModel))
+                    .ExposeConfiguration(c =>
+                    {
+                        // This is to work around what looks to be an issue in the NHibernate driver:
+                        // When inserting a row with IDENTITY column, the "SELET @@IDENTITY" statement
+                        // is issued as a separate command. By default, it is also issued in a separate
+                        // connection, which is not supported (returns NULL).
+                        //c.SetProperty("connection.release_mode", "on_close");
+                        //new SchemaExport(c).Create(false /*script*/, true /*export*/);
+                       // new SchemaUpdate(c).Execute(false, true);
+                    })
+                    .BuildConfiguration();
+            
             new SchemaUpdate(configuration).Execute(false, true);
 
         }
@@ -78,38 +80,6 @@ namespace Coevery.Metadata.Services
                 tables.Add(re.ToString());
             }
             return tables;
-        }
-
-        private interface IPseudoProvider
-        {
-            string StoreSchemaTablesQuery { get; }
-            bool SupportsSchemas { get; }
-        }
-
-        private class SqlPseudoProvider : IPseudoProvider
-        {
-            public string StoreSchemaTablesQuery
-            {
-                get { return "SELECT  TABLE_NAME Name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'"; }
-            }
-
-            public bool SupportsSchemas
-            {
-                get { return true; }
-            }
-        }
-
-        private class SqlCePseudoProvider : IPseudoProvider
-        {
-            public string StoreSchemaTablesQuery
-            {
-                get { return "SELECT TABLE_NAME Name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'TABLE'"; }
-            }
-
-            public bool SupportsSchemas
-            {
-                get { return false; }
-            }
         }
     }
 }

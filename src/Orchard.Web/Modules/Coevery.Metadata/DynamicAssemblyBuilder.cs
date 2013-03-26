@@ -11,7 +11,7 @@ namespace Coevery.Metadata
 {
     public interface IDynamicAssemblyBuilder : IDependency
     {
-        void Build(IEnumerable<DynamicTypeDefinition> typeDefinitions);
+        IEnumerable<Type> Build(IEnumerable<DynamicTypeDefinition> typeDefinitions);
     }
 
     public class DynamicAssemblyBuilder : IDynamicAssemblyBuilder
@@ -23,7 +23,8 @@ namespace Coevery.Metadata
             _virtualPathProvider = virtualPathProvider;
         }
 
-        public void Build(IEnumerable<DynamicTypeDefinition> typeDefinitions) {
+        public IEnumerable<Type> Build(IEnumerable<DynamicTypeDefinition> typeDefinitions)
+        {
             var assemblyBuidler = BuildAssembly();
             var moduleBuidler = BuildModule(assemblyBuidler);
             foreach (var definition in typeDefinitions) {
@@ -32,10 +33,11 @@ namespace Coevery.Metadata
                 BuildEmptyCtor(typeBuidler);
                 BuildCtor(typeBuidler, fieldBuilders);
                 BuildProperties(definition, typeBuidler, fieldBuilders);
-                typeBuidler.CreateType();
-                //yield return typeBuidler.CreateType();
+                Type type = typeBuidler.CreateType();
             }
             assemblyBuidler.Save(AssemblyName + ".dll");
+            var assembly = Assembly.Load(AssemblyName);
+            return  assembly.GetTypes();
         }
 
         private AssemblyBuilder BuildAssembly() {

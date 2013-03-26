@@ -14,7 +14,7 @@ function FieldContext($resource) {
 
 function GenerateContext($resource) {
     return $resource(
-        'api/metadata/metadata/:Name',
+        'api/metadata/Generation/:Name',
         { Name: '@Name' },
         { update: { method: 'PUT' } });
 }
