@@ -33,7 +33,7 @@ namespace Coevery.Metadata.Services
             _dataServiceProviderFactory = dataServiceProviderFactory;
         }
 
-        public void UpdateSchema(IEnumerable<DynamicTypeDefinition> typeDefinitions, Func<string, string> format, IEnumerable<Type> types)
+        public void UpdateSchema(Func<string, string> format, IEnumerable<Type> types)
         {
 
             
