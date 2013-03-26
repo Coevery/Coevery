@@ -7,4 +7,5 @@
   <Place Parts_MenuWidget_Edit="Content:10"/>
   <Place Parts_MenuWidget="Content"/>
   <Place Parts_ShapeMenuItemPart_Edit="Content:10"/>
+  <Place Parts_ModuleMenuItem_Edit="Content:12"/>
 </Placement>

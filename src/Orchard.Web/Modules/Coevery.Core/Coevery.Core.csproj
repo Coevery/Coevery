@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Coevery.Leads</RootNamespace>
-    <AssemblyName>Coevery.Lead</AssemblyName>
+    <RootNamespace>Coevery.Core</RootNamespace>
+    <AssemblyName>Coevery.Core</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -45,6 +45,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\aspnetwebapi\System.Net.Http.dll</HintPath>
@@ -79,10 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
-    <Compile Include="Handlers\ModuleMenuItemPartHandler.cs" />
+    <Compile Include="Handlers\ModuleMenuItemPartHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ModuleMenuItemPart.cs" />
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
+    <Compile Include="ModuleMenuProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
     <Compile Include="ViewModels\ModuleMenuItemEditViewModel.cs" />
