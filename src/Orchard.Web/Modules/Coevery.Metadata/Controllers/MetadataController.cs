@@ -140,31 +140,6 @@ namespace Coevery.Metadata.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        // DELETE api/metadata/metadata/name
-        public virtual HttpResponseMessage Generate(string name)
-        {
-            var typeViewModel = _contentDefinitionService.GetType(name);
-            if (typeViewModel == null)
-            {
-                ModelState.AddModelError("Name", T("A type with the name not exists.").ToString());
-            }
-            if (!ModelState.IsValid)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-            }
-            bool suc = _contentDefinitionService.GenerateType(name);
-
-            if (suc)
-            {
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            
-        }
-
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
 
             return true;
