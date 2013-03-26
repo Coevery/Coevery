@@ -25,7 +25,7 @@ namespace Coevery.Metadata.Controllers
         }
 
         public Localizer T { get; set; }
-        // DELETE api/metadata/metadata/name
+     
         public virtual HttpResponseMessage Get(string name)
         {
 

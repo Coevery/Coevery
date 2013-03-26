@@ -9,6 +9,7 @@ namespace Coevery.Metadata.ViewModels {
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public List<FieldViewModelDto> Fields { get; set; }
+        public bool IsEnable { get; set; }
     }
 
 }

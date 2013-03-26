@@ -7,6 +7,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
+using Orchard.ContentManagement.ViewModels;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Environment.Configuration;
 using Orchard.Localization;
@@ -407,5 +408,29 @@ namespace Coevery.Metadata.Services {
                 dataTablePrefix = _shellSettings.DataTablePrefix + "_";
             return dataTablePrefix + extensionName + '_' + name;
         }
+
+
+         public EditTypeViewModel GetTempEditTypeViewModel()
+         {
+             ContentTypeDefinition tempType = new ContentTypeDefinition(string.Empty,string.Empty);
+             List<TemplateViewModel> templates = new List<TemplateViewModel>();
+             var template = new TemplateViewModel(null, string.Empty)
+             {
+                 TemplateName = "DefinitionTemplates/DynamicTypeSettingsViewModel",
+                 Model = new DynamicTypeSettingsViewModel
+                 {
+                     IsEnabled = false
+                 }
+                 
+             };
+
+             templates.Add(template);
+             EditTypeViewModel tempViewModel = new EditTypeViewModel(tempType)
+             {
+                 Templates = templates
+             };
+       
+             return tempViewModel;
+         }
     }
 }

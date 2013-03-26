@@ -1,4 +1,4 @@
-﻿
+﻿@model Coevery.Metadata.ViewModels.EditTypeViewModel
 @{
     Script.Require("MetadataContext");
     Script.Require("MetadataDetailController");
@@ -56,3 +56,5 @@
         </section>
     </div>
 </section>
+
+@{ Html.RenderTemplates(Model.Templates); }
