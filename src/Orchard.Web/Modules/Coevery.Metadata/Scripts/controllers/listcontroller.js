@@ -50,6 +50,13 @@
             logger.error("Failed to fetched Metadata.");
         });
     };
+    
+    $scope.generate = function() {
+        if ($scope.mySelections.length > 0) {
+            
+        }
+    }
+
 
     $scope.getAllMetadata();
 }
