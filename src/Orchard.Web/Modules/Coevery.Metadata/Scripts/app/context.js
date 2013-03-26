@@ -11,3 +11,10 @@ function FieldContext($resource) {
         { Name: '@Name' },
         { update: { method: 'PUT' } });
 }
+
+function GenerateContext($resource) {
+    return $resource(
+        'api/metadata/metadata/:Name',
+        { Name: '@Name' },
+        { update: { method: 'PUT' } });
+}
