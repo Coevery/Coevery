@@ -61,25 +61,5 @@ namespace Coevery.Metadata.Services
             new SchemaUpdate(configuration).Execute(false, true);
 
         }
-
-        private IEnumerable<string> GetDatabaseTables()
-        {
-            var parameters = _sessionFactoryHolder.GetSessionFactoryParameters();
-            var tabels = parameters.RecordDescriptors.Select(t => t.TableName).ToList();
-            return tabels;
-
-        }
-
-        private static IEnumerable<string> GetDatabaseTables(ISession session, IPseudoProvider provider)
-        {
-            var query = session.CreateSQLQuery(provider.StoreSchemaTablesQuery);
-            var reObjs = query.List();
-            List<string> tables = new List<string>();
-            foreach (var re in reObjs)
-            {
-                tables.Add(re.ToString());
-            }
-            return tables;
-        }
     }
 }
