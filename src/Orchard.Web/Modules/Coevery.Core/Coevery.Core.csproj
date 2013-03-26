@@ -86,7 +86,9 @@
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ModuleMenuItemPart.cs" />
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
-    <Compile Include="ModuleMenuProvider.cs" />
+    <Compile Include="NavigationQueryProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
     <Compile Include="ViewModels\ModuleMenuItemEditViewModel.cs" />
