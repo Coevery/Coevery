@@ -21,8 +21,6 @@ namespace Orchard.Modules.Services {
         private readonly IExtensionManager _extensionManager;
         private readonly IShellDescriptorManager _shellDescriptorManager;
         private readonly ICacheManager _cacheManager;
-        private readonly IContentManager _contentManager;
-        private readonly IMenuService _menuService;
 
         public ModuleService(
                 IFeatureManager featureManager,
@@ -30,9 +28,7 @@ namespace Orchard.Modules.Services {
                 IVirtualPathProvider virtualPathProvider,
                 IExtensionManager extensionManager,
                 IShellDescriptorManager shellDescriptorManager,
-                ICacheManager cacheManager,
-                IContentManager contentManager,
-                IMenuService menuService)
+                ICacheManager cacheManager)
         {
 
             Services = orchardServices;
@@ -48,8 +44,6 @@ namespace Orchard.Modules.Services {
             }
 
             T = NullLocalizer.Instance;
-            _contentManager = contentManager;
-            _menuService = menuService;
         }
 
         public Localizer T { get; set; }
