@@ -157,8 +157,14 @@ namespace Coevery.Metadata.Controllers {
                 Services.TransactionManager.Cancel();
                 return View(viewModel);
             }
-
-            var contentTypeDefinition = _contentDefinitionService.AddType(viewModel.Name, viewModel.DisplayName,false);
+            EditTypeViewDto dto = new EditTypeViewDto()
+            {
+                Name = viewModel.Name,
+                DisplayName = viewModel.DisplayName,
+                IsEnabled = false,
+                IsDeployed = false
+            };
+            var contentTypeDefinition = _contentDefinitionService.AddType(dto);
             
             // adds CommonPart by default
             _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);

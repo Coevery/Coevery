@@ -10,7 +10,7 @@ namespace Coevery.Metadata.Services {
         IEnumerable<EditTypeViewModel> GetTypes();
         EditTypeViewModel GetTempEditTypeViewModel();
         EditTypeViewModel GetType(string name);
-        ContentTypeDefinition AddType(string name, string displayName,bool isEnabled);
+        ContentTypeDefinition AddType(EditTypeViewDto editTypeViewDto);
         void AlterType(EditTypeViewModel typeViewModel, IUpdateModel updater);
         void RemoveType(string name, bool deleteContent);
         void AddPartToType(string partName, string typeName);

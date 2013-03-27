@@ -82,7 +82,13 @@ namespace Coevery.Metadata.Services {
             return viewModel;
         }
 
-        public ContentTypeDefinition AddType(string name, string displayName,bool isEnabled) {
+        public ContentTypeDefinition AddType(EditTypeViewDto editTypeViewDto)
+        {
+            string displayName = editTypeViewDto.DisplayName;
+            string name = editTypeViewDto.Name;
+            bool isEnabled = editTypeViewDto.IsEnabled;
+            bool isDeployed = editTypeViewDto.IsDeployed;
+
             if(String.IsNullOrWhiteSpace(displayName)) {
                 throw new ArgumentException("displayName");
             }
@@ -101,6 +107,7 @@ namespace Coevery.Metadata.Services {
 
             var contentTypeDefinition = new ContentTypeDefinition(name, displayName);
             contentTypeDefinition.Settings["DynamicTypeSettings.IsEnabled"] = isEnabled.ToString();
+            contentTypeDefinition.Settings["DynamicTypeSettings.IsDeployed"] = isDeployed.ToString();
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
             _contentDefinitionManager.AlterTypeDefinition(name,
                 cfg => cfg.Creatable()
@@ -420,7 +427,8 @@ namespace Coevery.Metadata.Services {
                  TemplateName = "DefinitionTemplates/DynamicTypeSettingsViewModel",
                  Model = new DynamicTypeSettingsViewModel
                  {
-                     IsEnabled = false
+                     IsEnabled = false,
+                     IsDeployed = false
                  }
                  
              };

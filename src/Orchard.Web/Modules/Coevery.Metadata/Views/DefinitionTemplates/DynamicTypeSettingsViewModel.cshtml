@@ -1,10 +1,11 @@
 ﻿@model Coevery.Metadata.ViewModels.DynamicTypeSettingsViewModel
 
-
     <fieldset>
         <label for="@Html.FieldIdFor(m => m.IsEnabled)" class="checkbox">
             <input type="checkbox" ng-model="item.IsEnabled" name="IsEnabled" id="inputIsEnabled"> </input>@T("IsEnabled")
         </label>
-
+         <label for="@Html.FieldIdFor(m => m.IsDeployed)" class="checkbox">
+            <input type="checkbox" ng-model="item.IsDeployed" name="IsDeployed" id="inputIsDeployed"> </input>@T("IsDeployed")
+        </label>
     </fieldset>
 

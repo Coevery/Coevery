@@ -3,7 +3,9 @@
     $scope.mySelections = [];
     var metadata = MetadataContext($resource);
     var metadataGenerator = GenerateContext($resource);
-    var metadataColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') }];
+    var metadataColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') },
+                              { field: 'IsEnabled', displayName: localize.getLocalizedString('IsEnabled') },
+                              { field: 'IsDeployed', displayName: localize.getLocalizedString('IsDeployed') }];
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,
