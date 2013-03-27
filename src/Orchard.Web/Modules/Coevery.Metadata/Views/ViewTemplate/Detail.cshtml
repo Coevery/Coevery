@@ -24,7 +24,7 @@
     </ul>
     <h1>Meta Detail <span>Metadata add/edit</span></h1>
 </header>
-@{ Html.RenderTemplates(Model.Templates); }
+
 <section id="main-content" ng-controller="MetadataDetailCtrl">
     <div class="row-fluid">
         <section class="span12 widget">
@@ -43,13 +43,19 @@
                     <section class="control-group">
                         <label class="control-label" for="inputDisplayName">DisplayName</label>
                         <div class="controls">
-                            <input type="text"  class="span12" ng-model="item.DisplayName" name="DisplayName" id="inputDisplayName" required>
+                            <input type="text" class="span12" ng-model="item.DisplayName" name="DisplayName" id="inputDisplayName" required>
                             <span class="text-error" ng-show="!myForm.DisplayName.$valid">Required!</span>
+                        </div>
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label">Setting</label>
+                        <div class="controls">
+                            @{Html.RenderTemplates(Model.Templates); }
                         </div>
                     </section>
                     <section class="form-actions">
                         <input type="submit" value="Save" class="btn btn-primary" ng-disabled="!myForm.$valid">
-                        <input type="button" value="Exit" class="btn" ng-click="exit()"/>
+                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
                     </section>
                 </form>
             </section>

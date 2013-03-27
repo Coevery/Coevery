@@ -27,13 +27,14 @@ namespace Coevery.Dynamic.Settings
         public override IEnumerable<TemplateViewModel> TypeEditorUpdate(ContentTypeDefinitionBuilder builder, IUpdateModel updateModel)
         {
             var model = new DynamicTypeSettingsViewModel();
-            updateModel.TryUpdateModel(model, "DynamicTypeSettingsViewModel", null, null);
+            //updateModel.TryUpdateModel(model, "DynamicTypeSettingsViewModel", null, null);
 
-            builder.WithSetting("DynamicTypeSettings.IsEnabled", model.IsEnabled.ToString());
+            //builder.WithSetting("DynamicTypeSettings.IsEnabled", model.IsEnabled.ToString());
 
-            if (model.IsEnabled) {
-                
-            }
+            //if (model.IsEnabled)
+            //{
+
+            //}
             yield return DefinitionTemplate(model);
         }
     }

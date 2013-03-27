@@ -82,7 +82,7 @@ namespace Coevery.Metadata.Services {
             return viewModel;
         }
 
-        public ContentTypeDefinition AddType(string name, string displayName) {
+        public ContentTypeDefinition AddType(string name, string displayName,bool isEnabled) {
             if(String.IsNullOrWhiteSpace(displayName)) {
                 throw new ArgumentException("displayName");
             }
@@ -100,6 +100,7 @@ namespace Coevery.Metadata.Services {
                 name = VersionName(name);
 
             var contentTypeDefinition = new ContentTypeDefinition(name, displayName);
+            contentTypeDefinition.Settings["DynamicTypeSettings.IsEnabled"] = isEnabled.ToString();
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
             _contentDefinitionManager.AlterTypeDefinition(name,
                 cfg => cfg.Creatable()

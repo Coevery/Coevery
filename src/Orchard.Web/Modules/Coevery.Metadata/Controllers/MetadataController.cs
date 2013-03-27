@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using Coevery.Dynamic.Settings;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
 using Orchard;
@@ -48,7 +49,10 @@ namespace Coevery.Metadata.Controllers
         public virtual EditTypeViewDto Get(string name)
         {
             var metadataType = _contentDefinitionService.GetType(name);
-            var metadata = new EditTypeViewDto() { DisplayName = metadataType.DisplayName, Name = metadataType.Name };
+            var setting = metadataType.Settings.GetModel<DynamicTypeSettings>();
+            var metadata = new EditTypeViewDto() { DisplayName = metadataType.DisplayName, 
+                Name = metadataType.Name,
+                IsEnabled = setting.IsEnabled};
             metadata.Fields = new List<FieldViewModelDto>();
 
             if (metadataType.Fields != null)
@@ -65,6 +69,7 @@ namespace Coevery.Metadata.Controllers
            
             var typeViewModel = _contentDefinitionService.GetType(id);
             typeViewModel.DisplayName = editTypeModel.DisplayName;
+            typeViewModel.Settings["DynamicTypeSettings.IsEnabled"] = editTypeModel.IsEnabled.ToString();
             if (String.IsNullOrWhiteSpace(typeViewModel.DisplayName))
             {
                 ModelState.AddModelError("DisplayName", T("The Content Type name can't be empty.").ToString());
@@ -119,7 +124,7 @@ namespace Coevery.Metadata.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
-            _contentDefinitionService.AddType(editTypeModel.Name, editTypeModel.DisplayName);
+            _contentDefinitionService.AddType(editTypeModel.Name, editTypeModel.DisplayName,editTypeModel.IsEnabled);
             _contentDefinitionService.AddPartToType("CommonPart", editTypeModel.Name);
             return Request.CreateResponse(HttpStatusCode.Created, editTypeModel);
         }
@@ -141,7 +146,7 @@ namespace Coevery.Metadata.Controllers
         }
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
-
+           
             return true;
         }
 

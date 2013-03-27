@@ -158,7 +158,7 @@ namespace Coevery.Metadata.Controllers {
                 return View(viewModel);
             }
 
-            var contentTypeDefinition = _contentDefinitionService.AddType(viewModel.Name, viewModel.DisplayName);
+            var contentTypeDefinition = _contentDefinitionService.AddType(viewModel.Name, viewModel.DisplayName,false);
             
             // adds CommonPart by default
             _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
