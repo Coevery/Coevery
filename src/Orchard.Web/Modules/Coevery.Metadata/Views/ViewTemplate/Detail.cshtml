@@ -24,7 +24,7 @@
     </ul>
     <h1>Meta Detail <span>Metadata add/edit</span></h1>
 </header>
-
+@{ Html.RenderTemplates(Model.Templates); }
 <section id="main-content" ng-controller="MetadataDetailCtrl">
     <div class="row-fluid">
         <section class="span12 widget">
@@ -57,4 +57,3 @@
     </div>
 </section>
 
-@{ Html.RenderTemplates(Model.Templates); }
