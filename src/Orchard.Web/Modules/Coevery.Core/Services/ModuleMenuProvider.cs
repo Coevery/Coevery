@@ -1,6 +1,5 @@
 ﻿using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
-using System.Threading;
 using System.Web;
 using Coevery.Core.Models;
 using Orchard.ContentManagement;
@@ -9,7 +8,7 @@ using Orchard.Core.Navigation.Models;
 using Orchard.Localization;
 using Orchard.UI.Navigation;
 
-namespace Coevery.Core
+namespace Coevery.Core.Services
 {
     public class ModuelMenuProvider : IMenuProvider
     {
