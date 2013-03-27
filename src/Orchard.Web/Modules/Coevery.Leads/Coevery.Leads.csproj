@@ -142,9 +142,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Content.Edit-Lead.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Parts.FormDesigner.Form.cshtml" />
   </ItemGroup>
   <ItemGroup>

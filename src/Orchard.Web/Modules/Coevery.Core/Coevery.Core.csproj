@@ -91,6 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Routes.cs" />
+    <Compile Include="Shapes.cs" />
     <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
     <Compile Include="ViewModels\ModuleMenuItemEditViewModel.cs" />
   </ItemGroup>
@@ -144,6 +145,9 @@
     <Content Include="Styles\Web.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content.Edit-Default.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
