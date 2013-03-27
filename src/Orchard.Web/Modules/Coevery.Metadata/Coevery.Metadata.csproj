@@ -136,7 +136,6 @@
     <Compile Include="Extensions\MetadataExtensions.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Routes.cs" />
     <Compile Include="Services\ContentTypePlacementStrategy.cs" />
     <Compile Include="Services\DefaultTableSchemaManager.cs" />
     <Compile Include="Services\IPlacementService.cs" />
@@ -180,6 +179,10 @@
     <Content Include="Scripts\controllers\fieldlistcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
+    <Content Include="Scripts\formdesigner\ContextMenu.js" />
+    <Content Include="Scripts\formdesigner\jsutils.js" />
+    <Content Include="Scripts\formdesigner\Linq.js" />
+    <Content Include="Scripts\formdesigner\main.js" />
     <Content Include="Scripts\i18n\resources-locale_default.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
     <Content Include="Styles\Images\move.gif" />
@@ -246,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\DynamicTypeSettingsViewModel.cshtml" />
+    <Content Include="Views\Home\Dynamic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FieldViewTemplate\Detail.cshtml" />
