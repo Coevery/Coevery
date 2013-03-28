@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Metadata.DynamicTypeGeneration;
 using Coevery.Metadata.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;

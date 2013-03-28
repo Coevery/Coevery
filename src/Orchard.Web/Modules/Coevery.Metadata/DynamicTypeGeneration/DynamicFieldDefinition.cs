@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coevery.Metadata
+namespace Coevery.Metadata.DynamicTypeGeneration
 {
     public class DynamicFieldDefinition
     {

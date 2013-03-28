@@ -130,9 +130,9 @@
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
-    <Compile Include="DynamicAssemblyBuilder.cs" />
-    <Compile Include="DynamicFieldDefinition.cs" />
-    <Compile Include="DynamicTypeDefinition.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
