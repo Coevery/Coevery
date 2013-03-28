@@ -25,7 +25,7 @@ namespace Orchard.Modules.Services {
                 IVirtualPathProvider virtualPathProvider,
                 IExtensionManager extensionManager,
                 IShellDescriptorManager shellDescriptorManager,
-                ICacheManager cacheManager)
+                ICacheManager cacheManager) {
 
             Services = orchardServices;
 
@@ -45,7 +45,6 @@ namespace Orchard.Modules.Services {
         public Localizer T { get; set; }
         public IOrchardServices Services { get; set; }
 
-      
         /// <summary>
         /// Retrieves an enumeration of the available features together with its state (enabled / disabled).
         /// </summary>
@@ -94,7 +93,6 @@ namespace Orchard.Modules.Services {
         public void DisableFeatures(IEnumerable<string> featureIds, bool force) {
             foreach (string featureId in _featureManager.DisableFeatures(featureIds, force)) {
                 var featureName = _featureManager.GetAvailableFeatures().Where(f => f.Id == featureId).First().Name;
-                
                 Services.Notifier.Information(T("{0} was disabled", featureName));
             }
         }
