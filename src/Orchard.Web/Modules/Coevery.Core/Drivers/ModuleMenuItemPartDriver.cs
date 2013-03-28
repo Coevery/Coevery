@@ -41,7 +41,7 @@ namespace Coevery.Core.Drivers {
 
         protected override DriverResult Editor(ModuleMenuItemPart part, dynamic shapeHelper)
         {
-            var contentTypes = _contentTypeRepository.Table.ToList();
+            var contentTypes = _contentTypeRepository.Fetch(t=>!t.Hidden).ToList();
             var selectLists = contentTypes.Select(t => new SelectListItem
             {
                 Selected = part.Record.ContentTypeDefinitionRecord != null && part.Record.ContentTypeDefinitionRecord.Id.Equals(t.Id),

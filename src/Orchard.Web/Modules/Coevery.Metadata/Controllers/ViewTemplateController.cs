@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using Orchard.ContentManagement;
+using Coevery.Metadata.Services;
+using Orchard.ContentManagement.ViewModels;
 
-namespace Coevery.Leads.Controllers
+namespace Coevery.Metadata.Controllers
 {
     public class ViewTemplateController : Controller
     {
+        private readonly IContentDefinitionService _contentDefinitionService;
+        public ViewTemplateController(IContentDefinitionService contentDefinitionService)
+        {
+            _contentDefinitionService = contentDefinitionService;
+        }
         public ActionResult List()
         {
             return View();
@@ -16,7 +19,8 @@ namespace Coevery.Leads.Controllers
 
         public ActionResult Detail()
         {
-            return View();
+            var model = _contentDefinitionService.GetTempEditTypeViewModel();
+            return View(model);
         }
     }
 }

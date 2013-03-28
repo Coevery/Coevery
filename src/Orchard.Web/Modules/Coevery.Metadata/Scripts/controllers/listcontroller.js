@@ -2,6 +2,7 @@
     
     $scope.mySelections = [];
     var metadata = MetadataContext($resource);
+    var metadataGenerator = GenerateContext($resource);
     var metadataColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') }];
     $scope.gridOptions = {
         data: 'myData',
@@ -33,7 +34,7 @@
         $state.transitionTo('Create', { Moudle: 'Metadata' });
     };
 
-    $scope.OpenFieldList = function() {
+    $scope.openFieldList = function() {
         $state.transitionTo('SubList', { Moudle: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
     };
 
@@ -50,6 +51,19 @@
             logger.error("Failed to fetched Metadata.");
         });
     };
+    
+    $scope.generate = function() {
+        if ($scope.mySelections.length > 0)
+        {
+            debugger;
+            metadataGenerator.get({ name: $scope.mySelections[0].Name }, function () {
+                logger.success("Generate metadata successful.");
+            }, function () {
+                logger.error("Failed to Generate the metadata.");
+            });
+        }
+    }
+
 
     $scope.getAllMetadata();
 }
