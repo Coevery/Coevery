@@ -163,8 +163,6 @@ Form.prototype = new Control();
 Form.prototype.constructor = Form;
 Form.prototype.buildDom = function () {
     var formDom = $('<div id="' + this.id + '" class="form"><div class="entry"></div></div>');
-    //var headerHtml = '<h3 class="form-title"><label>' + this.title + '</label><input type="text" class="text-editor" /></h3>';
-    //formDom.append($(headerHtml));
     return formDom;
 };
 Form.prototype.registerEvent = function () {
@@ -239,7 +237,7 @@ function Tab(row) {
 Tab.prototype = new Control();
 Tab.prototype.constructor = Tab;
 Tab.prototype.buildDom = function () {
-    var tabDom = $('<div class="row-fluid tab" id="' + this.id +
+    var tabDom = $('<div class="row-fluid tab" test id="' + this.id +
         '"><section class="span12 widget"><header class="widget-header"><span class="title">&nbsp;</span>' +
         '</header><section class="widget-content form-container"><form class="form-horizontal entry"></form></section></section></div>');
     return tabDom;
@@ -402,7 +400,7 @@ Cell.prototype.registerEvent = function () {
 
             var existItem = cell.controls[0];
             var form = cell.parent.parent.parent;
-            var dragElement = $(ui.helper);
+            var dragElement = $(ui.draggable);
             var dragItem = form.findItem(dragElement.attr("id"));
             var originalCell = null;
 
@@ -777,47 +775,19 @@ function Textarea() {
 }
 Textarea.prototype = new FormControl();
 Textarea.prototype.constructor = Textarea;
-Textarea.prototype.buildDom = function (parentElem) {
+Textarea.prototype.buildDom = function () {
     var textareaDom = $(formElementTemplate["textarea"].format(this.id, this.title));
     return textareaDom;
 };
 
 function getCloneElem(event) {
     var targetElem = $(event.target);
-    var cloneElem = targetElem.clone();
-    cloneElem.height(targetElem.height());
+    var cloneElem = $('<p class="alert alert-info"></p>');
+    cloneElem.css('cursor', 'pointer');
+    cloneElem.text(targetElem.text());
+    cloneElem.height(18);
+    cloneElem.width(150);
     return cloneElem;
-}
-/*
- * init toolboxes
- */
-function initToolbox() {
-    $("#toolboxes fieldset p[data-key=tab]").draggable({
-        helper: getCloneElem,
-        revert: "invalid",
-        connectToSortable: ".form>.entry",
-        start: function (event, ui) {
-            setZIndex(ui.helper);
-        }
-    });
-
-    $("#toolboxes fieldset p[data-key^=row]").draggable({
-        helper: getCloneElem,
-        revert: "invalid",
-        connectToSortable: ".tab form.entry",
-        start: function (event, ui) {
-            setZIndex(ui.helper);
-        }
-    });
-
-    $("#toolboxes fieldset p[data-key^=form-]").draggable({
-        helper: getCloneElem,
-        revert: "invalid",
-        connectToSortable: ".cell",
-        start: function (event, ui) {
-            setZIndex(ui.helper);
-        }
-    });
 }
 
 function convertToClientForm(formObj) {
@@ -826,37 +796,134 @@ function convertToClientForm(formObj) {
     return clientForm;
 }
 
-var form = null;
-$(function () {
-    initToolbox();
-    form = new Form(new Tab(new Row(1)));
-    form.controls[0].controls[0].controls[0].controls.push(new Textbox());
-    form.controls[1] = new Tab(new Row(1));
-    form.controls[1].controls[0].controls[0].controls.push(new CheckboxList());
-    form.controls[2] = new Tab(new Row(1));
-    //var jsonForm = $("#hfJsonForm").val();
-    //if (jsonForm == "") {
-    //    form = new Form(new Tab(new Row(1)));
-    //}
-    //else {
-    //    form = convertToClientForm($.parseJSON(jsonForm));
-    //}
-    form.init("#form-designer");
-
-
-    //var $demoForm = $("#demoForm");
-    //$("#btnPreview").click(function () {
-    //    $("[name='xml']").val(form.toXml());
-    //    $demoForm.attr("action", "/demo/preview");
-    //    $demoForm.attr("target", "_blank");
-    //    $demoForm.submit();
-    //});
-
-    //var $btnSave = $("#btnSave");
-    //$btnSave.click(function () {
-    //    $("[name='xml']").val(form.toXml());
-    //    $demoForm.attr("action", "/demo/save");
-    //    $demoForm.removeAttr("target");
-    //    $demoForm.submit();
-    //});
+var coevery = angular.module('coevery', []);
+coevery.config(function ($compileProvider) {
+    $compileProvider.directive('compile', function ($compile) {
+        return function(scope, element, attrs) {
+            scope.$watch(
+                function(scope) {
+                    return scope.$eval(attrs.compile);
+                },
+                function(value) {
+                    element.html(value);
+                    $compile(element.contents())(scope);
+                }
+            );
+        };
+    });
 });
+
+coevery.directive('fdToolsTab', function () {
+        return {
+            template: '<p class="alert alert-info" data-key="tab">Tab</p>',
+            replace: true,
+            link: function (scope, element, attrs) {
+                element.css('cursor', 'pointer');
+                element.draggable({
+                    helper: getCloneElem,
+                    revert: "invalid",
+                    connectToSortable: ".form>.entry",
+                    start: function (event, ui) {
+                        setZIndex(ui.helper);
+                    }
+                });
+            }
+        };
+    })
+    .directive('fdToolsRow', function () {
+        return {
+            template: '<p class="alert alert-info"></p>',
+            replace: true,
+            link: function (scope, element, attrs) {
+                switch (attrs.fdToolsRow) {
+                    case '1':
+                        element.text('One Columns');
+                        attrs.$set('data-key', 'row1');
+                        break;
+                    case '2':
+                        element.text('Two Columns');
+                        attrs.$set('data-key', 'row2');
+                        break;
+                    case '3':
+                        element.text('Three Columns');
+                        attrs.$set('data-key', 'row3');
+                        break;
+                    case '4':
+                        element.text('Four Columns');
+                        attrs.$set('data-key', 'row4');
+                        break;
+                    default:
+                        element.text('One Columns');
+                        attrs.$set('data-key', 'row1');
+                        break;
+                }
+                element.css('cursor', 'pointer');
+                element.draggable({
+                    helper: getCloneElem,
+                    revert: "invalid",
+                    connectToSortable: ".tab form.entry",
+                    start: function (event, ui) {
+                        setZIndex(ui.helper);
+                    }
+                });
+            }
+        };
+    })
+    .directive('fdToolsControl', function () {
+        return {
+            template: '<p class="alert alert-info"></p>',
+            replace: true,
+            link: function (scope, element, attrs) {
+                switch (attrs.fdToolsControl) {
+                    case 'text':
+                        element.text('Textbox');
+                        attrs.$set('data-key', 'form-tex');
+                        break;
+                    case 'radio':
+                        element.text('Radio List');
+                        attrs.$set('data-key', 'form-radio');
+                        break;
+                    case 'checkbox':
+                        element.text('Checkbox List');
+                        attrs.$set('data-key', 'form-checkbox');
+                        break;
+                    case 'select':
+                        element.text('Dropdown List');
+                        attrs.$set('data-key', 'form-select');
+                        break;
+                    case 'textarea':
+                        element.text('Textarea');
+                        attrs.$set('data-key', 'form-textarea');
+                        break;
+                    default:
+                        element.text('Textbox');
+                        attrs.$set('data-key', 'form-tex');
+                        break;
+                }
+                element.css('cursor', 'pointer');
+                element.draggable({
+                    helper: getCloneElem,
+                    revert: "invalid",
+                    connectToSortable: ".cell",
+                    start: function (event, ui) {
+                        setZIndex(ui.helper);
+                    }
+                });
+            }
+        };
+    })
+    .directive('fdForm', function () {
+        return {
+            link: function (scope, element, attrs) {
+                var form = new Form();
+                form.init("#" + attrs.id);
+            }
+        };
+    })
+    .directive('test', function () {
+        return {
+            link: function (scope, element, attrs) {
+                console.log('hi,test');
+            }
+        };
+    });

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.Core.Navigation.Models;
-using Orchard.Core.Navigation.Services;
 using Orchard.Environment.Extensions;
 using Orchard.Environment.Extensions.Models;
 using Orchard.Environment.Descriptor;
@@ -29,7 +26,6 @@ namespace Orchard.Modules.Services {
                 IExtensionManager extensionManager,
                 IShellDescriptorManager shellDescriptorManager,
                 ICacheManager cacheManager)
-        {
 
             Services = orchardServices;
 
@@ -50,7 +46,6 @@ namespace Orchard.Modules.Services {
         public IOrchardServices Services { get; set; }
 
       
-
         /// <summary>
         /// Retrieves an enumeration of the available features together with its state (enabled / disabled).
         /// </summary>
@@ -77,10 +72,9 @@ namespace Orchard.Modules.Services {
         /// <param name="featureIds">The IDs for the features to be enabled.</param>
         /// <param name="force">Boolean parameter indicating if the feature should enable it's dependencies if required or fail otherwise.</param>
         public void EnableFeatures(IEnumerable<string> featureIds, bool force) {
-            foreach (string featureId in _featureManager.EnableFeatures(featureIds, force)) 
-            {
-                var feature = _featureManager.GetAvailableFeatures().First(f => f.Id.Equals(featureId, StringComparison.OrdinalIgnoreCase));
-                Services.Notifier.Information(T("{0} was enabled", feature.Name));
+            foreach (string featureId in _featureManager.EnableFeatures(featureIds, force)) {
+                var featureName = _featureManager.GetAvailableFeatures().First(f => f.Id.Equals(featureId, StringComparison.OrdinalIgnoreCase)).Name;
+                Services.Notifier.Information(T("{0} was enabled", featureName));
             }
         }
 
@@ -99,9 +93,9 @@ namespace Orchard.Modules.Services {
         /// <param name="force">Boolean parameter indicating if the feature should disable the features which depend on it if required or fail otherwise.</param>
         public void DisableFeatures(IEnumerable<string> featureIds, bool force) {
             foreach (string featureId in _featureManager.DisableFeatures(featureIds, force)) {
-                var feature = _featureManager.GetAvailableFeatures().Where(f => f.Id == featureId).First();
+                var featureName = _featureManager.GetAvailableFeatures().Where(f => f.Id == featureId).First().Name;
                 
-                Services.Notifier.Information(T("{0} was disabled", feature.Name));
+                Services.Notifier.Information(T("{0} was disabled", featureName));
             }
         }
 

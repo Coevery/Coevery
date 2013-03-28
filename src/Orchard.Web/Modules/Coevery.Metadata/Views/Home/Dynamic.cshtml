@@ -1,6 +1,7 @@
 ﻿@{
     Script.Require("jQuery");
     Script.Require("jQueryUI");
+    Script.Require("angular");
     Script.Require("FormDesignerJsutils");
     Script.Require("FormDesignerLinq");
     Script.Require("FormDesignerContextMenu");
@@ -10,6 +11,11 @@
     form.entry {
         min-height: 20px;
     }
+
+    .form>.entry {
+        min-height: 200px;
+    }
+
     .form-horizontal .row-fluid .control-group {
         border-top: 0;
     }
@@ -37,7 +43,8 @@
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        border: 1px dashed gray;
+        border: 1px dashed red;
+        margin: 5px 0;
     }
 
     .cell {
@@ -46,11 +53,6 @@
     }
 
     .drop-highlight {
-        /*width: 100%;
-        height: 2px;*/
-        /*background-color: red;*/
-        /*top: -1px;
-        position: absolute;*/
         border-top: 1px solid red;
     }
 
@@ -124,7 +126,7 @@
 
 <section id="main-content">
     <div class="row-fluid">
-        <div id="form-designer" class="span8">
+        <div id="form-designer" compile="html" fd-form class="span8">
             @Display(Model)
         </div>
         <div class="span4">
@@ -135,22 +137,22 @@
                 <section class="widget-content form-container">
                     <fieldset>
                         <legend>Tabs</legend>
-                        <p class="alert alert-info" data-key="tab">Tab</p>
+                        <div fd-tools-tab></div>
                     </fieldset>
                     <fieldset>
                         <legend>Rows</legend>
-                        <p class="alert alert-info" data-key="row1">One Columns</p>
-                        <p class="alert alert-info" data-key="row2">Two Columns</p>
-                        <p class="alert alert-info" data-key="row3">Three Columns</p>
-                        <p class="alert alert-info" data-key="row4">Four Columns</p>
+                        <div fd-tools-row="1"></div>
+                        <div fd-tools-row="2"></div>
+                        <div fd-tools-row="3"></div>
+                        <div fd-tools-row="4"></div>
                     </fieldset>
                     <fieldset>
                         <legend>Form Tools</legend>
-                        <p class="alert alert-info" data-key="form-text">Textbox</p>
-                        <p class="alert alert-info" data-key="form-radio">Radio List</p>
-                        <p class="alert alert-info" data-key="form-checkbox">Checkbox List</p>
-                        <p class="alert alert-info" data-key="form-select">Dropdown List</p>
-                        <p class="alert alert-info" data-key="form-textarea">Textarea</p>
+                        <div fd-tools-control="text"></div>
+                        <div fd-tools-control="radio"></div>
+                        <div fd-tools-control="checkbox"></div>
+                        <div fd-tools-control="select"></div>
+                        <div fd-tools-control="textarea"></div>
                     </fieldset>
                 </section>
             </section>
