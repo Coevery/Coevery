@@ -52,5 +52,10 @@
     {
         "key": "SourceLeadId",
         "value": "来源"
-    }
+    },
+     /* Common*/
+     {
+         "key": "Id",
+         "value": "Id"
+     }
 ];

@@ -28,7 +28,7 @@ function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $reso
     };
 
     $scope.exit = function() {
-        $state.transitionTo('List', { Moudle: moduleName });
+        $state.transitionTo('List', { Module: moduleName });
     };
 
     if (!isNew) {

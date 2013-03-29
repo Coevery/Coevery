@@ -1,7 +1,7 @@
 ﻿CommonCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource'];
 
 function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
-   
+    debugger;
     var moduleName = $rootScope.$stateParams.Module;
     var module = CommonContext($rootScope,$resource);
     $scope.mySelections = [];
@@ -17,7 +17,7 @@ function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
         enableColumnResize: true,
         enableColumnReordering: true,
         //enableCellEdit: true,
-        columnDefs: [{ field: 'ContentId', displayName: localize.getLocalizedString('ContentId') },
+        columnDefs: [{ field: 'Id', displayName: localize.getLocalizedString('Id') },
                 { field: 'Topic', displayName: localize.getLocalizedString('Topic') },
                 { field: 'StatusCode', displayName: localize.getLocalizedString('StatusCode') },
                 { field: 'FirstName', displayName: localize.getLocalizedString('FirstName') },
@@ -37,12 +37,12 @@ function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
     };
 
     $scope.add = function () {
-        $state.transitionTo('Create', { Moudle: moduleName });
+        $state.transitionTo('Create', { Module: moduleName });
     };
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('Detail', { Moudle: moduleName, Id: $scope.mySelections[0].ContentId });
+            $state.transitionTo('Detail', { Module: moduleName, Id: $scope.mySelections[0].ContentId });
         }
     };
 

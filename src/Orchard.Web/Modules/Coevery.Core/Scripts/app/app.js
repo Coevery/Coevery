@@ -5,42 +5,42 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
 
         $stateProvider
             .state('List', {
-                url: '/{Moudle:[a-zA-Z]+}',
+                url: '/{Module:[a-zA-Z]+}',
                 templateUrl: function(params) {
-                    //return params.Moudle + '/ViewTemplate/List';
-                    return 'CoeveryCore/ContentViewTemplate/List/' + params.Moudle;
+                    //return params.Module + '/ViewTemplate/List';
+                    return 'CoeveryCore/ContentViewTemplate/List/' + params.Module;
                 }
             })
             .state('Create', {
-                url: '/{Moudle:[a-zA-Z]+}/Create',
+                url: '/{Module:[a-zA-Z]+}/Create',
                 templateUrl: function(params) {
-                    // return params.Moudle + '/ViewTemplate/Detail';
-                    return 'CoeveryCore/ContentViewTemplate/Detail/' + params.Moudle;
+                    // return params.Module + '/ViewTemplate/Detail';
+                    return 'CoeveryCore/ContentViewTemplate/Detail/' + params.Module;
                 }
             })
             .state('Detail', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
                 templateUrl: function(params) {
-                    // return params.Moudle + '/ViewTemplate/Detail';
-                    return 'CoeveryCore/ContentViewTemplate/Detail/'+ params.Moudle;
+                    // return params.Module + '/ViewTemplate/Detail';
+                    return 'CoeveryCore/ContentViewTemplate/Detail/'+ params.Module;
                 }
             })
             .state('SubList', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}',
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}',
                 templateUrl: function(params) {
-                    return params.Moudle + '/' + params.SubModule + 'ViewTemplate/' + params.View;
+                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }
             })
             .state('SubCreate', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/Create',
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/Create',
                 templateUrl: function(params) {
-                    return params.Moudle + '/' + params.SubModule + 'ViewTemplate/' + params.View;
+                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }
             })
             .state('SubDetail', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/{SubId:[0-9a-zA-Z]+}',
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/{SubId:[0-9a-zA-Z]+}',
                 templateUrl: function(params) {
-                    return params.Moudle + '/' + params.SubModule + 'ViewTemplate/' + params.View;
+                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }
             });
     }])
