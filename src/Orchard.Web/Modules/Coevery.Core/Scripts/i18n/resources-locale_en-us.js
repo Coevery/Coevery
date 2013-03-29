@@ -29,6 +29,14 @@
         "key": "FieldTypeDisplayName",
         "value": "Field Type"
     },
+    {
+        "key": "IsEnabled",
+        "value": "IsEnabled"
+    },
+    {
+        "key": "IsDeployed",
+        "value": "IsDeployed"
+    },
     /*Opportunityies*/
     {
         "key": "OpportunityId",

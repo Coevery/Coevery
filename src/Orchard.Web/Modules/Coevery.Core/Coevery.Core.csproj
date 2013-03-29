@@ -149,6 +149,12 @@
   <ItemGroup>
     <Content Include="Views\Content.Edit-Default.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ViewTemplate\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ViewTemplate\List.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

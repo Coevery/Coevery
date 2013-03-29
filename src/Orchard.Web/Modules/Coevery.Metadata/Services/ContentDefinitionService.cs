@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Metadata.DynamicTypeGeneration;
 using Coevery.Metadata.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
@@ -50,12 +51,8 @@ namespace Coevery.Metadata.Services {
 
         public IEnumerable<EditTypeViewModel> GetTypes()
         {
-            var contentyTypes = _contentDefinitionManager.ListTypeDefinitions();
-            var typeNames = contentyTypes.Select(ctd => ctd.Name);
-            var parts = _contentDefinitionManager.ListPartDefinitions();
-            var userParts = parts.Where(cpd => typeNames.Contains(cpd.Name));
-            var dtos = userParts.Select((ctd => new EditTypeViewModel(contentyTypes.FirstOrDefault(t => t.Name == ctd.Name)))).OrderBy(m => m.DisplayName);
-            return dtos;
+            var contentyTypes = _contentDefinitionManager.ListUserTypeDefinitions();
+            return contentyTypes.Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
         }
 
         public EditTypeViewModel GetType(string name) {
@@ -82,7 +79,13 @@ namespace Coevery.Metadata.Services {
             return viewModel;
         }
 
-        public ContentTypeDefinition AddType(string name, string displayName) {
+        public ContentTypeDefinition AddType(EditTypeViewDto editTypeViewDto)
+        {
+            string displayName = editTypeViewDto.DisplayName;
+            string name = editTypeViewDto.Name;
+            bool isEnabled = editTypeViewDto.IsEnabled;
+            bool isDeployed = editTypeViewDto.IsDeployed;
+
             if(String.IsNullOrWhiteSpace(displayName)) {
                 throw new ArgumentException("displayName");
             }
@@ -100,6 +103,8 @@ namespace Coevery.Metadata.Services {
                 name = VersionName(name);
 
             var contentTypeDefinition = new ContentTypeDefinition(name, displayName);
+            contentTypeDefinition.Settings["DynamicTypeSettings.IsEnabled"] = isEnabled.ToString();
+            contentTypeDefinition.Settings["DynamicTypeSettings.IsDeployed"] = isDeployed.ToString();
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
             _contentDefinitionManager.AlterTypeDefinition(name,
                 cfg => cfg.Creatable()
@@ -419,7 +424,8 @@ namespace Coevery.Metadata.Services {
                  TemplateName = "DefinitionTemplates/DynamicTypeSettingsViewModel",
                  Model = new DynamicTypeSettingsViewModel
                  {
-                     IsEnabled = false
+                     IsEnabled = false,
+                     IsDeployed = false
                  }
                  
              };

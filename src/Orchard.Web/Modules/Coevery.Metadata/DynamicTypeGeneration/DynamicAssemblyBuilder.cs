@@ -1,5 +1,4 @@
-﻿using Coevery.Dynamic;
-using Orchard;
+﻿using Orchard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Orchard.FileSystems.VirtualPath;
 
-namespace Coevery.Metadata
+namespace Coevery.Metadata.DynamicTypeGeneration
 {
     public interface IDynamicAssemblyBuilder : IDependency
     {
