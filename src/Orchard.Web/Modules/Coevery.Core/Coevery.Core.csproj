@@ -87,10 +87,11 @@
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ModuleMenuItemPart.cs" />
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
-    <Compile Include="ModuleMenuProvider.cs" />
+    <Compile Include="Services\ModuleMenuProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Routes.cs" />
+    <Compile Include="Shapes.cs" />
     <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
     <Compile Include="ViewModels\ModuleMenuItemEditViewModel.cs" />
   </ItemGroup>
@@ -144,6 +145,15 @@
     <Content Include="Styles\Web.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content.Edit-Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ViewTemplate\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ViewTemplate\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

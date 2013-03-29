@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using Coevery.Dynamic.Settings;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
 using Orchard;
@@ -38,8 +39,13 @@ namespace Coevery.Metadata.Controllers
         {
             List<EditTypeViewDto> metadataList = new List<EditTypeViewDto>();
             var metadataTypes = _contentDefinitionService.GetTypes().ToList();
-            metadataTypes.ForEach(c => {
-                metadataList.Add(new EditTypeViewDto() { DisplayName = c.DisplayName, Name = c.Name });
+            metadataTypes.ForEach(c => 
+            {
+                var setting = c.Settings.GetModel<DynamicTypeSettings>();
+                metadataList.Add(new EditTypeViewDto() { DisplayName = c.DisplayName, 
+                    Name = c.Name,
+                    IsEnabled = setting.IsEnabled,
+                    IsDeployed = setting.IsDeployed});
             });
             return metadataList;
         }
@@ -48,7 +54,11 @@ namespace Coevery.Metadata.Controllers
         public virtual EditTypeViewDto Get(string name)
         {
             var metadataType = _contentDefinitionService.GetType(name);
-            var metadata = new EditTypeViewDto() { DisplayName = metadataType.DisplayName, Name = metadataType.Name };
+            var setting = metadataType.Settings.GetModel<DynamicTypeSettings>();
+            var metadata = new EditTypeViewDto() { DisplayName = metadataType.DisplayName, 
+                Name = metadataType.Name,
+                IsEnabled = setting.IsEnabled,
+                IsDeployed = setting.IsDeployed};
             metadata.Fields = new List<FieldViewModelDto>();
 
             if (metadataType.Fields != null)
@@ -65,6 +75,8 @@ namespace Coevery.Metadata.Controllers
            
             var typeViewModel = _contentDefinitionService.GetType(id);
             typeViewModel.DisplayName = editTypeModel.DisplayName;
+            typeViewModel.Settings["DynamicTypeSettings.IsEnabled"] = editTypeModel.IsEnabled.ToString();
+            typeViewModel.Settings["DynamicTypeSettings.IsDeployed"] = editTypeModel.IsDeployed.ToString();
             if (String.IsNullOrWhiteSpace(typeViewModel.DisplayName))
             {
                 ModelState.AddModelError("DisplayName", T("The Content Type name can't be empty.").ToString());
@@ -119,7 +131,7 @@ namespace Coevery.Metadata.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
-            _contentDefinitionService.AddType(editTypeModel.Name, editTypeModel.DisplayName);
+            _contentDefinitionService.AddType(editTypeModel);
             _contentDefinitionService.AddPartToType("CommonPart", editTypeModel.Name);
             return Request.CreateResponse(HttpStatusCode.Created, editTypeModel);
         }
@@ -141,7 +153,7 @@ namespace Coevery.Metadata.Controllers
         }
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
-
+           
             return true;
         }
 

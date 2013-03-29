@@ -28,6 +28,14 @@
         "key": "FieldTypeDisplayName",
         "value": "类型"
     },
+    {
+        "key": "IsEnabled",
+        "value": "可用状态"
+    },
+    {
+        "key": "IsDeployed",
+        "value": "部署状态"
+    },
     /*Opportunityies*/
     {
         "key": "OpportunityId",

@@ -1,8 +1,13 @@
-﻿function MetadataCtrl($scope, logger, $state, localize, $resource) {
-    
+﻿
+function MetadataCtrl($scope, logger, $state, localize, $resource) {
+    var cellTemplateString = '<div><a href ="Coevery#/metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
     $scope.mySelections = [];
     var metadata = MetadataContext($resource);
-    var metadataColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') }];
+    var metadataGenerator = GenerateContext($resource);
+    var metadataColumnDefs = [{field: 'DisplayName',displayName: localize.getLocalizedString('DisplayName'),cellTemplate: cellTemplateString},
+        { field: 'IsEnabled', displayName: localize.getLocalizedString('IsEnabled') },
+        { field: 'IsDeployed', displayName: localize.getLocalizedString('IsDeployed') }];
+    
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,
@@ -33,7 +38,7 @@
         $state.transitionTo('Create', { Moudle: 'Metadata' });
     };
 
-    $scope.OpenFieldList = function() {
+    $scope.openFieldList = function() {
         $state.transitionTo('SubList', { Moudle: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
     };
 
@@ -50,6 +55,19 @@
             logger.error("Failed to fetched Metadata.");
         });
     };
+    
+    $scope.generate = function() {
+        if ($scope.mySelections.length > 0)
+        {
+            debugger;
+            metadataGenerator.get({ name: $scope.mySelections[0].Name }, function () {
+                logger.success("Generate metadata successful.");
+            }, function () {
+                logger.error("Failed to Generate the metadata.");
+            });
+        }
+    }
+
 
     $scope.getAllMetadata();
 }

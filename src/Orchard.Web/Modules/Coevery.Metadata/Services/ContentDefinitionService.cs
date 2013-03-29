@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Metadata.DynamicTypeGeneration;
 using Coevery.Metadata.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
+using Orchard.ContentManagement.ViewModels;
 using Orchard.Core.Contents.Extensions;
+using Orchard.Environment.Configuration;
 using Orchard.Localization;
 using Orchard.Utility.Extensions;
 
@@ -17,27 +20,39 @@ namespace Coevery.Metadata.Services {
         private readonly IEnumerable<IContentPartDriver> _contentPartDrivers;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+        private readonly ITableSchemaManager _tableSchemaManager;
+        private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
+        private readonly ShellSettings _shellSettings;
 
         public ContentDefinitionService(
                 IOrchardServices services,
                 IContentDefinitionManager contentDefinitionManager,
                 IEnumerable<IContentPartDriver> contentPartDrivers,
                 IEnumerable<IContentFieldDriver> contentFieldDrivers,
-                IContentDefinitionEditorEvents contentDefinitionEditorEvents)
+                IContentDefinitionEditorEvents contentDefinitionEditorEvents,
+                ITableSchemaManager tableSchemaManager,
+                IDynamicAssemblyBuilder dynamicAssemblyBuilder,
+                ShellSettings shellSettings)
         {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             _contentPartDrivers = contentPartDrivers;
             _contentFieldDrivers = contentFieldDrivers;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
+            _tableSchemaManager = tableSchemaManager;
+            _shellSettings = shellSettings;
+
             T = NullLocalizer.Instance;
         }
 
         public IOrchardServices Services { get; set; }
         public Localizer T { get; set; }
 
-        public IEnumerable<EditTypeViewModel> GetTypes() {
-            return _contentDefinitionManager.ListTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
+        public IEnumerable<EditTypeViewModel> GetTypes()
+        {
+            var contentyTypes = _contentDefinitionManager.ListUserTypeDefinitions();
+            return contentyTypes.Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
         }
 
         public EditTypeViewModel GetType(string name) {
@@ -64,7 +79,13 @@ namespace Coevery.Metadata.Services {
             return viewModel;
         }
 
-        public ContentTypeDefinition AddType(string name, string displayName) {
+        public ContentTypeDefinition AddType(EditTypeViewDto editTypeViewDto)
+        {
+            string displayName = editTypeViewDto.DisplayName;
+            string name = editTypeViewDto.Name;
+            bool isEnabled = editTypeViewDto.IsEnabled;
+            bool isDeployed = editTypeViewDto.IsDeployed;
+
             if(String.IsNullOrWhiteSpace(displayName)) {
                 throw new ArgumentException("displayName");
             }
@@ -82,9 +103,13 @@ namespace Coevery.Metadata.Services {
                 name = VersionName(name);
 
             var contentTypeDefinition = new ContentTypeDefinition(name, displayName);
+            contentTypeDefinition.Settings["DynamicTypeSettings.IsEnabled"] = isEnabled.ToString();
+            contentTypeDefinition.Settings["DynamicTypeSettings.IsDeployed"] = isDeployed.ToString();
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
             _contentDefinitionManager.AlterTypeDefinition(name,
-                cfg => cfg.Creatable().Draftable());
+                cfg => cfg.Creatable()
+                    .Draftable()
+                    .WithPart(name));
 
             return contentTypeDefinition;
         }
@@ -340,5 +365,78 @@ namespace Coevery.Metadata.Services {
                 _thunk.AddModelError(_prefix(key), errorMessage);
             }
         }
+
+
+        public bool GenerateType(string name)
+        {
+            var typeDefinitions = _contentDefinitionManager.ListTypeDefinitions();
+
+            var typeNames = typeDefinitions.Select(ctd => ctd.Name);
+
+            // user-defined parts
+            // except for those parts with the same name as a type (implicit type's part or a mistake)
+            var userContentParts = _contentDefinitionManager
+                .ListPartDefinitions()
+                .Where(cpd => typeNames.Contains(cpd.Name))
+                .Select(cpd => new DynamicTypeDefinition
+                {
+                    Name = cpd.Name,
+                    Fields = cpd.Fields.Select(f => new DynamicFieldDefinition
+                    {
+                        Name = f.Name,
+                        Type = typeof(string)
+                    }).Union(new[] { new DynamicFieldDefinition { Name = "Id", Type = typeof(int) } })
+                }).ToList();
+
+            if (userContentParts.Any())
+            {
+                try
+                {
+                   var types = _dynamicAssemblyBuilder.Build(userContentParts);
+                    _tableSchemaManager.UpdateSchema(FormatTableName,types);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+            }
+            return true;
+        }
+
+         private string FormatTableName(string name) {
+            var extensionId = "Coevery_DynamicTypes";
+            var extensionName = extensionId.Replace('.', '_');
+
+            var dataTablePrefix = "";
+            if (!string.IsNullOrEmpty(_shellSettings.DataTablePrefix))
+                dataTablePrefix = _shellSettings.DataTablePrefix + "_";
+            return dataTablePrefix + extensionName + '_' + name;
+        }
+
+
+         public EditTypeViewModel GetTempEditTypeViewModel()
+         {
+             ContentTypeDefinition tempType = new ContentTypeDefinition(string.Empty,string.Empty);
+             List<TemplateViewModel> templates = new List<TemplateViewModel>();
+             var template = new TemplateViewModel(null, string.Empty)
+             {
+                 TemplateName = "DefinitionTemplates/DynamicTypeSettingsViewModel",
+                 Model = new DynamicTypeSettingsViewModel
+                 {
+                     IsEnabled = false,
+                     IsDeployed = false
+                 }
+                 
+             };
+
+             templates.Add(template);
+             EditTypeViewModel tempViewModel = new EditTypeViewModel(tempType)
+             {
+                 Templates = templates
+             };
+       
+             return tempViewModel;
+         }
     }
 }
