@@ -1,4 +1,4 @@
-﻿Name: Coevery.Core
+﻿Name: CoeveryCore
 AntiForgery: enabled
 Author: The Orchard Team
 Website: http://orchardproject.net

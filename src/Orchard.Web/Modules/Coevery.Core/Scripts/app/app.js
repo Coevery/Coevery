@@ -7,19 +7,22 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
             .state('List', {
                 url: '/{Moudle:[a-zA-Z]+}',
                 templateUrl: function(params) {
-                    return params.Moudle + '/ViewTemplate/List';
+                    //return params.Moudle + '/ViewTemplate/List';
+                    return 'CoeveryCore/ContentViewTemplate/List/' + params.Moudle;
                 }
             })
             .state('Create', {
                 url: '/{Moudle:[a-zA-Z]+}/Create',
                 templateUrl: function(params) {
-                    return params.Moudle + '/ViewTemplate/Detail';
+                    // return params.Moudle + '/ViewTemplate/Detail';
+                    return 'CoeveryCore/ContentViewTemplate/Detail/' + params.Moudle;
                 }
             })
             .state('Detail', {
                 url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
                 templateUrl: function(params) {
-                    return params.Moudle + '/ViewTemplate/Detail';
+                    // return params.Moudle + '/ViewTemplate/Detail';
+                    return 'CoeveryCore/ContentViewTemplate/Detail/'+ params.Moudle;
                 }
             })
             .state('SubList', {
@@ -45,4 +48,5 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
         ['$rootScope', '$state', '$stateParams',
             function($rootScope, $state, $stateParams) {
                 $rootScope.$state = $state;
+                $rootScope.$stateParams = $stateParams;
             }]);
