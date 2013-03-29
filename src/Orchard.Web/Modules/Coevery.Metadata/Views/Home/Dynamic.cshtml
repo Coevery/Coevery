@@ -8,6 +8,10 @@
     Script.Require("FormDesignerMain");
 }
 <style>
+    form.entry {
+        min-height: 20px;    
+    }
+
     [fd-form]>.entry {
         min-height: 200px;
     }
@@ -36,16 +40,15 @@
 
     /*Form Designer*/
     .sort-placeholder {
-        list-style: none;
-        background-color: white;
-        height: 24px;
+        /*list-style: none;
+        background-color: white;*/
+        height: 1px;
         width: 100%;
-        padding: 5px 5px 5px 5px;
+        /*padding: 5px 5px 5px 5px;*/
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        border: 1px dashed red;
-        margin: 5px 0;
+        border: 1px solid red;
     }
 
     .cell {
