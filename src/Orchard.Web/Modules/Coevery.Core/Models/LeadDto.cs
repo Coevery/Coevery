@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using Orchard.WebApi.Common;
 
-namespace Coevery.Leads.Models
+namespace DynamicTypes.Models
 {
     public class LeadDto : IDto<Lead>
     {
@@ -13,7 +9,7 @@ namespace Coevery.Leads.Models
 
         public LeadDto(Lead item)
         {
-            LeadId = item.Id;
+            Id = item.Id;
             Topic = item.Topic;
             FirstName = item.FirstName;
             LastName = item.LastName;
@@ -21,7 +17,7 @@ namespace Coevery.Leads.Models
         }
 
         [Key]
-        public int LeadId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string Topic { get; set; }
@@ -42,8 +38,8 @@ namespace Coevery.Leads.Models
 
         public int ContentId
         {
-            get { return LeadId; }
-            set { LeadId = value; }
+            get { return Id; }
+            set { Id = value; }
         }
     }
 }

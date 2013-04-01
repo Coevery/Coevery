@@ -35,14 +35,11 @@ namespace Coevery.Metadata.Services
 
         public void UpdateSchema(Func<string, string> format, IEnumerable<Type> types)
         {
-
-            
             var recordBlueprints = types.Select(t => new RecordBlueprint {TableName = format(t.Name), Type = t}).ToList();
             var persistenceModel = AbstractDataServicesProvider.CreatePersistenceModel(recordBlueprints);
             var dataServiceProvider = this._dataServiceProviderFactory.CreateProvider(this._sessionFactoryHolder.GetSessionFactoryParameters());
             var persistenceConfigurer = dataServiceProvider.GetPersistenceConfigurer(true);
-
-            //var persistenceConfigurer = new 
+            
             var configuration = Fluently.Configure()
                     .Database(persistenceConfigurer)
                     .Mappings(m => m.AutoMappings.Add(persistenceModel))

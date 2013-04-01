@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
+using Coevery.Core.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
@@ -25,8 +27,6 @@ namespace Coevery.Core.Controllers
     {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly ITransactionManager _transactionManager;
-        private readonly ISiteService _siteService;
 
         public ContentViewTemplateController(
             IOrchardServices orchardServices,
@@ -38,8 +38,6 @@ namespace Coevery.Core.Controllers
             Services = orchardServices;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
-            _transactionManager = transactionManager;
-            _siteService = siteService;
             T = NullLocalizer.Instance;
             Logger = NullLogger.Instance;
             Shape = shapeFactory;
@@ -49,6 +47,20 @@ namespace Coevery.Core.Controllers
         public IOrchardServices Services { get; private set; }
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
+
+        public ActionResult List(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return  new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            string moduleName = id;
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            id = pluralService.Singularize(id);
+            var contentType = _contentDefinitionManager.GetTypeDefinition(id);
+            CommonListViewModel listViewModel = new CommonListViewModel {ContentTypeDefinition = contentType, ModuleName = moduleName};
+            return View(listViewModel);
+        }
 
         public ActionResult Detail(string id, int? containerId)
         {

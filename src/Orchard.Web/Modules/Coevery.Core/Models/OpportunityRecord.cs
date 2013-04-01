@@ -1,6 +1,6 @@
 ﻿using Orchard.ContentManagement.Records;
 
-namespace Coevery.Opportunities.Models
+namespace Coevery.Core.Models
 {
     public class OpportunityRecord : ContentPartRecord
     {

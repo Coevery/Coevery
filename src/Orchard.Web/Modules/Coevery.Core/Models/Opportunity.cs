@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Orchard.ContentManagement;
+﻿using Orchard.ContentManagement;
 
-namespace Coevery.Opportunities.Models
+namespace Coevery.Core.Models
 {
     public class Opportunity : ContentPart<OpportunityRecord>
     {

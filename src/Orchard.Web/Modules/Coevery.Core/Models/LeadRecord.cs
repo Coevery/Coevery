@@ -1,6 +1,6 @@
 ﻿using Orchard.ContentManagement.Records;
 
-namespace Coevery.Leads.Models
+namespace DynamicTypes.Models
 {
     public class LeadRecord : ContentPartRecord
     {

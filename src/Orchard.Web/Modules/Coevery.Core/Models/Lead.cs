@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Orchard.ContentManagement;
 
-namespace Coevery.Leads.Models
+namespace DynamicTypes.Models
 {
     public class Lead : ContentPart<LeadRecord>
     {

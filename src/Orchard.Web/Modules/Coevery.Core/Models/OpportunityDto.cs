@@ -1,7 +1,6 @@
-﻿using System;
-using Orchard.WebApi.Common;
+﻿using Orchard.WebApi.Common;
 
-namespace Coevery.Opportunities.Models
+namespace Coevery.Core.Models
 {
     public class OpportunityDto : IDto<Opportunity>
     {
