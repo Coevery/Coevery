@@ -14,8 +14,7 @@ namespace Orchard.ContentManagement.MetaData.Models {
                 ModelName = key,
                 ValueProvider = new DictionaryValueProvider<string>(this, null)
             };
-            var re = (T)binder.BindModel(controllerContext, context);
-            return re;
+            return (T)binder.BindModel(controllerContext, context);
 
         }
 
