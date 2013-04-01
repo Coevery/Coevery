@@ -1,9 +1,16 @@
 ﻿@model Orchard.Core.Common.ViewModels.TextFieldDriverViewModel
-
 <section class="control-group">
-    <label class="control-label" for="@Html.FieldIdFor(m => m.Text)">@Model.Field.DisplayName</label>
+    <label class="control-label" for="@Html.FieldIdFor(m => m.Text)" @if (Model.Settings.Required){ <text>class="required"</text> }>@Model.Field.DisplayName</label>
     <div class="controls">
-        <input type="text" class="span12" ng-model="item.@Model.Field.Name" name="@Model.Field.Name" id="@Html.FieldIdFor(m => m.Text)" @if(Model.Settings.Required) { <text>required</text> }>
-        <span class="text-error" ng-show="!myForm.@Model.Field.Name.$valid">Required!</span>
+        @if (String.IsNullOrWhiteSpace(Model.Settings.Flavor))
+        {
+            @Html.TextBoxFor(m => m.Text, new { @class = "span12" })        
+            @Html.ValidationMessageFor(m => m.Text)
+        }
+        else
+        {
+            @Display.Body_Editor(Text: Model.Text, EditorFlavor: Model.Settings.Flavor)
+        }
+        <span class="hint">@Model.Settings.Hint</span>
     </div>
 </section>
