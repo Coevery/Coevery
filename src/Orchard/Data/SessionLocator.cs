@@ -38,6 +38,10 @@ namespace Orchard.Data {
         }
 
         void ITransactionManager.RequireNew() {
+            ((ITransactionManager)this).RequireNew(IsolationLevel.ReadCommitted);
+        }
+
+        void ITransactionManager.RequireNew(IsolationLevel level) {
             EnsureSession();
 
             if (_cancelled) {
@@ -51,8 +55,8 @@ namespace Orchard.Data {
                 }
             }
 
-            Logger.Debug("Creating transaction on RequireNew");
-            _transaction = _session.BeginTransaction(IsolationLevel.ReadCommitted);
+            Logger.Debug("Creating new transaction with isolation level {0}", level);
+            _transaction = _session.BeginTransaction(level);
         }
 
         void ITransactionManager.Cancel() {
@@ -84,7 +88,7 @@ namespace Orchard.Data {
             }
 
             var sessionFactory = _sessionFactoryHolder.GetSessionFactory();
-            Logger.Information("Openning database session");
+            Logger.Information("Opening database session");
             _session = sessionFactory.OpenSession(new SessionInterceptor());
         }
 

@@ -43,15 +43,15 @@ namespace Coevery.Core.Services
                     else
                     {
                         // fetch the culture of the content menu item, if any
-                        var contentMenuItemPart = part.As<ContentMenuItemPart>();
-                        if (contentMenuItemPart != null)
-                        {
-                            localized = contentMenuItemPart.Content.As<ILocalizableAspect>();
-                            if (localized != null)
-                            {
-                                culture = localized.Culture;
-                            }
-                        }
+                        //var contentMenuItemPart = part.As<ModuleMenuItemPart>();
+                        //if (contentMenuItemPart != null)
+                        //{
+                        //    localized = contentMenuItemPart.Content.As<ILocalizableAspect>();
+                        //    if (localized != null)
+                        //    {
+                        //        culture = localized.Culture;
+                        //    }
+                        //}
                     }
 
                     if (part.Is<ModuleMenuItemPart>())

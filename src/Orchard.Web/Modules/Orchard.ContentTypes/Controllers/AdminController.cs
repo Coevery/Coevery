@@ -250,7 +250,7 @@ namespace Orchard.ContentTypes.Controllers {
 
             Services.Notifier.Information(T("\"{0}\" settings have been saved.", typeViewModel.DisplayName));
 
-            return RedirectToAction("List");
+            return RedirectToAction("Edit", new { id });
         }
 
         [HttpPost, ActionName("Edit")]
@@ -284,7 +284,7 @@ namespace Orchard.ContentTypes.Controllers {
                 Type = typeViewModel,
                 PartSelections = _contentDefinitionService.GetParts(false/*metadataPartsOnly*/)
                     .Where(cpd => !typeViewModel.Parts.Any(p => p.PartDefinition.Name == cpd.Name) && cpd.Settings.GetModel<ContentPartSettings>().Attachable)
-                    .Select(cpd => new PartSelectionViewModel { PartName = cpd.Name, PartDisplayName = cpd.DisplayName })
+                    .Select(cpd => new PartSelectionViewModel { PartName = cpd.Name, PartDisplayName = cpd.DisplayName, PartDescription = cpd.Description})
             };
 
             return View(viewModel);

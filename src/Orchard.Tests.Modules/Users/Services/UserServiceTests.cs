@@ -104,10 +104,18 @@ namespace Orchard.Tests.Modules.Users.Services {
             builder.RegisterInstance(ShellSettingsUtility.CreateEncryptionEnabled());
 
             _session = _sessionFactory.OpenSession();
+            _session.BeginTransaction();
+
             builder.RegisterInstance(new TestSessionLocator(_session)).As<ISessionLocator>();
             _container = builder.Build();
             _membershipService = _container.Resolve<IMembershipService>();
             _userService = _container.Resolve<IUserService>();
+        }
+
+        [TearDown]
+        public void TearDown() {
+            _session.Transaction.Commit();
+            _session.Transaction.Dispose();
         }
 
         [Test]
@@ -134,7 +142,6 @@ namespace Orchard.Tests.Modules.Users.Services {
 
             // Create user lower case
             _membershipService.CreateUser(new CreateUserParams("admin", "66554321", "foo@bar.com", "", "", true));
-            _container.Resolve<IOrchardServices>().ContentManager.Flush();
 
             // Verify unicity with upper case which with turkish coallition would yeld admin with an i without the dot and therefore generate a different user name
             Assert.That(_userService.VerifyUserUnicity("ADMIN", "differentfoo@bar.com"), Is.False);

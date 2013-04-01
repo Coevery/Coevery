@@ -6,4 +6,5 @@ Version: 1.3
 OrchardVersion: 1.3
 Description: Test Coevery.Framework,web api
 FeatureDescription: Coevery.Opportunities
+Dependencies: Orchard.AngularJS, Coevery.Core
 Category: Sales

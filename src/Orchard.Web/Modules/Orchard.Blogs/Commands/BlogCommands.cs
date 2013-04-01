@@ -5,6 +5,7 @@ using Orchard.Blogs.Models;
 using Orchard.Commands;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
+using Orchard.ContentPicker.Models;
 using Orchard.Core.Common.Models;
 using Orchard.Core.Navigation.Models;
 using Orchard.Security;
@@ -163,7 +164,7 @@ namespace Orchard.Blogs.Commands {
         [CommandName("blog build archive")]
         [CommandHelp("blog build archive /BlogId:<id> \r\n\t" + "Rebuild the archive information for the blog specified by <id>")]
         [OrchardSwitches("BlogId")]
-        public void BuilddArchive() {
+        public void BuildArchive() {
 
             var blog = _blogService.Get(BlogId, VersionOptions.Latest);
 
