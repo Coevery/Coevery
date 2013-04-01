@@ -1,10 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using System.Data;
+using System.Web.Mvc;
 using Orchard.Mvc.Filters;
 
 namespace Orchard.Data {
     public interface ITransactionManager : IDependency {
         void Demand();
         void RequireNew();
+        void RequireNew(IsolationLevel level);
         void Cancel();
     }
 
