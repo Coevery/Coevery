@@ -27,7 +27,7 @@
     };
 
     $scope.exit = function () {
-        $state.transitionTo('List', { Moudle: 'Metadata' });
+        $state.transitionTo('List', { Module: 'Metadata' });
     };
     if (!isNew) {
         var metaData = metadata.get({ name: name }, function () {
