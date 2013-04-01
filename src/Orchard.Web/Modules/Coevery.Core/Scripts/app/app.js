@@ -7,22 +7,35 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
             .state('List', {
                 url: '/{Module:[a-zA-Z]+}',
                 templateUrl: function(params) {
-                    //return params.Module + '/ViewTemplate/List';
-                    return 'CoeveryCore/ContentViewTemplate/List/' + params.Module;
+                    debugger;
+                    if (params.Module == 'Metadata'){
+                        return params.Module + '/ViewTemplate/List';
+                    } else{
+                        return 'CoeveryCore/ContentViewTemplate/List/' + params.Module;
+                    }
                 }
             })
             .state('Create', {
                 url: '/{Module:[a-zA-Z]+}/Create',
-                templateUrl: function(params) {
-                    // return params.Module + '/ViewTemplate/Detail';
-                    return 'CoeveryCore/ContentViewTemplate/Detail/' + params.Module;
+                templateUrl: function (params) {
+                    debugger;
+                    if (params.Module == 'Metadata'){
+                        return params.Module + '/ViewTemplate/Detail';
+                    } else{
+                        return 'CoeveryCore/ContentViewTemplate/Create/' + params.Module;
+                    }
                 }
             })
             .state('Detail', {
                 url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
-                templateUrl: function(params) {
-                    // return params.Module + '/ViewTemplate/Detail';
-                    return 'CoeveryCore/ContentViewTemplate/Detail/'+ params.Module;
+                templateUrl: function (params) {
+                    debugger;
+                    if (params.Module =='Metadata'){
+                        return params.Module + '/ViewTemplate/Detail';
+                    } else{
+                        return 'CoeveryCore/ContentViewTemplate/Edit/' + params.Id;
+                    }
+                    
                 }
             })
             .state('SubList', {
@@ -50,3 +63,10 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                 $rootScope.$state = $state;
                 $rootScope.$stateParams = $stateParams;
             }]);
+
+$(function () {
+    $('form').live("submit", function (event) {
+        event.preventDefault();
+        return false;
+    });
+});

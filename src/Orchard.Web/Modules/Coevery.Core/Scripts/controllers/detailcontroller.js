@@ -1,26 +1,23 @@
 ﻿CommonDetailCtrl.$inject = ['$rootScope','$scope', 'logger', '$state', '$stateParams', '$resource'];
 
 function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $resource) {
-
+    var moduleName = $rootScope.$stateParams.Module;
     var module = CommonContext($rootScope,$resource);
     var id = $stateParams.Id;
     var isNew = id ? false : true;
 
     $scope.save = function () {
-        if (isNew) {
-            $scope.item.$save(function (u, putResponseHeaders) {
-                isNew = false;
-                logger.success("Create the " + contentTypeName + " successful.");
-            }, function () {
-                logger.error("Failed to create the " + contentTypeName + ".");
-            });
-        } else {
-            $scope.item.$update(function (u, putResponseHeaders) {
-                logger.success("Update the " + contentTypeName + " successful.");
-            }, function () {
-                logger.error("Failed to update the " + contentTypeName);
-            });
-        }
+        debugger;
+        $.ajax({
+            url: myForm.action,
+            type: myForm.method,
+            data: $(myForm).serialize(),
+            success: function (result) {
+                $state.transitionTo('List', { Module: moduleName });
+            }
+        });
+       return false;
+        
     };
 
     $scope.change = function() {

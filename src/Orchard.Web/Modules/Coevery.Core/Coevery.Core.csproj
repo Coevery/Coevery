@@ -81,21 +81,13 @@
   <ItemGroup>
     <Compile Include="Controllers\ContentViewTemplateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LeadController.cs" />
-    <Compile Include="Controllers\OppportunityController.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
     <Compile Include="Handlers\ModuleMenuItemPartHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Migrations.cs" />
-    <Compile Include="Models\Lead.cs" />
-    <Compile Include="Models\LeadDto.cs" />
-    <Compile Include="Models\LeadRecord.cs" />
     <Compile Include="Models\ModuleMenuItemPart.cs" />
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
-    <Compile Include="Models\Opportunity.cs" />
-    <Compile Include="Models\OpportunityDto.cs" />
-    <Compile Include="Models\OpportunityRecord.cs" />
     <Compile Include="Services\ModuleMenuProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
@@ -161,9 +153,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Content.Edit-Default1.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\ContentViewTemplate\List.cshtml">
       <SubType>
       </SubType>
@@ -173,13 +162,15 @@
     <Content Include="Views\ContentViewTemplate\CreatableTypeList.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\ContentViewTemplate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\Detail.cshtml" />
+    <Content Include="Views\ContentViewTemplate\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content.Edit-Default.cshtml">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

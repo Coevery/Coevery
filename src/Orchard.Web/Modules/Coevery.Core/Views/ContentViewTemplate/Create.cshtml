@@ -1,16 +1,44 @@
-@using Orchard.ContentManagement
+﻿@using Orchard.ContentManagement
 @using Orchard.Utility.Extensions
+
+@{
+    Script.Require("CommonContext");
+    Script.Require("CommonDetailController");
+}
+@Display.FootScripts()
 
 @{
     ContentItem contentItem = Model.ContentItem;
     var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
-    var pageTitle = T("New {0}", typeDisplayName);
-
-    Layout.Title = (string)pageTitle.Text;
+    var typeName = contentItem.TypeDefinition.Name;
+    var ngparam = new Dictionary<string, object> { { "ng-submit", "save()" }, { "name", "myForm" } };
 }
 
-@using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { ReturnUrl = Request.QueryString["ReturnUrl"] }))) {
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Sales</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">@typeDisplayName</a>
+        </li>
+        <li>
+            <a href="#">Detail</a>
+        </li>
+    </ul>
+    <h1>@typeDisplayName Detail <span>@typeDisplayName add</span></h1>
+</header>
+<section id="main-content" ng-controller="CommonDetailCtrl">
+@using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new {Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+    FormMethod.Post,ngparam))
+{
     @Html.ValidationSummary()
     // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
     @Display(Model)
 }
+</section>
