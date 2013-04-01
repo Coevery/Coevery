@@ -9,10 +9,10 @@
 }
 <style>
     form.entry {
-        min-height: 20px;
+        min-height: 20px;    
     }
 
-    .form>.entry {
+    [fd-form]>.entry {
         min-height: 200px;
     }
 
@@ -20,9 +20,9 @@
         border-top: 0;
     }
 
-    .form-horizontal .row-fluid {
+    /*.form-horizontal .row-fluid {
         border-top: 1px solid #ccc;
-    }
+    }*/
 
     .form-label {
         text-align: left;
@@ -33,18 +33,22 @@
         font-size: 1em;
         line-height: 1.4em;
     }
+
+    .highlight {
+        background: #def5ff; 
+    }
+
     /*Form Designer*/
     .sort-placeholder {
-        list-style: none;
-        background-color: white;
-        height: 24px;
+        /*list-style: none;
+        background-color: white;*/
+        height: 1px;
         width: 100%;
-        padding: 5px 5px 5px 5px;
+        /*padding: 5px 5px 5px 5px;*/
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        border: 1px dashed red;
-        margin: 5px 0;
+        border: 1px solid red;
     }
 
     .cell {
@@ -126,7 +130,8 @@
 
 <section id="main-content">
     <div class="row-fluid">
-        <div id="form-designer" compile="html" fd-form class="span8">
+        <div id="form-designer" class="span8">
+            <div fd-form></div>
             @Display(Model)
         </div>
         <div class="span4">
@@ -136,15 +141,8 @@
                 </header>
                 <section class="widget-content form-container">
                     <fieldset>
-                        <legend>Tabs</legend>
-                        <div fd-tools-tab></div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Rows</legend>
-                        <div fd-tools-row="1"></div>
-                        <div fd-tools-row="2"></div>
-                        <div fd-tools-row="3"></div>
-                        <div fd-tools-row="4"></div>
+                        <legend>Layout</legend>
+                        <div fd-tools-section></div>
                     </fieldset>
                     <fieldset>
                         <legend>Form Tools</legend>
