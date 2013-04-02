@@ -1,4 +1,7 @@
-﻿using Orchard.DisplayManagement.Descriptors;
+﻿using Orchard.DisplayManagement;
+using Orchard.DisplayManagement.Descriptors;
+using System.IO;
+using System.Web.Mvc;
 
 namespace Coevery.Core {
     public class Shapes : IShapeTableProvider {
@@ -11,8 +14,10 @@ namespace Coevery.Core {
                 });
         }
 
-        public void ngGrid()
+        [Shape]
+        public void ngGrid(dynamic Display, TextWriter Output, HtmlHelper Html)
         {
+            Output.WriteLine("<section class=\"gridStyle\" ng-grid=\"gridOptions\"></section>");
         }
     }
 }
