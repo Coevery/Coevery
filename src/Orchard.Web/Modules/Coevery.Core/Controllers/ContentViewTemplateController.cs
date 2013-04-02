@@ -70,8 +70,22 @@ namespace Coevery.Core.Controllers
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             id = pluralService.Singularize(id);
             var contentType = _contentDefinitionManager.GetTypeDefinition(id);
-            CommonListViewModel listViewModel = new CommonListViewModel {ContentTypeDefinition = contentType, ModuleName = moduleName};
-            return View(listViewModel);
+
+            dynamic viewModel = Services.New.ViewModel();
+            viewModel.DisplayName(contentType.DisplayName);
+            viewModel.TypeDifinition(contentType);
+            var model = GetListModel();
+            viewModel.Content(model);
+            return View(viewModel);
+        }
+
+        private dynamic GetListModel()
+        {
+            var id = 49;
+            var contentItem = _contentManager.Get(id, VersionOptions.Published);
+
+            dynamic model = _contentManager.BuildDisplay(contentItem);
+            return model;
         }
 
         public ActionResult Create(string id, int? containerId)

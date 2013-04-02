@@ -3,7 +3,8 @@
 function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
     debugger;
     var moduleName = $rootScope.$stateParams.Module;
-    var module = CommonContext($rootScope,$resource);
+    var module = CommonContext($rootScope, $resource);
+    var columnDefs = getColumnDefs(localize);
     $scope.mySelections = [];
 
     $scope.gridOptions = {
@@ -17,11 +18,7 @@ function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
         enableColumnResize: true,
         enableColumnReordering: true,
         //enableCellEdit: true,
-        columnDefs: [{ field: 'Id', displayName: localize.getLocalizedString('Id') },
-                { field: 'Topic', displayName: localize.getLocalizedString('Topic') },
-                { field: 'StatusCode', displayName: localize.getLocalizedString('StatusCode') },
-                { field: 'FirstName', displayName: localize.getLocalizedString('FirstName') },
-                { field: 'LastName', displayName: localize.getLocalizedString('LastName') }]
+        columnDefs: columnDefs
     };
 
     $scope.delete = function () {
