@@ -1,0 +1,36 @@
+@using Orchard.ContentManagement
+@using Orchard.Utility.Extensions
+
+
+@{
+    ContentItem contentItem = Model.ContentItem;
+    var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
+    var typeName = contentItem.TypeDefinition.Name;
+}
+
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+                                        <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Sales</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">@typeDisplayName</a>
+        </li>
+        <li>
+            <a href="#">Detail</a>
+        </li>
+    </ul>
+    <h1>@typeDisplayName Detail <span>@typeDisplayName edit</span></h1>
+</header>
+
+@using (Html.BeginFormAntiForgeryPost()) 
+{
+    @Html.ValidationSummary()
+    // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
+    @Display(Model)
+}

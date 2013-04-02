@@ -35,16 +35,16 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
     };
 
     $scope.add = function() {
-        $state.transitionTo('Create', { Moudle: 'Metadata' });
+        $state.transitionTo('Create', { Module: 'Metadata' });
     };
 
     $scope.openFieldList = function() {
-        $state.transitionTo('SubList', { Moudle: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
+        $state.transitionTo('SubList', { Module: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
     };
 
     $scope.edit = function() {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('Detail', { Moudle: 'Metadata', Id: $scope.mySelections[0].Name });
+            $state.transitionTo('Detail', { Module: 'Metadata', Id: $scope.mySelections[0].Name });
         }
     };
 

@@ -19,7 +19,6 @@ using Orchard.Utility.Extensions;
 
 namespace Coevery.Metadata.Controllers
 {
-
     public class MetadataController : ApiController, IUpdateModel
     {
         private readonly IContentDefinitionService _contentDefinitionService;

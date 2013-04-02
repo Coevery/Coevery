@@ -1,9 +1,10 @@
+﻿@model Coevery.Core.ViewModels.CommonListViewModel
+
 @{
-    
-    Script.Require("MetadataContext");
-    Script.Require("MetadataController");
-    
+    Script.Require("CommonContext");
+    Script.Require("CommonListController");
 }
+
 @Display.FootScripts()
 
 <header id="main-header" class="page-header">
@@ -13,17 +14,17 @@
                                         <span class="divider">&raquo;</span>
         </li>
         <li>
-            <a href="#">Admin</a>
+            <a href="#">Sales</a>
             <span class="divider">&raquo;</span>
         </li>
         <li>
-            <a href="#">Metata</a>
+            <a href="#">@Model.ContentTypeDefinition.DisplayName</a>
         </li>
     </ul>
-    <h1>@T("Metadata") <span>Metadata List</span></h1>
+    <h1 id="main-heading">@Model.ContentTypeDefinition.DisplayName <span>Display all @Model.ContentTypeDefinition.DisplayName</span></h1>
 </header>
 
-<section id="main-content" ng-controller="MetadataCtrl">
+<section id="main-content" ng-controller="CommonCtrl">
     <div class="row-fluid">
         <section class="span12 widget">
             <header class="widget-header">
@@ -33,25 +34,20 @@
                 <section class="dt_header">
                     <section class="btn-group">
                         <button class="btn" ng-click="add()">
-                            <i class="icol-add"></i>@T("Add")
+                            <i class="icol-add"></i> @T("Add")
                         </button>
                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
-                            <i class="icol-page-white-edit"></i>@T("Edit")
-                        </button>
-                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="openFieldList()">
-                            <i class="icol-book-open"></i>@T("Fields")
-                        </button>
-                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="generate()">
-                            <i class="icos-arrow-down"></i>@T("Generate")
+                            <i class="icol-page-white-edit"></i> @T("Edit")
                         </button>
                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
-                            <i class="icol-cross"></i>@T("Delete")
+                            <i class="icol-cross"></i> @T("Delete")
                         </button>
-                        <button class="btn" ng-click="getAllMetadata()">
-                            <i class="icol-arrow-refresh"></i>@T("Refresh")
+                        <button class="btn" ng-click="getAll()">
+                            <i class="icol-arrow-refresh"></i> @T("Refresh")
                         </button>
                     </section>
                 </section>
+
                 <section class="gridStyle" ng-grid="gridOptions"></section>
             </section>
         </section>

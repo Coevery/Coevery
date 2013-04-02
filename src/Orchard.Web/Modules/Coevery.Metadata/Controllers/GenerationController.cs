@@ -56,8 +56,6 @@ namespace Coevery.Metadata.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
-
-
         }
     }
 }

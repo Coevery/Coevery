@@ -23,7 +23,7 @@
     };
 
     $scope.exit = function () {
-        $state.transitionTo('SubList', { Moudle: 'Metadata', Id: $stateParams.Id, SubModule: 'Field', View: 'List' });
+        $state.transitionTo('SubList', { Module: 'Metadata', Id: $stateParams.Id, SubModule: 'Field', View: 'List' });
     };
     if (!isNew) {
         $scope.NameDisabled = true;

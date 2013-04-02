@@ -29,6 +29,7 @@ namespace Orchard.WebApi.Common
             var re = _contentManager.List<TContentType>();
             reDtos.AddRange(re.Select(record => ConstructDto(record)));
             return reDtos;
+            
         }
 
         // GET api/leads/lead/5
