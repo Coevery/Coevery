@@ -90,10 +90,10 @@
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
     <Compile Include="Providers\Layouts\ngGridLayout.cs" />
     <Compile Include="Providers\Layouts\ngGridLayoutForms.cs" />
-    <Compile Include="Services\ModuleMenuProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Routes.cs" />
+    <Compile Include="Providers\NavigationQueryProvider.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
     <Compile Include="ViewModels\CommonListViewModel.cs" />
@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
