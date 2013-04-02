@@ -10,5 +10,9 @@ namespace Coevery.Core {
                     shape.Metadata.Alternates.Add("Content_Edit__Default");
                 });
         }
+
+        public void ngGrid()
+        {
+        }
     }
 }

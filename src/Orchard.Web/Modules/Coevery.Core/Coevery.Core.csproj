@@ -87,6 +87,8 @@
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ModuleMenuItemPart.cs" />
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
+    <Compile Include="Providers\Layouts\ngGridLayout.cs" />
+    <Compile Include="Providers\Layouts\ngGridLayoutForms.cs" />
     <Compile Include="Services\ModuleMenuProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
@@ -124,6 +126,14 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
+      <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
+      <Name>Orchard.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
+      <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
+      <Name>Orchard.Projections</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
