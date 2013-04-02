@@ -1,24 +1,6 @@
-﻿'use strict';
-
-//Row.prototype.setHeight = function () {
-//    var cells = this.controls;
-//    var maxHeight = 0;
-//    cells.Each(function (i, item) {
-//        var itemElem = $("#" + item.id);
-//        itemElem[0].style.removeProperty("height");
-//        if (item.controls.length > 0) {
-//            var tempHeight = itemElem.height();
-//            maxHeight = tempHeight > maxHeight ? tempHeight : maxHeight;
-//        }
-//    });
-//    cells.Each(function (i, item) {
-//        $("#" + item.id).height(maxHeight);
-//    });
-//};
-
-(function () {
+﻿(function () {
+    'use strict';
     var currentSectionEntry = null;
-
     var zIndex = 101;
 
     function setZIndex(jQueryElem) {
@@ -27,7 +9,7 @@
 
     function getCloneElem(event) {
         var targetElem = $(event.target);
-        var cloneElem = $('<p class="alert alert-info"></p>');
+        var cloneElem = $('<p class="alert alert-error"></p>');
         cloneElem.text(targetElem.text());
         cloneElem.height(18);
         cloneElem.width(150);
@@ -46,7 +28,7 @@
     })
         .directive('fdToolsControl', function () {
             return {
-                template: '<p fd-draggable="div[fd-section] form.entry" class="alert alert-info"></p>',
+                template: '<p fd-draggable class="alert alert-info"></p>',
                 replace: true,
                 link: function (scope, element, attrs) {
                     switch (attrs.fdToolsControl) {
@@ -88,12 +70,11 @@
                     $("#" + id + ">.entry").sortable({
                         items: "div[fd-section]:not(.sort-placeholder)",
                         placeholder: "sort-placeholder",
-                        //cursor: 'move',
                         tolerance: "pointer",
                         scroll: false,
                         beforeStop: function (event, ui) {
                             if (ui.item.is('p')) {
-                                var newItem = $('<div fd-section></div>');
+                                var newItem = $('<div fd-section colum-count="2"></div>');
                                 ui.item.replaceWith(newItem);
                                 $compile(newItem)(scope);
                             }
@@ -132,7 +113,8 @@
                         }
                     );
 
-                    $('#' + id + " form.entry:first").droppable({
+                    var entry = $('#' + id + " form.entry:first");
+                    entry.droppable({
                         accept: '[fd-control], [fd-tools-control]',
                         tolerance: "pointer",
                         drop: function (event, ui) {
@@ -160,7 +142,7 @@
 
                             var filledColums = colums.has('[fd-control]:not(.dragging)');
                             if (filledColums.length == colums.length) {
-                                var newRow = $('<div fd-row="1"></div>');
+                                var newRow = $('<div fd-row="' + attrs.columCount + '"></div>');
                                 $(this).append(newRow);
                                 $compile(newRow)(scope);
                                 colums.splice(colums.length, 0, newRow.children()[columIndex]);
@@ -197,9 +179,9 @@
                         }
                     });
 
-                    var newRow = $('<div fd-row="1"></div>');
-                    $('#' + id + " form.entry:first").append(newRow);
-                    $compile(newRow)(scope);
+                    var emptyRow = $('<div fd-row="' + attrs.columCount + '"></div>');
+                    entry.append(emptyRow);
+                    $compile(emptyRow)(scope);
                 }
             };
         })
@@ -268,73 +250,37 @@
             return {
                 link: function (scope, element, attrs) {
                     var parentRow;
-
-                    //element.sortable({
-                    //    items: "div[fd-control]:not(.sort-placeholder)",
-                    //    placeholder: "sort-placeholder",
-                    //    connectWith: "div[fd-section] form.entry",
-                    //    cursor: 'move',
-                    //    tolerance: "pointer",
-                    //    helper: getCloneElem,
-                    //    scroll: false,
-                    //    stop: function (event, ui) {
-
-                    //        function moveField(field, row) {
-                    //            if (field.parent().is('[fd-row]')) {
-                    //                var index = field.parent().children().index(field);
-                    //                switch (index) {
-                    //                    case 0:
-                    //                        field.parent().before(row);
-                    //                        break;
-                    //                    case 1:
-                    //                        field.parent().after(row);
-                    //                        break;
-                    //                    default:
-                    //                        break;
-                    //                }
-                    //            } else {
-                    //                field.after(row);
-                    //            }
-                    //            row.append(field);
-                    //        }
-
-                    //        if (ui.item.is('[fd-tools-control]')) {
-                    //            var key = ui.item.data('key');
-                    //            var formKey = key.substr("form-".length);
-                    //            var newItem = $('<div fd-control="' + formKey + '"></div>');
-                    //            $compile(newItem)(scope);
-                    //            ui.item.replaceWith(newItem);
-                    //            var newRow = $('<div fd-row></div>');
-                    //            $compile(newRow)(scope);
-
-                    //            moveField(newItem, newRow);
-                    //        } else {
-                    //            if (ui.item.parent().attr('id') != parentRow.attr('id')) {
-                    //                moveField(ui.item, parentRow);
-                    //            }
-
-                    //            ui.item.fadeTo('normal', 1);
-                    //        }
-                    //    },
-                    //    start: function (event, ui) {
-                    //        if (ui.item.is('[fd-control]')) {
-                    //            parentRow = ui.item.parent();
-                    //            ui.item.css('opacity', '0.3');
-                    //            ui.item.show();
-                    //        }
-                    //    }
-                    //});
                 }
             };
         })
         .directive('fdDraggable', function () {
             var lastColum = null;
-
+            
+            function setDragEffect(item, valid) {
+                if (valid) {
+                    item.removeClass('alert-error');
+                    item.addClass('alert-info');
+                } else {
+                    item.removeClass('alert-info');
+                    item.addClass('alert-error');
+                }
+            }
+            
             function clearMark() {
-                if (lastColum != null) {
+                if (lastColum) {
                     lastColum.removeClass('markedAbove');
                     lastColum.removeClass('marked');
                     lastColum = null;
+                }
+            }
+
+            function setMark(above) {
+                if (above) {
+                    lastColum.removeClass('marked');
+                    lastColum.addClass('markedAbove');
+                } else {
+                    lastColum.removeClass('markedAbove');
+                    lastColum.addClass('marked');
                 }
             }
 
@@ -347,7 +293,6 @@
                         revert: "invalid",
                         connectToSortable: connectTo,
                         helper: getCloneElem,
-                        //cursor: 'move',
                         cursorAt: { left: -5, top: -5 },
                         tolerance: "pointer",
                         scroll: false,
@@ -363,36 +308,29 @@
                         },
                         drag: function (event, ui) {
                             clearMark();
-                            if (currentSectionEntry != null) {
-                                ui.helper.removeClass('alert-error');
-                                ui.helper.addClass('alert-info');
+                            if (currentSectionEntry) {
+                                setDragEffect(ui.helper, true);
                                 var rows = currentSectionEntry.children('div[fd-row]');
-                                for (var i = 0; i < rows.length; i++) {
-                                    var row = $(rows[i]);
-                                    var rowOffset = row.offset();
-                                    if (rowOffset.top <= event.clientY
-                                        && event.clientY <= rowOffset.top + row.height()) {
-                                        var above = event.clientY <= rowOffset.top + row.height() / 2 ? true : false;
-                                        var colums = row.children('[fd-colum]');
-
-                                        var columWidth = colums.first().width();
-                                        var index = Math.floor((event.clientX - rowOffset.left) / columWidth);
-                                        lastColum = $(colums[index]);
-
-                                        if (above) {
-                                            lastColum.removeClass('marked');
-                                            lastColum.addClass('markedAbove');
-                                        } else {
-                                            lastColum.removeClass('markedAbove');
-                                            lastColum.addClass('marked');
-                                        }
-
-                                        break;
-                                    }
+                                var columCount = parseInt(currentSectionEntry.parents('[fd-section]:first').attr('colum-count'));
+                                var columWidth = rows.width() / columCount;
+                                var columIndex = Math.floor((event.clientX - rows.offset().left) / columWidth);
+                                var rowIndex = Math.floor((event.clientY - rows.offset().top) / rows.height());
+                                var colums = rows.find('[fd-colum]:nth-child(' + (columIndex + 1) + ')');
+                                var above;
+                                if ($(colums[rowIndex]).children().length) {
+                                    var currentColum = $(colums[rowIndex]);
+                                    var isPrev = event.clientY < currentColum.offset().top + rows.height() / 2;
+                                    above = isPrev && rowIndex == 0;
+                                    var index = isPrev && rowIndex ? rowIndex - 1 : rowIndex;
+                                    lastColum = $(colums[index]);
+                                } else {
+                                    var filledColums = colums.has('[fd-control]');
+                                    above = !filledColums.length;
+                                    lastColum = filledColums.length ? filledColums.last() : colums.first();
                                 }
+                                setMark(above);
                             } else {
-                                ui.helper.removeClass('alert-info');
-                                ui.helper.addClass('alert-error');
+                                setDragEffect(ui.helper, false);
                             }
                         }
                     });
