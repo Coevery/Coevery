@@ -33,7 +33,7 @@ namespace Coevery.Core.Controllers
 {
     public class ContentViewTemplateController : Controller, IUpdateModel
     {
-         private readonly IContentManager _contentManager;
+        private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
