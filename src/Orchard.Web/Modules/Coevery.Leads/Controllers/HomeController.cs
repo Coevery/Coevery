@@ -6,9 +6,9 @@ using Orchard.Themes;
 
 namespace Coevery.Leads.Controllers
 {
-    public class HomeController : Controller
-    {
+    //public class HomeController : Controller
+    //{
 
         
-    }
+    //}
 }

@@ -12,15 +12,18 @@ namespace Coevery.Metadata.Controllers
         {
             _contentDefinitionService = contentDefinitionService;
         }
-        public ActionResult List()
+        public ActionResult List(string id)
         {
             return View();
         }
 
-        public ActionResult Detail()
-        {
+        public ActionResult Edit(string id) {
             var model = _contentDefinitionService.GetTempEditTypeViewModel();
             return View(model);
+        }
+
+        public ActionResult Create(string id, int? containerId) {
+            return Edit(id);
         }
     }
 }
