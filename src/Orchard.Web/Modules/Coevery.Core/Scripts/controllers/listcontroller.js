@@ -1,7 +1,6 @@
 ﻿CommonCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource'];
 
 function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
-    debugger;
     var moduleName = $rootScope.$stateParams.Module;
     var module = CommonContext($rootScope, $resource);
     var columnDefs = getColumnDefs(localize);
@@ -53,3 +52,5 @@ function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
 
     $scope.getAll();
 }
+
+//@ sourceURL=Coevery.Core/listcontroller.js

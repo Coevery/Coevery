@@ -7,7 +7,6 @@ function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $reso
     var isNew = id ? false : true;
 
     $scope.save = function () {
-        debugger;
         $.ajax({
             url: myForm.action,
             type: myForm.method,
@@ -16,8 +15,6 @@ function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $reso
                 $state.transitionTo('List', { Module: moduleName });
             }
         });
-       return false;
-        
     };
 
     $scope.change = function() {
@@ -38,3 +35,5 @@ function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $reso
         $scope.item = new module();
     }
 }
+
+//@ sourceURL=Coevery.Core/detailcontroller.js
