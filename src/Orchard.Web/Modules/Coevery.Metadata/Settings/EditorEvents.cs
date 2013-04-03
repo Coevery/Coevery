@@ -48,6 +48,7 @@ namespace Coevery.Metadata.Settings {
             var model = new ContentPartSettings();
             updateModel.TryUpdateModel(model, "ContentPartSettings", null, null);
             builder.Attachable(model.Attachable);
+            builder.WithDescription(model.Description);
             yield return DefinitionTemplate(model);
         }
     }
