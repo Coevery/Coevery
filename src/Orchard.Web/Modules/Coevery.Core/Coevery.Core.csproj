@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ContentViewTemplateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
     <Compile Include="Handlers\ModuleMenuItemPartHandler.cs">
       <SubType>Code</SubType>
@@ -105,6 +106,7 @@
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\app\logger.js" />
+    <Content Include="Scripts\controllers\columnfactory.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\i18n\resources-locale_en-us.js" />
