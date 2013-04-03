@@ -55,17 +55,16 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
             logger.error("Failed to fetched Metadata.");
         });
     };
-    
+
     $scope.generate = function() {
-        if ($scope.mySelections.length > 0)
-        {
-            metadataGenerator.get({ name: $scope.mySelections[0].Name }, function () {
+        if ($scope.mySelections.length > 0) {
+            metadataGenerator.get({ name: $scope.mySelections[0].Name }, function() {
                 logger.success("Generate metadata successful.");
-            }, function () {
+            }, function() {
                 logger.error("Failed to Generate the metadata.");
             });
         }
-    }
+    };
 
 
     $scope.getAllMetadata();

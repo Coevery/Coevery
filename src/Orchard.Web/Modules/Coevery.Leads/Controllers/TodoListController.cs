@@ -47,11 +47,11 @@ namespace Coevery.Leads.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
 
-            if (todoListDto.UserId != _userId)
-            {
-                // Trying to modify a record that does not belong to the user
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Unauthorized));
-            }
+            //if (todoListDto.UserId != _userId)
+            //{
+            //    // Trying to modify a record that does not belong to the user
+            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Unauthorized));
+            //}
 
             return todoListDto;
         }
