@@ -1,7 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Coevery.Metadata.ViewModels;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
@@ -18,7 +16,7 @@ namespace Coevery.Dynamic.Settings
             var settings = definition.Settings.GetModel<DynamicTypeSettings>();
             var model = new DynamicTypeSettingsViewModel
             {
-                IsEnabled = settings.IsEnabled
+                IsDeployed = settings.IsDeployed
             };
 
             yield return DefinitionTemplate(model);
@@ -27,14 +25,10 @@ namespace Coevery.Dynamic.Settings
         public override IEnumerable<TemplateViewModel> TypeEditorUpdate(ContentTypeDefinitionBuilder builder, IUpdateModel updateModel)
         {
             var model = new DynamicTypeSettingsViewModel();
-            //updateModel.TryUpdateModel(model, "DynamicTypeSettingsViewModel", null, null);
+            updateModel.TryUpdateModel(model, "DynamicTypeSettingsViewModel", null, null);
 
-            //builder.WithSetting("DynamicTypeSettings.IsEnabled", model.IsEnabled.ToString());
+            builder.WithSetting("DynamicTypeSettings.IsDeployed", model.IsDeployed.ToString());
 
-            //if (model.IsEnabled)
-            //{
-
-            //}
             yield return DefinitionTemplate(model);
         }
     }

@@ -13,11 +13,10 @@ function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $reso
             type: myForm.method,
             data: $(myForm).serialize(),
             success: function (result) {
+                debugger;
                 $state.transitionTo('List', { Module: moduleName });
             }
         });
-       return false;
-        
     };
 
     $scope.change = function() {

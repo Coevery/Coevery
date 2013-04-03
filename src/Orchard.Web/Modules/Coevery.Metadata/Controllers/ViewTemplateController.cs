@@ -92,7 +92,7 @@ namespace Coevery.Metadata.Controllers
 
             var typeViewModel = _contentDefinitionService.GetType(string.Empty);
 
-            return View("Detail",typeViewModel);
+            return View(typeViewModel);
         }
 
         [HttpPost, ActionName("Create")]

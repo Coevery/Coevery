@@ -154,14 +154,12 @@
     <Compile Include="Services\StereotypeService.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
     <Compile Include="Settings\DynamicTypeSettings.cs" />
-    <Compile Include="Settings\EditorEvents.cs" />
     <Compile Include="Settings\PlacementSettings.cs" />
     <Compile Include="ViewModels\AddPartsViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
-    <Compile Include="ViewModels\ContentTypeSettingsViewModel.cs" />
     <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
     <Compile Include="ViewModels\FieldViewModelDto.cs" />
     <Compile Include="ViewModels\EditTypeViewModelDto.cs" />
@@ -218,6 +216,7 @@
     <Content Include="Views\EditorTemplates\TypePart.cshtml" />
     <Content Include="Views\EditorTemplates\TypeParts.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\ViewTemplate\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config">
@@ -245,13 +244,7 @@
     <None Include="Views\Home\EditField.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\DefinitionTemplates\ContentTypeSettingsViewModel.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Views\Home\EditPlacement.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\DefinitionTemplates\ContentPartSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -267,7 +260,7 @@
     <Content Include="Views\FieldViewTemplate\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ViewTemplate\Detail.cshtml" />
+    <Content Include="Views\ViewTemplate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ViewTemplate\List.cshtml" />

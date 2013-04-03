@@ -20,7 +20,7 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                 templateUrl: function (params) {
                     debugger;
                     if (params.Module == 'Metadata'){
-                        return params.Module + '/ViewTemplate/Detail';
+                        return params.Module + '/ViewTemplate/Create';
                     } else{
                         return 'CoeveryCore/ContentViewTemplate/Create/' + params.Module;
                     }
@@ -31,7 +31,7 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                 templateUrl: function (params) {
                     debugger;
                     if (params.Module =='Metadata'){
-                        return params.Module + '/ViewTemplate/Detail';
+                        return params.Module + '/ViewTemplate/Edit/' + params.Id;
                     } else{
                         return 'CoeveryCore/ContentViewTemplate/Edit/' + params.Id;
                     }
@@ -64,9 +64,8 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                 $rootScope.$stateParams = $stateParams;
             }]);
 
-$(function () {
-    $('form').live("submit", function (event) {
+$(function() {
+    $('body').on("submit", 'form', function(event) {
         event.preventDefault();
-        return false;
     });
 });

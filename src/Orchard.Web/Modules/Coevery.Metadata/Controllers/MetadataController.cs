@@ -28,7 +28,7 @@ namespace Coevery.Metadata.Controllers {
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                        select new {type.DisplayName, setting.IsDeployed};
+                        select new {type.DisplayName, type.Name, setting.IsDeployed};
             return query;
         }
 

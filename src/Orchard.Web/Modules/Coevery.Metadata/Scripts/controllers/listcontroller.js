@@ -1,11 +1,11 @@
-﻿
+﻿//@ sourceURL=/OrchardLocal/Modules/Coevery.Metadata/scripts/controllers/listcontroller.js
 function MetadataCtrl($scope, logger, $state, localize, $resource) {
     var cellTemplateString = '<div><a href ="Coevery#/metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
     $scope.mySelections = [];
     var metadata = MetadataContext($resource);
     var metadataGenerator = GenerateContext($resource);
-    var metadataColumnDefs = [{field: 'DisplayName',displayName: localize.getLocalizedString('DisplayName'),cellTemplate: cellTemplateString},
-        { field: 'IsEnabled', displayName: localize.getLocalizedString('IsEnabled') },
+    var metadataColumnDefs = [
+        { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName'), cellTemplate: cellTemplateString },
         { field: 'IsDeployed', displayName: localize.getLocalizedString('IsDeployed') }];
     
     $scope.gridOptions = {
@@ -42,7 +42,7 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
         $state.transitionTo('SubList', { Module: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
     };
 
-    $scope.edit = function() {
+    $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
             $state.transitionTo('Detail', { Module: 'Metadata', Id: $scope.mySelections[0].Name });
         }
