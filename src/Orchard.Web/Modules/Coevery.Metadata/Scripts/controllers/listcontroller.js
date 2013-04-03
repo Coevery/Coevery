@@ -1,4 +1,4 @@
-﻿//@ sourceURL=/OrchardLocal/Modules/Coevery.Metadata/scripts/controllers/listcontroller.js
+﻿
 function MetadataCtrl($scope, logger, $state, localize, $resource) {
     var cellTemplateString = '<div><a href ="Coevery#/metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
     $scope.mySelections = [];
@@ -59,7 +59,6 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
     $scope.generate = function() {
         if ($scope.mySelections.length > 0)
         {
-            debugger;
             metadataGenerator.get({ name: $scope.mySelections[0].Name }, function () {
                 logger.success("Generate metadata successful.");
             }, function () {
@@ -71,3 +70,5 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
 
     $scope.getAllMetadata();
 }
+
+//@ sourceURL=Coevery.Metadata/listcontroller.js

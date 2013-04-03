@@ -7,7 +7,6 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
             .state('List', {
                 url: '/{Module:[a-zA-Z]+}',
                 templateUrl: function(params) {
-                    debugger;
                     if (params.Module == 'Metadata'){
                         return params.Module + '/ViewTemplate/List';
                     } else{
@@ -18,7 +17,6 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
             .state('Create', {
                 url: '/{Module:[a-zA-Z]+}/Create',
                 templateUrl: function (params) {
-                    debugger;
                     if (params.Module == 'Metadata'){
                         return params.Module + '/ViewTemplate/Create';
                     } else{
@@ -29,7 +27,6 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
             .state('Detail', {
                 url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
                 templateUrl: function (params) {
-                    debugger;
                     if (params.Module =='Metadata'){
                         return params.Module + '/ViewTemplate/Edit/' + params.Id;
                     } else{
