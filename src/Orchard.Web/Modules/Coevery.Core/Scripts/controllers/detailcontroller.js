@@ -10,7 +10,7 @@ function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $reso
         $.ajax({
             url: myForm.action,
             type: myForm.method,
-            data: $(myForm).serialize(),
+            data: $(myForm).serialize() + '&submit.Save=Save',
             success: function (result) {
                 $state.transitionTo('List', { Module: moduleName });
             }
@@ -25,15 +25,15 @@ function CommonDetailCtrl($rootScope,$scope, logger, $state, $stateParams, $reso
         $state.transitionTo('List', { Module: moduleName });
     };
 
-    if (!isNew) {
-        var lead = module.get({ leadId: id }, function() {
-            $scope.item = lead;
-        }, function() {
-            logger.error("The lead does not exist.");
-        });
-    } else {
-        $scope.item = new module();
-    }
+    //if (!isNew) {
+    //    var lead = module.get({ leadId: id }, function() {
+    //        $scope.item = lead;
+    //    }, function() {
+    //        logger.error("The lead does not exist.");
+    //    });
+    //} else {
+    //    $scope.item = new module();
+    //}
 }
 
 //@ sourceURL=Coevery.Core/detailcontroller.js
