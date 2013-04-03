@@ -67,6 +67,7 @@
             var userPart = typeDefinition.Parts.First(t => t.PartDefinition.Name == typeDefinition.Name);
 
             int index = 0;
+            Output.Write("{ field: 'ContentId', displayName: localize.getLocalizedString('Id') },");
             foreach (var filed in userPart.PartDefinition.Fields)
             {
                 var colTemp = "{{ field: '{0}', displayName: localize.getLocalizedString('{0}') }},";

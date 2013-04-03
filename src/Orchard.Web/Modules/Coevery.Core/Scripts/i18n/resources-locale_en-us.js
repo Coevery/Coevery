@@ -58,5 +58,14 @@
      {
          "key": "Id",
          "value": "Id"
+     },
+      {
+          "key": "QuoteName",
+          "value": "QuoteName"
+      },
+     {
+         "key": "QuoteDate",
+         "value": "QuoteDate"
      }
+    
 ];

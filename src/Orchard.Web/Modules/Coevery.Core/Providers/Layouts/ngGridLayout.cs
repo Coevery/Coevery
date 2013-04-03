@@ -51,7 +51,7 @@ namespace Orchard.Projections.Providers.Layouts {
             string contentType = string.Empty;
             if(layoutComponentResults.Any())
             contentType = layoutComponentResults.First().ContentItem.TypeDefinition.Name;
-
+            
             IEnumerable<dynamic> shapes =
                 context.LayoutRecord.Display == (int) LayoutRecord.Displays.Content
                     ? layoutComponentResults.Select(x => _contentManager.BuildDisplay(x.ContentItem, context.LayoutRecord.DisplayType))
