@@ -18,25 +18,21 @@ namespace Orchard.Mvc.Routes {
         private readonly IRunningShellTable _runningShellTable;
         private readonly UrlPrefix _urlPrefix;
         private readonly IRouteHandler _routeHandler;
-        public CoreRoute(IRouteHandler routeHandler) {
+        public CoreRoute(IRouteHandler routeHandler)
+        {
             _routeHandler = routeHandler;
-            //_route = route;
-            //_shellSettings = shellSettings;
-            //_runningShellTable = runningShellTable;
-            //Area = route.GetAreaName();
-            //if (!string.IsNullOrEmpty(_shellSettings.RequestUrlPrefix))
-            //    _urlPrefix = new UrlPrefix(_shellSettings.RequestUrlPrefix);
         }
 
         public override RouteData GetRouteData(HttpContextBase httpContext) {
             string url = httpContext.Request.AppRelativeCurrentExecutionFilePath;
-            if (url.Contains("Coevery") && url.Length > 11) {
+            string filterKey = "~/Coevery/";
+            if (url.StartsWith(filterKey) && url.Length > filterKey.Length) {
                 string[] urlArrs = url.Split(new char[] {'/'});
-                var routeData = new RouteData(this, _routeHandler);
+                var routeData = RouteTable.Routes.GetRouteData(httpContext);
                 routeData.Values["area"] = "Coevery.Core";
                 routeData.DataTokens["area"] = "Coevery.Core";
                 routeData.Values["controller"] = "ContentViewTemplate";
-                routeData.Values["id"] = urlArrs[urlArrs.Length-1];
+                routeData.Values["id"] = urlArrs[urlArrs.Length - 1];
                 routeData.Values["action"] = urlArrs[urlArrs.Length - 2];
                 return routeData;
             }
