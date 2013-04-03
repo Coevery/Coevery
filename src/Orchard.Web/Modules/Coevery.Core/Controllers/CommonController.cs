@@ -88,6 +88,7 @@ namespace Coevery.Core.Controllers
 
                     var contentItemMetadata = Services.ContentManager.GetItemMetadata(contentItem);
                     var result = new JObject();
+                    result["ContentId"] = contentItem.Id;
                      tokenizedDescriptors.ForEach(
                         d =>
                         {

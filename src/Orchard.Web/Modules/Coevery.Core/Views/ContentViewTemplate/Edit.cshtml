@@ -1,6 +1,11 @@
 @using Orchard.ContentManagement
 @using Orchard.Utility.Extensions
 
+@{
+    Script.Require("CommonContext");
+    Script.Require("CommonDetailController");
+}
+@Display.FootScripts()
 
 @{
     ContentItem contentItem = Model.ContentItem;
@@ -27,10 +32,11 @@
     </ul>
     <h1>@typeDisplayName Detail <span>@typeDisplayName edit</span></h1>
 </header>
-
-@using (Html.BeginFormAntiForgeryPost()) 
-{
-    @Html.ValidationSummary()
-    // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
-    @Display(Model)
-}
+<section id="main-content" ng-controller="CommonDetailCtrl">
+    @using (Html.BeginFormAntiForgeryPost()) 
+    {
+        @Html.ValidationSummary()
+        // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
+        @Display(Model)
+    }
+</section>
