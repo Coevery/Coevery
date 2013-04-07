@@ -75,8 +75,9 @@ namespace Coevery.Metadata.Controllers
 
         #region Types
 
-       //[Themed]
-        public ActionResult List() {
+        //[Themed]
+        public ActionResult List()
+        {
             return View();
             //return View("List", new ListContentTypesViewModel
             //{

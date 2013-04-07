@@ -45,13 +45,16 @@ angular.module('localization', []).
                 if ((localize.dictionary !== []) && (localize.dictionary.length > 0)) {
                     // use the filter service to only return those entries which match the value
                     // and only take the first result
-                    var entry = $filter('filter')(localize.dictionary, function(element) {
+                    var entries = $filter('filter')(localize.dictionary, function(element) {
                             return element.key === value;
                         }
-                    )[0];
+                    );
 
-                    // set the result
-                    result = entry.value;
+                    if(entries && entries.length >0 )
+                        result = entries[0].value;
+                    else {
+                        result = value;
+                    }
                 }
                 // return the value to the call
                 return result;

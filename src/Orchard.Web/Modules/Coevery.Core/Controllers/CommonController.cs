@@ -58,7 +58,7 @@ namespace Coevery.Core.Controllers
 
         private IEnumerable<JObject> GetLayoutComponents()
         {
-            var contentItem1 = _contentManager.Get(49, VersionOptions.Published);
+            var contentItem1 = _contentManager.Get(40, VersionOptions.Published);
             var part = contentItem1.As<ProjectionPart>();
             var query = part.Record.QueryPartRecord;
             // applying layout
