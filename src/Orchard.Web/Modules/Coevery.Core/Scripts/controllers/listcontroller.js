@@ -22,9 +22,9 @@ function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
 
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
-            module.delete({ leadId: $scope.mySelections[0].LeadId }, function () {
+            module.delete({ contentType: $scope.mySelections[0].ContentId }, function () {
                 $scope.mySelections.pop();
-                $scope.getAllLeads();
+                $scope.getAll();
                 logger.success('Delete the '+moduleName+' successful.');
             }, function () {
                 logger.error('Failed to delete the lead.');

@@ -46,22 +46,14 @@ namespace Coevery.Core.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
             
-            //List<object> re = new List<object>();
-           
-            //string moduleName = id;
-            //var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            //var contentType = pluralService.Singularize(id);
-            //var contentItems = _contentManager.Query(contentType).List();
-            //foreach (var contentItem in contentItems)
-            //{
-            //    var contentPart = contentItem.Parts.FirstOrDefault(t => t.PartDefinition.Name == contentType);
-            //    if (contentPart != null)
-            //    {
-                   
-            //    }
-            //}
+      
             var re = this.GetLayoutComponents();
             return re;
+        }
+
+        public void Delete(int id)
+        {
+         
         }
 
         private IEnumerable<JObject> GetLayoutComponents()

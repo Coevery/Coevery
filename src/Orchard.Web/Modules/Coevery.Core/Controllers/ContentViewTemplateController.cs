@@ -196,6 +196,25 @@ namespace Coevery.Core.Controllers
             });
         }
 
+        [HttpPost]
+        public ActionResult Remove(int id, string returnUrl)
+        {
+            var contentItem = _contentManager.Get(id, VersionOptions.Latest);
+
+            if (!Services.Authorizer.Authorize(Permissions.DeleteContent, contentItem, T("Couldn't remove content")))
+                return new HttpUnauthorizedResult();
+
+            if (contentItem != null)
+            {
+                _contentManager.Remove(contentItem);
+                Services.Notifier.Information(string.IsNullOrWhiteSpace(contentItem.TypeDefinition.DisplayName)
+                    ? T("That content has been removed.")
+                    : T("That {0} has been removed.", contentItem.TypeDefinition.DisplayName));
+            }
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
+        }
+
         private ActionResult EditPOST(int id, string returnUrl, Action<ContentItem> conditionallyPublish)
         {
             var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
