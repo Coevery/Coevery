@@ -170,6 +170,7 @@
     <Compile Include="ViewModels\EditPartViewModel.cs" />
     <Compile Include="ViewModels\EditPlacementViewModel.cs" />
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
+    <Compile Include="ViewModels\FormDesignerViewModel.cs" />
     <Compile Include="ViewModels\ListContentPartsViewModel.cs" />
     <Compile Include="ViewModels\RemoveFieldViewModel.cs" />
     <Compile Include="ViewModels\RemovePartViewModel.cs" />
