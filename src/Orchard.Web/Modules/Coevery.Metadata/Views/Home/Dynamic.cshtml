@@ -38,6 +38,7 @@
                         @{
                             foreach (var filed in Model.ContentPart.PartDefinition.Fields)
                             {
+                                //Temp:"<fd-tools-control field-type=\"{0}\" field-text =\"{1}\" {2}></fd-tools-control>";
                                 string controlDesc = Model.HtmlControlDescs[filed.Name];
                                 Output.Write(controlDesc);
                             }

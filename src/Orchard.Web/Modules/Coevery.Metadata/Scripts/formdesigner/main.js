@@ -203,6 +203,7 @@
                     var id = newGuid();
                     attrs.$set('id', id);
                     var type = attrs.fieldType;
+                    var title = attrs.fieldTitle;
                     var newItem;
                     switch (type) {
                         case 'text':
@@ -212,10 +213,10 @@
                             newItem = $('<label class="radio span4"><input type="radio" name="radioOptions" checked/>option1</label><label class="radio span4"><input type="radio" name="radioOptions"/>option2</label><div class="span4 tools"></div>');
                             break;
                         case 'checkbox':
-                            newItem = $('<label class="checkbox span9"><input type="checkbox" />option1</label><div class="span3 tools"></div>');
+                            newItem = $('<label class="checkbox span9"><input type="checkbox" /></label><div class="span3 tools"></div>');
                             break;
                         case 'select':
-                            newItem = $('<select class="span9"><option>option1</option><option>option2</option><option>option3</option></select><div class="span3 tools"></div>');
+                            newItem = $('<select class="span9"><option></option><option>option2</option><option>option3</option></select><div class="span3 tools"></div>');
                             break;
                         case 'textarea':
                             newItem = $('<textarea class="span9"></textarea><div class="span3 tools"></div>');
@@ -224,6 +225,7 @@
                             newItem = $('<input type="text" class="span9"/><div class="span3 tools"></div>');
                             break;
                     }
+                    element.find('.title').text(title);
                     element.children('.controls-row').append(newItem);
                     var propertyItem = $('<fd-field-tool-property></fd-field-tool-property>');
                     element.find('.tools').append(propertyItem);
@@ -309,8 +311,17 @@
                             var dragItem;
                             if (ui.draggable.is('[fd-tools-control]')) {
                                 var type = ui.draggable.attr('field-type');
-                                dragItem = $('<fd-field field-always-on-layout field-required></fd-field>');
+                                var title = ui.draggable.attr('field-text');
+                                var required = ui.draggable.attr('required');
+                                if (required != null)
+                                {
+                                    dragItem = $('<fd-field field-always-on-layout field-required></fd-field>');
+                                } else{
+                                    dragItem = $('<fd-field field-always-on-layout></fd-field>');
+                                }
+                                
                                 dragItem.attr('field-type', type);
+                                dragItem.attr('field-title', title);
                                 $compile(dragItem)(scope);
                             } else {
                                 dragItem = ui.draggable;
