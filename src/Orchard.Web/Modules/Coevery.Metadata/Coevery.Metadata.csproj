@@ -127,6 +127,7 @@
     <Compile Include="AdminMenu.cs" />
     <Compile Include="Controllers\FieldViewTemplateController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />

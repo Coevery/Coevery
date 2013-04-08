@@ -1,6 +1,13 @@
 ﻿(function () {
     'use strict';
-
+    
+    function LayoutContext($resource) {
+        return $resource(
+            '/OrchardLocal/api/metadata/layout/:id',
+            { id: '@id' },
+            { update: { method: 'PUT' } });
+    }
+    
     function adjustColumnHeight(rows) {
         for (var i = 0; i < rows.length; i++) {
             var row = $(rows[i]);
@@ -42,7 +49,7 @@
         adjustColumnHeight(rows);
     }
 
-    var coevery = angular.module('coevery', []);
+    var coevery = angular.module('coevery', ['ngResource']);
 
     coevery.directive('fdToolsSection', function () {
         return {
@@ -491,38 +498,45 @@
                 }
             };
         })
-        .directive('fdSaveLayoutButton', function () {
+        .directive('fdSaveLayoutButton', function ($resource) {
             return {
                 template: '<button class="btn">Save</button>',
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
                     element.click(function () {
-                        var layout = '<?xml version="1.0"?>';
-                        layout += '<Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+                        var layoutString = '<?xml version="1.0"?>';
+                        layoutString += '<Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
                         var sections = $('[fd-form]').find('[fd-section]');
                         sections.each(function () {
                             if ($(this).find('[fd-field]').length) {
-                                layout += '<Section columns="' + $(this).attr('section-columns') + '">';
+                                layoutString += '<Section columns="' + $(this).attr('section-columns') + '">';
                                 var rows = $(this).find('[fd-row]');
                                 rows.each(function () {
-                                    layout += '<Row>';
+                                    layoutString += '<Row>';
                                     var columns = $(this).find('[fd-column]');
                                     columns.each(function () {
-                                        layout += '<Column>';
+                                        layoutString += '<Column>';
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
-                                            layout += '<Field type="' + field.attr('field-type') + '"></Field>';
+                                            layoutString += '<Field type="' + field.attr('field-type') + '"></Field>';
                                         }
-                                        layout += '</Column>';
+                                        layoutString += '</Column>';
                                     });
-                                    layout += '</Row>';
+                                    layoutString += '</Row>';
                                 });
-                                layout += '</Section>';
+                                layoutString += '</Section>';
                             }
                         });
-                        layout += '</Form>';
-                        console.log(layout);
+                        layoutString += '</Form>';
+                        console.log(layoutString);
+
+                        var Layout = LayoutContext($resource);
+                        Layout.save({ id: 'Lead', layout: layoutString }, function() {
+                            console.log('success');
+                        }, function() {
+                            console.log('failed');
+                        });
                     });
                 }
             };
