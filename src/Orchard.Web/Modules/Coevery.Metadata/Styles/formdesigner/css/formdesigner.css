@@ -1,0 +1,144 @@
+﻿.tools div {
+    height: 18px;
+    width: 20px;
+    cursor: pointer;
+    margin-top: 5px;
+    float: right;
+}
+
+.tools .remove {
+    background-image: url(../images/wrenchRemove.png);
+    background-repeat: no-repeat;
+    background-position: 2px -14px;
+}
+
+.tools .property {
+    background-image: url(../images/wrenchRemove.png);
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+}
+
+.title img {
+    width: 12px;
+    height: 12px;
+    vertical-align: top;
+    margin-right: 4px;
+}
+
+[fd-form] [fd-section] [fd-row] [fd-column] [fd-field] {
+    border: 0;
+}
+
+form.entry {
+}
+
+.markedAbove {
+    border-top: 3px solid red;
+}
+
+.marked {
+    border-bottom: 3px solid red;
+}
+
+.highlight {
+    background: #ebf9ff;
+}
+
+.tools .highlight {
+    background-color: #bae9fd;
+}
+
+[fd-form] > .entry {
+    min-height: 200px;
+}
+
+.form-label {
+    text-align: left;
+    padding-top: 5px;
+}
+
+.smallText {
+    font-size: 1em;
+    line-height: 1.4em;
+}
+
+/*Form Designer*/
+.sort-placeholder {
+    background-color: white;
+    height: 20px;
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px dashed red;
+    margin: 0 0 10px 0;
+}
+
+.drop-highlight {
+    border-top: 1px solid red;
+}
+
+/*
+ * right click context menu
+ */
+.context-menu {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+    .context-menu ul {
+        list-style-type: none;
+        float: left;
+        border: 1px solid #979797;
+        background: #f1f1f1 url(../../Images/line.png) 24px 0 repeat-y;
+        padding: 2px;
+        -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.6);
+        box-shadow: 2px 2px 2px rgba(0,0,0,.6);
+    }
+
+        .context-menu ul li {
+            clear: both;
+            height: 24px;
+            cursor: default;
+            line-height: 24px;
+            white-space: nowrap;
+            padding: 0 30px;
+        }
+
+            .context-menu ul li.sub {
+                background-repeat: no-repeat;
+                background-position: right 9px;
+                background-image: url(../../Images/arrow.png);
+            }
+
+            .context-menu ul li:hover {
+                background-color: #f1f3f6;
+                border-radius: 3px;
+                border: 1px solid #aecff7;
+                height: 22px;
+                line-height: 22px;
+                background-position: right -8px;
+                padding: 0 29px;
+            }
+
+            .context-menu ul li.disable {
+                color: gray;
+                cursor: default;
+            }
+
+                .context-menu ul li.disable:hover {
+                    background-color: transparent;
+                    border: 1px solid transparent;
+                }
+
+                .context-menu ul li.disable.active {
+                    border-color: transparent;
+                    background: none;
+                }
+
+        .context-menu ul ul {
+            display: none;
+            position: absolute;
+        }

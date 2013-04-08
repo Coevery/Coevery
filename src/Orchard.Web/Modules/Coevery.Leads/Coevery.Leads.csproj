@@ -99,8 +99,6 @@
     <Compile Include="Services\TodoService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\arrow.png" />
-    <Content Include="Images\line.png" />
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
