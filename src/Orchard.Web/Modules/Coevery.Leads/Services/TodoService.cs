@@ -36,14 +36,18 @@ namespace Coevery.Leads.Services
         }
         public IEnumerable<TodoListDto> GetAllTodoListDto()
         {
+
             List<TodoListDto> reDtos = new List<TodoListDto>();
-            var re = _todoListRepository.Table.AsEnumerable();
-            reDtos.AddRange(re.Select(todoList => new TodoListDto(todoList)));
+            //var re = _todoListRepository.Table.AsEnumerable();
+            //reDtos.AddRange(re.Select(todoList => new TodoListDto(todoList)));
+            reDtos.Add(new TodoListDto(){ Title = "111", TodoListId = 1});
+            reDtos.Add(new TodoListDto() { Title = "222", TodoListId = 2 });
+            reDtos.Add(new TodoListDto() { Title = "333", TodoListId = 3 });
             return reDtos;
         }
 
-        public TodoListDto GetTodoListDto(int id)
-        {
+        public TodoListDto GetTodoListDto(int id) {
+            return new TodoListDto() {Title = "333", TodoListId = 3};
             TodoListRecord todoList = _todoListRepository.Get(id);
             if (todoList != null)
             {
