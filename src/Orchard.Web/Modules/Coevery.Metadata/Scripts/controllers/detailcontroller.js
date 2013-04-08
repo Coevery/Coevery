@@ -1,43 +1,55 @@
-﻿function MetadataDetailCtrl($scope, logger, $state, $stateParams, $resource) {
+﻿function MetadataDetailCtrl($scope, logger, localize, $state, $stateParams, $resource) {
     var name = $stateParams.Id;
+    var field = FieldContext($resource);
     var metadata = MetadataContext($resource);
-    var isNew = (name || name == '') ? false : true;
-    
-    
-    $scope.save = function () {
-        if (isNew) {
-            $scope.item.$save(function (u, putResponseHeaders) {
-                isNew = false;
-                $scope.NameDisabled = true;
-                logger.success("Create the metadata successful.");
-            }, function () {
-                logger.error("Failed to create the metadata.");
-            });
-        } else {
-            $scope.item.$update(function (u, putResponseHeaders) {
-                logger.success("Update the metadata successful.");
-            }, function () {
-                logger.error("Failed to update the metadata.");
-            });
-        }
+    $scope.mySelections = [];
+    var fieldColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') },
+                           { field: 'Name', displayName: localize.getLocalizedString('FieldTypeDisplayName') }];
+
+    $scope.gridOptions = {
+        data: 'myData',
+        selectedItems: $scope.mySelections,
+        multiSelect: false,
+        showColumnMenu: true,
+        enableColumnResize: true,
+        enableColumnReordering: true,
+        columnDefs: fieldColumnDefs
     };
 
-    $scope.change = function () {
-
+    $scope.delete = function () {
+        if ($scope.mySelections.length > 0) {
+            field.delete({ name: $scope.mySelections[0].Name, parentname: name }, function () {
+                $scope.mySelections.pop();
+                $scope.getAllField();
+                logger.success("Delete the field successful.");
+            }, function () {
+                logger.error("Failed to delete the field.");
+            });
+        }
     };
 
     $scope.exit = function () {
         $state.transitionTo('List', { Module: 'Metadata' });
     };
-    if (!isNew) {
+
+    $scope.add = function () {
+        $state.transitionTo('SubCreate', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail' });
+    };
+
+    $scope.edit = function () {
+        if ($scope.mySelections.length > 0) {
+            $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail', SubId: $scope.mySelections[0].Name });
+        }
+    };
+
+
+    $scope.getAllField = function () {
         var metaData = metadata.get({ name: name }, function () {
-            $scope.NameDisabled = true;
             $scope.item = metaData;
+            $scope.myData = metaData.Fields;
         }, function () {
             logger.error("The metadata does not exist.");
         });
-    } else {
-        $scope.NameDisabled = false;
-        $scope.item = new metadata();
-    }
+    };
+    $scope.getAllField();
 }
