@@ -164,8 +164,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
     <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
-    <Compile Include="ViewModels\FieldViewModelDto.cs" />
-    <Compile Include="ViewModels\EditTypeViewModelDto.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
     <Compile Include="ViewModels\EditFieldViewModel.cs" />
@@ -183,6 +181,7 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Styles\formdesigner\images\alwaysdisplay12.gif" />
     <Content Include="Styles\formdesigner\images\arrow.png" />
     <Content Include="Styles\formdesigner\images\line.png" />
@@ -208,6 +207,9 @@
     <Content Include="Styles\orchard-contenttypes-admin.css" />
     <Content Include="Views\EditorTemplates\ContentTypePart.ascx" />
     <Content Include="Views\FieldViewTemplate\List.cshtml" />
+    <Content Include="Views\FieldViewTemplate\Create.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Views\Home\AddPartsTo.cshtml" />
     <None Include="Views\Home\CreatePart.cshtml" />
     <None Include="Views\Home\RemoveFieldFrom.cshtml" />

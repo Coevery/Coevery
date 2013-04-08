@@ -32,124 +32,129 @@ namespace Coevery.Metadata.Controllers
 
         public Localizer T { get; set; }
 
-        
-        // GET api/metadata/field/name
-        public virtual FieldViewModelDto Get(string parentname)
-        {
-            var fieldModel = new FieldViewModelDto() { ParentName = parentname };
-            fieldModel.FieldTypes = new List<FieldTypeDto>();
-            _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName).Select(c => c.FieldTypeName).ToList().ForEach(c => {
-                fieldModel.FieldTypes.Add(new FieldTypeDto(){Name = c});
-            });
-            return fieldModel;
+        // GET api/metadata/field
+        public object Get(string name) {
+            var type = _contentDefinitionService.GetType(name);
+            return type.Fields.Select(f => new {f.DisplayName, Name = f.FieldDefinition.Name.CamelFriendly()}).ToList();
         }
 
-        public virtual FieldViewModelDto Get(string name,string parentname)
-        {
-            var partViewModel = _contentDefinitionService.GetPart(parentname);
-            var fieldViewModel = partViewModel.Fields.FirstOrDefault(x => x.Name == name);
-            var fieldModel = Get(parentname);
-            if (fieldViewModel == null)
-                return fieldModel;
-            fieldModel.DisplayName = fieldViewModel.DisplayName;
-            fieldModel.Name = fieldViewModel.Name;
-            fieldModel.FieldTypeName = new FieldTypeDto() {Name = fieldViewModel.FieldDefinition.Name};
-            return fieldModel;
-        }
+        //// GET api/metadata/field/name
+        //public virtual FieldViewModelDto Get(string parentname)
+        //{
+        //    var fieldModel = new FieldViewModelDto() { ParentName = parentname };
+        //    fieldModel.FieldTypes = new List<FieldTypeDto>();
+        //    _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName).Select(c => c.FieldTypeName).ToList().ForEach(c => {
+        //        fieldModel.FieldTypes.Add(new FieldTypeDto(){Name = c});
+        //    });
+        //    return fieldModel;
+        //}
 
-        // PUT api/metadata/field/name
-        public virtual HttpResponseMessage Put(string id, FieldViewModelDto fieldModel)
-        {
-            var partViewModel = _contentDefinitionService.GetPart(fieldModel.ParentName);
+        //public virtual FieldViewModelDto Get(string name,string parentname)
+        //{
+        //    var partViewModel = _contentDefinitionService.GetPart(parentname);
+        //    var fieldViewModel = partViewModel.Fields.FirstOrDefault(x => x.Name == name);
+        //    var fieldModel = Get(parentname);
+        //    if (fieldViewModel == null)
+        //        return fieldModel;
+        //    fieldModel.DisplayName = fieldViewModel.DisplayName;
+        //    fieldModel.Name = fieldViewModel.Name;
+        //    fieldModel.FieldTypeName = new FieldTypeDto() {Name = fieldViewModel.FieldDefinition.Name};
+        //    return fieldModel;
+        //}
+
+        //// PUT api/metadata/field/name
+        //public virtual HttpResponseMessage Put(string id, FieldViewModelDto fieldModel)
+        //{
+        //    var partViewModel = _contentDefinitionService.GetPart(fieldModel.ParentName);
 
 
-            // prevent null reference exception in validation
-            fieldModel.DisplayName = fieldModel.DisplayName ?? String.Empty;
+        //    // prevent null reference exception in validation
+        //    fieldModel.DisplayName = fieldModel.DisplayName ?? String.Empty;
 
-            // remove extra spaces
-            fieldModel.DisplayName = fieldModel.DisplayName.Trim();
+        //    // remove extra spaces
+        //    fieldModel.DisplayName = fieldModel.DisplayName.Trim();
 
-            if (String.IsNullOrWhiteSpace(fieldModel.DisplayName))
-            {
-                ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
-            }
+        //    if (String.IsNullOrWhiteSpace(fieldModel.DisplayName))
+        //    {
+        //        ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
+        //    }
 
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => t.Name != fieldModel.Name && String.Equals(t.DisplayName.Trim(), fieldModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase)))
-            {
-                ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
-            }
+        //    if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => t.Name != fieldModel.Name && String.Equals(t.DisplayName.Trim(), fieldModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase)))
+        //    {
+        //        ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        //    }
 
-            var field = _contentDefinitionManager.GetPartDefinition(fieldModel.ParentName).Fields.FirstOrDefault(x => x.Name == id);
+        //    var field = _contentDefinitionManager.GetPartDefinition(fieldModel.ParentName).Fields.FirstOrDefault(x => x.Name == id);
 
-            if (field == null)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-            }
-            field.DisplayName = fieldModel.DisplayName;
-            _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
+        //    if (field == null)
+        //    {
+        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        //    }
+        //    field.DisplayName = fieldModel.DisplayName;
+        //    _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
 
-        // POST api/metadata/field
-        public virtual HttpResponseMessage Post(FieldViewModelDto fieldModel)
-        {
-            var partViewModel = _contentDefinitionService.GetPart(fieldModel.ParentName);
-            var typeViewModel = _contentDefinitionService.GetType(fieldModel.ParentName);
-            if (partViewModel == null) {
-                // id passed in might be that of a type w/ no implicit field
-                if (typeViewModel != null) {
-                    partViewModel = new EditPartViewModel {Name = typeViewModel.Name};
-                    _contentDefinitionService.AddPart(new CreatePartViewModel {Name = partViewModel.Name});
-                    _contentDefinitionService.AddPartToType(partViewModel.Name, typeViewModel.Name);
-                }
-            }
+        //// POST api/metadata/field
+        //public virtual HttpResponseMessage Post(FieldViewModelDto fieldModel)
+        //{
+        //    var partViewModel = _contentDefinitionService.GetPart(fieldModel.ParentName);
+        //    var typeViewModel = _contentDefinitionService.GetType(fieldModel.ParentName);
+        //    if (partViewModel == null) {
+        //        // id passed in might be that of a type w/ no implicit field
+        //        if (typeViewModel != null) {
+        //            partViewModel = new EditPartViewModel {Name = typeViewModel.Name};
+        //            _contentDefinitionService.AddPart(new CreatePartViewModel {Name = partViewModel.Name});
+        //            _contentDefinitionService.AddPartToType(partViewModel.Name, typeViewModel.Name);
+        //        }
+        //    }
 
-            fieldModel.DisplayName = fieldModel.DisplayName ?? String.Empty;
-            fieldModel.DisplayName = fieldModel.DisplayName.Trim();
-            fieldModel.Name = fieldModel.Name ?? String.Empty;
+        //    fieldModel.DisplayName = fieldModel.DisplayName ?? String.Empty;
+        //    fieldModel.DisplayName = fieldModel.DisplayName.Trim();
+        //    fieldModel.Name = fieldModel.Name ?? String.Empty;
 
-            if (String.IsNullOrWhiteSpace(fieldModel.DisplayName)) {
-                ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
-            }
+        //    if (String.IsNullOrWhiteSpace(fieldModel.DisplayName)) {
+        //        ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
+        //    }
 
-            if (String.IsNullOrWhiteSpace(fieldModel.Name)) {
-                ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
-            }
+        //    if (String.IsNullOrWhiteSpace(fieldModel.Name)) {
+        //        ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
+        //    }
 
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), fieldModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("Name", T("A field with the same name already exists.").ToString());
-            }
+        //    if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), fieldModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
+        //        ModelState.AddModelError("Name", T("A field with the same name already exists.").ToString());
+        //    }
 
-            if (!String.IsNullOrWhiteSpace(fieldModel.Name) && !fieldModel.Name[0].IsLetter()) {
-                ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
-            }
+        //    if (!String.IsNullOrWhiteSpace(fieldModel.Name) && !fieldModel.Name[0].IsLetter()) {
+        //        ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
+        //    }
 
-            if (!String.Equals(fieldModel.Name, fieldModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase)) {
-                ModelState.AddModelError("Name", T("The technical name contains invalid characters.").ToString());
-            }
+        //    if (!String.Equals(fieldModel.Name, fieldModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase)) {
+        //        ModelState.AddModelError("Name", T("The technical name contains invalid characters.").ToString());
+        //    }
 
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(fieldModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
-            }
+        //    if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(fieldModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase))) {
+        //        ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
+        //    }
 
-            if (!ModelState.IsValid) {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-            }
-            string fieldTypeName = fieldModel.FieldTypeName == null ? null : fieldModel.FieldTypeName.Name;
-            _contentDefinitionService.AddFieldToPart(fieldModel.Name, fieldModel.DisplayName, fieldTypeName, partViewModel.Name);
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
+        //    if (!ModelState.IsValid) {
+        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        //    }
+        //    string fieldTypeName = fieldModel.FieldTypeName == null ? null : fieldModel.FieldTypeName.Name;
+        //    _contentDefinitionService.AddFieldToPart(fieldModel.Name, fieldModel.DisplayName, fieldTypeName, partViewModel.Name);
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
 
-        // DELETE api/metadata/field/name
-        public virtual HttpResponseMessage Delete(string name,string parentname)
-        {
-            _contentDefinitionService.RemoveFieldFromPart(name, parentname);
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
+        //// DELETE api/metadata/field/name
+        //public virtual HttpResponseMessage Delete(string name,string parentname)
+        //{
+        //    _contentDefinitionService.RemoveFieldFromPart(name, parentname);
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
     }
 }

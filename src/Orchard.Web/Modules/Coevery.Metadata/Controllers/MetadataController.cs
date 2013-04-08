@@ -32,6 +32,18 @@ namespace Coevery.Metadata.Controllers {
             return query;
         }
 
+        // GET api/metadata/metadata
+        public object Get(string name) {
+            var metadataTypes = _contentDefinitionService.GetTypes();
+
+            var query = from type in metadataTypes
+                        let setting = type.Settings.GetModel<DynamicTypeSettings>()
+                        let fields = type.Fields.Select(f => new {f.DisplayName, Name = f.FieldDefinition.Name.CamelFriendly()})
+                        where type.Name == name
+                        select new {type.DisplayName, type.Name, setting.IsDeployed, Fields = fields};
+            return query.SingleOrDefault();
+        }
+
         //// GET api/metadata/metadata/name
         //public virtual EditTypeViewDto Get(string name) {
         //    var metadataType = _contentDefinitionService.GetType(name);
