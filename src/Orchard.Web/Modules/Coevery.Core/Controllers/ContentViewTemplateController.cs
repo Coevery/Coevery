@@ -81,7 +81,7 @@ namespace Coevery.Core.Controllers
 
         private dynamic GetListModel()
         {
-            var id = 40;
+            var id = 49;
             var contentItem = _contentManager.Get(id, VersionOptions.Published);
 
             dynamic model = _contentManager.BuildDisplay(contentItem);
