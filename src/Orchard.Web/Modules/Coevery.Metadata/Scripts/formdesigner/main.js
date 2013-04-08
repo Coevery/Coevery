@@ -63,26 +63,7 @@
                 restrict: 'E',
                 link: function (scope, element, attrs) {
                     var titleElem = element.children();
-                    switch (attrs.fieldType) {
-                        case 'text':
-                            titleElem.text('Textbox');
-                            break;
-                        case 'radio':
-                            titleElem.text('Radio List');
-                            break;
-                        case 'checkbox':
-                            titleElem.text('Checkbox List');
-                            break;
-                        case 'select':
-                            titleElem.text('Dropdown List');
-                            break;
-                        case 'textarea':
-                            titleElem.text('Textarea');
-                            break;
-                        default:
-                            titleElem.text('Textbox');
-                            break;
-                    }
+                    titleElem.text(attrs.fieldText);
                 }
             };
         })

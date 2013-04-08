@@ -7,7 +7,10 @@ namespace Orchard.ContentManagement {
         public string DisplayName { get { return PartFieldDefinition.DisplayName; } }
 
         public ContentPartFieldDefinition PartFieldDefinition { get; set; }
-        public ContentFieldDefinition FieldDefinition { get { return PartFieldDefinition.FieldDefinition; } }
+        public ContentFieldDefinition FieldDefinition
+        {
+            get { return PartFieldDefinition.FieldDefinition; }
+        }
 
         public IFieldStorage Storage { get; set; }
     }
