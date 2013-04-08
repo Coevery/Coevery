@@ -1,13 +1,13 @@
 ﻿(function () {
     'use strict';
-    
+
     function LayoutContext($resource) {
         return $resource(
             '/OrchardLocal/api/metadata/layout/:id',
             { id: '@id' },
             { update: { method: 'PUT' } });
     }
-    
+
     function adjustColumnHeight(rows) {
         for (var i = 0; i < rows.length; i++) {
             var row = $(rows[i]);
@@ -505,36 +505,34 @@
                 restrict: 'E',
                 link: function (scope, element, attrs) {
                     element.click(function () {
-                        var layoutString = '<?xml version="1.0"?>';
-                        layoutString += '<Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+                        var layoutString = '';
                         var sections = $('[fd-form]').find('[fd-section]');
                         sections.each(function () {
                             if ($(this).find('[fd-field]').length) {
-                                layoutString += '<Section columns="' + $(this).attr('section-columns') + '">';
+                                var columnCount = $(this).attr('section-columns');
+                                layoutString += '<fd-section section-columns="' + columnCount + '">';
                                 var rows = $(this).find('[fd-row]');
                                 rows.each(function () {
-                                    layoutString += '<Row>';
+                                    layoutString += '<fd-row row-columns="' + columnCount + '">';
                                     var columns = $(this).find('[fd-column]');
                                     columns.each(function () {
-                                        layoutString += '<Column>';
+                                        layoutString += '<fd-column>';
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
-                                            layoutString += '<Field type="' + field.attr('field-type') + '"></Field>';
+                                            layoutString += '<fd-field type="' + field.attr('field-type') + '"></fd-field>';
                                         }
-                                        layoutString += '</Column>';
+                                        layoutString += '</fd-column>';
                                     });
-                                    layoutString += '</Row>';
+                                    layoutString += '</fd-row>';
                                 });
-                                layoutString += '</Section>';
+                                layoutString += '</fd-section>';
                             }
                         });
-                        layoutString += '</Form>';
-                        console.log(layoutString);
 
                         var Layout = LayoutContext($resource);
-                        Layout.save({ id: 'Lead', layout: layoutString }, function() {
+                        Layout.save({ id: 'Lead', layout: layoutString }, function () {
                             console.log('success');
-                        }, function() {
+                        }, function () {
                             console.log('failed');
                         });
                     });
