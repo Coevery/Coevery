@@ -90,7 +90,7 @@
     <Compile Include="Controllers\ContentViewTemplateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
-    <Compile Include="AreaRoutes.cs" />
+    <Compile Include="Routes.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
     <Compile Include="Handlers\ModuleMenuItemPartHandler.cs">
       <SubType>Code</SubType>
