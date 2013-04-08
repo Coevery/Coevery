@@ -6,7 +6,7 @@
     Script.Require("FormDesignerLinq");
     Script.Require("FormDesignerContextMenu");
     Script.Require("FormDesignerMain");
-    
+
     Style.Include("formdesigner/css/formdesigner.css");
 }
 <header id="main-header" class="page-header">
@@ -16,7 +16,7 @@
 <section id="main-content">
     <div class="row-fluid">
         <div id="form-designer" class="span8">
-            <div fd-form></div>
+            <fd-form></fd-form>
             @Display(Model)
         </div>
         <div class="span4">
@@ -25,18 +25,19 @@
                     <span class="title">Tools</span>
                 </header>
                 <section class="widget-content form-container">
+                    <fd-save-layout-button></fd-save-layout-button>
                     <fieldset>
                         <legend>Layout</legend>
-                        <div fd-tools-section section-columns="1"></div>
-                        <div fd-tools-section section-columns="2"></div>
+                        <fd-tools-section section-columns="1"></fd-tools-section>
+                        <fd-tools-section section-columns="2"></fd-tools-section>
                     </fieldset>
                     <fieldset>
                         <legend>Form Tools</legend>
-                        <div fd-tools-control field-type="text"></div>
-                        <div fd-tools-control field-type="radio"></div>
-                        <div fd-tools-control field-type="checkbox"></div>
-                        <div fd-tools-control field-type="select"></div>
-                        <div fd-tools-control field-type="textarea"></div>
+                        <fd-tools-control field-type="text"></fd-tools-control>
+                        <fd-tools-control field-type="radio"></fd-tools-control>
+                        <fd-tools-control field-type="checkbox"></fd-tools-control>
+                        <fd-tools-control field-type="select"></fd-tools-control>
+                        <fd-tools-control field-type="textarea"></fd-tools-control>
                     </fieldset>
                 </section>
             </section>
