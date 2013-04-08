@@ -17,8 +17,7 @@
 <section id="main-content">
     <div class="row-fluid">
         <div id="form-designer" class="span8">
-            <div fd-form></div>
-            @Display(Model)
+            <fd-form></fd-form>
         </div>
         <div class="span4">
             <section id="toolboxes" class="widget">
@@ -26,20 +25,16 @@
                     <span class="title">Tools</span>
                 </header>
                 <section class="widget-content form-container">
+                    <fd-save-layout-button></fd-save-layout-button>
                     <fieldset>
                         <legend>Layout</legend>
-                        <div fd-tools-section section-columns="1"></div>
-                        <div fd-tools-section section-columns="2"></div>
+                        <fd-tools-section section-columns="1"></fd-tools-section>
+                        <fd-tools-section section-columns="2"></fd-tools-section>
                     </fieldset>
                     <fieldset>
                         <legend>Form Tools</legend>
-                        @* <div fd-tools-control field-type="text" field-text ="Name"></div>
-                        <div fd-tools-control field-type="radio" field-text ="Enable"></div>
-                        <div fd-tools-control field-type="checkbox" field-text ="checkbox"></div>
-                        <div fd-tools-control field-type="select" field-text ="select"></div>
-                        <div fd-tools-control field-type="textarea" field-text ="textarea"></div>*@
                         @{
-                            string filedFormat = "<div fd-tools-control field-type=\"{0}\" field-text =\"{1}\"></div>";
+                            string filedFormat = "<fd-tools-control field-type=\"{0}\" field-text =\"{1}\"></fd-tools-control>";
                             foreach (var filed in Model.ContentPart.PartDefinition.Fields)
                             {
                                 string filedType = filed.FieldDefinition.Name;
