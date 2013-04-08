@@ -28,7 +28,7 @@ namespace Orchard.Mvc.Routes {
             string filterKey = "~/Coevery/";
             if (url.StartsWith(filterKey) && url.Length > filterKey.Length) {
                 string[] urlArrs = url.Split(new char[] {'/'});
-                var routeData = RouteTable.Routes.GetRouteData(httpContext);
+                var routeData = new RouteData(this, _routeHandler);
                 routeData.Values["area"] = "Coevery.Core";
                 routeData.DataTokens["area"] = "Coevery.Core";
                 routeData.Values["controller"] = "ContentViewTemplate";

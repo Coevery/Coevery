@@ -53,12 +53,13 @@ namespace Coevery.Core.Controllers
 
         public void Delete(int id)
         {
-         
+            var contentItem = _contentManager.Get(id, VersionOptions.Latest);
+            _contentManager.Remove(contentItem);
         }
 
         private IEnumerable<JObject> GetLayoutComponents()
         {
-            var contentItem1 = _contentManager.Get(40, VersionOptions.Published);
+            var contentItem1 = _contentManager.Get(49, VersionOptions.Published);
             var part = contentItem1.As<ProjectionPart>();
             var query = part.Record.QueryPartRecord;
             // applying layout

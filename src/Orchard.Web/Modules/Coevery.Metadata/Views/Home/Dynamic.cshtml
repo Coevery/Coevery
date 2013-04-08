@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Coevery.Metadata.ViewModels.FormDesignerViewModel
+@{
     Script.Require("jQuery");
     Script.Require("jQueryUI");
     Script.Require("angular");
@@ -16,8 +17,7 @@
 <section id="main-content">
     <div class="row-fluid">
         <div id="form-designer" class="span8">
-            <div fd-form></div>
-            @Display(Model)
+            <fd-form></fd-form>
         </div>
         <div class="span4">
             <section id="toolboxes" class="widget">
@@ -25,18 +25,23 @@
                     <span class="title">Tools</span>
                 </header>
                 <section class="widget-content form-container">
+                    <fd-save-layout-button></fd-save-layout-button>
                     <fieldset>
                         <legend>Layout</legend>
-                        <div fd-tools-section section-columns="1"></div>
-                        <div fd-tools-section section-columns="2"></div>
+                        <fd-tools-section section-columns="1"></fd-tools-section>
+                        <fd-tools-section section-columns="2"></fd-tools-section>
                     </fieldset>
                     <fieldset>
                         <legend>Form Tools</legend>
-                        <div fd-tools-control field-type="text"></div>
-                        <div fd-tools-control field-type="radio"></div>
-                        <div fd-tools-control field-type="checkbox"></div>
-                        <div fd-tools-control field-type="select"></div>
-                        <div fd-tools-control field-type="textarea"></div>
+                        @{
+                            string filedFormat = "<fd-tools-control field-type=\"{0}\" field-text =\"{1}\"></fd-tools-control>";
+                            foreach (var filed in Model.ContentPart.PartDefinition.Fields)
+                            {
+                                string filedType = filed.FieldDefinition.Name;
+                                string controlType = Model.GetControlType(filedType);
+                                Output.Write(string.Format(filedFormat, controlType, filed.DisplayName));
+                            }
+                        }
                     </fieldset>
                 </section>
             </section>

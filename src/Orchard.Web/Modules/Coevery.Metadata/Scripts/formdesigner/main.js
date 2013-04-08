@@ -46,8 +46,9 @@
 
     coevery.directive('fdToolsSection', function () {
         return {
-            template: '<p fd-draggable="[fd-form]>.entry" class="alert alert-info"><span class="title"></span></p>',
+            template: '<p fd-tools-section fd-draggable="[fd-form]>.entry" class="alert alert-info"><span class="title"></span></p>',
             replace: true,
+            restrict: 'E',
             link: function (scope, element, attrs) {
                 var columnCount = attrs.sectionColumns;
                 var titleElem = element.children();
@@ -57,37 +58,20 @@
     })
         .directive('fdToolsControl', function () {
             return {
-                template: '<p fd-draggable class="alert alert-info"><span class="title"></span></p>',
+                template: '<p fd-tools-control fd-draggable class="alert alert-info"><span class="title"></span></p>',
                 replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     var titleElem = element.children();
-                    switch (attrs.fieldType) {
-                        case 'text':
-                            titleElem.text('Textbox');
-                            break;
-                        case 'radio':
-                            titleElem.text('Radio List');
-                            break;
-                        case 'checkbox':
-                            titleElem.text('Checkbox List');
-                            break;
-                        case 'select':
-                            titleElem.text('Dropdown List');
-                            break;
-                        case 'textarea':
-                            titleElem.text('Textarea');
-                            break;
-                        default:
-                            titleElem.text('Textbox');
-                            break;
-                    }
+                    titleElem.text(attrs.fieldText);
                 }
             };
         })
         .directive('fdForm', function ($compile) {
             return {
-                template: '<div><div class="entry"></div></div>',
+                template: '<div fd-form><div class="entry"></div></div>',
                 replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
@@ -98,7 +82,7 @@
                         scroll: false,
                         beforeStop: function (event, ui) {
                             if (ui.item.is('p')) {
-                                var newItem = $('<div fd-section></div>');
+                                var newItem = $('<fd-section></fd-section>');
                                 newItem.attr('section-columns', ui.item.attr('section-columns'));
                                 ui.item.replaceWith(newItem);
                                 $compile(newItem)(scope);
@@ -110,8 +94,9 @@
         })
         .directive('fdSection', function ($compile) {
             return {
-                template: '<div class="row-fluid"><section class="span12 widget"><header class="widget-header light"><span class="title">&nbsp;</span></header><section class="widget-content form-container"><form fd-field-container class="form-horizontal entry"></form></section></section></div>',
+                template: '<div fd-section class="row-fluid"><section class="span12 widget"><header class="widget-header light"><span class="title">&nbsp;</span></header><section class="widget-content form-container"><form fd-field-container class="form-horizontal entry"></form></section></section></div>',
                 replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
@@ -131,8 +116,8 @@
                             });
                             rows.each(function () {
                                 var row = $(this);
-                                row.attr('fd-row', 2);
-                                var newColumn = $('<div fd-column></div>');
+                                row.attr('row-columns', 2);
+                                var newColumn = $('<fd-column></fd-column>');
                                 row.append(newColumn);
                                 $compile(newColumn)(scope);
                             });
@@ -146,7 +131,7 @@
                                 if (i < leftEmptyColumns.length) {
                                     $(leftEmptyColumns[i]).append(this);
                                 } else {
-                                    var newRow = $('<div fd-row="1"></div>');
+                                    var newRow = $('<fd-row row-columns="1"></fd-row>');
                                     container.append(newRow);
                                     $compile(newRow)(scope);
                                     newRow.children('[fd-column]').append(this);
@@ -163,7 +148,8 @@
                         adjustColumnHeight(container.children('[fd-row]'));
                     });
 
-                    var emptyRow = $('<div fd-row="' + element.attr('section-columns') + '"></div>');
+                    var emptyRow = $('<fd-row></fd-row>');
+                    emptyRow.attr('row-columns', element.attr('section-columns'));
                     $('#' + id + ' [fd-field-container]:first').append(emptyRow);
                     $compile(emptyRow)(scope);
                 }
@@ -171,14 +157,15 @@
         })
         .directive('fdRow', function ($compile) {
             return {
-                template: '<div class="row-fluid"></div>',
+                template: '<div fd-row class="row-fluid"></div>',
                 replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
-                    var columnCount = parseInt(attrs.fdRow);
+                    var columnCount = parseInt(attrs.rowColumns);
                     for (var i = 0; i < columnCount; i++) {
-                        var newColumn = $('<div fd-column></div>');
+                        var newColumn = $('<fd-column></fd-column>');
                         element.append(newColumn);
                         $compile(newColumn)(scope);
                     }
@@ -187,11 +174,14 @@
         })
         .directive('fdColumn', function ($compile) {
             return {
+                template: '<div fd-column></div>',
+                replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
 
-                    var columnCount = parseInt(element.parent().attr('fd-row'));
+                    var columnCount = parseInt(element.parent().attr('row-columns'));
                     var width = 12 / columnCount;
                     element.addClass('span' + width);
                 }
@@ -199,8 +189,9 @@
         })
         .directive('fdField', function ($compile) {
             return {
-                template: '<div fd-hoverable fd-draggable class="control-group"><label class="form-label title span3">title</label><div class="controls-row span9"></div></div>',
+                template: '<div fd-field fd-hoverable fd-draggable class="control-group"><label class="form-label title span3">title</label><div class="controls-row span9"></div></div>',
                 replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
@@ -227,12 +218,12 @@
                             break;
                     }
                     element.children('.controls-row').append(newItem);
-                    var propertyItem = $('<div fd-field-tool-property></div>');
+                    var propertyItem = $('<fd-field-tool-property></fd-field-tool-property>');
                     element.find('.tools').append(propertyItem);
                     $compile(propertyItem)(scope);
                     element.find('.tools').hide();
                     if (attrs.fieldAlwaysOnLayout == undefined) {
-                        var removeItem = $('<div fd-field-tool-remove></div>');
+                        var removeItem = $('<fd-field-tool-remove></fd-field-tool-remove>');
                         element.find('.tools').append(removeItem);
                         $compile(removeItem)(scope);
                     } else {
@@ -257,8 +248,9 @@
         })
         .directive('fdFieldToolRemove', function ($compile) {
             return {
-                template: '<div fd-hoverable class="remove"></div>',
+                template: '<div fd-field-tool-remove fd-hoverable class="remove"></div>',
                 replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
@@ -277,8 +269,9 @@
         })
         .directive('fdFieldToolProperty', function ($compile) {
             return {
-                template: '<div fd-hoverable class="property"></div>',
+                template: '<div fd-field-tool-property fd-hoverable class="property"></div>',
                 replace: true,
+                restrict: 'E',
                 link: function (scope, element, attrs) {
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
@@ -295,6 +288,7 @@
         })
         .directive('fdFieldContainer', function ($compile) {
             return {
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     var lastColumn = null;
 
@@ -308,7 +302,7 @@
                             var dragItem;
                             if (ui.draggable.is('[fd-tools-control]')) {
                                 var type = ui.draggable.attr('field-type');
-                                dragItem = $('<div fd-field field-always-on-layout field-required></div>');
+                                dragItem = $('<fd-field field-always-on-layout field-required></fd-field>');
                                 dragItem.attr('field-type', type);
                                 $compile(dragItem)(scope);
                             } else {
@@ -328,7 +322,8 @@
 
                             var filledColumns = columns.has('[fd-field]:not(.dragging)');
                             if (filledColumns.length == columns.length) {
-                                var newRow = $('<div fd-row="' + $(this).parents('[fd-section]:first').attr('section-columns') + '"></div>');
+                                var newRow = $('<fd-row></fd-row>');
+                                newRow.attr('row-columns', $(this).parents('[fd-section]:first').attr('section-columns'));
                                 $(this).append(newRow);
                                 $compile(newRow)(scope);
                                 columns.splice(columns.length, 0, newRow.children()[columnIndex]);
@@ -397,7 +392,7 @@
                     }
 
                     function markColumn(position) {
-                        var rows = element.children('div[fd-row]');
+                        var rows = element.children('[fd-row]');
                         var columnCount = parseInt(element.parents('[fd-section]:first').attr('section-columns'));
                         var columnWidth = rows.width() / columnCount;
                         var columnIndex = Math.floor((position.x - rows.offset().left) / columnWidth);
@@ -438,6 +433,7 @@
             }
 
             return {
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     var connectTo = attrs.fdDraggable;
 
@@ -480,6 +476,7 @@
         })
         .directive('fdHoverable', function () {
             return {
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     element.hover(
                         function () {
@@ -491,6 +488,42 @@
                             this.hoverOutHandler();
                         }
                     );
+                }
+            };
+        })
+        .directive('fdSaveLayoutButton', function () {
+            return {
+                template: '<button class="btn">Save</button>',
+                replace: true,
+                restrict: 'E',
+                link: function (scope, element, attrs) {
+                    element.click(function () {
+                        var layout = '<?xml version="1.0"?>';
+                        layout += '<Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+                        var sections = $('[fd-form]').find('[fd-section]');
+                        sections.each(function () {
+                            if ($(this).find('[fd-field]').length) {
+                                layout += '<Section columns="' + $(this).attr('section-columns') + '">';
+                                var rows = $(this).find('[fd-row]');
+                                rows.each(function () {
+                                    layout += '<Row>';
+                                    var columns = $(this).find('[fd-column]');
+                                    columns.each(function () {
+                                        layout += '<Column>';
+                                        var field = $(this).find('[fd-field]');
+                                        if (field.length) {
+                                            layout += '<Field type="' + field.attr('field-type') + '"></Field>';
+                                        }
+                                        layout += '</Column>';
+                                    });
+                                    layout += '</Row>';
+                                });
+                                layout += '</Section>';
+                            }
+                        });
+                        layout += '</Form>';
+                        console.log(layout);
+                    });
                 }
             };
         });
