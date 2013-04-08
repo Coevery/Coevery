@@ -312,7 +312,14 @@
                             if (ui.draggable.is('[fd-tools-control]')) {
                                 var type = ui.draggable.attr('field-type');
                                 var title = ui.draggable.attr('field-text');
-                                dragItem = $('<fd-field field-always-on-layout field-required></fd-field>');
+                                var required = ui.draggable.attr('required');
+                                if (required != null)
+                                {
+                                    dragItem = $('<fd-field field-always-on-layout field-required></fd-field>');
+                                } else{
+                                    dragItem = $('<fd-field field-always-on-layout></fd-field>');
+                                }
+                                
                                 dragItem.attr('field-type', type);
                                 dragItem.attr('field-title', title);
                                 $compile(dragItem)(scope);
