@@ -203,6 +203,9 @@
     <Content Include="Styles\orchard-contenttypes-admin.css" />
     <Content Include="Views\EditorTemplates\ContentTypePart.ascx" />
     <Content Include="Views\FieldViewTemplate\List.cshtml" />
+    <Content Include="Views\FieldViewTemplate\AddFieldTo.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Views\Home\AddPartsTo.cshtml" />
     <None Include="Views\Home\CreatePart.cshtml" />
     <None Include="Views\Home\RemoveFieldFrom.cshtml" />
