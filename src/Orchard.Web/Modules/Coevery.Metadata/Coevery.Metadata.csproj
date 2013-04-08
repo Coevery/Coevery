@@ -172,6 +172,11 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Styles\formdesigner\images\alwaysdisplay12.gif" />
+    <Content Include="Styles\formdesigner\images\arrow.png" />
+    <Content Include="Styles\formdesigner\images\line.png" />
+    <Content Include="Styles\formdesigner\images\required12.gif" />
+    <Content Include="Styles\formdesigner\images\wrenchRemove.png" />
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
@@ -179,12 +184,13 @@
     <Content Include="Scripts\controllers\fieldlistcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\formdesigner\ContextMenu.js" />
+    <Content Include="Scripts\formdesigner\contextmenu.js" />
     <Content Include="Scripts\formdesigner\jsutils.js" />
-    <Content Include="Scripts\formdesigner\Linq.js" />
+    <Content Include="Scripts\formdesigner\linq.js" />
     <Content Include="Scripts\formdesigner\main.js" />
     <Content Include="Scripts\i18n\resources-locale_default.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
+    <Content Include="Styles\formdesigner\css\formdesigner.css" />
     <Content Include="Styles\Images\move.gif" />
     <Content Include="Styles\orchard-contenttypes-admin.css" />
     <Content Include="Views\FieldViewTemplate\List.cshtml" />
@@ -260,6 +266,7 @@
   <ItemGroup>
     <Content Include="Views\ViewTemplate\List.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

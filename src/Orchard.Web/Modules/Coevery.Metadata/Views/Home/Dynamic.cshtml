@@ -6,135 +6,9 @@
     Script.Require("FormDesignerLinq");
     Script.Require("FormDesignerContextMenu");
     Script.Require("FormDesignerMain");
+    
+    Style.Include("formdesigner/css/formdesigner.css");
 }
-<style>
-    form.entry {
-    }
-
-    [fd-cell] {
-        min-height: 30px;
-    }
-
-    .markedAbove {
-        border-top: 3px solid red;
-    }
-
-     .marked{
-        border-bottom: 3px solid red;
-    }
-
-    [fd-form] > .entry {
-        min-height: 200px;
-    }
-
-    .form-horizontal .row-fluid .control-group {
-        border-top: 0;
-    }
-
-    /*.form-horizontal .row-fluid {
-        border-top: 1px solid #ccc;
-    }*/
-
-    .form-label {
-        text-align: left;
-        padding-top: 5px;
-    }
-
-    .smallText {
-        font-size: 1em;
-        line-height: 1.4em;
-    }
-
-    .highlight {
-        background: #def5ff;
-    }
-
-    /*Form Designer*/
-    .sort-placeholder {
-        /*list-style: none;
-        background-color: white;*/
-        height: 1px;
-        width: 100%;
-        /*padding: 5px 5px 5px 5px;*/
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        border: 1px solid red;
-    }
-
-    .cell {
-        border: 1px dashed gray;
-        border-top-color: transparent;
-    }
-
-    .drop-highlight {
-        border-top: 1px solid red;
-    }
-
-    /*
- * right click context menu
- */
-    .context-menu {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-        .context-menu ul {
-            list-style-type: none;
-            float: left;
-            border: 1px solid #979797;
-            background: #f1f1f1 url(../../Images/line.png) 24px 0 repeat-y;
-            padding: 2px;
-            -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.6);
-            box-shadow: 2px 2px 2px rgba(0,0,0,.6);
-        }
-
-            .context-menu ul li {
-                clear: both;
-                height: 24px;
-                cursor: default;
-                line-height: 24px;
-                white-space: nowrap;
-                padding: 0 30px;
-            }
-
-                .context-menu ul li.sub {
-                    background-repeat: no-repeat;
-                    background-position: right 9px;
-                    background-image: url(../../Images/arrow.png);
-                }
-
-                .context-menu ul li:hover {
-                    background-color: #f1f3f6;
-                    border-radius: 3px;
-                    border: 1px solid #aecff7;
-                    height: 22px;
-                    line-height: 22px;
-                    background-position: right -8px;
-                    padding: 0 29px;
-                }
-
-                .context-menu ul li.disable {
-                    color: gray;
-                    cursor: default;
-                }
-
-                    .context-menu ul li.disable:hover {
-                        background-color: transparent;
-                        border: 1px solid transparent;
-                    }
-
-                    .context-menu ul li.disable.active {
-                        border-color: transparent;
-                        background: none;
-                    }
-
-            .context-menu ul ul {
-                display: none;
-                position: absolute;
-            }
-</style>
 <header id="main-header" class="page-header">
     <h1>Form Designer</h1>
 </header>
@@ -153,15 +27,16 @@
                 <section class="widget-content form-container">
                     <fieldset>
                         <legend>Layout</legend>
-                        <div fd-tools-section></div>
+                        <div fd-tools-section section-columns="1"></div>
+                        <div fd-tools-section section-columns="2"></div>
                     </fieldset>
                     <fieldset>
                         <legend>Form Tools</legend>
-                        <div fd-tools-control="text"></div>
-                        <div fd-tools-control="radio"></div>
-                        <div fd-tools-control="checkbox"></div>
-                        <div fd-tools-control="select"></div>
-                        <div fd-tools-control="textarea"></div>
+                        <div fd-tools-control field-type="text"></div>
+                        <div fd-tools-control field-type="radio"></div>
+                        <div fd-tools-control field-type="checkbox"></div>
+                        <div fd-tools-control field-type="select"></div>
+                        <div fd-tools-control field-type="textarea"></div>
                     </fieldset>
                 </section>
             </section>
