@@ -28,6 +28,12 @@ namespace Coevery.Metadata.ViewModels {
             get { return !string.IsNullOrWhiteSpace(_displayName) ? _displayName : Name.TrimEnd("Part").CamelFriendly(); }
             set { _displayName = value; }
         }
+
+        public string Description {
+            get { return Settings.ContainsKey("ContentPartSettings.Description") ? Settings["ContentPartSettings.Description"] : null; }
+            set { Settings["ContentPartSettings.Description"] = value;}
+        }
+
         public IEnumerable<TemplateViewModel> Templates { get; set; }
         public IEnumerable<EditPartFieldViewModel> Fields { get; set; }
         public SettingsDictionary Settings { get; set; }

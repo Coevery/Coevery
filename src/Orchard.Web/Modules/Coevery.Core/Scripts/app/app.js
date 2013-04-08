@@ -5,39 +5,40 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
 
         $stateProvider
             .state('List', {
-                url: '/{Moudle:[a-zA-Z]+}',
+                url: '/{Module:[a-zA-Z]+}',
                 templateUrl: function(params) {
-                    return params.Moudle + '/ViewTemplate/List';
+                    return "Coevery/" + params.Module + '/ViewTemplate/List/' + params.Module;
                 }
             })
             .state('Create', {
-                url: '/{Moudle:[a-zA-Z]+}/Create',
-                templateUrl: function(params) {
-                    return params.Moudle + '/ViewTemplate/Detail';
+                url: '/{Module:[a-zA-Z]+}/Create',
+                templateUrl: function (params) {
+                    return "Coevery/" + params.Module + '/ViewTemplate/Create/' + params.Module;
+                        return params.Module + '/ViewTemplate/Create';
                 }
             })
             .state('Detail', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
-                templateUrl: function(params) {
-                    return params.Moudle + '/ViewTemplate/Detail';
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
+                templateUrl: function (params) {
+                    return "Coevery/" + params.Module + '/ViewTemplate/Edit/' + params.Id;
                 }
             })
             .state('SubList', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}',
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}',
                 templateUrl: function(params) {
-                    return params.Moudle + '/' + params.SubModule + 'ViewTemplate/' + params.View;
+                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }
             })
             .state('SubCreate', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/Create',
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/Create',
                 templateUrl: function(params) {
-                    return params.Moudle + '/' + params.SubModule + 'ViewTemplate/' + params.View;
+                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }
             })
             .state('SubDetail', {
-                url: '/{Moudle:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/{SubId:[0-9a-zA-Z]+}',
+                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/{SubId:[0-9a-zA-Z]+}',
                 templateUrl: function(params) {
-                    return params.Moudle + '/' + params.SubModule + 'ViewTemplate/' + params.View;
+                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }
             });
     }])
@@ -45,4 +46,11 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
         ['$rootScope', '$state', '$stateParams',
             function($rootScope, $state, $stateParams) {
                 $rootScope.$state = $state;
+                $rootScope.$stateParams = $stateParams;
             }]);
+
+$(function() {
+    $('body').on("submit", 'form', function(event) {
+        event.preventDefault();
+    });
+});

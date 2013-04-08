@@ -13,6 +13,7 @@ namespace Coevery.Metadata.ViewModels {
     public class PartSelectionViewModel {
         public string PartName { get; set; }
         public string PartDisplayName { get; set; }
+        public string PartDescription { get;set; }
         public bool IsSelected { get; set; }
     }
 }

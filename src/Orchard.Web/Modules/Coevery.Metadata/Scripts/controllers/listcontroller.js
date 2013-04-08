@@ -4,8 +4,8 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
     $scope.mySelections = [];
     var metadata = MetadataContext($resource);
     var metadataGenerator = GenerateContext($resource);
-    var metadataColumnDefs = [{field: 'DisplayName',displayName: localize.getLocalizedString('DisplayName'),cellTemplate: cellTemplateString},
-        { field: 'IsEnabled', displayName: localize.getLocalizedString('IsEnabled') },
+    var metadataColumnDefs = [
+        { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName'), cellTemplate: cellTemplateString },
         { field: 'IsDeployed', displayName: localize.getLocalizedString('IsDeployed') }];
     
     $scope.gridOptions = {
@@ -35,16 +35,16 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
     };
 
     $scope.add = function() {
-        $state.transitionTo('Create', { Moudle: 'Metadata' });
+        $state.transitionTo('Create', { Module: 'Metadata' });
     };
 
     $scope.openFieldList = function() {
-        $state.transitionTo('SubList', { Moudle: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
+        $state.transitionTo('SubList', { Module: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
     };
 
-    $scope.edit = function() {
+    $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('Detail', { Moudle: 'Metadata', Id: $scope.mySelections[0].Name });
+            $state.transitionTo('Detail', { Module: 'Metadata', Id: $scope.mySelections[0].Name });
         }
     };
 
@@ -59,7 +59,6 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
     $scope.generate = function() {
         if ($scope.mySelections.length > 0)
         {
-            debugger;
             metadataGenerator.get({ name: $scope.mySelections[0].Name }, function () {
                 logger.success("Generate metadata successful.");
             }, function () {
@@ -71,3 +70,5 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
 
     $scope.getAllMetadata();
 }
+
+//@ sourceURL=Coevery.Metadata/listcontroller.js

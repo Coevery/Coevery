@@ -4,6 +4,7 @@
     Script.Require("MetadataController");
     
 }
+
 @Display.FootScripts()
 
 <header id="main-header" class="page-header">
@@ -41,7 +42,7 @@
                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="openFieldList()">
                             <i class="icol-book-open"></i>@T("Fields")
                         </button>
-                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="generate()">
+                         <button class="btn" ng-click="generate()">
                             <i class="icos-arrow-down"></i>@T("Generate")
                         </button>
                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">

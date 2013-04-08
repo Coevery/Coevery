@@ -30,16 +30,16 @@
     };
 
     $scope.exit = function () {
-        $state.transitionTo('List', { Moudle: 'Metadata' });
+        $state.transitionTo('List', { Module: 'Metadata' });
     };
     
     $scope.add = function () {
-        $state.transitionTo('SubCreate', { Moudle: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail' });
+        $state.transitionTo('SubCreate', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail' });
     };
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('SubDetail', { Moudle: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail', SubId: $scope.mySelections[0].Name });
+            $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail', SubId: $scope.mySelections[0].Name });
         }
     };
 

@@ -1,0 +1,113 @@
+@model Coevery.Metadata.ViewModels.EditTypeViewModel
+@{
+    Script.Require("MetadataContext");
+    Script.Require("MetadataDetailController");
+}
+@Display.FootScripts()
+
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Admin</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Metata</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Detail</a>
+        </li>
+    </ul>
+    <h1>Meta Detail <span>Metadata add/edit</span></h1>
+</header>
+
+<section id="main-content" ng-controller="MetadataDetailCtrl">
+    <div class="row-fluid">
+        <section class="span12 widget">
+            <header class="widget-header">
+                <span class="title"></span>
+            </header>
+            <section class="widget-content form-container">
+                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.ValidationSummary()
+                    <section class="control-group">
+                        <label class="control-label" for="DisplayName">@T("Display Name")</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                            <span class="hint">@T("Content Type Id: {0}", Model.Name)</span>
+                        </div>
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label" for="Name">@T("Content Type Id")</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "span12" })
+                            <span class="hint">@T("Technical name of the type.")</span>
+                        </div>
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label">Setting</label>
+                        <div class="controls">
+                            @{Html.RenderTemplates(Model.Templates); }
+                        </div>
+                    </section>
+                    <section class="form-actions">
+                        <input type="submit" value="Save" name="submit.Save" class="btn btn-primary">
+                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
+                    </section>
+                }
+            </section>
+        </section>
+    </div>
+</section>
+
+
+@using (Script.Foot())
+{
+<script type="text/javascript">
+//<![CDATA[
+    $(function(){
+        var $name = $("#@Html.FieldIdFor(m => m.Name)");
+        var $displayName = $("#@Html.FieldIdFor(m => m.DisplayName)");
+        var jsonUrl = "@Url.Action("ContentTypeName", "Admin", new RouteValueDictionary { { "Area", "Orchard.ContentTypes" } })";
+        var version = 0;
+
+        var nameAltered;
+        $name.keypress(function() {
+            nameAltered = true;
+        });
+        
+        var compute = function() {
+            // stop processing automatically if altered by the user
+            if(nameAltered) {
+                return true;
+            }
+
+            $.post(jsonUrl, {
+                    displayName: $displayName.val(),
+                    version: ++version,
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                },
+                function(data) {
+                    if(version == data.version) {
+                        $name.val(data.result);
+                    }
+                },
+                "json"
+            );
+        };
+        
+        //pull technical name input from tab order
+        $name.attr("tabindex", -1);
+        
+        $displayName.keyup(compute);
+        $displayName.blur(compute);
+    })
+//]]>
+</script>
+}

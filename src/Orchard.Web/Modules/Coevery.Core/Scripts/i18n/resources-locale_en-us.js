@@ -53,5 +53,19 @@
     {
         "key": "SourceLeadId",
         "value": "Source Lead"
-    }
+    },
+    /* Common*/
+     {
+         "key": "Id",
+         "value": "Id"
+     },
+      {
+          "key": "QuoteName",
+          "value": "QuoteName"
+      },
+     {
+         "key": "QuoteDate",
+         "value": "QuoteDate"
+     }
+    
 ];

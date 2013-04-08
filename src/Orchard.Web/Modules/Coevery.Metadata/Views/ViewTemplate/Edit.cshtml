@@ -1,0 +1,71 @@
+﻿@model Coevery.Metadata.ViewModels.EditTypeViewModel
+@{
+    Script.Require("MetadataContext");
+    Script.Require("MetadataDetailController");
+}
+@Display.FootScripts()
+
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Admin</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Metata</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Detail</a>
+        </li>
+    </ul>
+    <h1>Meta Detail <span>Metadata add/edit</span></h1>
+</header>
+
+<section id="main-content" ng-controller="MetadataDetailCtrl">
+    <div class="row-fluid">
+        <section class="span12 widget">
+            <header class="widget-header">
+                <span class="title"></span>
+            </header>
+            <section class="widget-content form-container">
+                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    // todo: come up with real itemtype definitions and locations for said definitions
+                    @Html.ValidationSummary()
+                    <section class="control-group">
+                        <label class="control-label" for="inputName">Name</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                            <span class="hint">@T("Content Type Id: {0}", Model.Name)</span>
+                        </div>
+                        @* todo: if we continue to go down the midrodata route, some helpers would be nice *@
+                        <meta itemprop="DisplayName" content="@Model.DisplayName" />
+                        @* has unintended consequences (renamging the type) - changing the name creates a new type of that name *@
+                        <meta itemprop="Id" content="@Model.Name" />
+                        @Html.HiddenFor(m => m.Name)
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label">Setting</label>
+                        <div class="controls">
+                            @{Html.RenderTemplates(Model.Templates); }
+                        </div>
+                    </section>
+
+                    <div class="manage-type">
+                        <h2>@T("Fields")</h2>
+                        @Html.EditorFor(m => m.Fields, "Fields", "")
+                    </div>
+                    <section class="form-actions">
+                        <input type="submit" value="Save" name="submit.Save" class="btn btn-primary">
+                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
+                    </section>
+                }
+            </section>
+        </section>
+    </div>
+</section>

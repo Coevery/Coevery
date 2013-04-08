@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 using Coevery.Metadata.Services;
-using Orchard.ContentManagement.MetaData;
 using Orchard.Localization;
 
 namespace Coevery.Metadata.Controllers
@@ -14,13 +10,13 @@ namespace Coevery.Metadata.Controllers
     public class GenerationController : ApiController
     {
         private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly ITypeDeployService _typeDeployServicer;
 
         public GenerationController(IContentDefinitionService contentDefinitionService,
-            IContentDefinitionManager contentDefinitionManager)
+            ITypeDeployService typeDeployServicer)
         {
             _contentDefinitionService = contentDefinitionService;
-            _contentDefinitionManager = contentDefinitionManager;
+            _typeDeployServicer = typeDeployServicer;
             T = NullLocalizer.Instance;
         }
 
@@ -28,7 +24,6 @@ namespace Coevery.Metadata.Controllers
      
         public virtual HttpResponseMessage Get(string name)
         {
-
             var typeViewModel = _contentDefinitionService.GetType(name);
             if (typeViewModel == null)
             {
@@ -41,7 +36,7 @@ namespace Coevery.Metadata.Controllers
 
             try
             {
-                bool suc = _contentDefinitionService.GenerateType(name);
+                bool suc = _typeDeployServicer.DeployType(name);
 
                 if (suc)
                 {
@@ -56,8 +51,6 @@ namespace Coevery.Metadata.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
-
-
         }
     }
 }

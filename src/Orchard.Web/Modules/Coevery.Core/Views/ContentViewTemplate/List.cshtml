@@ -1,0 +1,92 @@
+﻿@using System.Text
+@using Orchard.ContentManagement.MetaData.Models
+
+@{
+    Script.Require("CommonContext");
+    Script.Require("CommonListController");
+}
+
+@Display.FootScripts()
+
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+                                        <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Sales</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">@Model.DisplayName</a>
+        </li>
+    </ul>
+    <h1 id="main-heading">@Model.DisplayName <span>Display all @Model.DisplayName</span></h1>
+</header>
+
+<section id="main-content" ng-controller="CommonCtrl">
+    <div class="row-fluid">
+        <section class="span12 widget">
+            <header class="widget-header">
+                <span class="title">&nbsp;</span>
+            </header>
+            <section class="widget-content table-container dataTables_wrapper">
+                <section class="dt_header">
+                    <section class="btn-group">
+                        <button class="btn" ng-click="add()">
+                            <i class="icol-add"></i>@T("Add")
+                        </button>
+                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
+                            <i class="icol-page-white-edit"></i>@T("Edit")
+                        </button>
+                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
+                            <i class="icol-cross"></i>@T("Delete")
+                        </button>
+                        <button class="btn" ng-click="getAll()">
+                            <i class="icol-arrow-refresh"></i>@T("Refresh")
+                        </button>
+                    </section>
+                </section>
+
+                @Display(Model.Content)
+                @*                <section class="gridStyle" ng-grid="gridOptions"></section>*@
+            </section>
+        </section>
+    </div>
+</section>
+
+@{
+    Output.Write("<script> ");
+}
+   function getColumnDefs(localize)
+    {
+        var columnDefs = [
+        @{
+            ContentTypeDefinition typeDefinition = Model.TypeDifinition;
+            var userPart = typeDefinition.Parts.First(t => t.PartDefinition.Name == typeDefinition.Name);
+
+            int index = 0;
+            Output.Write("{ field: 'ContentId', displayName: localize.getLocalizedString('Id') },");
+            foreach (var filed in userPart.PartDefinition.Fields)
+            {
+                var colTemp = "{{ field: '{0}', displayName: localize.getLocalizedString('{0}') }},";
+                if (index == userPart.PartDefinition.Fields.Count() - 1)
+                {
+                    colTemp = "{{ field: '{0}', displayName: localize.getLocalizedString('{0}') }}";
+                }
+                string text = string.Format(colTemp, filed.Name);
+                Output.Write(text);
+                index++;
+
+            }
+        }
+        ];
+        return columnDefs;
+    }
+@{
+    Output.Write("</script> ");
+}
+
+
+

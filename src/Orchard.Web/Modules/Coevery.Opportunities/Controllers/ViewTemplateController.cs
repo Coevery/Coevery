@@ -7,28 +7,28 @@ using Orchard.ContentManagement;
 
 namespace Coevery.Leads.Controllers
 {
-    public class ViewTemplateController : Controller
-    {
-        private readonly IContentManager _contentManager;
+    //public class ViewTemplateController : Controller
+    //{
+    //    private readonly IContentManager _contentManager;
 
-        public ViewTemplateController(IContentManager contentManager)
-        {
-            _contentManager = contentManager;
-        }
+    //    public ViewTemplateController(IContentManager contentManager)
+    //    {
+    //        _contentManager = contentManager;
+    //    }
 
-        public ActionResult List()
-        {
-            return View();
-        }
+    //    public ActionResult List()
+    //    {
+    //        return View();
+    //    }
 
-        public ActionResult Detail()
-        {
-            var id = "Opportunity";
-            var contentItem = _contentManager.New(id);
+    //    public ActionResult Detail()
+    //    {
+    //        var id = "Opportunity";
+    //        var contentItem = _contentManager.New(id);
 
-            dynamic model = _contentManager.BuildEditor(contentItem);
+    //        dynamic model = _contentManager.BuildEditor(contentItem);
 
-            return View((object)model);
-        }
-    }
+    //        return View((object)model);
+    //    }
+    //}
 }
