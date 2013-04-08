@@ -22,14 +22,14 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                     return "Coevery/" + params.Module + '/ViewTemplate/Edit/' + params.Id;
                 }
             })
+            .state('SubCreate', {
+                        url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/Create',
+                        templateUrl: function (params) {
+                            return params.Module + '/' + params.SubModule + 'ViewTemplate/Create/' + params.Id;
+                        }
+            })
             .state('SubList', {
                 url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}',
-                templateUrl: function(params) {
-                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
-                }
-            })
-            .state('SubCreate', {
-                url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/Create',
                 templateUrl: function(params) {
                     return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View;
                 }

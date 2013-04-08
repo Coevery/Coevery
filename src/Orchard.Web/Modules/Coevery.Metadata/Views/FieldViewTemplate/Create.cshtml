@@ -1,5 +1,5 @@
 @using Orchard.Utility.Extensions
-@model Orchard.ContentTypes.ViewModels.AddFieldViewModel
+@model Coevery.Metadata.ViewModels.AddFieldViewModel
 
 @{
     
@@ -38,7 +38,8 @@
                 <span class="title"></span>
             </header>
             <section class="widget-content form-container">
-                @using (Html.BeginFormAntiForgeryPost())
+                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, 
+                    new { @class = "form-horizontal", @name="myForm",@ng_submit="save()" }))
                 {
                     @Html.ValidationSummary()
                     <section class="control-group">
@@ -61,11 +62,10 @@
                             @Html.DropDownListFor(m => m.FieldTypeName, new SelectList(Model.Fields.Select(x => new { x.FieldTypeName, DisplayName = x.FieldTypeName.CamelFriendly() }), "FieldTypeName", "DisplayName"))
                         </div>
                     </section>
-                    
 
                     <section class="form-actions">
                         <input type="submit" value="Save" class="btn btn-primary" ng-disabled="!myForm.$valid">
-                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
+                        <input type="button" value="Cancel" class="btn" ng-click="exit()" />
                     </section>
                 }
             </section>

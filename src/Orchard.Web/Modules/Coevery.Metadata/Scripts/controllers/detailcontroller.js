@@ -33,7 +33,7 @@
     };
 
     $scope.add = function () {
-        $state.transitionTo('SubCreate', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail' });
+        $state.transitionTo('SubCreate', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Create' });
     };
 
     $scope.edit = function () {
@@ -53,3 +53,5 @@
     };
     $scope.getAllField();
 }
+
+//@ sourceURL=Coevery.Metadata/detailcontroller.js
