@@ -1,8 +1,10 @@
-﻿@model Coevery.Metadata.ViewModels.FormDesignerViewModel
+﻿@using Coevery.Metadata.HtmlControlProviders
+@model Coevery.Metadata.ViewModels.FormDesignerViewModel
 @{
     Script.Require("jQuery");
     Script.Require("jQueryUI");
     Script.Require("angular");
+    Script.Require("angularResource");
     Script.Require("FormDesignerJsutils");
     Script.Require("FormDesignerLinq");
     Script.Require("FormDesignerContextMenu");
@@ -32,16 +34,15 @@
                         <fd-tools-section section-columns="2"></fd-tools-section>
                     </fieldset>
                     <fieldset>
-                        <legend>Form Tools</legend>
+                         <legend>@Model.TypeDefinition.DisplayName</legend>
                         @{
-                            string filedFormat = "<fd-tools-control field-type=\"{0}\" field-text =\"{1}\"></fd-tools-control>";
                             foreach (var filed in Model.ContentPart.PartDefinition.Fields)
                             {
-                                string filedType = filed.FieldDefinition.Name;
-                                string controlType = Model.GetControlType(filedType);
-                                Output.Write(string.Format(filedFormat, controlType, filed.DisplayName));
+                                //Temp:"<fd-tools-control field-type=\"{0}\" field-text =\"{1}\" {2}></fd-tools-control>";
+                                string controlDesc = Model.HtmlControlDescs[filed.Name];
+                                Output.Write(controlDesc);
                             }
-                        }
+                          }
                     </fieldset>
                 </section>
             </section>
