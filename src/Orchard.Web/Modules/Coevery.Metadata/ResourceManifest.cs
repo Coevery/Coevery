@@ -15,6 +15,8 @@ namespace Coevery.Metadata {
             manifest.DefineScript("FormDesignerContextMenu").SetUrl("formdesigner/contextmenu.js");
             manifest.DefineScript("FormDesignerJsutils").SetUrl("formdesigner/jsutils.js");
             manifest.DefineScript("FormDesignerLinq").SetUrl("formdesigner/linq.js");
+
+            manifest.DefineScript("UserViewListController").SetUrl("controllers/userviewlistcontroller.js");
         }
     }
 }

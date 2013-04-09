@@ -62,6 +62,10 @@
       <Private>True</Private>
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Orchard.Users\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\nhibernate\NHibernate.dll</HintPath>
@@ -130,6 +134,8 @@
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
+    <Compile Include="Controllers\UserViewController.cs" />
+    <Compile Include="Controllers\UserViewTemplateController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
@@ -183,6 +189,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\controllers\editcontroller.js" />
+    <Content Include="Scripts\controllers\userviewdetailcontroller.js" />
+    <Content Include="Scripts\controllers\userviewlistcontroller.js" />
     <Content Include="Styles\formdesigner\images\alwaysdisplay12.gif" />
     <Content Include="Styles\formdesigner\images\arrow.png" />
     <Content Include="Styles\formdesigner\images\line.png" />
@@ -230,6 +238,7 @@
     <Content Include="Views\EditorTemplates\TypeParts.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\ViewTemplate\Create.cshtml" />
+    <Content Include="Views\UserViewTemplate\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config">
@@ -244,6 +253,10 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
+      <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
+      <Name>Orchard.Projections</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Themes\Orchard.Themes.csproj">
       <Project>{CDE24A24-01D3-403C-84B9-37722E18DFB7}</Project>

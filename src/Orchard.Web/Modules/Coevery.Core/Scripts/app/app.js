@@ -10,6 +10,7 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
                     return "Coevery/" + params.Module + '/ViewTemplate/List/' + params.Module;
                 }
             })
+        
             .state('Create', {
                 url: '/{Module:[a-zA-Z]+}/Create',
                 templateUrl: function(params) {
