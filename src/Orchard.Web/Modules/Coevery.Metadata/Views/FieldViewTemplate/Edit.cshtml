@@ -1,0 +1,81 @@
+﻿@using Orchard.Utility.Extensions
+@model Coevery.Metadata.ViewModels.EditPartFieldViewModel
+@{
+    
+    Script.Require("MetadataContext");
+    Script.Require("FieldDetailCtrl");
+}
+@Display.FootScripts()
+
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Admin</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Metata</a>
+        </li>
+        <li>
+            <a href="#">Fields</a>
+        </li>
+        <li>
+            <a href="#">Detail</a>
+        </li>
+    </ul>
+    <h1>Field Detail <span>Field add/edit</span></h1>
+</header>
+
+<section id="main-content" ng-controller="FieldDetailCtrl">
+    <div class="row-fluid">
+        <section class="span12 widget">
+            <header class="widget-header">
+                <span class="title"></span>
+            </header>
+            <section class="widget-content form-container">
+                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+                    new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
+                {
+                    @Html.ValidationSummary()
+                    <section class="control-group">
+                        <label class="control-label" for="Name">@T("Technical Name")</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "span12",disabled="disabled" })
+                            <span class="hint">@T("Technical name of the field.")</span>
+                             @Html.HiddenFor(m => m.Name)
+                        </div>
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label"  for="FieldTypeName">@T("Field Type")</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.FieldDefinition.Name, new { @class = "span12",disabled="disabled" })
+                            @*@Html.DropDownListFor(m => m.FieldTypeName, new SelectList(Model.Fields.Select(x => new { x.FieldTypeName, DisplayName = x.FieldTypeName.CamelFriendly() }), "FieldTypeName", "DisplayName"))*@
+                        </div>
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label" for="DisplayName">@T("Display Name")</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus" })
+                            <span class="hint">@T("Name of the field as it will be displayed in screens.")</span>
+                        </div>
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label" for="Name">Setting</label>
+                        <div class="controls">
+                            @{Html.RenderTemplates(Model.Templates);}
+                        </div>
+                    </section>
+
+                    <section class="form-actions">
+                        <input type="submit" value="Save" class="btn btn-primary" ng-disabled="!myForm.$valid">
+                        <input type="button" value="Cancel" class="btn" ng-click="exit()" />
+                    </section>
+                }
+            </section>
+        </section>
+    </div>
+</section>
