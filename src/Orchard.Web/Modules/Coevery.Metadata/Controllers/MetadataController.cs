@@ -24,7 +24,7 @@ namespace Coevery.Metadata.Controllers {
 
         // GET api/metadata/metadata
         public IEnumerable<object> Get() {
-            var metadataTypes = _contentDefinitionService.GetTypes();
+            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
@@ -34,7 +34,7 @@ namespace Coevery.Metadata.Controllers {
 
         // GET api/metadata/metadata
         public object Get(string name) {
-            var metadataTypes = _contentDefinitionService.GetTypes();
+            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()

@@ -18,6 +18,7 @@ namespace Coevery.Metadata.Controllers {
     {
         private IContentDefinitionManager _contentDefinitionManager;
         private IContentDefinitionService _contentDefinitionService;
+
         public HomeController(IOrchardServices orchardServices,
             IContentDefinitionManager contentDefinitionManager,
             IContentDefinitionService contentDefinitionService)

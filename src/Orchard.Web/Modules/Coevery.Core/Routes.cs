@@ -1,39 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
 using Orchard.Environment.ShellBuilders.Models;
 using Orchard.Mvc.Routes;
+using Orchard.ContentManagement.MetaData;
 
 namespace Coevery.Core
 {
-    public class AreaRoutes : IRouteProvider
-    {
+    public class Routes : IRouteProvider {
         private readonly ShellBlueprint _blueprint;
-        public AreaRoutes(ShellBlueprint blueprint)
-        {
+        private readonly IContentDefinitionManager _contentDefinitionManager;
+
+        public Routes(ShellBlueprint blueprint, IContentDefinitionManager contentDefinitionManager) {
             _blueprint = blueprint;
+            _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public void GetRoutes(ICollection<RouteDescriptor> routes)
-        {
+        public void GetRoutes(ICollection<RouteDescriptor> routes) {
 
             foreach (var routeDescriptor in GetRoutes())
                 routes.Add(routeDescriptor);
         }
 
-
-
-        public IEnumerable<RouteDescriptor> GetRoutes()
-        {
+        public IEnumerable<RouteDescriptor> GetRoutes() {
             var displayPathsPerArea = _blueprint.Controllers.GroupBy(
                 x => x.AreaName,
                 x => x.Feature.Descriptor.Extension);
-            List<RouteDescriptor> coeveryRoutes = new List<RouteDescriptor>();
-            var route = new RouteDescriptor
-            {
+
+            yield return new RouteDescriptor {
                 Route = new Route(
                     "Coevery",
                     new RouteValueDictionary {
@@ -47,24 +46,15 @@ namespace Coevery.Core
                     },
                     new MvcRouteHandler())
             };
-            coeveryRoutes.Add(route);
 
-            coeveryRoutes.Add(new RouteDescriptor
-            {
-                Priority = -11,
-                Route = new CoreRoute(new MvcRouteHandler())
-            });
-
-            foreach (var item in displayPathsPerArea)
-            {
+            foreach (var item in displayPathsPerArea) {
                 var areaName = item.Key;
                 var extensionDescriptor = item.Distinct().Single();
                 var displayPath = extensionDescriptor.Path;
                 SessionStateBehavior defaultSessionState;
                 Enum.TryParse(extensionDescriptor.SessionState, true /*ignoreCase*/, out defaultSessionState);
 
-                coeveryRoutes.Add(new RouteDescriptor
-                {
+                yield return new RouteDescriptor {
                     Priority = -10,
                     SessionState = defaultSessionState,
                     Route = new Route(
@@ -80,10 +70,30 @@ namespace Coevery.Core
                             {"area", areaName}
                         },
                         new MvcRouteHandler())
-                });
+                };
             }
-            return coeveryRoutes;
+
+            var contentDefinitions = _contentDefinitionManager.ListTypeDefinitions();
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            foreach (var definition in contentDefinitions) {
+                var areaName = pluralService.Pluralize(definition.Name);
+                yield return new RouteDescriptor {
+                    Priority = -11,
+                    Route = new CoreRoute(new Route(
+                                              "Coevery/" + areaName + "/{controller}/{action}/{id}",
+                                              new RouteValueDictionary {
+                                                  {"area", areaName},
+                                                  {"controller", "home"},
+                                                  {"action", "index"},
+                                                  {"id", ""}
+                                              },
+                                              new RouteValueDictionary(),
+                                              new RouteValueDictionary {
+                                                  {"area", areaName}
+                                              },
+                                              new MvcRouteHandler()))
+                };
+            }
         }
-       
     }
 }

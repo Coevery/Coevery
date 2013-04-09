@@ -8,6 +8,7 @@ using Orchard.ContentManagement.MetaData.Models;
 namespace Coevery.Metadata.Services {
     public interface IContentDefinitionService : IDependency {
         IEnumerable<EditTypeViewModel> GetTypes();
+        IEnumerable<EditTypeViewModel> GetUserDefinedTypes();
         EditTypeViewModel GetType(string name);
         ContentTypeDefinition AddType(string name, string displayName);
         void AlterType(EditTypeViewModel typeViewModel, IUpdateModel updater);
