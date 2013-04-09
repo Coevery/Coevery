@@ -6,13 +6,10 @@ namespace Orchard.ContentManagement.MetaData
 {
     public static class ContentDefinitionServiceExtension
     {
-        public static IEnumerable<ContentTypeDefinition> ListUserTypeDefinitions(this IContentDefinitionManager contentDefinitionManager)
-        {
-            var contentyTypes = contentDefinitionManager.ListTypeDefinitions();
-            var typeNames = contentyTypes.Select(ctd => ctd.Name);
+        public static IEnumerable<ContentTypeDefinition> ListUserDefinedTypeDefinitions(this IContentDefinitionManager contentDefinitionManager) {
+            var contentTypes = contentDefinitionManager.ListTypeDefinitions();
             var parts = contentDefinitionManager.ListPartDefinitions();
-            var userParts = parts.Where(cpd => typeNames.Contains(cpd.Name));
-            return contentyTypes.Where(c => userParts.Any(u => u.Name == c.Name));
+            return contentTypes.Where(t => parts.Any(p => p.Name == t.Name));
         }
     }
 }

@@ -47,6 +47,11 @@ namespace Coevery.Metadata.Services
             return _contentDefinitionManager.ListTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
         }
 
+        public IEnumerable<EditTypeViewModel> GetUserDefinedTypes()
+        {
+            return _contentDefinitionManager.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
+        }
+
         public EditTypeViewModel GetType(string name)
         {
             var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(name);
