@@ -66,6 +66,8 @@
     <Content Include="Scripts\angular-ui-states.js" />
     <Content Include="Scripts\angular-ui-states.min.js" />
     <Content Include="Scripts\localize.js" />
+    <Content Include="Scripts\ng-grid.debug.js" />
+    <Content Include="Scripts\ng-grid.min.js" />
     <Content Include="Styles\images\glyphicons-halflings-white.png" />
     <Content Include="Styles\images\glyphicons-halflings.png" />
     <Content Include="Styles\jquery.pnotify.css" />
