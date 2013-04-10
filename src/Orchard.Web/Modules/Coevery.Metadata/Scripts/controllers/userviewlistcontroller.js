@@ -1,8 +1,8 @@
 ﻿UserViewCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource'];
 
 function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource) {
-    var moduleName = 'UserView';
-    var module = UserViewContext($rootScope, $resource);
+    var moduleName = 'Projection';
+    var module = UserViewContext($resource);
     var columnDefs = getColumnDefs(localize);
     $scope.mySelections = [];
 
@@ -53,4 +53,4 @@ function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource) {
     $scope.getAll();
 }
 
-//@ sourceURL=Coevery.Core/listcontroller.js
+//@ sourceURL=Coevery.Metadata/userviewlistcontroller.js

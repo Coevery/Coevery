@@ -15,7 +15,23 @@ namespace Coevery.Metadata.Controllers
         {
             _contentManager = contentManager;
         }
-        public IEnumerable<object> Get(string id)
+
+        public IEnumerable<JObject> Get()
+        {
+            List<JObject> re = new List<JObject>();
+            var projections = _contentManager.Query<ProjectionPart>().List();
+            foreach (var projectionPart in projections)
+            {
+                JObject reObJ = new JObject();
+                reObJ["ContentId"] = projectionPart.Id;
+                reObJ["Name"] = "--";
+                reObJ["DisplayName"] = projectionPart.As<TitlePart>().Title;
+                re.Add(reObJ);
+            }
+            return re;
+        }
+
+        public IEnumerable<JObject> Get(string id)
         {
             List<JObject> re = new List<JObject>();
              var projections = _contentManager.Query<ProjectionPart>().List();
@@ -23,8 +39,8 @@ namespace Coevery.Metadata.Controllers
             {
                JObject reObJ = new JObject();
                 reObJ["ContentId"] = projectionPart.Id;
-                reObJ["Name"] = string.Empty;
-                reObJ["DisPlayName"] = projectionPart.As<TitlePart>().Title;
+                reObJ["Name"] = "--";
+                reObJ["DisplayName"] = projectionPart.As<TitlePart>().Title;
                 re.Add(reObJ);
             }
             return re;

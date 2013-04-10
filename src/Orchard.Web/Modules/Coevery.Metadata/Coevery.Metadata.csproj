@@ -135,7 +135,7 @@
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
     <Compile Include="Controllers\UserViewController.cs" />
-    <Compile Include="Controllers\UserViewTemplateController.cs" />
+    <Compile Include="Controllers\ProjectionViewTemplateController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
@@ -156,10 +156,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\IPlacementService.cs" />
+    <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\IStereotypesProvider.cs" />
     <Compile Include="Services\ITableSchemaManager.cs" />
     <Compile Include="Services\ITypeDeployService.cs" />
     <Compile Include="Services\PlacementService.cs" />
+    <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="Services\StereotypeService.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
     <Compile Include="Settings\DynamicTypeSettings.cs" />
@@ -180,6 +182,7 @@
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
     <Compile Include="ViewModels\FormDesignerViewModel.cs" />
     <Compile Include="ViewModels\ListContentPartsViewModel.cs" />
+    <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
     <Compile Include="ViewModels\RemoveFieldViewModel.cs" />
     <Compile Include="ViewModels\RemovePartViewModel.cs" />
     <Compile Include="ViewModels\CreateTypeViewModel.cs" />
@@ -238,7 +241,8 @@
     <Content Include="Views\EditorTemplates\TypeParts.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\ViewTemplate\Create.cshtml" />
-    <Content Include="Views\UserViewTemplate\List.cshtml" />
+    <Content Include="Views\ProjectionViewTemplate\List.cshtml" />
+    <Content Include="Views\ProjectionViewTemplate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config">
@@ -253,6 +257,10 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
+      <Project>{642A49D7-8752-4177-80D6-BFBBCFAD3DE0}</Project>
+      <Name>Orchard.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
       <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
