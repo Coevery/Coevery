@@ -61,8 +61,7 @@ namespace Coevery.Metadata.Controllers
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
-        public ActionResult EditPost(EditPartFieldViewModel viewModel, string id)
-        {
+        public ActionResult EditPost(EditPartFieldViewModel viewModel, string id) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
                 return new HttpUnauthorizedResult();
 
@@ -70,8 +69,7 @@ namespace Coevery.Metadata.Controllers
                 return HttpNotFound();
 
             var partViewModel = _contentDefinitionService.GetPart(id);
-            if (partViewModel == null)
-            {
+            if (partViewModel == null) {
                 return HttpNotFound();
             }
 
@@ -81,13 +79,11 @@ namespace Coevery.Metadata.Controllers
             // remove extra spaces
             viewModel.DisplayName = viewModel.DisplayName.Trim();
 
-            if (String.IsNullOrWhiteSpace(viewModel.DisplayName))
-            {
+            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
             }
 
-            if (partViewModel.Fields.Any(t => t.Name != viewModel.Name && String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase)))
-            {
+            if (partViewModel.Fields.Any(t => t.Name != viewModel.Name && String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase))) {
                 ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
             }
 
@@ -101,15 +97,14 @@ namespace Coevery.Metadata.Controllers
 
             var field = _contentDefinitionManager.GetPartDefinition(id).Fields.FirstOrDefault(x => x.Name == viewModel.Name);
 
-            if (field == null)
-            {
+            if (field == null) {
                 return HttpNotFound();
             }
 
             field.DisplayName = viewModel.DisplayName;
             _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
 
-            _contentDefinitionService.AlterType(typeViewModel, this,viewModel.Name);
+            _contentDefinitionService.AlterField(typeViewModel.Name, viewModel, this);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

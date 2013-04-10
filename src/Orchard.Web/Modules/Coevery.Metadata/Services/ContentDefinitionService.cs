@@ -110,12 +110,7 @@ namespace Coevery.Metadata.Services
             return contentTypeDefinition;
         }
 
-        public void AlterType(EditTypeViewModel typeViewModel, IUpdateModel updater)
-        {
-            AlterType(typeViewModel, updater,string.Empty);
-        }
-
-        public void AlterType(EditTypeViewModel typeViewModel, IUpdateModel updateModel, string fieldName)
+        public void AlterType(EditTypeViewModel typeViewModel, IUpdateModel updateModel)
         {
             var updater = new Updater(updateModel);
             _contentDefinitionManager.AlterTypeDefinition(typeViewModel.Name, typeBuilder =>
@@ -147,11 +142,10 @@ namespace Coevery.Metadata.Services
                         foreach (var field in partViewModel.PartDefinition.Fields)
                         {
                             var fieldViewModel = field;
-                            if (!string.IsNullOrEmpty(fieldName) && fieldViewModel.Name != fieldName) {
-                                // enable updater to be aware of changing field prefix
-                                updater._prefix = secondHalf =>
+
+                            // enable updater to be aware of changing field prefix
+                            updater._prefix = secondHalf =>
                                 string.Format("{0}.{1}.{2}", fieldFirstHalf, fieldViewModel.Prefix, secondHalf);
-                            }
                             // allow extensions to alter partField configuration
                             partBuilder.WithField(fieldViewModel.Name, partFieldBuilder =>
                             {
@@ -168,20 +162,10 @@ namespace Coevery.Metadata.Services
                         foreach (var field in typeViewModel.Fields)
                         {
                             var fieldViewModel = field;
-                            if (!string.IsNullOrEmpty(fieldName)) {
-                                if (fieldViewModel.Name == fieldName) {
-                                    // enable updater to be aware of changing field prefix
-                                    updater._prefix = secondHalf => secondHalf;
-                                }
-                                else {
-                                    continue;
-                                }
-                            }
-                            else {
-                                // enable updater to be aware of changing field prefix
-                                updater._prefix = secondHalf =>
-                                    string.Format("{0}.{1}", fieldViewModel.Prefix, secondHalf);
-                            }
+
+                            // enable updater to be aware of changing field prefix
+                            updater._prefix = secondHalf =>
+                                string.Format("{0}.{1}", fieldViewModel.Prefix, secondHalf);
 
                             // allow extensions to alter partField configuration
                             partBuilder.WithField(fieldViewModel.Name, partFieldBuilder =>
@@ -189,6 +173,20 @@ namespace Coevery.Metadata.Services
                                 fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater);
                             });
                         }
+                    });
+                }
+            });
+        }
+
+        public void AlterField(string typeName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel) {
+            var updater = new Updater(updateModel);
+            updater._prefix = secondHalf => secondHalf;
+            _contentDefinitionManager.AlterPartDefinition(typeName, partBuilder => {
+
+                // allow extensions to alter partField configuration
+                if (fieldViewModel != null) {
+                    partBuilder.WithField(fieldViewModel.Name, partFieldBuilder => {
+                        fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater);
                     });
                 }
             });
