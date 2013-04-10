@@ -258,7 +258,7 @@
     <Content Include="Views\FormDesignerViewTemplate\Dynamic.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FieldViewTemplate\Detail.cshtml" />
+    <Content Include="Views\FieldViewTemplate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ViewTemplate\Edit.cshtml" />

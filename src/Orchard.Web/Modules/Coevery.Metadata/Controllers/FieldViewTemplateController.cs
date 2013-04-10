@@ -4,23 +4,29 @@ using System.Net;
 using System.Web.Mvc;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
+using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard;
+using Orchard.Core.Contents.Controllers;
 using Orchard.Localization;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 
 namespace Coevery.Metadata.Controllers
 {
-    public class FieldViewTemplateController : Controller
+    public class FieldViewTemplateController : Controller, IUpdateModel
     {
         private readonly IContentDefinitionService _contentDefinitionService;
-
+        private readonly IContentDefinitionManager _contentDefinitionManager;
         public FieldViewTemplateController(
             IOrchardServices orchardServices,
-            IContentDefinitionService contentDefinitionService) {
+            IContentDefinitionService contentDefinitionService,
+            IContentDefinitionManager contentDefinitionManager)
+        {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
+            _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
         }
 
@@ -32,12 +38,79 @@ namespace Coevery.Metadata.Controllers
             return View();
         }
 
-        public ActionResult Detail()
+        public ActionResult Edit(string id, string subId)
         {
-            return View();
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
+                return new HttpUnauthorizedResult();
+
+            var typeViewModel = _contentDefinitionService.GetType(id);
+            if (typeViewModel == null)
+            {
+                return HttpNotFound();
+            }
+
+            var fieldViewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == subId);
+
+            if (fieldViewModel == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(fieldViewModel);
         }
 
-        public ActionResult Create(string id) {
+        [HttpPost, ActionName("Edit")]
+        [FormValueRequired("submit.Save")]
+        public ActionResult EditPost(EditPartFieldViewModel viewModel, string id) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
+                return new HttpUnauthorizedResult();
+
+            if (viewModel == null)
+                return HttpNotFound();
+
+            var partViewModel = _contentDefinitionService.GetPart(id);
+            if (partViewModel == null) {
+                return HttpNotFound();
+            }
+
+            // prevent null reference exception in validation
+            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
+
+            // remove extra spaces
+            viewModel.DisplayName = viewModel.DisplayName.Trim();
+
+            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
+                ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
+            }
+
+            if (partViewModel.Fields.Any(t => t.Name != viewModel.Name && String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase))) {
+                ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
+            }
+
+            var typeViewModel = _contentDefinitionService.GetType(id);
+            if (!ModelState.IsValid) {
+                string displayName = viewModel.DisplayName;
+                viewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == viewModel.Name);
+                viewModel.DisplayName = displayName;
+                return View(viewModel);
+            }
+
+            var field = _contentDefinitionManager.GetPartDefinition(id).Fields.FirstOrDefault(x => x.Name == viewModel.Name);
+
+            if (field == null) {
+                return HttpNotFound();
+            }
+
+            field.DisplayName = viewModel.DisplayName;
+            _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
+
+            _contentDefinitionService.AlterField(typeViewModel.Name, viewModel, this);
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        public ActionResult Create(string id)
+        {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
@@ -143,6 +216,16 @@ namespace Coevery.Metadata.Controllers
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties)
+        {
+            return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);
+        }
+
+        void IUpdateModel.AddModelError(string key, LocalizedString errorMessage)
+        {
+            ModelState.AddModelError(key, errorMessage.ToString());
         }
     }
 }

@@ -178,6 +178,20 @@ namespace Coevery.Metadata.Services
             });
         }
 
+        public void AlterField(string typeName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel) {
+            var updater = new Updater(updateModel);
+            updater._prefix = secondHalf => secondHalf;
+            _contentDefinitionManager.AlterPartDefinition(typeName, partBuilder => {
+
+                // allow extensions to alter partField configuration
+                if (fieldViewModel != null) {
+                    partBuilder.WithField(fieldViewModel.Name, partFieldBuilder => {
+                        fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater);
+                    });
+                }
+            });
+        }
+
         public void RemoveType(string name, bool deleteContent)
         {
 

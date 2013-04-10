@@ -1,12 +1,10 @@
 /**
  * State-based routing for AngularJS
- * @version v0.0.1 - 2013-03-20
- * @link 
+ * @version v0.0.1 - 2013-04-06
+ * @link http://angular-ui.github.com/
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
-
 (function (window, angular, undefined) {
-
 /*jshint globalstrict:true*/
 /*global angular:false*/
 'use strict';
@@ -395,7 +393,8 @@ angular.module('ui.util').provider('$urlMatcherFactory', $UrlMatcherFactory);
 
 $UrlRouterProvider.$inject = ['$urlMatcherFactoryProvider'];
 function $UrlRouterProvider(  $urlMatcherFactory) {
-  var rules = [], otherwise = null;
+  var rules = [], 
+      otherwise = null;
 
   // Returns a string that is a prefix of all strings matching the RegExp
   function regExpPrefix(re) {
@@ -1002,5 +1001,4 @@ function $RouteProvider(  $stateProvider,    $urlRouterProvider) {
 angular.module('ui.compat')
   .provider('$route', $RouteProvider)
   .directive('ngView', $ViewDirective);
-
 })(window, window.angular);

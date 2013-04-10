@@ -39,7 +39,7 @@
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail', SubId: $scope.mySelections[0].Name });
+            $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Edit', SubId: $scope.mySelections[0].Name });
         }
     };
 

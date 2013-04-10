@@ -4,7 +4,7 @@
     var metadata = MetadataContext($resource);
     $scope.mySelections = [];
     var fieldColumnDefs = [{ field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') },
-                           { field: 'Name', displayName: localize.getLocalizedString('FieldTypeDisplayName') }];
+                           { field: 'FieldType', displayName: localize.getLocalizedString('FieldTypeDisplayName') }];
 
     $scope.gridOptions = {
         data: 'myData',
@@ -38,7 +38,7 @@
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Detail', SubId: $scope.mySelections[0].Name });
+            $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Edit', SubId: $scope.mySelections[0].Name });
         }
     };
 

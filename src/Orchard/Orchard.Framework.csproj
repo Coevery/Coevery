@@ -154,6 +154,8 @@
     <Compile Include="ContentManagement\Aspects\ILocalizableAspect.cs" />
     <Compile Include="ContentManagement\ContentIdentity.cs" />
     <Compile Include="ContentManagement\DefaultHqlQuery.cs" />
+    <Compile Include="ContentManagement\FieldStorage\ContentPartFieldStorage\DefaultContentPartFieldStorageProvider.cs" />
+    <Compile Include="ContentManagement\FieldStorage\ContentPartFieldStorage\DefaultCotentPartFieldStorage.cs" />
     <Compile Include="ContentManagement\Handlers\UpdateContentContext.cs" />
     <Compile Include="ContentManagement\IHqlExpression.cs" />
     <Compile Include="ContentManagement\IHqlQuery.cs" />
