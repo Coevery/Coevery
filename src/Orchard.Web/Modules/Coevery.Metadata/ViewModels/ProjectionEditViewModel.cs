@@ -9,6 +9,12 @@ namespace Coevery.Metadata.ViewModels
 {
     public class ProjectionEditViewModel
     {
+        public ProjectionEditViewModel()
+        {
+            QueryViewModel = new AdminEditViewModel();
+            LayoutViewModel = new LayoutEditViewModel();
+            AllFields = new List<PropertyDescriptor>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }

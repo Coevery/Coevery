@@ -13,7 +13,8 @@ namespace Coevery.Metadata.Services
     {
         ProjectionEditViewModel CreateTempProjection(string entityType);
         AdminEditViewModel GetQueryViewModel(QueryPart query);
-
         ProjectionEditViewModel GetProjectionViewModel(int id);
+
+        bool EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
     }
 }

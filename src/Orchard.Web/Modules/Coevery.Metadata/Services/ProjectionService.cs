@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Coevery.Metadata.ViewModels;
+using FluentNHibernate;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Core.Title.Models;
@@ -21,6 +22,7 @@ using Orchard.Projections.Services;
 using Orchard.Projections.ViewModels;
 using Orchard.Settings;
 using Orchard.UI.Notify;
+using Orchard.Utility;
 
 namespace Coevery.Metadata.Services
 {
@@ -307,5 +309,43 @@ namespace Coevery.Metadata.Services
             return viewModel;
         }
 
+
+
+        public bool EditPost(int id, ProjectionEditViewModel viewModel,IEnumerable<string> pickedFileds )
+        {
+            var projectionItem = _contentManager.Get(id, VersionOptions.Latest);
+            var projectionPart = projectionItem.As<ProjectionPart>();
+            var queryId = projectionPart.Record.QueryPartRecord.Id;
+            var queryItem = _contentManager.Get(queryId, VersionOptions.Latest);
+            var queryPart = queryItem.As<QueryPart>();
+
+            //Post DisplayName
+            projectionItem.As<TitlePart>().Title = viewModel.DisplayName;
+           
+
+            //Post Selected Fields
+            LayoutRecord layoutRecord = projectionPart.Record.LayoutRecord;
+            layoutRecord.Properties.Clear();
+
+            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
+            string category = queryPart.Name + "ContentFields";
+
+            foreach (var property in pickedFileds)
+            {
+                var fieldDescpritor = allFields.FirstOrDefault(t => t.Name.Text == property);
+                if (fieldDescpritor == null)
+                {
+                    throw  new Exception("selected field not found:" + property);
+                }
+               var propertyRecord = new PropertyRecord
+                {
+                    Category = category,
+                    Type = fieldDescpritor.Type,
+                    Position = layoutRecord.Properties.Count
+                };
+               layoutRecord.Properties.Add(propertyRecord);
+            }
+            return true;
+        }
     }
 }

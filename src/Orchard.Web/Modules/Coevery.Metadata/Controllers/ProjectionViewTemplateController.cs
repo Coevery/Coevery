@@ -78,9 +78,9 @@ namespace Coevery.Metadata.Controllers
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
-        public ActionResult EditPOST(string id,ProjectionEditViewModel viewModel,IEnumerable<string> picklist, string returnUrl)
+        public ActionResult EditPOST(int id,ProjectionEditViewModel viewModel,IEnumerable<string> picklist, string returnUrl)
         {
-           
+           bool suc = _projectionService.EditPost(id, viewModel, picklist);
             return new EmptyResult();
         }
        
