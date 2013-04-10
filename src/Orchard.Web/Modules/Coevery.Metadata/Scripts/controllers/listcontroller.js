@@ -38,10 +38,6 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
         $state.transitionTo('Create', { Module: 'Metadata' });
     };
 
-    $scope.openFieldList = function() {
-        $state.transitionTo('SubList', { Module: 'Metadata', Id: $scope.mySelections[0].Name, SubModule: 'Field', View: 'List' });
-    };
-
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
             $state.transitionTo('Detail', { Module: 'Metadata', Id: $scope.mySelections[0].Name });
@@ -58,7 +54,7 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
 
     $scope.generate = function() {
         if ($scope.mySelections.length > 0) {
-            metadataGenerator.get({ name: $scope.mySelections[0].Name }, function() {
+            metadataGenerator.post({ name: $scope.mySelections[0].Name }, function() {
                 logger.success("Generate metadata successful.");
             }, function() {
                 logger.error("Failed to Generate the metadata.");

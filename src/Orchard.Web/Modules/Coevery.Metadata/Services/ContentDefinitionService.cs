@@ -47,6 +47,11 @@ namespace Coevery.Metadata.Services
             return _contentDefinitionManager.ListTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
         }
 
+        public IEnumerable<EditTypeViewModel> GetUserDefinedTypes()
+        {
+            return _contentDefinitionManager.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
+        }
+
         public EditTypeViewModel GetType(string name)
         {
             var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(name);
@@ -168,6 +173,20 @@ namespace Coevery.Metadata.Services
                                 fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater);
                             });
                         }
+                    });
+                }
+            });
+        }
+
+        public void AlterField(string typeName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel) {
+            var updater = new Updater(updateModel);
+            updater._prefix = secondHalf => secondHalf;
+            _contentDefinitionManager.AlterPartDefinition(typeName, partBuilder => {
+
+                // allow extensions to alter partField configuration
+                if (fieldViewModel != null) {
+                    partBuilder.WithField(fieldViewModel.Name, partFieldBuilder => {
+                        fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater);
                     });
                 }
             });

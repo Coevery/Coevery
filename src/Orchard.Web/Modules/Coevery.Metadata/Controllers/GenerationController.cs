@@ -21,8 +21,8 @@ namespace Coevery.Metadata.Controllers
         }
 
         public Localizer T { get; set; }
-     
-        public virtual HttpResponseMessage Get(string name)
+
+        public virtual HttpResponseMessage Post(string name)
         {
             var typeViewModel = _contentDefinitionService.GetType(name);
             if (typeViewModel == null)
@@ -36,19 +36,15 @@ namespace Coevery.Metadata.Controllers
 
             try
             {
-                bool suc = _typeDeployServicer.DeployType(name);
+                bool successful = _typeDeployServicer.DeployType(name);
 
-                if (suc)
+                if (successful)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
-                }
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
         }
