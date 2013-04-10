@@ -1,0 +1,6 @@
+﻿@{
+    string templateName = @Model.ContentField.Name + ".html";
+}
+<script type="text/ng-template" id="@templateName">
+    @Model.Metadata.ChildContent
+</script>
