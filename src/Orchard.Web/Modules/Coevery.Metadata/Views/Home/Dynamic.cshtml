@@ -19,7 +19,16 @@
 <section id="main-content">
     <div class="row-fluid">
         <div id="form-designer" class="span8">
-            <fd-form></fd-form>
+            <fd-form>
+                @*<fd-section section-columns="2">
+                    <fd-row>
+                        <fd-column></fd-column>
+                        <fd-column>
+                            <fd-field field-type="text" field-display-name="Test"></fd-field>
+                        </fd-column>
+                    </fd-row>
+                </fd-section>*@
+            </fd-form>
         </div>
         <div class="span4">
             <section id="toolboxes" class="widget">
@@ -38,7 +47,7 @@
                         @{
                             foreach (var filed in Model.ContentPart.PartDefinition.Fields)
                             {
-                                //Temp:"<fd-tools-control field-type=\"{0}\" field-text =\"{1}\" {2}></fd-tools-control>";
+                                //Temp:"<fd-tools-field field-type=\"{0}\" field-display-name =\"{1}\" field-name=\"{2}\" {3}></fd-tools-field>";
                                 string controlDesc = Model.HtmlControlDescs[filed.Name];
                                 Output.Write(controlDesc);
                             }

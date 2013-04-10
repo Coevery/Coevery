@@ -8,29 +8,53 @@
             { update: { method: 'PUT' } });
     }
 
-    function adjustColumnHeight(rows) {
+    function adjustRowsHeight(rows) {
         for (var i = 0; i < rows.length; i++) {
-            var row = $(rows[i]);
-            var columns = row.children('[fd-column]');
-            var maxColumnHeight = 0;
-            var maxFieldHeight = 0;
-            for (var j = 0; j < columns.length; j++) {
-                columns[j].style.removeProperty('height');
-                var column = $(columns[j]);
-                if (column.children('[fd-field]').length) {
-                    column.children('[fd-field]')[0].style.removeProperty('height');
-                    var columnHeight = column.height();
-                    maxColumnHeight = Math.max(maxColumnHeight, columnHeight);
-                    maxFieldHeight = Math.max(maxFieldHeight, column.children('[fd-field]').height());
-                }
+            adjustRowHeight(rows[i]);
+            //var row = $(rows[i]);
+            //var columns = row.children('[fd-column]');
+            //var maxColumnHeight = 0;
+            //var maxFieldHeight = 0;
+            //for (var j = 0; j < columns.length; j++) {
+            //    columns[j].style.removeProperty('height');
+            //    var column = $(columns[j]);
+            //    if (column.children('[fd-field]').length) {
+            //        column.children('[fd-field]')[0].style.removeProperty('height');
+            //        var columnHeight = column.height();
+            //        maxColumnHeight = Math.max(maxColumnHeight, columnHeight);
+            //        maxFieldHeight = Math.max(maxFieldHeight, column.children('[fd-field]').height());
+            //    }
+            //}
+            //if (maxColumnHeight) {
+            //    columns.each(function () {
+            //        var borderHeight = $(this).is('.marked, .markedAbove') ? 3 : 0;
+            //        $(this).height(maxColumnHeight - borderHeight);
+            //        $(this).children('[fd-field]').height(maxFieldHeight);
+            //    });
+            //}
+        }
+    }
+
+    function adjustRowHeight(row) {
+        var columns = $(row).children('[fd-column]');
+        var maxColumnHeight = 0;
+        var maxFieldHeight = 0;
+        for (var i = 0; i < columns.length; i++) {
+            columns[i].style.removeProperty('height');
+            var column = $(columns[i]);
+            if (column.children('[fd-field]').length) {
+                column.children('[fd-field]')[0].style.removeProperty('height');
+                var columnHeight = column.height();
+                maxColumnHeight = Math.max(maxColumnHeight, columnHeight);
+                maxFieldHeight = Math.max(maxFieldHeight, column.children('[fd-field]').height());
             }
-            if (maxColumnHeight) {
-                columns.each(function () {
-                    var borderHeight = $(this).is('.marked, .markedAbove') ? 3 : 0;
-                    $(this).height(maxColumnHeight - borderHeight);
-                    $(this).children('[fd-field]').height(maxFieldHeight);
-                });
-            }
+        }
+        if (maxColumnHeight) {
+            columns.each(function () {
+                var borderHeight = $(this).is('.marked, .markedAbove') ? 3 : 0;
+                $(this).height(maxColumnHeight - borderHeight);
+                $(this).children('[fd-field]').height(maxFieldHeight);
+            });
         }
     }
 
@@ -46,14 +70,22 @@
         if (row.siblings().length && lastRow.find('[fd-field]').length == 0) {
             lastRow.remove();
         }
-        adjustColumnHeight(rows);
+        adjustRowsHeight(rows);
+    }
+
+    function createNewRow(columnCount) {
+        var columnsString = '';
+        for (var i = 0; i < columnCount; i++) {
+            columnsString += '<fd-column></fd-column>';
+        }
+        return $('<fd-row>' + columnsString + '</fd-row>');
     }
 
     var coevery = angular.module('coevery', ['ngResource']);
 
     coevery.directive('fdToolsSection', function () {
         return {
-            template: '<p fd-tools-section fd-draggable="[fd-form]>.entry" class="alert alert-info"><span class="title"></span></p>',
+            template: '<p fd-tools-section fd-draggable="[fd-form]" class="alert alert-info"><span class="title"></span></p>',
             replace: true,
             restrict: 'E',
             link: function (scope, element, attrs) {
@@ -63,26 +95,27 @@
             }
         };
     })
-        .directive('fdToolsControl', function () {
+        .directive('fdToolsField', function () {
             return {
-                template: '<p fd-tools-control fd-draggable class="alert alert-info"><span class="title"></span></p>',
+                template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
                     var titleElem = element.children();
-                    titleElem.text(attrs.fieldText);
+                    titleElem.text(attrs.fieldDisplayName);
                 }
             };
         })
         .directive('fdForm', function ($compile) {
             return {
-                template: '<div fd-form><div class="entry"></div></div>',
+                template: '<div fd-form ng-transclude></div>',
                 replace: true,
                 restrict: 'E',
+                transclude: true,
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
-                    $('#' + id + '>.entry').sortable({
+                    element.sortable({
                         items: '[fd-section]:not(.sort-placeholder)',
                         placeholder: 'sort-placeholder',
                         tolerance: 'pointer',
@@ -101,20 +134,21 @@
         })
         .directive('fdSection', function ($compile) {
             return {
-                template: '<div fd-section class="row-fluid"><section class="span12 widget"><header class="widget-header light"><span class="title">&nbsp;</span></header><section class="widget-content form-container"><form fd-field-container class="form-horizontal entry"></form></section></section></div>',
+                template: '<div fd-section class="row-fluid"><section class="span12 widget"><header class="widget-header light"><span class="title">&nbsp;</span></header><section class="widget-content form-container"><form fd-field-container class="form-horizontal" ng-transclude></form></section></section></div>',
                 replace: true,
                 restrict: 'E',
+                transclude: true,
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
 
-                    $('#' + id + ' header:first').dblclick(function () {
-                        var container = $('#' + id + ' [fd-field-container]:first');
-                        var rows = container.children('[fd-row]');
-                        var columnCount = rows.first().children('[fd-column]').length;
+                    element.find('header:first').dblclick(function () {
+                        var section = $(this).parents('[fd-section]');
+                        var rows = section.find('[fd-row]');
+                        var columnCount = parseInt(section.attr('section-columns'));
 
                         if (columnCount == 1) {
-                            $('#' + id).attr('section-columns', 2);
+                            section.attr('section-columns', 2);
                             var columns = rows.children('[fd-column]');
                             columns.each(function () {
                                 var item = $(this);
@@ -123,13 +157,12 @@
                             });
                             rows.each(function () {
                                 var row = $(this);
-                                row.attr('row-columns', 2);
                                 var newColumn = $('<fd-column></fd-column>');
                                 row.append(newColumn);
                                 $compile(newColumn)(scope);
                             });
                         } else {
-                            $('#' + id).attr('section-columns', 1);
+                            section.attr('section-columns', 1);
                             var rightColumns = rows.children('[fd-column]:nth-child(2)');
                             var rightFields = rightColumns.find('[fd-field]');
                             var leftColumns = rows.children('[fd-column]:nth-child(1)');
@@ -138,8 +171,8 @@
                                 if (i < leftEmptyColumns.length) {
                                     $(leftEmptyColumns[i]).append(this);
                                 } else {
-                                    var newRow = $('<fd-row row-columns="1"></fd-row>');
-                                    container.append(newRow);
+                                    var newRow = createNewRow(1);
+                                    section.find('[fd-field-container]').append(newRow);
                                     $compile(newRow)(scope);
                                     newRow.children('[fd-column]').append(this);
                                 }
@@ -152,43 +185,42 @@
                             rightColumns.remove();
                         }
 
-                        adjustColumnHeight(container.children('[fd-row]'));
+                        adjustRowsHeight(section.find('[fd-row]'));
                     });
 
-                    var emptyRow = $('<fd-row></fd-row>');
-                    emptyRow.attr('row-columns', element.attr('section-columns'));
-                    $('#' + id + ' [fd-field-container]:first').append(emptyRow);
-                    $compile(emptyRow)(scope);
+                    if (!element.find('[fd-row]').length) {
+                        var columnCount = parseInt(attrs.sectionColumns);
+                        var emptyRow = createNewRow(columnCount);
+                        element.find('[fd-field-container]:first').append(emptyRow);
+                        $compile(emptyRow)(scope);
+                    }
                 }
             };
         })
         .directive('fdRow', function ($compile) {
             return {
-                template: '<div fd-row class="row-fluid"></div>',
+                template: '<div fd-row class="row-fluid" ng-transclude></div>',
                 replace: true,
                 restrict: 'E',
+                transclude: true,
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
-                    var columnCount = parseInt(attrs.rowColumns);
-                    for (var i = 0; i < columnCount; i++) {
-                        var newColumn = $('<fd-column></fd-column>');
-                        element.append(newColumn);
-                        $compile(newColumn)(scope);
-                    }
+                    adjustRowHeight(element);
                 }
             };
         })
         .directive('fdColumn', function ($compile) {
             return {
-                template: '<div fd-column></div>',
+                template: '<div fd-column ng-transclude></div>',
                 replace: true,
                 restrict: 'E',
+                transclude: true,
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
 
-                    var columnCount = parseInt(element.parent().attr('row-columns'));
+                    var columnCount = parseInt(element.parents('[fd-section]:first').attr('section-columns'));
                     var width = 12 / columnCount;
                     element.addClass('span' + width);
                 }
@@ -203,7 +235,6 @@
                     var id = newGuid();
                     attrs.$set('id', id);
                     var type = attrs.fieldType;
-                    var title = attrs.fieldTitle;
                     var newItem;
                     switch (type) {
                         case 'text':
@@ -225,7 +256,7 @@
                             newItem = $('<input type="text" class="span9"/><div class="span3 tools"></div>');
                             break;
                     }
-                    element.find('.title').text(title);
+                    element.find('.title').text(attrs.fieldDisplayName);
                     element.children('.controls-row').append(newItem);
                     var propertyItem = $('<fd-field-tool-property></fd-field-tool-property>');
                     element.find('.tools').append(propertyItem);
@@ -302,26 +333,24 @@
                     var lastColumn = null;
 
                     element.droppable({
-                        accept: '[fd-field], [fd-tools-control]',
+                        accept: '[fd-field], [fd-tools-field]',
                         tolerance: "pointer",
                         drop: function (event, ui) {
-                            scope.dragHandler = null;
+                            scope.$root.dragHandler = null;
 
                             var markedColumn = $(this).find('.marked, .markedAbove');
                             var dragItem;
-                            if (ui.draggable.is('[fd-tools-control]')) {
-                                var type = ui.draggable.attr('field-type');
-                                var title = ui.draggable.attr('field-text');
+                            if (ui.draggable.is('[fd-tools-field]')) {
                                 var required = ui.draggable.attr('required');
-                                if (required != null)
-                                {
-                                    dragItem = $('<fd-field field-always-on-layout field-required></fd-field>');
-                                } else{
-                                    dragItem = $('<fd-field field-always-on-layout></fd-field>');
+                                if (required != null) {
+                                    dragItem = $('<fd-field field-required></fd-field>');
+                                } else {
+                                    dragItem = $('<fd-field></fd-field>');
                                 }
-                                
-                                dragItem.attr('field-type', type);
-                                dragItem.attr('field-title', title);
+
+                                dragItem.attr('field-type', ui.draggable.attr('field-type'));
+                                dragItem.attr('field-display-name', ui.draggable.attr('field-display-name'));
+                                dragItem.attr('field-name', ui.draggable.attr('field-name'));
                                 $compile(dragItem)(scope);
                             } else {
                                 dragItem = ui.draggable;
@@ -340,8 +369,8 @@
 
                             var filledColumns = columns.has('[fd-field]:not(.dragging)');
                             if (filledColumns.length == columns.length) {
-                                var newRow = $('<fd-row></fd-row>');
-                                newRow.attr('row-columns', $(this).parents('[fd-section]:first').attr('section-columns'));
+                                var columnCount = parseInt($(this).parents('[fd-section]:first').attr('section-columns'));
+                                var newRow = createNewRow(columnCount);
                                 $(this).append(newRow);
                                 $compile(newRow)(scope);
                                 columns.splice(columns.length, 0, newRow.children()[columnIndex]);
@@ -361,21 +390,21 @@
                                 moveNextColumns(dragColumn);
                             }
 
-                            adjustColumnHeight($(this).children('[fd-row]'));
+                            adjustRowsHeight($(this).children('[fd-row]'));
                             clearMark();
                         },
                         over: function (event, ui) {
                             setDragEffect(ui.helper, true);
-                            scope.dragHandler = function (dragEvent, dragUi) {
+                            scope.$root.dragHandler = function (dragEvent, dragUi) {
                                 markColumn({
                                     x: dragEvent.pageX,
                                     y: dragEvent.pageY
                                 });
                             };
-                            scope.dragHandler(event, ui);
+                            scope.$root.dragHandler(event, ui);
                         },
                         out: function (event, ui) {
-                            scope.dragHandler = null;
+                            scope.$root.dragHandler = null;
                             setDragEffect(ui.helper, false);
                             clearMark();
                         }
@@ -464,19 +493,19 @@
                         tolerance: "pointer",
                         scroll: false,
                         start: function (event, ui) {
-                            scope.enableHover = false;
+                            scope.$root.enableHover = false;
                             setZIndex(ui.helper);
                             $(event.target).css('opacity', '0.3');
                             $(event.target).addClass('dragging');
                         },
                         stop: function (event, ui) {
-                            scope.enableHover = true;
+                            scope.$root.enableHover = true;
                             $(event.target).css('opacity', '1');
                             $(event.target).removeClass('dragging');
                         },
                         drag: function (event, ui) {
-                            if (scope.dragHandler) {
-                                scope.dragHandler(event, ui);
+                            if (scope.$root.dragHandler) {
+                                scope.$root.dragHandler(event, ui);
                             }
                         }
                     });
@@ -496,9 +525,10 @@
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
+                    scope.$root.enableHover = true;
                     element.hover(
                         function () {
-                            if (scope.enableHover) {
+                            if (scope.$root.enableHover) {
                                 this.hoverOverHandler();
                             }
                         },
@@ -524,13 +554,13 @@
                                 layoutString += '<fd-section section-columns="' + columnCount + '">';
                                 var rows = $(this).find('[fd-row]');
                                 rows.each(function () {
-                                    layoutString += '<fd-row row-columns="' + columnCount + '">';
+                                    layoutString += '<fd-row">';
                                     var columns = $(this).find('[fd-column]');
                                     columns.each(function () {
                                         layoutString += '<fd-column>';
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
-                                            layoutString += '<fd-field type="' + field.attr('field-type') + '"></fd-field>';
+                                            layoutString += '<fd-field field-name="' + field.attr('field-name') + '"></fd-field>';
                                         }
                                         layoutString += '</fd-column>';
                                     });

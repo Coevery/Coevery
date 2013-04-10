@@ -29,9 +29,6 @@
     border: 0;
 }
 
-form.entry {
-}
-
 .markedAbove {
     border-top: 3px solid red;
 }
@@ -48,7 +45,7 @@ form.entry {
     background-color: #bae9fd;
 }
 
-[fd-form] > .entry {
+[fd-form] {
     min-height: 200px;
 }
 

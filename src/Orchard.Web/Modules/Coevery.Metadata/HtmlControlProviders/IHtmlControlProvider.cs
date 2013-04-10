@@ -13,15 +13,15 @@ namespace Coevery.Metadata.HtmlControlProviders
     public abstract class ControlProviderBase : IHtmlControlProvider
     {
         protected ContentPartFieldDefinition _field;
-        private const string ControlDescTemp = "<fd-tools-control field-type=\"{0}\" field-text =\"{1}\" {2}></fd-tools-control>";
+        private const string ControlDescTemp = "<fd-tools-field field-type=\"{0}\" field-display-name =\"{1}\" field-name=\"{2}\" {3}></fd-tools-field>";
 
-        public  string GenerateHtmlContrlDesc()
+        public string GenerateHtmlContrlDesc()
         {
             string filedType = _field.FieldDefinition.Name;
             string controlType = GetControlType(filedType);
             string settingPartten = GenerateControlpattern();
 
-            return string.Format(ControlDescTemp, controlType, _field.DisplayName, settingPartten);
+            return string.Format(ControlDescTemp, controlType, _field.DisplayName, _field.Name, settingPartten);
         }
 
         public virtual string GenerateControlpattern()
@@ -59,5 +59,5 @@ namespace Coevery.Metadata.HtmlControlProviders
             }
         }
     }
-  
+
 }
