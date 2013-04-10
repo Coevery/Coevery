@@ -1,7 +1,8 @@
-﻿
-var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization', 'ui.compat'])
+﻿'use strict';
+
+var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'localization', 'ui.compat'])
     .value('$anchorScroll', angular.noop)
-    .config(["$stateProvider", function ($stateProvider) {
+    .config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
             .state('List', {
@@ -36,9 +37,10 @@ var coevery = angular.module('coevery', ['ngGrid', 'ngResource', 'localization',
             })
             .state('SubDetail', {
                 url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}/{SubId:[0-9a-zA-Z]+}',
-                templateUrl: function (params) {
-                    return params.Module + '/' + params.SubModule + 'ViewTemplate/' + params.View + '/' + params.Id + '?subId=' + params.SubId;
-                }
+                templateProvider: ['$http', '$stateParams', function ($http, $stateParams) {
+                    var url = $stateParams.Module + '/' + $stateParams.SubModule + 'ViewTemplate/' + $stateParams.View + '/' + $stateParams.Id + '?subId=' + $stateParams.SubId;
+                    return $http.get(url).then(function(response) { return response.data; });
+                }]
             });
     }])
     .run(
