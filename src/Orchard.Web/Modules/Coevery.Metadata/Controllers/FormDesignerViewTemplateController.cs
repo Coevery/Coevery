@@ -18,18 +18,15 @@ namespace Coevery.Metadata.Controllers
 
     public class FormDesignerViewTemplateController : Controller
     {
-        private IContentDefinitionManager _contentDefinitionManager;
-        private IContentDefinitionService _contentDefinitionService;
         private readonly IContentManager _contentManager;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
 
-        public FormDesignerViewTemplateController(IOrchardServices orchardServices,
-            IContentDefinitionManager contentDefinitionManager,
-            IContentDefinitionService contentDefinitionService,
-            IContentManager contentManager)
+        public FormDesignerViewTemplateController(
+            IOrchardServices orchardServices,
+            IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
         {
-            _contentDefinitionManager = contentDefinitionManager;
-            _contentDefinitionService = contentDefinitionService;
             _contentManager = contentManager;
+            _contentDefinitionManager = contentDefinitionManager;
             Services = orchardServices;
             T = NullLocalizer.Instance;
         }
@@ -45,21 +42,20 @@ namespace Coevery.Metadata.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
-            //FormDesignerViewModel viewModel = new FormDesignerViewModel();
-            //var typeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
-            //viewModel.TypeDefinition = typeDefinition;
-            //viewModel.ContentPart = typeDefinition.Parts.FirstOrDefault(t => t.PartDefinition.Name == typeDefinition.Name);
-            //viewModel.HtmlControlDescs = _contentDefinitionService.GetHtmlDescForTypeFields(viewModel.ContentPart);
 
             var contentItem = _contentManager.New(id);
             dynamic model = _contentManager.BuildEditor(contentItem);
-            var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
+            var contentTypeDefinition = contentItem.TypeDefinition;
             string layout = contentTypeDefinition.Settings.ContainsKey("Layout")
                                 ? contentTypeDefinition.Settings["Layout"]
                                 : null;
-            model.Layout = layout;
 
-            return View((object)model);
+            var viewModel = Services.New.ViewModel().Content(model);
+            viewModel.Layout = layout;
+            viewModel.Fields = _contentDefinitionManager.GetPartDefinition(id).Fields;
+            viewModel.DisplayName = contentItem.TypeDefinition.DisplayName;
+
+            return View((object)viewModel);
         }
 
     }

@@ -10,8 +10,6 @@
 @{
     ContentItem contentItem = Model.ContentItem;
     var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
-    var typeName = contentItem.TypeDefinition.Name;
-    var ngparam = new Dictionary<string, object> { { "ng-submit", "save()" }, { "name", "myForm" } };
 }
 
 <header id="main-header" class="page-header">
@@ -33,9 +31,9 @@
     </ul>
     <h1>@typeDisplayName Detail <span>@typeDisplayName edit</span></h1>
 </header>
-<section id="main-content" ng-controller="CommonDetailCtrl">
+<section id="main-content">
     @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
-    FormMethod.Post, ngparam))
+    FormMethod.Post, new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()", @ng_controller = "CommonDetailCtrl" }))
     {
         @Html.ValidationSummary()
         // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type

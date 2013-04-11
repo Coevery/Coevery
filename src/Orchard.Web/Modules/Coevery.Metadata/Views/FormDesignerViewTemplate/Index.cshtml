@@ -24,7 +24,7 @@
     <div class="row-fluid">
         <div id="form-designer" class="span8">
             <fd-form>
-                @{ Output.Write(Model.Layout); }
+                @Display(Model.Layout)
             </fd-form>
         </div>
         <div class="span4">
@@ -40,14 +40,10 @@
                         <fd-tools-section section-columns="2"></fd-tools-section>
                     </fieldset>
                     <fieldset>
-                        <legend>@Model.ContentItem.TypeDefinition.DisplayName</legend>
+                        <legend>@Model.DisplayName</legend>
                         @{
-                            foreach (var field in Model.ContentItem.Parts[0].Fields)
-                            {
-                                //Temp:"<fd-tools-field field-type=\"{0}\" field-display-name =\"{1}\" field-name=\"{2}\" {3}></fd-tools-field>";
-
-                                var temp = "<fd-tools-field field-display-name=\"{0}\" field-name=\"{1}\"></fd-tools-field>";
-                                Output.Write(string.Format(temp, field.DisplayName, field.Name));
+                            foreach (var field in Model.Fields) {
+                                @:<fd-tools-field field-display-name="@field.DisplayName" field-name="@field.Name"></fd-tools-field>
                             }
                         }
                     </fieldset>
@@ -56,4 +52,4 @@
         </div>
     </div>
 </section>
-@Display(Model)
+@Display(Model.Content)
