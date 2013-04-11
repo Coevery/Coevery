@@ -24,7 +24,7 @@
     <div class="row-fluid">
         <div id="form-designer" class="span8">
             <fd-form>
-                @Display(Model.Layout)
+                @{ Output.Write(Model.Layout); }
             </fd-form>
         </div>
         <div class="span4">

@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'localization', 'ui.compat'])
+var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'localization', 'ui.compat', 'coevery.layout'])
     .value('$anchorScroll', angular.noop)
     .config(['$stateProvider', function ($stateProvider) {
 
@@ -51,6 +51,48 @@ var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'localiza
                 $rootScope.$state = $state;
                 $rootScope.$stateParams = $stateParams;
             }]);
+
+angular.module('coevery.layout', [])
+    .directive('fdSection', function () {
+        return {
+            template: '<fieldset fd-section><legend class="title">Section Title</legend><div ng-transclude></div></fieldset>',
+            replace: true,
+            restrict: 'E',
+            transclude: true
+        };
+    })
+    .directive('fdRow', function () {
+        return {
+            template: '<div fd-row class="row-fluid" ng-transclude></div>',
+            replace: true,
+            restrict: 'E',
+            transclude: true
+        };
+    })
+    .directive('fdColumn', function () {
+        return {
+            template: '<div fd-column ng-transclude></div>',
+            replace: true,
+            restrict: 'E',
+            transclude: true,
+            link: function (scope, element, attrs) {
+                var columnCount = parseInt(element.parents('[fd-section]:first').attr('section-columns'));
+                var width = 12 / columnCount;
+                element.addClass('span' + width);
+            }
+        };
+    })
+    .directive('fdField', function () {
+        return {
+            template: '<div fd-field></div>',
+            replace: true,
+            restrict: 'E',
+            link: function (scope, element, attrs) {
+                var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]');
+                element.html(template.text());
+            }
+        };
+    });
 
 $(function () {
     $('body').on("submit", 'form', function (event) {

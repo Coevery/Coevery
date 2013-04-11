@@ -11,6 +11,7 @@
     ContentItem contentItem = Model.ContentItem;
     var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
     var typeName = contentItem.TypeDefinition.Name;
+}
 
 <header id="main-header" class="page-header">
     <ul class="breadcrumb">
@@ -38,14 +39,10 @@
         @Html.ValidationSummary()
         // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
         
-        Output.Write(Model.Layout); 
         <div class="row-fluid">
             <section class="span12 widget">
-                <header class="widget-header">
-                    <span class="title">&nbsp;</span>
-                </header>
                 <section class="widget-content form-container">
-                   
+                    @{ Output.Write(Model.Layout); } 
                     <section class="form-actions">
                         <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
                         <input type="button" value="Exit" class="btn" ng-click="exit()" />
@@ -55,3 +52,4 @@
         </div>
     }
 </section>
+@Display(Model); 
