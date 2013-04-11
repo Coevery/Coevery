@@ -1,6 +1,6 @@
-﻿UserViewCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource'];
+﻿UserViewCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource', '$stateParams'];
 
-function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource) {
+function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource,$stateParams) {
     var moduleName = 'Projection';
     var module = UserViewContext($resource);
     var columnDefs = getColumnDefs(localize);
@@ -27,18 +27,18 @@ function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource) {
                 $scope.getAll();
                 logger.success('Delete the ' + moduleName + ' successful.');
             }, function () {
-                logger.error('Failed to delete the lead.');
+                logger.error('Failed to delete the ' + moduleName);
             });
         }
     };
 
     $scope.add = function () {
-        $state.transitionTo('Create', { Module: moduleName });
+        $state.transitionTo('SubCreate', { Module: 'Metadata', SubModule: 'Projection', Id: $stateParams.Id });
     };
 
     $scope.edit = function () {
         if ($scope.mySelections.length > 0) {
-            $state.transitionTo('Detail', { Module: moduleName, Id: $scope.mySelections[0].ContentId });
+            $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Projection', View: 'Edit', Id: $stateParams.Id, SubId: $scope.mySelections[0].ContentId });
         }
     };
 
@@ -46,7 +46,7 @@ function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource) {
         var records = module.query(function () {
             $scope.myData = records;
         }, function () {
-            logger.error("Failed to fetched records for " + moduleName);
+            logger.error("Failed to fetched projections for " + $stateParams.Id);
         });
     };
 

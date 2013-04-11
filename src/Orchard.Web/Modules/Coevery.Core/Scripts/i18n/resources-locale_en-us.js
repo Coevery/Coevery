@@ -66,6 +66,10 @@
      {
          "key": "QuoteDate",
          "value": "QuoteDate"
-     }
+     },
+      {
+          "key": "EnityType",
+          "value": "EnityType"
+      }
     
 ];
