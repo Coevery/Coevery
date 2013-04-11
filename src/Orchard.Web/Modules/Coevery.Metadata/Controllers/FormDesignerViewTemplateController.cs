@@ -39,7 +39,7 @@ namespace Coevery.Metadata.Controllers
         public ILogger Logger { get; set; }
 
 
-        public ActionResult Dynamic(string id, string returnUrl)
+        public ActionResult Index(string id, string returnUrl)
         {
             if (string.IsNullOrEmpty(id))
             {

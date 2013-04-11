@@ -1,4 +1,4 @@
-﻿(function () {
+﻿$(function () {
     'use strict';
 
     function LayoutContext($resource) {
@@ -60,20 +60,19 @@
         return $('<fd-row>' + columnsString + '</fd-row>');
     }
 
-    var coevery = angular.module('coevery', ['ngResource']);
-
-    coevery.directive('fdToolsSection', function () {
-        return {
-            template: '<p fd-tools-section fd-draggable="[fd-form]" class="alert alert-info"><span class="title"></span></p>',
-            replace: true,
-            restrict: 'E',
-            link: function (scope, element, attrs) {
-                var columnCount = attrs.sectionColumns;
-                var titleElem = element.children();
-                titleElem.text('Section' + columnCount);
-            }
-        };
-    })
+    angular.module('coevery.layout', ['ngResource'])
+        .directive('fdToolsSection', function () {
+            return {
+                template: '<p fd-tools-section fd-draggable="[fd-form]" class="alert alert-info"><span class="title"></span></p>',
+                replace: true,
+                restrict: 'E',
+                link: function (scope, element, attrs) {
+                    var columnCount = attrs.sectionColumns;
+                    var titleElem = element.children();
+                    titleElem.text('Section' + columnCount);
+                }
+            };
+        })
         .directive('fdToolsField', function () {
             return {
                 template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
@@ -549,4 +548,10 @@
                 }
             };
         });
-})();
+
+    //angular.bootstrap($('[ng-app]'), ['coevery.layout']);
+    angular.bootstrap($('fd-form'), ['coevery', 'coevery.layout']);
+});
+
+
+//@ sourceURL=Coevery.Metadata/main.js

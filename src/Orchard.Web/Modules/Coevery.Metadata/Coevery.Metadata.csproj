@@ -255,7 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\DynamicTypeSettingsViewModel.cshtml" />
-    <Content Include="Views\FormDesignerViewTemplate\Dynamic.cshtml" />
+    <Content Include="Views\FormDesignerViewTemplate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FieldViewTemplate\Edit.cshtml" />
