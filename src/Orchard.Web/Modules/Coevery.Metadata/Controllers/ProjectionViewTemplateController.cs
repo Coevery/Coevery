@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
@@ -9,7 +7,7 @@ using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Core.Contents.Controllers;
 using Orchard.DisplayManagement;
-using Orchard.Forms.Services;
+
 using Orchard.Localization;
 using Orchard.Projections.Descriptors.Filter;
 using Orchard.Projections.Descriptors.Layout;
@@ -24,27 +22,13 @@ namespace Coevery.Metadata.Controllers
 {
     public class ProjectionViewTemplateController:Controller
     {
-        private readonly IOrchardServices _services;
-        private readonly ISiteService _siteService;
-        private readonly IQueryService _queryService;
-        private readonly IProjectionManager _projectionManager;
-        private readonly IContentManager _contentManager;
         private readonly IProjectionService _projectionService;
 
         public ProjectionViewTemplateController(
              IOrchardServices services,
             IShapeFactory shapeFactory,
-            ISiteService siteService,
-            IQueryService queryService,
-            IProjectionManager projectionManager,
-            IContentManager contentManager,
             IProjectionService projectionService)
         {
-            _services = services;
-            _siteService = siteService;
-            _queryService = queryService;
-            _projectionManager = projectionManager;
-            _contentManager = contentManager;
             _projectionService = projectionService;
             Services = services;
 
