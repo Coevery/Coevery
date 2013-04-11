@@ -237,7 +237,6 @@
     <Content Include="Views\ViewTemplate\Create.cshtml" />
     <Content Include="Views\ProjectionViewTemplate\List.cshtml" />
     <Content Include="Views\ProjectionViewTemplate\Edit.cshtml" />
-    <Content Include="XMLFile1.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config">
