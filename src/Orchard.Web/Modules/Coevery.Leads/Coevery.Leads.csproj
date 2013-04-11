@@ -84,7 +84,6 @@
     <Compile Include="Controllers\TodoListController.cs" />
     <Compile Include="Drivers\LeadDriver.cs" />
     <Compile Include="Handlers\LeadHandler.cs" />
-    <Compile Include="Migrations.cs" />
     <Compile Include="Models\Lead.cs" />
     <Compile Include="Models\LeadDto.cs" />
     <Compile Include="Models\LeadRecord.cs" />

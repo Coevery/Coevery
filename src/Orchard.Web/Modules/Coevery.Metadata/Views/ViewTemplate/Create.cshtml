@@ -26,14 +26,15 @@
     <h1>Meta Detail <span>Metadata add/edit</span></h1>
 </header>
 
-<section id="main-content" ng-controller="MetadataDetailCtrl">
+<section id="main-content">
     <div class="row-fluid">
         <section class="span12 widget">
             <header class="widget-header">
                 <span class="title"></span>
             </header>
             <section class="widget-content form-container">
-                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" }))
+                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+                    new { @class = "form-horizontal", @ng_submit = "save()", @ng_controller = "MetadataDetailCtrl" }))
                 {
                     @Html.ValidationSummary()
                     <section class="control-group">
