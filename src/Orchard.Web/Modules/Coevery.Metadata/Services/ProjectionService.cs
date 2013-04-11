@@ -82,7 +82,10 @@ namespace Coevery.Metadata.Services
             _contentManager.Create(projectionItem, VersionOptions.Draft);
             _contentManager.Create(queryItem, VersionOptions.Draft);
             projectionPart.Record.QueryPartRecord = queryPart.Record;
+            projectionPart.As<TitlePart>().Title = entityType;
             queryPart.As<TitlePart>().Title = entityType;
+            _contentManager.Publish(queryItem);
+            _contentManager.Publish(projectionItem);
 
             var queryViewModel = this.GetQueryViewModel(queryPart);
             viewModel.QueryViewModel = queryViewModel;
@@ -92,7 +95,21 @@ namespace Coevery.Metadata.Services
             var layoutViewModel = this.CreateTempLayout(queryPart, "", "ngGrid");
             viewModel.LayoutViewModel = layoutViewModel;
             if(layoutViewModel != null)projectionPart.Record.LayoutRecord = queryPart.Layouts[0];
-            //Get All Field
+
+            //Create filter  for query
+            var filterGroup = new FilterGroupRecord();
+            queryPart.Record.FilterGroups.Clear();
+            queryPart.Record.FilterGroups.Add(filterGroup);
+            var filterRecord = new FilterRecord
+            {
+                Category = "Content",
+                Type = "ContentTypes",
+                Position = filterGroup.Filters.Count,
+                State = this.GetContentTypeFilterState(entityType)
+            };
+            filterGroup.Filters.Add(filterRecord);
+
+            //Get all field
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
             string category = entityType + "ContentFields";
             viewModel.AllFields = allFields.Where(t => t.Category == category);
@@ -110,8 +127,8 @@ namespace Coevery.Metadata.Services
             var queryItem = _contentManager.Get(queryId, VersionOptions.Latest);
             var queryPart = queryItem.As<QueryPart>();
             viewModel.Id = id;
-            viewModel.Name = queryPart.Name;
-            viewModel.DisplayName = projectionItem.As<TitlePart>().Title;
+            viewModel.Name = projectionItem.As<TitlePart>().Title;
+            viewModel.DisplayName = queryPart.Name;
             viewModel.QueryViewModel = this.GetQueryViewModel(queryPart);
            
             //Get LayoutViewModel;
@@ -120,7 +137,7 @@ namespace Coevery.Metadata.Services
 
             //Get AllFields
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
-            string category = queryPart.Name + "ContentFields";
+            string category = viewModel.Name + "ContentFields";
             viewModel.AllFields = allFields.Where(t => t.Category == category);
 
             return viewModel;
@@ -136,7 +153,7 @@ namespace Coevery.Metadata.Services
             var queryPart = queryItem.As<QueryPart>();
 
             //Post DisplayName
-            projectionItem.As<TitlePart>().Title = viewModel.DisplayName;
+            queryPart.As<TitlePart>().Title = viewModel.DisplayName;
 
 
             //Post Selected Fields
@@ -144,7 +161,7 @@ namespace Coevery.Metadata.Services
             layoutRecord.Properties.Clear();
 
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
-            string category = queryPart.Name + "ContentFields";
+            string category = projectionItem.As<TitlePart>().Title + "ContentFields";
 
             foreach (var property in pickedFileds)
             {
@@ -153,16 +170,102 @@ namespace Coevery.Metadata.Services
                 {
                     throw new Exception("selected field not found:" + property);
                 }
+
+                var fieldName = this.GetFiledName(fieldDescpritor.Name.Text);
                 var propertyRecord = new PropertyRecord
                 {
                     Category = category,
                     Type = fieldDescpritor.Type,
-                    Description = fieldDescpritor.Description.Text,
-                    Position = layoutRecord.Properties.Count
+                    Description = fieldName,
+                    Position = layoutRecord.Properties.Count,
+                    State = this.GetPropertyState(fieldName)
                 };
                 layoutRecord.Properties.Add(propertyRecord);
             }
+            layoutRecord.State = this.GetLayoutState(queryPart.Id, layoutRecord.Properties.Count, layoutRecord.Description);
             return true;
+        }
+
+        private string GetContentTypeFilterState(string entityType)
+        {
+            string format = @"<Form>
+                  <Description></Description>
+                  <ContentTypes>{0}</ContentTypes>
+                  <__RequestVerificationToken>POESz5zBfaUfKi7nV-DN7HBjHfMa6SDP08I_cFQu5y6_iV_PXniWPAJQOFVXsajUk2hk_QMrKZ8fLDCxATbMmuJuNUK_rhBRq2DIld2IJ0E-yGca8Jw8Ma_dWrri63fgR5hmVq1rfuOGFtEM1YJaZUSlgOHVe7RH1GKag_vA2nQ1</__RequestVerificationToken>
+                </Form>";
+            return string.Format(format, entityType);
+        }
+
+        private string GetPropertyState(string filedName)
+        {
+            //Dictionary<string, string> datas = new Dictionary<string, string>();
+            //datas.Add("Description",filedName);
+            //var re = FormParametersHelper.ToString(datas);
+            string format = @"<Form>
+                  <Description>{0}</Description>
+                  <LinkToContent>false</LinkToContent>
+                  <ExcludeFromDisplay>false</ExcludeFromDisplay>
+                  <CreateLabel>false</CreateLabel>
+                  <Label></Label>
+                  <CustomizePropertyHtml>false</CustomizePropertyHtml>
+                  <CustomPropertyTag></CustomPropertyTag>
+                  <CustomPropertyCss></CustomPropertyCss>
+                  <CustomizeLabelHtml>false</CustomizeLabelHtml>
+                  <CustomLabelTag></CustomLabelTag>
+                  <CustomLabelCss></CustomLabelCss>
+                  <CustomizeWrapperHtml>false</CustomizeWrapperHtml>
+                  <CustomWrapperTag></CustomWrapperTag>
+                  <CustomWrapperCss></CustomWrapperCss>
+                  <NoResultText></NoResultText>
+                  <ZeroIsEmpty>false</ZeroIsEmpty>
+                  <HideEmpty>false</HideEmpty>
+                  <RewriteOutput>false</RewriteOutput>
+                  <RewriteText></RewriteText>
+                  <TrimLength>false</TrimLength>
+                  <MaxLength>0</MaxLength>
+                  <TrimOnWordBoundary>false</TrimOnWordBoundary>
+                  <AddEllipsis>false</AddEllipsis>
+                  <StripHtmlTags>false</StripHtmlTags>
+                  <TrimWhiteSpace>false</TrimWhiteSpace>
+                  <PreserveLines>false</PreserveLines>
+                  <__RequestVerificationToken>ciDAMpqWekeZ9akUdP45wrGCR-RbzW3fKdnX3IztKQZd1zVqvBQLpNHgueKedAEt6YyEZ3kGF1zFcuvCaFedP2XovGdniK5wpqg5TMcxICtLElQDw14kWyePWJx4KI4Wqw8usNPgLFlXNRSQWIcBbv3JNZ5ITLKNigxo4znvIrk1</__RequestVerificationToken>
+                    </Form>";
+            return string.Format(format,filedName);
+        }
+
+        private string GetLayoutState(int queryId, int columnCount,string desc)
+        {
+            Dictionary<string,string> datas = new Dictionary<string, string>();
+            datas.Add("QueryId", queryId.ToString());
+            datas.Add("Category", "Html");
+            datas.Add("Type", "ngGrid");
+
+            datas.Add("Description", desc);
+            datas.Add("Display", "1");
+            datas.Add("DisplayType", "Summary");
+
+            datas.Add("Alignment", "horizontal");
+            datas.Add("Columns", columnCount.ToString());
+            datas.Add("GridId", string.Empty);
+
+            datas.Add("GridClass", string.Empty);
+            datas.Add("RowClass", string.Empty);
+
+            var re = FormParametersHelper.ToString(datas);
+            return re;
+        }
+
+        private string GetFiledName(string fieldDescriptorName)
+        {
+            string[] descs = fieldDescriptorName.Split(':');
+            if (descs.Length == 2)
+            {
+                return descs[0];
+            }
+            else
+            {
+                throw new Exception("unknown field Format.");
+            }
         }
 
         private LayoutEditViewModel GetLayoutEditViewModel(LayoutRecord layoutRecord)
@@ -194,8 +297,6 @@ namespace Coevery.Metadata.Services
             // bind form with existing values
             var parameters = FormParametersHelper.FromString(layoutRecord.State);
             _formManager.Bind(form, new DictionaryValueProvider<string>(parameters, CultureInfo.InvariantCulture));
-
-         
 
             var fieldEntries = new List<PropertyEntry>();
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
@@ -231,8 +332,6 @@ namespace Coevery.Metadata.Services
             model.Layout = _projectionManager.DescribeLayouts().SelectMany(x => x.Descriptors).FirstOrDefault(x => x.Category == category && x.Type == type);
 
             var layoutRecord = new LayoutRecord { Category = "Html", Type = type };
-          
-           
 
             // save form parameters
             layoutRecord.Description = "DefaultLayoutFor" + query.Name;
@@ -250,7 +349,6 @@ namespace Coevery.Metadata.Services
 
         public AdminEditViewModel GetQueryViewModel(QueryPart query)
         {
-
             var viewModel = new AdminEditViewModel
             {
                 Id = query.Id,
