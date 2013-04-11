@@ -136,7 +136,7 @@ namespace Coevery.Core.Controllers
             }
 
             dynamic model = _contentManager.BuildEditor(contentItem);
-            var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
+            var contentTypeDefinition = contentItem.TypeDefinition;
             string layout = contentTypeDefinition.Settings.ContainsKey("Layout")
                                 ? contentTypeDefinition.Settings["Layout"]
                                 : null;
@@ -214,6 +214,11 @@ namespace Coevery.Core.Controllers
                 return new HttpUnauthorizedResult();
 
             dynamic model = _contentManager.BuildEditor(contentItem);
+            var contentTypeDefinition = contentItem.TypeDefinition;
+            string layout = contentTypeDefinition.Settings.ContainsKey("Layout")
+                                ? contentTypeDefinition.Settings["Layout"]
+                                : null;
+            model.Layout = layout;
             // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
             return View((object)model);
         }
