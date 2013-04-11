@@ -93,6 +93,8 @@
     <Content Include="Scripts\js\demo\form_wizard.js" />
     <Content Include="Scripts\js\demo\gallery.js" />
     <Content Include="Scripts\js\demo\mail.js" />
+    <Content Include="Scripts\js\demo\picklist.js" />
+    <Content Include="Scripts\js\demo\picklist.min.js" />
     <Content Include="Scripts\js\demo\statistic.js" />
     <Content Include="Scripts\js\demo\ui_comps.js" />
     <Content Include="Scripts\js\demo\widgets.js" />
@@ -1926,6 +1928,7 @@
     <Content Include="Styles\main-style.css" />
     <Content Include="Styles\misc.css" />
     <Content Include="Styles\mooncake.min.css" />
+    <Content Include="Styles\picklist.css" />
     <Content Include="Styles\plugins\elfinder.css" />
     <Content Include="Styles\plugins\fullcalendar.css" />
     <Content Include="Styles\plugins\plugins.min.css" />

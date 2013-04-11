@@ -135,6 +135,7 @@
   <ItemGroup>
     <Folder Include="App_Start\" />
     <Folder Include="Services\" />
+    <Folder Include="Views\ViewManage\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
