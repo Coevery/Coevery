@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
 using Orchard;
@@ -42,13 +43,12 @@ namespace Coevery.Metadata.Controllers
         }
 
         // POST api/metadata/field
-        public virtual HttpResponseMessage Post(string id, dynamic layoutInfo)
-        {
+        public virtual HttpResponseMessage Post(string id, FormDataCollection data) {
             var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
             if (contentTypeDefinition == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
 
-            var layout = (string)layoutInfo.layout;
+            var layout = data.Get("layout");
 
             if (contentTypeDefinition.Settings.ContainsKey("Layout"))
             {

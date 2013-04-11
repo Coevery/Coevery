@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using Coevery.Metadata.Extensions;
 using Coevery.Metadata.Services;
@@ -71,7 +72,7 @@ namespace Coevery.Metadata.Controllers
         }
 
         [HttpPost, ActionName("Create")]
-        public ActionResult CreatePOST(CreateTypeViewModel viewModel)
+        public ActionResult CreatePOST(EditTypeViewModel viewModel)
         {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
                 return new HttpUnauthorizedResult();
@@ -110,17 +111,19 @@ namespace Coevery.Metadata.Controllers
                 return View(viewModel);
             }
 
-            var contentTypeDefinition = _contentDefinitionService.AddType(viewModel.Name, viewModel.DisplayName);
+            _contentDefinitionService.AlterType(viewModel, this);
+
+            //var contentTypeDefinition = _contentDefinitionService.AlterType(viewModel,this);
 
             // adds CommonPart by default
-            _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
+            //_contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
 
-            var typeViewModel = new EditTypeViewModel(contentTypeDefinition);
+            //var typeViewModel = new EditTypeViewModel(contentTypeDefinition);
 
 
-            Services.Notifier.Information(T("The \"{0}\" content type has been created.", typeViewModel.DisplayName));
+            Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
 
-            return RedirectToAction("AddPartsTo", new { id = typeViewModel.Name });
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         public ActionResult ContentTypeName(string displayName, int version)

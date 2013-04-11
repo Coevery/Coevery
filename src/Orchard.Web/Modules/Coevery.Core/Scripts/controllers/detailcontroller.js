@@ -42,21 +42,19 @@
 
 //angular.bootstrap($('[ng-app]'), ['coevery', 'coevery.layout']);
 
-CommonDetailCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', '$stateParams', '$resource'];
+CommonDetailCtrl.$inject = ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams',];
 
-function CommonDetailCtrl($rootScope, $scope, logger, $state, $stateParams, $resource) {
+function CommonDetailCtrl($timeout, $rootScope, $scope, logger, $state, $stateParams, $element) {
     var moduleName = $rootScope.$stateParams.Module;
-    var module = CommonContext($rootScope, $resource);
     var id = $stateParams.Id;
-    var isNew = id ? false : true;
 
     $scope.save = function () {
         $.ajax({
-            url: myForm.action,
-            type: myForm.method,
-            data: $(myForm).serialize() + '&submit.Save=Save',
+            url: $element.attr('action'),
+            type: $element.attr('method'),
+            data: $element.serialize() + '&submit.Save=Save',
             success: function (result) {
-                $state.transitionTo('List', { Module: moduleName });
+                $timeout($scope.exit, 0);
             }
         });
     };

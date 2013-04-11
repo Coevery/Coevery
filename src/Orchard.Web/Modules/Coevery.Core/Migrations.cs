@@ -21,36 +21,6 @@ namespace Coevery.Core {
                 .WithSetting("Stereotype", "MenuItem")
                 );
 
-            SchemaBuilder.CreateTable("OpportunityRecord",
-              table => table
-                  .ContentPartRecord()
-                  .Column<string>("Name")
-                  .Column<string>("Description")
-                  .Column<int>("SourceLeadId")
-              );
-
-            ContentDefinitionManager.AlterPartDefinition("Opportunity",
-                cfg => cfg
-                    .WithField("Name", builder => builder
-                        .WithDisplayName("Name")
-                        .OfType("TextField"))
-                    .WithField("Description", builder => builder
-                        .WithDisplayName("Description")
-                        .OfType("TextField"))
-                    .WithField("SourceLeadId", builder => builder
-                        .WithDisplayName("SourceLeadId")
-                        .OfType("TextField"))
-                    .Attachable()
-                );
-
-            ContentDefinitionManager.AlterTypeDefinition("Opportunity",
-               cfg => cfg
-                   .WithPart("Opportunity")
-                   .WithPart("LocalizationPart")
-                   .Creatable()
-               );
-
-            return 1;
             return 1;
         }
 

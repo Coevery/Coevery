@@ -31,7 +31,7 @@
     <h1>Field Detail <span>Field add/edit</span></h1>
 </header>
 
-<section id="main-content" ng-controller="FieldDetailCtrl">
+<section id="main-content">
     <div class="row-fluid">
         <section class="span12 widget">
             <header class="widget-header">
@@ -39,7 +39,7 @@
             </header>
             <section class="widget-content form-container">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, 
-                    new { @class = "form-horizontal", @name="myForm",@ng_submit="save()" }))
+                    new { @class = "form-horizontal", @name="myForm", @ng_submit="save()", @ng_controller="FieldDetailCtrl" }))
                 {
                     @Html.ValidationSummary()
                     <section class="control-group">
