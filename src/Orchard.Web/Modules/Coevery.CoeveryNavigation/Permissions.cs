@@ -2,15 +2,19 @@
 using Orchard.Environment.Extensions.Models;
 using Orchard.Security.Permissions;
 
-namespace Coevery.Metadata {
+namespace Coevery.CoeveryNavigation
+{
     public class Permissions : IPermissionProvider {
-        public static readonly Permission EditContentTypes = new Permission { Name = "EditContentTypes", Description = "Edit content types." };
-        
+        public static readonly Permission ManageMainMenu = new Permission { Name = "ManageMainMenu", Description = "Manage main menu" };
+        public static readonly Permission PublishContent = new Permission { Description = "Publish or unpublish content for others", Name = "PublishContent" };
+        public static readonly Permission EditContent = new Permission { Description = "Edit content for others", Name = "EditContent", ImpliedBy = new[] { PublishContent } };
         public virtual Feature Feature { get; set; }
 
         public IEnumerable<Permission> GetPermissions() {
             return new [] {
-                EditContentTypes
+                PublishContent,
+                EditContent,
+                ManageMainMenu
             };
         }
 
