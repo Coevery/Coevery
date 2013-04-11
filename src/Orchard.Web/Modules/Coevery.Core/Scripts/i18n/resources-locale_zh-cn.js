@@ -57,5 +57,9 @@
      {
          "key": "Id",
          "value": "Id"
-     }
+     },
+      {
+          "key": "EnityType",
+          "value": "类型"
+      }
 ];

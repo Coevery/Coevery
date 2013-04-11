@@ -10,7 +10,7 @@
             type: myForm.method,
             data: $(myForm).serialize() + '&submit.Save=Save',
             success: function (result) {
-                $state.transitionTo('List', { Module: moduleName });
+                logger.success("Layout Saved.");
             }
         });
     };
@@ -20,7 +20,7 @@
     };
 
     $scope.exit = function () {
-        $state.transitionTo('UserViewList', { Module: 'Metadata' });
+        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Projection', View: 'List', Id: $stateParams.Id });
     };
    
 }
