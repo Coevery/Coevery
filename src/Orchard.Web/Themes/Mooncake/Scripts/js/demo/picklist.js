@@ -191,7 +191,7 @@
 
 		_populateLists: function() {
 			var self = this, 
-				nothingSelected = (self.element[0].selectedIndex <= 0), 
+				nothingSelected = (self.element[0].selectedOptions.length <= 0),
 				randomId = self._generateRandomId();
 
 			self.element.children().each(function() {
@@ -240,7 +240,7 @@
 			items.each(function(k, v) {
 				self.sourceList.append( self._removeSelection( $(v) ) );
 				
-				itemId = $(v).attr("id");
+				var itemId = $(v).attr("id");
 				self._itemDictionary[ itemId ].removeAttr( "selected" );
 			});
 			
