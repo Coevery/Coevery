@@ -44,15 +44,15 @@
 
 CommonDetailCtrl.$inject = ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams',];
 
-function CommonDetailCtrl($timeout, $rootScope, $scope, logger, $state, $stateParams) {
+function CommonDetailCtrl($timeout, $rootScope, $scope, logger, $state, $stateParams, $element) {
     var moduleName = $rootScope.$stateParams.Module;
     var id = $stateParams.Id;
 
     $scope.save = function () {
         $.ajax({
-            url: $scope.myForm.action,
-            type: $scope.myForm.method,
-            data: $($scope.myForm).serialize() + '&submit.Save=Save',
+            url: $element.attr('action'),
+            type: $element.attr('method'),
+            data: $element.serialize() + '&submit.Save=Save',
             success: function (result) {
                 $timeout($scope.exit, 0);
             }
