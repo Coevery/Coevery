@@ -38,7 +38,7 @@ namespace Coevery.Metadata.Controllers
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-
+        [Themed]
         public ActionResult Index(string id, string returnUrl)
         {
             if (string.IsNullOrEmpty(id))
