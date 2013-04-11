@@ -22,10 +22,11 @@ namespace Coevery.Metadata.Controllers
             var projections = _contentManager.Query<ProjectionPart>().List();
             foreach (var projectionPart in projections)
             {
+                string displayName = _contentManager.Get(projectionPart.Record.QueryPartRecord.Id).As<TitlePart>().Title;
                 JObject reObJ = new JObject();
                 reObJ["ContentId"] = projectionPart.Id;
-                reObJ["Name"] = "--";
-                reObJ["DisplayName"] = projectionPart.As<TitlePart>().Title;
+                reObJ["EntityType"] = projectionPart.As<TitlePart>().Title;
+                reObJ["DisplayName"] = displayName;
                 re.Add(reObJ);
             }
             return re;
