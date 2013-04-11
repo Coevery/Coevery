@@ -29,7 +29,7 @@
 
 <section id="main-content" ng-controller="UserViewDetailCtrl">
 
-    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { Id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { subId = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                 FormMethod.Post,
                  new { @class = "form-horizontal", @name="myForm",@ng_submit="save()" }))
     {
