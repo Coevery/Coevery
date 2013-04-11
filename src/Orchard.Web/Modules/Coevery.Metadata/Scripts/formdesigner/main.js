@@ -79,19 +79,19 @@
         return $('<fd-row>' + columnsString + '</fd-row>');
     }
 
-    var coevery = angular.module('coevery', ['ngResource'])
-         .directive('fdToolsSection', function () {
-             return {
-                 template: '<p fd-tools-section fd-draggable="[fd-form]" class="alert alert-info"><span class="title"></span></p>',
-                 replace: true,
-                 restrict: 'E',
-                 link: function (scope, element, attrs) {
-                     var columnCount = attrs.sectionColumns;
-                     var titleElem = element.children();
-                     titleElem.text('Section' + columnCount);
-                 }
-             };
-         })
+    var coevery = angular.module('coevery', ['ngResource']);
+    coevery.directive('fdToolsSection', function () {
+        return {
+            template: '<p fd-tools-section fd-draggable="[fd-form] form" class="alert alert-info"><span class="title"></span></p>',
+            replace: true,
+            restrict: 'E',
+            link: function (scope, element, attrs) {
+                var columnCount = attrs.sectionColumns;
+                var titleElem = element.children();
+                titleElem.text('Section' + columnCount);
+            }
+        };
+    })
          .directive('fdToolsField', function () {
              return {
                  template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
@@ -112,7 +112,7 @@
                  link: function (scope, element, attrs) {
                      var id = newGuid();
                      attrs.$set('id', id);
-                     element.sortable({
+                     element.find('form:first').sortable({
                          items: '[fd-section]:not(.sort-placeholder)',
                          placeholder: 'sort-placeholder',
                          tolerance: 'pointer',

@@ -1,5 +1,9 @@
 ﻿[fd-form] .widget-content {
-    border-top: 0;   
+    /*border-top: 0;*/   
+}
+
+[fd-form] form {
+    min-height: 50px; 
 }
 
 .tools div {
@@ -47,10 +51,6 @@
 
 .tools .highlight {
     background-color: #bae9fd;
-}
-
-[fd-form] {
-    min-height: 200px;
 }
 
 .form-label {
