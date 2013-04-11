@@ -8,7 +8,9 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Coevery.Core.Services;
 using Coevery.Core.ViewModels;
+using Newtonsoft.Json.Linq;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
@@ -25,6 +27,7 @@ using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.Mvc.Extensions;
 using Orchard.Mvc.Html;
+using Orchard.Projections.Models;
 using Orchard.Settings;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
@@ -37,6 +40,7 @@ namespace Coevery.Core.Controllers
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
+        private readonly IProjectionService _projectionService;
 
         public ContentViewTemplateController(
             IOrchardServices orchardServices,
@@ -44,12 +48,15 @@ namespace Coevery.Core.Controllers
             IContentDefinitionManager contentDefinitionManager,
             ITransactionManager transactionManager,
             ISiteService siteService,
-            IShapeFactory shapeFactory) {
+            IShapeFactory shapeFactory,
+            IProjectionService projectionService) {
             Services = orchardServices;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
             _transactionManager = transactionManager;
             _siteService = siteService;
+            _projectionService = projectionService;
+
             T = NullLocalizer.Instance;
             Logger = NullLogger.Instance;
             Shape = shapeFactory;
@@ -70,19 +77,39 @@ namespace Coevery.Core.Controllers
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             id = pluralService.Singularize(id);
             var contentType = _contentDefinitionManager.GetTypeDefinition(id);
+            int viewId = _projectionService.GetProjectionId(id);
 
             dynamic viewModel = Services.New.ViewModel();
             viewModel.DisplayName(contentType.DisplayName);
             viewModel.TypeDifinition(contentType);
-            var model = GetListModel();
+            viewModel.Columns(this.GetViewColumns(viewId));
+            var model = GetListModel(viewId);
             viewModel.Content(model);
             return View(viewModel);
         }
 
-        private dynamic GetListModel()
+        private IEnumerable<string> GetViewColumns(int viewId)
         {
-            var id = 35;
-            var contentItem = _contentManager.Get(id, VersionOptions.Published);
+            List<string> re = new List<string>();
+            if (viewId == -1) return re;
+            var projectionItem = _contentManager.Get(viewId, VersionOptions.Latest);
+            var projectionPart = projectionItem.As<ProjectionPart>();
+            var queryPartRecord = projectionPart.Record.QueryPartRecord;
+
+            if (queryPartRecord.Layouts.Count == 0) return re;
+            var properties = queryPartRecord.Layouts[0].Properties;
+            foreach (var propertyRecord in properties)
+            {
+                re.Add(propertyRecord.Description);
+            }
+            return re;
+        }
+        private dynamic GetListModel(int viewId)
+        {
+          
+            if (viewId == -1) return null;
+
+            var contentItem = _contentManager.Get(viewId, VersionOptions.Latest);
 
             dynamic model = _contentManager.BuildDisplay(contentItem);
             return model;

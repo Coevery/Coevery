@@ -42,22 +42,22 @@ namespace Orchard.Projections.Providers.Layouts {
 
         public dynamic RenderLayout(LayoutContext context, IEnumerable<LayoutComponentResult> layoutComponentResults)
         {
-            int columns = Convert.ToInt32(context.State.Columns.Value);
-            bool horizontal = Convert.ToString(context.State.Alignment) != "vertical";
-            string rowClass = context.State.RowClass;
-            string gridClass = context.State.GridClass;
-            string gridId = context.State.GridId;
+            //int columns = Convert.ToInt32(context.State.Columns.Value);
+            //bool horizontal = Convert.ToString(context.State.Alignment) != "vertical";
+            //string rowClass = context.State.RowClass;
+            //string gridClass = context.State.GridClass;
+            //string gridId = context.State.GridId;
 
-            string contentType = string.Empty;
-            if(layoutComponentResults.Any())
-            contentType = layoutComponentResults.First().ContentItem.TypeDefinition.Name;
+            //string contentType = string.Empty;
+            //if(layoutComponentResults.Any())
+            //contentType = layoutComponentResults.First().ContentItem.TypeDefinition.Name;
             
-            IEnumerable<dynamic> shapes =
-                context.LayoutRecord.Display == (int) LayoutRecord.Displays.Content
-                    ? layoutComponentResults.Select(x => _contentManager.BuildDisplay(x.ContentItem, context.LayoutRecord.DisplayType))
-                    : layoutComponentResults.Select(x => x.Properties);
+            //IEnumerable<dynamic> shapes =
+            //    context.LayoutRecord.Display == (int) LayoutRecord.Displays.Content
+            //        ? layoutComponentResults.Select(x => _contentManager.BuildDisplay(x.ContentItem, context.LayoutRecord.DisplayType))
+            //        : layoutComponentResults.Select(x => x.Properties);
 
-            return Shape.ngGrid(Items: shapes,ContentType:contentType);
+            return Shape.ngGrid(Items: null,ContentType:string.Empty);
         }
     }
 }
