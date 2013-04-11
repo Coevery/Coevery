@@ -21,7 +21,8 @@ function GenerateContext($resource) {
 
 function UserViewContext($resource) {
     return $resource(
-        'api/metadata/UserView/:Name',
+        'api/metadata/UserView/:Name:Id',
         { Name: '@Name' },
+        { Id: '@Id' },
         { update: { method: 'PUT' } });
 }
