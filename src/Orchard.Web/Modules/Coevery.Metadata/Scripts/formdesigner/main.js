@@ -521,7 +521,6 @@
                  link: function (scope, element, attrs) {
                      var url = $location.absUrl();
                      var moduleId = url.substr(url.lastIndexOf('/') + 1);
-                     var Layout = LayoutContext($resource);
                      element.click(function () {
                          var layoutString = '';
                          var sections = $('[fd-form]').find('[fd-section]');
@@ -547,10 +546,8 @@
                              }
                          });
 
-                         Layout.save({ id: moduleId, layout: layoutString }, function () {
+                         $.post('/OrchardLocal/api/metadata/layout/' + moduleId, { id: moduleId, layout: layoutString }, function() {
                              console.log('success');
-                         }, function () {
-                             console.log('failed');
                          });
                      });
                  }
