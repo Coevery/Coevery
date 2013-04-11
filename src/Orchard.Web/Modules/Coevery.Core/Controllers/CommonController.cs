@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Core.Services;
 using Newtonsoft.Json.Linq;
 using Orchard;
 using Orchard.ContentManagement;
@@ -24,16 +25,19 @@ namespace Coevery.Core.Controllers
         private IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         private readonly ITokenizer _tokenizer;
+        private readonly IProjectionService _projectionService;
 
         public CommonController(IContentManager iContentManager,
             IOrchardServices orchardServices,
             IProjectionManager projectionManager, 
-            ITokenizer tokenizer)
+            ITokenizer tokenizer,
+            IProjectionService projectionService)
         {
             _contentManager = iContentManager;
             Services = orchardServices;
             _projectionManager = projectionManager;
             _tokenizer = tokenizer;
+            _projectionService = projectionService;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -45,9 +49,9 @@ namespace Coevery.Core.Controllers
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
-            
-      
-            var re = this.GetLayoutComponents();
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            id = pluralService.Singularize(id);
+            var re = this.GetLayoutComponents(id);
             return re;
         }
 
@@ -57,9 +61,12 @@ namespace Coevery.Core.Controllers
             _contentManager.Remove(contentItem);
         }
 
-        private IEnumerable<JObject> GetLayoutComponents()
+        private IEnumerable<JObject> GetLayoutComponents(string entityType)
         {
-            var contentItem1 = _contentManager.Get(35, VersionOptions.Published);
+            int viewId = _projectionService.GetProjectionId(entityType);
+            if(viewId == -1)return  new LinkedList<JObject>();
+
+            var contentItem1 = _contentManager.Get(viewId, VersionOptions.Latest);
             var part = contentItem1.As<ProjectionPart>();
             var query = part.Record.QueryPartRecord;
             // applying layout

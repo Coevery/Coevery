@@ -4,19 +4,11 @@ using System.Web.Mvc;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
 using Orchard;
-using Orchard.ContentManagement;
 using Orchard.Core.Contents.Controllers;
 using Orchard.DisplayManagement;
-
 using Orchard.Localization;
-using Orchard.Projections.Descriptors.Filter;
-using Orchard.Projections.Descriptors.Layout;
-using Orchard.Projections.Descriptors.SortCriterion;
-using Orchard.Projections.Models;
-using Orchard.Projections.Services;
-using Orchard.Projections.ViewModels;
 using Orchard.Security;
-using Orchard.Settings;
+
 
 namespace Coevery.Metadata.Controllers
 {

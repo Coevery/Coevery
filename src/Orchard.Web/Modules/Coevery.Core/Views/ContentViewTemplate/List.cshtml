@@ -63,19 +63,17 @@
     {
         var columnDefs = [
         @{
-            ContentTypeDefinition typeDefinition = Model.TypeDifinition;
-            var userPart = typeDefinition.Parts.First(t => t.PartDefinition.Name == typeDefinition.Name);
-
+            IEnumerable<string> columns = Model.Columns;
             int index = 0;
             Output.Write("{ field: 'ContentId', displayName: localize.getLocalizedString('Id') },");
-            foreach (var filed in userPart.PartDefinition.Fields)
+            foreach (var colName in columns)
             {
                 var colTemp = "{{ field: '{0}', displayName: localize.getLocalizedString('{0}') }},";
-                if (index == userPart.PartDefinition.Fields.Count() - 1)
+                if (index == columns.Count() -1)
                 {
                     colTemp = "{{ field: '{0}', displayName: localize.getLocalizedString('{0}') }}";
                 }
-                string text = string.Format(colTemp, filed.Name);
+                string text = string.Format(colTemp, colName);
                 Output.Write(text);
                 index++;
 
