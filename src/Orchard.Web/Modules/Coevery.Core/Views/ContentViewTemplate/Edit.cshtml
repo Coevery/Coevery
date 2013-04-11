@@ -39,6 +39,19 @@
     {
         @Html.ValidationSummary()
         // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
-        @Display(Model)
+        <div class="row-fluid">
+            <section class="span12 widget">
+                <header class="widget-header">
+                    <span class="title">&nbsp;</span>
+                </header>
+                <section class="widget-content form-container">
+                    @Display(Model)
+                    <section class="form-actions">
+                        <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
+                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
+                    </section>
+                </section>
+            </section>
+        </div>
     }
 </section>

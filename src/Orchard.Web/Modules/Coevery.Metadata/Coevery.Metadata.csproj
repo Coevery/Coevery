@@ -168,7 +168,7 @@
     <Compile Include="Settings\PlacementSettings.cs" />
     <Compile Include="HtmlControlProviders\IHtmlControlProvider.cs" />
     <Compile Include="ViewModels\AddPartsViewModel.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\FormDesignerViewTemplateController.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
@@ -222,12 +222,6 @@
     <Content Include="Views\FieldViewTemplate\Create.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <None Include="Views\Home\AddPartsTo.cshtml" />
-    <None Include="Views\Home\CreatePart.cshtml" />
-    <None Include="Views\Home\RemoveFieldFrom.cshtml" />
-    <None Include="Views\Home\RemovePartFrom.cshtml" />
-    <None Include="Views\Home\Create.cshtml" />
-    <None Include="Views\Home\EditPart.cshtml" />
     <Content Include="Views\DisplayTemplates\EditTypeViewModel.cshtml" />
     <Content Include="Views\DisplayTemplates\EditPartViewModel.cshtml" />
     <Content Include="Views\DisplayTemplates\Field.cshtml" />
@@ -275,12 +269,6 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Views\Home\EditField.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Views\Home\EditPlacement.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -288,7 +276,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\DynamicTypeSettingsViewModel.cshtml" />
-    <Content Include="Views\Home\Dynamic.cshtml" />
+    <Content Include="Views\FormDesignerViewTemplate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FieldViewTemplate\Edit.cshtml" />
