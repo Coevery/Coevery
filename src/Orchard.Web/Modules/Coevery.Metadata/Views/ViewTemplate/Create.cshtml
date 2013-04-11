@@ -1,7 +1,7 @@
 @model Coevery.Metadata.ViewModels.EditTypeViewModel
 @{
     Script.Require("MetadataContext");
-    Script.Require("MetadataDetailController");
+    Script.Require("MetadataEditController");
 }
 @Display.FootScripts()
 
@@ -34,7 +34,7 @@
             </header>
             <section class="widget-content form-container">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                    new { @class = "form-horizontal", @ng_submit = "save()", @ng_controller = "MetadataDetailCtrl" }))
+                    new { @class = "form-horizontal", @ng_submit = "save()", @ng_controller = "MetadataEditCtrl" }))
                 {
                     @Html.ValidationSummary()
                     <section class="control-group">

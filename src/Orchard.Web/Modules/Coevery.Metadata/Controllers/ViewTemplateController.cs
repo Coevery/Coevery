@@ -113,7 +113,9 @@ namespace Coevery.Metadata.Controllers
 
             _contentDefinitionService.AlterType(viewModel, this);
 
-            //var contentTypeDefinition = _contentDefinitionService.AlterType(viewModel,this);
+            _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
+
+            //var contentTypeDefinition = _contentDefinitionService.AddType(viewModel.DisplayName,viewModel.Name);
 
             // adds CommonPart by default
             //_contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);

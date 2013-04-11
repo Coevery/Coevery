@@ -8,6 +8,7 @@ namespace Coevery.Metadata {
             manifest.DefineScript("MetadataContext").SetUrl("app/context.js");
             manifest.DefineScript("MetadataController").SetUrl("controllers/listcontroller.js");
             manifest.DefineScript("MetadataDetailController").SetUrl("controllers/detailcontroller.js");
+            manifest.DefineScript("MetadataEditController").SetUrl("controllers/editcontroller.js");
             manifest.DefineScript("FieldCtrl").SetUrl("controllers/fieldlistcontroller.js");
             manifest.DefineScript("FieldDetailCtrl").SetUrl("controllers/fielddetailcontroller.js");
 
