@@ -6,10 +6,12 @@
 }
 
 <div class="control-group">
-    <label class="form-label title span3">@Model.DisplayName</label>
+    <label class="form-label title span3" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
     <div class="controls-row span9">
         <div class="control span12">
-            <input type="text" class="span12" />
+            <input type="@settings.Type.ToString().ToLower()" id="@Html.FieldIdFor(m => m.Value)" name="@Html.FieldNameFor(m => m.Value)"@if(!String.IsNullOrWhiteSpace(settings.Title)) {<text> title="@settings.Title"</text>} value="@Model.Value"@if(settings.Required) {<text> required="required"</text> }@if(settings.AutoFocus) {<text> autofocus="autofocus"</text> }@if(settings.AutoComplete) {<text> autocomplete="on"</text> }@if(!string.IsNullOrWhiteSpace(settings.Placeholder)) {<text> placeholder="@settings.Placeholder"</text>}@if(!string.IsNullOrEmpty(settings.Pattern)) {<text> pattern="@settings.Pattern"</text>}@if(!string.IsNullOrEmpty(settings.EditorCssClass)) {<text> class="@settings.EditorCssClass span12"</text>} else {<text> class="textMedium span12"</text>} @if(settings.MaxLength > 1) {<text> maxlength="@settings.MaxLength.ToString()"</text>} />
+            @Html.ValidationMessageFor(m => m.Value)
+            <span class="hint">@settings.Hint</span>
         </div>
     </div>
 </div>
