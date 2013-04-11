@@ -1,4 +1,4 @@
-﻿(function () {
+﻿$(function () {
     'use strict';
 
     function LayoutContext($resource) {
@@ -11,27 +11,6 @@
     function adjustRowsHeight(rows) {
         for (var i = 0; i < rows.length; i++) {
             adjustRowHeight(rows[i]);
-            //var row = $(rows[i]);
-            //var columns = row.children('[fd-column]');
-            //var maxColumnHeight = 0;
-            //var maxFieldHeight = 0;
-            //for (var j = 0; j < columns.length; j++) {
-            //    columns[j].style.removeProperty('height');
-            //    var column = $(columns[j]);
-            //    if (column.children('[fd-field]').length) {
-            //        column.children('[fd-field]')[0].style.removeProperty('height');
-            //        var columnHeight = column.height();
-            //        maxColumnHeight = Math.max(maxColumnHeight, columnHeight);
-            //        maxFieldHeight = Math.max(maxFieldHeight, column.children('[fd-field]').height());
-            //    }
-            //}
-            //if (maxColumnHeight) {
-            //    columns.each(function () {
-            //        var borderHeight = $(this).is('.marked, .markedAbove') ? 3 : 0;
-            //        $(this).height(maxColumnHeight - borderHeight);
-            //        $(this).children('[fd-field]').height(maxFieldHeight);
-            //    });
-            //}
         }
     }
 
@@ -81,20 +60,19 @@
         return $('<fd-row>' + columnsString + '</fd-row>');
     }
 
-    var coevery = angular.module('coevery', ['ngResource']);
-
-    coevery.directive('fdToolsSection', function () {
-        return {
-            template: '<p fd-tools-section fd-draggable="[fd-form]" class="alert alert-info"><span class="title"></span></p>',
-            replace: true,
-            restrict: 'E',
-            link: function (scope, element, attrs) {
-                var columnCount = attrs.sectionColumns;
-                var titleElem = element.children();
-                titleElem.text('Section' + columnCount);
-            }
-        };
-    })
+    angular.module('coevery.layout', ['ngResource'])
+        .directive('fdToolsSection', function () {
+            return {
+                template: '<p fd-tools-section fd-draggable="[fd-form]" class="alert alert-info"><span class="title"></span></p>',
+                replace: true,
+                restrict: 'E',
+                link: function (scope, element, attrs) {
+                    var columnCount = attrs.sectionColumns;
+                    var titleElem = element.children();
+                    titleElem.text('Section' + columnCount);
+                }
+            };
+        })
         .directive('fdToolsField', function () {
             return {
                 template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
@@ -228,36 +206,26 @@
         })
         .directive('fdField', function ($compile) {
             return {
-                template: '<div fd-field fd-hoverable fd-draggable class="control-group"><label class="form-label title span3">title</label><div class="controls-row span9"></div></div>',
+                template: '<div fd-field fd-hoverable fd-draggable></div>',
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
-                    var type = attrs.fieldType;
-                    var newItem;
-                    switch (type) {
-                        case 'text':
-                            newItem = $('<input type="text" class="span9"/><div class="span3 tools"></div>');
-                            break;
-                        case 'radio':
-                            newItem = $('<label class="radio span4"><input type="radio" name="radioOptions" checked/>option1</label><label class="radio span4"><input type="radio" name="radioOptions"/>option2</label><div class="span4 tools"></div>');
-                            break;
-                        case 'checkbox':
-                            newItem = $('<label class="checkbox span9"><input type="checkbox" /></label><div class="span3 tools"></div>');
-                            break;
-                        case 'select':
-                            newItem = $('<select class="span9"><option></option><option>option2</option><option>option3</option></select><div class="span3 tools"></div>');
-                            break;
-                        case 'textarea':
-                            newItem = $('<textarea class="span9"></textarea><div class="span3 tools"></div>');
-                            break;
-                        default:
-                            newItem = $('<input type="text" class="span9"/><div class="span3 tools"></div>');
-                            break;
-                    }
-                    element.find('.title').text(attrs.fieldDisplayName);
-                    element.children('.controls-row').append(newItem);
+                    //    case 'select':
+                    //        newItem = $('<select class="span9"><option></option><option>option2</option><option>option3</option></select><div class="span3 tools"></div>');
+                    //        break;
+                    //    case 'textarea':
+                    //        newItem = $('<textarea class="span9"></textarea><div class="span3 tools"></div>');
+                    //        break;
+
+                    var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]');
+                    element.html(template.text());
+                    var control = element.find('.control');
+                    control.removeClass('span12');
+                    control.addClass('span9');
+                    control.after('<div class="span3 tools"></div>');
+
                     var propertyItem = $('<fd-field-tool-property></fd-field-tool-property>');
                     element.find('.tools').append(propertyItem);
                     $compile(propertyItem)(scope);
@@ -348,8 +316,6 @@
                                     dragItem = $('<fd-field></fd-field>');
                                 }
 
-                                dragItem.attr('field-type', ui.draggable.attr('field-type'));
-                                dragItem.attr('field-display-name', ui.draggable.attr('field-display-name'));
                                 dragItem.attr('field-name', ui.draggable.attr('field-name'));
                                 $compile(dragItem)(scope);
                             } else {
@@ -539,12 +505,15 @@
                 }
             };
         })
-        .directive('fdSaveLayoutButton', function ($resource) {
+        .directive('fdSaveLayoutButton', function ($resource, $location) {
             return {
                 template: '<button class="btn">Save</button>',
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
+                    var url = $location.absUrl();
+                    var moduleId = url.substr(url.lastIndexOf('/') + 1);
+                    var Layout = LayoutContext($resource);
                     element.click(function () {
                         var layoutString = '';
                         var sections = $('[fd-form]').find('[fd-section]');
@@ -554,7 +523,7 @@
                                 layoutString += '<fd-section section-columns="' + columnCount + '">';
                                 var rows = $(this).find('[fd-row]');
                                 rows.each(function () {
-                                    layoutString += '<fd-row">';
+                                    layoutString += '<fd-row>';
                                     var columns = $(this).find('[fd-column]');
                                     columns.each(function () {
                                         layoutString += '<fd-column>';
@@ -570,8 +539,7 @@
                             }
                         });
 
-                        var Layout = LayoutContext($resource);
-                        Layout.save({ id: 'Lead', layout: layoutString }, function () {
+                        Layout.save({ id: moduleId, layout: layoutString }, function () {
                             console.log('success');
                         }, function () {
                             console.log('failed');
@@ -580,4 +548,10 @@
                 }
             };
         });
-})();
+
+    //angular.bootstrap($('[ng-app]'), ['coevery.layout']);
+    angular.bootstrap($('fd-form'), ['coevery', 'coevery.layout']);
+});
+
+
+//@ sourceURL=Coevery.Metadata/main.js

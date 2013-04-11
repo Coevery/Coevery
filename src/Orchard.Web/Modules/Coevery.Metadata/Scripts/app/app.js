@@ -15,5 +15,11 @@ var metadataApp = angular.module('metadataApp', ['ngGrid', 'ngResource', 'ui.com
            templateUrl: function (params) {
                return '/OrchardLocal/Metadata/Home/Field';
            }
-       });
+       }).
+       state('UserViewList', {
+            url: '/{Module:[a-zA-Z]+}/{params:\\S*}',
+            templateUrl: function (params) {
+                return '/OrchardLocal/Metadata/UserViewTemplate';
+            }
+        });
     }]);

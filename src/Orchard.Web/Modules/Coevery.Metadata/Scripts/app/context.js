@@ -18,3 +18,10 @@ function GenerateContext($resource) {
         { Name: '@Name' },
         { update: { method: 'PUT' } });
 }
+
+function UserViewContext($resource) {
+    return $resource(
+        'api/metadata/UserView/:Name',
+        { Name: '@Name' },
+        { update: { method: 'PUT' } });
+}

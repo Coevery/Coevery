@@ -1,0 +1,105 @@
+﻿@model Coevery.Metadata.ViewModels.ProjectionEditViewModel
+
+@{
+    Script.Require("MetadataContext");
+    Script.Require("UserViewDetailController");
+}
+@Display.FootScripts()
+
+<header id="main-header" class="page-header">
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>Coevery
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Admin</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">UserView</a>
+            <span class="divider">&raquo;</span>
+        </li>
+        <li>
+            <a href="#">Create</a>
+        </li>
+    </ul>
+    <h1>UserView Detail <span>UserView add</span></h1>
+</header>
+
+<section id="main-content" ng-controller="UserViewDetailCtrl">
+
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { subId = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                FormMethod.Post,
+                 new { @class = "form-horizontal", @name="myForm",@ng_submit="save()" }))
+    {
+        <div class="row-fluid">
+            <section class="span12 widget">
+                <header class="widget-header">
+                    <span class="title">Create UserView</span>
+                </header>
+                <section class="widget-content form-container">
+                    @Html.ValidationSummary()
+                    <legend>General Info</legend>
+                    <fieldset>
+                        <section class="control-group">
+                            <label class="control-label" for="inputName">Name</label>
+                            <div class="controls" >
+                                @Html.TextBoxFor(m => m.Name, new { @class = "span12",@disabled = "disabled"})
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label" for="inputName">DisplayName</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                            </div>
+                        </section>
+                    </fieldset>
+
+                    <legend>Select Field To Display</legend>
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="picklist-ex">All Field</label>
+                            <div class="controls">
+                                <select id="picklist-ex" name="picklist">
+                                    @{
+                                        string optionTemp = "<option {1}>{0}</option>";
+                                        foreach (var field in Model.AllFields)
+                                        {
+                                            string selectedDesc = string.Empty;
+                                            bool selected = Model.LayoutViewModel.Properties.Any(t => t.Type == field.Type);
+                                            if (selected)
+                                            {
+                                                selectedDesc = "selected=\"selected\"";
+                                            }
+                                            Output.Write(string.Format(optionTemp, field.Name, selectedDesc));
+                                        }
+                                        
+                                    }
+                                </select>
+                                <p class="help-block">Use shift and control keys to select multiple items</p>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <section class="form-actions">
+                        <input type="submit" value="Save" name="submit.Save" class="btn btn-primary">
+                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
+                    </section>
+                </section>
+            </section>
+        </div>
+    }
+
+
+</section>
+<script type="text/javascript">
+    //<![CDATA[
+    $('#picklist-ex').picklist({
+        addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+        addLabel: '<i class="icon-caret-right"></i>',
+        removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+        removeLabel: '<i class="icon-caret-left"></i>'
+    });
+    //]]>
+</script>

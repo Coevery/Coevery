@@ -34,11 +34,26 @@
     <h1>@typeDisplayName Detail <span>@typeDisplayName add</span></h1>
 </header>
 <section id="main-content" ng-controller="CommonDetailCtrl">
-@using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new {Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
-    FormMethod.Post,ngparam))
-{
-    @Html.ValidationSummary()
-    // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
-    @Display(Model)
-}
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+    FormMethod.Post, ngparam))
+    {
+        @Html.ValidationSummary()
+        // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
+        
+        Output.Write(Model.Layout); 
+        <div class="row-fluid">
+            <section class="span12 widget">
+                <header class="widget-header">
+                    <span class="title">&nbsp;</span>
+                </header>
+                <section class="widget-content form-container">
+                    @Display(Model)
+                    <section class="form-actions">
+                        <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
+                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
+                    </section>
+                </section>
+            </section>
+        </div>
+    }
 </section>
