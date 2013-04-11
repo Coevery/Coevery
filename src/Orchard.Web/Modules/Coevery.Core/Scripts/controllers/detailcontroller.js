@@ -42,7 +42,7 @@
 
 //angular.bootstrap($('[ng-app]'), ['coevery', 'coevery.layout']);
 
-CommonDetailCtrl.$inject = ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams',];
+CommonDetailCtrl.$inject = ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams', '$element'];
 
 function CommonDetailCtrl($timeout, $rootScope, $scope, logger, $state, $stateParams, $element) {
     var moduleName = $rootScope.$stateParams.Module;
