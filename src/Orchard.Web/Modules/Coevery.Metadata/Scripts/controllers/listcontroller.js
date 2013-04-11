@@ -54,7 +54,7 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
 
     $scope.generate = function() {
         if ($scope.mySelections.length > 0) {
-            metadataGenerator.post({ name: $scope.mySelections[0].Name }, function() {
+            metadataGenerator.save({ name: $scope.mySelections[0].Name }, function() {
                 logger.success("Generate metadata successful.");
             }, function() {
                 logger.error("Failed to Generate the metadata.");
