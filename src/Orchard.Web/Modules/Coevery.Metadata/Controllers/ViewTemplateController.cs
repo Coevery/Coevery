@@ -54,14 +54,9 @@ namespace Coevery.Metadata.Controllers
 
         #region Types
 
-        //[Themed]
         public ActionResult List()
         {
             return View();
-            //return View("List", new ListContentTypesViewModel
-            //{
-            //    Types = _contentDefinitionService.GetTypes()
-            //});
         }
 
 
