@@ -1,6 +1,6 @@
-﻿CommonCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource'];
+﻿CommonCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource', '$stateParams'];
 
-function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
+function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource,$stateParams) {
     var moduleName = $rootScope.$stateParams.Module;
     var module = CommonContext($rootScope, $resource);
     var columnDefs = getColumnDefs(localize);
@@ -41,7 +41,14 @@ function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource) {
             $state.transitionTo('Detail', { Module: moduleName, Id: $scope.mySelections[0].ContentId });
         }
     };
-
+    $scope.createnewview = function () {
+        $state.transitionTo('SubCreate', { Module: 'Metadata', SubModule: 'Projection', Id: $stateParams.Module });
+    };
+    
+    $scope.editview = function () {
+        $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Projection', View: 'Edit', Id: $stateParams.Module, SubId: viewId });
+    };
+    
     $scope.getAll = function () {
         var records = module.query(function () {
             $scope.myData = records;

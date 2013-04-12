@@ -40,7 +40,7 @@ namespace Coevery.Core.Controllers
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
-        private readonly IProjectionService _projectionService;
+        private readonly IViewPartService _projectionService;
 
         public ContentViewTemplateController(
             IOrchardServices orchardServices,
@@ -49,7 +49,7 @@ namespace Coevery.Core.Controllers
             ITransactionManager transactionManager,
             ISiteService siteService,
             IShapeFactory shapeFactory,
-            IProjectionService projectionService) {
+            IViewPartService projectionService) {
             Services = orchardServices;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
@@ -82,10 +82,11 @@ namespace Coevery.Core.Controllers
             dynamic viewModel = Services.New.ViewModel();
             viewModel.DisplayName(contentType.DisplayName);
             viewModel.TypeDefinition(contentType);
-            viewModel.Columns(this.GetViewColumns(viewId));
+           // viewModel.Columns(this.GetViewColumns(viewId));
             viewModel.ModuleName(moduleName);
+            viewModel.ViewId(viewId);
             var model = GetListModel(viewId);
-            viewModel.Content(model);
+            viewModel.ListViewModel(model);
             return View(viewModel);
         }
 

@@ -178,7 +178,8 @@ namespace Coevery.Metadata.Services
                     Type = fieldDescpritor.Type,
                     Description = fieldName,
                     Position = layoutRecord.Properties.Count,
-                    State = this.GetPropertyState(fieldName)
+                    State = this.GetPropertyState(fieldName),
+                    LinkToContent = true
                 };
                 layoutRecord.Properties.Add(propertyRecord);
             }
@@ -203,7 +204,7 @@ namespace Coevery.Metadata.Services
             //var re = FormParametersHelper.ToString(datas);
             string format = @"<Form>
                   <Description>{0}</Description>
-                  <LinkToContent>false</LinkToContent>
+                  <LinkToContent>true</LinkToContent>
                   <ExcludeFromDisplay>false</ExcludeFromDisplay>
                   <CreateLabel>false</CreateLabel>
                   <Label></Label>

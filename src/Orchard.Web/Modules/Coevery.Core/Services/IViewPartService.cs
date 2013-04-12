@@ -6,8 +6,9 @@ using Orchard;
 
 namespace Coevery.Core.Services
 {
-    public interface IProjectionService:IDependency
+    public interface IViewPartService:IDependency
     {
         int GetProjectionId(string entityType);
+        void SetView(string entityType, int projectionId);
     }
 }

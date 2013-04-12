@@ -25,13 +25,13 @@ namespace Coevery.Core.Controllers
         private IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         private readonly ITokenizer _tokenizer;
-        private readonly IProjectionService _projectionService;
+        private readonly IViewPartService _projectionService;
 
         public CommonController(IContentManager iContentManager,
             IOrchardServices orchardServices,
             IProjectionManager projectionManager, 
             ITokenizer tokenizer,
-            IProjectionService projectionService)
+            IViewPartService projectionService)
         {
             _contentManager = iContentManager;
             Services = orchardServices;

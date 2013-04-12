@@ -24,6 +24,16 @@ namespace Coevery.Core {
             return 1;
         }
 
+        public int UpdateFrom1()
+        {
+            SchemaBuilder.CreateTable("ViewPartRecord",
+               table => table
+                   .ContentPartRecord()
+                   .Column<int>("ContentTypeDefinitionRecord_id")
+                   .Column<int>("ProjectionPartRecord_id")
+               );
+            return 2;
+        }
     
     }
 }

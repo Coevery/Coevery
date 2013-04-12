@@ -1,4 +1,5 @@
-﻿@using System.Text
+﻿@using System.ComponentModel
+@using System.Text
 @using Orchard.ContentManagement.MetaData.Models
 @using Orchard.Projections.Models
 
@@ -9,7 +10,6 @@
 
 @{
     ContentTypeDefinition typeDefinition = Model.TypeDefinition;
-    IEnumerable<PropertyRecord> columns = Model.Columns;
 }
 
 @Display.FootScripts()
@@ -41,72 +41,38 @@
                 <section class="dt_header">
                     <section class="btn-group">
                         <button class="btn" ng-click="add()">
-                            <i class="icol-add"></i>@T("Add")
-                        </button>
+                            <i class="icol-add"></i>@T("Add")</button>
                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
-                            <i class="icol-page-white-edit"></i>@T("Edit")
-                        </button>
+                            <i class="icol-page-white-edit"></i>@T("Edit")</button>
                         <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
-                            <i class="icol-cross"></i>@T("Delete")
-                        </button>
+                            <i class="icol-cross"></i>@T("Delete")</button>
                         <button class="btn" ng-click="getAll()">
-                            <i class="icol-arrow-refresh"></i>@T("Refresh")
-                        </button>
+                            <i class="icol-arrow-refresh"></i>@T("Refresh")</button>
                     </section>
-                </section>
 
-                @Display(Model.Content)
-                @*                <section class="gridStyle" ng-grid="gridOptions"></section>*@
-            </section>
+                    <section class="pull-right">
+                          
+                        <section class="btn-group">
+                           
+                            <button class="btn" ng-click="editview">
+                                <i class="icol-page-white-edit"></i>@T("EditView")</button>
+                            <button class="btn" ng-click="createnewview()">
+                                <i class="icol-add"></i>@T("CreateNewView")</button>
+                        </section>
+                    </section>
+
+                    <section class="pull-right">
+                        @Html.DropDownList("viewlist",new LinkedList<SelectListItem>(), new { @class = "dropdown pull-right" })
+                        </section>
+        </section>
+
+                @Display(Model.ListViewModel)
+        </section>
         </section>
     </div>
 </section>
 
-@{
-    Output.Write("<script> ");
-}
-function getColumnDefs(localize)
-{
-@{
-    string cellVarTemp = "var cellTemplate{0} = '<div><a href =\"Coevery#/{1}/{{{{row.entity.ContentId}}}}\" class=\"ngCellText\">{{{{row.entity.{0}}}}}</a></div>';";
-    foreach (var col in columns)
-    {
-        string cellTemplae = string.Empty;
-        if (col.LinkToContent)
-        {
-            string cellVar = string.Format(cellVarTemp, col.Description,Model.ModuleName);
-            Output.Write(cellVar );
-        }
-    }
-}
-        var columnDefs = [
-@{
-    int index = 0;
-    Output.Write("{ field: 'ContentId', displayName: localize.getLocalizedString('Id') },");
-    foreach (var col in columns)
-    {
-        var colTemp = "{{ field: '{0}', displayName: localize.getLocalizedString('{0}') {1} }},";
-        if (index == columns.Count() - 1)
-        {
-            colTemp = "{{ field: '{0}', displayName: localize.getLocalizedString('{0}') {1} }}";
-        }
-        string cellTemplae = string.Empty;
-        if (col.LinkToContent)
-        {
-            cellTemplae = ",cellTemplate: cellTemplate" + col.Description;
-        }
-        string text = string.Format(colTemp, col.Description,cellTemplae);
-        Output.Write(text);
-        index++;
 
-    }
-}
-];
-        return columnDefs;
-    }
-@{
-    Output.Write("</script> ");
-}
 
 
 

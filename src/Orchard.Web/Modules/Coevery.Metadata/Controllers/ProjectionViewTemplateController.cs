@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 using System.Web.Mvc;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
@@ -39,6 +41,12 @@ namespace Coevery.Metadata.Controllers
 
         public ActionResult Create(string id)
         {
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            if (pluralService.IsPlural(id))
+            {
+                id = pluralService.Singularize(id);
+            }
+
            var viewModel = _projectionService.CreateTempProjection(id);
            return RedirectToAction("Edit", new { subId = viewModel.Id });
         }

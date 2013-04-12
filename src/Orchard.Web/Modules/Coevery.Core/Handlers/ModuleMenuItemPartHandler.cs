@@ -37,5 +37,10 @@ namespace Coevery.Core.Handlers {
                // context.Metadata.DisplayRouteValues = _contentManager.GetItemMetadata(moduleMenuItemPart.Content).DisplayRouteValues;
             }
         }
+
+        protected override void Loading(LoadContentContext context)
+        {
+            base.Loading(context);
+        }
     }
 }

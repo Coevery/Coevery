@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
 using Orchard.ContentManagement;
@@ -35,6 +37,12 @@ namespace Coevery.Metadata.Controllers
 
         public IEnumerable<JObject> Get(string id)
         {
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            if (pluralService.IsPlural(id))
+            {
+                id = pluralService.Singularize(id);
+            }
+
             List<JObject> re = new List<JObject>();
             var projections = _contentManager.Query<ProjectionPart>().List().Where(t => t.As<TitlePart>().Title == id);
             foreach (var projectionPart in projections)
