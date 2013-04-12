@@ -41,7 +41,7 @@ namespace Coevery.Metadata.Services {
                     {
                         Name = f.Name,
                         Type = typeof(string)
-                    }).Union(new[] { new DynamicFieldDefinition { Name = "Id", Type = typeof(int) } })
+                    })
                 }).ToList();
 
             if (userContentParts.Any())

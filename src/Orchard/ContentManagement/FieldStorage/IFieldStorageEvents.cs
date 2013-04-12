@@ -39,6 +39,8 @@ namespace Orchard.ContentManagement.FieldStorage {
         }
 
         public void Set<T>(string name, T value) {
+            if (string.IsNullOrEmpty(name))
+                name = _contentPartFieldDefinition.Name;
             _concreteStorage.Set(name, value);
 
             var context = new FieldStorageEventContext {
