@@ -22,7 +22,7 @@ function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource,$s
 
     $scope.delete = function () {
         if ($scope.mySelections.length > 0) {
-            module.delete({ contentType: $scope.mySelections[0].ContentId }, function () {
+            module.delete({ Id: $scope.mySelections[0].ContentId }, function () {
                 $scope.mySelections.pop();
                 $scope.getAll();
                 logger.success('Delete the ' + moduleName + ' successful.');
@@ -43,7 +43,7 @@ function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource,$s
     };
 
     $scope.getAll = function () {
-        var records = module.query(function () {
+        var records = module.query({Name:$stateParams.Id},function () {
             $scope.myData = records;
         }, function () {
             logger.error("Failed to fetched projections for " + $stateParams.Id);
