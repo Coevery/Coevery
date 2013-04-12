@@ -2,17 +2,15 @@
 @using Orchard.ContentManagement
 @using Orchard.Core.Navigation.Models;
 
-@if (!Model.ContentItem.TypeDefinition.Settings.ContainsKey("Stereotype") || Model.ContentItem.TypeDefinition.Settings["Stereotype"] != "MenuItem")
-{
+@if (!Model.ContentItem.TypeDefinition.Settings.ContainsKey("Stereotype") || Model.ContentItem.TypeDefinition.Settings["Stereotype"] != "MenuItem") {
 
     <fieldset>
-
+        
         @Html.EditorFor(m => m.OnMenu)
         <label for="@Html.FieldIdFor(m => m.OnMenu)" class="forcheckbox">@T("Show on a menu")</label>
         <div data-controllerid="@Html.FieldIdFor(m => m.OnMenu)" class="">
             <select id="@Html.FieldIdFor(m => m.CurrentMenuId)" name="@Html.FieldNameFor(m => m.CurrentMenuId)">
-                @foreach (ContentItem menu in Model.Menus)
-                {
+                @foreach (ContentItem menu in Model.Menus) {
                     @Html.SelectOption(Model.CurrentMenuId, menu.Id, Html.ItemDisplayText(menu).ToString())
                 }
             </select>
@@ -25,17 +23,14 @@
     </fieldset>
 
 }
-else
-{
+else {
     
-    <section class="control-group">
-        <label class="control-label" for="MenuText">@T("Menu text")</label>
-        <div class="controls">
-            @Html.TextBoxFor(m => m.MenuText, new { @class = "textMedium", autofocus = "autofocus" })
-        </div>
+    <fieldset>
+        <label for="MenuText">@T("Menu text")</label>
+        @Html.TextBoxFor(m => m.MenuText, new { @class = "textMedium", autofocus = "autofocus" })
         <span class="hint">@T("The text that should appear in the menu.")</span>
         @Html.HiddenFor(m => m.OnMenu, true)
         @Html.HiddenFor(m => m.CurrentMenuId, Request["menuId"])
-    </section>
+    </fieldset>
 
 }
