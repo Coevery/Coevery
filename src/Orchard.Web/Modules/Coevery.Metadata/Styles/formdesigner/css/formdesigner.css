@@ -41,7 +41,8 @@
     margin-right: 4px;
 }
 
-.markedAbove {
+.markedAbove,
+[fd-form] [fd-section]>legend.markedAbove {
     border-top: 3px solid red;
 }
 

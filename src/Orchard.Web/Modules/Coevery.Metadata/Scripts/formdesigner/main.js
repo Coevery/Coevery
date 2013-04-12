@@ -18,12 +18,30 @@
     }
 
     function setDragEffect(item, valid) {
+        var itemElem = $(item);
         if (valid) {
-            item.removeClass('alert-error');
-            item.addClass('alert-info');
+            itemElem.removeClass('alert-error');
+            itemElem.addClass('alert-info');
         } else {
-            item.removeClass('alert-info');
-            item.addClass('alert-error');
+            itemElem.removeClass('alert-info');
+            itemElem.addClass('alert-error');
+        }
+    }
+    
+    function clearMark(item) {
+        var itemElem = $(item);
+        itemElem.removeClass('markedAbove');
+        itemElem.removeClass('marked');
+    }
+
+    function setMark(item, above) {
+        var itemElem = $(item);
+        if (above) {
+            itemElem.removeClass('marked');
+            itemElem.addClass('markedAbove');
+        } else {
+            itemElem.removeClass('markedAbove');
+            itemElem.addClass('marked');
         }
     }
 
@@ -82,7 +100,7 @@
     var coevery = angular.module('coevery', ['ngResource']);
     coevery.directive('fdToolsSection', function () {
         return {
-            template: '<p fd-tools-section fd-draggable="[fd-form] form" class="alert alert-info"><span class="title"></span></p>',
+            template: '<p fd-tools-section fd-draggable class="alert alert-info"><span class="title"></span></p>',
             replace: true,
             restrict: 'E',
             link: function (scope, element, attrs) {
@@ -112,34 +130,83 @@
                  link: function (scope, element, attrs) {
                      var id = newGuid();
                      attrs.$set('id', id);
-                     element.find('form:first').sortable({
-                         items: '[fd-section]:not(.sort-placeholder)',
-                         placeholder: 'sort-placeholder',
-                         tolerance: 'pointer',
-                         scroll: false,
-                         helper: getHelper,
-                         cursorAt: { left: -5, top: -5 },
+                     
+                     var lastMarked = null;
+                     element.find('form:first').droppable({
+                         accept: '[fd-section], [fd-tools-section]',
+                         tolerance: "pointer",
+                         drop: function (event, ui) {
+                             scope.$root.dragHandler = null;
+                             
+                             var markedSection = $(this).find('.marked, .markedAbove').closest('[fd-section]');
+                             var dragItem;
+                             if (ui.draggable.is('[fd-tools-section]')) {
+                                 dragItem = $('<fd-section></fd-section>');
+                                 dragItem.attr('section-columns', ui.draggable.attr('section-columns'));
+                                 $compile(dragItem)(scope);
+                             } else {
+                                 dragItem = ui.draggable;
+                             }
+                             
+                             if (markedSection.attr('id') == dragItem.attr('id')) {
+                                 clearMark(lastMarked);
+                                 lastMarked = null;
+                                 return;
+                             }
+
+                             if (markedSection.is('.marked')) {
+                                 markedSection.after(dragItem);
+                             } else {
+                                 markedSection.before(dragItem);
+                             }
+                             clearMark(lastMarked);
+                             lastMarked = null;
+                         },
                          over: function (event, ui) {
                              setDragEffect(ui.helper, true);
+                             scope.$root.dragHandler = function (dragEvent, dragUi) {
+                                 markSection({
+                                     x: dragEvent.pageX,
+                                     y: dragEvent.pageY
+                                 });
+                             };
+                             scope.$root.dragHandler(event, ui);
                          },
                          out: function (event, ui) {
-                             //setDragEffect(ui.helper, false);
-                         },
-                         beforeStop: function (event, ui) {
-                             if (ui.item.is('p')) {
-                                 var newItem = $('<fd-section></fd-section>');
-                                 newItem.attr('section-columns', ui.item.attr('section-columns'));
-                                 ui.item.replaceWith(newItem);
-                                 $compile(newItem)(scope);
-                             }
+                             scope.$root.dragHandler = null;
+                             setDragEffect(ui.helper, false);
+                             clearMark(lastMarked);
+                             lastMarked = null;
                          }
                      });
+
+                     function markSection(position) {
+                         var sections = element.find('[fd-section]');
+                         var above;
+
+                         for (var i = 0; i < sections.length; i++) {
+                             var section = $(sections[i]);
+                             var sectionOffsetY = section.offset().top;
+                             var sectionHeight = section.height();
+                             var result = position.y >= sectionOffsetY && position.y < sectionOffsetY + sectionHeight ?
+                                 (position.y < sectionOffsetY + sectionHeight / 2 ? true : false) :
+                                 null;
+                             if (result != null) {
+                                 clearMark(lastMarked);
+                                 above = result && i == 0;
+                                 var index = result && i ? i - 1 : i;
+                                 lastMarked = above ? $(sections[index]).find('legend:first') : sections[index];
+                                 setMark(lastMarked, above);
+                                 break;
+                             }
+                         }
+                     }
                  }
              };
          })
          .directive('fdSection', function ($compile) {
              return {
-                 template: '<fieldset fd-section><legend class="title">Section Title</legend><div fd-field-container ng-transclude></div></fieldset>',
+                 template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend class="title">Section Title</legend><div fd-field-container ng-transclude></div></fieldset>',
                  replace: true,
                  restrict: 'E',
                  transclude: true,
@@ -239,12 +306,6 @@
                  link: function (scope, element, attrs) {
                      var id = newGuid();
                      attrs.$set('id', id);
-                     //    case 'select':
-                     //        newItem = $('<select class="span9"><option></option><option>option2</option><option>option3</option></select><div class="span3 tools"></div>');
-                     //        break;
-                     //    case 'textarea':
-                     //        newItem = $('<textarea class="span9"></textarea><div class="span3 tools"></div>');
-                     //        break;
 
                      var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]');
                      element.html(template.text());
@@ -350,7 +411,8 @@
                              }
 
                              if (markedColumn.children('[fd-field]').attr('id') == dragItem.attr('id')) {
-                                 clearMark();
+                                 clearMark(lastColumn);
+                                 lastColumn = null;
                                  return;
                              }
 
@@ -384,7 +446,8 @@
                              }
 
                              adjustRowsHeight($(this).children('[fd-row]'));
-                             clearMark();
+                             clearMark(lastColumn);
+                             lastColumn = null;
                          },
                          over: function (event, ui) {
                              setDragEffect(ui.helper, true);
@@ -399,27 +462,10 @@
                          out: function (event, ui) {
                              scope.$root.dragHandler = null;
                              setDragEffect(ui.helper, false);
-                             clearMark();
-                         }
-                     });
-
-                     function clearMark() {
-                         if (lastColumn) {
-                             lastColumn.removeClass('markedAbove');
-                             lastColumn.removeClass('marked');
+                             clearMark(lastColumn);
                              lastColumn = null;
                          }
-                     }
-
-                     function setMark(above) {
-                         if (above) {
-                             lastColumn.removeClass('marked');
-                             lastColumn.addClass('markedAbove');
-                         } else {
-                             lastColumn.removeClass('markedAbove');
-                             lastColumn.addClass('marked');
-                         }
-                     }
+                     });
 
                      function markColumn(position) {
                          var rows = element.children('[fd-row]');
@@ -437,17 +483,17 @@
                                  (position.y < columnOffsetY + columnHeight / 2 ? true : false) :
                                  null;
                              if (result != null) {
-                                 clearMark();
+                                 clearMark(lastColumn);
                                  if (column.children('[fd-field]').length) {
                                      above = result && i == 0;
                                      var index = result && i ? i - 1 : i;
-                                     lastColumn = $(columns[index]);
+                                     lastColumn = columns[index];
                                  } else {
                                      var filledColumns = columns.has('[fd-field]');
                                      above = !filledColumns.length;
                                      lastColumn = filledColumns.length ? filledColumns.last() : columns.first();
                                  }
-                                 setMark(above);
+                                 setMark(lastColumn, above);
                                  break;
                              }
                          }
@@ -465,12 +511,11 @@
              return {
                  restrict: 'A',
                  link: function (scope, element, attrs) {
-                     var connectTo = attrs.fdDraggable;
-
                      element.css('cursor', 'move');
                      element.draggable({
                          revert: "invalid",
-                         connectToSortable: connectTo,
+                         connectToSortable: attrs.dragConnectToSortable,
+                         handle: attrs.dragHandle,
                          helper: getHelper,
                          cursorAt: { left: -5, top: -5 },
                          tolerance: "pointer",
