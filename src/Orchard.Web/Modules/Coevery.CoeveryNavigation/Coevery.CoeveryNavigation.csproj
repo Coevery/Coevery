@@ -83,6 +83,7 @@
     <Compile Include="ResourceManifest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Shapes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
@@ -141,6 +142,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ViewTemplate\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.MenuItem.Edit-Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.MenuWidget.Edit-Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.Navigation.AdminMenu.Edit-Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.Navigation.Menu.Edit-Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.ShapeMenuItemPart.Edit-Default.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

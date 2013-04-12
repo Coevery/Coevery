@@ -5,7 +5,7 @@
             type: myForm.method,
             data: $(myForm).serialize() + '&submit.Save=Save',
             success: function (result) {
-                //$state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
+                //$state.transitionTo('List', { Module: 'CoeveryNavigation' });
             }
         });
     };
