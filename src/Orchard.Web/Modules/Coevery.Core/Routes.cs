@@ -77,14 +77,6 @@ namespace Coevery.Core
                 Priority = -11,
                 Route = new CoreRoute()
             };
-
-            //var contentDefinitions = _contentDefinitionManager.ListTypeDefinitions();
-            //var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            //foreach (var definition in contentDefinitions) {
-            //    var areaName = pluralService.Pluralize(definition.Name);
-
-            //    };
-            //}
         }
     }
 }
