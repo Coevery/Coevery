@@ -5,39 +5,6 @@
     var settings = Model.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
 }
 
-@*@switch (settings.SelectionMode)
-{
-    case SelectionMode.Checkbox:
-    <div class="control-group">
-        <label class="form-label title span3">@Model.DisplayName</label>
-        <div class="controls-row span9">
-            <div class="control span12">
-                <label class="checkbox span12">
-                    <input type="checkbox" />
-                </label>
-            </div>
-        </div>
-    </div>
-        break;
-    case SelectionMode.Radiobutton:
-    <div class="control-group">
-        <label class="form-label title span3">@Model.DisplayName</label>
-        <div class="controls-row span9">
-            <div class="control span12">
-                <label class="radio span6">
-                    <input type="radio" name="@Html.FieldNameFor(m => m.Value)" />@T(settings.OnLabel)
-                </label>
-                <label class="radio span6">
-                    <input type="radio" name="@Html.FieldNameFor(m => m.Value)" />@T(settings.OffLabel)
-                </label>
-            </div>
-        </div>
-    </div>
-        break;
-    default:
-        break;
-}*@
-
 <div class="control-group">
     <label class="form-label title span3" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
     <div class="controls-row span9">

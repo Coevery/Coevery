@@ -1,13 +1,17 @@
-﻿function NavigationDetailCtrl($scope, logger, $state, $stateParams, $resource) {
+﻿function NavigationDetailCtrl($scope,$timeout, logger, $state, $stateParams, $resource) {
     $scope.save = function () {
         $.ajax({
             url: myForm.action,
             type: myForm.method,
             data: $(myForm).serialize() + '&submit.Save=Save',
             success: function (result) {
-                //$state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
+                $timeout($scope.exit, 0);
             }
         });
+    };
+    
+    $scope.exit = function () {
+        $state.transitionTo('List', { Module: 'CoeveryNavigation'});
     };
     
 }

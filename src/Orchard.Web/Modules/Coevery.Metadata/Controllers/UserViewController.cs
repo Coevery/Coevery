@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Orchard.ContentManagement;
 using Orchard.Core.Title.Models;
 using Orchard.Projections.Models;
+using System.Linq;
 
 namespace Coevery.Metadata.Controllers
 {
@@ -35,16 +36,23 @@ namespace Coevery.Metadata.Controllers
         public IEnumerable<JObject> Get(string id)
         {
             List<JObject> re = new List<JObject>();
-             var projections = _contentManager.Query<ProjectionPart>().List();
+            var projections = _contentManager.Query<ProjectionPart>().List().Where(t => t.As<TitlePart>().Title == id);
             foreach (var projectionPart in projections)
             {
-               JObject reObJ = new JObject();
+                string displayName = _contentManager.Get(projectionPart.Record.QueryPartRecord.Id).As<TitlePart>().Title;
+                JObject reObJ = new JObject();
                 reObJ["ContentId"] = projectionPart.Id;
-                reObJ["Name"] = "--";
-                reObJ["DisplayName"] = projectionPart.As<TitlePart>().Title;
+                reObJ["EntityType"] = projectionPart.As<TitlePart>().Title;
+                reObJ["DisplayName"] = displayName;
                 re.Add(reObJ);
             }
             return re;
+        }
+
+        public void Delete(int id)
+        {
+            var contentItem = _contentManager.Get(id);
+            _contentManager.Remove(contentItem);
         }
     }
 }
