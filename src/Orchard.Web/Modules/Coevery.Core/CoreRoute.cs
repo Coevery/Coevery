@@ -5,15 +5,13 @@ using Orchard.Mvc.Extensions;
 
 namespace Coevery.Core {
 
-    public class CoreRoute : RouteBase, IRouteWithArea {
+    public class CoreRoute : RouteBase {
 
         private readonly RouteBase _route;
 
-        public string Area { get; private set; }
-
-        public CoreRoute(RouteBase route) {
-            _route = route;
-            Area = route.GetAreaName();
+        public CoreRoute()
+        {
+            _route = new Route("Coevery/{area}/{controller}/{action}/{id}", new MvcRouteHandler());
         }
 
         public override RouteData GetRouteData(HttpContextBase httpContext) {

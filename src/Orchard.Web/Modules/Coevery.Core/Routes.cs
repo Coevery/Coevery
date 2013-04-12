@@ -73,27 +73,18 @@ namespace Coevery.Core
                 };
             }
 
-            var contentDefinitions = _contentDefinitionManager.ListTypeDefinitions();
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            foreach (var definition in contentDefinitions) {
-                var areaName = pluralService.Pluralize(definition.Name);
-                yield return new RouteDescriptor {
-                    Priority = -11,
-                    Route = new CoreRoute(new Route(
-                                              "Coevery/" + areaName + "/{controller}/{action}/{id}",
-                                              new RouteValueDictionary {
-                                                  {"area", areaName},
-                                                  {"controller", "home"},
-                                                  {"action", "index"},
-                                                  {"id", ""}
-                                              },
-                                              new RouteValueDictionary(),
-                                              new RouteValueDictionary {
-                                                  {"area", areaName}
-                                              },
-                                              new MvcRouteHandler()))
-                };
-            }
+            yield return new RouteDescriptor {
+                Priority = -11,
+                Route = new CoreRoute()
+            };
+
+            //var contentDefinitions = _contentDefinitionManager.ListTypeDefinitions();
+            //var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            //foreach (var definition in contentDefinitions) {
+            //    var areaName = pluralService.Pluralize(definition.Name);
+
+            //    };
+            //}
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Coevery.Metadata.Controllers
             var contentTypeDefinition = contentItem.TypeDefinition;
             string layout = contentTypeDefinition.Settings.ContainsKey("Layout")
                                 ? contentTypeDefinition.Settings["Layout"]
-                                : null;
+                                : string.Empty;
 
             var viewModel = Services.New.ViewModel().Content(model);
             viewModel.Layout = layout;
