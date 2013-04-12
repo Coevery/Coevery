@@ -63,7 +63,7 @@ angular.module('coevery.layout', [])
     })
     .directive('fdRow', function () {
         return {
-            template: '<div fd-row class="row-fluid" ng-transclude></div>',
+            template: '<div fd-row class="control-group" ng-transclude></div>',
             replace: true,
             restrict: 'E',
             transclude: true

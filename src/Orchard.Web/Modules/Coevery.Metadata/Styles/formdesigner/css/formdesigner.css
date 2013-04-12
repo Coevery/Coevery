@@ -1,9 +1,17 @@
 ﻿[fd-form] .widget-content {
-    /*border-top: 0;*/   
+    /*border-top: 0;*/
+}
+
+[fd-field] {
+    padding: 16px 0;
+}
+
+[fd-form] [fd-section] [fd-row].control-group {
+    padding: 0 20px;
 }
 
 [fd-form] form {
-    min-height: 50px; 
+    min-height: 50px;
 }
 
 .tools div {
@@ -33,10 +41,6 @@
     margin-right: 4px;
 }
 
-[fd-form] [fd-section] [fd-row] [fd-column] [fd-field] .control-group{
-    border: 0;
-}
-
 .markedAbove {
     border-top: 3px solid red;
 }
@@ -51,16 +55,6 @@
 
 .tools .highlight {
     background-color: #bae9fd;
-}
-
-.form-label {
-    text-align: left;
-    padding-top: 5px;
-}
-
-.smallText {
-    font-size: 1em;
-    line-height: 1.4em;
 }
 
 /*Form Designer*/

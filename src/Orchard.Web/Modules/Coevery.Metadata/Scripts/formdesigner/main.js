@@ -204,7 +204,7 @@
          })
          .directive('fdRow', function ($compile) {
              return {
-                 template: '<div fd-row class="row-fluid" ng-transclude></div>',
+                 template: '<div fd-row class="control-group" ng-transclude></div>',
                  replace: true,
                  restrict: 'E',
                  transclude: true,
@@ -233,7 +233,7 @@
          })
          .directive('fdField', function ($compile) {
              return {
-                 template: '<div fd-field fd-hoverable fd-draggable></div>',
+                 template: '<div fd-field fd-hoverable fd-draggable class="clearfix"></div>',
                  replace: true,
                  restrict: 'E',
                  link: function (scope, element, attrs) {
