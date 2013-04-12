@@ -22,12 +22,12 @@
 
 <section id="main-content">
     <div class="row-fluid">
-        <div id="form-designer" class="span8">
+        <div id="form-designer" class="span9">
             <fd-form>
                 @{ Output.Write(Model.Layout); }
             </fd-form>
         </div>
-        <div class="span4">
+        <div class="span3">
             <section id="toolboxes" class="widget">
                 <header class="widget-header">
                     <span class="title">Tools</span>
@@ -51,5 +51,6 @@
             </section>
         </div>
     </div>
+    <fd-field-properties-dialog></fd-field-properties-dialog>
 </section>
 @Display(Model.Content)
