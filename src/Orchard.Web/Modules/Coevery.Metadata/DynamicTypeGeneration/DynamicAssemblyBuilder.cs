@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Orchard.ContentManagement;
+using Orchard.ContentManagement.Records;
 using Orchard.FileSystems.VirtualPath;
 
 namespace Coevery.Metadata.DynamicTypeGeneration
@@ -27,13 +29,22 @@ namespace Coevery.Metadata.DynamicTypeGeneration
             var assemblyBuidler = BuildAssembly();
             var moduleBuidler = BuildModule(assemblyBuidler);
             foreach (var definition in typeDefinitions) {
+                if (definition.Fields.Count() <= 0) continue;
                 var typeBuidler = BuildType(definition, moduleBuidler);
                 var fieldBuilders = BuildFields(definition, typeBuidler).ToList();
                 BuildEmptyCtor(typeBuidler);
                 BuildCtor(typeBuidler, fieldBuilders);
-                BuildProperties(definition, typeBuidler, fieldBuilders);
+                BuildProperties(definition, typeBuidler, fieldBuilders,false);
                 Type type = typeBuidler.CreateType();
+
+                var partTypeBuidler = BuildPartType(definition, moduleBuidler, type);
+                var partFieldBuilders = BuildFields(definition, partTypeBuidler).ToList();
+                BuildEmptyCtor(partTypeBuidler);
+                BuildCtor(partTypeBuidler, partFieldBuilders);
+                BuildProperties(definition, partTypeBuidler, partFieldBuilders,true);
+                partTypeBuidler.CreateType();
             }
+
             assemblyBuidler.Save(AssemblyName + ".dll");
             var assembly = Assembly.Load(AssemblyName);
             return  assembly.GetTypes();
@@ -71,7 +82,23 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                                                    TypeAttributes.AutoClass |
                                                    TypeAttributes.AnsiClass |
                                                    TypeAttributes.BeforeFieldInit |
-                                                   TypeAttributes.AutoLayout);
+                                                   TypeAttributes.AutoLayout, typeof(ContentPartRecord));
+            return typBuilder;
+        }
+
+        private static TypeBuilder BuildPartType(DynamicTypeDefinition definition, ModuleBuilder modBuilder, Type type)
+        {
+            // Build the type
+            var typeName = string.Format("{0}.{1}.{2}Part", AssemblyName, "Records", definition.Name);
+            Type contentType = typeof (ContentPart<>);
+            var genericContentType = contentType.MakeGenericType(type);
+            var typBuilder = modBuilder.DefineType(typeName,
+                                                   TypeAttributes.Public |
+                                                   TypeAttributes.Class |
+                                                   TypeAttributes.AutoClass |
+                                                   TypeAttributes.AnsiClass |
+                                                   TypeAttributes.BeforeFieldInit |
+                                                   TypeAttributes.AutoLayout, genericContentType);
             return typBuilder;
         }
 
@@ -134,7 +161,7 @@ namespace Coevery.Metadata.DynamicTypeGeneration
 
         private static void BuildProperties(DynamicTypeDefinition definition,
                                             TypeBuilder typBuilder,
-                                            List<FieldBuilder> fieldBuilders) {
+                                            List<FieldBuilder> fieldBuilders,bool userParanet) {
             var fields = definition.Fields.ToList();
             for (int i = 0; i < fields.Count; i++) {
                 var propBuilder = typBuilder.DefineProperty(
@@ -145,22 +172,41 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                     "get_" + fields[i].Name, MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig,
                     fields[i].Type, Type.EmptyTypes);
                 var generator = getMethBuilder.GetILGenerator();
-
-                generator.Emit(OpCodes.Ldarg_0); // load 'this'
-                generator.Emit(OpCodes.Ldfld, fieldBuilders[i]); // load the field
-                generator.Emit(OpCodes.Ret);
+                if (userParanet) {
+                    MethodInfo mi = typBuilder.BaseType.GetProperty("Record").PropertyType.GetProperty(fields[i].Name).GetGetMethod();
+                    generator.Emit(OpCodes.Ldarg_0);
+                    generator.Emit(OpCodes.Call, mi);
+                    generator.Emit(OpCodes.Ret);
+                }
+                else {
+                    generator.Emit(OpCodes.Ldarg_0); // load 'this'
+                    generator.Emit(OpCodes.Ldfld, fieldBuilders[i]); // load the field
+                    generator.Emit(OpCodes.Ret);
+                }
+                
                 propBuilder.SetGetMethod(getMethBuilder);
-
+          
                 // Build Set prop
                 var setMethBuilder = typBuilder.DefineMethod(
                     "set_" + fields[i].Name, MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig,
                     typeof (void), new[] {fieldBuilders[i].FieldType});
                 generator = setMethBuilder.GetILGenerator();
-
-                generator.Emit(OpCodes.Ldarg_0); // load 'this'
-                generator.Emit(OpCodes.Ldarg_1); // load value
-                generator.Emit(OpCodes.Stfld, fieldBuilders[i]);
-                generator.Emit(OpCodes.Ret);
+                if (userParanet) {
+                    MethodInfo rmi = typBuilder.BaseType.GetProperty("Record").GetGetMethod();
+                    MethodInfo mi = typBuilder.BaseType.GetProperty("Record").PropertyType.GetProperty(fields[i].Name).GetSetMethod();
+                    generator.Emit(OpCodes.Ldarg_0);
+                    generator.Emit(OpCodes.Call, rmi);
+                    generator.Emit(OpCodes.Ldarg_1);
+                    generator.Emit(OpCodes.Call, mi);
+                    generator.Emit(OpCodes.Ret);
+                }
+                else {
+                    generator.Emit(OpCodes.Ldarg_0); // load 'this'
+                    generator.Emit(OpCodes.Ldarg_1); // load value
+                    generator.Emit(OpCodes.Stfld, fieldBuilders[i]);
+                    generator.Emit(OpCodes.Ret);
+                }
+                
                 propBuilder.SetSetMethod(setMethBuilder);
             }
         }
