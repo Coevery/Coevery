@@ -33,10 +33,9 @@ namespace Coevery.Metadata.Services
             _dataServiceProviderFactory = dataServiceProviderFactory;
         }
 
-        public void UpdateSchema(Func<string, string> format, IEnumerable<Type> types)
+        public void UpdateSchema(IEnumerable<RecordBlueprint> recordBlueprints)
         {
-            var recordBlueprints = types.Select(t => new RecordBlueprint {TableName = format(t.Name), Type = t}).ToList();
-            var persistenceModel = AbstractDataServicesProvider.CreatePersistenceModel(recordBlueprints);
+            var persistenceModel = AbstractDataServicesProvider.CreatePersistenceModel(recordBlueprints.ToList());
             var dataServiceProvider = this._dataServiceProviderFactory.CreateProvider(this._sessionFactoryHolder.GetSessionFactoryParameters());
             var persistenceConfigurer = dataServiceProvider.GetPersistenceConfigurer(true);
             
