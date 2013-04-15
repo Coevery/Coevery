@@ -153,6 +153,13 @@
                                 lastMarked = null;
                                 return;
                             }
+                            
+                            if (!markedSection.length) {
+                                $(this).append(dragItem);
+                                clearMark(lastMarked);
+                                lastMarked = null;
+                                return;
+                            }
 
                             if (markedSection.is('.marked')) {
                                 markedSection.after(dragItem);
@@ -183,6 +190,11 @@
                     function markSection(position) {
                         var sections = element.find('[fd-section]');
                         var above;
+
+                        if (!sections.length) {
+                            lastMarked = element;
+                            setMark(lastMarked, true);
+                        }
 
                         for (var i = 0; i < sections.length; i++) {
                             var section = $(sections[i]);
@@ -318,18 +330,16 @@
                     element.find('.tools').append(propertyItem);
                     $compile(propertyItem)(scope);
                     element.find('.tools').hide();
-                    if (attrs.fieldAlwaysOnLayout == undefined) {
-                        var removeItem = $('<fd-field-tool-remove></fd-field-tool-remove>');
-                        element.find('.tools').append(removeItem);
-                        $compile(removeItem)(scope);
-                    } else {
-                        var img = $('<img src="/OrchardLocal/Modules/Coevery.Metadata/Styles/formdesigner/images/alwaysdisplay12.gif">');
-                        element.find('.title').prepend(img);
-                    }
-                    if (attrs.fieldRequired != undefined) {
-                        var img = $('<img src="/OrchardLocal/Modules/Coevery.Metadata/Styles/formdesigner/images/required12.gif">');
-                        element.find('.title').prepend(img);
-                    }
+
+                    changeToAlwaysOnLayout(attrs.fieldAlwaysOnLayout != null);
+                    changeToRequired(attrs.fieldRequired != null);
+
+                    
+                    element[0].removeListener = scope.$root.$watch(function () {
+                        return element.attr('field-required');
+                    }, function(newValue) {
+                        changeToRequired(newValue != null);
+                    });
 
                     element[0].hoverOverHandler = function() {
                         $(this).addClass('highlight');
@@ -339,6 +349,33 @@
                         $(this).removeClass('highlight');
                         $(this).find('.tools').hide();
                     };
+                    
+                    function changeToRequired(required) {
+                        if (required) {
+                            if (!element.find('.required-image').length) {
+                                var img = $('<img class="required-image" src="/OrchardLocal/Modules/Coevery.Metadata/Styles/formdesigner/images/required12.gif">');
+                                element.find('.title').prepend(img);
+                            }
+                        } else {
+                            element.find('.required-image').remove();
+                        }
+                    }
+                    
+                    function changeToAlwaysOnLayout(required) {
+                        if (required) {
+                            if (!element.find('.layout-image').length) {
+                                var img = $('<img class="layout-image" src="/OrchardLocal/Modules/Coevery.Metadata/Styles/formdesigner/images/alwaysdisplay12.gif">');
+                                element.find('.title').prepend(img);
+                            }
+                            element.find('[fd-field-tool-remove]').remove();
+                        } else {
+                            element.find('.layout-image').remove();
+                            
+                            var removeItem = $('<fd-field-tool-remove></fd-field-tool-remove>');
+                            element.find('.tools').append(removeItem);
+                            $compile(removeItem)(scope);
+                        }
+                    }
                 }
             };
         })
@@ -357,7 +394,9 @@
 
                     element.click(function() {
                         var column = $(this).parents('[fd-column]:first');
-                        $(this).parents('[fd-field]:first').remove();
+                        var field = $(this).parents('[fd-field]:first');
+                        field[0].removeListener && field[0].removeListener();
+                        field.remove();
                         moveNextColumns(column);
                     });
                 }
@@ -376,8 +415,13 @@
                         $(this).removeClass('highlight');
                     };
 
-                    element.click(function() {
-                        scope.$root.fieldPropertyReadonly = true;
+                    element.click(function () {
+                        var field = $(this).parents('[fd-field]:first');
+                        scope.$root.currentField = {
+                            field: field,
+                            readonly: field.attr('field-readonly') != null,
+                            required: field.attr('field-required') != null
+                        };
                         scope.$root.$apply();
                         $('#myModal').modal({ backdrop: 'static' });
                     });
@@ -386,13 +430,21 @@
         })
         .directive('fdFieldPropertiesDialog', function($compile) {
             return {
-                template: '<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Field Properties</h3></div><div class="modal-body"><label class="checkbox"><input type="checkbox" ng-model="fieldPropertyReadonly"/>Read-Only</label><label class="checkbox"><input type="checkbox" name="required" value="true"/>Required</label></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><button class="btn btn-primary">Ok</button></div></div>',
+                template: '<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Field Properties</h3></div><div class="modal-body"><label class="checkbox"><input type="checkbox" ng-model="currentField.readonly"/>Read-Only</label><label class="checkbox"><input type="checkbox" ng-model="currentField.required"/>Required</label></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><button class="btn btn-primary">Ok</button></div></div>',
                 replace: true,
                 restrict: 'E',
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
+                    var rootScope = scope.$root;
                     element.find('.btn-primary').click(function(parameters) {
-                        console.log('test');
-                        scope.fieldPropertyReadonly;
+                        rootScope.currentField.readonly
+                            ? rootScope.currentField.field.attr('field-readonly', '')
+                            : rootScope.currentField.field.removeAttr('field-readonly');
+                        rootScope.currentField.required
+                            ? rootScope.currentField.field.attr('field-required', '')
+                            : rootScope.currentField.field.removeAttr('field-required');
+
+                        scope.$root.$apply();
+                        $('#myModal').modal('hide');
                     });
                 }
             };
@@ -562,12 +614,10 @@
                     scope.$root.enableHover = true;
                     element.hover(
                         function() {
-                            if (scope.$root.enableHover) {
-                                this.hoverOverHandler();
-                            }
+                            scope.$root.enableHover && this.hoverOverHandler && this.hoverOverHandler();
                         },
                         function() {
-                            this.hoverOutHandler();
+                            this.hoverOutHandler && this.hoverOutHandler();
                         }
                     );
                 }
@@ -596,7 +646,10 @@
                                         layoutString += '<fd-column>';
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
-                                            layoutString += '<fd-field field-name="' + field.attr('field-name') + '"></fd-field>';
+                                            var settings = '';
+                                            field.attr('field-required') != null && (settings += ' field-required');
+                                            field.attr('field-readonly') != null && (settings += ' field-readonly');
+                                            layoutString += '<fd-field field-name="' + field.attr('field-name') + '"' + settings + '></fd-field>';
                                         }
                                         layoutString += '</fd-column>';
                                     });
