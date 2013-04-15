@@ -33,18 +33,18 @@ namespace Orchard.Environment.Extensions.Loaders
         }
 
         public override ExtensionProbeEntry Probe(ExtensionDescriptor descriptor) {
-            //if (descriptor.Id == "Coevery.DynamicTypes")
-            //{
-            //    var virtualPath = GetAssemblyVirtualPath(descriptor);
-            //    return new ExtensionProbeEntry
-            //    {
-            //        Descriptor = descriptor,
-            //        Loader = this,
-            //        Priority = 100, // Higher priority because assemblies in ~/bin always take precedence
-            //        VirtualPath = virtualPath,
-            //        VirtualPathDependencies = Enumerable.Empty<string>(),
-            //    };
-            //}
+            if (descriptor.Id == "Coevery.DynamicTypes")
+            {
+                var virtualPath = GetAssemblyVirtualPath(descriptor);
+                return new ExtensionProbeEntry
+                {
+                    Descriptor = descriptor,
+                    Loader = this,
+                    Priority = 100, // Higher priority because assemblies in ~/bin always take precedence
+                    VirtualPath = virtualPath,
+                    VirtualPathDependencies = Enumerable.Empty<string>(),
+                };
+            }
             return null;
         }
 

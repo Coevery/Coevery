@@ -79,8 +79,6 @@ namespace Coevery.Metadata.DynamicTypeGeneration
             var genericContentType = contentType.MakeGenericType(type);
             var baseCtorInfo = genericContentType.GetConstructor(new Type[1] { paramGenericType });
             generator.Emit(OpCodes.Call, baseCtorInfo);
-            generator.Emit(OpCodes.Nop);
-            generator.Emit(OpCodes.Nop);
             generator.Emit(OpCodes.Ret);
         }
 
@@ -183,7 +181,7 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                                                    TypeAttributes.AutoClass |
                                                    TypeAttributes.AnsiClass |
                                                    TypeAttributes.BeforeFieldInit |
-                                                   TypeAttributes.AutoLayout, typeof(ContentHandler));
+                                                   TypeAttributes.AutoLayout, genericContentType);
             return typBuilder;
         }
 
