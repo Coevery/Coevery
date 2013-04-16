@@ -50,7 +50,11 @@ namespace Orchard.Environment.Extensions.Loaders
 
         public override void ExtensionActivated(ExtensionLoadingContext ctx, ExtensionDescriptor extension)
         {
-            string sourceFileName = _virtualPathProvider.MapPath(GetAssemblyVirtualPath(extension));
+            var virtualPath = GetAssemblyVirtualPath(extension);
+
+            if (!_virtualPathProvider.TryFileExists(virtualPath)) return;
+
+            string sourceFileName = _virtualPathProvider.MapPath(virtualPath);
 
             // Copy the assembly if it doesn't exist or if it is older than the source file.
             bool copyAssembly =

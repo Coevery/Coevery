@@ -106,7 +106,7 @@ namespace Orchard.Environment {
                             builder.RegisterType<PrecompiledExtensionLoader>().As<IExtensionLoader>().SingleInstance();
                             builder.RegisterType<DynamicExtensionLoader>().As<IExtensionLoader>().SingleInstance();
                             builder.RegisterType<RawThemeExtensionLoader>().As<IExtensionLoader>().SingleInstance();
-                            builder.RegisterType<GeneratedExtensionLoader>().As<IExtensionLoader>().SingleInstance();
+                            //builder.RegisterType<GeneratedExtensionLoader>().As<IExtensionLoader>().SingleInstance();
                         }
                     }
 
