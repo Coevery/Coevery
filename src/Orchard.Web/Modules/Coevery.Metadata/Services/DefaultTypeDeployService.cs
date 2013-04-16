@@ -2,7 +2,9 @@
 using System.Linq;
 using Coevery.Metadata.DynamicTypeGeneration;
 using Orchard.ContentManagement.MetaData;
+using Orchard.ContentManagement.Records;
 using Orchard.Environment.Configuration;
+using Orchard.Environment.ShellBuilders.Models;
 
 namespace Coevery.Metadata.Services {
     public class DefaultTypeDeployService : ITypeDeployService {
@@ -48,8 +50,15 @@ namespace Coevery.Metadata.Services {
             {
                 try
                 {
-                    var types = _dynamicAssemblyBuilder.Build(userContentParts);
-                    _tableSchemaManager.UpdateSchema(FormatTableName, types);
+                    var types = _dynamicAssemblyBuilder.Build(userContentParts).ToList();
+                    types = types.Where(c => typeof (ContentPartRecord).IsAssignableFrom(c)).ToList();
+                    var recordBlueprints = types.Select(t => new RecordBlueprint { TableName = FormatTableName(t.Name,false), Type = t }).ToList();
+                    types.Clear();
+                    types.Add(typeof(ContentTypeRecord));
+                    types.Add(typeof(ContentItemRecord));
+                    types.Add(typeof(ContentItemVersionRecord));
+                    recordBlueprints.AddRange(types.Select(t => new RecordBlueprint { TableName = FormatTableName(t.Name,true), Type = t }).ToList());
+                    _tableSchemaManager.UpdateSchema(recordBlueprints);
                 }
                 catch (Exception)
                 {
@@ -60,9 +69,10 @@ namespace Coevery.Metadata.Services {
             return true;
         }
 
-        private string FormatTableName(string name)
+        private string FormatTableName(string name,bool isBaseType)
         {
             var extensionId = "Coevery_DynamicTypes";
+            if (isBaseType) extensionId = "Orchard_Framework_";
             var extensionName = extensionId.Replace('.', '_');
 
             var dataTablePrefix = "";

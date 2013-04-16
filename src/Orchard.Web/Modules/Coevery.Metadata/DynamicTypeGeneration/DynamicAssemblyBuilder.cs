@@ -1,11 +1,15 @@
-﻿using Orchard;
+﻿using Coevery.Metadata.Drivers;
+using Orchard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.Drivers;
+using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.Records;
+using Orchard.Data;
 using Orchard.FileSystems.VirtualPath;
 
 namespace Coevery.Metadata.DynamicTypeGeneration
@@ -39,16 +43,63 @@ namespace Coevery.Metadata.DynamicTypeGeneration
 
                 var partTypeBuidler = BuildPartType(definition, moduleBuidler, type);
                 var partFieldBuilders = BuildFields(definition, partTypeBuidler).ToList();
-                BuildEmptyCtor(partTypeBuidler);
+                BuildPartEmptyCtor(partTypeBuidler, type);
                 BuildCtor(partTypeBuidler, partFieldBuilders);
                 BuildProperties(definition, partTypeBuidler, partFieldBuilders,true);
-                partTypeBuidler.CreateType();
+                var contentPartType = partTypeBuidler.CreateType();
+
+                var driverTypeBuidler = BuildDriverType(definition, moduleBuidler, contentPartType);
+                driverTypeBuidler.CreateType();
+
+                var handlerTypeBuidler = BuildHandlerType(definition, moduleBuidler, type);
+                BuildHandlerCtor(handlerTypeBuidler, type);
+                handlerTypeBuidler.CreateType();
             }
 
             assemblyBuidler.Save(AssemblyName + ".dll");
             var assembly = Assembly.Load(AssemblyName);
             return  assembly.GetTypes();
         }
+
+        private static void BuildHandlerCtor(TypeBuilder typBuilder, Type type)
+        {
+            Type paramType = typeof(IRepository<>);
+            var paramGenericType = paramType.MakeGenericType(type);
+            var ctorBuilder = typBuilder.DefineConstructor(
+                MethodAttributes.Public |
+                MethodAttributes.SpecialName |
+                MethodAttributes.RTSpecialName,
+                CallingConventions.Standard,
+                new Type[1] { paramGenericType });
+
+            var generator = ctorBuilder.GetILGenerator();
+            generator.Emit(OpCodes.Ldarg_0);
+            generator.Emit(OpCodes.Ldarg_1);
+            Type contentType = typeof(DynamicContentsHandler<>);
+            var genericContentType = contentType.MakeGenericType(type);
+            var baseCtorInfo = genericContentType.GetConstructor(new Type[1] { paramGenericType });
+            generator.Emit(OpCodes.Call, baseCtorInfo);
+            generator.Emit(OpCodes.Ret);
+        }
+
+        private static void BuildPartEmptyCtor(TypeBuilder typBuilder,Type type)
+        {
+            var ctorBuilder = typBuilder.DefineConstructor(
+                MethodAttributes.Public |
+                MethodAttributes.SpecialName |
+                MethodAttributes.RTSpecialName,
+                CallingConventions.Standard,
+                new Type[0]);
+
+            var generator = ctorBuilder.GetILGenerator();
+            generator.Emit(OpCodes.Ldarg_0);
+            Type contentType = typeof(ContentPart<>);
+            var genericContentType = contentType.MakeGenericType(type);
+            var baseCtorInfo = genericContentType.GetConstructor(new Type[0]);
+            generator.Emit(OpCodes.Call, baseCtorInfo);
+            generator.Emit(OpCodes.Ret);
+        }
+
 
         private AssemblyBuilder BuildAssembly() {
             AppDomain aDomain = AppDomain.CurrentDomain;
@@ -91,6 +142,38 @@ namespace Coevery.Metadata.DynamicTypeGeneration
             // Build the type
             var typeName = string.Format("{0}.{1}.{2}Part", AssemblyName, "Records", definition.Name);
             Type contentType = typeof (ContentPart<>);
+            var genericContentType = contentType.MakeGenericType(type);
+            var typBuilder = modBuilder.DefineType(typeName,
+                                                   TypeAttributes.Public |
+                                                   TypeAttributes.Class |
+                                                   TypeAttributes.AutoClass |
+                                                   TypeAttributes.AnsiClass |
+                                                   TypeAttributes.BeforeFieldInit |
+                                                   TypeAttributes.AutoLayout, genericContentType);
+            return typBuilder;
+        }
+
+        private static TypeBuilder BuildDriverType(DynamicTypeDefinition definition, ModuleBuilder modBuilder, Type type)
+        {
+            // Build the type
+            var typeName = string.Format("{0}.{1}.{2}PartDriver", AssemblyName, "Records", definition.Name);
+            Type driverType = typeof(DynamicContentsDriver<>);
+            var genericContentType = driverType.MakeGenericType(type);
+            var typBuilder = modBuilder.DefineType(typeName,
+                                                   TypeAttributes.Public |
+                                                   TypeAttributes.Class |
+                                                   TypeAttributes.AutoClass |
+                                                   TypeAttributes.AnsiClass |
+                                                   TypeAttributes.BeforeFieldInit |
+                                                   TypeAttributes.AutoLayout, genericContentType);
+            return typBuilder;
+        }
+
+        private static TypeBuilder BuildHandlerType(DynamicTypeDefinition definition, ModuleBuilder modBuilder,Type type)
+        {
+            // Build the type
+            var typeName = string.Format("{0}.{1}.{2}PartHandler", AssemblyName, "Records", definition.Name);
+            Type contentType = typeof(DynamicContentsHandler<>);
             var genericContentType = contentType.MakeGenericType(type);
             var typBuilder = modBuilder.DefineType(typeName,
                                                    TypeAttributes.Public |
