@@ -53,11 +53,6 @@ namespace Coevery.Metadata.Services {
                     var types = _dynamicAssemblyBuilder.Build(userContentParts).ToList();
                     types = types.Where(c => typeof (ContentPartRecord).IsAssignableFrom(c)).ToList();
                     var recordBlueprints = types.Select(t => new RecordBlueprint { TableName = FormatTableName(t.Name,false), Type = t }).ToList();
-                    types.Clear();
-                    types.Add(typeof(ContentTypeRecord));
-                    types.Add(typeof(ContentItemRecord));
-                    types.Add(typeof(ContentItemVersionRecord));
-                    recordBlueprints.AddRange(types.Select(t => new RecordBlueprint { TableName = FormatTableName(t.Name,true), Type = t }).ToList());
                     _tableSchemaManager.UpdateSchema(recordBlueprints);
                 }
                 catch (Exception)
@@ -72,7 +67,7 @@ namespace Coevery.Metadata.Services {
         private string FormatTableName(string name,bool isBaseType)
         {
             var extensionId = "Coevery_DynamicTypes";
-            if (isBaseType) extensionId = "Orchard_Framework_";
+            if (isBaseType) extensionId = "Orchard_Framework";
             var extensionName = extensionId.Replace('.', '_');
 
             var dataTablePrefix = "";

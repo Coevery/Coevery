@@ -2,9 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using Coevery.Dynamic;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Conventions.Helpers;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
+using Orchard.ContentManagement.Records;
+using Orchard.Data.Conventions;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
 using Orchard.Data;
@@ -35,9 +40,10 @@ namespace Coevery.Metadata.Services
 
         public void UpdateSchema(IEnumerable<RecordBlueprint> recordBlueprints)
         {
-            var persistenceModel = AbstractDataServicesProvider.CreatePersistenceModel(recordBlueprints.ToList());
+            var persistenceModel = CreatePersistenceModel(recordBlueprints.ToList());
             var dataServiceProvider = this._dataServiceProviderFactory.CreateProvider(this._sessionFactoryHolder.GetSessionFactoryParameters());
             var persistenceConfigurer = dataServiceProvider.GetPersistenceConfigurer(true);
+            
             
             var configuration = Fluently.Configure()
                     .Database(persistenceConfigurer)
@@ -56,6 +62,21 @@ namespace Coevery.Metadata.Services
             
             new SchemaUpdate(configuration).Execute(false, true);
 
+        }
+
+        private  AutoPersistenceModel CreatePersistenceModel(ICollection<RecordBlueprint> recordDescriptors)
+        {
+            if (recordDescriptors == null)
+            {
+                throw new ArgumentNullException("recordDescriptors");
+            }
+
+            return AutoMap.Source(new AbstractDataServicesProvider.TypeSource(recordDescriptors))
+                // Ensure that namespaces of types are never auto-imported, so that 
+                // identical type names from different namespaces can be mapped without ambiguity
+                          .Conventions.Setup(x => x.Add(AutoImport.Never()))
+                          .Conventions.Add(new RecordTableNameConvention(recordDescriptors))
+                          .Conventions.Add(new CacheConvention(recordDescriptors));
         }
     }
 }
