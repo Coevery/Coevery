@@ -58,7 +58,7 @@ namespace Orchard.Data.Providers {
         }
 
         [Serializable]
-        class TypeSource : ITypeSource {
+       public class TypeSource : ITypeSource {
             private readonly IEnumerable<RecordBlueprint> _recordDescriptors;
 
             public TypeSource(IEnumerable<RecordBlueprint> recordDescriptors) { _recordDescriptors = recordDescriptors; }
