@@ -5,7 +5,10 @@ using Coevery.Dynamic;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Helpers;
+using FluentNHibernate.Conventions.Inspections;
+using FluentNHibernate.Conventions.Instances;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using Orchard.ContentManagement.Records;
@@ -66,7 +69,11 @@ namespace Coevery.Metadata.Services
                           .Conventions.Setup(x => x.Add(AutoImport.Never()))
                           .Conventions.Add(new RecordTableNameConvention(recordDescriptors))
                           .Conventions.Add(new CacheConvention(recordDescriptors))
-                          .Alterations(alt => alt.Add(new IgnoreInfosetAlteration(recordDescriptors)));
+                          .Conventions.Add(new PrimaryKeyConvention())
+                          .Alterations(alt =>
+                          {
+                              alt.Add(new IgnoreInfosetAlteration(recordDescriptors));
+                          });
          
         }
     }
@@ -91,4 +98,13 @@ namespace Coevery.Metadata.Services
             model.OverrideAll(alt => alt.IgnoreProperty("ContentItemVersionRecord"));
         }
     }
+
+     class PrimaryKeyConvention : IIdConvention
+     {
+         public void Apply(IIdentityInstance instance)
+         {
+             instance.Column("Id");
+             instance.GeneratedBy.Assigned();
+         }
+     }
 }
