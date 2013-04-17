@@ -48,16 +48,7 @@ namespace Coevery.Metadata.Services
             var configuration = Fluently.Configure()
                     .Database(persistenceConfigurer)
                     .Mappings(m => m.AutoMappings.Add(persistenceModel))
-                    .ExposeConfiguration(c =>
-                    {
-                        // This is to work around what looks to be an issue in the NHibernate driver:
-                        // When inserting a row with IDENTITY column, the "SELET @@IDENTITY" statement
-                        // is issued as a separate command. By default, it is also issued in a separate
-                        // connection, which is not supported (returns NULL).
-                        //c.SetProperty("connection.release_mode", "on_close");
-                        //new SchemaExport(c).Create(false /*script*/, true /*export*/);
-                       // new SchemaUpdate(c).Execute(false, true);
-                    })
+                    .ExposeConfiguration(c =>{})
                     .BuildConfiguration();
             
             new SchemaUpdate(configuration).Execute(false, true);
@@ -72,11 +63,32 @@ namespace Coevery.Metadata.Services
             }
 
             return AutoMap.Source(new AbstractDataServicesProvider.TypeSource(recordDescriptors))
-                // Ensure that namespaces of types are never auto-imported, so that 
-                // identical type names from different namespaces can be mapped without ambiguity
                           .Conventions.Setup(x => x.Add(AutoImport.Never()))
                           .Conventions.Add(new RecordTableNameConvention(recordDescriptors))
-                          .Conventions.Add(new CacheConvention(recordDescriptors));
+                          .Conventions.Add(new CacheConvention(recordDescriptors))
+                          .Alterations(alt => alt.Add(new IgnoreInfosetAlteration(recordDescriptors)));
+         
+        }
+    }
+
+     class IgnoreInfosetAlteration : IAutoMappingAlteration
+    {
+        private readonly IEnumerable<RecordBlueprint> _recordDescriptors;
+
+        public IgnoreInfosetAlteration()
+        {
+            _recordDescriptors = Enumerable.Empty<RecordBlueprint>();
+        }
+
+        public IgnoreInfosetAlteration(IEnumerable<RecordBlueprint> recordDescriptors)
+        {
+            _recordDescriptors = recordDescriptors;
+        }
+
+        public void Alter(AutoPersistenceModel model)
+        {
+            model.OverrideAll(alt => alt.IgnoreProperty("ContentItemRecord"));
+            model.OverrideAll(alt => alt.IgnoreProperty("ContentItemVersionRecord"));
         }
     }
 }
