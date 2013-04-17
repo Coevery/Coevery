@@ -1,8 +1,0 @@
-﻿@model Coevery.Dynamic.ViewModels.DynamicTypeSettingsViewModel
-
-<fieldset>
-    @Html.EditorFor(m => m.IsEnabled)
-    <label for="@Html.FieldIdFor(m => m.IsEnabled)" class="forcheckbox">@T("IsEnabled")</label>
-    @Html.ValidationMessageFor(m => m.IsEnabled)
-    <span class="hint">@T("Determines if an instance of this content type can be used.")</span>
-</fieldset>

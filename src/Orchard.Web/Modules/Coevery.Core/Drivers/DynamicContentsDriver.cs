@@ -4,7 +4,7 @@ using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Settings;
 
-namespace Coevery.Metadata.Drivers {
+namespace Coevery.Core.Drivers {
     public abstract class DynamicContentsDriver<TContent> : ContentPartDriver<TContent> where TContent : ContentPart, new() {
         protected override DriverResult Display(TContent part, string displayType, dynamic shapeHelper) {
             return Combined(
