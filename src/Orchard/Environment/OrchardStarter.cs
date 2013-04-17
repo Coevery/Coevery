@@ -99,7 +99,6 @@ namespace Orchard.Environment {
                                 .WithParameter(new NamedParameter("paths", new[] { "~/Core" }));
                             builder.RegisterType<ThemeFolders>().As<IExtensionFolders>().SingleInstance()
                                 .WithParameter(new NamedParameter("paths", new[] { "~/Themes" }));
-                            builder.RegisterType<GeneratedModuleFolders>().As<IExtensionFolders>().SingleInstance();
 
                             builder.RegisterType<CoreExtensionLoader>().As<IExtensionLoader>().SingleInstance();
                             builder.RegisterType<ReferencedExtensionLoader>().As<IExtensionLoader>().SingleInstance();

@@ -1,4 +1,5 @@
-﻿using Coevery.Metadata.Drivers;
+﻿using Coevery.Core.Drivers;
+using Coevery.Core.Handlers;
 using Orchard;
 using System;
 using System.Collections.Generic;
@@ -6,10 +7,9 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.Drivers;
-using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
+using Orchard.Environment.Features;
 using Orchard.FileSystems.VirtualPath;
 
 namespace Coevery.Metadata.DynamicTypeGeneration
@@ -23,29 +23,32 @@ namespace Coevery.Metadata.DynamicTypeGeneration
     {
         internal const string AssemblyName = "Coevery.DynamicTypes";
         private readonly IVirtualPathProvider _virtualPathProvider;
+        private readonly IFeatureManager _featureManager;
 
-        public DynamicAssemblyBuilder(IVirtualPathProvider virtualPathProvider) {
+        public DynamicAssemblyBuilder(
+            IVirtualPathProvider virtualPathProvider, 
+            IFeatureManager featureManager) {
             _virtualPathProvider = virtualPathProvider;
+            _featureManager = featureManager;
         }
 
-        public IEnumerable<Type> Build(IEnumerable<DynamicTypeDefinition> typeDefinitions)
-        {
+        public IEnumerable<Type> Build(IEnumerable<DynamicTypeDefinition> typeDefinitions) {
             var assemblyBuidler = BuildAssembly();
             var moduleBuidler = BuildModule(assemblyBuidler);
             foreach (var definition in typeDefinitions) {
-                if (definition.Fields.Count() <= 0) continue;
+                if (!definition.Fields.Any()) continue;
                 var typeBuidler = BuildType(definition, moduleBuidler);
                 var fieldBuilders = BuildFields(definition, typeBuidler).ToList();
                 BuildEmptyCtor(typeBuidler);
                 BuildCtor(typeBuidler, fieldBuilders);
-                BuildProperties(definition, typeBuidler, fieldBuilders,false);
+                BuildProperties(definition, typeBuidler, fieldBuilders, false);
                 Type type = typeBuidler.CreateType();
 
                 var partTypeBuidler = BuildPartType(definition, moduleBuidler, type);
                 var partFieldBuilders = BuildFields(definition, partTypeBuidler).ToList();
                 BuildPartEmptyCtor(partTypeBuidler, type);
                 BuildCtor(partTypeBuidler, partFieldBuilders);
-                BuildProperties(definition, partTypeBuidler, partFieldBuilders,true);
+                BuildProperties(definition, partTypeBuidler, partFieldBuilders, true);
                 var contentPartType = partTypeBuidler.CreateType();
 
                 var driverTypeBuidler = BuildDriverType(definition, moduleBuidler, contentPartType);
@@ -56,9 +59,11 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                 handlerTypeBuidler.CreateType();
             }
 
+            _featureManager.DisableFeatures(new[] {AssemblyName});
             assemblyBuidler.Save(AssemblyName + ".dll");
+            _featureManager.EnableFeatures(new[] {AssemblyName});
             var assembly = Assembly.Load(AssemblyName);
-            return  assembly.GetTypes();
+            return assembly.GetTypes();
         }
 
         private static void BuildHandlerCtor(TypeBuilder typBuilder, Type type)
@@ -111,9 +116,8 @@ namespace Coevery.Metadata.DynamicTypeGeneration
             return asmBuilder;
         }
 
-        private string GetAssemblyDirectory()
-        {
-            var virtualPath = _virtualPathProvider.Combine("~/Modules/Coevery.Dynamic", "bin");
+        private string GetAssemblyDirectory() {
+            var virtualPath = _virtualPathProvider.Combine("~/Modules/" + AssemblyName, "bin");
             return _virtualPathProvider.MapPath(virtualPath);
         }
 
