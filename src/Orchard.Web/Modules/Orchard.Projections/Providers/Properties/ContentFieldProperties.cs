@@ -42,16 +42,21 @@ namespace Orchard.Projections.Providers.Properties {
 
                 var descriptor = describe.For(part.Name + "ContentFields", T("{0} Content Fields", part.Name.CamelFriendly()), T("Content Fields for {0}", part.Name.CamelFriendly()));
 
-                foreach(var field in part.Fields) {
+                foreach (var field in part.Fields)
+                {
                     var localField = field;
                     var localPart = part;
                     var drivers = _contentFieldDrivers.Where(x => x.GetFieldInfo().Any(fi => fi.FieldTypeName == localField.FieldDefinition.Name)).ToList();
+                    string storage;
+                    localField.Settings.TryGetValue("Storage", out storage);
 
                     var membersContext = new DescribeMembersContext(
-                        (storageName, storageType, displayName, description) => {
+                        (storageName, storageType, displayName, description) =>
+                        {
+                            //storageName = storage;
                             // look for a compatible field type editor
                             IFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(storageType));
-                            
+
                             descriptor.Element(
                                 type: localPart.Name + "." + localField.Name + "." + storageName ?? "",
                                 name: new LocalizedString(localField.DisplayName + (displayName != null ? ":" + displayName.Text : "")),
@@ -59,10 +64,11 @@ namespace Orchard.Projections.Providers.Properties {
                                 property: (context, contentItem) => Render(context, contentItem, fieldTypeEditor, storageName, storageType, localPart, localField),
                                 display: context => DisplayFilter(context, localPart, localField, storageName),
                                 form: _propertyFormater.GetForm(storageType)
-                            );
+                                );
                         });
-                    
-                    foreach(var driver in drivers) {
+
+                    foreach (var driver in drivers)
+                    {
                         driver.Describe(membersContext);
                     }
                 }
@@ -82,7 +88,7 @@ namespace Orchard.Projections.Providers.Properties {
                 return String.Empty;
             }
 
-            var value = f.Storage.Get<object>(storageName);
+            var value = f.Storage.Get<object>(field.Name);
 
             if (value == null) {
                 return null;
