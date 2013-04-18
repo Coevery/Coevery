@@ -519,13 +519,6 @@
             link: function(scope, element, attrs) {
                 var rootScope = scope.$root;
                 element.find('.btn-primary').click(function(parameters) {
-                    //rootScope.currentField.readonly
-                    //    ? rootScope.currentField.field.attr('field-readonly', '')
-                    //    : rootScope.currentField.field.removeAttr('field-readonly');
-                    //rootScope.currentField.required
-                    //    ? rootScope.currentField.field.attr('field-required', '')
-                    //    : rootScope.currentField.field.removeAttr('field-required');
-
                     rootScope.currentSection.section.attr('section-columns', rootScope.currentSection.columns);
                     scope.$root.$apply();
                     $('#sectionPropertiesDialog').modal('hide');
@@ -717,9 +710,9 @@
         })
         .directive('fdSaveLayoutButton', function($resource, $location) {
             return {
-                template: '<button class="btn">Save</button>',
-                replace: true,
-                restrict: 'E',
+                //template: '<button class="btn">Save</button>',
+                //replace: true,
+                //restrict: 'E',
                 link: function(scope, element, attrs) {
                     var url = $location.absUrl();
                     var moduleId = url.substr(url.lastIndexOf('/') + 1);
