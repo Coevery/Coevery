@@ -106,7 +106,7 @@
             link: function(scope, element, attrs) {
                 var columnCount = attrs.sectionColumns;
                 var titleElem = element.children();
-                titleElem.text('Section' + columnCount);
+                titleElem.text(columnCount + '-Column Section');
             }
         };
     })
