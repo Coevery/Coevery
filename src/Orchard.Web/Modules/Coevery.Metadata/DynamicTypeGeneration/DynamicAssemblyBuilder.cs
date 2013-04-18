@@ -260,18 +260,27 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                     "get_" + fields[i].Name, MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig,
                     fields[i].Type, Type.EmptyTypes);
                 var generator = getMethBuilder.GetILGenerator();
-                if (userParanet) {
+                if (userParanet)
+                {
+                    MethodInfo getRecord = typBuilder.BaseType.GetProperty("Record").GetGetMethod();
                     MethodInfo mi = typBuilder.BaseType.GetProperty("Record").PropertyType.GetProperty(fields[i].Name).GetGetMethod();
                     generator.Emit(OpCodes.Ldarg_0);
-                    generator.Emit(OpCodes.Call, mi);
+                    generator.Emit(OpCodes.Call, getRecord);
+                    generator.Emit(OpCodes.Callvirt, mi);
+                    //generator.Emit(OpCodes.Stloc_0);
+                    //Label targetInstruction = generator.DefineLabel();
+                    //generator.Emit(OpCodes.Br_S, targetInstruction);
+                    //generator.MarkLabel(targetInstruction);
+                    //generator.Emit(OpCodes.Ldloc_0);
                     generator.Emit(OpCodes.Ret);
                 }
-                else {
+                else
+                {
                     generator.Emit(OpCodes.Ldarg_0); // load 'this'
                     generator.Emit(OpCodes.Ldfld, fieldBuilders[i]); // load the field
                     generator.Emit(OpCodes.Ret);
                 }
-                
+
                 propBuilder.SetGetMethod(getMethBuilder);
           
                 // Build Set prop

@@ -47,10 +47,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Orchard.Users\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Orchard.Tokens, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Piedone.HelpfulLibraries\bin\Orchard.Tokens.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity.Design" />
@@ -157,6 +153,10 @@
     <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
       <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
       <Name>Orchard.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
+      <Project>{6F759635-13D7-4E94-BCC9-80445D63F117}</Project>
+      <Name>Orchard.Tokens</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
