@@ -2,9 +2,6 @@
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
-using Coevery.Metadata.HtmlControlProviders;
-using Coevery.Metadata.Services;
-using Coevery.Metadata.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;

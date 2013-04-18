@@ -61,8 +61,9 @@ namespace Coevery.Metadata.DynamicTypeGeneration
 
             _featureManager.DisableFeatures(new[] {AssemblyName});
             assemblyBuidler.Save(AssemblyName + ".dll");
+            var assemblyPath = GetAssemblyDirectory() + "\\" + AssemblyName + ".dll";
             _featureManager.EnableFeatures(new[] {AssemblyName});
-            var assembly = Assembly.Load(AssemblyName);
+            var assembly = Assembly.LoadFrom(assemblyPath);
             return assembly.GetTypes();
         }
 
