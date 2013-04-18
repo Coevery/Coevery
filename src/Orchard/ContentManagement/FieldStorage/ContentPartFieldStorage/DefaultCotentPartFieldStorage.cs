@@ -17,7 +17,7 @@ namespace Orchard.ContentManagement.FieldStorage.ContentPartFieldStorage {
                 return default(T);
             var getter = _getters.GetOrAdd(name, n =>
                                                  CallSite<Func<CallSite, object, dynamic>>.Create(
-                                                     Binder.GetMember(CSharpBinderFlags.None, n, _contentPart.GetType(),
+                                                     Binder.GetMember(CSharpBinderFlags.None, n, null,
                                                                       new[] {CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)})));
 
             var result = getter.Target(getter, _contentPart);

@@ -45,6 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\autofac\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\autofac\Autofac.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Castle Windsor 2.0\bin\Castle.Core.dll</HintPath>
@@ -138,8 +146,6 @@
     <Compile Include="Controllers\UserViewController.cs" />
     <Compile Include="Controllers\ProjectionViewTemplateController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
-    <Compile Include="Drivers\DynamicContentsHandler.cs" />
-    <Compile Include="Drivers\DynamicContentsDriver.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
@@ -255,6 +261,10 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coevery.Core\Coevery.Core.csproj">
+      <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
+      <Name>Coevery.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642A49D7-8752-4177-80D6-BFBBCFAD3DE0}</Project>
