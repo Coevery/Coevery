@@ -264,14 +264,15 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                 {
                     MethodInfo getRecord = typBuilder.BaseType.GetProperty("Record").GetGetMethod();
                     MethodInfo mi = typBuilder.BaseType.GetProperty("Record").PropertyType.GetProperty(fields[i].Name).GetGetMethod();
+                    generator.DeclareLocal(fields[i].Type);
                     generator.Emit(OpCodes.Ldarg_0);
                     generator.Emit(OpCodes.Call, getRecord);
                     generator.Emit(OpCodes.Callvirt, mi);
-                    //generator.Emit(OpCodes.Stloc_0);
-                    //Label targetInstruction = generator.DefineLabel();
-                    //generator.Emit(OpCodes.Br_S, targetInstruction);
-                    //generator.MarkLabel(targetInstruction);
-                    //generator.Emit(OpCodes.Ldloc_0);
+                    generator.Emit(OpCodes.Stloc_0);
+                    Label targetInstruction = generator.DefineLabel();
+                    generator.Emit(OpCodes.Br_S, targetInstruction);
+                    generator.MarkLabel(targetInstruction);
+                    generator.Emit(OpCodes.Ldloc_0);
                     generator.Emit(OpCodes.Ret);
                 }
                 else
