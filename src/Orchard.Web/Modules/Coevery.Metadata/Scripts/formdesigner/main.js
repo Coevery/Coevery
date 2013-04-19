@@ -664,7 +664,7 @@
                         helper: getHelper,
                         cursorAt: { left: -5, top: -5 },
                         tolerance: "pointer",
-                        scroll: false,
+                        //scroll: false,
                         start: function(event, ui) {
                             scope.$root.enableHover = false;
                             setZIndex(ui.helper);
