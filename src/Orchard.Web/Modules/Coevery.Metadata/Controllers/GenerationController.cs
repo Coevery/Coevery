@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Metadata.DynamicTypeGeneration;
 using Coevery.Metadata.Services;
 using Orchard.Localization;
 
@@ -9,14 +10,12 @@ namespace Coevery.Metadata.Controllers
 {
     public class GenerationController : ApiController
     {
-        private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly ITypeDeployService _typeDeployServicer;
+        private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
 
-        public GenerationController(IContentDefinitionService contentDefinitionService,
-            ITypeDeployService typeDeployServicer)
+        public GenerationController(
+            IDynamicAssemblyBuilder dynamicAssemblyBuilder)
         {
-            _contentDefinitionService = contentDefinitionService;
-            _typeDeployServicer = typeDeployServicer;
+            _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             T = NullLocalizer.Instance;
         }
 
@@ -24,9 +23,8 @@ namespace Coevery.Metadata.Controllers
 
         public HttpResponseMessage Post([FromBody]string name)
         {
-            try
-            {
-                bool successful = _typeDeployServicer.DeployType(name);
+            try {
+                bool successful = _dynamicAssemblyBuilder.Build();
 
                 if (successful)
                 {

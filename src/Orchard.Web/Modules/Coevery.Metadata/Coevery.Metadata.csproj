@@ -159,7 +159,7 @@
     <Compile Include="Services\ContentTypePlacementStrategy.cs" />
     <Compile Include="Services\DefaultStereotypesProvider.cs" />
     <Compile Include="Services\DefaultTableSchemaManager.cs" />
-    <Compile Include="Services\DefaultTypeDeployService.cs" />
+    <Compile Include="Services\DynamicTypeAutomaticMigrations.cs" />
     <Compile Include="Services\IContentDefinitionService.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -167,7 +167,6 @@
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\IStereotypesProvider.cs" />
     <Compile Include="Services\ITableSchemaManager.cs" />
-    <Compile Include="Services\ITypeDeployService.cs" />
     <Compile Include="Services\PlacementService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="Services\StereotypeService.cs" />

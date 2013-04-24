@@ -11,5 +11,12 @@ namespace Orchard.ContentManagement.MetaData
             var parts = contentDefinitionManager.ListPartDefinitions();
             return contentTypes.Where(t => parts.Any(p => p.Name == t.Name));
         }
+
+        public static IEnumerable<ContentPartDefinition> ListUserDefinedPartDefinitions(this IContentDefinitionManager contentDefinitionManager)
+        {
+            var contentTypes = contentDefinitionManager.ListTypeDefinitions();
+            var parts = contentDefinitionManager.ListPartDefinitions();
+            return parts.Where(t => contentTypes.Any(p => p.Name == t.Name));
+        }
     }
 }

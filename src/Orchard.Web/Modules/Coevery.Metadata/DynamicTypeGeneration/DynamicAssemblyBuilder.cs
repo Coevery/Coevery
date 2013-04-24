@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
 using Orchard.Environment.Features;
@@ -16,23 +17,43 @@ namespace Coevery.Metadata.DynamicTypeGeneration
 {
     public interface IDynamicAssemblyBuilder : IDependency
     {
-        IEnumerable<Type> Build(IEnumerable<DynamicTypeDefinition> typeDefinitions);
+        bool Build();
     }
 
     public class DynamicAssemblyBuilder : IDynamicAssemblyBuilder
     {
         internal const string AssemblyName = "Coevery.DynamicTypes";
         private readonly IVirtualPathProvider _virtualPathProvider;
-        private readonly IFeatureManager _featureManager;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
 
         public DynamicAssemblyBuilder(
             IVirtualPathProvider virtualPathProvider, 
-            IFeatureManager featureManager) {
+            IContentDefinitionManager contentDefinitionManager) {
             _virtualPathProvider = virtualPathProvider;
-            _featureManager = featureManager;
+            _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public IEnumerable<Type> Build(IEnumerable<DynamicTypeDefinition> typeDefinitions) {
+        public bool Build() {
+            // user-defined parts
+            // except for those parts with the same name as a type (implicit type's part or a mistake)
+            var userDefinedParts = _contentDefinitionManager
+                .ListUserDefinedPartDefinitions()
+                .Select(cpd => new DynamicTypeDefinition {
+                    Name = cpd.Name,
+                    Fields = cpd.Fields.Select(f => new DynamicFieldDefinition {
+                        Name = f.Name,
+                        Type = typeof (string)
+                    })
+                }).ToList();
+
+            if (userDefinedParts.Any()) {
+                Build(userDefinedParts);
+                return true;
+            }
+            return false;
+        }
+
+        public void Build(IEnumerable<DynamicTypeDefinition> typeDefinitions) {
             var assemblyBuidler = BuildAssembly();
             var moduleBuidler = BuildModule(assemblyBuidler);
             foreach (var definition in typeDefinitions) {
@@ -59,12 +80,7 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                 handlerTypeBuidler.CreateType();
             }
 
-            _featureManager.DisableFeatures(new[] {AssemblyName});
             assemblyBuidler.Save(AssemblyName + ".dll");
-            var assemblyPath = GetAssemblyDirectory() + "\\" + AssemblyName + ".dll";
-            _featureManager.EnableFeatures(new[] {AssemblyName});
-            var assembly = Assembly.LoadFrom(assemblyPath);
-            return assembly.GetTypes();
         }
 
         private static void BuildHandlerCtor(TypeBuilder typBuilder, Type type)
@@ -308,6 +324,5 @@ namespace Coevery.Metadata.DynamicTypeGeneration
                 propBuilder.SetSetMethod(setMethBuilder);
             }
         }
-
     }
 }
