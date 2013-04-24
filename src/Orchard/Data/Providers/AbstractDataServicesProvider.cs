@@ -29,11 +29,10 @@ namespace Orchard.Data.Providers {
             var persistenceModel = CreatePersistenceModel(parameters.RecordDescriptors.ToList());
 
             return Fluently.Configure()
-                .Database(database)
-                .Mappings(m => m.AutoMappings.Add(persistenceModel))
-                .ExposeConfiguration(cfg => cfg.EventListeners.LoadEventListeners = new ILoadEventListener[] { new OrchardLoadEventListener() })
-                .BuildConfiguration()
-                ;
+                           .Database(database)
+                           .Mappings(m => m.AutoMappings.Add(persistenceModel))
+                           .ExposeConfiguration(cfg => cfg.EventListeners.LoadEventListeners = new ILoadEventListener[] {new OrchardLoadEventListener()})
+                           .BuildConfiguration();
         }
 
         public static AutoPersistenceModel CreatePersistenceModel(ICollection<RecordBlueprint> recordDescriptors) {
@@ -58,13 +57,17 @@ namespace Orchard.Data.Providers {
         }
 
         [Serializable]
-       public class TypeSource : ITypeSource {
+        public class TypeSource : ITypeSource {
             private readonly IEnumerable<RecordBlueprint> _recordDescriptors;
 
-            public TypeSource(IEnumerable<RecordBlueprint> recordDescriptors) { _recordDescriptors = recordDescriptors; }
+            public TypeSource(IEnumerable<RecordBlueprint> recordDescriptors) {
+                _recordDescriptors = recordDescriptors;
+            }
 
-            public IEnumerable<Type> GetTypes() { return _recordDescriptors.Select(descriptor => descriptor.Type); }
-            
+            public IEnumerable<Type> GetTypes() {
+                return _recordDescriptors.Select(descriptor => descriptor.Type);
+            }
+
             public void LogSource(IDiagnosticLogger logger) {
                 throw new NotImplementedException();
             }

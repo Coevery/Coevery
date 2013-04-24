@@ -150,8 +150,6 @@
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
-    <Compile Include="HtmlControlProviders\HtmlControlProviderFactory.cs" />
-    <Compile Include="HtmlControlProviders\HtmlControlProviders.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\ContentDefinitionService.cs">
@@ -175,7 +173,6 @@
     <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
     <Compile Include="Settings\DynamicTypeSettings.cs" />
     <Compile Include="Settings\PlacementSettings.cs" />
-    <Compile Include="HtmlControlProviders\IHtmlControlProvider.cs" />
     <Compile Include="ViewModels\AddPartsViewModel.cs" />
     <Compile Include="Controllers\FormDesignerViewTemplateController.cs" />
     <Compile Include="Permissions.cs" />
@@ -189,7 +186,6 @@
     <Compile Include="ViewModels\EditPartViewModel.cs" />
     <Compile Include="ViewModels\EditPlacementViewModel.cs" />
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
-    <Compile Include="ViewModels\FormDesignerViewModel.cs" />
     <Compile Include="ViewModels\ListContentPartsViewModel.cs" />
     <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
     <Compile Include="ViewModels\RemoveFieldViewModel.cs" />

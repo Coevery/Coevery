@@ -44,6 +44,12 @@
   <ItemGroup>
     <Content Include="Module.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Coevery.Core\Coevery.Core.csproj">
+      <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
+      <Name>Coevery.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -29,7 +29,5 @@ namespace Coevery.Metadata.Services {
         void AddFieldToPart(string fieldName, string fieldTypeName, string partName);
         void AddFieldToPart(string fieldName, string displayName, string fieldTypeName, string partName);
         void RemoveFieldFromPart(string fieldName, string partName);
-
-        IDictionary<string, string> GetHtmlDescForTypeFields(ContentTypePartDefinition partDefinition);
     }
 }

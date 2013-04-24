@@ -10,7 +10,6 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Localization;
 using Orchard.Utility.Extensions;
-using Coevery.Metadata.HtmlControlProviders;
 
 namespace Coevery.Metadata.Services
 {
@@ -20,22 +19,19 @@ namespace Coevery.Metadata.Services
         private readonly IEnumerable<IContentPartDriver> _contentPartDrivers;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
-        private readonly IHtmlControlProviderFactory _htmlControlProviderFactory;
 
         public ContentDefinitionService(
                 IOrchardServices services,
                 IContentDefinitionManager contentDefinitionManager,
                 IEnumerable<IContentPartDriver> contentPartDrivers,
                 IEnumerable<IContentFieldDriver> contentFieldDrivers,
-                IContentDefinitionEditorEvents contentDefinitionEditorEvents,
-                IHtmlControlProviderFactory htmlControlProviderFactory)
+                IContentDefinitionEditorEvents contentDefinitionEditorEvents)
         {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             _contentPartDrivers = contentPartDrivers;
             _contentFieldDrivers = contentFieldDrivers;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
-            _htmlControlProviderFactory = htmlControlProviderFactory;
             T = NullLocalizer.Instance;
         }
 
@@ -423,19 +419,6 @@ namespace Coevery.Metadata.Services
             {
                 _thunk.AddModelError(_prefix(key), errorMessage);
             }
-        }
-
-
-        public IDictionary<string, string> GetHtmlDescForTypeFields(ContentTypePartDefinition partDefinition)
-        {
-            Dictionary<string,string> re = new Dictionary<string, string>();
-            foreach (var field in partDefinition.PartDefinition.Fields)
-            {
-                var provider = _htmlControlProviderFactory.GetHtmlControlProvider(field);
-                string controlDesc = provider.GenerateHtmlContrlDesc();
-                re.Add(field.Name,controlDesc);
-            }
-            return re;
         }
     }
 }
