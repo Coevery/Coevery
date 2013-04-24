@@ -11,6 +11,7 @@ namespace Orchard.FileSystems.Media {
     public class FileSystemStorageProvider : IStorageProvider {
         private readonly string _storagePath;
         private readonly string _publicPath;
+        private readonly string _relativePath;
 
         public FileSystemStorageProvider(ShellSettings settings) {
             var mediaPath = HostingEnvironment.IsHosted
@@ -28,6 +29,7 @@ namespace Orchard.FileSystems.Media {
             if (!appPath.StartsWith("/"))
                 appPath = '/' + appPath;
 
+            _relativePath = "~/Media/" + settings.Name + "/";
             _publicPath = appPath + "Media/" + settings.Name + "/";
 
             T = NullLocalizer.Instance;
@@ -51,7 +53,7 @@ namespace Orchard.FileSystems.Media {
         /// <param name="path">The relative path to be mapped.</param>
         /// <returns>The relative path combined with the public path in an URL friendly format ('/' character for directory separator).</returns>
         private string MapPublic(string path) {
-            return string.IsNullOrEmpty(path) ? _publicPath : Path.Combine(_publicPath, path).Replace(Path.DirectorySeparatorChar, '/');
+            return string.IsNullOrEmpty(path) ? _publicPath : Path.Combine(_publicPath, path).Replace(Path.DirectorySeparatorChar, '/').Replace(" ", "%20");
         }
 
         private static string Fix(string path) {
@@ -80,6 +82,27 @@ namespace Orchard.FileSystems.Media {
         /// <returns>The public URL.</returns>
         public string GetPublicUrl(string path) {
             return MapPublic(path);
+        }
+
+        public string GetRelativePath(string path) {
+            return (_relativePath + path).Replace(Path.DirectorySeparatorChar, '/');
+        }
+
+        /// <summary>
+        /// Retrieves the local path for a given url within the storage provider.
+        /// </summary>
+        /// <param name="url">The public url of the media.</param>
+        /// <returns>The local path.</returns>
+        public string GetLocalPath(string url) {
+            if (url.StartsWith(_relativePath)) {
+                return url.Substring(_relativePath.Length);
+            }
+
+            if (!url.StartsWith(_publicPath)) {
+                return url;
+            }
+
+            return Combine("", url.Substring(_publicPath.Length).Replace("%20", " "));
         }
 
         /// <summary>
