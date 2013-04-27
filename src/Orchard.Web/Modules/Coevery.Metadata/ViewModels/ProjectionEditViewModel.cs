@@ -22,6 +22,7 @@ namespace Coevery.Metadata.ViewModels
         public AdminEditViewModel QueryViewModel { get; set; }
         public LayoutEditViewModel LayoutViewModel { get; set; }
         public IEnumerable<PropertyDescriptor> AllFields { get; set; }
+        public string VisableTo { get; set; }
 
     }
 }

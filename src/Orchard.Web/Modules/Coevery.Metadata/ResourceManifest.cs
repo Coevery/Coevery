@@ -19,6 +19,7 @@ namespace Coevery.Metadata {
 
             manifest.DefineScript("UserViewListController").SetUrl("controllers/userviewlistcontroller.js");
             manifest.DefineScript("UserViewDetailController").SetUrl("controllers/userviewdetailcontroller.js");
+            manifest.DefineStyle("ColumnSelector").SetUrl("formdesigner/css/columnselector.css");
         }
     }
 }
