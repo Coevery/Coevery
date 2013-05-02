@@ -1,4 +1,12 @@
-﻿[fd-form] .widget-content {
+﻿.btn-group.auto-open > ul.dropdown-menu {
+    margin-top: 0;
+}
+
+.btn-group.auto-open:hover > ul.dropdown-menu {
+    display: block;
+}
+
+[fd-form] .widget-content {
     /*border-top: 0;*/
 }
 

@@ -5,13 +5,14 @@
     Script.Require("jQueryUI");
     Script.Require("angular");
     Script.Require("angularResource");
-    
+
     Script.Require("FormDesignerJsutils");
     //Script.Require("FormDesignerLinq");
     //Script.Require("FormDesignerContextMenu");
     Script.Require("FormDesignerMain");
 
     Style.Include("formdesigner/css/formdesigner.css");
+    Style.Include("formdesigner/css/docs.css");
 }
 @*@Display.FootScripts()
 @Display.StylesheetLinks()*@
@@ -21,37 +22,123 @@
 </header>
 
 <section id="main-content">
+
     <div class="row-fluid">
-        <div id="form-designer" class="span9">
-            <fd-form>
-                @{ Output.Write(Model.Layout); }
-            </fd-form>
+        <div class="span9">
+
+            <div id="form-designer">
+                <fd-form>
+                    @{ Output.Write(Model.Layout); }
+                </fd-form>
+            </div>
         </div>
         <div class="span3">
-            <section id="toolboxes" class="widget">
-                <header class="widget-header">
-                    <span class="title">Tools</span>
-                </header>
-                <section class="widget-content form-container">
-                    <fd-save-layout-button></fd-save-layout-button>
-                    <fieldset>
-                        <legend>Layout</legend>
+            <div data-spy="affix" data-offset-top="98" class="bs-docs-sidenav">
+                <section id="toolboxes" class="widget">
+                    <header class="widget-header light">
+                        <span class="title">Toolbox</span>
+                        <div class="toolbar">
+                            <div class="btn-group auto-open">
+                                <span class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon-pencil"></i>Action <i class="caret"></i>
+                                </span>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a fd-save-layout-button href="#">Save Layout</a></li>
+                                    <li><a href="#">Resume Layout</a></li>
+                                    <li><a href="#">Reset Layout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </header>
+                    <div id="toolbar-ex" class="toolbar form-toolbar">
+                        <form class="search-form">
+                            <input type="text" class="span12 search-query" placeholder="Search...">
+                        </form>
+                    </div>
+                    <section class="widget-content form-container">
+                        @*<fd-save-layout-button></fd-save-layout-button>
+                        <div class="btn-group">
+                            <button class="btn">Button Setting</button>
+                        <button class="btn">Save Layout</button>
+                        <button class="btn">Resume Layout</button>
+                        </div>*@
+
+                        @*<fieldset>
+                            <legend>Layout</legend>*@
                         <fd-tools-section section-columns="1"></fd-tools-section>
                         <fd-tools-section section-columns="2"></fd-tools-section>
-                    </fieldset>
-                    <fieldset>
-                        <legend>@Model.DisplayName</legend>
+                        @*</fieldset>*@
+                        @*  <fieldset>
+                            <legend>@Model.DisplayName</legend>*@
                         @{
-                            foreach (var field in Model.Fields) {
-                                @:<fd-tools-field field-display-name="@field.DisplayName" field-name="@field.Name"></fd-tools-field>
-                            }
+                            foreach (var field in Model.Fields)
+                            {
+                            @:<fd-tools-field field-display-name="@field.DisplayName" field-name="@field.Name"></fd-tools-field>
+                                }
                         }
-                    </fieldset>
+                        @*</fieldset>*@
+                    </section>
                 </section>
-            </section>
+            </div>
         </div>
     </div>
-    <fd-field-properties-dialog></fd-field-properties-dialog>
-    <fd-section-properties-dialog></fd-section-properties-dialog>
+    @*<fd-field-properties-dialog></fd-field-properties-dialog>*@
+    @*<fd-section-properties-dialog></fd-section-properties-dialog>*@
+
+    <div id="sectionPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Section Properties</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Section Title</label>
+                    <div class="controls">
+                        <input type="text"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Section Layout</label>
+                    <div class="controls">
+                        <label class="radio">
+                            <input type="radio" ng-model="currentSection.columns" value="1" />1-Columns
+                        </label>
+                        <label class="radio">
+                            <input type="radio" ng-model="currentSection.columns" value="2" />2-Columns
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="btn btn-primary">Ok</button>
+        </div>
+    </div>
+    
+    <div id="fieldPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Field Properties</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Field Settings</label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="currentField.readonly"/>Read-Only
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="currentField.required" value="2" />Required
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="btn btn-primary">Ok</button>
+        </div>
+    </div>
 </section>
 @Display(Model.Content)
