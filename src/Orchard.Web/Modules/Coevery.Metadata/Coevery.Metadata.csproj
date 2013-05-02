@@ -199,6 +199,7 @@
     <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Scripts\controllers\userviewdetailcontroller.js" />
     <Content Include="Scripts\controllers\userviewlistcontroller.js" />
+    <Content Include="Styles\formdesigner\css\columnselector.css" />
     <Content Include="Styles\formdesigner\css\docs.css" />
     <Content Include="Styles\formdesigner\images\alwaysdisplay12.gif" />
     <Content Include="Styles\formdesigner\images\arrow.png" />
@@ -297,7 +298,9 @@
   <ItemGroup>
     <Content Include="Views\ViewTemplate\List.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\ProjectionViewTemplate\StaicEdit.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
