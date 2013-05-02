@@ -34,7 +34,15 @@
     </ul>
     <h1>UserView Detail <span>UserView add</span></h1>
 </header>
+@{
+    var sortedBy = new BindingList<SelectListItem>();
+    sortedBy.Add(new SelectListItem{Selected = true,Text = "Name"});
+    sortedBy.Add(new SelectListItem { Selected = false, Text = "Age" });
 
+    var sortMode = new BindingList<SelectListItem>();
+    sortMode.Add(new SelectListItem { Selected = true, Text = "Desc" });
+    sortMode.Add(new SelectListItem { Selected = false, Text = "Asc" });
+}
 
 <section id="main-content" ng-controller="UserViewDetailCtrl">
 
@@ -51,35 +59,43 @@
                     @Html.ValidationSummary()
                     <legend>General Info</legend>
                     <fieldset>
-                        <section class="control-group">
-                            <label class="control-label" for="inputName">Name</label>
-                            <div class="controls" >
-                                @Html.TextBoxFor(m => m.Name, new { @class = "span12",@disabled = "disabled"})
+                        <section class="control-group ">
+                            <div class="span6">
+                                <label class="control-label " for="inputName">Name</label>
+                                <div class="controls" >
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "span8",@disabled = "disabled"})
+                                </div>
                             </div>
-                        </section>
-                        <section class="control-group">
-                            <label class="control-label" for="inputName">DisplayName</label>
+                            
+                            <div class="span6">
+                            <label class="control-label " for="inputName">DisplayName</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span8" })
                             </div>
+                                </div>
                         </section>
-                            <section class="control-group">
-                            <label class="control-label" for="inputName">VisableTo</label>
-                             <div class="controls">
-                                 @Html.DropDownListFor(m => m.VisableTo,new BindingList<SelectListItem>() ,string.Empty, new { @class = "span4" })
+
+                        <section class="control-group">
+                            <div class="span6">
+                                <label class="control-label" for="inputName">VisableTo</label>
+                                <div class="controls">
+                                    @Html.DropDownListFor(m => m.VisableTo,new BindingList<SelectListItem>() ,string.Empty, new { @class = "span8" })
+                                </div>
                             </div>
-                            <br>
+                            
+                            <div class="span6">
                             <label class="control-label" for="inputName">PageRowCount</label>
-                              <div class="controls">
+                            <div class="controls">
                                 <input type="number" class="span4"/>
                             </div>
+                                </div>
                         </section>
                     </fieldset>
 
                     <legend>Select Field To Display</legend>
                     <fieldset>
                         <div >
-                         @*   <label class="control-label" for="picklist-ex">All Field</label>*@
+                            @*   <label class="control-label" for="picklist-ex">All Field</label>*@
                             <div >
                                 <select id="picklist-ex" name="picklist">
                                     @{
@@ -103,10 +119,23 @@
                                         
                                     }
                                 </select>
-                                <p class="help-block">Use shift and control keys to select multiple items</p>
                             </div>
                         </div>
                     </fieldset>
+                    <section class="control-group">
+                        <div class="span6">
+                            <label class="control-label " for="sortby">Sorted By</label>
+                            <div class="controls">
+                                @Html.DropDownListFor(m => m.SortedBy,sortedBy ,string.Empty, new { @class = "span4",@id ="sortby" })
+                                @Html.DropDownListFor(m => m.SortMode,sortMode ,string.Empty, new { @class = "span4" })
+                                <input type="button" class="btn" name="Preview" value="Preview" ng-click="preview()" />
+                            </div>
+                        </div>
+                        <div class="span6" />
+                    </section>
+                 
+                        <section class="gridStyle" ng-grid="gridOptions"></section>
+                 
 
                     <section class="form-actions">
                         <input type="submit" value="Save" name="submit.Save" class="btn btn-primary">
@@ -121,7 +150,7 @@
 </section>
 <script type="text/javascript">
     //<![CDATA[
-    $('#picklist-ex').picklist({
+   var picklistobj = $('#picklist-ex').picklist({
         sourceListLabel: 'All Columns',
         targetListLabel: 'Drag and drop to reorder',
         addAllLabel:'Add AllColumns'

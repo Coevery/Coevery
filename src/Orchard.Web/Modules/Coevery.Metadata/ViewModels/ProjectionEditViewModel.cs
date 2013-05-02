@@ -23,6 +23,8 @@ namespace Coevery.Metadata.ViewModels
         public LayoutEditViewModel LayoutViewModel { get; set; }
         public IEnumerable<PropertyDescriptor> AllFields { get; set; }
         public string VisableTo { get; set; }
+        public string SortedBy { get; set; }
+        public string SortMode { get; set; }
 
     }
 }

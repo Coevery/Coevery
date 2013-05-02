@@ -2,7 +2,41 @@
     var name = $stateParams.Id;
     var metadata = UserViewContext($resource);
     var isNew = (name || name == '') ? false : true;
+    $scope.mySelections = [];
+    $scope.filedCoumns = [];
+    
+    $scope.gridOptions = {
+        data: 'myData',
+        //enableCellSelection: true,
+        //enableRowSelection: false,
+        //showSelectionCheckbox: true,
+        selectedItems: $scope.mySelections,
+        multiSelect: false,
+        showColumnMenu: true,
+        enableColumnResize: true,
+        enableColumnReordering: true,
+        //enableCellEdit: true,
+        columnDefs: 'filedCoumns'
+    };
 
+    $scope.preview = function () {
+        var obj = picklistobj;
+       
+        var columns = obj.children();
+        $scope.filedCoumns = new Array();
+        var index = 0;
+        columns.each(function (k, v) {
+            var fieldName = $(v).text();
+            
+            var selected = $(v).attr("selected");
+            if (selected) {
+                
+                $scope.filedCoumns[index] = { field: fieldName, displayName: fieldName };
+            }
+            index++;
+        });
+       // $scope.myData = new Array();
+    };
 
     $scope.save = function () {
         $.ajax({
@@ -35,7 +69,7 @@
         var elementTemp = '<li id ="{1}" class="ui-state-default "><span class="icon-th-list"></span>{0}<span class="fieldbtn"><a  href="javascript:void(0);"  ng-click="removefield(\'{1}\')" >Remove</a></span></li>';
         var element = $.format(elementTemp, fieldName, addFieldId);
         $('#sortable').append(element);
-        $.com
+      
     };
     
     $scope.removefield = function (fieldId) {

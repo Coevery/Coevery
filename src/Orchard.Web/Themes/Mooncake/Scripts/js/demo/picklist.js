@@ -75,7 +75,9 @@
             sortList: true,
             guidPrefix: 'pl'
         },
-
+        _publicTest:function() {
+            return 2;
+        },
         // Private Methods
 
         _init: function (element, options) {
@@ -145,17 +147,14 @@
 
             if (type == 'source') {
                 var addAllBtn = self._buildAddAllBtn();
-                $('<div></div>')
-                    .append(self[type + "Label"])
-                    .append(addAllBtn)
-                    .append(self[type + "List"])
-                    .appendTo(container);
-            } else {
+                self[type + "Label"].append(addAllBtn);
+            }
+            
                 $('<div></div>')
                    .append(self[type + "Label"])
                    .append(self[type + "List"])
                    .appendTo(container);
-            }
+            
 
             var filter =
 				$('<div></div>', {
@@ -249,6 +248,7 @@
         _buildAddedBtn: function () {
             var btnAdded = $("<span><span>")
 		        .addClass("fieldbtn")
+                .addClass("disabletext")
 		        .text('Added');
 
             return btnAdded;
@@ -282,11 +282,12 @@
             var selectedItemId = itemId + 'Add';
             var text = sourceLi.attr("showtext");
             var copy = $("<li></li>")
-                           .text(text)
                            .attr('itemId', itemId)
                            .attr('id',selectedItemId)
                            .addClass(self.options.listItemClass)
                            .addClass("ui-state-default");
+            var textSpan = $("<span><span>")
+                .text(text);
             var img = $("<span><span>")
                    .addClass("icol-selection");
             var btnRemove = $("<span><span>")
@@ -296,7 +297,8 @@
 		        .attr("href", "javascript:void(0);")
 		        .on('click', $.proxy(self._removeHandler, self,selectedItemId));
             btnRemove.append(href);
-            copy.append(img);   
+            copy.append(img);
+            copy.append(textSpan);
             copy.append(btnRemove);
             return copy;
         },
@@ -333,6 +335,7 @@
                 self._sortItems(self.targetList);
             }
         },
+        
 
         _removeItem: function (items) {
             var self = this;
