@@ -204,9 +204,11 @@
     <Content Include="Scripts\controllers\userviewdetailcontroller.js" />
     <Content Include="Scripts\controllers\userviewlistcontroller.js" />
     <Content Include="Styles\formdesigner\css\docs.css" />
+    <Content Include="Styles\formdesigner\images\merge.png" />
     <Content Include="Styles\formdesigner\images\alwaysdisplay12.gif" />
     <Content Include="Styles\formdesigner\images\arrow.png" />
     <Content Include="Styles\formdesigner\images\line.png" />
+    <Content Include="Styles\formdesigner\images\split.png" />
     <Content Include="Styles\formdesigner\images\required12.gif" />
     <Content Include="Styles\formdesigner\images\wrenchRemove.png" />
     <Content Include="Module.txt" />
