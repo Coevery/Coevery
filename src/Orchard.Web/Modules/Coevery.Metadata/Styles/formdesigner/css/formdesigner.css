@@ -1,4 +1,8 @@
-﻿.btn-group.auto-open > ul.dropdown-menu {
+﻿[fd-field].selected {
+    background-color: #c7e7af;
+}
+
+.btn-group.auto-open > ul.dropdown-menu {
     margin-top: 0;
 }
 

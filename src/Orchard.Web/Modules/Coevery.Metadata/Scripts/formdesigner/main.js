@@ -201,7 +201,7 @@
                                 dragItem = $('<fd-section></fd-section>');
                                 dragItem.attr('section-columns', ui.draggable.attr('section-columns'));
                                 dragItem.attr('section-columns-width', ui.draggable.attr('section-columns-width'));
-                                dragItem.attr('section-title', 'test');
+                                dragItem.attr('section-title', 'Sample Title');
                                 $compile(dragItem)(scope);
                             } else {
                                 dragItem = ui.draggable;
@@ -452,6 +452,13 @@
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
+                    var id = newGuid();
+                    attrs.$set('id', id);
+                    element.click(function (e) {
+                        if (e.ctrlKey) {
+                            element.toggleClass('selected');
+                        }
+                    });
                     if (attrs.fieldEmpty != null) {
                         element.append('<div class="span9">Blank Space</div>');
                         element.append('<div class="span3 tools"></div>');
@@ -474,9 +481,37 @@
                         };
                         return;
                     }
+                    if (attrs.fieldText != null) {
+                        element.append('<div class="span9 text-content">Sample Text</div>');
+                        element.append('<div class="span3 tools"></div>');
+                        var propertyItem = $('<fd-tool-property></fd-tool-property>');
+                        element.find('.tools').append(propertyItem);
+                        $compile(propertyItem)(scope);
+                        var removeItem = $('<fd-tool-remove></fd-tool-remove>');
+                        element.find('.tools').append(removeItem);
+                        $compile(removeItem)(scope);
+                        element.find('.tools')[0].toolRemove = function (removeAll) {
+                            var column = element.parents('[fd-column]:first');
+                            element.remove();
+                            removeAll || moveNextColumns(column);
+                        };
 
-                    var id = newGuid();
-                    attrs.$set('id', id);
+                        element[0].hoverOverHandler = function () {
+                            $(this).addClass('highlight');
+                            $(this).find('.tools').show();
+                        };
+                        element[0].hoverOutHandler = function () {
+                            $(this).removeClass('highlight');
+                            $(this).find('.tools').hide();
+                        };
+                        var openTextDialog = function () {
+                            $('#textPropertiesDialog').modal({ backdrop: 'static' });
+                        };
+                        element.find('.tools')[0].toolProperty = openTextDialog;
+                        element.dblclick(openTextDialog);
+                        return;
+                    }
+
                     $rootScope.inLayoutFields.push(attrs.fieldName);
 
                     var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]').text();
@@ -666,6 +701,7 @@
                     element.droppable({
                         accept: '[fd-field], [fd-tools-field]',
                         tolerance: "pointer",
+                        hoverClass: 'drop-hover',
                         drop: function(event, ui) {
                             $rootScope.dragHandler = null;
 
@@ -673,6 +709,7 @@
                             var dragItem;
                             if (ui.draggable.is('[fd-tools-field]')) {
                                 dragItem = $('<fd-field></fd-field>');
+                                dragItem.attr('field-text', ui.draggable.attr('field-text'));
                                 dragItem.attr('field-empty', ui.draggable.attr('field-empty'));
                                 dragItem.attr('field-required', ui.draggable.attr('required'));
                                 dragItem.attr('field-name', ui.draggable.attr('field-name'));
@@ -800,6 +837,7 @@
                         helper: getHelper,
                         //cursorAt: { left: -5, top: -5 },
                         tolerance: 'pointer',
+                        distance: 10,
                         //scroll: false,
                         start: function(event, ui) {
                             $rootScope.enableHover = false;
@@ -896,3 +934,15 @@
 
 
 //@ sourceURL=Coevery.Metadata/main.js
+
+    setTimeout(function() {
+        $('#test').affix({
+            offset: {
+                top: function () {
+                    var height = $(window).height() - 69 - 90;
+
+                    return $('#form-designer').height() > height ? 0 : 1000;
+                }
+            }
+        });
+    }, 100);
