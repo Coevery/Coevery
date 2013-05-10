@@ -545,3 +545,8 @@ table tr .action-col
         text-overflow: ellipsis;
     }
 }
+
+.table th.rightCell,
+.table td.rightCell {
+    text-align: right;
+}

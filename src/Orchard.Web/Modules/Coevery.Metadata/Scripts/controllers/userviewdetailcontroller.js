@@ -23,7 +23,7 @@
         var obj = picklistobj;
        
         var columns = obj.children();
-        $scope.filedCoumns = new Array();
+        $scope.filedCoumns = [];
         var index = 0;
         columns.each(function (k, v) {
             var fieldName = $(v).text();

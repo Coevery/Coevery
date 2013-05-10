@@ -2,41 +2,19 @@
 @model Coevery.Metadata.ViewModels.ProjectionEditViewModel
 
 @{
-    //Script.Require("jQuery");
     Script.Require("MetadataContext");
     Script.Require("UserViewDetailController");
-    //Script.Require("jQueryUI");
-    //Style.Require("ColumnSelector");
     Style.Require("jQueryUI_Orchard");
-    Style.Include("formdesigner/css/columnselector.css");
 }
 @Display.FootScripts()
 @Display.StylesheetLinks()
 
-
-<header id="main-header" class="page-header">
-    <ul class="breadcrumb">
-        <li>
-            <i class="icon-home"></i>Coevery
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Admin</a>
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">UserView</a>
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Create</a>
-        </li>
-    </ul>
-    <h1>UserView Detail <span>UserView add</span></h1>
+<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
+    <h1 style="background-image: none;">View Detail <span>show view detail information</span></h1>
 </header>
 @{
     var sortedBy = new BindingList<SelectListItem>();
-    sortedBy.Add(new SelectListItem{Selected = true,Text = "Name"});
+    sortedBy.Add(new SelectListItem { Selected = true, Text = "Name" });
     sortedBy.Add(new SelectListItem { Selected = false, Text = "Age" });
 
     var sortMode = new BindingList<SelectListItem>();
@@ -44,116 +22,173 @@
     sortMode.Add(new SelectListItem { Selected = false, Text = "Asc" });
 }
 
+@*<div class="navbar">
+    <div class="navbar-inner" style="min-height: 30px">
+        <button type="button" class="btn btn-primary">Save </button>
+        <button type="button" class="btn">Cancel</button>
+    </div>
+</div>*@
+    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+            <button type="button" class="btn btn-primary"><i class="icon-save"></i> Save</button>
+            <button type="button" class="btn">Cancel</button>
+    </div>
 <section id="main-content" ng-controller="UserViewDetailCtrl">
+    <div class="row-fluid">
+        <div class="span12">
+            <div>
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { subId = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                                                      FormMethod.Post,
+                                                      new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
+                {
 
-    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { subId = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                FormMethod.Post,
-                 new { @class = "form-horizontal", @name="myForm",@ng_submit="save()" }))
-    {
-        <div class="row-fluid">
-            <section class="span12 widget">
-                <header class="widget-header">
-                    <span class="title">Create UserView</span>
-                </header>
-                <section class="widget-content form-container">
-                    @Html.ValidationSummary()
-                    <legend>General Info</legend>
                     <fieldset>
-                        <section class="control-group ">
-                            <div class="span6">
-                                <label class="control-label " for="inputName">Name</label>
-                                <div class="controls" >
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "span8",@disabled = "disabled"})
+                        <legend><h5>General Info</h5></legend>
+                        <div class="row-fluid">
+                            <div class="control-group">
+                                <div class="span6">
+                                    <label class="control-label " for="inputName">Name</label>
+                                    <div class="controls">
+                                        @Html.TextBoxFor(m => m.Name, new { @class = "span8", @disabled = "disabled" })
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div class="span6">
-                            <label class="control-label " for="inputName">DisplayName</label>
-                            <div class="controls">
-                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span8" })
-                            </div>
-                                </div>
-                        </section>
 
-                        <section class="control-group">
-                            <div class="span6">
-                                <label class="control-label" for="inputName">VisableTo</label>
-                                <div class="controls">
-                                    @Html.DropDownListFor(m => m.VisableTo,new BindingList<SelectListItem>() ,string.Empty, new { @class = "span8" })
+                                <div class="span6">
+                                    <label class="control-label " for="inputName">DisplayName</label>
+                                    <div class="controls">
+                                        @Html.TextBoxFor(m => m.DisplayName, new { @class = "span8" })
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="span6">
-                            <label class="control-label" for="inputName">PageRowCount</label>
-                            <div class="controls">
-                                <input type="number" class="span4"/>
-                            </div>
+                            <section class="control-group">
+                                <div class="span6">
+                                    <label class="control-label" for="inputName">VisableTo</label>
+                                    <div class="controls">
+                                        @Html.DropDownListFor(m => m.VisableTo, new BindingList<SelectListItem>(), string.Empty, new { @class = "span8" })
+                                    </div>
                                 </div>
-                        </section>
-                    </fieldset>
 
-                    <legend>Select Field To Display</legend>
-                    <fieldset>
-                        <div >
-                            @*   <label class="control-label" for="picklist-ex">All Field</label>*@
-                            <div >
-                                <select id="picklist-ex" name="picklist">
-                                    @{
-                                        string optionTemp = "<option {1}>{0}</option>";
-                                        Dictionary<string,bool> testData = new Dictionary<string, bool>();
-                                        testData.Add("Field" + testData.Count.ToString(), true);
-                                        testData.Add("Field" + testData.Count.ToString(), true);
-                                        testData.Add("Field" + testData.Count.ToString(), false);
-                                        testData.Add("Field" + testData.Count.ToString(), false);
-                                        testData.Add("Field" + testData.Count.ToString(), false);
-                                        foreach (var pair in testData)
-                                        {
-                                            string selectedDesc = string.Empty;
-                                            bool selected = pair.Value;
-                                            if (selected)
-                                            {
-                                                selectedDesc = "selected=\"selected\"";
-                                            }
-                                            Output.Write(string.Format(optionTemp, pair.Key, selectedDesc));
-                                        }
-                                        
-                                    }
-                                </select>
-                            </div>
+                                <div class="span6">
+                                    <label class="control-label" for="inputName">PageRowCount</label>
+                                    <div class="controls">
+                                        <input type="number" class="span4" />
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </fieldset>
-                    <section class="control-group">
-                        <div class="span6">
-                            <label class="control-label " for="sortby">Sorted By</label>
-                            <div class="controls">
-                                @Html.DropDownListFor(m => m.SortedBy,sortedBy ,string.Empty, new { @class = "span4",@id ="sortby" })
-                                @Html.DropDownListFor(m => m.SortMode,sortMode ,string.Empty, new { @class = "span4" })
-                                <input type="button" class="btn" name="Preview" value="Preview" ng-click="preview()" />
-                            </div>
-                        </div>
-                        <div class="span6" />
-                    </section>
-                 
-                        <section class="gridStyle" ng-grid="gridOptions"></section>
-                 
+                    <fieldset>
+                        <legend><h5>Select Fields to Display</h5></legend>
+                        <div class="row-fluid">
+                            <div class="control-group">
+                                <div class="span6 widget">
+                                    <div class="widget-content">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Fields</th>
+                                                    <th class="rightCell">
+                                                        <button class="btn-link" type="button">Add All</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Field 1</td>
+                                                    <td class="rightCell"><span class="label">Added</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Field 2</td>
+                                                    <td class="rightCell">
+                                                        <div class="rightCell"><span class="label">Added</span></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Field 3</td>
+                                                    <td class="rightCell"><span class="label">Added</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Field 4</td>
+                                                    <td class="rightCell"><span class="label hide">Added</span>
+                                                        <button class="btn-link" type="button">Add</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Field 5</td>
+                                                    <td class="rightCell"><span class="label hide">Added</span>
+                                                        <button class="btn-link" type="button">Add</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                    <section class="form-actions">
-                        <input type="submit" value="Save" name="submit.Save" class="btn btn-primary">
-                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
-                    </section>
-                </section>
-            </section>
+                                <div class="span6 widget">
+                                    <div class="widget-content">
+                                        <h5>Drag and drop to reorder</h5>
+                                        <div class="sortable-list">
+                                            <ul id="sortable">
+                                                <li class="ui-state-default">
+                                                    Item 1
+                                                    <div class="pull-right"><button class="btn-link" type="button">Remove</button></div>
+                                                </li>
+                                                <li class="ui-state-default">
+                                                    Item 2
+                                                    <div class="pull-right"><button class="btn-link" type="button">Remove</button></div>
+                                                </li>
+                                                <li class="ui-state-default">
+                                                    Item 3
+                                                    <div class="pull-right"><button class="btn-link" type="button">Remove</button></div>
+                                                </li>
+                                                <li class="ui-state-default">
+                                                    Item 4
+                                                    <div class="pull-right"><button class="btn-link" type="button">Remove</button></div>
+                                                </li>
+                                                <li class="ui-state-default">
+                                                    Item 5
+                                                    <div class="pull-right"><button class="btn-link" type="button">Remove</button></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="span6">
+                                    <label class="control-label " for="SortedBy">Sorted By</label>
+                                    <div class="controls">
+                                        @Html.DropDownListFor(m => m.SortedBy, sortedBy, string.Empty, new { @class = "span4", @id = "sortby" })
+                                        @Html.DropDownListFor(m => m.SortMode, sortMode, string.Empty, new { @class = "span4" })
+                                        <input type="button" class="btn btn-small" name="Preview" value="Preview" ng-click="preview()" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <section class="gridStyle" ng-grid="gridOptions"></section>
+                        </div>
+                    </fieldset>
+                }
+            </div>
         </div>
-    }
-
-
+    </div>
+    <div class="toolbar">
+            <button type="button" class="btn btn-primary">Save </button>
+            <button type="button" class="btn">Cancel</button>
+    </div>
 </section>
-<script type="text/javascript">
+
+<script>
+    $(document).ready(
+        function() {
+            $('.sortable-list ul').sortable({
+                placeholder: 'placeholder',
+                forcePlaceholderSize: true
+            });
+        }
+    );
+</script>
+@*<script type="text/javascript">
     //<![CDATA[
    var picklistobj = $('#picklist-ex').picklist({
-        sourceListLabel: 'All Columns',
+        sourceListLabel: 'All Fields',
         targetListLabel: 'Drag and drop to reorder',
-        addAllLabel:'Add AllColumns'
+        addAllLabel:'Add All Fields'
     });
     //]]>
-</script>
+</script>*@

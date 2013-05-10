@@ -588,6 +588,8 @@
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-vi.js" />
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-CN.js" />
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
+    <Content Include="Styles\bootstrap\bootstrap-responsive.css" />
+    <Content Include="Styles\bootstrap\bootstrap-responsive.min.css" />
     <Content Include="Styles\bootstrap\bootstrap.css" />
     <Content Include="Styles\bootstrap\bootstrap.min.css" />
     <Content Include="Styles\button.css" />
@@ -610,6 +612,8 @@
     <Content Include="Styles\images\dt\sort_asc_d.png" />
     <Content Include="Styles\images\dt\sort_desc.png" />
     <Content Include="Styles\images\dt\sort_desc_d.png" />
+    <Content Include="Styles\images\glyphicons-halflings-white.png" />
+    <Content Include="Styles\images\glyphicons-halflings.png" />
     <Content Include="Styles\images\icons\iconsweets\icos-dark.png" />
     <Content Include="Styles\images\icons\iconsweets\icos-white.png" />
     <Content Include="Styles\images\icons\iconsweets\is2\dark\abacus.png" />
