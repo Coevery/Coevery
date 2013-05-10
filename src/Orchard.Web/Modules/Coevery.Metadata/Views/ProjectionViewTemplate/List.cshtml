@@ -8,60 +8,37 @@
 
 @Display.FootScripts()
 
-<header id="main-header" class="page-header">
-    <ul class="breadcrumb">
-        <li>
-            <i class="icon-home"></i>Coevery
-                                        <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Metadata</a>
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">UserView</a>
-        </li>
-    </ul>
-    <h1 id="main-heading">UserView <span>Display all UserView</span></h1>
+<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">List of Views <span>Display all views</span></h1>
 </header>
-
-<section id="main-content" ng-controller="UserViewCtrl">
-    <div class="row-fluid">
-        <section class="span12 widget">
-            <header class="widget-header">
-                <span class="title">&nbsp;</span>
-            </header>
-            <section class="widget-content table-container dataTables_wrapper">
-                <section class="dt_header">
-                    <section class="btn-group">
-                        <button class="btn" ng-click="add()">
-                            <i class="icol-add"></i>@T("Add")
-                        </button>
-                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
-                            <i class="icol-page-white-edit"></i>@T("Edit")
-                        </button>
-                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
-                            <i class="icol-cross"></i>@T("Delete")
-                        </button>
-                        <button class="btn" ng-click="getAll()">
-                            <i class="icol-arrow-refresh"></i>@T("Refresh")
-                        </button>
-                    </section>
-                </section>
-              <section class="gridStyle" ng-grid="gridOptions"></section>
-            </section>
-        </section>
+<section ng-controller="UserViewCtrl">
+    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+        <button class="btn btn-success" ng-click="add()">
+            <i class="icon-plus"></i> @T("Add")
+        </button>
+        <button class="btn" ng-click="getAll()">
+            <i class="icon-refresh"></i> @T("Refresh")
+        </button>
     </div>
+    <section id="main-content">
+        <div class="row-fluid">
+            <section class="span12">
+                <section class="gridStyle" ng-grid="gridOptions"></section>
+            </section>
+        </div>
+    </section>
 </section>
 
+
 <script>
-function getColumnDefs(localize) {
-    var columnDefs = [{ field: 'ContentId', displayName: localize.getLocalizedString('Id') },
-                { field: 'EntityType', displayName: localize.getLocalizedString('EntityType') },
-                { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') }];
-    debugger;
-    return columnDefs;
-}
+    function getColumnDefs(localize) {
+        var columnDefs = [
+            { field: 'ContentId', displayName: 'Actions', width: 100, cellTemplate: '<button class="btn btn-small" ng-click="edit(row.getProperty(col.field))"><i class="icon-pencil"></i></button><button class="btn btn-small" ng-click="delete(row.getProperty(col.field))"><i class="icon-remove"></i></button>' },
+            { field: 'ContentId', displayName: localize.getLocalizedString('Id') },
+            { field: 'EntityType', displayName: localize.getLocalizedString('EntityType') },
+            { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') }];
+        return columnDefs;
+    }
 </script>
 
 

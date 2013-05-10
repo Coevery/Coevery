@@ -66,6 +66,8 @@
     <Content Include="Scripts\angular-ui-states.js" />
     <Content Include="Scripts\angular-ui-states.min.js" />
     <Content Include="Scripts\localize.js" />
+    <Content Include="Scripts\ng-grid-2.0.5.debug.js" />
+    <Content Include="Scripts\ng-grid-2.0.5.min.js" />
     <Content Include="Scripts\ng-grid.debug.js" />
     <Content Include="Scripts\ng-grid.min.js" />
     <Content Include="Styles\images\glyphicons-halflings-white.png" />
@@ -254,8 +256,6 @@
     <Content Include="Scripts\jquery.pnotify.min.js" />
     <Content Include="Scripts\jstd-scenario-adapter-config.js" />
     <Content Include="Scripts\jstd-scenario-adapter.js" />
-    <Content Include="Scripts\ng-grid-2.0.2.debug.js" />
-    <Content Include="Scripts\ng-grid-2.0.2.min.js" />
     <Content Include="Scripts\Web.config">
       <SubType>Designer</SubType>
     </Content>
