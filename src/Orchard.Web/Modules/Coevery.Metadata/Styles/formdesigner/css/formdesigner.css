@@ -1,4 +1,8 @@
-﻿.btn-group.auto-open > ul.dropdown-menu {
+﻿[fd-field].selected {
+    background-color: #c7e7af;
+}
+
+.btn-group.auto-open > ul.dropdown-menu {
     margin-top: 0;
 }
 
@@ -26,12 +30,31 @@
     opacity: 0.3;
 }
 
+#toolboxes .tab-content {
+    padding: 0;
+    border: 0;
+    height: 330px;
+    overflow: auto;
+}
+
 .tools div {
     height: 18px;
     width: 20px;
     cursor: pointer;
     margin-top: 5px;
     float: right;
+}
+
+.tools .merge {
+    background-image: url(../images/merge.png);
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+}
+
+.tools .split {
+    background-image: url(../images/split.png);
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
 }
 
 .tools .remove {
