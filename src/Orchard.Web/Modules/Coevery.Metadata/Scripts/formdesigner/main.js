@@ -21,11 +21,15 @@
         //helper.height(18);
         //helper.width(150);
 
-        var helper = $('<div class="" style="border:1px solid #ccc;"></div>');
+        //var helper = $('<div class="" style="border:1px solid #ccc;"></div>');
+        //helper.height($(this).height());
+        //helper.width($(this).width());
+        //helper.append($(this).html());
+
+        var helper = $(this).clone();
         helper.height($(this).height());
         helper.width($(this).width());
-        helper.append($(this).html());
-        //helper.css('background-color','transparent');
+        helper.css('border', '1px solid #ccc');
         return helper;
     }
 
@@ -146,16 +150,20 @@
                 function setFieldsUsed(fields) {
                     for (var j = 0; j < fields.length; j++) {
                         var fieldItem = $('[fd-tools-field][field-name=' + fields[j] + ']');
-                        fieldItem.css('opacity', '0.3');
-                        fieldItem[0].disableDraggable();
+                        //fieldItem.css('opacity', '0.3');
+                        //fieldItem[0].disableDraggable();
+
+                        fieldItem.hide();
                     }
                 }
 
                 function setFieldsUnused(fields) {
                     for (var j = 0; j < fields.length; j++) {
                         var fieldItem = $('[fd-tools-field][field-name=' + fields[j] + ']');
-                        fieldItem.css('opacity', '1');
-                        fieldItem[0].enableDraggable();
+                        //fieldItem.css('opacity', '1');
+                        //fieldItem[0].enableDraggable();
+
+                        fieldItem.show();
                     }
                 }
 
@@ -530,6 +538,30 @@
                     changeToAlwaysOnLayout(attrs.fieldAlwaysOnLayout != null);
                     changeToRequired(attrs.fieldRequired != null);
 
+                    var columnTool = $('<div fd-tool-column></div>');
+                    columnTool.click(function() {
+                        var column = element.parent();
+                        var otherColumn = column.siblings();
+                        if (element.attr('merged') != null) {
+                            $(this).removeClass('split');
+                            $(this).addClass('merge');
+                            removeSpanClass(column);
+                            var leftWidth = parseInt(element.parents('[fd-section]:first').attr('section-columns-width'));
+                            var width = column.prev().length ? 12 - leftWidth : leftWidth;
+                            column.addClass('span' + width);
+                            otherColumn.show();
+                            element.removeAttr('merged');
+                        } else {
+                            $(this).removeClass('merge');
+                            $(this).addClass('split');
+                            removeSpanClass(column);
+                            column.addClass('span12');
+                            otherColumn.hide();
+                            element.attr('merged', '');
+                        }
+                    });
+                    element.find('.tools').append(columnTool);
+
                     var watchList = [];
                     var watch = $rootScope.$watch(function () {
                         return element.attr('field-required');
@@ -540,6 +572,21 @@
                     
                     element[0].hoverOverHandler = function() {
                         $(this).addClass('highlight');
+                        
+                        var columnCount = parseInt($(this).parents('[fd-section]:first').attr('section-columns'));
+                        $(this).find('[fd-tool-column]').removeClass('merge');
+                        $(this).find('[fd-tool-column]').removeClass('split');
+                        $(this).find('[fd-tool-column]').hide();
+                        if (columnCount == 2) {
+                            var row = $(this).parents('[fd-row]');
+                            var fieldCount = row.find('[fd-field]').length;
+                            if (fieldCount == 1) {
+                                var className = $(this).attr('merged') != null ? 'split' : 'merge';
+                                $(this).find('[fd-tool-column]').addClass(className);
+                                $(this).find('[fd-tool-column]').show();
+                            }
+                        }
+
                         $(this).find('.tools').show();
                     };
                     element[0].hoverOutHandler = function() {
