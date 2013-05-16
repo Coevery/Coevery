@@ -1,7 +1,7 @@
 ﻿@model Coevery.Fields.Settings.BooleanFieldSettings
 @using Coevery.Fields.Settings;
 
-<fieldset>
+@*<fieldset>
     <div>
         @Html.CheckBoxFor(m => m.Optional) <label for="@Html.FieldIdFor(m => m.Optional)" class="forcheckbox">@T("Add a neutral option")</label>
         <span class="hint">@T("Check to allow the user to enter a neutral value, like 'Maybe'.")</span>
@@ -56,4 +56,31 @@
         <span class="hint">@T("The help text is written under the field when the user is selecting a value.")</span>
         @Html.ValidationMessageFor(m => m.Hint)
     </div>
-</fieldset>
+</fieldset>*@
+
+<section class="control-group">
+    <label class="control-label">
+        Default Value
+    </label>
+    <div class="controls">
+        <label class="radio">
+            <input type="radio" ng-model="defaultValue" value="true"/>
+            True
+        </label>
+        <label class="radio">
+            <input type="radio" ng-model="defaultValue" value="false"/>
+            False
+        </label>
+    </div>
+</section>
+<section class="control-group">
+    <label class="control-label">
+        Display Option
+    </label>
+    <div class="controls">
+        <select ng-model="booleanDisplayOption" class="span12">
+            <option value="checkbox">Checkbox</option>
+            <option value="radio">Radio</option>
+        </select>
+    </div>
+</section>

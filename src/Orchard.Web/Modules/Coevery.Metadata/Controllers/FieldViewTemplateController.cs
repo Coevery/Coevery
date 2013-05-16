@@ -8,6 +8,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard;
+using Orchard.ContentManagement.ViewModels;
 using Orchard.Core.Contents.Controllers;
 using Orchard.Localization;
 using Orchard.UI.Notify;
@@ -114,22 +115,47 @@ namespace Coevery.Metadata.Controllers
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
-            var partViewModel = _contentDefinitionService.GetPart(id);
+            //var partViewModel = _contentDefinitionService.GetPart(id);
 
-            if (partViewModel == null)
+            //if (partViewModel == null)
+            //{
+            //    //id passed in might be that of a type w/ no implicit field
+            //    var typeViewModel = _contentDefinitionService.GetType(id);
+            //    if (typeViewModel != null)
+            //        partViewModel = new EditPartViewModel(new ContentPartDefinition(id));
+            //    else
+            //        return HttpNotFound();
+            //}
+
+            var viewModel = new AddFieldViewModel 
             {
-                //id passed in might be that of a type w/ no implicit field
-                var typeViewModel = _contentDefinitionService.GetType(id);
-                if (typeViewModel != null)
-                    partViewModel = new EditPartViewModel(new ContentPartDefinition(id));
-                else
-                    return HttpNotFound();
-            }
+                Fields = _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName),
+            };
+
+            return View(viewModel);
+        }
+
+        public ActionResult DependencyList(string id)
+        {
+            return View();
+        }
+
+        public ActionResult EditFieldInfo(string id, string subId)
+        {
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
+                return new HttpUnauthorizedResult();
+
+            _contentDefinitionService.AddType("EmptyTypeTemplate", "EmptyTypeTemplate");
+            _contentDefinitionService.AddPart(new CreatePartViewModel { Name = "EmptyPartTemplate" });
+            _contentDefinitionService.AddFieldToPart("EmptyFieldTemplate", subId + "Field", "EmptyPartTemplate");
+            _contentDefinitionService.AddPartToType("EmptyPartTemplate", "EmptyTypeTemplate");
+            var newTypeViewModel = _contentDefinitionService.GetType("EmptyTypeTemplate");
+            _contentDefinitionService.RemovePart("EmptyPartTemplate");
+            _contentDefinitionService.RemoveType("EmptyTypeTemplate", true);
 
             var viewModel = new AddFieldViewModel
             {
-                Part = partViewModel,
-                Fields = _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName)
+                TypeTemplates = newTypeViewModel.Parts.First().PartDefinition.Fields.First().Templates
             };
 
             return View(viewModel);
