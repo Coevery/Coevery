@@ -27,7 +27,7 @@
         { field: 'DisplayName', displayName: 'Field Label' },
         { field: 'Name', displayName: 'Field Name' },
         { field: 'FieldType', displayName: 'Field Type' },
-        { field: 'ControllingField', displayName: 'Controlling Field' }
+        { field: 'ControlField', displayName: 'Control Field' }
     ];
     $scope.userFields = {
         data: 'userFields',
