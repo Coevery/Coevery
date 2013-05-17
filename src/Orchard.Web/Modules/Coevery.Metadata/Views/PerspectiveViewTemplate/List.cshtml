@@ -1,0 +1,154 @@
+﻿@{
+    //Style.Require("jQueryUI_Orchard");
+    Script.Include("controllers/perspectivelistcontroller.js");
+}
+@Display.FootScripts()
+@Display.StylesheetLinks()
+
+<style>
+    /*#manage-perspective .tabs-left>.nav-tabs {
+        border-right: 0;
+        margin: 0;
+    }
+    #manage-perspective .tabs-left>.tab-content {
+        padding-left: 19px;
+        border-left: 1px solid #ddd;
+    }*/
+</style>
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 style="background-image: none;">Perspective Management <span>An perspective is a group of navigation items that work as a unit to provide functionality</span></h1>
+</header>
+
+<section ng-controller="PerspectiveListCtrl">
+    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+        <button type="button" class="btn btn-success" ng-click="addPerspective()">Add Perspective</button>
+        <button type="button" class="btn" ng-click="addPerspective()">Edit</button>
+        <button type="button" class="btn">Remove</button>
+        <button type="button" class="btn" ng-click="exit()">Back</button>
+    </div>
+    <section id="main-content">
+        <div id="manage-perspective" class="row-fluid">
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#sales" data-toggle="tab">Sales</a></li>
+                    <li><a href="#marketing" data-toggle="tab">Marketing</a></li>
+                    <li><a href="#develop" data-toggle="tab">Develop</a></li>
+                </ul>
+                <div class="tab-content">
+                    <section class="pull-right">
+
+                        <button class="btn btn-small btn-success" ng-click="addNavigationItem()">Add Navigation Item</button>
+                    </section>
+                    <h4 class="sub" style="clear: both"><span>Navigation Items</span></h4>
+
+                    <div class="tab-pane active" id="sales">
+                        <div class="sortable-list">
+                            <ul>
+                                <li class="ui-state-default">Home
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Leads
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Accounts
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Opportunities
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Reports
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="marketing">
+                        <div class="sortable-list">
+                            <ul>
+                                <li class="ui-state-default">Home
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Leads
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Contacts
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Accounts
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="develop">
+                        <div class="sortable-list">
+                            <ul>
+                                <li class="ui-state-default">Home
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Projects
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Tasks
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                                <li class="ui-state-default">Week Report
+                                    <div class="pull-right">
+                                        <button class="btn-link" type="button" ng-click="addNavigationItem()">Edit</button>
+                                        <button class="btn-link" type="button">Remove</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+<script>
+    $(document).ready(
+        function () {
+            $('.sortable-list ul').sortable({
+                placeholder: 'placeholder',
+                forcePlaceholderSize: true
+            });
+        }
+    );
+</script>

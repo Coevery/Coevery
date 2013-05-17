@@ -1,0 +1,74 @@
+﻿@{
+    Style.Include("perspective/jquery.minicolors.css");
+    Script.Include("perspective/jquery.minicolors.js");
+    Script.Include("perspective/bootstrap-fileinput.min.js");
+    Script.Include("controllers/navigationitemdetailcontroller.js");
+}
+@Display.FootScripts()
+@Display.StylesheetLinks()
+
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 style="background-image: none;">Navigation Item Detail <span>show navigation item detail information</span></h1>
+</header>
+
+<section ng-controller="NavigationItemDetailCtrl">
+    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn" ng-click="exit()">Cancel</button>
+    </div>
+    <section id="main-content">
+        <div class="row-fluid">
+            <form class="form-horizontal">
+                <section class="control-group">
+                    <label class="control-label">
+                        Perspective
+                    </label>
+                    <div class="controls">
+                        <select class="span12">
+                            <option>Please select one perspective</option>
+                        </select>
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label">
+                        Entity
+                    </label>
+                    <div class="controls">
+                        <select class="span12">
+                            <option>Please select one entity</option>
+                        </select>
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label" for="color">Color</label>
+                    <div class="controls">
+                        <input id="color" type="text" class="minicolors">
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label">
+                        Icon
+                    </label>
+                    <div class="controls">
+                        <input type="file" id="input04" data-provide="fileinput">
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label" for="description">
+                        Description
+                    </label>
+                    <div class="controls">
+                        <textarea class="span12" id="description" ng-model="description"></textarea>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </section>
+</section>
+<script>
+    $(document).ready(
+        function () {
+            $('.minicolors').minicolors();
+        }
+    );
+</script>

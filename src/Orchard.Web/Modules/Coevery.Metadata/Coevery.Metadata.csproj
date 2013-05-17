@@ -144,6 +144,7 @@
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
+    <Compile Include="Controllers\PerspectiveViewTemplateController.cs" />
     <Compile Include="Controllers\UserViewController.cs" />
     <Compile Include="Controllers\ProjectionViewTemplateController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
@@ -196,13 +197,18 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\controllers\perspectivedetailcontroller.js" />
     <Content Include="Scripts\controllers\dependencylistcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Scripts\controllers\editfieldinfocontroller.js" />
     <Content Include="Scripts\controllers\fieldeditcontroller.js" />
+    <Content Include="Scripts\controllers\navigationitemdetailcontroller.js" />
+    <Content Include="Scripts\controllers\perspectivelistcontroller.js" />
     <Content Include="Scripts\controllers\userviewdetailcontroller.js" />
     <Content Include="Scripts\controllers\userviewlistcontroller.js" />
     <Content Include="Scripts\directives\columnpicker.js" />
+    <Content Include="Scripts\perspective\bootstrap-fileinput.min.js" />
+    <Content Include="Scripts\perspective\jquery.minicolors.js" />
     <Content Include="Styles\formdesigner\css\columnselector.css" />
     <Content Include="Styles\formdesigner\css\docs.css" />
     <Content Include="Styles\formdesigner\images\merge.png" />
@@ -231,6 +237,8 @@
     <Content Include="Styles\menu.contenttypes-admin.css" />
     <Content Include="Styles\orchard-contenttypes-admin.css" />
     <Content Include="Styles\columnpicker.css" />
+    <Content Include="Styles\perspective\jquery.minicolors.css" />
+    <Content Include="Styles\perspective\jquery.minicolors.png" />
     <Content Include="Views\EditorTemplates\ContentTypePart.ascx" />
     <Content Include="Views\FieldViewTemplate\List.cshtml" />
     <Content Include="Views\FieldViewTemplate\Create.cshtml">
@@ -314,6 +322,16 @@
   <ItemGroup>
     <Content Include="Views\FieldViewTemplate\DependencyList.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PerspectiveViewTemplate\EditPerspective.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PerspectiveViewTemplate\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PerspectiveViewTemplate\EditNavigationItem.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
