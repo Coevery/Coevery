@@ -1,5 +1,6 @@
-﻿
-function FieldDetailCtrl($http, $timeout, $scope, logger, $state, $stateParams, $element) {
+﻿function FieldDetailCtrl($http, $timeout, $scope, logger, $state, $stateParams, $element) {
+    $scope.fieldType = 'Input';
+   
     $scope.save = function () {
         $.ajax({
             url: $element.attr('action'),
@@ -13,6 +14,10 @@ function FieldDetailCtrl($http, $timeout, $scope, logger, $state, $stateParams, 
 
     $scope.exit = function() {
         $state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
+    };
+
+    $scope.next = function() {
+        $state.transitionTo('SubDetail', { Module: 'Metadata', Id: $stateParams.Id, SubModule: 'Field', View: 'EditFieldInfo', SubId: $scope.fieldType });
     };
 }
 

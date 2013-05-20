@@ -35,5 +35,7 @@ namespace Coevery.Metadata.ViewModels {
         /// List of the available Field types
         /// </summary>
         public IEnumerable<ContentFieldInfo> Fields { get; set; }
+
+        public IEnumerable<Orchard.ContentManagement.ViewModels.TemplateViewModel> TypeTemplates { get; set; }
     }
 }

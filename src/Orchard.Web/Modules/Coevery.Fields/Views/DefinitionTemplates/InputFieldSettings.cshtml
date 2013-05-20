@@ -1,7 +1,7 @@
 ﻿@model Coevery.Fields.Settings.InputFieldSettings
 @using Coevery.Fields.Settings;
 
-<fieldset>
+@*<fieldset>
     <div>
     	<label class="forpicker" for="@Html.FieldIdFor(m => m.Type)">@T("Input type")</label>    
         <select id="@Html.FieldIdFor(m => m.Type)" name="@Html.FieldNameFor(m => m.Type)">
@@ -76,4 +76,14 @@
         <span class="hint">@T("The help text is written under the field when the user is entering a value.")</span>
         @Html.ValidationMessageFor(m => m.Hint)
     </div>
-</fieldset>
+</fieldset>*@
+
+
+<section class="control-group">
+    <label class="control-label" for="textLength">
+        Length
+    </label>
+    <div class="controls">
+        <input type="text" class="span12" id="textLength" ng-model="textLength">
+    </div>
+</section>
