@@ -5,89 +5,95 @@
 }
 @Display.FootScripts()
 
-<header id="main-header" class="page-header">
-    <ul class="breadcrumb">
-        <li>
-            <i class="icon-home"></i>Coevery
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Admin</a>
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Metata</a>
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Detail</a>
-        </li>
-    </ul>
-    <h1>Meta Detail <span>Metadata add/edit</span></h1>
+<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
+    <h1 style="background-image: none;">Entity Detail <span>show entity detail information</span></h1>
 </header>
 
-<section id="main-content" ng-controller="MetadataDetailCtrl">
-    <div class="row-fluid">
-        <section class="span12 widget">
-            <header class="widget-header">
-                <span class="title"></span>
-            </header>
-            <section class="widget-content form-container">
-                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" }))
-                {
-                    // todo: come up with real itemtype definitions and locations for said definitions
-                    @Html.ValidationSummary()
-                    <section class="control-group">
-                        <label class="control-label" for="inputName">Name</label>
-                        <div class="controls">
-                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
-                            <span class="hint">@T("Content Type Id: {0}", Model.Name)</span>
-                        </div>
-                        @* todo: if we continue to go down the midrodata route, some helpers would be nice *@
-                        <meta itemprop="DisplayName" content="@Model.DisplayName" />
-                        @* has unintended consequences (renamging the type) - changing the name creates a new type of that name *@
-                        <meta itemprop="Id" content="@Model.Name" />
-                        @Html.HiddenFor(m => m.Name)
-                    </section>
-                    <section class="control-group">
-                        <label class="control-label">Setting</label>
-                        <div class="controls">
-                            @{Html.RenderTemplates(Model.Templates); }
-                        </div>
-                    </section>
+<section ng-controller="MetadataDetailCtrl">
+    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+        <button type="button" class="btn btn-primary">Edit</button>
+        <button type="button" class="btn">Delete</button>
+        <button type="button" class="btn">Cancel</button>
+    </div>
 
-                    <section class="form-actions">
-                        <input type="submit" value="Save" name="submit.Save" class="btn btn-primary">
-                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
-                    </section>
-                }
-            </section>
-        </section>
-    </div>
-    <div class="row-fluid">
-        <section class="span12 widget">
-            <header class="widget-header">
-                <span class="title">Fields</span>
-            </header>
-            <section class="widget-content table-container dataTables_wrapper">
-                <section class="dt_header">
-                    <section class="btn-group">
-                        <button class="btn" ng-click="add()">
-                            <i class="icol-add"></i>@T("Add")
-                        </button>
-                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
-                            <i class="icol-page-white-edit"></i>@T("Edit")
-                        </button>
-                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
-                            <i class="icol-cross"></i>@T("Delete")
-                        </button>
-                        <button class="btn" ng-click="getAllField()">
-                            <i class="icol-arrow-refresh"></i>@T("Refresh")
-                        </button>
-                    </section>
-                </section>
-                <section class="gridStyle" ng-grid="gridOptions"></section>
-            </section>
-        </section>
-    </div>
+    <section id="main-content">
+        <div class="row-fluid">
+            <div class="span12">
+                <div>
+                    @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        // todo: come up with real itemtype definitions and locations for said definitions
+                        @Html.ValidationSummary()
+                        <section class="control-group">
+                            <label class="control-label" for="inputName">Name</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                                <span class="hint">@T("Content Type Id: {0}", Model.Name)</span>
+                            </div>
+                            @* todo: if we continue to go down the midrodata route, some helpers would be nice *@
+                            <meta itemprop="DisplayName" content="@Model.DisplayName" />
+                            @* has unintended consequences (renamging the type) - changing the name creates a new type of that name *@
+                            <meta itemprop="Id" content="@Model.Name" />
+                            @Html.HiddenFor(m => m.Name)
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">Setting</label>
+                            <div class="controls">
+                                @{Html.RenderTemplates(Model.Templates); }
+                            </div>
+                        </section>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab-001" data-toggle="tab">Fields</a></li>
+                        <li><a href="#tab-002" data-toggle="tab">Relationships</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-001">
+                            <div class="btn-toolbar">
+                                <button class="btn btn-success" ng-click="add()">
+                                    <i class="icon-plus"></i>@T("Add")
+                                </button>
+                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
+                                    <i class="icol-page-white-edit"></i>@T("Edit")
+                                </button>
+                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
+                                    <i class="icol-cross"></i>@T("Delete")
+                                </button>
+                                <button class="btn" ng-click="getAllField()">
+                                    <i class="icol-arrow-refresh"></i>@T("Refresh")
+                                </button>
+                            </div>
+                            <section class="gridStyle" ng-grid="gridOptions"></section>
+                        </div>
+                        <div class="tab-pane" id="tab-002">
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i>Add <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
+                                        <li><a href="#"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
+                                    </ul>
+                                </div>
+                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
+                                    <i class="icol-page-white-edit"></i>@T("Edit")
+                                </button>
+                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
+                                    <i class="icol-cross"></i>@T("Delete")
+                                </button>
+
+                            </div>
+                            <section class="gridStyle" ng-grid="gridOptions"></section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </section>
+
