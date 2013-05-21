@@ -1,0 +1,22 @@
+﻿@{
+    Style.Require("pnotify");
+    Style.Require("ngGrid");
+    Style.Include("module.css");
+
+    Script.Require("jQuery");
+    Script.Require("jQueryUI");
+    Script.Require("pnotify");
+    Script.Require("angular");
+    Script.Require("angularResource");
+    
+    Script.Require("angular_UI_States");
+    Script.Require("ngGrid");
+    Script.Include("i18n/resources-locale_" + WorkContext.CurrentCulture + ".js");
+    Script.Require("angular_Localize");
+    Script.Require("CoeveryApp");
+    Script.Require("Logger");
+}
+
+<div ng-show="{{$state.transition}}">Loading...</div>
+<section  class="ng-cloak"  ui-view ng-animate="'wave'">
+</section>

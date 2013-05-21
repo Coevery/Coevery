@@ -46,7 +46,21 @@ namespace Coevery.Core
                     },
                     new MvcRouteHandler())
             };
-
+            yield return new RouteDescriptor
+            {
+                Route = new Route(
+                    "Coevery/Admin",
+                    new RouteValueDictionary {
+                        {"area", "Coevery.Core"},
+                        {"controller", "Admin"},
+                        {"action", "Index"}
+                    },
+                    new RouteValueDictionary(),
+                    new RouteValueDictionary {
+                        {"area", "Coevery.Core"}
+                    },
+                    new MvcRouteHandler())
+            };
             foreach (var item in displayPathsPerArea) {
                 var areaName = item.Key;
                 var extensionDescriptor = item.Distinct().Single();
