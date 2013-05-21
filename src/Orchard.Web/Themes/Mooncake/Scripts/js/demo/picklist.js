@@ -223,7 +223,7 @@
             items.each(function (k, v) {
                 self.targetList.append(self._removeSelection($(v)));
 
-                itemId = $(v).attr("id");
+                var itemId = $(v).attr("id");
                 self._itemDictionary[itemId].attr("selected", true);
             });
 
@@ -240,7 +240,7 @@
             items.each(function (k, v) {
                 self.sourceList.append(self._removeSelection($(v)));
 
-                itemId = $(v).attr("id");
+                var itemId = $(v).attr("id");
                 self._itemDictionary[itemId].removeAttr("selected");
             });
 

@@ -133,7 +133,6 @@
 
 .pickList .pickList_list .pickList_listItem
 {
-    margin: 5px;
     cursor: default;
     padding: 3px 6px;
     line-height: 18px;
@@ -149,7 +148,7 @@
 
 .pickList .pickList_list .pickList_listItem:hover
 {
-    cursor: move;
+    cursor: pointer;
 }
 
 /* Picklist Filter

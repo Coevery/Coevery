@@ -57,38 +57,36 @@
                         <div class="tab-pane active" id="tab-001">
                             <div class="btn-toolbar">
                                 <button class="btn btn-success" ng-click="add()">
-                                    <i class="icon-plus"></i>@T("Add")
+                                    <i class="icon-plus"></i> New Field
                                 </button>
-                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
-                                    <i class="icol-page-white-edit"></i>@T("Edit")
-                                </button>
-                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
-                                    <i class="icol-cross"></i>@T("Delete")
-                                </button>
-                                <button class="btn" ng-click="getAllField()">
-                                    <i class="icol-arrow-refresh"></i>@T("Refresh")
-                                </button>
+                                <button class="btn" ng-click="gotoDependency()">Field Dependency</button>
                             </div>
-                            <section class="gridStyle" ng-grid="gridOptions"></section>
+                            <h4>System Fields</h4>
+                            <div class="row-fluid">
+                                <section class="gridStyle" ng-grid="gridOptions"></section>
+                            </div>
+                            <h4>User Fields</h4>
+                            <div class="row-fluid">
+                                <section class="gridStyle" ng-grid="userFields"></section>
+                            </div>
                         </div>
                         <div class="tab-pane" id="tab-002">
                             <div class="btn-toolbar">
                                 <div class="btn-group">
                                     <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i>Add <span class="caret"></span></button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
-                                        <li><a href="#"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
+                                        <li><a href="" ng-click="editOneToMany()"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
+                                        <li><a href="" ng-click="editManyToMany()"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
                                     </ul>
                                 </div>
-                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
+                                @*<button class="btn" ng-disabled="mySelections.length == 0" ng-click="">
                                     <i class="icol-page-white-edit"></i>@T("Edit")
                                 </button>
-                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
+                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="">
                                     <i class="icol-cross"></i>@T("Delete")
-                                </button>
-
+                                </button>*@
                             </div>
-                            <section class="gridStyle" ng-grid="gridOptions"></section>
+                            <section class="gridStyle" ng-grid="relationshipGrid"></section>
                         </div>
                     </div>
                 </div>
