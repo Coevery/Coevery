@@ -14,24 +14,52 @@
 
 @Display.FootScripts()
 
-<header id="main-header" class="page-header">
-    <ul class="breadcrumb">
-        <li>
-            <i class="icon-home"></i>Coevery
-                                        <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Sales</a>
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">@Model.DisplayName</a>
-        </li>
-    </ul>
-    <h1 id="main-heading">@Model.DisplayName <span>Display all @Model.DisplayName</span></h1>
+<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">@Model.DisplayName <span>Display all @Model.DisplayName</span></h1>
 </header>
 
-<section id="main-content" ng-controller="CommonCtrl">
+<section ng-controller="CommonCtrl">
+    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+        <button class="btn btn-success" ng-click="add()">
+            <i class="icon-plus"></i> @T("Add")
+        </button>
+        <button class="btn" ng-click="getAll()">
+            <i class="icon-refresh"></i> @T("Refresh")
+        </button>
+    </div>
+    <section id="main-content">
+        <div class="row-fluid">
+            <section class="span12">
+                <section class="pull-right">
+
+                    <section class="btn-group">
+
+                        <button class="btn" ng-click="editview">
+                            <i class="icol-page-white-edit"></i>@T("EditView")</button>
+                        <button class="btn" ng-click="createnewview()">
+                            <i class="icol-add"></i>@T("CreateNewView")</button>
+                    </section>
+                </section>
+
+
+                <section class="pull-right">
+                    @Html.DropDownList("viewlist", new LinkedList<SelectListItem>(), new { @class = "dropdown pull-right" })
+                </section>
+                
+                <div class="navbar-search pull-right">
+                    <input class="search-query" type="text" size="42">
+                    <span class="ui-icon ui-icon-search" title="Find files"></span>
+                    <span class="ui-icon ui-icon-close"></span>
+                </div>
+
+                @Display(Model.ListViewModel)
+            </section>
+
+        </div>
+    </section>
+</section>
+
+@*<section id="main-content" ng-controller="CommonCtrl">
     <div class="row-fluid">
         <section class="span12 widget">
             <header class="widget-header">
@@ -51,9 +79,9 @@
                     </section>
 
                     <section class="pull-right">
-                          
+
                         <section class="btn-group">
-                           
+
                             <button class="btn" ng-click="editview">
                                 <i class="icol-page-white-edit"></i>@T("EditView")</button>
                             <button class="btn" ng-click="createnewview()">
@@ -62,15 +90,15 @@
                     </section>
 
                     <section class="pull-right">
-                        @Html.DropDownList("viewlist",new LinkedList<SelectListItem>(), new { @class = "dropdown pull-right" })
-                        </section>
-        </section>
+                        @Html.DropDownList("viewlist", new LinkedList<SelectListItem>(), new { @class = "dropdown pull-right" })
+                    </section>
+                </section>
 
                 @Display(Model.ListViewModel)
-        </section>
+            </section>
         </section>
     </div>
-</section>
+</section>*@
 
 
 
