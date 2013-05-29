@@ -145,6 +145,7 @@
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
     <Compile Include="Controllers\PerspectiveViewTemplateController.cs" />
+    <Compile Include="Controllers\RelationshipViewTemplateController.cs" />
     <Compile Include="Controllers\UserViewController.cs" />
     <Compile Include="Controllers\ProjectionViewTemplateController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
@@ -197,6 +198,8 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
+    <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\perspectivedetailcontroller.js" />
     <Content Include="Scripts\controllers\dependencylistcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
@@ -331,7 +334,12 @@
   <ItemGroup>
     <Content Include="Views\PerspectiveViewTemplate\EditNavigationItem.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\RelationshipViewTemplate\EditManyToMany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\RelationshipViewTemplate\EditOneToMany.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
