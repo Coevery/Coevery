@@ -1,49 +1,76 @@
 ﻿@using System.Web.Routing;
 @using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
+<div class="btn-toolbar" style="border: 0; width: 100%; margin-top: 1px; ">
+    <div class="btn-group" style="border: 0; width: 100%;">
+        <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0;background: rgb(44, 163, 222); width: 100%;">
+            <i  style="background-position: center;"></i><span></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            @foreach (var firstLevelMenuItem in Model)
+            {
+                IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
+                string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
+                <li title="@firstLevelMenuItem.Text" style="cursor:pointer; margin-left: 2px;padding: 3px 20px;">
+                    <i style="background-position:center; "></i>
+                    @firstLevelMenuItem.Text
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+@foreach (var firstLevelMenuItem in Model)
+{
 
-<ul class="menu">
-    @foreach(var firstLevelMenuItem in Model) {
-        IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-
-        string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
-        <li>
-            <span title="@firstLevelMenuItem.Text">
-                <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
-				<span class="nav-title">@firstLevelMenuItem.Text</span>
-            </span>
+    IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
+    string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
+    <ul class="menu" id="@firstLevelMenuItem.Text">
         @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild)
         {
-                <ul class="inner-nav">
-                @foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
+            foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
+            {
+                string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
+                var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
+                var secondLevelUrl = secondLevelMenuItem.Href;
+                if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
                 {
-                    string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-                    var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
-                    var secondLevelUrl = secondLevelMenuItem.Href;
-                    if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
-                    {
-                        secondLevelUrl = firstOfTheThird.Href;
-                    }                    
-                    <li ng-class="{ active: $state.params.Moudle == '@secondLevelMenuItem.Text.TextHint'}">
-                    <a href="@secondLevelUrl">
-                        <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
-                        @secondLevelMenuItem.Text
-                    </a>
-                    </li>
+                    secondLevelUrl = firstOfTheThird.Href;
                 }
-                </ul>
+                <li>
+                    <a href="@secondLevelUrl">
+                    <span title="@secondLevelMenuItem.Text">
+                         
+                        <i class="icon-home" 
+                           style="width: 32px;height: 32px;background-position: center;background-image: url(@Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico"));"></i>
+                        <span class="nav-title">@secondLevelMenuItem.Text</span>
+                       
+                    </span>
+                         </a>
+                </li>
+            }
         }
-       </li>
-    }
-    <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled" onclick="ToggleButtonClick()"><span></span></span></li>
-</ul>
+    </ul>
+}
 @using (Script.Foot())
 {
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
+            $('#content').toggleClass('sidebar-minimized').end().toggleClass('toggled');
+            $(".btn-toolbar .dropdown-menu>li").click(function () {
+                var $li = $(this);
+                var action = $li[0].title;
+                $("#navigation .menu").css('display', 'none');
+                $("#navigation #" + action).css('display', 'block');
+                $(".btn-toolbar .btn-group span:first").text(action);
+                //$(".btn-toolbar .btn-group i:first").css("background-image", $li.children().css("background-image"));
+            });
+            $(".btn-toolbar .dropdown-menu>li:first").click();
+            
+
             $(".menu li:first").addClass("active");
-            $(".menu>li:not(:last)").click(function() {
+            $(".menu>li").click(function () {
                 var $li = $(this);
                 if ($li.hasClass("active")) {
                     return;
@@ -51,16 +78,7 @@
                 $(".menu>li.active").removeClass("active");
                 $li.addClass("active");
             });
+            
         });
-        function ToggleButtonClick() {
-            if (!!$('#sidebar #navigation .menu >li.active:first .inner-nav').length) {
-                $('#content')
-                    .toggleClass('sidebar-minimized')
-                    .end()
-                    .toggleClass('toggled');
-                $('#sidebar-toggle').toggleClass('toggled', $('#content').hasClass('sidebar-minimized'));
-            }
-        }
-        //]]>
     </script>
 }

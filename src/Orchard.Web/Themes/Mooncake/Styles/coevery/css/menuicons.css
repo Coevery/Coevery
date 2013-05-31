@@ -4,8 +4,8 @@
 
 /* sales*/
 .icon-sales:before{content:url(../images/sales.png);}
-.icol-leads{background-image: url(../images/lead.png);background-position: 0px 0px;}
-.icol-opportunities{background-image: url(../images/opportunity.png);background-position: 0px 0px;}
+.icol-leads:before{content: url(../images/lead.png);}
+.icol-opportunities:before{content: url(../images/opportunity.png);}
 
 /*Home*/
 

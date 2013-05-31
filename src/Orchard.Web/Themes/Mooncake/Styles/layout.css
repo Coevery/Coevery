@@ -1003,19 +1003,20 @@ body
 	/* Hidden Sidebar */
     #wrapper #content.sidebar-minimized #sidebar
     {
-        width: 70px;
+        width: 90px;/*changed:70px*/
+        min-height: 500px;
     }
 
     #wrapper #content.sidebar-minimized #main
     {
-        margin-left: 70px;
+        margin-left: 90px;/*changed:70px*/
     }
 
     #wrapper #content.sidebar-minimized #content-inner
     {
         background-image: url(images/layout/content-bg.png);
         background-position: left top;
-        background-size: 70px 1px;
+        background-size: 90px 1px;/*70px*/
     }
 	/* End Hidden Sidebar */
 
@@ -1044,7 +1045,7 @@ body
     {
         font-size: 32px;
         padding: 6px 5px 11px 5px;
-        width: 58px;
+        width: 77px;
     }
 
     #wrapper #sidebar #navigation ul.menu > li > .inner-nav
