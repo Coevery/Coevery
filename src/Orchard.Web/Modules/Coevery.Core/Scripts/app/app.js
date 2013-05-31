@@ -1,13 +1,28 @@
 ﻿'use strict';
 
+function SetActiveMenu(module) {
+    if (!$(".menu>#" + module).hasClass("active")) {
+        $(".menu>li.active").removeClass("active");
+        var $li = $(".menu>#" + module);
+        $li.addClass("active");
+        if (!$li.parent()) return;
+        var $liParent = $li.parent();
+        if ($liParent[0] && $("#navigation #" + $liParent[0].id).css('display') != 'block') {
+            $("#navigation .menu").css('display', 'none');
+            $("#navigation #" + $liParent[0].id).css('display', 'block');
+            $(".btn-toolbar .btn-group span:first").text($liParent[0].id);
+        }
+    }
+}
+
 var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'localization', 'ui.compat', 'coevery.layout'])
     .value('$anchorScroll', angular.noop)
     .config(['$stateProvider', function ($stateProvider) {
-
         $stateProvider
             .state('List', {
                 url: '/{Module:[a-zA-Z]+}',
                 templateUrl: function (params) {
+                    SetActiveMenu(params.Module);
                     return "Coevery/" + params.Module + '/ViewTemplate/List/' + params.Module;
                 }
             })

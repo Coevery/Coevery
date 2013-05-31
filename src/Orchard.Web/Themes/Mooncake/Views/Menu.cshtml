@@ -1,84 +1,52 @@
 ﻿@using System.Web.Routing;
 @using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
-<div class="btn-toolbar" style="border: 0; width: 100%; margin-top: 1px; ">
+<div class="btn-toolbar" style="border: 0; width: 100%; margin-top: 1px;">
     <div class="btn-group" style="border: 0; width: 100%;">
-        <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0;background: rgb(44, 163, 222); width: 100%;">
-            <i  style="background-position: center;"></i><span></span>
+        <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(44, 163, 222); width: 100%;">
+            <i style="background-position: center;"></i><span>@foreach (var firstLevelMenuItem in Model) {@firstLevelMenuItem.Text break;}</span>
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
             @foreach (var firstLevelMenuItem in Model)
             {
-                IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-                string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
                 <li title="@firstLevelMenuItem.Text" style="cursor:pointer; margin-left: 2px;padding: 3px 20px;">
-                    <i style="background-position:center; "></i>
+                    <i style="background-position: center;"></i>
                     @firstLevelMenuItem.Text
                 </li>
             }
         </ul>
     </div>
 </div>
-@foreach (var firstLevelMenuItem in Model)
-{
+@{
+    int firstLevelIndex = 0;
+    foreach (var firstLevelMenuItem in Model) {
+        IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
+        string displayCss = "none";
+        if (firstLevelIndex == 0) {displayCss = "block";}
+        firstLevelIndex++;
+        <ul class="menu" id="@firstLevelMenuItem.Text" style="display:@displayCss;">
+            @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild) {
+                foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
+                    string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
+                    var firstOfTheThird = ((IEnumerable<dynamic>) secondLevelMenuItem).FirstOrDefault();
+                    var secondLevelUrl = secondLevelMenuItem.Href;
+                    if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
+                        secondLevelUrl = firstOfTheThird.Href;
+                    }
+                    <li id="@secondLevelMenuItem.Text">
+                        <a href="@secondLevelUrl">
+                            <span title="@secondLevelMenuItem.Text">
 
-    IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-    string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
-    <ul class="menu" id="@firstLevelMenuItem.Text">
-        @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild)
-        {
-            foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
-            {
-                string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-                var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
-                var secondLevelUrl = secondLevelMenuItem.Href;
-                if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
-                {
-                    secondLevelUrl = firstOfTheThird.Href;
+                                <i class="icon-home" 
+                                   style="width: 32px; height: 32px; background-position: center; background-image: url(@Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico"));"></i>
+                                <span class="nav-title">@secondLevelMenuItem.Text</span>
+
+                            </span>
+                        </a>
+                    </li>
                 }
-                <li>
-                    <a href="@secondLevelUrl">
-                    <span title="@secondLevelMenuItem.Text">
-                         
-                        <i class="icon-home" 
-                           style="width: 32px;height: 32px;background-position: center;background-image: url(@Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico"));"></i>
-                        <span class="nav-title">@secondLevelMenuItem.Text</span>
-                       
-                    </span>
-                         </a>
-                </li>
             }
-        }
-    </ul>
-}
-@using (Script.Foot())
-{
-    <script type="text/javascript">
-        //<![CDATA[
-        $(document).ready(function () {
-            $('#content').toggleClass('sidebar-minimized').end().toggleClass('toggled');
-            $(".btn-toolbar .dropdown-menu>li").click(function () {
-                var $li = $(this);
-                var action = $li[0].title;
-                $("#navigation .menu").css('display', 'none');
-                $("#navigation #" + action).css('display', 'block');
-                $(".btn-toolbar .btn-group span:first").text(action);
-                //$(".btn-toolbar .btn-group i:first").css("background-image", $li.children().css("background-image"));
-            });
-            $(".btn-toolbar .dropdown-menu>li:first").click();
-            
-
-            $(".menu li:first").addClass("active");
-            $(".menu>li").click(function () {
-                var $li = $(this);
-                if ($li.hasClass("active")) {
-                    return;
-                }
-                $(".menu>li.active").removeClass("active");
-                $li.addClass("active");
-            });
-            
-        });
-    </script>
+        </ul>
+    }
 }
