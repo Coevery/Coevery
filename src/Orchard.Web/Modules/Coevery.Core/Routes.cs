@@ -49,7 +49,7 @@ namespace Coevery.Core
             yield return new RouteDescriptor
             {
                 Route = new Route(
-                    "Coevery/Admin",
+                    "CoeveryAdmin",
                     new RouteValueDictionary {
                         {"area", "Coevery.Core"},
                         {"controller", "CoeveryAdmin"},

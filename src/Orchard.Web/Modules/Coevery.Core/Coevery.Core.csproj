@@ -117,6 +117,7 @@
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
+    <Content Include="Scripts\app\adminapp.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\controllers\columnfactory.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />

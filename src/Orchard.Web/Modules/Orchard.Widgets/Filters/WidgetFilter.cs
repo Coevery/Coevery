@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Coevery.AdminNavigation;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
 using Orchard.Localization;
@@ -40,7 +41,8 @@ namespace Orchard.Widgets.Filters {
             if (workContext == null ||
                 workContext.Layout == null ||
                 workContext.CurrentSite == null ||
-                AdminFilter.IsApplied(filterContext.RequestContext)) {
+                AdminFilter.IsApplied(filterContext.RequestContext)||
+                CoeveryAdminFilter.IsApplied(filterContext.RequestContext)) {
                 return;
             }
 
