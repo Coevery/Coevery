@@ -1,0 +1,17 @@
+﻿#navigation header {
+    display: none;
+}
+.navbar-inner {
+    min-height: 69px;
+}
+.icon-form:before{content:"\f03a";}
+.icon-statistics:before{content:"\e0a2";}
+.icol-static-tables {background-position: -160px -208px;}
+.icol-responsive-tables {background-position: -448px -96px;}
+.icol-creative-version {background-position: -496px -160px;}
+.icol-form-layouts {background-position: -384px -112px;}
+.icol-form-elements{background-position: -48px -240px;}
+#navigation .widget:after,
+#navigation .widget:before {
+    content: none;
+}

@@ -52,7 +52,7 @@ namespace Coevery.Core
                     "Coevery/Admin",
                     new RouteValueDictionary {
                         {"area", "Coevery.Core"},
-                        {"controller", "Admin"},
+                        {"controller", "CoeveryAdmin"},
                         {"action", "Index"}
                     },
                     new RouteValueDictionary(),
