@@ -28,7 +28,7 @@
     Style.Include("ui.css");
 
     Style.Include("picklist.css");
-   
+
 
     Script.Require("jQuery");
     Script.Include("js/libs/bootstrap.min.js");
@@ -121,7 +121,7 @@
                                                     <img src="images/pp.jpg" alt=""></span>
                                                 <span class="details">
                                                     <strong>John Doe</strong> commented on your photo
-                                                            <span class="time">13 minutes ago</span>
+                                                    <span class="time">13 minutes ago</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -131,7 +131,7 @@
                                                     <img src="images/pp.jpg" alt=""></span>
                                                 <span class="details">
                                                     <strong>Jane Roe</strong> commented on your photo
-                                                            <span class="time">27 minutes ago</span>
+                                                    <span class="time">27 minutes ago</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -141,7 +141,7 @@
                                                     <img src="images/pp.jpg" alt=""></span>
                                                 <span class="details">
                                                     <strong>Billy John</strong> commented on your photo
-                                                            <span class="time">43 minutes ago</span>
+                                                    <span class="time">43 minutes ago</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -159,14 +159,27 @@
                         </div>
                     </div>
                     <div id="header-functions" class="pull-right">
-                        <div id="user-info" class="clearfix">
-                            <span class="info">Welcome
-                                        <span class="name">Shana-chan</span>
-                            </span>
-                            <div class="avatar">
-                                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt="Avatar">
-                                </a>
+                        <div id="user-info" class="clearfix" style="margin-top: 2px;">
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <div class="btn dropdown-toggle" data-toggle="dropdown" style="border:none;color: #ffffff; background: rgb(48, 48, 48);">
+                                        <i style="background-position: center;"></i><span>liuleibao</span>
+                                        <span class="caret" style="border-top: 4px solid #ffffff;"></span>
+                                    </div>
+                                    <ul class="dropdown-menu">
+                                    <li title="" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
+                                         <a href="@Href("~/CoeveryAdmin")">
+                                        <i style="background-position: center;"></i>
+                                         后台
+                                        </a>
+                                    </li>
+                                    </ul>
+                                </div>
+                                <div class="avatar">
+                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                        <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt="Avatar">
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div id="logout-ribbon">

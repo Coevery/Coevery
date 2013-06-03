@@ -20,45 +20,45 @@
     background-color: #fff;
 }
 
-.accordion .accordion-group:first-child
-{
-    border-top-width: 1px;
-}
+    .accordion .accordion-group:first-child
+    {
+        border-top-width: 1px;
+    }
 
-.accordion .accordion-group
-{
-    margin: 0;
-    border-top-width: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-}
+    .accordion .accordion-group
+    {
+        margin: 0;
+        border-top-width: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
 
-.accordion .accordion-group, 
-.accordion .accordion-inner
-{
-    border-color: #ccc;
-}
+    .accordion .accordion-group,
+    .accordion .accordion-inner
+    {
+        border-color: #ccc;
+    }
 
-.accordion .accordion-heading a, 
-.accordion .accordion-heading span
-{
-    color: #333;
-    text-decoration: none;
-    background-color: #fcfcfc;
-    background-image: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.05) 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(85%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.05)));
-    background-image: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
-    background-image: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
-    background-image: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
-    background-image: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
-}
+    .accordion .accordion-heading a,
+    .accordion .accordion-heading span
+    {
+        color: #333;
+        text-decoration: none;
+        background-color: #fcfcfc;
+        background-image: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.05) 100%);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(85%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.05)));
+        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
+        background-image: -o-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
+        background-image: -ms-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
+        background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 85%,rgba(0,0,0,0.05) 100%);
+    }
 
-.accordion .accordion-heading:hover a, 
-.accordion .accordion-heading:hover span
-{
-    background-color: #fefefe;
-}
+    .accordion .accordion-heading:hover a,
+    .accordion .accordion-heading:hover span
+    {
+        background-color: #fefefe;
+    }
 
 /* Modal
 ================================================== */
@@ -86,35 +86,35 @@
     border-radius: 3px 3px 0 0;
 }
 
-.modal .modal-header .close
-{
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    border: 1px solid transparent;
-    padding: 1px 4px;
-    margin: 0;
-}
+    .modal .modal-header .close
+    {
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        border: 1px solid transparent;
+        padding: 1px 4px;
+        margin: 0;
+    }
 
-.modal .modal-header .close:hover
-{
-    border: 1px solid #888;
-    opacity: 0.4;
-    filter: alpha(opacity=40);
-}
+        .modal .modal-header .close:hover
+        {
+            border: 1px solid #888;
+            opacity: 0.4;
+            filter: alpha(opacity=40);
+        }
 
-.modal .modal-header .close:active
-{
-    background-color: #d0d0d0;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
-}
+        .modal .modal-header .close:active
+        {
+            background-color: #d0d0d0;
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+            -moz-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+        }
 
 /* Progressbar
 ================================================== */
 
-.progress .bar, 
+.progress .bar,
 .progress.progress-info .bar
 {
     border: 1px solid #1184be;
@@ -178,13 +178,13 @@
     float: left;
 }
 
-.widget .widget-header .toolbar .nav > li.dropdown:hover .caret, 
-.widget .widget-header .toolbar .nav > li.open .caret
-{
-    border-top-color: #ddd;
-}
+    .widget .widget-header .toolbar .nav > li.dropdown:hover .caret,
+    .widget .widget-header .toolbar .nav > li.open .caret
+    {
+        border-top-color: #ddd;
+    }
 
-.widget .widget-header.light .toolbar .nav > li.dropdown:hover .caret, 
+.widget .widget-header.light .toolbar .nav > li.dropdown:hover .caret,
 .widget .widget-header.light .toolbar .nav > li.open .caret
 {
     border-top-color: #aaa;
@@ -240,16 +240,16 @@
     margin-bottom: 0;
 }
 
-.widget > .nav.nav-tabs > .active > a
-{
-    border-color: #cfcfcf;
-    border-bottom-color: transparent;
-}
+    .widget > .nav.nav-tabs > .active > a
+    {
+        border-color: #cfcfcf;
+        border-bottom-color: transparent;
+    }
 
-.widget > .nav.nav-tabs + .tab-content
-{
-    border-top-width: 0;
-}
+    .widget > .nav.nav-tabs + .tab-content
+    {
+        border-top-width: 0;
+    }
 
 .widget .tab-content
 {
@@ -263,8 +263,8 @@
 /* Widget Alerts
 ================================================== */
 
-.widget .widget-content.no-padding .alert, 
-.widget .form-container .alert, 
+.widget .widget-content.no-padding .alert,
+.widget .form-container .alert,
 .widget .table-container .alert
 {
     -webkit-border-radius: 0;
@@ -273,10 +273,10 @@
     margin-bottom: 0;
 }
 
-.widget .widget-content.no-padding .alert + .alert, 
-.widget .form-container .alert + .alert, 
-.widget .table-container .alert + .alert, 
-.widget .form-container .alert + .control-group
-{
-    border-top: 0;
-}
+    .widget .widget-content.no-padding .alert + .alert,
+    .widget .form-container .alert + .alert,
+    .widget .table-container .alert + .alert,
+    .widget .form-container .alert + .control-group
+    {
+        border-top: 0;
+    }

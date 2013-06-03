@@ -14,7 +14,16 @@
             </span>
         @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild)
         {
-                <ul class="inner-nav">
+            <ul class="inner-nav">
+                @if (firstLevelMenuItem.Text.TextHint == "Entities")
+                {
+                    <li ng-class="{ active: $state.params.Moudle == 'All Entities'}">
+                        <a href="@Href("~/CoeveryAdmin#/Metadata")">
+                            <i class="icol-AllEntities"></i>
+                            All Entities
+                        </a>
+                    </li>
+                }
                 @foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
                 {
                     string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
@@ -25,13 +34,13 @@
                         secondLevelUrl = firstOfTheThird.Href;
                     }                    
                     <li ng-class="{ active: $state.params.Moudle == '@secondLevelMenuItem.Text.TextHint'}">
-                    <a href="@secondLevelUrl">
-                        <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
-                        @secondLevelMenuItem.Text
-                    </a>
+                        <a href="@secondLevelUrl">
+                            <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
+                            @secondLevelMenuItem.Text
+                        </a>
                     </li>
                 }
-                </ul>
+            </ul>
         }
        </li>
     }
@@ -50,6 +59,7 @@
                 }
                 $(".menu>li.active").removeClass("active");
                 $li.addClass("active");
+                $li.children("ul").children("li:first").children("a").click();
             });
         });
         function ToggleButtonClick() {

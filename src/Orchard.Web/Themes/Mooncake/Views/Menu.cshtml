@@ -41,7 +41,6 @@
                                 <i class="icon-home" 
                                    style="width: 32px; height: 32px; background-position: center; background-image: url(@Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico"));"></i>
                                 <span class="nav-title">@secondLevelMenuItem.Text</span>
-
                             </span>
                         </a>
                     </li>
@@ -50,3 +49,17 @@
         </ul>
     }
 }
+@using (Script.Foot())
+ {
+     <script type="text/javascript">
+         $(document).ready(function() {
+             $(".btn-toolbar .dropdown-menu>li").click(function() {
+                 var $li = $(this);
+                 var action = $li[0].title;
+                 $("#navigation .menu").css('display', 'none');
+                 $("#navigation #" + action).css('display', 'block');
+                 $(".btn-toolbar .btn-group span:first").text(action);
+             });
+         });
+     </script>
+ }
