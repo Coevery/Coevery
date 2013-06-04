@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using Coevery.AdminNavigation;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
@@ -32,7 +33,7 @@ namespace Coevery.Metadata.Controllers
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        [Themed]
+        [CoeveryAdmin]
         public ActionResult Index(string id, string returnUrl)
         {
             if (string.IsNullOrEmpty(id))
