@@ -91,7 +91,7 @@
                 </section>
             </div>
         </div>
-      <div class="span9">
+        <div class="span9">
             <div id="form-designer">
                 <fd-form>
                     @{ Output.Write(Model.Layout); }
@@ -198,4 +198,9 @@
         </div>
     </div>
 </section>
-@Display(Model.Content)
+@foreach (var item in Model.Content.Content.Items) {
+    if (item.TemplateName != null && item.TemplateName.StartsWith("Fields/")) {
+        Output.Write(Display(item));
+    }
+}
+@*@Display(Model.Content)*@
