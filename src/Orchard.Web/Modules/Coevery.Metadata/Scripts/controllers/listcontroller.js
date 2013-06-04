@@ -1,6 +1,6 @@
 ﻿
 function MetadataCtrl($scope, logger, $state, localize, $resource) {
-    var cellTemplateString = '<div><a href ="Coevery#/metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
+    var cellTemplateString = '<div><a href ="#/Metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
     $scope.mySelections = [];
     var metadata = MetadataContext($resource);
     var metadataGenerator = GenerateContext($resource);

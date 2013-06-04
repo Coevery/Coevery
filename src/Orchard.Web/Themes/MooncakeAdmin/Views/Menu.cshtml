@@ -3,46 +3,43 @@
 @using Orchard.Utility.Extensions;
 
 <ul class="menu">
-    @foreach(var firstLevelMenuItem in Model) {
+    @foreach (var firstLevelMenuItem in Model) {
         IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
 
         string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
-        <li>
-            <span title="@firstLevelMenuItem.Text">
-                <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
-				<span class="nav-title">@firstLevelMenuItem.Text</span>
-            </span>
-        @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild)
-        {
-            <ul class="inner-nav">
-                @if (firstLevelMenuItem.Text.TextHint == "Entities")
-                {
-                    <li ng-class="{ active: $state.params.Moudle == 'All Entities'}">
-                        <a href="@Href("~/CoeveryAdmin#/Metadata")">
-                            <i class="icol-AllEntities"></i>
-                            All Entities
-                        </a>
-                    </li>
-                }
-                @foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
-                {
-                    string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-                    var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
-                    var secondLevelUrl = secondLevelMenuItem.Href;
-                    if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
-                    {
-                        secondLevelUrl = firstOfTheThird.Href;
-                    }                    
-                    <li ng-class="{ active: $state.params.Moudle == '@secondLevelMenuItem.Text.TextHint'}">
-                        <a href="@secondLevelUrl">
-                            <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
-                            @secondLevelMenuItem.Text
-                        </a>
-                    </li>
-                }
-            </ul>
+
+        if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild) {
+            <li>
+                <span title="@firstLevelMenuItem.Text">
+                    <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
+                    <span class="nav-title">@firstLevelMenuItem.Text</span>
+                </span>
+                <ul class="inner-nav">
+                    @foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
+                        string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
+                        var firstOfTheThird = ((IEnumerable<dynamic>) secondLevelMenuItem).FirstOrDefault();
+                        var secondLevelUrl = secondLevelMenuItem.Href;
+                        if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
+                            secondLevelUrl = firstOfTheThird.Href;
+                        }
+                        <li ng-class="{ active: $state.params.Moudle == '@secondLevelMenuItem.Text.TextHint'}">
+                            <a href="@secondLevelUrl">
+                                <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
+                                @secondLevelMenuItem.Text
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
         }
-       </li>
+        else {
+            <li>
+                <a href="@firstLevelMenuItem.Href">
+                    <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
+                    <span class="nav-title">@firstLevelMenuItem.Text</span>
+                </a>
+            </li>
+        }
     }
     <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled" onclick="ToggleButtonClick()"><span></span></span></li>
 </ul>
@@ -51,15 +48,14 @@
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
-            $(".menu li:first").addClass("active");
-            $(".menu>li:not(:last)").click(function() {
+            $(".menu>li:nth-child(2)").addClass("active");
+            $(".menu>li:not(:last)").click(function () {
                 var $li = $(this);
                 if ($li.hasClass("active")) {
                     return;
                 }
                 $(".menu>li.active").removeClass("active");
                 $li.addClass("active");
-                $li.children("ul").children("li:first").children("a").click();
             });
         });
         function ToggleButtonClick() {

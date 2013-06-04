@@ -88,6 +88,12 @@
     $scope.editManyToMany = function () {
         $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Relationship', View: 'EditManyToMany' });
     };
+    $scope.listViewDesigner = function() {
+        $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Projection', View: 'List' });
+    }; 
+    $scope.formDesigner = function () {
+        location.href = 'Metadata/FormDesignerViewTemplate/Index/' + name;
+    }; 
     
     $scope.getAllField = function () {
         var metaData = metadata.get({ name: name }, function () {
