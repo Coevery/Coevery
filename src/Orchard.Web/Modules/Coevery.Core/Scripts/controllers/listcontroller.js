@@ -3,7 +3,12 @@
 function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource,$stateParams) {
     var moduleName = $rootScope.$stateParams.Module;
     var module = CommonContext($rootScope, $resource);
-    var columnDefs = getColumnDefs(localize);
+    //var columnDefs = getColumnDefs(localize);
+    var columnDefs = [{ field: 'Id', displayName: localize.getLocalizedString('Id') },
+                { field: 'Topic', displayName: localize.getLocalizedString('Topic') },
+                { field: 'StatusCode', displayName: localize.getLocalizedString('StatusCode') },
+                { field: 'FirstName', displayName: localize.getLocalizedString('FirstName') },
+                { field: 'LastName', displayName: localize.getLocalizedString('LastName') }];
     $scope.mySelections = [];
 
     $scope.gridOptions = {
