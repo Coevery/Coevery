@@ -12,7 +12,9 @@
         { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<button class="btn btn-small" ng-click="edit(row.getProperty(col.field))"><i class="icon-pencil"></i></button>' },
         { field: 'DisplayName', displayName: 'Field Label' },
         { field: 'Name', displayName: 'Field Name' },
-        { field: 'FieldType', displayName: 'Field Type' }
+        { field: 'Type', displayName: 'Type' },
+        { field: 'FieldType', displayName: 'Field Type' },
+        { field: 'ControlField', displayName: 'Control Field' }
     ];
 
     $scope.gridOptions = {
@@ -99,6 +101,9 @@
         var metaData = metadata.get({ name: name }, function () {
             $scope.item = metaData;
             $scope.myData = metaData.Fields;
+            $.each($scope.myData, function() {
+                $.extend(this, { Type: 'System Field' });
+            });
             $scope.userFields = [
                 { DisplayName: 'Full Name', Name: 'FullName', FieldType: 'Input Field' }
             ];
