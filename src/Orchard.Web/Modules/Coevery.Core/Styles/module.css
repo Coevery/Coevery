@@ -61,6 +61,6 @@
     }
 
 .btn [class^="icon-"],
-a [class^="icon-"] {
+.btn-group a [class^="icon-"] {
     vertical-align: text-top;
 }
