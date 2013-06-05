@@ -10,7 +10,7 @@ function SetActiveMenu(module) {
         if ($liParent[0] && $("#navigation #" + $liParent[0].id).css('display') != 'block') {
             $("#navigation .menu").css('display', 'none');
             $("#navigation #" + $liParent[0].id).css('display', 'block');
-            $(".btn-toolbar .btn-group #firstMenu").text($liParent[0].id);
+            $("#FirstMenu .btn-group #FirstMenuText").text($liParent[0].id);
         }
     }
 }
