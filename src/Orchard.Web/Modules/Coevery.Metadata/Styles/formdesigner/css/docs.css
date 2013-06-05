@@ -2,13 +2,13 @@
 -------------------------------------------------- */
 
 .bs-docs-sidenav {
-  width: 200px;
-  padding: 0;
+    width: 200px;
+    padding: 0;
 }
 
-.bs-docs-sidenav.affix {
-  /*top: 80px;*/
-}
+    .bs-docs-sidenav.affix {
+        top: 143px;
+    }
 
 /* Responsive
 -------------------------------------------------- */
@@ -16,35 +16,47 @@
 /* Desktop large
 ------------------------- */
 @media (min-width: 1200px) {
-  .bs-docs-sidenav {
-    width: 226px;
-  }
+    .bs-docs-sidenav {
+        width: 226px;
+    }
 }
 
 /* Tablet to desktop
 ------------------------- */
 @media (min-width: 768px) and (max-width: 979px) {
-  /* Adjust sidenav width */
-  .bs-docs-sidenav {
-    width: 166px;
-    margin-top: 20px;
-  }
-  .bs-docs-sidenav.affix {
-    top: 0;
-  }
+    /* Adjust sidenav width */
+    .bs-docs-sidenav {
+        width: 166px;
+        margin-top: 20px;
+    }
+
+        .bs-docs-sidenav.affix {
+            top: 0;
+        }
 }
 
 /* Tablet
 ------------------------- */
 @media (max-width: 767px) {
-  /* Sidenav */
-  .bs-docs-sidenav {
-    width: auto;
-    margin-bottom: 20px;
-  }
-  .bs-docs-sidenav.affix {
-    position: static;
-    width: auto;
-    top: 0;
-  }
+    /* Sidenav */
+    .bs-docs-sidenav {
+        width: auto;
+        margin-bottom: 20px;
+    }
+
+        .bs-docs-sidenav.affix {
+            position: static;
+            width: auto;
+            top: 0;
+        }
+}
+
+#wrapper #main .affix + #main-content {
+    padding-top: 52px;
+}
+
+.form-actions.affix {
+    top: 81px;
+    z-index: 999;
+    width: 100%;
 }
