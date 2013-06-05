@@ -59,3 +59,8 @@
     .fade-leave-setup.fade-leave-start {
         opacity: 0;
     }
+
+.btn [class^="icon-"],
+a [class^="icon-"] {
+    vertical-align: text-top;
+}

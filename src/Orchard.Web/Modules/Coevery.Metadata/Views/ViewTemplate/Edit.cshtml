@@ -13,7 +13,7 @@
     <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
         <button type="button" class="btn btn-primary">Edit</button>
         <button type="button" class="btn">Delete</button>
-        <button type="button" class="btn">Cancel</button>
+        <button type="button" class="btn" ng-click="exit()">Cancel</button>
         <button type="button" class="btn" ng-click="listViewDesigner()">List View Designer</button>
         <button type="button" class="btn" ng-click="formDesigner()">Form Designer</button>
     </div>
@@ -59,7 +59,7 @@
                         <div class="tab-pane active" id="tab-001">
                             <div class="btn-toolbar">
                                 <button class="btn btn-success" ng-click="add()">
-                                    <i class="icon-plus"></i> New Field
+                                    <i class="icon-plus"></i>&nbsp;New Field
                                 </button>
                                 <button class="btn" ng-click="gotoDependency()">Field Dependency</button>
                             </div>
@@ -75,7 +75,9 @@
                         <div class="tab-pane" id="tab-002">
                             <div class="btn-toolbar">
                                 <div class="btn-group">
-                                    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i>Add <span class="caret"></span></button>
+                                    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                        <i class="icon-plus"></i>&nbsp;Add&nbsp;<span class="caret"></span>
+                                    </button>
                                     <ul class="dropdown-menu">
                                         <li><a href="" ng-click="editOneToMany()"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
                                         <li><a href="" ng-click="editManyToMany()"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>

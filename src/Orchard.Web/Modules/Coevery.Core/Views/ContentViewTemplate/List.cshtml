@@ -15,350 +15,168 @@
 @Display.FootScripts()
 
 <header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
-    <ul style="list-style: none; display: inline;">
-        <li>
-            <h1 id="main-heading" style="background-image: none;">@Model.DisplayName <span>Display all @Model.DisplayName</span></h1>
-        </li>
-        <li>
-            <div class="btn-toolbar" style="margin: 0px;">
-                <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                        <span>过滤器</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" style="">
-                        <li title="" style="cursor: pointer;"><a>创建过滤器</a>
-                        </li>
-                        <li title="">
-                            <hr style="margin: 0px;" />
-                        </li>
-                        <li title="" style="cursor: pointer;">
-                            <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                            </a>
-                        </li>
-                        <li title="" style="cursor: pointer;">
-                            <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                            </a>
-                        </li>
-                        <li title="" style="cursor: pointer;">
-                            <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                        <span>View</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" style="">
-                        <li title="" style="cursor: pointer;"><a>创建View</a>
-                        </li>
-                        <li title="">
-                            <hr style="margin: 0px;" />
-                        </li>
-                        <li title="" style="cursor: pointer;">
-                            <a>List View<div style="float: right; text-decoration: underline;">删除</div>
-                            </a>
-                        </li>
-                        <li title="" style="cursor: pointer;">
-                            <a>Chart View<div style="float: right; text-decoration: underline;">删除</div>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-
-                <div class="input-append" style="margin: 0px 0px 0px 10px;">
-                    <input type="text" style="width: 150px;">
-                    <button type="button" class="btn">
-                        <i class="icol-magnifier"></i>
-                    </button>
-                </div>
-            </div>
-        </li>
-    </ul>
-
+    <h1 id="main-heading" style="background-image: none;">@Model.DisplayName <span>Display all @Model.DisplayName</span></h1>
 </header>
 
 <section ng-controller="CommonCtrl">
-    <div id="demo-accordion-01" class="accordion">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <div class="accordion-toggle" style="cursor: auto;">
-                    <a data-toggle="collapse"
-                        onclick="if($('#collapseBtn').hasClass('icon-minus')){$('#collapseBtn').addClass('icon-plus');
-                        $('#collapseBtn').removeClass('icon-minus');} else{$('#collapseBtn').removeClass('icon-plus');$('#collapseBtn').addClass('icon-minus'); }"
-                        data-parent="#demo-accordion-01" href="#collapse-01">
-                        <span class="btn"><i id="collapseBtn" class="icon-plus"></i></span>
-                    </a>
-                    <span>过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
-                    <span><a href="#">Close</a></span>
-                </div>
-
+    <section id="main-content">
+        <div style="float: left;">
+            <button class="btn btn-success" ng-click="add()">
+                <i class="icon-plus"></i>&nbsp;@T("Add")
+            </button>
+            <button class="btn" ng-click="getAll()">
+                <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+            </button>
+        </div>
+        <div class="btn-toolbar" style="margin: 0px; float: right;">
+            <div class="btn-group">
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <span>过滤器</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" style="">
+                    <li title="" style="cursor: pointer;"><a>创建过滤器</a>
+                    </li>
+                    <li title="">
+                        <hr style="margin: 0px;" />
+                    </li>
+                    <li title="" style="cursor: pointer;">
+                        <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
+                    </li>
+                    <li title="" style="cursor: pointer;">
+                        <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
+                    </li>
+                    <li title="" style="cursor: pointer;">
+                        <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <div id="collapse-01" class="collapse">
-                <div class="accordion-inner">
-                    <div class="widget">
-                        <div class="widget-content form-container">
-                            <form class="form-horizontal">
-                                <div class="control-group">
-                                    <label class="control-label" for="userDropdown">VisableTo</label>
-                                    <div class="controls">
-                                        <select id="userDropdown" class="span4">
-                                            <option>Me</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <fieldset id="input_cloning" class="sheepit-form" style="display: block;">
-                                    <legend>Filters   
-                                    </legend>
-                                    <div id="input_cloning_template0" class="control-group" idtemplate="input_cloning_template">
-                                        <div class="btn-toolbar" style="margin: 0px;">
-                                            <div class="btn-group">
-                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                    <span>总费用</span>
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" style="">
-                                                    <li title="" style="cursor: pointer;">态状</li>
-                                                    <li title="" style="cursor: pointer;">总费用</li>
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                    <span>></span>
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" style="">
-                                                    <li title="" style="cursor: pointer;">></li>
-                                                    <li title="" style="cursor: pointer;"><</li>
-                                                </ul>
-                                            </div>
-                                            <input type="text" id="input_cloning_0_input" name="text[0]" idtemplate="input_cloning_%23index%23_input" nametemplate="text%5B%23index%23%5D">
-                                        </div>
-                                        <span class="close" id="input_cloning_remove_current" style="display: inline;">×</span>
-                                    </div>
 
+            <div class="btn-group">
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <span>View</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" style="">
+                    <li title="" style="cursor: pointer;"><a>创建View</a>
+                    </li>
+                    <li title="">
+                        <hr style="margin: 0px;" />
+                    </li>
+                    <li title="" style="cursor: pointer;">
+                        <a>List View<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
+                    </li>
+                    <li title="" style="cursor: pointer;">
+                        <a>Chart View<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="input-append" style="margin: 0px 0px 0px 10px;">
+                <input type="text" style="width: 150px;">
+                <button type="button" class="btn">
+                    <i class="icol-magnifier"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="demo-accordion-01" class="accordion" style="margin-top: 40px;">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <div class="accordion-toggle" style="cursor: auto;">
+                        <a data-toggle="collapse"
+                            onclick="if($('#collapseBtn').hasClass('icon-minus')){$('#collapseBtn').addClass('icon-plus');
+     $('#collapseBtn').removeClass('icon-minus');} else{$('#collapseBtn').removeClass('icon-plus');$('#collapseBtn').addClass('icon-minus'); }"
+                            data-parent="#demo-accordion-01" href="#collapse-01">
+                            <span class="btn"><i id="collapseBtn" class="icon-plus"></i></span>
+                        </a>
+                        <span>过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
+                        <span><a href="#">Close</a></span>
+                    </div>
+
+                </div>
+                <div id="collapse-01" class="collapse">
+                    <div class="accordion-inner">
+                        <div class="widget">
+                            <div class="widget-content form-container">
+                                <form class="form-horizontal">
                                     <div class="control-group">
-                                        <div style="float: left;">
+                                        <label class="control-label" for="userDropdown">VisableTo</label>
+                                        <div class="controls">
+                                            <select id="userDropdown" class="span4">
+                                                <option>Me</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <fieldset id="input_cloning" class="sheepit-form" style="display: block;">
+                                        <legend>Filters   
+                                        </legend>
+                                        <div id="input_cloning_template0" class="control-group" idtemplate="input_cloning_template">
+                                            <div class="btn-toolbar" style="margin: 0px;">
+                                                <div class="btn-group">
+                                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                                        <span>总费用</span>
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" style="">
+                                                        <li title="" style="cursor: pointer;">态状</li>
+                                                        <li title="" style="cursor: pointer;">总费用</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                                        <span>></span>
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" style="">
+                                                        <li title="" style="cursor: pointer;">></li>
+                                                        <li title="" style="cursor: pointer;"><</li>
+                                                    </ul>
+                                                </div>
+                                                <input type="text" id="input_cloning_0_input" name="text[0]" idtemplate="input_cloning_%23index%23_input" nametemplate="text%5B%23index%23%5D">
+                                            </div>
+                                            <span class="close" id="input_cloning_remove_current" style="display: inline;">×</span>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <div style="float: left;">
                                                 <span class="btn btn-mini" id="input_cloning_add" style=""><i class="icon-plus"></i></span><span>Add another</span>
                                             </div>
-                                        <div style="margin-left: 10px; float:left;">
-                                            
-                                            <label class="checkbox">
-                                                <input type="checkbox">
-                                                Save Filter
-                                            </label>
+                                            <div style="margin-left: 10px; float: left;">
+
+                                                <label class="checkbox">
+                                                    <input type="checkbox">
+                                                    Save Filter
+                                                </label>
+                                            </div>
                                         </div>
+                                    </fieldset>
+                                    <div class="form-actions" style="height: 20px; vertical-align: middle;">
+                                        <button type="submit" class="btn btn-primary">Apply</button>
+                                        <button class="btn" type="reset">Close</button>
                                     </div>
-                                </fieldset>
-                                <div class="form-actions" style="height: 20px; vertical-align: middle;">
-                                    <button type="submit" class="btn btn-primary">Apply</button>
-                                    <button class="btn" type="reset">Close</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <section id="main-content">
         <div class="row-fluid">
             <section class="span12 widget">
-                @* <section class="pull-right">
-
-                    <section class="btn-group">
-                        <button class="btn" ng-click="editview">
-                            <i class="icol-page-white-edit"></i>@T("EditView")</button>
-                        <button class="btn" ng-click="createnewview()">
-                            <i class="icol-add"></i>@T("CreateNewView")</button>
-                    </section>
-
-                </section>*@
-
-
-                @*   <section class="pull-right">
-                    @Html.DropDownList("viewlist", new LinkedList<SelectListItem>(), new { @class = "dropdown pull-right" })
-                </section>
-
-                <div class="navbar-search pull-right">
-                    <input class="search-query" type="text" size="42">
-                    <span class="ui-icon ui-icon-search" title="Find files"></span>
-                    <span class="ui-icon ui-icon-close"></span>
-                </div>*@
-
-                @* @Display(Model.ListViewModel)*@
-                <div class="widget-header" style="height: 10px;">
-                    <span class="title"></span>
-                </div>
-                <div class="widget-content table-container">
-                    <div id="demo-dtable-01_wrapper" class="dataTables_wrapper form-inline" role="grid">
-                        <div class="dt_header">
-                            <div class="row-fluid">
-                                <button class="btn btn-success" ng-click="add()">
-                                    <i class="icon-plus"></i>@T("Add")
-                                </button>
-                                <button class="btn" ng-click="getAll()">
-                                    <i class="icon-refresh"></i>@T("Refresh")
-                                </button>
-                            </div>
-                        </div>
-                        <table id="demo-dtable-01" class="table table-striped dataTable" aria-describedby="demo-dtable-01_info">
-                            <thead>
-                                <tr role="row">
-                                    <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="demo-dtable-01" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Country: activate to sort column descending" style="width: 296px;">Country</th>
-                                    <th class="sorting" role="columnheader" tabindex="0" aria-controls="demo-dtable-01" rowspan="1" colspan="1" aria-label="Death rate per 1,000 people: activate to sort column ascending" style="width: 197px;">Fisrt Name</th>
-                                    <th class="sorting" role="columnheader" tabindex="0" aria-controls="demo-dtable-01" rowspan="1" colspan="1" aria-label="Population aged 0-14 (%): activate to sort column ascending" style="width: 175px;">Last Name</th>
-                                    <th class="sorting" role="columnheader" tabindex="0" aria-controls="demo-dtable-01" rowspan="1" colspan="1" aria-label="Population aged 15-64 (%): activate to sort column ascending" style="width: 183px;">Full Name</th>
-                                    <th class="sorting" role="columnheader" tabindex="0" aria-controls="demo-dtable-01" rowspan="1" colspan="1" aria-label="Population aged 65++ (%): activate to sort column ascending" style="width: 180px;">Tel</th>
-                                </tr>
-                            </thead>
-
-                            <tbody role="alert" aria-live="polite" aria-relevant="all">
-                                <tr class="odd">
-                                    <td class="  sorting_1">Afghanistan</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">yixun</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">023-35644536</td>
-                                </tr>
-                                <tr class="even">
-                                    <td class="  sorting_1">Albania</td>
-                                    <td class=" ">cao</td>
-                                    <td class=" ">xin mao</td>
-                                    <td class=" ">cao xin mao</td>
-                                    <td class=" ">023-35644531</td>
-                                </tr>
-                                <tr class="odd">
-                                    <td class="  sorting_1">Afghanistan</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">yixun</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">023-35644536</td>
-                                </tr>
-                                <tr class="even">
-                                    <td class="  sorting_1">Albania</td>
-                                    <td class=" ">cao</td>
-                                    <td class=" ">xin mao</td>
-                                    <td class=" ">cao xin mao</td>
-                                    <td class=" ">023-35644531</td>
-                                </tr>
-                                <tr class="odd">
-                                    <td class="  sorting_1">Afghanistan</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">yixun</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">023-35644536</td>
-                                </tr>
-                                <tr class="even">
-                                    <td class="  sorting_1">Albania</td>
-                                    <td class=" ">cao</td>
-                                    <td class=" ">xin mao</td>
-                                    <td class=" ">cao xin mao</td>
-                                    <td class=" ">023-35644531</td>
-                                </tr>
-                                <tr class="odd">
-                                    <td class="  sorting_1">Afghanistan</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">yixun</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">023-35644536</td>
-                                </tr>
-                                <tr class="even">
-                                    <td class="  sorting_1">Albania</td>
-                                    <td class=" ">cao</td>
-                                    <td class=" ">xin mao</td>
-                                    <td class=" ">cao xin mao</td>
-                                    <td class=" ">023-35644531</td>
-                                </tr>
-                                <tr class="odd">
-                                    <td class="  sorting_1">Afghanistan</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">yixun</td>
-                                    <td class=" ">liu</td>
-                                    <td class=" ">023-35644536</td>
-                                </tr>
-                                <tr class="even">
-                                    <td class="  sorting_1">Albania</td>
-                                    <td class=" ">cao</td>
-                                    <td class=" ">xin mao</td>
-                                    <td class=" ">cao xin mao</td>
-                                    <td class=" ">023-35644531</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="dt_footer">
-                            <div class="row-fluid">
-                                <div class="span6">
-                                    <div class="dataTables_info" id="demo-dtable-01_info">Showing 1 to 10 of 259 entries</div>
-                                </div>
-                                <div class="span6">
-                                    <div class="dataTables_paginate paging_bootstrap pagination">
-                                        <ul>
-                                            <li class="prev disabled"><a href="#">← Previous</a></li>
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a href="#">4</a></li>
-                                            <li><a href="#">5</a></li>
-                                            <li class="next"><a href="#">Next → </a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                @Display(Model.ListViewModel)
             </section>
 
         </div>
     </section>
 </section>
 
-@*<section id="main-content" ng-controller="CommonCtrl">
-    <div class="row-fluid">
-        <section class="span12 widget">
-            <header class="widget-header">
-                <span class="title">&nbsp;</span>
-            </header>
-            <section class="widget-content table-container dataTables_wrapper">
-                <section class="dt_header">
-                    <section class="btn-group">
-                        <button class="btn" ng-click="add()">
-                            <i class="icol-add"></i>@T("Add")</button>
-                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="edit()">
-                            <i class="icol-page-white-edit"></i>@T("Edit")</button>
-                        <button class="btn" ng-disabled="mySelections.length == 0" ng-click="delete()">
-                            <i class="icol-cross"></i>@T("Delete")</button>
-                        <button class="btn" ng-click="getAll()">
-                            <i class="icol-arrow-refresh"></i>@T("Refresh")</button>
-                    </section>
-
-                    <section class="pull-right">
-
-                        <section class="btn-group">
-
-                            <button class="btn" ng-click="editview">
-                                <i class="icol-page-white-edit"></i>@T("EditView")</button>
-                            <button class="btn" ng-click="createnewview()">
-                                <i class="icol-add"></i>@T("CreateNewView")</button>
-                        </section>
-                    </section>
-
-                    <section class="pull-right">
-                        @Html.DropDownList("viewlist", new LinkedList<SelectListItem>(), new { @class = "dropdown pull-right" })
-                    </section>
-                </section>
-
-                @Display(Model.ListViewModel)
-            </section>
-        </section>
-    </div>
-</section>*@
 
 
 

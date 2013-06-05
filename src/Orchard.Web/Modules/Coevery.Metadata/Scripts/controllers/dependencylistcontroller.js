@@ -3,7 +3,7 @@
     $('.step2').hide();
 
     var fieldColumnDefs = [
-        { field: 'ContentId', displayName: 'Actions', width: 100, cellTemplate: '<button class="btn btn-small"><i class="icon-pencil"></i></button><button class="btn btn-small"><i class="icon-remove"></i></button>' },
+        { field: 'ContentId', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a>Delete</a></div>' },
         { field: 'ControlField', displayName: 'Control Field' },
         { field: 'DependentField', displayName: 'Dependent Field' },
         { field: 'ModifiedBy', displayName: 'Modified By' }

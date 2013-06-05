@@ -12,26 +12,14 @@
     var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
 }
 
-<header id="main-header" class="page-header">
-    <ul class="breadcrumb">
-        <li>
-            <i class="icon-home"></i>Coevery
-                                        <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">Sales</a>
-            <span class="divider">&raquo;</span>
-        </li>
-        <li>
-            <a href="#">@typeDisplayName</a>
-        </li>
-        <li>
-            <a href="#">Detail</a>
-        </li>
-    </ul>
+<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
     <h1>@typeDisplayName Detail <span>@typeDisplayName edit</span></h1>
 </header>
-<section id="main-content">
+<section id="main-content" ng-controller="CommonDetailCtrl">
+     <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+         <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
+         <input type="button" value="Exit" class="btn" ng-click="exit()" />
+    </div>
     <div class="row-fluid">
         <section class="span12 widget">
             <section class="widget-content form-container">
@@ -42,13 +30,9 @@
                     // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
         
                     Output.Write(Model.Layout); 
-                    <section class="form-actions">
-                        <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
-                        <input type="button" value="Exit" class="btn" ng-click="exit()" />
-                    </section>
                 }
             </section>
         </section>
     </div>
 </section>
-@Display(Model); 
+@Display(Model)
