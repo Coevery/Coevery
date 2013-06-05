@@ -4,7 +4,7 @@
 <div class="btn-toolbar" style="border: 0; width: 100%; margin-top: 1px;">
     <div class="btn-group" style="border: 0; width: 100%;">
         <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(44, 163, 222); width: 100%;">
-            <i style="background-position: center;"></i><span>@foreach (var firstLevelMenuItem in Model) {@firstLevelMenuItem.Text break;}</span>
+            <i style="background-position: center;"></i><span id="firstMenu">@foreach (var firstLevelMenuItem in Model) {@firstLevelMenuItem.Text break;}</span>
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
@@ -58,7 +58,7 @@
                  var action = $li[0].title;
                  $("#navigation .menu").css('display', 'none');
                  $("#navigation #" + action).css('display', 'block');
-                 $(".btn-toolbar .btn-group span:first").text(action);
+                 $(".btn-toolbar .btn-group #firstMenu").text(action);
              });
          });
      </script>
