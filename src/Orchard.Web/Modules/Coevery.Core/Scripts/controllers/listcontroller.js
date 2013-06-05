@@ -41,10 +41,10 @@ function CommonCtrl($rootScope,$scope, logger, $state, localize, $resource,$stat
         $state.transitionTo('Create', { Module: moduleName });
     };
 
-    $scope.edit = function () {
-        if ($scope.mySelections.length > 0) {
-            $state.transitionTo('Detail', { Module: moduleName, Id: $scope.mySelections[0].ContentId });
-        }
+    $scope.edit = function (id) {
+        //if ($scope.mySelections.length > 0) {
+            $state.transitionTo('Detail', { Module: moduleName, Id: id });
+        //}
     };
     $scope.createnewview = function () {
         $state.transitionTo('SubCreate', { Module: 'Metadata', SubModule: 'Projection', Id: $stateParams.Module });
