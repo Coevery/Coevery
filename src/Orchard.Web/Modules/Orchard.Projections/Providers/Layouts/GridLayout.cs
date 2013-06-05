@@ -40,7 +40,7 @@ namespace Orchard.Projections.Providers.Layouts {
         }
 
         public dynamic RenderLayout(LayoutContext context, IEnumerable<LayoutComponentResult> layoutComponentResults) {
-            int columns = Convert.ToInt32(context.State.Columns.Value);
+            int columns = Convert.ToInt32(context.State.Columns);
             bool horizontal = Convert.ToString(context.State.Alignment) != "vertical"; 
             string rowClass = context.State.RowClass;
             string gridClass = context.State.GridClass;
