@@ -8,7 +8,7 @@ function UserViewCtrl($rootScope, $scope, logger, $state, localize, $resource,$s
 
     $scope.gridOptions = {
         data: 'myData',
-        showSelectionCheckbox: true,
+        //showSelectionCheckbox: true,
         selectedItems: $scope.mySelections,
         multiSelect: true,
         enableColumnResize: true,

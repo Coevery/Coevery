@@ -2,7 +2,7 @@
     $('.itemsview').hide();
 
     var fieldColumnDefs = [
-        { field: 'ContentId', displayName: 'Actions', width: 100, cellTemplate: '<button class="btn btn-small"><i class="icon-remove"></i></button>' },
+        { field: 'ContentId', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Delete</a></div>' },
         { field: 'Value', displayName: 'Value', enableCellEdit: true },
         { field: 'IsDefault', displayName: 'Is Default', cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text><input type="checkbox" ng-checked="row.entity[col.field]"></span></div>' },
         { field: 'ModifiedBy', displayName: 'Modified By' }

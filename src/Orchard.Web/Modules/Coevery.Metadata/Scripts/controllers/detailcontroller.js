@@ -9,7 +9,7 @@
     //];
 
     var fieldColumnDefs = [
-        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<button class="btn btn-small" ng-click="edit(row.getProperty(col.field))"><i class="icon-pencil"></i></button>' },
+        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a></div>' },
         { field: 'DisplayName', displayName: 'Field Label' },
         { field: 'Name', displayName: 'Field Name' },
         { field: 'Type', displayName: 'Type' },
@@ -39,7 +39,7 @@
     };
     
     var relationshipColumnDefs = [
-      { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<button class="btn btn-small"><i class="icon-pencil"></i></button><button class="btn btn-small"><i class="icon-remove"></i></button>' },
+      { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a>Delete</a></div>' },
       { field: 'Name', displayName: 'Relationship Name' },
       { field: 'PrimaryEntity', displayName: 'Primary Entity' },
       { field: 'RelatedEntity', displayName: 'Related Entity' },
