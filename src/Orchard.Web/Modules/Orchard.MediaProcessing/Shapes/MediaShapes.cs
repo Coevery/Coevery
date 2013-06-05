@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Hosting;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.Environment;
@@ -19,6 +20,7 @@ using Orchard.Tokens;
 using Orchard.Utility.Extensions;
 
 namespace Orchard.MediaProcessing.Shapes {
+    
     public class MediaShapes : IDependency {
         private readonly Work<IStorageProvider> _storageProvider;
         private readonly Work<IImageProcessingFileNameProvider> _fileNameProvider;
@@ -46,7 +48,7 @@ namespace Orchard.MediaProcessing.Shapes {
         public ILogger Logger { get; set; }
 
         [Shape]
-        public void ResizeMediaUrl(dynamic Display, TextWriter Output, ContentItem ContentItem, string Path, int Width, int Height, string Mode, string Alignment, string PadColor) {
+        public void ResizeMediaUrl(dynamic Shape, dynamic Display, TextWriter Output, ContentItem ContentItem, string Path, int Width, int Height, string Mode, string Alignment, string PadColor) {
             var state = new Dictionary<string, string> {
                 {"Width", Width.ToString(CultureInfo.InvariantCulture)},
                 {"Height", Height.ToString(CultureInfo.InvariantCulture)},
@@ -67,38 +69,54 @@ namespace Orchard.MediaProcessing.Shapes {
                 + "_m_" + Convert.ToString(Mode)
                 + "_a_" + Convert.ToString(Alignment) 
                 + "_c_" + Convert.ToString(PadColor);
- 
-            MediaUrl(Display, Output, profile, Path, ContentItem, filter);
+
+            MediaUrl(Shape, Display, Output, profile, Path, ContentItem, filter);
         }
 
         [Shape]
-        public void MediaUrl(dynamic Display, TextWriter Output, string Profile, string Path, ContentItem ContentItem, FilterRecord CustomFilter) {
+        public void MediaUrl(dynamic Shape, dynamic Display, TextWriter Output, string Profile, string Path, ContentItem ContentItem, FilterRecord CustomFilter) {
+            try {
+                Shape.IgnoreShapeTracer = true;
+                var services = new Lazy<IOrchardServices>(() => _services.Value);
+                var storageProvider = new Lazy<IStorageProvider>(() => _storageProvider.Value);
 
-            var services = new Lazy<IOrchardServices>(() => _services.Value);
-            var storageProvider = new Lazy<IStorageProvider>(() => _storageProvider.Value);
+                // try to load the processed filename from cache
+                var filePath = _fileNameProvider.Value.GetFileName(Profile, Path);
+                bool process = false;
 
-            // try to load the processed filename from cache
-            var filePath = _fileNameProvider.Value.GetFileName(Profile, Path);
-            bool process = false;
+                // if the filename is not cached, process it
+                if (string.IsNullOrEmpty(filePath)) {
+                    Logger.Debug("FilePath is null, processing required, profile {0} for image {1}", Profile, Path); 
 
-            // if the filename is not cached, process it
-            if (!string.IsNullOrEmpty(filePath)) {
-                process = true;
-            }
-            
-            // the processd file doesn't exist anymore, process it
-            else if (!storageProvider.Value.FileExists(filePath)) {
                     process = true;
-            }
+                }
+            
+                    // the processd file doesn't exist anymore, process it
+                else if (!storageProvider.Value.FileExists(filePath)) {
+                    Logger.Debug("Processed file no longer exists, processing required, profile {0} for image {1}", Profile, Path); 
 
-            // if the original file is more recent, process it
-            else if (storageProvider.Value.GetFile(Path).GetLastUpdated() > storageProvider.Value.GetFile(filePath).GetLastUpdated()) {
-                process = true;
-            }
-                
-            // todo: regenerate the file if the profile is newer, by deleting the associated filename cache entries.
-            if (process) {
-                try {
+                    process = true;
+                }
+
+                // if the original file is more recent, process it
+                else {
+                    DateTime pathLastUpdated;
+                    if (TryGetImageLastUpdated(Path, out pathLastUpdated)) {
+                        var filePathLastUpdated = storageProvider.Value.GetFile(filePath).GetLastUpdated();
+                            
+                        if (pathLastUpdated > filePathLastUpdated)
+                        {
+                            Logger.Debug("Original file more recent, processing required, profile {0} for image {1}", Profile, Path);
+
+                            process = true;
+                        }
+                    }
+                }
+
+                // todo: regenerate the file if the profile is newer, by deleting the associated filename cache entries.
+                if (process) {
+                    Logger.Debug("Processing profile {0} for image {1}", Profile, Path);
+                    
                     ImageProfilePart profilePart;
 
                     if (CustomFilter == null) {
@@ -112,7 +130,8 @@ namespace Orchard.MediaProcessing.Shapes {
                     }
 
                     using (var image = GetImage(Path)) {
-                        var filterContext = new FilterContext {Media = image, Format = new FileInfo(Path).Extension, FilePath = storageProvider.Value.Combine(Profile, CreateDefaultFileName(Path))};
+                        
+                        var filterContext = new FilterContext { Media = image, FilePath = storageProvider.Value.Combine(Profile, CreateDefaultFileName(Path)) };
 
                         var tokens = new Dictionary<string, object>();
                         // if a content item is provided, use it while tokenizing
@@ -155,46 +174,95 @@ namespace Orchard.MediaProcessing.Shapes {
                         filePath = filterContext.FilePath;
                     }
                 }
-                catch (Exception ex) {
-                    Logger.Error(ex, "An error occured while processing {0} for image {1}", Profile, Path);
-                    return;
-                }
+
+                // generate a timestamped url to force client caches to update if the file has changed
+                var publicUrl = storageProvider.Value.GetPublicUrl(filePath);
+                var timestamp = storageProvider.Value.GetFile(storageProvider.Value.GetLocalPath(filePath)).GetLastUpdated().Ticks;
+                Output.Write(publicUrl + "?v=" + timestamp.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception ex) {
+                Logger.Error(ex, "An error occured while rendering shape {0} for image {1}", Profile, Path);
+            }
+        }
+
+        private enum ImagePathType
+        {
+            StorageProvider,
+            AbsoluteUrl,
+            AppRelative,
+            Invalid
+        }
+
+        private ImagePathType GetImagePathType(string path) {
+            // /OrchardLocal/images/my-image.jpg
+            if (Uri.IsWellFormedUriString(path, UriKind.Relative)) {
+                return ImagePathType.StorageProvider;
             }
 
-            // generate a timestamped url to force client caches to update if the file has changed
-            var publicUrl = storageProvider.Value.GetPublicUrl(filePath);
-            var timestamp = storageProvider.Value.GetFile(storageProvider.Value.GetLocalPath(filePath)).GetLastUpdated().Ticks;
-            Output.Write(publicUrl + "?v=" + timestamp.ToString(CultureInfo.InvariantCulture));
+            // http://blob.storage-provider.net/my-image.jpg
+            if (Uri.IsWellFormedUriString(path, UriKind.Absolute)) {
+                return ImagePathType.AbsoluteUrl;
+            }
+
+            // ~/Media/Default/images/my-image.jpg
+            if (VirtualPathUtility.IsAppRelative(path)) {
+                return ImagePathType.AppRelative;
+            }
+
+            return ImagePathType.Invalid;
         }
 
         // TODO: Update this method once the storage provider has been updated
         private Stream GetImage(string path) {
             var storageProvider = new Lazy<IStorageProvider>(() => _storageProvider.Value);
             var services = new Lazy<IOrchardServices>(() => _services.Value);
+            var webClient = new Lazy<WebClient>(() => new WebClient());
 
             var request = services.Value.WorkContext.HttpContext.Request;
 
-            // /OrchardLocal/images/my-image.jpg
-            if (Uri.IsWellFormedUriString(path, UriKind.Relative)) {
-                path = storageProvider.Value.GetLocalPath(path);
+            switch (GetImagePathType(path)) {
+                case ImagePathType.StorageProvider:
+                    path = storageProvider.Value.GetLocalPath(path);
 
-                // images/my-image.jpg
-                var file = storageProvider.Value.GetFile(path);
-                return file.OpenRead();
-            }
+                    // images/my-image.jpg
+                    var file = storageProvider.Value.GetFile(path);
+                    return file.OpenRead();
 
-            // http://blob.storage-provider.net/my-image.jpg
-            if (Uri.IsWellFormedUriString(path, UriKind.Absolute)) {
-                var webClient = new WebClient();
-                return webClient.OpenRead(new Uri(path));
-            }
-            // ~/Media/Default/images/my-image.jpg
-            if (VirtualPathUtility.IsAppRelative(path)) {
-                var webClient = new WebClient();
-                return webClient.OpenRead(new Uri(request.Url, VirtualPathUtility.ToAbsolute(path)));
-            }
+                case ImagePathType.AbsoluteUrl:
+                    return webClient.Value.OpenRead(new Uri(path));
 
-            throw new ArgumentException("invalid path");
+                case ImagePathType.AppRelative:
+                    return webClient.Value.OpenRead(new Uri(request.Url, VirtualPathUtility.ToAbsolute(path)));
+
+                default:
+                    throw new ArgumentException("invalid path");
+            }
+        }
+
+        private bool TryGetImageLastUpdated(string path, out DateTime lastUpdated) {
+            var imagePathType = GetImagePathType(path);
+            switch (imagePathType)
+            {
+                case ImagePathType.StorageProvider:
+                    path = _storageProvider.Value.GetLocalPath(path);
+
+                    var file = _storageProvider.Value.GetFile(path);
+                    lastUpdated = file.GetLastUpdated();
+
+                    return true;
+
+                case ImagePathType.AppRelative:
+                    var serverPath = HostingEnvironment.MapPath(path);
+                    lastUpdated = File.GetLastWriteTime(serverPath);
+
+                    return true;
+
+                default:
+                    Logger.Warning("Cannot get last updated time for {0}, {1}", imagePathType, path);
+
+                    lastUpdated = DateTime.MinValue;
+                    return false;
+            }
         }
 
         private static string CreateDefaultFileName(string path) {

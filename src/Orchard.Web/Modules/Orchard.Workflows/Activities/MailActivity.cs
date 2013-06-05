@@ -13,13 +13,13 @@ using Orchard.Workflows.Services;
 
 namespace Orchard.Workflows.Activities {
 
-    public class MailActions : Task {
+    public class MailActivity : Task {
         private readonly IMessageManager _messageManager;
         private readonly IOrchardServices _orchardServices;
         private readonly IMembershipService _membershipService;
         public const string MessageType = "ActionEmail";
 
-        public MailActions(
+        public MailActivity(
             IMessageManager messageManager,
             IOrchardServices orchardServices,
             IMembershipService membershipService) {
@@ -59,7 +59,8 @@ namespace Orchard.Workflows.Activities {
 
             var properties = new Dictionary<string, string> {
                 {"Body", activityContext.GetState<string>("Body")}, 
-                {"Subject", activityContext.GetState<string>("Subject")}
+                {"Subject", activityContext.GetState<string>("Subject")},
+                {"RecipientOther",activityContext.GetState<string>("RecipientOther")}
             }; 
 
             if (recipient == "owner") {
@@ -91,8 +92,7 @@ namespace Orchard.Workflows.Activities {
                 }
             }
             else if (recipient == "other") {
-                var email = properties["RecipientOther"];
-                _messageManager.Send(SplitEmail(email), MessageType, "email", properties);
+                _messageManager.Send(SplitEmail(activityContext.GetState<string>("RecipientOther")), MessageType, "email", properties);
             }
 
             yield return T("Sent");
@@ -120,7 +120,7 @@ namespace Orchard.Workflows.Activities {
             }
 
             switch (context.Type) {
-                case MailActions.MessageType:
+                case MailActivity.MessageType:
                     context.MailMessage.Subject = context.Properties["Subject"];
                     context.MailMessage.Body = context.Properties["Body"];
                     FormatEmailBody(context);

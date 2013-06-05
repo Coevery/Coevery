@@ -33,6 +33,8 @@ namespace Orchard.ContentManagement {
         private readonly Lazy<IContentDisplay> _contentDisplay;
         private readonly Lazy<ISessionLocator> _sessionLocator; 
         private readonly Lazy<IEnumerable<IContentHandler>> _handlers;
+        private readonly Lazy<IEnumerable<IIdentityResolverSelector>> _identityResolverSelectors;
+
         private const string Published = "Published";
         private const string Draft = "Draft";
 
@@ -46,7 +48,8 @@ namespace Orchard.ContentManagement {
             Func<IContentManagerSession> contentManagerSession,
             Lazy<IContentDisplay> contentDisplay,
             Lazy<ISessionLocator> sessionLocator,
-            Lazy<IEnumerable<IContentHandler>> handlers) {
+            Lazy<IEnumerable<IContentHandler>> handlers,
+            Lazy<IEnumerable<IIdentityResolverSelector>> identityResolverSelectors) {
             _context = context;
             _contentTypeRepository = contentTypeRepository;
             _contentItemRepository = contentItemRepository;
@@ -54,6 +57,7 @@ namespace Orchard.ContentManagement {
             _contentDefinitionManager = contentDefinitionManager;
             _cacheManager = cacheManager;
             _contentManagerSession = contentManagerSession;
+            _identityResolverSelectors = identityResolverSelectors;
             _handlers = handlers;
             _contentDisplay = contentDisplay;
             _sessionLocator = sessionLocator;
@@ -285,9 +289,10 @@ namespace Orchard.ContentManagement {
                     return itemsById.TryGetValue(id, out values) ? values : Enumerable.Empty<ContentItem>();
                 }).AsPart<T>().ToArray();
         }
-        
-        public IEnumerable<T> GetManyByVersionId<T>(IEnumerable<int> versionRecordIds, QueryHints hints) where T : class, IContent {
-            var contentItemVersionRecords = GetManyImplementation(hints, (contentItemCriteria, contentItemVersionCriteria) => 
+
+
+        public IEnumerable<ContentItem> GetManyByVersionId(IEnumerable<int> versionRecordIds, QueryHints hints) {
+            var contentItemVersionRecords = GetManyImplementation(hints, (contentItemCriteria, contentItemVersionCriteria) =>
                 contentItemVersionCriteria.Add(Restrictions.In("Id", versionRecordIds.ToArray())));
 
             var itemsById = contentItemVersionRecords
@@ -298,7 +303,11 @@ namespace Orchard.ContentManagement {
             return versionRecordIds.SelectMany(id => {
                 IGrouping<int, ContentItem> values;
                 return itemsById.TryGetValue(id, out values) ? values : Enumerable.Empty<ContentItem>();
-            }).AsPart<T>().ToArray();
+            }).ToArray();
+        }
+
+        public IEnumerable<T> GetManyByVersionId<T>(IEnumerable<int> versionRecordIds, QueryHints hints) where T : class, IContent {
+            return GetManyByVersionId(versionRecordIds, hints).AsPart<T>();
         }
 
         private IEnumerable<ContentItemVersionRecord> GetManyImplementation(QueryHints hints, Action<ICriteria, ICriteria> predicate) {
@@ -514,6 +523,42 @@ namespace Orchard.ContentManagement {
             }
         }
 
+        /// <summary>
+        /// Lookup for a content item based on a <see cref="ContentIdentity"/>. If multiple 
+        /// resolvers can give a result, the one with the highest priority is used. As soon as 
+        /// only one content item is returned from resolvers, it is returned as the result.
+        /// </summary>
+        /// <param name="contentIdentity">The <see cref="ContentIdentity"/> instance to lookup</param>
+        /// <returns>The <see cref="ContentItem"/> instance represented by the identity object.</returns>
+        public ContentItem ResolveIdentity(ContentIdentity contentIdentity) {
+            var resolvers = _identityResolverSelectors.Value
+                .Select(x => x.GetResolver(contentIdentity))
+                .Where(x => x != null)
+                .OrderByDescending(x => x.Priority);
+
+            if (!resolvers.Any())
+                return null;
+
+            IEnumerable<ContentItem> contentItems = null;
+            foreach (var resolver in resolvers) {
+                var resolved = resolver.Resolve(contentIdentity).ToArray();
+                
+                // first pass
+                if (contentItems == null) {
+                    contentItems = resolved;
+                }
+                else { // subsquent passes means we need to intersect 
+                    contentItems = contentItems.Intersect(resolved).ToArray();
+                }
+
+                if (contentItems.Count() == 1) {
+                    return contentItems.First();
+                }
+            }
+
+            return contentItems.FirstOrDefault();
+        }
+        
         public ContentItemMetadata GetItemMetadata(IContent content) {
             var context = new GetContentItemMetadataContext {
                 ContentItem = content.ContentItem,
@@ -591,9 +636,14 @@ namespace Orchard.ContentManagement {
             }
 
             var identity = elementId.Value;
+
+            if (String.IsNullOrWhiteSpace(identity)) {
+                return;
+            }
+
             var status = element.Attribute("Status");
 
-            var item = importContentSession.Get(identity, XmlConvert.DecodeName(element.Name.LocalName));
+            var item = importContentSession.Get(identity, VersionOptions.Latest, XmlConvert.DecodeName(element.Name.LocalName));
             if (item == null) {
                 item = New(XmlConvert.DecodeName(element.Name.LocalName));
                 if (status != null && status.Value == "Draft") {
@@ -625,7 +675,7 @@ namespace Orchard.ContentManagement {
                 contentHandler.Imported(context);
             }
 
-            var savedItem = Get(item.Id, VersionOptions.DraftRequired);
+            var savedItem = Get(item.Id, VersionOptions.Latest);
 
             // the item has been pre-created in the first pass of the import, create it in db
             if(savedItem == null) {
@@ -651,6 +701,10 @@ namespace Orchard.ContentManagement {
 
             foreach (var contentHandler in Handlers) {
                 contentHandler.Exported(context);
+            }
+
+            if (context.Exclude) {
+                return null;
             }
 
             context.Data.SetAttributeValue("Id", GetItemMetadata(contentItem).Identity.ToString());

@@ -73,9 +73,9 @@ namespace Orchard.Tests.Modules.Users.Services {
             builder.RegisterType<MembershipService>().As<IMembershipService>();
             builder.RegisterType<DefaultContentQuery>().As<IContentQuery>();
             builder.RegisterType<DefaultContentManager>().As<IContentManager>();
+            builder.RegisterType<StubCacheManager>().As<ICacheManager>();
             builder.RegisterType(typeof(SettingsFormatter)).As<ISettingsFormatter>();
             builder.RegisterType<ContentDefinitionManager>().As<IContentDefinitionManager>();
-            builder.RegisterType<StubCacheManager>().As<ICacheManager>();
             builder.RegisterType<DefaultContentManagerSession>().As<IContentManagerSession>();
             builder.RegisterType<UserPartHandler>().As<IContentHandler>();
             builder.RegisterType<StubWorkContextAccessor>().As<IWorkContextAccessor>();

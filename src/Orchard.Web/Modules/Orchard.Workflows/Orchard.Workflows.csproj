@@ -55,6 +55,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\aspnetwebapi\System.Net.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,6 +75,8 @@
     <Content Include="Scripts\jquery.jsPlumb-1.3.16-all-min.js" />
     <Content Include="Scripts\orchard-workflows-serialize.js" />
     <Content Include="Scripts\orchard-workflows.js" />
+    <Content Include="Styles\images\menu.workflows.png" />
+    <Content Include="Styles\menu.workflows-admin.css" />
     <Content Include="Styles\workflows-activity.css" />
     <Content Include="Styles\images\cog.png" />
     <Content Include="Styles\workflows-activity-delete-publish.css" />
@@ -116,6 +122,10 @@
       <Project>{d10ad48f-407d-4db5-a328-173ec7cb010f}</Project>
       <Name>Orchard.Roles</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Scripting.CSharp\Orchard.Scripting.CSharp.csproj">
+      <Project>{5d13ef34-8b39-4ec5-847f-e12892acf841}</Project>
+      <Name>Orchard.Scripting.CSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
       <Project>{6f759635-13d7-4e94-bcc9-80445d63f117}</Project>
       <Name>Orchard.Tokens</Name>
@@ -126,12 +136,20 @@
     <Compile Include="Activities\BranchActivity.cs" />
     <Compile Include="Activities\AssignRoleActivity.cs" />
     <Compile Include="Activities\CloseCommentsActivity.cs" />
+    <Compile Include="Activities\TriggerActivity.cs" />
+    <Compile Include="Activities\SignalActivity.cs" />
     <Compile Include="Activities\MergeBranchActivity.cs" />
     <Compile Include="Activities\DeleteActivity.cs" />
     <Compile Include="Activities\ExclusiveBranchActivity.cs" />
     <Compile Include="Activities\IsInRoleActivity.cs" />
     <Compile Include="Activities\MailActivity.cs" />
+    <Compile Include="Activities\RedirectActivity.cs" />
     <Compile Include="Activities\TimerActivity.cs" />
+    <Compile Include="Activities\WebRequestActivity.cs" />
+    <Compile Include="Controllers\SignalController.cs" />
+    <Compile Include="Forms\DecisionForms.cs" />
+    <Compile Include="Forms\SignalForms.cs" />
+    <Compile Include="Forms\RedirectActionForm.cs" />
     <Compile Include="Forms\TimerForms.cs" />
     <Compile Include="Forms\BranchForms.cs" />
     <Compile Include="Forms\MailForms.cs" />
@@ -143,6 +161,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Drivers\UserTaskDriver.cs" />
     <Compile Include="Drivers\WorkflowDriver.cs" />
+    <Compile Include="Forms\WebRequestForm.cs" />
     <Compile Include="Handlers\ContentHandler.cs" />
     <Compile Include="Handlers\WorkflowHandler.cs" />
     <Compile Include="Models\AwaitingActivityRecord.cs" />
@@ -159,6 +178,8 @@
     <Compile Include="Forms\UserTaskForms.cs" />
     <Compile Include="Forms\NotificationActivityForms.cs" />
     <Compile Include="ResourceManifest.cs" />
+    <Compile Include="Services\GenericEventService.cs" />
+    <Compile Include="Services\ISignalService.cs" />
     <Compile Include="Services\Task.cs" />
     <Compile Include="Services\Event.cs" />
     <Compile Include="Services\IActivity.cs" />
@@ -166,6 +187,7 @@
     <Compile Include="Services\IActivitiesManager.cs" />
     <Compile Include="Services\IWorkflowManager.cs" />
     <Compile Include="Services\WorkflowManager.cs" />
+    <Compile Include="Tokens\SignalTokens.cs" />
     <Compile Include="ViewModels\AdminEditViewModel.cs" />
     <Compile Include="ViewModels\AdminIndexViewModel.cs" />
     <Compile Include="ViewModels\WorkflowDefinitionViewModel.cs" />
@@ -232,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Activity-Publish.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Activity-Redirect.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
