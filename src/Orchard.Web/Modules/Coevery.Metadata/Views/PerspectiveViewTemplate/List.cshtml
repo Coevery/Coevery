@@ -22,12 +22,17 @@
 <section ng-controller="PerspectiveListCtrl">
     <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
         <button type="button" class="btn btn-success" ng-click="addPerspective()">Add Perspective</button>
-        <button type="button" class="btn" ng-click="addPerspective()">Edit</button>
-        <button type="button" class="btn">Remove</button>
-        <button type="button" class="btn" ng-click="exit()">Back</button>
+        <button class="btn" ng-click="getAllMetadata()">
+            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+        </button>
     </div>
     <section id="main-content">
-        <div id="manage-perspective" class="row-fluid">
+         <div class="row-fluid">
+            <section class="span12">
+                <section class="gridStyle" ng-grid="gridOptions"></section>
+            </section>
+        </div>
+        @*<div id="manage-perspective" class="row-fluid">
             <div class="tabbable tabs-left">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#sales" data-toggle="tab">Sales</a></li>
@@ -139,10 +144,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
     </section>
 </section>
-<script>
+@*<script>
     $(document).ready(
         function () {
             $('.sortable-list ul').sortable({
@@ -151,4 +156,4 @@
             });
         }
     );
-</script>
+</script>*@

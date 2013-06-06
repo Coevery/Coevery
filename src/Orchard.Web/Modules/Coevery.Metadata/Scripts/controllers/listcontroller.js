@@ -5,7 +5,7 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
     var metadata = MetadataContext($resource);
     var metadataGenerator = GenerateContext($resource);
     var metadataColumnDefs = [
-        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
+        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
         { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName'), cellTemplate: cellTemplateString },
         { field: 'IsDeployed', displayName: localize.getLocalizedString('IsDeployed') }];
 
