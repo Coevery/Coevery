@@ -1,10 +1,10 @@
 ﻿@using System.Web.Routing;
 @using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
-<div class="btn-toolbar" style="border: 0; width: 100%; margin-top: 1px;">
+<div class="btn-toolbar" id="FirstMenu"  style="border: 0; width: 100%; margin-top: 1px;">
     <div class="btn-group" style="border: 0; width: 100%;">
         <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(44, 163, 222); width: 100%;">
-            <i style="background-position: center;"></i><span id="firstMenu">@foreach (var firstLevelMenuItem in Model) {@firstLevelMenuItem.Text break;}</span>
+            <i style="background-position: center;"></i><span id="FirstMenuText">@foreach (var firstLevelMenuItem in Model) {@firstLevelMenuItem.Text break;}</span>
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
@@ -53,12 +53,12 @@
  {
      <script type="text/javascript">
          $(document).ready(function() {
-             $(".btn-toolbar .dropdown-menu>li").click(function() {
+             $("#FirstMenu .dropdown-menu>li").click(function () {
                  var $li = $(this);
                  var action = $li[0].title;
                  $("#navigation .menu").css('display', 'none');
                  $("#navigation #" + action).css('display', 'block');
-                 $(".btn-toolbar .btn-group #firstMenu").text(action);
+                 $("#FirstMenu .btn-group #FirstMenuText").text(action);
              });
          });
      </script>
