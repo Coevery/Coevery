@@ -87,8 +87,9 @@
             <div class="container">
                 <div class="brand-wrap pull-left">
                     <div class="brand-img">
-                        <a class="brand" href="#">
+                        <a class="brand" href="http://www.novasoftware.cn/" style="font-size: 30px;">
                             <img src="@Href("~/Themes/Mooncake/Styles/coevery/images/coevery.png")" alt="" >
+                            Coevery
                         </a>
                     </div>
                 </div>
@@ -162,17 +163,17 @@
                         <div id="user-info" class="clearfix" style="margin-top: 2px;">
                             <div class="btn-toolbar">
                                 <div class="btn-group">
-                                    <div class="btn dropdown-toggle" data-toggle="dropdown" style="border:none;color: #ffffff; background: rgb(48, 48, 48);">
+                                    <div class="btn dropdown-toggle" data-toggle="dropdown" style="border: none; color: #ffffff; background: rgb(48, 48, 48);">
                                         <i style="background-position: center;"></i><span>liuleibao</span>
                                         <span class="caret" style="border-top: 4px solid #ffffff;"></span>
                                     </div>
                                     <ul class="dropdown-menu">
-                                    <li title="" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
-                                         <a href="@Href("~/CoeveryAdmin")">
-                                        <i style="background-position: center;"></i>
-                                         后台
-                                        </a>
-                                    </li>
+                                        <li title="" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
+                                            <a href="@Href("~/CoeveryAdmin")">
+                                                <i style="background-position: center;"></i>
+                                                后台
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="avatar">
@@ -194,6 +195,38 @@
 <div id="content-wrap">
     <div id="content" class="sidebar-minimized toggled">
         <div id="content-outer">
+            <div class="btn-toolbar" id="FirstMenu" style="border: 0; width: 100%; margin-top:10px;">
+                <div class="btn-group" style="border: 0; float: left; margin-top: 15px;">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(252, 252, 252);">
+                        <i style="background-position: center;"></i><span id="FirstMenuText" style="font-size: 25px;">Sales</span>
+                        <span class="caret"></span>
+                    </button>
+
+                    <ul class="dropdown-menu">
+
+                        <li title="Sales" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
+                            <i style="background-position: center;"></i>
+                            Sales
+                        </li>
+                        <li title="Home" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
+                            <i style="background-position: center;"></i>
+                            Home
+                        </li>
+
+                    </ul>
+                </div>
+                <div style="float: left;margin-top: 10px;">
+                    <header class="main-header_BG main-header" style="background-image: none; margin-bottom: 0; ">
+                        <h1>Lead <span>Display all Leads</span></h1>
+                    </header>
+                </div>
+
+
+                <div style="padding-top: 70px;">
+                    <hr style="height: 1px; margin: 0px; background-color: rgb(204,204,204);" />
+                </div>
+
+            </div>
             <div id="content-inner">
                 <aside id="sidebar" style="overflow-x: visible; overflow-y: visible;">
                     <nav id="navigation" class="collapse">
@@ -212,9 +245,9 @@
     </div>
 </div>
 <footer id="footer">
-    <div class="footer-left">MoonCake - Responsive Admin Template</div>
+    <div class="footer-left">novasoftware - <a href="http://www.novasoftware.cn/">http://www.novasoftware.cn/</a></div>
     <div class="footer-right">
-        <p>Copyright 2012. All Rights Reserved.</p>
+        <p>Copyright 2013. All Rights Reserved.</p>
     </div>
 </footer>
 @tag.EndElement

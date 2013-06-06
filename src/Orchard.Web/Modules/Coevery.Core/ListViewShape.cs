@@ -75,7 +75,7 @@ namespace Coevery.Core
             Output.Write("var columnDefs = [");
 
             int index = 0;
-            Output.Write("{ field: 'ContentId', displayName: 'Actions',width: 150,cellTemplate: '<div style=\"margin-top: 5px;margin-left: 5px;\"><span class=\"span2\"><a ng-click=\"edit(row.getProperty(col.field))\">Eidt</a></span><span class=\"span2\"></span><span class=\"span2\"><a ng-click=\"delete(row.getProperty(col.field))\">Delete</a></span></div>' },");
+            Output.Write("{ field: 'ContentId', displayName: 'Actions',width: 150,cellTemplate: '<div style=\"margin-top: 5px;margin-left: 5px;\"><span class=\"span2\"><a ng-click=\"edit(row.getProperty(col.field))\">Eidt</a></span><span class=\"span2\"></span><span class=\"span2\"><a ng-click=\"delete(row.getProperty(col.field))\">Remove</a></span></div>' },");
             Output.Write("{ field: 'ContentId', displayName: localize.getLocalizedString('Id') },");
             foreach (var col in columns)
             {

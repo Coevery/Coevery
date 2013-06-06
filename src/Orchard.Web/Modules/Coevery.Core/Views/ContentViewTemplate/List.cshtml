@@ -14,12 +14,9 @@
 
 @Display.FootScripts()
 
-<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
-    <h1 id="main-heading" style="background-image: none;">@Model.DisplayName <span>Display all @Model.DisplayName</span></h1>
-</header>
 
 <section ng-controller="CommonCtrl">
-    <section id="main-content">
+    <section id="main-content" style="margin-top: 10px;">
         <div style="float: left;">
             <button class="btn btn-success" ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;@T("Add")
@@ -91,9 +88,9 @@
                 <div class="accordion-heading">
                     <div class="accordion-toggle" style="cursor: auto;">
                         <a data-toggle="collapse"
-                            onclick="if($('#collapseBtn').hasClass('icon-minus')){$('#collapseBtn').addClass('icon-plus');
+                           onclick="if($('#collapseBtn').hasClass('icon-minus')){$('#collapseBtn').addClass('icon-plus');
      $('#collapseBtn').removeClass('icon-minus');} else{$('#collapseBtn').removeClass('icon-plus');$('#collapseBtn').addClass('icon-minus'); }"
-                            data-parent="#demo-accordion-01" href="#collapse-01">
+                           data-parent="#demo-accordion-01" href="#collapse-01">
                             <span class="btn"><i id="collapseBtn" class="icon-plus"></i></span>
                         </a>
                         <span>过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
