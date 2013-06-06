@@ -131,7 +131,7 @@
     <Content Include="Config\log4net.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Config\Sample.HostComponents.config">
+    <Content Include="Config\HostComponents.config">
       <SubType>Designer</SubType>
     </Content>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -154,7 +154,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Tools\Orchard\Orchard.csproj">
       <Project>{33B1BC8D-E292-4972-A363-22056B207156}</Project>
-      <Name>Orchard %28Tools\Orchard%29</Name>
+      <Name>Orchard</Name>
     </ProjectReference>
     <ProjectReference Include="Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
@@ -162,7 +162,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Sample.Host.config" />
+    <Content Include="Config\Host.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -189,7 +189,7 @@
       <Orchard-Web-Bins Include="bin\*" />
       <SqlCeBinariesx86 Include="..\..\lib\sqlce\x86\**\*" />
       <SqlCeBinariesx64 Include="..\..\lib\sqlce\amd64\**\*" />
-      <_CustomFiles Include="Media\**\*;App_Data\**\*;Modules\**\*;Themes\**\*;Core\**\*;Config\**\*" Exclude="**\obj\**;**\bin\*.xml;**\.hgignore;**\.hgtags;**\.hg\**;@(Orchard-Web-Bins -> '**\%(Filename)%(Extension)');**\*.csproj.user;App_Data\Dependencies\*;App_Data\Logs\*" />
+      <_CustomFiles Include="Media\**\*;App_Data\**\*;Modules\**\*;Themes\**\*;Core\**\*;Config\**\*" Exclude="**\obj\**;**\bin\*.xml;**\*.cs;**\*.csproj;Modules\**\Tests\**;App_Data\**\mappings.bin;App_Data\**\cache.dat;App_Data\**\hrestart.txt;**\.hgignore;**\.hgtags;**\.hg\**;@(Orchard-Web-Bins -> '**\%(Filename)%(Extension)');**\*.csproj.user;App_Data\Dependencies\*;App_Data\RecipeQueue\*;App_Data\Logs\*" />
       <FilesForPackagingFromProject Include="%(_CustomFiles.Identity)">
         <DestinationRelativePath>%(RelativeDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
@@ -231,9 +231,8 @@
     <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/logger[@name='Orchard.Localization']" />
     <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/logger[@name='Orchard']" />
     <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/root/appender-ref[@ref='debug-file']" />
-    <!-- disable dynamic compilation loader -->
-    <Copy SourceFiles="$(PackageTmp)\Config\Sample.HostComponents.config" DestinationFiles="$(PackageTmp)\Config\HostComponents.config" />
-    <XmlUpdate XmlFileName="$(PackageTmp)\Config\HostComponents.config" XPath="/HostComponents/Components/Component[@Type='Orchard.Environment.Extensions.Loaders.DynamicExtensionLoader']/Properties/Property/@Value" Value="true" />
+    <!-- disable all file monitoring but ExtensionMonitoringCorrdinator to detect new modules/themes -->
+    <XmlUpdate XmlFileName="$(PackageTmp)\Config\HostComponents.config" XPath="/HostComponents/Components/Component/Properties/Property[@Name='DisableMonitoring']/@Value" Value="true" />
   </Target>
   <Target Name="AfterBuild" DependsOnTargets="AfterBuildCompiler">
     <PropertyGroup>

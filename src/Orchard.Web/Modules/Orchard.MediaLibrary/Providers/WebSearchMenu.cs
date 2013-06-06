@@ -13,7 +13,7 @@ namespace Orchard.MediaLibrary.Providers {
 
         public void GetNavigation(NavigationBuilder builder) {
             builder.AddImageSet("websearch")
-                .Add(T("Web Search"), "5", 
+                .Add(T("Web Search"), "7", 
                     menu => menu.Action("Index", "WebSearch", new { area = "Orchard.MediaLibrary" })
                         .Permission(Permissions.ManageMediaContent));
         }

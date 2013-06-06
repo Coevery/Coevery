@@ -5,19 +5,19 @@ namespace Orchard.jQuery {
         public void BuildManifests(ResourceManifestBuilder builder) {
             var manifest = builder.Add();
             manifest.DefineScript("jQuery").SetUrl("jquery-1.9.1.min.js", "jquery-1.9.1.js").SetVersion("1.9.1")
-                .SetCdn("//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js", "//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js", true);
+                .SetCdn("//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js", "//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.js", true);
 
             manifest.DefineScript("jQueryMigrate").SetUrl("jquery-migrate-1.1.1.min.js", "jquery-migrate-1.1.1.js").SetVersion("1.1.1")
-                .SetCdn("//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.1.1.min.js", "//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.1.1.min.js", true);
+                .SetCdn("//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.1.1.min.js", "//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.1.1.js", true);
 
             // Full jQuery UI bundle
             manifest.DefineScript("jQueryUI").SetUrl("jquery-ui.min.js", "jquery-ui.js").SetVersion("1.9.2").SetDependencies("jQuery")
-                .SetCdn("//ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.js", "//ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.js", true);
+                .SetCdn("//ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.js", true);
 
             // UI Core
             manifest.DefineScript("jQueryUI_Core").SetUrl("jquery.ui.core.min.js", "jquery.ui.core.js").SetVersion("1.9.2").SetDependencies("jQuery");
             manifest.DefineScript("jQueryUI_Widget").SetUrl("jquery.ui.widget.min.js", "jquery.ui.widget.js").SetVersion("1.9.2").SetDependencies("jQuery");
-            manifest.DefineScript("jQueryUI_Mouse").SetUrl("jquery.ui.mouse.min.js", "jquery.ui.mouse.js").SetVersion("1.9.2").SetDependencies("jQuery");
+            manifest.DefineScript("jQueryUI_Mouse").SetUrl("jquery.ui.mouse.min.js", "jquery.ui.mouse.js").SetVersion("1.9.2").SetDependencies("jQuery", "jQueryUI_Widget");
             manifest.DefineScript("jQueryUI_Position").SetUrl("jquery.ui.position.min.js", "jquery.ui.position.js").SetVersion("1.9.2").SetDependencies("jQuery");
 
             // Interactions
@@ -31,7 +31,7 @@ namespace Orchard.jQuery {
             manifest.DefineScript("jQueryUI_Accordion").SetUrl("jquery.ui.accordion.min.js", "jquery.ui.accordion.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core", "jQueryUI_Widget");
             manifest.DefineScript("jQueryUI_Autocomplete").SetUrl("jquery.ui.autocomplete.min.js", "jquery.ui.autocomplete.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core", "jQueryUI_Widget", "jQueryUI_Position", "jQueryUI_Menu");
             manifest.DefineScript("jQueryUI_Button").SetUrl("jquery.ui.button.min.js", "jquery.ui.button.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core", "jQueryUI_Widget");
-            manifest.DefineScript("jQueryUI_Dialog").SetUrl("jquery.ui.dialog.min.js", "jquery.ui.dialog.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core", "jQueryUI_Widget", "jQueryUI_Position", "jQueryUI_Mouse", "jQueryUI_Draggable", "jQueryUI_Resizable");
+            manifest.DefineScript("jQueryUI_Dialog").SetUrl("jquery.ui.dialog.min.js", "jquery.ui.dialog.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core", "jQueryUI_Widget", "jQueryUI_Position", "jQueryUI_Mouse", "jQueryUI_Draggable", "jQueryUI_Resizable", "jQueryUI_Button");
             manifest.DefineScript("jQueryUI_Slider").SetUrl("jquery.ui.slider.min.js", "jquery.ui.slider.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core", "jQueryUI_Widget", "jQueryUI_Mouse");
             manifest.DefineScript("jQueryUI_Tabs").SetUrl("jquery.ui.tabs.min.js", "jquery.ui.tabs.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core", "jQueryUI_Widget");
             manifest.DefineScript("jQueryUI_DatePicker").SetUrl("jquery.ui.datepicker.min.js", "jquery.ui.datepicker.js").SetVersion("1.9.2").SetDependencies("jQueryUI_Core");

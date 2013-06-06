@@ -46,8 +46,10 @@ namespace Coevery.AdminNavigation {
                 }
             }
 
+            var request = _workContextAccessor.GetContext().HttpContext.Request;
+
             // Set the currently selected path
-            Stack<MenuItem> selectedPath = NavigationHelper.SetSelectedPath(menuItems, routeData);
+            Stack<MenuItem> selectedPath = NavigationHelper.SetSelectedPath(menuItems, request, routeData);
 
             // Populate main nav
             dynamic menuShape = _shapeFactory.Menu().MenuName(menuName);
