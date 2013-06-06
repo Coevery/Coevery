@@ -11,7 +11,7 @@
 </header>
 
 <section ng-controller="DependencyListCtrl">
-    <section class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+    <section class="page-actions">
         <div class="step0">
             <button class="btn btn-success" ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;New
@@ -97,3 +97,9 @@
         </div>
     </section>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

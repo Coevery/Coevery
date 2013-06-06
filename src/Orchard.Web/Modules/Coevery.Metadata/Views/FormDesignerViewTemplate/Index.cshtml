@@ -2,6 +2,7 @@
 @{
     Script.Require("jQuery");
     Script.Require("jQueryUI");
+    Script.Require("pnotify");
     Script.Require("angular");
     Script.Require("angularResource");
 
@@ -9,8 +10,11 @@
     //Script.Require("FormDesignerLinq");
     //Script.Require("FormDesignerContextMenu");
     Script.Require("FormDesignerMain");
+    Script.Require("Logger");
 
+    Style.Require("pnotify");
     Style.Include("formdesigner/css/formdesigner.css");
+    Style.Require("Module");
     Style.Require("Affix");
 }
 @*@Display.FootScripts()
@@ -28,9 +32,10 @@
 </header>*@
 
 <section>
-    <div data-spy="affix" data-offset-top="71" class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
-        <button type="button" class="btn btn-primary">Save</button>
-        <button type="button" class="btn" ng-click="exit()">Cancel</button>
+    <div data-spy="affix" data-offset-top="71" class="page-actions">
+        <button fd-save-layout-button class="btn btn-primary">Save Layout</button>        
+        <button class="btn">Cancel Edit</button>  
+        <button class="btn">Reset Layout</button>   
     </div>
     <section id="main-content">
         <div class="row-fluid">

@@ -929,7 +929,7 @@
                 }
             };
         })
-        .directive('fdSaveLayoutButton', function($resource, $location) {
+        .directive('fdSaveLayoutButton', function ($resource, $location, logger) {
             return {
                 //template: '<button class="btn">Save</button>',
                 //replace: true,
@@ -968,7 +968,7 @@
                         });
 
                         $.post('/OrchardLocal/api/metadata/layout/' + moduleId, { id: moduleId, layout: layoutString }, function() {
-                            console.log('success');
+                            logger.success('Save success');
                         });
                     });
                 }

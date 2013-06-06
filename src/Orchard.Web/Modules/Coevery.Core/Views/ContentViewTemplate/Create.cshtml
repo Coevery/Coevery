@@ -13,28 +13,36 @@
     var typeName = contentItem.TypeDefinition.Name;
 }
 
-<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1>@typeDisplayName Detail <span>@typeDisplayName add</span></h1>
 </header>
-<section id="main-content" ng-controller="CommonDetailCtrl">
-     <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
-         <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
-         <input type="button" value="Exit" class="btn" ng-click="exit()" />
-    </div>
-    <div class="row-fluid">
-        <section class="span12 widget">
-            <section class="widget-content form-container">
-                @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+<section ng-controller="CommonDetailCtrl">
+    <section data-spy="affix" data-offset-top="71" class="page-actions">
+        <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
+        <input type="button" value="Exit" class="btn" ng-click="exit()" />
+    </section>
+    <section id="main-content">
+        <div class="row-fluid">
+            <section class="span12 widget">
+                <section class="widget-content form-container">
+                    @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                       FormMethod.Post, new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()", @ng_controller = "CommonDetailCtrl" }))
-                {
-                    @Html.ValidationSummary()
-                    // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
-        
-        
-                    Output.Write(Model.Layout); 
-                }
+                    {
+                        @Html.ValidationSummary()
+                        // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
+
+
+                        Output.Write(Model.Layout);
+                    }
+                </section>
             </section>
-        </section>
-    </div>
+        </div>
+    </section>
 </section>
-@Display(Model) 
+@Display(Model)
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

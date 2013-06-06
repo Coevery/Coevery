@@ -11,7 +11,7 @@
     <h1 id="main-heading" style="background-image: none;">@T("Metadata") <span>Metadata List</span></h1>
 </header>
 <section ng-controller="MetadataCtrl">
-    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+    <div class="page-actions">
         <button class="btn btn-success" ng-click="add()">
             <i class="icon-plus"></i>&nbsp;@T("Add")
         </button>
@@ -30,3 +30,9 @@
         </div>
     </section>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

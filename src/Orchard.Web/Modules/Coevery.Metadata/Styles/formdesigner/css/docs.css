@@ -50,13 +50,3 @@
             top: 0;
         }
 }
-
-#wrapper #main .affix + #main-content {
-    padding-top: 52px;
-}
-
-.form-actions.affix {
-    top: 81px;
-    z-index: 999;
-    width: 100%;
-}

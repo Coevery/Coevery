@@ -9,14 +9,14 @@
     <h1 id="main-heading" style="background-image: none;">Meta Detail <span>Metadata add/edit</span></h1>
 </header>
 <section ng-controller="MetadataEditCtrl">
-    <section class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+    <section class="page-actions">
         <button class="btn btn-primary">Save</button>
         <button class="btn" ng-click="exit()">Exit</button>
     </section>
     <section id="main-content">
         <div class="row-fluid">
             @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                    new { @class = "form-horizontal", @ng_submit = "save()", @ng_controller = "MetadataEditCtrl" }))
+                                                  new { @class = "form-horizontal", @ng_submit = "save()", @ng_controller = "MetadataEditCtrl" }))
             {
                 @Html.ValidationSummary()
                 <section class="control-group">
@@ -43,6 +43,12 @@
         </div>
     </section>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>
 
 @using (Script.Foot())
 {
