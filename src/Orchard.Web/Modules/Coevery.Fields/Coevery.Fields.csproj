@@ -76,6 +76,7 @@
     <Compile Include="Drivers\MediaGalleryFieldDriver.cs" />
     <Compile Include="Drivers\MediaPickerFieldDriver.cs" />
     <Compile Include="Fields\MediaGalleryField.cs" />
+    <Compile Include="FieldEditWrapper.cs" />
     <Compile Include="Handlers\MediaGalleryFieldHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
