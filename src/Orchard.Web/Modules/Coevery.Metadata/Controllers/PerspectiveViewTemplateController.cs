@@ -13,6 +13,11 @@ namespace Coevery.Metadata.Controllers
             return View();
         }
 
+        public ActionResult CreatePerspective(string id)
+        {
+            return View();
+        }
+
         public ActionResult EditPerspective(string id)
         {
             return View();

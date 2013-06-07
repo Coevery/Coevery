@@ -1,12 +1,13 @@
 ﻿@using System.Web.Routing;
 @using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
-<div class="btn-toolbar" id="FirstMenu"  style="border: 0; width: 100%; margin-top: 1px;">
-    <div class="btn-group" style="border: 0; width: 100%;">
-        <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(44, 163, 222); width: 100%;">
-            <i style="background-position: center;"></i><span id="FirstMenuText">@foreach (var firstLevelMenuItem in Model) {@firstLevelMenuItem.Text break;}</span>
+@*<div class="btn-toolbar" id="FirstMenu"  style="border: 0; width: 100%; margin-top: 1px;height: 70px;  vertical-align: middle;">
+    <div class="btn-group" style="border: 0; width: 100%; margin-top: 20px;">
+        <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(252, 252, 252); width: 98%; height: 44px;">
+            <i style="background-position: center;"></i><span id="FirstMenuText" style="font-size: 18px;">@foreach (var firstLevelMenuItem in Model) {@firstLevelMenuItem.Text break;}</span>
             <span class="caret"></span>
         </button>
+        <hr style="height:2px; margin:0px;"/>
         <ul class="dropdown-menu">
             @foreach (var firstLevelMenuItem in Model)
             {
@@ -17,7 +18,7 @@
             }
         </ul>
     </div>
-</div>
+</div>*@
 @{
     int firstLevelIndex = 0;
     foreach (var firstLevelMenuItem in Model) {

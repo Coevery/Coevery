@@ -16,7 +16,6 @@ function SetActiveMenu(module) {
 }
 
 var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'localization', 'ui.compat', 'coevery.layout'])
-    .value('$anchorScroll', angular.noop)
     .config(['$stateProvider', function ($stateProvider) {
         $stateProvider
             .state('List', {

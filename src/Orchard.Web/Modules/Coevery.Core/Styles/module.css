@@ -64,3 +64,24 @@
 .btn-group a [class^="icon-"] {
     vertical-align: text-top;
 }
+
+
+#wrapper #main .page-actions.affix + #main-content {
+    padding-top: 52px;
+}
+
+.page-actions.affix {
+    top: 81px;
+    z-index: 999;
+    width: 100%;
+}
+
+.page-actions {
+    padding: 10px 20px 10px 40px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    height: 30px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}

@@ -5,18 +5,18 @@
 }
 @Display.FootScripts()
 
-<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 style="background-image: none;">Entity Detail <span>show entity detail information</span></h1>
 </header>
 
 <section ng-controller="MetadataDetailCtrl">
-    <div id="actions" data-spy="affix" data-offset-top="71" class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+    <section data-spy="affix" data-offset-top="71" class="page-actions">
         <button type="button" class="btn btn-primary">Edit</button>
         <button type="button" class="btn">Delete</button>
-        <button type="button" class="btn" ng-click="exit()">Cancel</button>
+        <button type="button" class="btn" ng-click="exit()">Exit</button>
         <button type="button" class="btn" ng-click="listViewDesigner()">List View Designer</button>
         <button type="button" class="btn" ng-click="formDesigner()">Form Designer</button>
-    </div>
+    </section>
 
     <section id="main-content">
         <div class="row-fluid">
@@ -98,3 +98,9 @@
         </div>
     </section>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

@@ -112,7 +112,6 @@
         });
     };
     $scope.getAllField();
-    $('#actions').affix({ offset: { top: 71 } });
 }
 
 //@ sourceURL=Coevery.Metadata/detailcontroller.js

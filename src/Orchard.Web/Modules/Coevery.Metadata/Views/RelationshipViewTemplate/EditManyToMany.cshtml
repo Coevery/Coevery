@@ -14,9 +14,9 @@
 </header>
 
 <section ng-controller="ManyToManyDetailCtrl">
-    <div class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+    <div class="page-actions">
         <button type="button" class="btn btn-primary">Save</button>
-        <button type="button" class="btn" ng-click="exit()">Cancel</button>
+        <button type="button" class="btn" ng-click="exit()">Exit</button>
     </div>
     <section id="main-content">
         <div class="row-fluid">
@@ -124,6 +124,7 @@
 <script>
     $(document).ready(
         function () {
+            $('.page-actions').affix({ offset: { top: 71 } });
             $('#picklist-other,#picklist-current').picklist({
                 addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
                 addLabel: '<i class="icon-caret-right"></i>',

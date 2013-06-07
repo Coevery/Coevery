@@ -11,9 +11,9 @@
     <h1 id="main-heading" style="background-image: none;">Field Detail <span>Field add/edit</span></h1>
 </header>
 <section ng-controller="FieldDetailCtrl">
-    <section class="form-actions" style="margin-top: -10px; padding-top: 10px; padding-left: 40px; padding-bottom: 10px; height: 30px; border-bottom: 1px solid #e5e5e5">
+    <section class="page-actions">
         <button class="btn" ng-click="next()">Next</button>
-        <button class="btn" ng-click="exit()">Cancel</button>
+        <button class="btn" ng-click="exit()">Exit</button>
     </section>
     <section id="main-content">
         <h5>Step 1. Choose the field type</h5>
@@ -59,3 +59,9 @@
         </div>
     </section>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

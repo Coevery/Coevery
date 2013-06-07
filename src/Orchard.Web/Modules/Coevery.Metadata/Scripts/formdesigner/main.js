@@ -21,15 +21,25 @@
         //helper.height(18);
         //helper.width(150);
 
-        //var helper = $('<div class="" style="border:1px solid #ccc;"></div>');
-        //helper.height($(this).height());
-        //helper.width($(this).width());
-        //helper.append($(this).html());
-
-        var helper = $(this).clone();
+        var helper = $('<div class="" style="border:1px solid #ccc;"></div>');
         helper.height($(this).height());
         helper.width($(this).width());
-        helper.css('border', '1px solid #ccc');
+        helper.append($(this).html());
+        helper.css('background-color', 'white');
+        helper.find('.tools').remove();
+        helper.css('padding', '0 10px');
+
+        //var helper = $(this).clone();
+        //helper.height($(this).height());
+        //helper.width($(this).width());
+        //helper.css('border', '1px solid #ccc');
+        //helper.find('.tools').remove();
+        //helper.css('padding', '0 10px');
+
+        //if ($(this).is('fieldset')) {
+        //    helper.css('background-color', 'white');
+        //}
+        
         return helper;
     }
 
@@ -188,7 +198,7 @@
         })
         .directive('fdForm', function ($compile, $rootScope) {
             return {
-                template: '<div fd-form class="row-fluid"><section class="span12 widget"><section class="widget-content form-container"><form class="form-horizontal" ng-transclude></form></section></section></div>',
+                template: '<div fd-form class="row-fluid"><section class="span12"><form class="form-horizontal" ng-transclude></form></section></div>',
                 replace: true,
                 restrict: 'E',
                 transclude: true,
@@ -285,7 +295,7 @@
         })
         .directive('fdSection', function ($compile, $rootScope) {
             return {
-                template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend fd-hoverable class="clearfix"><div class="span9 title"></div><div class="span3 tools"><fd-tool-property></fd-tool-property><fd-tool-remove></fd-tool-remove></div></legend><div fd-field-container ng-transclude></div></fieldset>',
+                template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend fd-hoverable class="clearfix"><h5 class="span9 title"></h5><div class="span3 tools"><fd-tool-property></fd-tool-property><fd-tool-remove></fd-tool-remove></div></legend><div fd-field-container ng-transclude></div></fieldset>',
                 replace: true,
                 restrict: 'E',
                 transclude: true,
@@ -929,7 +939,7 @@
                 }
             };
         })
-        .directive('fdSaveLayoutButton', function($resource, $location) {
+        .directive('fdSaveLayoutButton', function ($resource, $location, logger) {
             return {
                 //template: '<button class="btn">Save</button>',
                 //replace: true,
@@ -968,7 +978,7 @@
                         });
 
                         $.post('/OrchardLocal/api/metadata/layout/' + moduleId, { id: moduleId, layout: layoutString }, function() {
-                            console.log('success');
+                            logger.success('Save success');
                         });
                     });
                 }

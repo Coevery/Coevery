@@ -15,12 +15,16 @@
 }
 
 [fd-field] {
-    padding: 16px 0;
+    /*padding: 16px 0;*/
 }
 
 [fd-form] [fd-section] [fd-row].control-group {
-    padding: 0 20px;
+    /*padding: 0 20px;*/
 }
+
+    [fd-form] [fd-section] [fd-row].control-group:last-child {
+        margin-bottom: 10px;
+    }
 
 [fd-form] form {
     min-height: 50px;
@@ -76,8 +80,12 @@
     margin-right: 4px;
 }
 
+.row-fluid .title[class*="span"] {
+    min-height: 0;
+}
+
 .markedAbove,
-[fd-form] [fd-section]>legend.markedAbove {
+[fd-form] [fd-section] > legend.markedAbove {
     border-top: 3px solid red;
 }
 

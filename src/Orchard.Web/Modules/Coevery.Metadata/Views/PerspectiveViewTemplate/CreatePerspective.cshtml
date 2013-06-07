@@ -10,7 +10,6 @@
 <section ng-controller="PerspectiveDetailCtrl">
     <div class="page-actions">
         <button type="button" class="btn btn-primary">Save</button>
-        <button type="button" class="btn">Remove</button>
         <button type="button" class="btn" ng-click="exit()">Exit</button>
     </div>
     <section id="main-content">
@@ -42,24 +41,11 @@
                 </section>
             </form>
         </div>
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="btn-toolbar">
-                    <button class="btn btn-success" ng-click="addNavigationItem()">
-                        <i class="icon-plus"></i>&nbsp;add Navigation
-                    </button>
-                </div>
-
-                <div class="row-fluid">
-                    <section class="gridStyle" ng-grid="gridOptions"></section>
-                </div>
-            </div>
-        </div>
     </section>
 </section>
 
-<script type="text/javascript">
-    $(function () {
+<script>
+    $(function() {
         $('.page-actions').affix({ offset: { top: 71 } });
     });
 </script>
