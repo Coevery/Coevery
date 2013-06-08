@@ -63,13 +63,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\angular-ui-states.js" />
-    <Content Include="Scripts\angular-ui-states.min.js" />
+    <Content Include="Scripts\angular-couchPotato.js" />
+    <Content Include="Scripts\angular-couchPotato.min.js" />
+    <Content Include="Scripts\angular-ui-router.js" />
+    <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\localize.js" />
     <Content Include="Scripts\ng-grid-2.0.5.debug.js" />
     <Content Include="Scripts\ng-grid-2.0.5.min.js" />
     <Content Include="Scripts\ng-grid.debug.js" />
     <Content Include="Scripts\ng-grid.min.js" />
+    <Content Include="Scripts\require.js" />
+    <Content Include="Scripts\require.min.js" />
     <Content Include="Styles\images\glyphicons-halflings-white.png" />
     <Content Include="Styles\images\glyphicons-halflings.png" />
     <Content Include="Styles\jquery.pnotify.css" />

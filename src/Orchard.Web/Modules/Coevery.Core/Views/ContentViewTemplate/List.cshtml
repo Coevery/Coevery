@@ -1,27 +1,18 @@
 ﻿@using System.ComponentModel
 @using System.Text
 @using Orchard.ContentManagement.MetaData.Models
-@using Orchard.Projections.Models
-
-@{
-    Script.Require("CommonContext");
-    Script.Require("CommonListController");
-}
 
 @{
     ContentTypeDefinition typeDefinition = Model.TypeDefinition;
 }
 
-@Display.FootScripts()
-
-
-<section ng-controller="CommonCtrl">
+<section data-ng-controller="GeneralListCtrl">
     <section id="main-content" style="margin-top: 10px;">
         <div style="float: left;">
-            <button class="btn btn-success" ng-click="add()">
+            <button class="btn btn-success" data-ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;@T("Add")
             </button>
-            <button class="btn" ng-click="getAll()">
+            <button class="btn" data-ng-click="getAll()">
                 <i class="icon-refresh"></i>&nbsp;@T("Refresh")
             </button>
         </div>

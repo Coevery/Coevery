@@ -20,9 +20,13 @@ namespace Orchard.AngularJS
             manifest.DefineStyle("pnotify_Icons").SetUrl("jquery.pnotify.icons.css");
             manifest.DefineStyle("pnotify").SetUrl("jquery.pnotify.css").SetDependencies("pnotify_Icons");
 
-            manifest.DefineScript("angular_UI_States").SetUrl("angular-ui-states.min.js", "angular-ui-states.js").SetVersion("0.0.1");
+            manifest.DefineScript("angular_UI_Router").SetUrl("angular-ui-router.min.js", "angular-ui-router.js").SetVersion("0.0.2").SetDependencies("angular");
+
+            manifest.DefineScript("angular_couchPotato").SetUrl("angular-couchPotato.min.js", "angular-couchPotato.js").SetVersion("0.0.4").SetDependencies("angular_UI_Router");
 
             manifest.DefineScript("angular_Localize").SetUrl("localize.js").SetDependencies("angular");
+
+            manifest.DefineScript("require").SetUrl("require.min.js", "require.js").SetVersion("2.1.6");
         }
     }
 }
