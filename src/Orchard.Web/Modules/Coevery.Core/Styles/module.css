@@ -67,7 +67,7 @@
 
 
 #wrapper #main .page-actions.affix + #main-content {
-    padding-top: 52px;
+    margin-top: 62px;
 }
 
 .page-actions.affix {

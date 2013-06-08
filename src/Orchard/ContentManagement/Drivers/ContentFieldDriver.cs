@@ -11,6 +11,8 @@ namespace Orchard.ContentManagement.Drivers {
     public abstract class ContentFieldDriver<TField> : IContentFieldDriver where TField : ContentField, new() {
         protected virtual string Prefix { get { return ""; } }
         protected virtual string Zone { get { return "Content"; } }
+        protected string DisplayName { get; set; }
+        protected string Description { get; set; }
 
         void IContentFieldDriver.GetContentItemMetadata(GetContentItemMetadataContext context) {
             Process(context.ContentItem, (part, field) => GetContentItemMetadata(part, field, context.Metadata), context.Logger);
@@ -92,6 +94,8 @@ namespace Orchard.ContentManagement.Drivers {
             var contentFieldInfo = new[] {
                 new ContentFieldInfo {
                     FieldTypeName = typeof (TField).Name,
+                    DisplayName = DisplayName,
+                    Description = Description,
                     Factory = (partFieldDefinition, storage) => new TField {
                         PartFieldDefinition = partFieldDefinition,
                         Storage = storage,

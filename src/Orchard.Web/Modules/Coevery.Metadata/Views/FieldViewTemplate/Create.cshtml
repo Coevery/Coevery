@@ -19,7 +19,20 @@
         <h5>Step 1. Choose the field type</h5>
         <div class="row-fluid">
             <form>
-                <section class="control-group">
+                @{
+                    foreach (var field in Model.Fields) {
+                        <section class="control-group">
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" ng-model="fieldType" value="@field.FieldTypeName">
+                                    @field.DisplayName
+                                    <span class="help-inline">@field.Description</span>
+                                </label>
+                            </div>
+                        </section>
+                    }
+                }
+                @*<section class="control-group">
                     <div class="controls">
                         <label class="radio">
                             <input type="radio" ng-model="fieldType" value="Input">
@@ -54,7 +67,7 @@
                             <span class="help-inline">Allows users to select multiple values from a list you define.</span>
                         </label>
                     </div>
-                </section>
+                </section>*@
             </form>
         </div>
     </section>

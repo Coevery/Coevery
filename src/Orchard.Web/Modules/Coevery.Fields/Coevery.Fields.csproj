@@ -132,6 +132,8 @@
     <Compile Include="Fields\LinkField.cs" />
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
+    <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="Settings\FieldSettings.cs" />
     <Compile Include="Settings\MediaGalleryFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaGalleryFieldSettings.cs" />
     <Compile Include="Settings\InputFieldEditorEvents.cs" />
@@ -181,6 +183,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Wrapper.Script.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\BooleanFieldDisplaySettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

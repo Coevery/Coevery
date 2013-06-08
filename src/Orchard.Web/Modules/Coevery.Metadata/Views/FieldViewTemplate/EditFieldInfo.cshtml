@@ -25,66 +25,68 @@
     <section id="main-content">
         <div class="row-fluid step2">
             <h5>Step 2. Enter the detail informations</h5>
-            <form class="form-horizontal">
+            @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+                                                  new { @class = "form-horizontal" })) {
                 <fieldset>
                     <legend>
                         <h5>Information</h5>
                     </legend>
                     <section class="control-group">
-                        <label class="control-label" for="fieldLabel">
-                            Field Label
+                        <label class="control-label" for="@Html.FieldIdFor(m => m.DisplayName)">
+                            @T("Field Label")
                         </label>
                         <div class="controls">
-                            <input type="text" class="span12" id="fieldLabel" ng-model="fieldLabel">
+                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus" })
                         </div>
                     </section>
                     <section class="control-group">
-                        <label class="control-label" for="fieldName">
-                            Field Name
+                        <label class="control-label" for="@Html.FieldIdFor(m => m.Name)">
+                            @T("Field Name")
                         </label>
                         <div class="controls">
-                            <input type="text" class="span12" id="fieldName" ng-model="fieldName">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "span12" })
                         </div>
                     </section>
                     <section class="control-group">
                         <label class="control-label">
-                            Options
+                            @T("Options")
                         </label>
                         <div class="controls">
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="required" />
-                                Required
+                                @Html.CheckBoxFor(m => m.Required)
+                                @T("Required")
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="readonly" />
-                                Read-Only
+                                @Html.CheckBoxFor(m => m.ReadOnly)
+                                @T("Read-Only")
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="alwaysInLayout" />
-                                Always In Layout
+                                @Html.CheckBoxFor(m => m.AlwaysInLayout)
+                                @T("Always In Layout")
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="isAudit" />
-                                IsAudit
+                                @Html.CheckBoxFor(m => m.IsAudit)
+                                @T("IsAudit")
                             </label>
                         </div>
                     </section>
                     <section class="control-group">
-                        <label class="control-label" for="helpText">
-                            Help Text
+                        <label class="control-label" for="@Html.FieldIdFor(m => m.HelpText)">
+                            @T("Help Text")
                         </label>
                         <div class="controls">
-                            <textarea class="span12" id="helpText" ng-model="helpText"></textarea>
+                            @Html.TextAreaFor(m => m.HelpText, new { @class = "span12" })
                         </div>
-                    </section>
+                    </section>                    
+                    @Html.HiddenFor(m=>m.FieldTypeName)
                 </fieldset>
                 <fieldset id="fieldPanel">
                     <legend>
                         <h5>Field Information</h5>
                     </legend>
-                    @{Html.RenderTemplates(Model.TypeTemplates); }
+                    @{ Html.RenderTemplates(Model.TypeTemplates); }
                 </fieldset>
-            </form>
+            }
         </div>
         <div class="row-fluid step3">
             <h5>Step 3. Confirm informations and add in layout</h5>

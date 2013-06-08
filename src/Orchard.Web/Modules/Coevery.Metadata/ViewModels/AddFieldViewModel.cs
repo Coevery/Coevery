@@ -26,6 +26,12 @@ namespace Coevery.Metadata.ViewModels {
         [Required]
         public string FieldTypeName { get; set; }
 
+        public bool Required { get; set; }
+        public bool ReadOnly { get; set; }
+        public bool AlwaysInLayout { get; set; }
+        public bool IsAudit { get; set; }
+        public string HelpText { get; set; }
+
         /// <summary>
         /// The part to add the field to
         /// </summary>

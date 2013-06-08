@@ -1,6 +1,6 @@
 ﻿function FieldEditInfoCtrl($http, $timeout, $scope, logger, $state, $stateParams, $element) {
-    $scope.defaultValue = 'false';
-    $scope.booleanDisplayOption = 'checkbox';
+    //$scope.defaultValue = 'false';
+    //$scope.booleanDisplayOption = 'checkbox';
     $scope.textLength = 255;
     $scope.selectDisplayOption = 'picklist';
     $('.step3').hide();
@@ -15,7 +15,15 @@
     };
 
     $scope.save = function() {
-
+        var form = $element.find('form[action]');
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize() + '&submit.Save=Save',
+            success: function (result) {
+                logger.success('success');
+            }
+        });
     };
 
     $scope.back = function() {
