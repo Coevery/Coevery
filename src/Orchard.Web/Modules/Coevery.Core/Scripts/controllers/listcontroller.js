@@ -1,12 +1,22 @@
 ﻿define(['core/app/couchPotatoService', 'core/services/commondataservice'], function (couchPotato) {
-    debugger;
     couchPotato.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource', '$stateParams', 'commonDataService',
-      function ($rootScope, $scope, logger, $state, localize, $resource, $stateParams, commonDataService) {
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService) {
           var moduleName = $rootScope.$stateParams.Module;
-          var columnDefs = getColumnDefs(localize);
+
+          var t = function (str) {
+              var result = i18n.t(str);
+              return result;
+          };
+
+          var columnDefs = [{ field: 'Id', displayName: t('Id') },
+                { field: 'Topic', displayName: t('Topic') },
+                { field: 'StatusCode', displayName: t('StatusCode') },
+                { field: 'FirstName', displayName: t('FirstName') },
+                { field: 'LastName', displayName: t('LastName') }];
           
+
           $scope.mySelections = [];
 
           $scope.gridOptions = {
@@ -49,8 +59,11 @@
           };
 
           $scope.getAll = function () {
-              var records = commonDataService.query(function () {
-                  $scope.myData = records;
+              var records = commonDataService.query(function() {
+                  //$scope.myData = records;
+                  $scope.myData = [{ 'Id': 1, 'Topic': 't1', 'StatusCode': '1', 'FirstName': 's1', 'LastName': 'c1' },
+                      { 'Id': 2, 'Topic': 't2', 'StatusCode': '2', 'FirstName': 's2', 'LastName': 'c2' }
+                  ];
               }, function () {
                   logger.error("Failed to fetched records for " + moduleName);
               });
@@ -60,6 +73,3 @@
       }]
     ]);
 });
-
-
-//@ sourceURL=Coevery.Core/listcontroller.js

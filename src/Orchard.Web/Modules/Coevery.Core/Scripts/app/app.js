@@ -1,26 +1,10 @@
 ﻿define([], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['agt.couchPotato', 'ui.compat', 'coevery.layout']);
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.couchPotato', 'ui.compat', 'coevery.layout']);
+    
     coevery.config(['$stateProvider', '$routeProvider', '$urlRouterProvider', '$couchPotatoProvider', '$locationProvider', '$provide',
         function($stateProvider, $routeProvider, $urlRouterProvider, $couchPotatoProvider, $locationProvider, $provide) {
-            //comment out the decorator function for html5mode
-            //uncomment the decorator function for force hash(bang) mode
-            // $provide.decorator('$sniffer', function($delegate) {
-            //   $delegate.history = false;
-            //   return $delegate;
-            // });
-            //$locationProvider.html5Mode(true);
-
-
-            $urlRouterProvider
-                .when('/c?id', '/contacts/:id')
-                .otherwise('/');
-
-            $routeProvider
-                .when('/user/:id', {
-                    redirectTo: '/contacts/:id'
-                });
 
             $stateProvider
                 .state('List', {
@@ -41,8 +25,8 @@
                         return "Coevery/" + params.Module + '/ViewTemplate/Create/' + params.Module;
                     },
                     resolve: {
-                        dummy: ['$stateParams', function($stateParams) {
-                            return $couchPotatoProvider.resolveDependencies([$stateParams.Module + '/Scripts/Controllers/detailcontroller']);
+                        dummy: ['$q', '$rootScope', '$stateParams', function($q, $rootScope, $stateParams) {
+                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
                         }]
                     }
                 })
@@ -51,31 +35,13 @@
                     url: '/{Id:[0-9a-zA-Z]+}',
                     templateUrl: function(params) {
                         return "Coevery/" + params.Module + '/ViewTemplate/Edit/' + params.Id;
+                    },
+                    resolve: {
+                        dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
+                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
+                        }]
                     }
                 });
-            //.state('SubCreate', {
-            //    parent: 'Detail',
-            //    url: '/{SubModule:[a-zA-Z]+}/Create',
-            //    templateUrl: function(params) {
-            //        return params.Module + '/' + params.SubModule + 'ViewTemplate/Create/' + params.Id;
-            //    }
-            //})
-            //.state('SubList', {
-            //    parent: 'Detail',
-            //    url: '/{SubModule:[a-zA-Z]+}/{View:[a-zA-Z]+}',
-            //    templateProvider: ['$http', '$stateParams', function($http, $stateParams) {
-            //        var url = $stateParams.Module + '/' + $stateParams.SubModule + 'ViewTemplate/' + $stateParams.View + '/' + $stateParams.Id;
-            //        return $http.get(url).then(function(response) { return response.data; });
-            //    }]
-            //})
-            //.state('SubDetail', {
-            //    parent: 'SubList',
-            //    url: '/{SubId:[0-9a-zA-Z]+}',
-            //    templateProvider: ['$http', '$stateParams', function($http, $stateParams) {
-            //        var url = $stateParams.Module + '/' + $stateParams.SubModule + 'ViewTemplate/' + $stateParams.View + '/' + $stateParams.Id + '?subId=' + $stateParams.SubId;
-            //        return $http.get(url).then(function(response) { return response.data; });
-            //    }]
-            //});
         }]);
 
     coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato',
@@ -88,6 +54,11 @@
             coevery.couchPotato = $couchPotato;
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
+            $rootScope.i18nextOptions = {
+                resGetPath: 'i18n/__ns_____lng__.json',
+                lowerCaseLng: true,
+                ns: 'resources-locale'
+            };
         }
     ]);
 
@@ -95,20 +66,20 @@
 
 });
 
-function SetActiveMenu(module) {
-    if (!$(".menu>#" + module).hasClass("active")) {
-        $(".menu>li.active").removeClass("active");
-        var $li = $(".menu>#" + module);
-        $li.addClass("active");
-        if (!$li.parent()) return;
-        var $liParent = $li.parent();
-        if ($liParent[0] && $("#navigation #" + $liParent[0].id).css('display') != 'block') {
-            $("#navigation .menu").css('display', 'none');
-            $("#navigation #" + $liParent[0].id).css('display', 'block');
-            $("#FirstMenu .btn-group #FirstMenuText").text($liParent[0].id);
-        }
-    }
-}
+//function SetActiveMenu(module) {
+//    if (!$(".menu>#" + module).hasClass("active")) {
+//        $(".menu>li.active").removeClass("active");
+//        var $li = $(".menu>#" + module);
+//        $li.addClass("active");
+//        if (!$li.parent()) return;
+//        var $liParent = $li.parent();
+//        if ($liParent[0] && $("#navigation #" + $liParent[0].id).css('display') != 'block') {
+//            $("#navigation .menu").css('display', 'none');
+//            $("#navigation #" + $liParent[0].id).css('display', 'block');
+//            $("#FirstMenu .btn-group #FirstMenuText").text($liParent[0].id);
+//        }
+//    }
+//}
 
 
 angular.module('coevery.layout', [])

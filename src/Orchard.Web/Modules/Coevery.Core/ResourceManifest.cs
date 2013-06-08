@@ -13,7 +13,6 @@ namespace Coevery.Core
             manifest.DefineScript("CommonListController").SetUrl("controllers/listcontroller.js");
             manifest.DefineScript("CommonDetailController").SetUrl("controllers/detailcontroller.js");
             manifest.DefineScript("CommonContext").SetUrl("app/context.js");
-            manifest.DefineScript("ColumnDefine").SetUrl("controllers/columnfactory.js");
             manifest.DefineScript("CoeveryAdminApp").SetUrl("app/adminapp.js");
             manifest.DefineStyle("Module").SetUrl("module.js");
         }
