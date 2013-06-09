@@ -3,16 +3,40 @@
 ================================================== */
 
 /* sales*/
-.icon-sales:before{content:url(../images/sales.png);}
-.icol-leads:before{content: url(../images/lead.png);}
-.icol-opportunities:before{content: url(../images/opportunity.png);}
+.icon-sales:before
+{
+    content: url(../images/sales.png);
+}
+
+.icol-leads:before
+{
+    content: url(../images/lead.png);
+}
+
+.icol-opportunities:before
+{
+    content: url(../images/opportunity.png);
+}
 
 /*Home*/
 
 /*admin*/
-.icon-admin:before{content:url(../images/admin.png);}
-.icol-metadata{background-image: url(../images/metadata.png);background-position: 0px 0px;}
-.icol-solutions{background-image: url(../images/solutions.png);background-position: 0px 0px;}
+.icon-admin:before
+{
+    content: url(../images/admin.png);
+}
+
+.icol-metadata
+{
+    background-image: url(../images/metadata.png);
+    background-position: 0px 0px;
+}
+
+.icol-solutions
+{
+    background-image: url(../images/solutions.png);
+    background-position: 0px 0px;
+}
 
 .main-header_BG
 {
@@ -24,35 +48,37 @@
     padding-bottom: 0px;
     border-bottom: 0;
     margin: 0px;
-    padding-left:50px;
+    padding-left: 50px;
 }
 
-.main-header h1{
-    font-size: 24px;
-    color: #444;
-    margin: 0;
-    padding: 0;
-    text-shadow: -1px -1px #f0f0f0;
-}
+    .main-header h1
+    {
+        font-size: 24px;
+        color: #444;
+        margin: 0;
+        padding: 0;
+        text-shadow: -1px -1px #f0f0f0;
+    }
 
-.main-header h1 span
-{
-    color: #777;
-    font-size: 11px;
-    font-weight: normal;
-    padding-left: 6px;
-    margin-left: 6px;
-    text-shadow: none;
-    border-left: 1px dotted #aaa;
-    line-height: 1;
-}
+        .main-header h1 span
+        {
+            color: #777;
+            font-size: 11px;
+            font-weight: normal;
+            padding-left: 6px;
+            margin-left: 6px;
+            text-shadow: none;
+            border-left: 1px dotted #aaa;
+            line-height: 1;
+        }
 
 .header-content
 {
-
     padding: 0 40px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+
