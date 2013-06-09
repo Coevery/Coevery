@@ -74,6 +74,8 @@
     <Content Include="Scripts\localize.js" />
     <Content Include="Scripts\ng-grid-2.0.5.debug.js" />
     <Content Include="Scripts\ng-grid-2.0.5.min.js" />
+    <Content Include="Scripts\ng-grid-2.0.6.debug.js" />
+    <Content Include="Scripts\ng-grid-2.0.6.min.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\require.min.js" />
     <Content Include="Styles\images\glyphicons-halflings-white.png" />
@@ -264,6 +266,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\ng-grid.css" />
+    <Content Include="Styles\ng-grid.min.css" />
     <Content Include="Styles\Web.config">
       <SubType>
       </SubType>
