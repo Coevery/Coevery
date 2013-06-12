@@ -168,7 +168,8 @@ namespace Coevery.Metadata.Controllers {
                     return HttpNotFound();
                 }
             }
-
+            var edited = new EditPartFieldViewModel();
+            TryUpdateModel(edited);
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
             viewModel.Name = viewModel.Name ?? String.Empty;
@@ -213,6 +214,15 @@ namespace Coevery.Metadata.Controllers {
                 Services.Notifier.Information(T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message));
                 Services.TransactionManager.Cancel();
                 return Create(id);
+            }
+
+            typeViewModel = _contentDefinitionService.GetType(id);
+            //_contentDefinitionService.AlterType(typeViewModel, this);
+            _contentDefinitionService.AlterField(typeViewModel.Name, edited, this);
+
+            if (!ModelState.IsValid) {
+                Services.TransactionManager.Cancel();
+                return View(viewModel);
             }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));

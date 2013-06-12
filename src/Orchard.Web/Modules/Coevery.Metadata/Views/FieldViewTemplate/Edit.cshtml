@@ -4,6 +4,8 @@
     Script.Include("controllers/fieldeditcontroller.js");
     //Script.Require("MetadataContext");
     //Script.Require("FieldDetailCtrl");
+
+    var fieldSettingsPrefix = Model.FieldDefinition.Name + "Settings.";
 }
 @Display.FootScripts()
 
@@ -13,7 +15,7 @@
 <section ng-controller="FieldEditCtrl">
     <section class="page-actions">
         <div class="editview">
-            <button class="btn btn-primary" ng-disabled="!myForm.$valid">Save</button>
+            <button class="btn btn-primary" ng-click="save()">Save</button>
             <button class="btn" ng-click="exit()">Exit</button>
             @*<button class="btn" ng-click="change()">Change Field Type</button>*@
             <button class="btn" ng-click="viewItems()">View Items</button>
@@ -28,8 +30,7 @@
     <section id="main-content">
         <div class="row-fluid editview">
             @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                  new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
-            {
+                                                  new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()", @id="field-info-form" })) {
                 @Html.ValidationSummary()
                 <fieldset>
                     <legend>
@@ -60,29 +61,29 @@
                         </label>
                         <div class="controls">
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="required" />
-                                Required
+                                @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]))
+                                @T("Required")
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="readonly" />
-                                Read-Only
+                                @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]))
+                                @("Read-Only")
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="alwaysInLayout" />
-                                Always In Layout
+                                @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]))
+                                @T("Always In Layout")
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" ng-model="isAudit" />
-                                IsAudit
+                                @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]))
+                                @T("IsAudit")
                             </label>
                         </div>
                     </section>
                     <section class="control-group">
                         <label class="control-label" for="helpText">
-                            Help Text
+                            @T("Help Text")
                         </label>
                         <div class="controls">
-                            <textarea class="span12" id="helpText" ng-model="helpText"></textarea>
+                            @Html.TextArea(fieldSettingsPrefix + "HelpText", Model.Settings[fieldSettingsPrefix + "HelpText"], new { @class = "span12" })
                         </div>
                     </section>
                 </fieldset>
@@ -97,7 +98,7 @@
         <div class="row-fluid itemsview">
             <h4>Items</h4>
             <div class="row-fluid">
-                <section class="gridStyle" ng-grid="gridOptions"></section> 
+                <section class="gridStyle" ng-grid="gridOptions"></section>
             </div>
         </div>
     </section>

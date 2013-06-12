@@ -26,7 +26,7 @@
         <div class="row-fluid step2">
             <h5>Step 2. Enter the detail informations</h5>
             @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                  new { @class = "form-horizontal" })) {
+                                                  new { @class = "form-horizontal", @id = "field-info-form" })) {
                 <fieldset>
                     <legend>
                         <h5>Information</h5>
@@ -53,19 +53,19 @@
                         </label>
                         <div class="controls">
                             <label class="checkbox">
-                                @Html.CheckBoxFor(m => m.Required)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.Required", Model.Required)
                                 @T("Required")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBoxFor(m => m.ReadOnly)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.ReadOnly", Model.ReadOnly)
                                 @T("Read-Only")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBoxFor(m => m.AlwaysInLayout)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.AlwaysInLayout", Model.AlwaysInLayout)
                                 @T("Always In Layout")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBoxFor(m => m.IsAudit)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.IsAudit", Model.IsAudit)
                                 @T("IsAudit")
                             </label>
                         </div>
@@ -75,10 +75,10 @@
                             @T("Help Text")
                         </label>
                         <div class="controls">
-                            @Html.TextAreaFor(m => m.HelpText, new { @class = "span12" })
+                            @Html.TextArea(Model.FieldTypeName + "Settings.HelpText", Model.HelpText, new { @class = "span12" })
                         </div>
-                    </section>                    
-                    @Html.HiddenFor(m=>m.FieldTypeName)
+                    </section>
+                    @Html.HiddenFor(m => m.FieldTypeName)
                 </fieldset>
                 <fieldset id="fieldPanel">
                     <legend>

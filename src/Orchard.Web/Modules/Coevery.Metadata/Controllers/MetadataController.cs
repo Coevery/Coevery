@@ -28,7 +28,7 @@ namespace Coevery.Metadata.Controllers {
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                        select new {type.DisplayName, type.Name, setting.IsDeployed};
+                        select new { type.DisplayName, type.Name, setting.IsDeployed };
             return query;
         }
 
@@ -38,9 +38,9 @@ namespace Coevery.Metadata.Controllers {
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                        let fields = type.Fields.Select(f => new {f.Name, f.DisplayName, FieldType = f.FieldDefinition.Name.CamelFriendly()})
+                        let fields = type.Fields.Select(f => new { f.Name, f.DisplayName, FieldType = f.FieldDefinition.Name.CamelFriendly(), IsSystemField = bool.Parse(f.Settings[f.FieldDefinition.Name + "Settings.IsSystemField"]) })
                         where type.Name == name
-                        select new {type.DisplayName, type.Name, setting.IsDeployed, Fields = fields};
+                        select new { type.DisplayName, type.Name, setting.IsDeployed, Fields = fields };
             return query.SingleOrDefault();
         }
     }

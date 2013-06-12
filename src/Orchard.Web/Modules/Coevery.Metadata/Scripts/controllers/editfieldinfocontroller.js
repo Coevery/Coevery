@@ -15,7 +15,7 @@
     };
 
     $scope.save = function() {
-        var form = $element.find('form[action]');
+        var form = $element.find('#field-info-form');
         $.ajax({
             url: form.attr('action'),
             type: form.attr('method'),
