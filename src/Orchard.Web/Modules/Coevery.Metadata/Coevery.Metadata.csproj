@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.cs" />
+    <Compile Include="Controllers\PerspectiveController.cs" />
     <Compile Include="Controllers\FieldViewTemplateController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
@@ -181,6 +182,8 @@
     <Compile Include="Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
+    <Compile Include="ViewModels\NavigationViewModel.cs" />
+    <Compile Include="ViewModels\PerspectiveViewModel.cs" />
     <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
@@ -199,6 +202,7 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\controllers\perspectivecreatecontroller.js" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\perspectivedetailcontroller.js" />

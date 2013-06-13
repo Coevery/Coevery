@@ -1,5 +1,8 @@
-﻿@{
-    Script.Include("controllers/perspectivedetailcontroller.js");
+﻿
+@using System.ComponentModel
+@model Coevery.Metadata.ViewModels.PerspectiveViewModel
+@{
+    Script.Include("controllers/perspectivecreatecontroller.js");
 }
 @Display.FootScripts()
 
@@ -7,39 +10,41 @@
     <h1 style="background-image: none;">Perspective Detail <span>show perspective detail information</span></h1>
 </header>
 
-<section ng-controller="PerspectiveDetailCtrl">
+<section ng-controller="PerspectiveCreateCtrl">
     <div class="page-actions">
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
         <button type="button" class="btn" ng-click="exit()">Exit</button>
     </div>
     <section id="main-content">
         <div class="row-fluid">
-            <form class="form-horizontal">
-                <section class="control-group">
+             @using (Html.BeginFormAntiForgeryPost(Url.Action("CreatePerspective", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                                                          FormMethod.Post,
+                                                          new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
+            {
+                @* <section class="control-group">
                     <label class="control-label" for="displayLabel">
                         Display Label
                     </label>
                     <div class="controls">
                         <input type="text" class="span12" id="displayLabel" ng-model="displayLabel">
                     </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label" for="name">
-                        Name
-                    </label>
+                </section>*@
+                 <section class="control-group">
+                    <label class="control-label" for="Title">Title</label>
                     <div class="controls">
-                        <input type="text" class="span12" id="name" ng-model="name">
+                        @Html.TextBoxFor(m => m.Title, new { @class = "span12" })
+                        <span class="hint">title</span>
                     </div>
                 </section>
-                <section class="control-group">
+                @*  <section class="control-group">
                     <label class="control-label" for="description">
                         Description
                     </label>
                     <div class="controls">
                         <textarea class="span12" id="description" ng-model="description"></textarea>
                     </div>
-                </section>
-            </form>
+                </section>*@
+            }
         </div>
     </section>
 </section>

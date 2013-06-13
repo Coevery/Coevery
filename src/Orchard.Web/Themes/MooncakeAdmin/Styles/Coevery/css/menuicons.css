@@ -14,3 +14,20 @@
 .icol-metadata{background-image: url(../images/metadata.png);background-position: 0px 0px;}
 .icol-solutions{background-image: url(../images/solutions.png);background-position: 0px 0px;}
 
+.SortItem
+{
+    background: url(../images/cache.gif) no-repeat 5px;
+    padding-left: 18px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 1px solid #ccc;
+    cursor: move;
+    zoom: 1;
+    margin-top: 5px;
+}
+
+.SortItem span
+{
+    margin-left:3px;
+}
+

@@ -138,7 +138,7 @@ namespace Coevery.Metadata.Services
             //Get AllFields
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
             string category = viewModel.Name + "ContentFields";
-            viewModel.AllFields = allFields.Where(t => t.Category == category);
+            viewModel.AllFields = allFields.Where(t => t.Category == category).ToList();
 
             return viewModel;
         }
@@ -160,9 +160,10 @@ namespace Coevery.Metadata.Services
             LayoutRecord layoutRecord = projectionPart.Record.LayoutRecord;
             layoutRecord.Properties.Clear();
 
-            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
-            string category = projectionItem.As<TitlePart>().Title + "ContentFields";
+            
 
+            string category = projectionItem.As<TitlePart>().Title + "ContentFields";
+            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors).Where(c => c.Category == category);
             foreach (var property in pickedFileds)
             {
                 var fieldDescpritor = allFields.FirstOrDefault(t => t.Name.Text == property);
@@ -322,7 +323,7 @@ namespace Coevery.Metadata.Services
                 }
             }
 
-            viewModel.Properties = fieldEntries.OrderBy(f => f.Position);
+            viewModel.Properties = fieldEntries.OrderBy(f => f.Position).ToList();
             return viewModel;
         }
         private LayoutEditViewModel CreateTempLayout(QueryPart query,string category, string type)

@@ -10,7 +10,7 @@ using Orchard.Core.Contents.Controllers;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Security;
-
+using System.Linq;
 
 namespace Coevery.Metadata.Controllers
 {
@@ -56,15 +56,16 @@ namespace Coevery.Metadata.Controllers
             if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to edit queries")))
                 return new HttpUnauthorizedResult();
             ProjectionEditViewModel viewModel = _projectionService.GetProjectionViewModel(subId);
-
+           
             return View(viewModel);
         }
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
-        public ActionResult EditPOST(int subId, ProjectionEditViewModel viewModel, IEnumerable<string> picklist, string returnUrl)
-        {
-            bool suc = _projectionService.EditPost(subId, viewModel, picklist);
+        public ActionResult EditPOST(int subId, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
+            var pickArray = picklist.Split(new char[] {'$'}).Where(c=>!string.IsNullOrEmpty(c)).ToList();
+            pickArray = pickArray.Select(c => c + ":Value").ToList();
+            bool suc = _projectionService.EditPost(subId, viewModel, pickArray);
             return new EmptyResult();
         }
        
