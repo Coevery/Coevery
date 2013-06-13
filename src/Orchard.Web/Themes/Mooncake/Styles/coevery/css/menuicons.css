@@ -18,6 +18,9 @@
     content: url(../images/opportunity.png);
 }
 
+
+.icon-collapse-up:before{content:url(../images/up.png);}
+.icon-collapse-down:before{content:url(../images/down.png);}
 /*Home*/
 
 /*admin*/
@@ -81,4 +84,15 @@
     box-sizing: border-box;
 }
 
+.footerNavbar
+{
+    background: url(../../images/layout/bg/white_tiles.png);
+     border: none !important;
+}
+.footerContainer
+{
+    width: 88% !important;
+    border: none;
+    
+}
 

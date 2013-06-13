@@ -1,4 +1,6 @@
-﻿define(['core/app/couchPotatoService', 'core/services/commondataservice'], function (couchPotato) {
+﻿
+
+define(['core/app/couchPotatoService', 'core/services/commondataservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
       ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService',
@@ -51,6 +53,41 @@
           //    enableColumnReordering: true,
           //    columnDefs: columnDefs
           //};
+
+          var idIndex = 1;
+          $scope.filters = [{id:'1'}];
+          $scope.addFilter = function () {
+              idIndex++;
+              $scope.filters.splice($scope.filters.length, 0, { id: idIndex });
+          };
+          
+          $scope.removeFilter = function (index) {
+              $scope.filters.splice(index, 1);
+          };
+
+          $scope.expendCollapse = function() {
+              if ($('#collapseBtn').hasClass('icon-collapse-up')) {
+                  $('#collapseBtn').addClass('icon-collapse-down');
+                  $('#collapseBtn').removeClass('icon-collapse-up');
+                  $('#closeFilterLink').css('display', '');
+                  
+              } else {
+                  $('#collapseBtn').removeClass('icon-collapse-down');
+                  $('#collapseBtn').addClass('icon-collapse-up');
+                  $('#closeFilterLink').css('display', 'none');
+              }
+          };
+
+          $scope.closeFilterCollapse = function () {
+              $('#filterCollapse').css('display', 'none');
+          };
+
+          $scope.openFilterCollapse = function(fiterId) {
+              $('#filterCollapse').css('display', '');
+              if ($('#collapseBtn').hasClass('icon-collapse-up')) return;
+              $scope.expendCollapse();
+              $('#collapseBtn').click();
+          };
 
           $scope.delete = function () {
               if ($scope.mySelections.length > 0) {
