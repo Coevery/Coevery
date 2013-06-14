@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <div id="filterCollapse" class="accordion" style="margin-top: 40px;">
+        <div id="filterCollapse" class="accordion" style="margin-top: 40px; display:none;">
             <div class="accordion-group">
                 <div class="accordion-heading" style="background-color: rgb(255,237,135);">
                     <div class="accordion-toggle" style="cursor: auto;">
@@ -153,10 +153,10 @@
             </div>
         </div>
         <div class="row-fluid">
-            <section class="span12 widget">
-                @Display(Model.ListViewModel)
+            <section class="span12" style="margin-top: 10px;">
+                <section class="gridStyle" ng-grid="gridOptions"></section>
+                @*@Display(Model.ListViewModel)*@
             </section>
-
         </div>
     </section>
 </section>

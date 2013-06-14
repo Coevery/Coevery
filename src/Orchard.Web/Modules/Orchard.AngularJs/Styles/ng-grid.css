@@ -26,7 +26,8 @@
   position: relative;
   overflow: hidden;
   font-weight: bold;
-  background-color: inherit;
+  background-color: rgb(242,246,255);
+  border: 1px solid #d4d4d4;
 }
 .ngHeaderCell {
   border-right: 1px solid #d4d4d4;
@@ -293,13 +294,14 @@
 }
 .ngRow {
   position: absolute;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid rgb(210,210,210);
 }
 .ngRow.odd {
-  background-color: #fdfdfd;
+  /*background-color: #fdfdfd;*/
 }
 .ngRow.even {
-  background-color: #f3f3f3;
+  /*background-color: #f3f3f3;*/
+
 }
 .ngRow.selected {
   background-color: #c9dde1;
@@ -307,8 +309,8 @@
 .ngCell {
   overflow: hidden;
   position: absolute;
-  border-right: 1px solid #d4d4d4;
-  border-left: 1px solid #d4d4d4;
+  /*border-right: 1px solid #d4d4d4;
+  border-left: 1px solid #d4d4d4;*/
   top: 0;
   bottom: 0;
   background-color: inherit;

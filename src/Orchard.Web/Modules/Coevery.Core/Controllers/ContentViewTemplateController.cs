@@ -85,8 +85,8 @@ namespace Coevery.Core.Controllers
            // viewModel.Columns(this.GetViewColumns(viewId));
             viewModel.ModuleName(moduleName);
             viewModel.ViewId(viewId);
-            var model = GetListModel(viewId);
-            viewModel.ListViewModel(model);
+            //var model = GetListModel(viewId);
+            //viewModel.ListViewModel(model);
             return View(viewModel);
         }
 

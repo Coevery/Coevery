@@ -1,35 +1,71 @@
 ﻿
 
-define(['core/app/couchPotatoService', 'core/services/commondataservice'], function (couchPotato) {
+define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/nggriddataservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService) {
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'ngGridDataService',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService, ngGridDataService) {
           var moduleName = $rootScope.$stateParams.Module;
+
+          $scope.pagingOptions = {
+              pageNumber: [],
+              pageSize: 10,
+              totalServerItems: 0,
+              currentPage: 1
+          };
+          $scope.setPagingData = function (data, page, pageSize) {
+              var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+              var maxRow = data.length;
+              var maxPages = Math.ceil(maxRow / $scope.pagingOptions.pageSize);
+              $scope.pagingOptions.pageNumber = [];
+              for (var index = 0; index < maxPages; index++) {
+                  $scope.pagingOptions.pageNumber[index] = index + 1;
+              }
+              $scope.myData = pagedData;
+              $scope.pagingOptions.totalServerItems = data.length;
+              if (!$scope.$$phase) {
+                  $scope.$apply();
+              }
+          };
+
+          $scope.getPagedDataAsync = function (pageSize, page) {
+              setTimeout(function () {
+                  var records = commonDataService.query(function () {
+                      $scope.setPagingData(records, page, pageSize);
+                  }, function () {
+                      logger.error("Failed to fetched records for " + moduleName);
+                  });
+              }, 100);
+          };
+
+          $scope.$watch('pagingOptions', function (newVal, oldVal) {
+              if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+                  $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+              }
+          }, true);
+
+          $scope.$watch('filterOptions', function (newVal, oldVal) {
+              if (newVal !== oldVal) {
+                  $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+              }
+          }, true);
 
           $scope.gridOptions = {
               data: 'myData',
-              columnDefs: [{ field: "name", width: 120},
-                          { field: "age", width: 120 },
-                          { field: "birthday", width: 120 },
-                          { field: "salary", width: 120 }]
+              enablePaging: true,
+              showFooter: true,
+              pagingOptions: $scope.pagingOptions,
+              columnDefs: "myColumns"
           };
-          $scope.myData = [{ name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
-                          { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
-                          { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "50,000" },
-                          { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "40,000" },
-                          { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" },
-                          { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
-                          { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
-                          { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "40,000" },
-                          { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "50,000" },
-                          { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" },
-                          { name: "Moroni", age: 50, birthday: "Oct 28, 1970", salary: "60,000" },
-                          { name: "Tiancum", age: 43, birthday: "Feb 12, 1985", salary: "70,000" },
-                          { name: "Jacob", age: 27, birthday: "Aug 23, 1983", salary: "40,000" },
-                          { name: "Nephi", age: 29, birthday: "May 31, 2010", salary: "50,000" },
-                          { name: "Enos", age: 34, birthday: "Aug 3, 2008", salary: "30,000" }];
-          
+
+          var gridColumns = ngGridDataService.query(function () {
+              $scope.myColumns = gridColumns;
+          }, function () {
+              $scope.myColumns = [];
+          });
+
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+
           //var t = function (str) {
           //    var result = i18n.t(str);
           //    return result;
@@ -40,7 +76,7 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice'], funct
           //      { field: 'StatusCode', displayName: t('StatusCode') },
           //      { field: 'FirstName', displayName: t('FirstName') },
           //      { field: 'LastName', displayName: t('LastName') }];
-          
+
 
           //$scope.mySelections = [];
 
@@ -55,22 +91,22 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice'], funct
           //};
 
           var idIndex = 1;
-          $scope.filters = [{id:'1'}];
+          $scope.filters = [{ id: '1' }];
           $scope.addFilter = function () {
               idIndex++;
               $scope.filters.splice($scope.filters.length, 0, { id: idIndex });
           };
-          
+
           $scope.removeFilter = function (index) {
               $scope.filters.splice(index, 1);
           };
 
-          $scope.expendCollapse = function() {
+          $scope.expendCollapse = function () {
               if ($('#collapseBtn').hasClass('icon-collapse-up')) {
                   $('#collapseBtn').addClass('icon-collapse-down');
                   $('#collapseBtn').removeClass('icon-collapse-up');
                   $('#closeFilterLink').css('display', '');
-                  
+
               } else {
                   $('#collapseBtn').removeClass('icon-collapse-down');
                   $('#collapseBtn').addClass('icon-collapse-up');
@@ -82,7 +118,7 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice'], funct
               $('#filterCollapse').css('display', 'none');
           };
 
-          $scope.openFilterCollapse = function(fiterId) {
+          $scope.openFilterCollapse = function (fiterId) {
               $('#filterCollapse').css('display', '');
               if ($('#collapseBtn').hasClass('icon-collapse-up')) return;
               $scope.expendCollapse();
@@ -108,7 +144,7 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice'], funct
           $scope.edit = function (id) {
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
-          
+
           //$scope.createnewview = function () {
           //    $state.transitionTo('SubCreate', { Module: 'Metadata', SubModule: 'Projection', Id: $stateParams.Module });
           //};
