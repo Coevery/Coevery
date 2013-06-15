@@ -3,10 +3,11 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.FieldStorage;
 
 namespace Coevery.Fields.Fields {
-    public class NumericField : ContentField {
+    public class SelectField : ContentField {
 
-        public Decimal? Value {
-            get { return Storage.Get<Decimal?>(); }
+        public int? Value {
+            get { return Storage.Get<int?>(); }
+
             set { Storage.Set(value); }
         }
     }

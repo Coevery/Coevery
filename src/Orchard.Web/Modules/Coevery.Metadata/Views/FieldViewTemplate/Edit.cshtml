@@ -6,6 +6,7 @@
     //Script.Require("FieldDetailCtrl");
 
     var fieldSettingsPrefix = Model.FieldDefinition.Name + "Settings.";
+    var isSystemField = bool.Parse(Model.Settings[fieldSettingsPrefix + "IsSystemField"]);
 }
 @Display.FootScripts()
 
@@ -30,7 +31,7 @@
     <section id="main-content">
         <div class="row-fluid editview">
             @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                  new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()", @id="field-info-form" })) {
+                                                  new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()", @id = "field-info-form" })) {
                 @Html.ValidationSummary()
                 <fieldset>
                     <legend>
@@ -61,19 +62,43 @@
                         </label>
                         <div class="controls">
                             <label class="checkbox">
-                                @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]))
+                                @if (isSystemField) {
+                                    @Html.Hidden(fieldSettingsPrefix + "Required", Model.Settings[fieldSettingsPrefix + "Required"]);
+                                    @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]), new { disabled = "disabled" });
+                                }
+                                else {
+                                    @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]));
+                                }
                                 @T("Required")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]))
+                                @if (isSystemField) {
+                                    @Html.Hidden(fieldSettingsPrefix + "ReadOnly", Model.Settings[fieldSettingsPrefix + "ReadOnly"]);
+                                    @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]), new { disabled = "disabled" });
+                                }
+                                else {
+                                    @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]));
+                                }
                                 @("Read-Only")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]))
+                                @if (isSystemField) {
+                                    @Html.Hidden(fieldSettingsPrefix + "AlwaysInLayout", Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]);
+                                    @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]), new { disabled = "disabled" });
+                                }
+                                else {
+                                    @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]));
+                                }
                                 @T("Always In Layout")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]))
+                                @if (isSystemField) {
+                                    @Html.Hidden(fieldSettingsPrefix + "IsAudit", Model.Settings[fieldSettingsPrefix + "IsAudit"]);
+                                    @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]), new { disabled = "disabled" });
+                                }
+                                else {
+                                    @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]));
+                                }
                                 @T("IsAudit")
                             </label>
                         </div>
@@ -93,6 +118,7 @@
                     </legend>
                     @{Html.RenderTemplates(Model.Templates);}
                 </fieldset>
+                @Html.Hidden(fieldSettingsPrefix + "IsSystemField", Model.Settings[fieldSettingsPrefix + "IsSystemField"])
             }
         </div>
         <div class="row-fluid itemsview">

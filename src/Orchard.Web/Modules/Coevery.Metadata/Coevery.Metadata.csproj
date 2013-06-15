@@ -181,6 +181,7 @@
     <Compile Include="Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
+    <Compile Include="ViewModels\FieldDependencyViewModel.cs" />
     <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />

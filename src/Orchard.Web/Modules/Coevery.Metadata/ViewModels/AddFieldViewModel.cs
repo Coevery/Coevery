@@ -31,6 +31,7 @@ namespace Coevery.Metadata.ViewModels {
         public bool AlwaysInLayout { get; set; }
         public bool IsAudit { get; set; }
         public string HelpText { get; set; }
+        public bool AddInLayout { get; set; }
 
         /// <summary>
         /// The part to add the field to

@@ -36,7 +36,7 @@
                             @T("Field Label")
                         </label>
                         <div class="controls">
-                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus" })
+                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus", ng_model = "fieldLabel" })
                         </div>
                     </section>
                     <section class="control-group">
@@ -44,7 +44,7 @@
                             @T("Field Name")
                         </label>
                         <div class="controls">
-                            @Html.TextBoxFor(m => m.Name, new { @class = "span12" })
+                            @Html.TextBoxFor(m => m.Name, new { @class = "span12", ng_model = "fieldName" })
                         </div>
                     </section>
                     <section class="control-group">
@@ -53,19 +53,19 @@
                         </label>
                         <div class="controls">
                             <label class="checkbox">
-                                @Html.CheckBox(Model.FieldTypeName + "Settings.Required", Model.Required)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.Required", Model.Required, new { ng_model = "required" })
                                 @T("Required")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBox(Model.FieldTypeName + "Settings.ReadOnly", Model.ReadOnly)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.ReadOnly", Model.ReadOnly, new { ng_model = "readonly" })
                                 @T("Read-Only")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBox(Model.FieldTypeName + "Settings.AlwaysInLayout", Model.AlwaysInLayout)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.AlwaysInLayout", Model.AlwaysInLayout, new { ng_model = "alwaysInLayout" })
                                 @T("Always In Layout")
                             </label>
                             <label class="checkbox">
-                                @Html.CheckBox(Model.FieldTypeName + "Settings.IsAudit", Model.IsAudit)
+                                @Html.CheckBox(Model.FieldTypeName + "Settings.IsAudit", Model.IsAudit, new { ng_model = "isAudit" })
                                 @T("IsAudit")
                             </label>
                         </div>
@@ -75,7 +75,7 @@
                             @T("Help Text")
                         </label>
                         <div class="controls">
-                            @Html.TextArea(Model.FieldTypeName + "Settings.HelpText", Model.HelpText, new { @class = "span12" })
+                            @Html.TextArea(Model.FieldTypeName + "Settings.HelpText", Model.HelpText, new { @class = "span12", ng_model = "helpText" })
                         </div>
                     </section>
                     @Html.HiddenFor(m => m.FieldTypeName)
@@ -124,6 +124,10 @@
                             <input type="checkbox" disabled ng-model="alwaysInLayout" />
                             Always In Layout
                         </label>
+                        <label class="checkbox">
+                            <input type="checkbox" disabled ng-model="isAudit" />
+                            IsAudit
+                        </label>
                     </div>
                 </section>
                 <section class="control-group">
@@ -139,7 +143,7 @@
                     </label>
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" checked />
+                            @Html.CheckBoxFor(m => m.AddInLayout)
                             Add in layout
                         </label>
                     </div>
@@ -149,8 +153,9 @@
     </section>
 </section>
 
-<script type="text/javascript">
+<script>
     $(function () {
         $('.page-actions').affix({ offset: { top: 71 } });
+
     });
 </script>

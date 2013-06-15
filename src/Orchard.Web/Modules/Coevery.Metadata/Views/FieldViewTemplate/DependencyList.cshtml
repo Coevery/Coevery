@@ -1,5 +1,5 @@
 ﻿@using Orchard.Utility.Extensions
-@model Coevery.Metadata.ViewModels.AddFieldViewModel
+@model Coevery.Metadata.ViewModels.FieldDependencyViewModel
 
 @{
     Script.Include("controllers/dependencylistcontroller.js");
@@ -42,7 +42,10 @@
                             Control Field
                         </label>
                         <div class="controls">
-                            <select class="span12" ng-model="controlField" ng-options="c.name for c in controlFields">
+                            <select class="span12" ng-model="controlField">
+                                @foreach (var field in Model.ControlFields) {
+                                    @Html.SelectOption(field.Name, false, field.DisplayName)
+                                }
                             </select>
                         </div>
                     </section>
@@ -51,7 +54,10 @@
                             Dependent Field
                         </label>
                         <div class="controls">
-                            <select class="span12" ng-model="dependentField" ng-options="c.name for c in dependentFields">
+                            <select class="span12" ng-model="dependentField">
+                                @foreach (var field in Model.DependentFields) {
+                                    @Html.SelectOption(field.Name, false, field.DisplayName)
+                                }
                             </select>
                         </div>
                     </section>
@@ -63,7 +69,7 @@
             <div class="row-fluid">
                 <section class="span12 widget">
                     <section class="widget-content table-container">
-                        <table class="table">
+                        <table class="table table-condensed" style="border-collapse: separate">
                             <thead>
                                 <tr>
                                     <th>IsChina</th>
@@ -74,19 +80,31 @@
                             <tbody>
                                 <tr>
                                     <th rowspan="3">Sport</th>
-                                    <td>Basketball
-                                        <input type="checkbox">
+                                    <td>
+                                        <label class="checkbox">
+                                            <input type="checkbox">
+                                            Basketball
+                                        </label>
                                     </td>
-                                    <td>Basketball
-                                        <input type="checkbox">
+                                    <td>
+                                        <label class="checkbox">
+                                            <input type="checkbox">
+                                            Basketball
+                                        </label>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Football
-                                        <input type="checkbox">
+                                    <td>
+                                        <label class="checkbox">
+                                            <input type="checkbox">
+                                            Football
+                                        </label>
                                     </td>
-                                    <td>Football
-                                        <input type="checkbox">
+                                    <td>
+                                        <label class="checkbox">
+                                            <input type="checkbox">
+                                            Football
+                                        </label>
                                     </td>
                                 </tr>
                             </tbody>

@@ -20,15 +20,6 @@
     $scope.myData = [
         { ControlField: 'IsClosed', DependentField: 'Status', ModifiedBy: 'Zhang Junnan, 2013-5-15' }
     ];
-    $scope.controlFields = [
-        { name: 'IsClosed' },
-        { name: 'Rating' },
-        { name: 'Industry' }
-    ];
-    $scope.dependentFields = [
-        { name: 'Sport' },
-        { name: 'Country' }
-    ];
 
     $scope.add = function() {
         $('.step0').hide();

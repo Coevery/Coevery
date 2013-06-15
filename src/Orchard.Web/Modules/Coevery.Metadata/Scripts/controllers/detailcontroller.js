@@ -57,8 +57,17 @@
         { Name: 'Leads_Users', PrimaryEntity: 'Lead', RelatedEntity: 'User', Type: 'Many to Many' }
     ];
 
+    var deleteField;
     $scope.delete = function (fieldName) {
-        field.delete({ name: fieldName, parentname: name }, function () {
+        deleteField = fieldName;
+        $('#myModal').modal({
+            backdrop: 'static',
+            keyboard: true
+        });
+    };
+    $scope.deleteField = function () {
+        $('#myModal').modal('hide');
+        field.delete({ name: deleteField, parentname: name }, function () {
             $scope.getAllField();
             logger.success("Delete the field successful.");
         }, function () {
@@ -99,7 +108,8 @@
             $scope.item = metaData;
             $scope.myData = metaData.Fields;
             $.each($scope.myData, function () {
-                $.extend(this, { Type: 'System Field' });
+                var type = this.IsSystemField ? 'System Field' : 'User Field';
+                $.extend(this, { Type: type });
             });
             $scope.userFields = [
                 { DisplayName: 'Full Name', Name: 'FullName', FieldType: 'Input Field' }

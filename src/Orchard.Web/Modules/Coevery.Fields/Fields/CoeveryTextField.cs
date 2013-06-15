@@ -3,7 +3,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.FieldStorage;
 
 namespace Coevery.Fields.Fields {
-    public class InputField : ContentField {
+    public class CoeveryTextField : ContentField {
 
         public string Value {
             get { return Storage.Get<string>(); }

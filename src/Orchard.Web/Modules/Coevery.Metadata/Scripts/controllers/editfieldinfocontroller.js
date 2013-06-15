@@ -5,34 +5,47 @@
     $scope.selectDisplayOption = 'picklist';
     $('.step3').hide();
 
-    $scope.prev = function() {
+    $scope.prev = function () {
         $state.transitionTo('SubCreate', { Module: 'Metadata', Id: $stateParams.Id, SubModule: 'Field', View: 'Create' });
     };
-    
-    $scope.next = function() {
+
+    $scope.next = function () {
         $('.step2').hide();
         $('.step3').show();
     };
 
-    $scope.save = function() {
+    $scope.save = function () {
         var form = $element.find('#field-info-form');
         $.ajax({
             url: form.attr('action'),
             type: form.attr('method'),
-            data: form.serialize() + '&submit.Save=Save',
+            data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
             success: function (result) {
                 logger.success('success');
+            },
+            error: function () {
+                logger.error('Failed');
             }
         });
     };
 
-    $scope.back = function() {
+    $scope.back = function () {
         $('.step2').show();
         $('.step3').hide();
     };
 
-    $scope.exit = function() {
+    $scope.exit = function () {
         $state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
     };
+
+    $('#DisplayName').keyup(function () {
+        var names = $('#DisplayName').val().split(' ');
+        var fieldName = '';
+        $.each(names, function () {
+            fieldName += this;
+        });
+        $scope.fieldName = fieldName;
+        $scope.$apply();
+    });
 }
 //@ sourceURL=Coevery.Metadata/editfieldinfocontroller.js

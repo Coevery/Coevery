@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -131,7 +132,28 @@ namespace Coevery.Metadata.Controllers {
         }
 
         public ActionResult DependencyList(string id) {
-            return View();
+            var typeViewModel = _contentDefinitionService.GetType(id);
+            var controlFields = new List<EditPartFieldViewModel>();
+            var dependentFields = new List<EditPartFieldViewModel>();
+            foreach (var field in typeViewModel.Fields) {
+                switch (field.FieldDefinition.Name) {
+                    case "SelectField":
+                        controlFields.Add(field);
+                        dependentFields.Add(field);
+                        break;
+                    case "MultiSelectField":
+                        dependentFields.Add(field);
+                        break;
+                    case "BooleanField":
+                        controlFields.Add(field);
+                        break;
+                }
+            }
+            var viewModel = new FieldDependencyViewModel {
+                ControlFields = controlFields,
+                DependentFields = dependentFields
+            };
+            return View(viewModel);
         }
 
         public ActionResult EditFieldInfo(string id, string subId) {
@@ -144,7 +166,8 @@ namespace Coevery.Metadata.Controllers {
 
             var viewModel = new AddFieldViewModel {
                 FieldTypeName = subId,
-                TypeTemplates = templates
+                TypeTemplates = templates,
+                AddInLayout = true
             };
 
             return View(viewModel);
@@ -199,12 +222,8 @@ namespace Coevery.Metadata.Controllers {
             }
 
             if (!ModelState.IsValid) {
-                viewModel.Part = partViewModel;
-                viewModel.Fields = _contentDefinitionService.GetFields();
-
                 Services.TransactionManager.Cancel();
-
-                return View(viewModel);
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
             try {
@@ -217,12 +236,11 @@ namespace Coevery.Metadata.Controllers {
             }
 
             typeViewModel = _contentDefinitionService.GetType(id);
-            //_contentDefinitionService.AlterType(typeViewModel, this);
             _contentDefinitionService.AlterField(typeViewModel.Name, edited, this);
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-                return View(viewModel);
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
