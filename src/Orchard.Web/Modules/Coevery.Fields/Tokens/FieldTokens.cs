@@ -58,31 +58,31 @@ namespace Coevery.Fields.Tokens {
         }
 
         public void Evaluate(dynamic context) {
-            context.For<LinkField>("LinkField")
-                .Token("Text", (Func<LinkField, object>)(field => field.Text))
-                .Chain("Text", "Text", (Func<LinkField, object>)(field => field.Text))
-                .Token("Url", (Func<LinkField, object>)(field => field.Value))
-                .Chain("Url", "Url", (Func<LinkField, object>)(field => field.Value))
-                .Token("Target", (Func<LinkField, object>)(field => field.Target))
-                ;
+            //context.For<LinkField>("LinkField")
+            //    .Token("Text", (Func<LinkField, object>)(field => field.Text))
+            //    .Chain("Text", "Text", (Func<LinkField, object>)(field => field.Text))
+            //    .Token("Url", (Func<LinkField, object>)(field => field.Value))
+            //    .Chain("Url", "Url", (Func<LinkField, object>)(field => field.Value))
+            //    .Token("Target", (Func<LinkField, object>)(field => field.Target))
+            //    ;
 
-            context.For<DateTimeField>("DateTimeField")
-                .Token("Date", (Func<DateTimeField, object>)(d => d.DateTime.ToString(_dateTimeLocalization.ShortDateFormat.Text, _cultureInfo.Value)))
-                .Token("Time", (Func<DateTimeField, object>)(d => d.DateTime.ToString(_dateTimeLocalization.ShortTimeFormat.Text, _cultureInfo.Value)))
-                .Token("DateTime", (Func<DateTimeField, object>)(d => d.DateTime.ToString(_dateTimeLocalization.ShortDateFormat.Text + " " + _dateTimeLocalization.ShortTimeFormat.Text, _cultureInfo.Value)))
-                .Chain("DateTime", "Date", (Func<DateTimeField, object>)(field => field.DateTime))
-                ;
+            //context.For<DateTimeField>("DateTimeField")
+            //    .Token("Date", (Func<DateTimeField, object>)(d => d.DateTime.ToString(_dateTimeLocalization.ShortDateFormat.Text, _cultureInfo.Value)))
+            //    .Token("Time", (Func<DateTimeField, object>)(d => d.DateTime.ToString(_dateTimeLocalization.ShortTimeFormat.Text, _cultureInfo.Value)))
+            //    .Token("DateTime", (Func<DateTimeField, object>)(d => d.DateTime.ToString(_dateTimeLocalization.ShortDateFormat.Text + " " + _dateTimeLocalization.ShortTimeFormat.Text, _cultureInfo.Value)))
+            //    .Chain("DateTime", "Date", (Func<DateTimeField, object>)(field => field.DateTime))
+            //    ;
 
-            context.For<MediaPickerField>("MediaPickerField")
-                .Token("Url", (Func<MediaPickerField, object>)(field => field.Url))
-                .Chain("Url", "Url", (Func<MediaPickerField, object>)(field => field.Url))
-                .Token("AlternateText", (Func<MediaPickerField, object>)(field => field.AlternateText))
-                .Token("Class", (Func<MediaPickerField, object>)(field => field.Class))
-                .Token("Style", (Func<MediaPickerField, object>)(field => field.Style))
-                .Token("Alignment", (Func<MediaPickerField, object>)(field => field.Alignment))
-                .Token("Width", (Func<MediaPickerField, object>)(field => field.Width))
-                .Token("Height", (Func<MediaPickerField, object>)(field => field.Height))
-                ;
+            //context.For<MediaPickerField>("MediaPickerField")
+            //    .Token("Url", (Func<MediaPickerField, object>)(field => field.Url))
+            //    .Chain("Url", "Url", (Func<MediaPickerField, object>)(field => field.Url))
+            //    .Token("AlternateText", (Func<MediaPickerField, object>)(field => field.AlternateText))
+            //    .Token("Class", (Func<MediaPickerField, object>)(field => field.Class))
+            //    .Token("Style", (Func<MediaPickerField, object>)(field => field.Style))
+            //    .Token("Alignment", (Func<MediaPickerField, object>)(field => field.Alignment))
+            //    .Token("Width", (Func<MediaPickerField, object>)(field => field.Width))
+            //    .Token("Height", (Func<MediaPickerField, object>)(field => field.Height))
+            //    ;
         }
     }
 }

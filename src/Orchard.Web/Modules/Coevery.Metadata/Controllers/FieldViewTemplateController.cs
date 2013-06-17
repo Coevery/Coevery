@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -14,46 +15,43 @@ using Orchard.Localization;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 
-namespace Coevery.Metadata.Controllers
-{
-    public class FieldViewTemplateController : Controller, IUpdateModel
-    {
+namespace Coevery.Metadata.Controllers {
+    public class FieldViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+
         public FieldViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
-            IContentDefinitionManager contentDefinitionManager)
-        {
+            IContentDefinitionManager contentDefinitionManager,
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
+            _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             T = NullLocalizer.Instance;
         }
 
         public IOrchardServices Services { get; private set; }
         public Localizer T { get; set; }
 
-        public ActionResult List()
-        {
+        public ActionResult List() {
             return View();
         }
 
-        public ActionResult Edit(string id, string subId)
-        {
+        public ActionResult Edit(string id, string subId) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
                 return new HttpUnauthorizedResult();
 
             var typeViewModel = _contentDefinitionService.GetType(id);
-            if (typeViewModel == null)
-            {
+            if (typeViewModel == null) {
                 return HttpNotFound();
             }
 
             var fieldViewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == subId);
 
-            if (fieldViewModel == null)
-            {
+            if (fieldViewModel == null) {
                 return HttpNotFound();
             }
 
@@ -110,8 +108,7 @@ namespace Coevery.Metadata.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult Create(string id)
-        {
+        public ActionResult Create(string id) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
@@ -127,116 +124,123 @@ namespace Coevery.Metadata.Controllers
             //        return HttpNotFound();
             //}
 
-            var viewModel = new AddFieldViewModel 
-            {
+            var viewModel = new AddFieldViewModel {
                 Fields = _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName),
             };
 
             return View(viewModel);
         }
 
-        public ActionResult DependencyList(string id)
-        {
-            return View();
+        public ActionResult DependencyList(string id) {
+            var typeViewModel = _contentDefinitionService.GetType(id);
+            var controlFields = new List<EditPartFieldViewModel>();
+            var dependentFields = new List<EditPartFieldViewModel>();
+            foreach (var field in typeViewModel.Fields) {
+                switch (field.FieldDefinition.Name) {
+                    case "SelectField":
+                        controlFields.Add(field);
+                        dependentFields.Add(field);
+                        break;
+                    case "MultiSelectField":
+                        dependentFields.Add(field);
+                        break;
+                    case "BooleanField":
+                        controlFields.Add(field);
+                        break;
+                }
+            }
+            var viewModel = new FieldDependencyViewModel {
+                ControlFields = controlFields,
+                DependentFields = dependentFields
+            };
+            return View(viewModel);
         }
 
-        public ActionResult EditFieldInfo(string id, string subId)
-        {
+        public ActionResult EditFieldInfo(string id, string subId) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
-            _contentDefinitionService.AddType("EmptyTypeTemplate", "EmptyTypeTemplate");
-            _contentDefinitionService.AddPart(new CreatePartViewModel { Name = "EmptyPartTemplate" });
-            _contentDefinitionService.AddFieldToPart("EmptyFieldTemplate", subId + "Field", "EmptyPartTemplate");
-            _contentDefinitionService.AddPartToType("EmptyPartTemplate", "EmptyTypeTemplate");
-            var newTypeViewModel = _contentDefinitionService.GetType("EmptyTypeTemplate");
-            _contentDefinitionService.RemovePart("EmptyPartTemplate");
-            _contentDefinitionService.RemoveType("EmptyTypeTemplate", true);
+            var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId), string.Empty, new SettingsDictionary());
+            //var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId + "Display"), string.Empty, new SettingsDictionary());
+            var templates = _contentDefinitionEditorEvents.PartFieldEditor(definition);
 
-            var viewModel = new AddFieldViewModel
-            {
-                TypeTemplates = newTypeViewModel.Parts.First().PartDefinition.Fields.First().Templates
+            var viewModel = new AddFieldViewModel {
+                FieldTypeName = subId,
+                TypeTemplates = templates,
+                AddInLayout = true
             };
 
             return View(viewModel);
         }
 
-        [HttpPost, ActionName("Create")]
-        public ActionResult CreatePost(AddFieldViewModel viewModel, string id)
-        {
+        [HttpPost, ActionName("EditFieldInfo")]
+        public ActionResult CreatePost(AddFieldViewModel viewModel, string id) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
             var partViewModel = _contentDefinitionService.GetPart(id);
             var typeViewModel = _contentDefinitionService.GetType(id);
-            if (partViewModel == null)
-            {
+            if (partViewModel == null) {
                 // id passed in might be that of a type w/ no implicit field
-                if (typeViewModel != null)
-                {
+                if (typeViewModel != null) {
                     partViewModel = new EditPartViewModel { Name = typeViewModel.Name };
                     _contentDefinitionService.AddPart(new CreatePartViewModel { Name = partViewModel.Name });
                     _contentDefinitionService.AddPartToType(partViewModel.Name, typeViewModel.Name);
                 }
-                else
-                {
+                else {
                     return HttpNotFound();
                 }
             }
-
+            var edited = new EditPartFieldViewModel();
+            TryUpdateModel(edited);
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
             viewModel.Name = viewModel.Name ?? String.Empty;
 
-            if (String.IsNullOrWhiteSpace(viewModel.DisplayName))
-            {
+            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
             }
 
-            if (String.IsNullOrWhiteSpace(viewModel.Name))
-            {
+            if (String.IsNullOrWhiteSpace(viewModel.Name)) {
                 ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
             }
 
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase)))
-            {
+            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
                 ModelState.AddModelError("Name", T("A field with the same name already exists.").ToString());
             }
 
-            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter())
-            {
+            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
                 ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
             }
 
-            if (!String.Equals(viewModel.Name, viewModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase))
-            {
+            if (!String.Equals(viewModel.Name, viewModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase)) {
                 ModelState.AddModelError("Name", T("The technical name contains invalid characters.").ToString());
             }
 
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(viewModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase)))
-            {
+            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(viewModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase))) {
                 ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
             }
 
-            if (!ModelState.IsValid)
-            {
-                viewModel.Part = partViewModel;
-                viewModel.Fields = _contentDefinitionService.GetFields();
-
+            if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-
-                return View(viewModel);
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
-            try
-            {
+            try {
                 _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Services.Notifier.Information(T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message));
                 Services.TransactionManager.Cancel();
                 return Create(id);
+            }
+
+            typeViewModel = _contentDefinitionService.GetType(id);
+            _contentDefinitionService.AlterField(typeViewModel.Name, edited, this);
+
+            if (!ModelState.IsValid) {
+                Services.TransactionManager.Cancel();
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
@@ -244,13 +248,11 @@ namespace Coevery.Metadata.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties)
-        {
+        bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);
         }
 
-        void IUpdateModel.AddModelError(string key, LocalizedString errorMessage)
-        {
+        void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
         }
     }

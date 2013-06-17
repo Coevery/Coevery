@@ -15,3 +15,5 @@
         $state.transitionTo('List', { Module: 'Metadata' });
     };
 }
+
+//@ sourceURL=Coevery.Metadata/editcontroller.js

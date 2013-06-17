@@ -73,11 +73,9 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
-    <Compile Include="Drivers\MediaGalleryFieldDriver.cs" />
-    <Compile Include="Drivers\MediaPickerFieldDriver.cs" />
-    <Compile Include="Fields\MediaGalleryField.cs" />
+    <Compile Include="Drivers\SelectFieldDriver.cs" />
     <Compile Include="FieldEditWrapper.cs" />
-    <Compile Include="Handlers\MediaGalleryFieldHandler.cs" />
+    <Compile Include="Fields\SelectField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
   </ItemGroup>
@@ -100,88 +98,43 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\DefinitionTemplates\BooleanFieldSettings.cshtml" />
-    <Content Include="Views\DefinitionTemplates\InputFieldSettings.cshtml" />
-    <Content Include="Views\DefinitionTemplates\NumericFieldSettings.cshtml" />
-    <Content Include="Views\DefinitionTemplates\LinkFieldSettings.cshtml" />
-    <Content Include="Views\DefinitionTemplates\DateTimeFieldSettings.cshtml" />
-    <Content Include="Views\DefinitionTemplates\EnumerationFieldSettings.cshtml" />
+    <Content Include="Views\DefinitionTemplates\CoeveryTextFieldSettings.cshtml" />
     <Content Include="Views\EditorTemplates\Fields\Boolean.Edit.cshtml" />
-    <Content Include="Views\EditorTemplates\Fields\Input.Edit.cshtml" />
-    <Content Include="Views\EditorTemplates\Fields\Numeric.Edit.cshtml" />
-    <Content Include="Views\EditorTemplates\Fields\Link.Edit.cshtml" />
-    <Content Include="Views\EditorTemplates\Fields\DateTime.Edit.cshtml" />
-    <Content Include="Views\EditorTemplates\Fields\Enumeration.Edit.cshtml" />
+    <Content Include="Views\EditorTemplates\Fields\CoeveryText.Edit.cshtml" />
     <Content Include="Views\Fields\Boolean.cshtml" />
-    <Content Include="Views\Fields\Numeric.cshtml" />
-    <Content Include="Views\Fields\Link.cshtml" />
-    <Content Include="Views\Fields\DateTime.cshtml" />
-    <Content Include="Views\Fields\Enumeration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drivers\BooleanFieldDriver.cs" />
-    <Compile Include="Drivers\InputFieldDriver.cs" />
-    <Compile Include="Drivers\NumericFieldDriver.cs" />
-    <Compile Include="Drivers\DateTimeFieldDriver.cs" />
-    <Compile Include="Drivers\EnumerationFieldDriver.cs" />
-    <Compile Include="Drivers\LinkFieldDriver.cs" />
+    <Compile Include="Drivers\CoeveryTextFieldDriver.cs" />
     <Compile Include="Fields\BooleanField.cs" />
-    <Compile Include="Fields\InputField.cs" />
-    <Compile Include="Fields\MediaPickerField.cs" />
-    <Compile Include="Fields\NumericField.cs" />
-    <Compile Include="Fields\DateTimeField.cs" />
-    <Compile Include="Fields\EnumerationField.cs" />
-    <Compile Include="Fields\LinkField.cs" />
+    <Compile Include="Fields\CoeveryTextField.cs" />
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
-    <Compile Include="Settings\MediaGalleryFieldEditorEvents.cs" />
-    <Compile Include="Settings\MediaGalleryFieldSettings.cs" />
-    <Compile Include="Settings\InputFieldEditorEvents.cs" />
-    <Compile Include="Settings\InputFieldSettings.cs" />
-    <Compile Include="Settings\MediaPickerFieldEditorEvents.cs" />
-    <Compile Include="Settings\MediaPickerFieldSettings.cs" />
-    <Compile Include="Settings\NumericFieldEditorEvents.cs" />
-    <Compile Include="Settings\NumericFieldSettings.cs" />
-    <Compile Include="Settings\LinkFieldEditorEvents.cs" />
-    <Compile Include="Settings\LinkFieldSettings.cs" />
-    <Compile Include="Settings\DateTimeFieldEditorEvents.cs" />
-    <Compile Include="Settings\DateTimeFieldSettings.cs" />
-    <Compile Include="Settings\EnumerationFieldEditorEvents.cs" />
-    <Compile Include="Settings\EnumerationFieldSettings.cs" />
+    <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="Settings\SelectFieldEditorEvents.cs" />
+    <Compile Include="Settings\SelectFieldSettings.cs" />
+    <Compile Include="Settings\FieldSettings.cs" />
+    <Compile Include="Settings\CoeveryTextFieldEditorEvents.cs" />
+    <Compile Include="Settings\CoeveryTextFieldSettings.cs" />
     <Compile Include="Tokens\FieldTokens.cs" />
-    <Compile Include="ViewModels\MediaGalleryFieldViewModel.cs" />
-    <Compile Include="ViewModels\NumericFieldViewModel.cs" />
-    <Compile Include="ViewModels\DateTimeFieldViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Handlers\" />
     <Folder Include="Models\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\DefinitionTemplates\MediaPickerFieldSettings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\EditorTemplates\Fields\MediaPicker.Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Fields\MediaPicker.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Fields\Input.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\DefinitionTemplates\MediaGalleryFieldSettings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\EditorTemplates\Fields\MediaGallery.Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Fields\MediaGallery.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Fields\MediaGallery.SummaryAdmin.cshtml" />
+    <Content Include="Views\Fields\CoeveryText.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Wrapper.Script.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\BooleanFieldDisplaySettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\SelectFieldSettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

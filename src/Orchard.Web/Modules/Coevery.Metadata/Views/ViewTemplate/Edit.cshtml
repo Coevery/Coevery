@@ -22,8 +22,7 @@
         <div class="row-fluid">
             <div class="span12">
                 <div>
-                    @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" }))
-                    {
+                    @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" })) {
                         // todo: come up with real itemtype definitions and locations for said definitions
                         @Html.ValidationSummary()
                         <section class="control-group">
@@ -83,18 +82,25 @@
                                         <li><a href="" ng-click="editManyToMany()"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
                                     </ul>
                                 </div>
-                                @*<button class="btn" ng-disabled="mySelections.length == 0" ng-click="">
-                                    <i class="icol-page-white-edit"></i>@T("Edit")
-                                </button>
-                                <button class="btn" ng-disabled="mySelections.length == 0" ng-click="">
-                                    <i class="icol-cross"></i>@T("Delete")
-                                </button>*@
                             </div>
                             <section class="gridStyle" ng-grid="relationshipGrid"></section>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+    <section id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Confirm</h3>
+        </div>
+        <div class="modal-body">
+            <p>You really want to delete this field?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+            <button class="btn btn-primary" ng-click="deleteField()">Yes</button>
         </div>
     </section>
 </section>

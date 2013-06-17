@@ -2,13 +2,15 @@
 
 function PerspectiveDetailCtrl($rootScope, $scope, logger, $state, localize, $resource, $stateParams) {
     
-    var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
     $scope.mySelections = [];
-    //var metadata = MetadataContext($resource);
+    var perpectiveId = $stateParams.Id;
+    var navigation = NavigationContext($resource);
+    var perspective = PerspectiveContext($resource);
 
-    var metadataColumnDefs = [
-        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
-        { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName'), cellTemplate: cellTemplateString }];
+    var navigationColumnDefs = [
+        { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
+        { field: 'Id', displayName: localize.getLocalizedString('Id') },
+        { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName') }];
 
     $scope.gridOptions = {
         data: 'myData',
@@ -17,32 +19,59 @@ function PerspectiveDetailCtrl($rootScope, $scope, logger, $state, localize, $re
         showColumnMenu: true,
         enableColumnResize: true,
         enableColumnReordering: true,
-        //enableCellEdit: true,
-        columnDefs: metadataColumnDefs
+        columnDefs: navigationColumnDefs
     };
 
     $scope.exit = function() {
-        $state.transitionTo('SubList', { Module: 'Metadata',SubModule:'Perspective', Id: $stateParams.Id, View: 'List' });
+        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', View: 'List' });
     };
     
     $scope.addNavigationItem = function() {
-        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', Id: $stateParams.Id, View: 'EditNavigationItem' });
+        $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: 0, View: 'EditNavigationItem' });
     };
     
-    $scope.edit = function () {
-        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', Id: $stateParams.Id, View: 'EditNavigationItem' });
+    $scope.save = function () {
+        $.ajax({
+            url: myForm.action,
+            type: myForm.method,
+            data: $(myForm).serialize() + '&submit.Save=Save',
+            success: function (result) {
+                logger.success("Perspective Saved.");
+            }
+        });
     };
     
-    $scope.delete = function (entityName) {
-        logger.success("Delete  successful.");
+    $scope.edit = function (navigationId) {
+        $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: navigationId, View: 'EditNavigationItem' });
     };
     
-    $scope.getAllMetadata = function () {
-        var metadatas = [{ DisplayName: 'Home' }, { DisplayName: 'Leads' }, { DisplayName: 'Accounts' }];
-        $scope.myData = metadatas;
+    $scope.delete = function (navigationId) {
+        perspective.delete({ Id: navigationId }, function () {
+            $scope.getAllNavigationdata();
+            logger.success('Delete the ' + moduleName + ' successful.');
+        }, function () {
+            logger.error('Failed to delete the ' + moduleName);
+        });
+    };
+    
+    $scope.deletePerspective = function () {
+        navigation.delete({ Id: perpectiveId }, function () {
+            $scope.exit();
+        }, function () {
+            logger.error('Failed to delete the ' + moduleName);
+        });
+    };
+  
+    
+    $scope.getAllNavigationdata = function () {
+        var navigations = navigation.query({ Id: perpectiveId }, function () {
+            $scope.myData = navigations;
+        }, function () {
+            logger.error("Failed to fetched Metadata.");
+        });
     };
 
-    $scope.getAllMetadata();
+    $scope.getAllNavigationdata();
 }
 
 //@ sourceURL=Coevery.Metadata/perspectivedetailcontroller.js

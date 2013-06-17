@@ -9,7 +9,7 @@
     //];
 
     var fieldColumnDefs = [
-        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a></div>' },
+        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-hide="row.getProperty(\'IsSystemField\')" ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
         { field: 'DisplayName', displayName: 'Field Label' },
         { field: 'Name', displayName: 'Field Name' },
         { field: 'Type', displayName: 'Type' },
@@ -37,7 +37,7 @@
         enableColumnReordering: true,
         columnDefs: userFieldColumnDefs
     };
-    
+
     var relationshipColumnDefs = [
       { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a>Delete</a></div>' },
       { field: 'Name', displayName: 'Relationship Name' },
@@ -56,18 +56,24 @@
         { Name: 'Leads_Opportunities', PrimaryEntity: 'Lead', RelatedEntity: 'Opportunity', Type: 'One to Many' },
         { Name: 'Leads_Users', PrimaryEntity: 'Lead', RelatedEntity: 'User', Type: 'Many to Many' }
     ];
-   
-    //$scope.delete = function () {
-    //    if ($scope.mySelections.length > 0) {
-    //        field.delete({ name: $scope.mySelections[0].Name, parentname: name }, function () {
-    //            $scope.mySelections.pop();
-    //            $scope.getAllField();
-    //            logger.success("Delete the field successful.");
-    //        }, function () {
-    //            logger.error("Failed to delete the field.");
-    //        });
-    //    }
-    //};
+
+    var deleteField;
+    $scope.delete = function (fieldName) {
+        deleteField = fieldName;
+        $('#myModal').modal({
+            backdrop: 'static',
+            keyboard: true
+        });
+    };
+    $scope.deleteField = function () {
+        $('#myModal').modal('hide');
+        field.delete({ name: deleteField, parentname: name }, function () {
+            $scope.getAllField();
+            logger.success("Delete the field successful.");
+        }, function () {
+            logger.error("Failed to delete the field.");
+        });
+    };
 
     $scope.exit = function () {
         $state.transitionTo('List', { Module: 'Metadata' });
@@ -81,28 +87,29 @@
         $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Edit', SubId: fieldName });
     };
 
-    $scope.gotoDependency = function() {
+    $scope.gotoDependency = function () {
         $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'DependencyList' });
     };
-    $scope.editOneToMany = function() {
+    $scope.editOneToMany = function () {
         $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Relationship', View: 'EditOneToMany' });
     };
     $scope.editManyToMany = function () {
         $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Relationship', View: 'EditManyToMany' });
     };
-    $scope.listViewDesigner = function() {
+    $scope.listViewDesigner = function () {
         $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Projection', View: 'List' });
-    }; 
+    };
     $scope.formDesigner = function () {
         location.href = 'Metadata/FormDesignerViewTemplate/Index/' + name;
-    }; 
-    
+    };
+
     $scope.getAllField = function () {
         var metaData = metadata.get({ name: name }, function () {
             $scope.item = metaData;
             $scope.myData = metaData.Fields;
-            $.each($scope.myData, function() {
-                $.extend(this, { Type: 'System Field' });
+            $.each($scope.myData, function () {
+                var type = this.IsSystemField ? 'System Field' : 'User Field';
+                $.extend(this, { Type: type });
             });
             $scope.userFields = [
                 { DisplayName: 'Full Name', Name: 'FullName', FieldType: 'Input Field' }

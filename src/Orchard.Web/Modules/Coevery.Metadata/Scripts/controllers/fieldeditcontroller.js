@@ -23,6 +23,18 @@
         $state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
     };
 
+    $scope.save = function () {
+        var form = $element.find('#field-info-form');
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize() + '&submit.Save=Save',
+            success: function (result) {
+                logger.success('Success');
+            }
+        });
+    };
+
     $scope.add = function () {
 
     };
@@ -41,3 +53,5 @@
         $('.itemsview').hide();
     };
 }
+
+//@ sourceURL=Coevery.Metadata/fieldeditcontroller.js

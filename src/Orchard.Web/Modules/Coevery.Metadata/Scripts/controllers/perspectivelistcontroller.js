@@ -4,10 +4,11 @@ function PerspectiveListCtrl($rootScope, $scope, logger, $state, localize, $reso
     
     var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
     $scope.mySelections = [];
-    //var metadata = MetadataContext($resource);
+    var perspective = PerspectiveContext($resource);
 
-    var metadataColumnDefs = [
-        { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
+    var perspectiveColumnDefs = [
+        { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
+        { field: 'Id', displayName: 'Id' },
         { field: 'DisplayName', displayName: localize.getLocalizedString('DisplayName'), cellTemplate: cellTemplateString }];
 
     $scope.gridOptions = {
@@ -17,32 +18,35 @@ function PerspectiveListCtrl($rootScope, $scope, logger, $state, localize, $reso
         showColumnMenu: true,
         enableColumnResize: true,
         enableColumnReordering: true,
-        //enableCellEdit: true,
-        columnDefs: metadataColumnDefs
+        columnDefs: perspectiveColumnDefs
     };
 
-    $scope.delete = function (entityName) {
-        logger.success("Delete  successful.");
+    $scope.delete = function (id) {
+        perspective.delete({ Id: id }, function () {
+            $scope.getAllPerspective();
+            logger.success('Delete the ' + moduleName + ' successful.');
+        }, function () {
+            logger.error('Failed to delete the ' + moduleName);
+        });
     };
     
     $scope.addPerspective = function () {
-        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', Id: $stateParams.Id, View: 'CreatePerspective' });
+        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', Id: $stateParams.Id,subId:0, View: 'CreatePerspective' });
     };
     
-    $scope.edit = function (entityName) {
-        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', Id: $stateParams.Id, View: 'EditPerspective'  });
+    $scope.edit = function (id) {
+        $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', Id: id, View: 'EditPerspective' });
     };
 
 
-    $scope.getAllMetadata = function () {
-        var metadatas = [{DisplayName:'Sales'},{DisplayName:'Marketing'},{DisplayName:'Develop'}];
-        $scope.myData = metadatas;
+    $scope.getAllPerspective = function () {
+        var perspectives = perspective.query(function () {
+            $scope.myData = perspectives;
+        }, function () {
+            logger.error("Failed to fetched Metadata.");
+        });
     };
-    
-    $scope.getAllMetadata();
-    //$scope.addNavigationItem = function() {
-    //    $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Perspective', Id: $stateParams.Id, View: 'EditNavigationItem' });
-    //};
+    $scope.getAllPerspective();
 }
 
 //@ sourceURL=Coevery.Metadata/perspectivelistcontroller.js

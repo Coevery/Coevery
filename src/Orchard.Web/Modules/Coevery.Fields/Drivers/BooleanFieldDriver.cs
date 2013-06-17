@@ -15,6 +15,8 @@ namespace Coevery.Fields.Drivers {
         public BooleanFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
+            DisplayName = "Boolean";
+            Description = "Allows users to enter any combination of letters and numbers.";
         }
 
         public Localizer T { get; set; }
@@ -48,8 +50,8 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Editor(ContentPart part, BooleanField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
-                if (!settings.Optional && !field.Value.HasValue) {
-                    updater.AddModelError(field.Name, T("The field {0} is mandatory.", T(field.DisplayName)));
+                if (settings.Required && !field.Value.HasValue) {
+                    updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
                 }
             }
 
