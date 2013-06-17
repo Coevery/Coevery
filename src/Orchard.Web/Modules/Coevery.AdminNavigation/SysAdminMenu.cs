@@ -3,7 +3,7 @@ using Orchard.UI.Navigation;
 
 namespace Coevery.AdminNavigation
 {
-    public class CoeveryAdminMenu : INavigationProvider
+    public class SysAdminMenu : INavigationProvider
     {
         public Localizer T { get; set; }
         public string MenuName { get { return "CoeveryAdmin"; } }

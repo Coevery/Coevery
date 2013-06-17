@@ -9,11 +9,11 @@ using Orchard.Security;
 
 namespace Coevery.AdminNavigation
 {
-    public class CoeveryAdminFilter : FilterProvider, IAuthorizationFilter
+    public class SysAdminFilter : FilterProvider, IAuthorizationFilter
     {
         private readonly IAuthorizer _authorizer;
 
-        public CoeveryAdminFilter(IAuthorizer authorizer)
+        public SysAdminFilter(IAuthorizer authorizer)
         {
             _authorizer = authorizer;
             T = NullLocalizer.Instance;
@@ -37,12 +37,12 @@ namespace Coevery.AdminNavigation
         public static void Apply(RequestContext context)
         {
             // the value isn't important
-            context.HttpContext.Items[typeof(CoeveryAdminFilter)] = null;
+            context.HttpContext.Items[typeof(SysAdminFilter)] = null;
         }
 
         public static bool IsApplied(RequestContext context)
         {
-            return context.HttpContext.Items.Contains(typeof(CoeveryAdminFilter));
+            return context.HttpContext.Items.Contains(typeof(SysAdminFilter));
         }
 
         private static bool IsAdmin(AuthorizationContext filterContext)
@@ -62,22 +62,22 @@ namespace Coevery.AdminNavigation
 
         private static bool IsNameAdmin(AuthorizationContext filterContext)
         {
-            return string.Equals(filterContext.ActionDescriptor.ControllerDescriptor.ControllerName, "CoeveryAdmin",
+            return string.Equals(filterContext.ActionDescriptor.ControllerDescriptor.ControllerName, "SystemAdmin",
                                  StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsNameAdminProxy(AuthorizationContext filterContext)
         {
             return filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.StartsWith(
-                "AdminControllerProxy", StringComparison.InvariantCultureIgnoreCase) &&
-                filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.Length == "CoeveryAdminControllerProxy".Length + 32;
+                "SystemAdminControllerProxy", StringComparison.InvariantCultureIgnoreCase) &&
+                filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.Length == "SystemAdminControllerProxy".Length + 32;
         }
 
-        private static IEnumerable<CoeveryAdminAttribute> GetAdminAttributes(ActionDescriptor descriptor)
+        private static IEnumerable<SysAdminAttribute> GetAdminAttributes(ActionDescriptor descriptor)
         {
-            return descriptor.GetCustomAttributes(typeof(CoeveryAdminAttribute), true)
-                .Concat(descriptor.ControllerDescriptor.GetCustomAttributes(typeof(CoeveryAdminAttribute), true))
-                .OfType<CoeveryAdminAttribute>();
+            return descriptor.GetCustomAttributes(typeof(SysAdminAttribute), true)
+                .Concat(descriptor.ControllerDescriptor.GetCustomAttributes(typeof(SysAdminAttribute), true))
+                .OfType<SysAdminAttribute>();
         }
     }
 }

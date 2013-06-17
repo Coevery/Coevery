@@ -31,7 +31,7 @@ namespace Coevery.AdminNavigation {
             WorkContext workContext = _workContextAccessor.GetContext(filterContext);
 
             const string menuName = "CoeveryAdmin";
-            if (!CoeveryAdminFilter.IsApplied(filterContext.RequestContext)) {
+            if (!SysAdminFilter.IsApplied(filterContext.RequestContext)) {
                 return;
             }
 

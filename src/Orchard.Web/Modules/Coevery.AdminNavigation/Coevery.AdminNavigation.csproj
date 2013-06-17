@@ -41,13 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoeveryAdminMenu.cs" />
-    <Compile Include="CoeveryAdminAttribute.cs" />
-    <Compile Include="CoeveryAdminFilter.cs" />
-    <Compile Include="CoeveryAdminThemeSelector.cs" />
+    <Compile Include="SysAdminMenu.cs" />
+    <Compile Include="SysAdminAttribute.cs" />
+    <Compile Include="SysAdminFilter.cs" />
+    <Compile Include="SysAdminThemeSelector.cs" />
     <Compile Include="CoeveryMenuFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CoeveryThemeFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />

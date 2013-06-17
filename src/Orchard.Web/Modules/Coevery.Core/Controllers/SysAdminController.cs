@@ -7,9 +7,9 @@ using Coevery.AdminNavigation;
 
 namespace Coevery.Core.Controllers
 {
-    public class CoeveryAdminController : Controller
+    public class SysAdminController : Controller
     {
-        [CoeveryAdmin]
+        [SysAdmin]
         public ActionResult Index(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
