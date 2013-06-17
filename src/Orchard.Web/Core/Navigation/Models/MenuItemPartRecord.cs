@@ -3,5 +3,6 @@
 namespace Orchard.Core.Navigation.Models {
     public class MenuItemPartRecord : ContentPartRecord {
         public virtual string Url { get; set; }
+        public virtual string FeatureId { get; set; }
     }
 }

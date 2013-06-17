@@ -26,3 +26,20 @@ function UserViewContext($resource) {
         { Id: '@Id' },
         { update: { method: 'PUT' } });
 }
+
+function PerspectiveContext($resource) {
+    return $resource(
+        'api/metadata/Perspective/:Name:Id',
+        { Name: '@Name' },
+        { Id: '@Id' },
+        { update: { method: 'PUT' } });
+}
+
+
+function NavigationContext($resource) {
+    return $resource(
+        'api/metadata/Navigation/:Name:Id',
+        { Name: '@Name' },
+        { Id: '@Id' },
+        { update: { method: 'PUT' } });
+}

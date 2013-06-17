@@ -951,7 +951,7 @@
     font-style: normal;
     speak: none;
     -webkit-font-smoothing: antialiased;
-    content: "\f0dc";
+    /*content: "\f0dc";*/
     display: inline-block;
     width: 16px;
     height: 16px;

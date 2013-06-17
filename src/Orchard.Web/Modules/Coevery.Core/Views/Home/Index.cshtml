@@ -1,22 +1,41 @@
 ﻿@{
     Style.Require("pnotify");
-    Style.Require("ngGrid");
     Style.Require("Module");
-
+    Style.Require("ngGrid");
+    
     Script.Require("jQuery");
     Script.Require("jQueryUI");
     Script.Require("pnotify");
     Script.Require("angular");
     Script.Require("angularResource");
     
-    Script.Require("angular_UI_States");
+    Script.Require("angular_UI_Router");
+    Script.Require("angular_couchPotato");
     Script.Require("ngGrid");
-    Script.Include("i18n/resources-locale_" + WorkContext.CurrentCulture + ".js");
-    Script.Require("angular_Localize");
-    Script.Require("CoeveryApp");
-    Script.Require("Logger");
+    
+    Script.Require("require");
+    Script.Require("i18next");
+    Script.Include("directives/angularjs-i18next-directive.js");
 }
 
-<div ng-show="{{$state.transition}}">Loading...</div>
-<section  class="ng-cloak"  ui-view ng-animate="'fade'">
+<div data-ng-show="{{$state.transition}}">Loading...</div>
+<section class="ng-cloak" data-ui-view data-ng-animate="'fade'">
 </section>
+
+@using (Script.Foot()) {
+    <script type="text/javascript">
+    //<![CDATA[
+        (function() {
+            var load = requirejs.load;
+            requirejs.load = function(context, moduleId, url) {
+                //modify url here, then call original load
+                return load(context, moduleId, url);
+            };
+
+
+            //Now load code.
+            require(['@Url.Content("~/Modules/Coevery.Core/scripts/app/main.js")']);
+        }());
+    //]]>
+    </script>
+}

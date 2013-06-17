@@ -1,4 +1,4 @@
-﻿function UserViewDetailCtrl($scope, logger, $state, $stateParams, $resource) {
+﻿function UserViewDetailCtrl($scope, logger, $state, $stateParams, $resource, $compile) {
     var name = $stateParams.Id;
     var metadata = UserViewContext($resource);
     var isNew = (name || name == '') ? false : true;
@@ -7,38 +7,33 @@
     
     $scope.gridOptions = {
         data: 'myData',
-        //enableCellSelection: true,
-        //enableRowSelection: false,
-        //showSelectionCheckbox: true,
         selectedItems: $scope.mySelections,
         multiSelect: false,
         showColumnMenu: true,
         enableColumnResize: true,
         enableColumnReordering: true,
-        //enableCellEdit: true,
         columnDefs: 'filedCoumns'
     };
 
     $scope.preview = function () {
-        var obj = picklistobj;
-       
-        var columns = obj.children();
-        $scope.filedCoumns = [];
+        var selectedFieldItems = $('#sortable >li');
         var index = 0;
-        columns.each(function (k, v) {
-            var fieldName = $(v).text();
-            
-            var selected = $(v).attr("selected");
-            if (selected) {
-                
-                $scope.filedCoumns[index] = { field: fieldName, displayName: fieldName };
-            }
+        $scope.filedCoumns = [];
+        selectedFieldItems.each(function (k, v) {
+            var fieldName = v.id.replace('SelectedField', '');
+            $scope.filedCoumns[index] = { field: fieldName, displayName: fieldName };
             index++;
         });
-       // $scope.myData = new Array();
     };
 
     $scope.save = function () {
+        var selectedFieldItems = $('#sortable >li');
+        var pickListValue = '';
+        selectedFieldItems.each(function (k, v) {
+            var fieldName = v.id.replace('SelectedField', '');
+            pickListValue += fieldName + '$';
+        });
+        $('#picklist')[0].value = pickListValue;
         $.ajax({
             url: myForm.action,
             type: myForm.method,
@@ -57,45 +52,25 @@
         $state.transitionTo('SubList', { Module: 'Metadata', SubModule: 'Projection', View: 'List', Id: $stateParams.Id });
     };
 
-    function getFieldName(fieldId) {
-
-        return "LeadName";
-    }
- 
-   
-    $scope.addfield = function (fieldId) {
-        var fieldName = getFieldName(fieldId);
-        var addFieldId = fieldId + 'Add';
-        var elementTemp = '<li id ="{1}" class="ui-state-default "><span class="icon-th-list"></span>{0}<span class="fieldbtn"><a  href="javascript:void(0);"  ng-click="removefield(\'{1}\')" >Remove</a></span></li>';
-        var element = $.format(elementTemp, fieldName, addFieldId);
-        $('#sortable').append(element);
-      
+    $scope.addfield = function (fieldName) {
+        var elementTemp = '<li id="SelectedField'+fieldName+'" class="ui-state-default">'+fieldName+'';
+        elementTemp += '<div class="pull-right">';
+        elementTemp += '<button class="btn-link" type="button"  ng-click="removefield(\''+fieldName+'\')">Remove</button>';
+        elementTemp += '</div>';
+        elementTemp += '</li>';
+        $compile(elementTemp)($scope).appendTo($('#sortable'));
+        $('#UnSelectedLabelField' + fieldName).removeClass('label hide');
+        $('#UnSelectedLabelField' + fieldName).addClass('label');
+        $('#UnSelectedButtonField' + fieldName).css('display', 'none');
     };
     
-    $scope.removefield = function (fieldId) {
-        $('#' + fieldId).remove();
+    $scope.removefield = function (fieldName) {
+        $('#SelectedField' + fieldName).remove();
+        $('#UnSelectedLabelField' + fieldName).removeClass('label');
+        $('#UnSelectedLabelField' + fieldName).addClass('label hide');
+        $('#UnSelectedButtonField' + fieldName).css('display', 'block');
     };
     
 }
-
-
-$.format = function (source, params) { 
-    if (arguments.length == 1) 
-        return function () { 
-            var args = $.makeArray(arguments); 
-            args.unshift(source); 
-            return $.format.apply(this, args); 
-        }; 
-    if (arguments.length > 2 && params.constructor != Array) { 
-        params = $.makeArray(arguments).slice(1); 
-    } 
-    if (params.constructor != Array) { 
-        params = [params]; 
-    } 
-    $.each(params, function (i, n) { 
-        source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n); 
-    }); 
-    return source; 
-}; 
 
 //@ sourceURL=Coevery.Metadata/userviewDetailcontroller.js

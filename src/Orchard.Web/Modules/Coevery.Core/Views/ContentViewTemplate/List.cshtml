@@ -1,27 +1,18 @@
 ﻿@using System.ComponentModel
 @using System.Text
 @using Orchard.ContentManagement.MetaData.Models
-@using Orchard.Projections.Models
-
-@{
-    Script.Require("CommonContext");
-    Script.Require("CommonListController");
-}
 
 @{
     ContentTypeDefinition typeDefinition = Model.TypeDefinition;
 }
 
-@Display.FootScripts()
-
-
-<section ng-controller="CommonCtrl">
+<section data-ng-controller="GeneralListCtrl">
     <section id="main-content" style="margin-top: 10px;">
         <div style="float: left;">
-            <button class="btn btn-success" ng-click="add()">
+            <button class="btn btn-success" data-ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;@T("Add")
             </button>
-            <button class="btn" ng-click="getAll()">
+            <button class="btn" data-ng-click="getAll()">
                 <i class="icon-refresh"></i>&nbsp;@T("Refresh")
             </button>
         </div>
@@ -32,22 +23,23 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" style="">
-                    <li title="" style="cursor: pointer;"><a>创建过滤器</a>
+
+                    <li title="" style="cursor: pointer;">
+                        <a ng-click="openFilterCollapse(1)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
+                    </li>
+                    <li title="" style="cursor: pointer;">
+                        <a ng-click="openFilterCollapse(2)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
+                    </li>
+                    <li title="" style="cursor: pointer;">
+                        <a ng-click="openFilterCollapse(3)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                        </a>
                     </li>
                     <li title="">
                         <hr style="margin: 0px;" />
                     </li>
-                    <li title="" style="cursor: pointer;">
-                        <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                        </a>
-                    </li>
-                    <li title="" style="cursor: pointer;">
-                        <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                        </a>
-                    </li>
-                    <li title="" style="cursor: pointer;">
-                        <a>价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                        </a>
+                    <li title="" style="cursor: pointer;"><a>创建过滤器</a>
                     </li>
                 </ul>
             </div>
@@ -83,80 +75,75 @@
             </div>
         </div>
 
-        <div id="demo-accordion-01" class="accordion" style="margin-top: 40px;">
+        <div id="filterCollapse" class="accordion" style="margin-top: 40px; display:none;">
             <div class="accordion-group">
-                <div class="accordion-heading">
+                <div class="accordion-heading" style="background-color: rgb(255,237,135);">
                     <div class="accordion-toggle" style="cursor: auto;">
-                        <a data-toggle="collapse"
-                           onclick="if($('#collapseBtn').hasClass('icon-minus')){$('#collapseBtn').addClass('icon-plus');
-     $('#collapseBtn').removeClass('icon-minus');} else{$('#collapseBtn').removeClass('icon-plus');$('#collapseBtn').addClass('icon-minus'); }"
-                           data-parent="#demo-accordion-01" href="#collapse-01">
-                            <span class="btn"><i id="collapseBtn" class="icon-plus"></i></span>
+                        <a  style="background: transparent;" data-toggle="collapse"
+                            
+                            data-parent="#demo-accordion-01" href="#collapse-01">
+                            <span class="btn" style="background: transparent;" ng-click="expendCollapse()"><i id="collapseBtn" class="icon-collapse-down"></i></span>
                         </a>
-                        <span>过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
-                        <span><a href="#">Close</a></span>
+                        <span style="background: transparent;">过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
+                        <span style="background: transparent;"><a id="closeFilterLink" ng-click="closeFilterCollapse()" style="cursor:pointer; background: transparent; color: rgb(51,84,127);">Close</a></span>
                     </div>
 
                 </div>
                 <div id="collapse-01" class="collapse">
-                    <div class="accordion-inner">
-                        <div class="widget">
-                            <div class="widget-content form-container">
+                    <div class="accordion-inner" style="padding: 0px;">
+                        <div class="widget" style="margin-bottom: 0px;">
+                            <div class="widget-content form-container" style="background-color: rgb(255,246,195);">
                                 <form class="form-horizontal">
+                                    
+                                    <div ng-repeat="filter in filters" id="input_cloning_template{{filter.id}}" class="control-group" idtemplate="input_cloning_template">
+                                        <div class="btn-toolbar" style="margin: 0px;">
+                                            <div class="btn-group">
+                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                                    <span>总费用{{filter.id}}</span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" style="">
+                                                    <li title="" style="cursor: pointer;">态状</li>
+                                                    <li title="" style="cursor: pointer;">总费用</li>
+                                                </ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                                    <span>></span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" style="">
+                                                    <li title="" style="cursor: pointer;">></li>
+                                                    <li title="" style="cursor: pointer;"><</li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" id="input_cloning_0_input" name="text[0]" idtemplate="input_cloning_%23index%23_input" nametemplate="text%5B%23index%23%5D">
+                                        </div>
+                                        <span class="close" id="input_cloning_remove_current" ng-click="removeFilter($index)" style="display: inline;">×</span>
+                                    </div>
+
                                     <div class="control-group">
-                                        <label class="control-label" for="userDropdown">VisableTo</label>
-                                        <div class="controls">
-                                            <select id="userDropdown" class="span4">
+                                        <div style="float: left;">
+                                            <span class="btn btn-mini" id="input_cloning_add" ng-click="addFilter()"><i class="icon-plus"></i></span><span>&nbsp;Add another</span>
+                                        </div>
+                                        <div style="margin-left: 10px; float: left;">
+
+                                            <label class="checkbox">
+                                                <input type="checkbox">
+                                                Save Filter
+                                            </label>
+                                        </div>
+
+                                        <div style="margin-left: 10px; float: left;">
+                                            <label class="span1" style="padding-right: 8px;">VisableTo</label>
+                                            <select id="userDropdown" class="span2" style="margin-top: -3px;">
                                                 <option>Me</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <fieldset id="input_cloning" class="sheepit-form" style="display: block;">
-                                        <legend>Filters   
-                                        </legend>
-                                        <div id="input_cloning_template0" class="control-group" idtemplate="input_cloning_template">
-                                            <div class="btn-toolbar" style="margin: 0px;">
-                                                <div class="btn-group">
-                                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                        <span>总费用</span>
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" style="">
-                                                        <li title="" style="cursor: pointer;">态状</li>
-                                                        <li title="" style="cursor: pointer;">总费用</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="btn-group">
-                                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                        <span>></span>
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" style="">
-                                                        <li title="" style="cursor: pointer;">></li>
-                                                        <li title="" style="cursor: pointer;"><</li>
-                                                    </ul>
-                                                </div>
-                                                <input type="text" id="input_cloning_0_input" name="text[0]" idtemplate="input_cloning_%23index%23_input" nametemplate="text%5B%23index%23%5D">
-                                            </div>
-                                            <span class="close" id="input_cloning_remove_current" style="display: inline;">×</span>
-                                        </div>
-
-                                        <div class="control-group">
-                                            <div style="float: left;">
-                                                <span class="btn btn-mini" id="input_cloning_add" style=""><i class="icon-plus"></i></span><span>Add another</span>
-                                            </div>
-                                            <div style="margin-left: 10px; float: left;">
-
-                                                <label class="checkbox">
-                                                    <input type="checkbox">
-                                                    Save Filter
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <div class="form-actions" style="height: 20px; vertical-align: middle;">
+                                    <div style="margin: 0 0 5px 20px;">
                                         <button type="submit" class="btn btn-primary">Apply</button>
-                                        <button class="btn" type="reset">Close</button>
+                                        <button class="btn" ng-click="closeFilterCollapse()">Close</button>
                                     </div>
                                 </form>
                             </div>
@@ -166,10 +153,10 @@
             </div>
         </div>
         <div class="row-fluid">
-            <section class="span12 widget">
-                @Display(Model.ListViewModel)
+            <section class="span12" style="margin-top: 10px;">
+                <section class="gridStyle" ng-grid="gridOptions"></section>
+                @*@Display(Model.ListViewModel)*@
             </section>
-
         </div>
     </section>
 </section>

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using System.ComponentModel
+@model Coevery.Metadata.ViewModels.NavigationViewModel
+@{
     Style.Include("perspective/jquery.minicolors.css");
     Script.Include("perspective/jquery.minicolors.js");
     Script.Include("perspective/bootstrap-fileinput.min.js");
@@ -13,30 +15,25 @@
 
 <section ng-controller="NavigationItemDetailCtrl">
     <div class="page-actions">
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
         <button type="button" class="btn" ng-click="exit()">Exit</button>
     </div>
     <section id="main-content">
         <div class="row-fluid">
-            <form class="form-horizontal">
+            @using (Html.BeginFormAntiForgeryPost(Url.Action("EditNavigationItem", new {perspectiveId=Model.PrespectiveId,navigationId=Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                                                  FormMethod.Post,
+                                                  new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
+            {
                 <section class="control-group">
-                    <label class="control-label">
-                        Perspective
-                    </label>
+                    <label class="control-label" enable="false" for="Title">Title</label>
                     <div class="controls">
-                        <select class="span12">
-                            <option>Please select one perspective</option>
-                        </select>
+                        @Html.TextBoxFor(m => m.Title, new {@readonly = "readonly", @class = "span12" })
                     </div>
                 </section>
-                <section class="control-group">
-                    <label class="control-label">
-                        Entity
-                    </label>
+                 <section class="control-group">
+                    <label class="control-label" enable="false" for="Title">Title</label>
                     <div class="controls">
-                        <select class="span12">
-                            <option>Please select one entity</option>
-                        </select>
+                        @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
                     </div>
                 </section>
                 <section class="control-group">
@@ -52,7 +49,7 @@
                     <div class="controls">
                         <input type="file" id="input04" data-provide="fileinput">
                     </div>
-                </section>
+                </section>@*
                 <section class="control-group">
                     <label class="control-label" for="description">
                         Description
@@ -60,8 +57,9 @@
                     <div class="controls">
                         <textarea class="span12" id="description" ng-model="description"></textarea>
                     </div>
-                </section>
-            </form>
+                </section>*@
+            }
+
         </div>
     </section>
 </section>
