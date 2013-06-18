@@ -140,6 +140,8 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
+    <Content Include="Views\CreateAction.cshtml" />
+    <Content Include="Views\GridLink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />

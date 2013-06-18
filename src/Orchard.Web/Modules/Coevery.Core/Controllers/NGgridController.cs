@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Routing;
 using Coevery.Core.Services;
 using Newtonsoft.Json.Linq;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.DisplayManagement.Implementation;
 using Orchard.Forms.Services;
 using Orchard.Localization;
+using Orchard.Mvc.ViewEngines;
+using Orchard.Mvc.ViewEngines.ThemeAwareness;
 using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Models;
 using Orchard.Projections.Services;
@@ -23,19 +30,49 @@ namespace Coevery.Core.Controllers
     public class NGgridController :ApiController
     {
         private IContentManager _contentManager;
+        private readonly IDisplayManager _displayManager;
         private readonly IViewPartService _projectionService;
-
+        private readonly ILayoutAwareViewEngine _layoutAwareViewEngine;
+        private readonly IWorkContextAccessor _workContextAccessor;
         public NGgridController(IContentManager iContentManager,
             IOrchardServices orchardServices,
-            IViewPartService projectionService)
+            ILayoutAwareViewEngine layoutAwareViewEngine,
+            IViewPartService projectionService, 
+            IDisplayManager displayManager, 
+            IWorkContextAccessor workContextAccessor)
         {
             _contentManager = iContentManager;
             Services = orchardServices;
+            _layoutAwareViewEngine = layoutAwareViewEngine;
             _projectionService = projectionService;
+            _displayManager = displayManager;
+            _workContextAccessor = workContextAccessor;
             T = NullLocalizer.Instance;
         }
         public Localizer T { get; set; }
         public IOrchardServices Services { get; private set; }
+
+        class EmptyController : ControllerBase
+        {
+            protected override void ExecuteCore() { }
+        }
+
+
+        private string GetGridTemplate(string viewName, ViewDataDictionary viewData)
+        {
+            HttpContextBase contextBase = new HttpContextWrapper(HttpContext.Current);
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", "controller");
+            routeData.DataTokens.Add("IWorkContextAccessor", _workContextAccessor);
+            var controllerContext = new System.Web.Mvc.ControllerContext(contextBase, routeData, new EmptyController());
+            var razorViewResult = _layoutAwareViewEngine.FindView(controllerContext, viewName, string.Empty, false);
+            var writer = new StringWriter();
+            var viewContext = new ViewContext(controllerContext, razorViewResult.View,
+                                              new ViewDataDictionary(viewData), new TempDataDictionary(), writer);
+            viewContext.GetWorkContext();
+            razorViewResult.View.Render(viewContext, writer);
+            return writer.ToString();
+        }
 
         // GET api/leads/lead
         public IEnumerable<object> Get(string id)
@@ -49,11 +86,9 @@ namespace Coevery.Core.Controllers
 
             int viewId = _projectionService.GetProjectionId(id);
             var columns = GetViewColumns(viewId);
-            int index = 0;
+            string actionTemplate = GetGridTemplate("CreateAction",new ViewDataDictionary());
+
             List<object> ngColumns = new List<object>();
-            string actionTemplate = "<div style=\"margin-top: 5px;margin-left: 5px;\"><span class=\"span2\">"+
-                "<a ng-click=\"edit(row.getProperty(col.field))\">Eidt</a></span><span class=\"span2\"></span>"+
-                "<span class=\"span2\"><a ng-click=\"delete(row.getProperty(col.field))\">Remove</a></span></div>";
             ngColumns.Add(new { field = "ContentId", displayName = "Actions", width = 150, cellTemplate = actionTemplate });
             ngColumns.Add(new { field = "ContentId", displayName = T("Id").Text });
 
@@ -62,7 +97,9 @@ namespace Coevery.Core.Controllers
             {
                 moduleName = pluralService.Pluralize(moduleName);
             }
-            string cellVarTemp = "<div><a href =\"Coevery#/" + moduleName + "/{{{{row.entity.ContentId}}}}\" class=\"ngCellText\">{{{{row.entity.{0}}}}}</a></div>';";
+            ViewDataDictionary viewData = new ViewDataDictionary();
+            viewData.Add("ModuleName", moduleName);
+            string cellVarTemp = GetGridTemplate("GridLink", viewData); //"<div><a href =\"Coevery#/" + moduleName + "/{{{{row.entity.ContentId}}}}\" class=\"ngCellText\">{{{{row.entity.{0}}}}}</a></div>';";
             foreach (var col in columns)
             {
                 string cellTemplae = string.Empty;
@@ -70,7 +107,7 @@ namespace Coevery.Core.Controllers
                     cellTemplae = string.Format(cellVarTemp, col.Description);
                 }
                 ngColumns.Add(new { field = col.Description, displayName = T(col.Description).Text, cellTemplate = cellTemplae });
-                index++;
+
             }
             return ngColumns;
         }
