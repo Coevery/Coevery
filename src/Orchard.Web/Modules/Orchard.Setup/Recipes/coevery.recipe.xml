@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0"?>
 <Orchard>
   <Recipe>
-    <Name>Lead</Name>
+    <Name>Coevery</Name>
     <Description>A recipe providing the features for CRM Leads.</Description>
     <Author>Coevery work Team</Author>
     <WebSite>http://orchardproject.net</WebSite>
-    <Tags>Lead</Tags>
+    <Tags>Coevery</Tags>
     <Version>1.0</Version>
   </Recipe>
 
