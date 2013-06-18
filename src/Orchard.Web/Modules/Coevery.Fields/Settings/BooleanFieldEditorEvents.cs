@@ -7,7 +7,7 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
-    public class BooleanFieldListModeEvents : ContentDefinitionEditorEventsBase {
+    public class BooleanFieldListModeEvents : FieldEditorEvents {
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "BooleanField") {
@@ -27,13 +27,7 @@ namespace Coevery.Fields.Settings {
 
             var model = new BooleanFieldSettings();
             if (updateModel.TryUpdateModel(model, "BooleanFieldSettings", null, null)) {
-                model.HelpText = model.HelpText ?? string.Empty;
-                builder.WithSetting("BooleanFieldSettings.HelpText", model.HelpText);
-                builder.WithSetting("BooleanFieldSettings.Required", model.Required.ToString());
-                builder.WithSetting("BooleanFieldSettings.ReadOnly", model.ReadOnly.ToString());
-                builder.WithSetting("BooleanFieldSettings.AlwaysInLayout", model.AlwaysInLayout.ToString());
-                builder.WithSetting("BooleanFieldSettings.IsSystemField", model.IsSystemField.ToString());
-                builder.WithSetting("BooleanFieldSettings.IsAudit", model.IsAudit.ToString());
+                UpdateSettings(model, builder, "BooleanFieldSettings");
                 builder.WithSetting("BooleanFieldSettings.OnLabel", model.OnLabel);
                 builder.WithSetting("BooleanFieldSettings.OffLabel", model.OffLabel);
                 builder.WithSetting("BooleanFieldSettings.SelectionMode", model.SelectionMode.ToString());

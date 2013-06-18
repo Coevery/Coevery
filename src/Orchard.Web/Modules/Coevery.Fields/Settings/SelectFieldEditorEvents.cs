@@ -7,7 +7,7 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
-    public class SelectFieldListModeEvents : ContentDefinitionEditorEventsBase {
+    public class SelectFieldListModeEvents : FieldEditorEvents {
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "SelectField") {
@@ -23,12 +23,7 @@ namespace Coevery.Fields.Settings {
 
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
-                builder.WithSetting("SelectFieldSettings.HelpText", model.HelpText);
-                builder.WithSetting("SelectFieldSettings.Required", model.Required.ToString());
-                builder.WithSetting("SelectFieldSettings.ReadOnly", model.ReadOnly.ToString());
-                builder.WithSetting("SelectFieldSettings.AlwaysInLayout", model.AlwaysInLayout.ToString());
-                builder.WithSetting("SelectFieldSettings.IsSystemField", model.IsSystemField.ToString());
-                builder.WithSetting("SelectFieldSettings.IsAudit", model.IsAudit.ToString());
+                UpdateSettings(model, builder, "SelectFieldSettings");
             }
 
             yield return DefinitionTemplate(model);

@@ -76,6 +76,7 @@
     <Compile Include="Drivers\SelectFieldDriver.cs" />
     <Compile Include="FieldEditWrapper.cs" />
     <Compile Include="Fields\SelectField.cs" />
+    <Compile Include="Migrations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
   </ItemGroup>
@@ -108,9 +109,11 @@
     <Compile Include="Drivers\CoeveryTextFieldDriver.cs" />
     <Compile Include="Fields\BooleanField.cs" />
     <Compile Include="Fields\CoeveryTextField.cs" />
+    <Compile Include="Records\OptionItemRecord.cs" />
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="Settings\FieldEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldSettings.cs" />
     <Compile Include="Settings\FieldSettings.cs" />

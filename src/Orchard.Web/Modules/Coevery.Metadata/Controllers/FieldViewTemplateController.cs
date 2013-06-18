@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Coevery.Fields.Records;
 using Coevery.Fields.Settings;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
@@ -12,6 +13,8 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard;
 using Orchard.ContentManagement.ViewModels;
 using Orchard.Core.Contents.Controllers;
+using Orchard.Core.Settings.Metadata.Records;
+using Orchard.Data;
 using Orchard.Localization;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
@@ -21,16 +24,22 @@ namespace Coevery.Metadata.Controllers {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+        private readonly IRepository<OptionItemRecord> _optionItemRepository;
+        private readonly IRepository<ContentPartFieldDefinitionRecord> _partFieldDefinitionRepository;
 
         public FieldViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents,
+            IRepository<OptionItemRecord> optionItemRepository,
+            IRepository<ContentPartFieldDefinitionRecord> partFieldDefinitionRepository) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _optionItemRepository = optionItemRepository;
+            _partFieldDefinitionRepository = partFieldDefinitionRepository;
             T = NullLocalizer.Instance;
         }
 
@@ -44,6 +53,17 @@ namespace Coevery.Metadata.Controllers {
         public ActionResult Edit(string id, string subId) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
                 return new HttpUnauthorizedResult();
+
+            //var fieldDefinition = _partFieldDefinitionRepository.Get(f => f.Name == "Sport");
+            //var item = new OptionItemRecord {
+            //    Value = "Baseball",
+            //    ContentPartFieldDefinitionRecord = fieldDefinition
+            //};
+            //_optionItemRepository.Create(item);
+
+            var items = _optionItemRepository.Table
+                .Where(x => x.ContentPartFieldDefinitionRecord.Name == "Sport")
+                .Select(x => x);
 
             var typeViewModel = _contentDefinitionService.GetType(id);
             if (typeViewModel == null) {
@@ -192,7 +212,7 @@ namespace Coevery.Metadata.Controllers {
                     return HttpNotFound();
                 }
             }
-           
+
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
             viewModel.Name = viewModel.Name ?? String.Empty;

@@ -6,7 +6,7 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
-    public class CoeveryTextFieldListModeEvents : ContentDefinitionEditorEventsBase {
+    public class CoeveryTextFieldListModeEvents : FieldEditorEvents {
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "CoeveryTextField") {
@@ -22,12 +22,7 @@ namespace Coevery.Fields.Settings {
 
             var model = new CoeveryTextFieldSettings();
             if (updateModel.TryUpdateModel(model, "CoeveryTextFieldSettings", null, null)) {
-                builder.WithSetting("CoeveryTextFieldSettings.HelpText", model.HelpText);
-                builder.WithSetting("CoeveryTextFieldSettings.Required", model.Required.ToString());
-                builder.WithSetting("CoeveryTextFieldSettings.ReadOnly", model.ReadOnly.ToString());
-                builder.WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", model.AlwaysInLayout.ToString());
-                builder.WithSetting("CoeveryTextFieldSettings.IsSystemField", model.IsSystemField.ToString());
-                builder.WithSetting("CoeveryTextFieldSettings.IsAudit", model.IsAudit.ToString());
+                UpdateSettings(model, builder, "CoeveryTextFieldSettings");
                 builder.WithSetting("CoeveryTextFieldSettings.MaxLength", model.MaxLength.ToString());
             }
 
