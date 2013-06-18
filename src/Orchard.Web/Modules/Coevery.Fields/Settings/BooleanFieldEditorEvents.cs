@@ -27,6 +27,7 @@ namespace Coevery.Fields.Settings {
 
             var model = new BooleanFieldSettings();
             if (updateModel.TryUpdateModel(model, "BooleanFieldSettings", null, null)) {
+                model.HelpText = model.HelpText ?? string.Empty;
                 builder.WithSetting("BooleanFieldSettings.HelpText", model.HelpText);
                 builder.WithSetting("BooleanFieldSettings.Required", model.Required.ToString());
                 builder.WithSetting("BooleanFieldSettings.ReadOnly", model.ReadOnly.ToString());

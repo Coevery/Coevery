@@ -11,12 +11,26 @@
 
     Script.Require("angular_UI_Router");
     Script.Require("ngGrid");
-    Script.Include("i18n/resources-locale_" + WorkContext.CurrentCulture + ".js");
+    
     Script.Require("angular_Localize");
     Script.Require("CoeveryAdminApp");
-    Script.Require("Logger");
+    Script.Include("app/adminlogger.js");
 }
 
 <div ng-show="{{$state.transition}}">Loading...</div>
 <section  class="ng-cloak"  ui-view ng-animate="'fade'">
 </section>
+
+@using (Script.Foot()) {
+    <script type="text/javascript">
+    //<![CDATA[
+        angular.element(document).ready(function () {
+            angular.bootstrap(document, ['coevery', function ($locationProvider) {
+                //$locationProvider.html5Mode(true).hashPrefix('!');
+            }]);
+        });
+        var lang = { };
+    //]]>
+    </script>
+}
+

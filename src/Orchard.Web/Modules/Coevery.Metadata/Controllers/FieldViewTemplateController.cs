@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Coevery.Fields.Settings;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
 using Orchard.ContentManagement;
@@ -87,17 +88,17 @@ namespace Coevery.Metadata.Controllers {
             }
 
             var typeViewModel = _contentDefinitionService.GetType(id);
+            var field = typeViewModel.Fields.FirstOrDefault(f => f.Name == viewModel.Name);
+            if (field == null) {
+                return HttpNotFound();
+            }
+
+            CheckData(field);
             if (!ModelState.IsValid) {
                 string displayName = viewModel.DisplayName;
                 viewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == viewModel.Name);
                 viewModel.DisplayName = displayName;
                 return View(viewModel);
-            }
-
-            var field = _contentDefinitionManager.GetPartDefinition(id).Fields.FirstOrDefault(x => x.Name == viewModel.Name);
-
-            if (field == null) {
-                return HttpNotFound();
             }
 
             field.DisplayName = viewModel.DisplayName;
@@ -191,8 +192,7 @@ namespace Coevery.Metadata.Controllers {
                     return HttpNotFound();
                 }
             }
-            var edited = new EditPartFieldViewModel();
-            TryUpdateModel(edited);
+           
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
             viewModel.Name = viewModel.Name ?? String.Empty;
@@ -235,9 +235,13 @@ namespace Coevery.Metadata.Controllers {
                 return Create(id);
             }
 
+            var edit = new EditPartFieldViewModel {
+                Name = viewModel.Name
+            };
+            _contentDefinitionService.AlterField(typeViewModel.Name, edit, this);
             typeViewModel = _contentDefinitionService.GetType(id);
-            _contentDefinitionService.AlterField(typeViewModel.Name, edited, this);
-
+            var field = typeViewModel.Fields.First(f => f.Name == viewModel.Name);
+            CheckData(field);
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
                 return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
@@ -254,6 +258,35 @@ namespace Coevery.Metadata.Controllers {
 
         void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
+        }
+
+        private void CheckData(EditPartFieldViewModel serverField) {
+            var settingsStr = serverField.FieldDefinition.Name + "Settings.";
+            var clientSettings = new FieldSettings();
+            TryUpdateModel(clientSettings, "BooleanFieldSettings");
+
+            var serverSettings = new FieldSettings {
+                IsSystemField = bool.Parse(serverField.Settings[settingsStr + "IsSystemField"]),
+                Required = bool.Parse(serverField.Settings[settingsStr + "Required"]),
+                ReadOnly = bool.Parse(serverField.Settings[settingsStr + "ReadOnly"]),
+                AlwaysInLayout = bool.Parse(serverField.Settings[settingsStr + "AlwaysInLayout"])
+            };
+
+            if (clientSettings.IsSystemField != serverSettings.IsSystemField) {
+                ModelState.AddModelError("IsSystemField", T("Can't modify the IsSystemField field.").ToString());
+            }
+
+            if (serverSettings.IsSystemField) {
+                if (clientSettings.Required != serverSettings.Required) {
+                    ModelState.AddModelError("Required", T("Can't modify the Required field.").ToString());
+                }
+                if (clientSettings.ReadOnly != serverSettings.ReadOnly) {
+                    ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
+                }
+                if (clientSettings.AlwaysInLayout != serverSettings.AlwaysInLayout) {
+                    ModelState.AddModelError("AlwaysInLayout", T("Can't modify the AlwaysInLayout field.").ToString());
+                }
+            }
         }
     }
 }

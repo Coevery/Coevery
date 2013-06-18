@@ -291,6 +291,10 @@
       <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
       <Name>Coevery.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Coevery.Fields\Coevery.Fields.csproj">
+      <Project>{02210E84-AE96-4CAD-9127-C7840308C396}</Project>
+      <Name>Coevery.Fields</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642A49D7-8752-4177-80D6-BFBBCFAD3DE0}</Project>
       <Name>Orchard.Forms</Name>
