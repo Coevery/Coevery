@@ -7,7 +7,7 @@
 
           $scope.pagingOptions = {
               pageNumber: [],
-              pageSize: 10,
+              pageSize: 13,
               totalServerItems: 0,
               currentPage: 1
           };
@@ -15,6 +15,7 @@
               var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
               var maxRow = data.length;
               var maxPages = Math.ceil(maxRow / $scope.pagingOptions.pageSize);
+            
               $scope.pagingOptions.pageNumber = [];
               for (var index = 0; index < maxPages; index++) {
                   $scope.pagingOptions.pageNumber[index] = index + 1;
@@ -63,6 +64,16 @@
           });
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+
+
+          $scope.GetScrollHeight = function () {
+              var height = document.height - 220;
+              return {"height":height +"px"};
+          };
+          
+
+          
+
 
           //var t = function (str) {
           //    var result = i18n.t(str);

@@ -87,7 +87,7 @@
 .footerNavbar
 {
     background: url(../../images/layout/bg/white_tiles.png);
-     border: none !important;
+    border: none !important;
 }
 .footerContainer
 {
@@ -96,3 +96,7 @@
     
 }
 
+.scrollDiv
+{
+    overflow-y: auto;overflow-x: hidden;width:100%;
+}
