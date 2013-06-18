@@ -26,9 +26,11 @@ namespace Orchard.Autoroute.Services {
 
             if (!slugContext.Adjusted) {
 
-                var disallowed = new Regex(@"[/:?#\[\]@!$&'()*+,;=\s\""\<\>\\\|%]+");
+                var disallowed = new Regex(@"[/:?#\[\]@!$&'()*+,.;=\s\""\<\>\\\|%]+");
 
-                slugContext.Slug = disallowed.Replace(slugContext.Title, "-").Trim('-','.');
+                var cleanedSlug = disallowed.Replace(slugContext.Title, "-").Trim('-','.');
+
+                slugContext.Slug = Regex.Replace(cleanedSlug, @"\-{2,}", "-");
 
                 if (slugContext.Slug.Length > 1000)
                     slugContext.Slug = slugContext.Slug.Substring(0, 1000).Trim('-', '.');
