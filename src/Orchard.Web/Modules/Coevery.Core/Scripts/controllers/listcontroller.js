@@ -1,6 +1,4 @@
-﻿
-
-define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/nggriddataservice'], function (couchPotato) {
+﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/nggriddataservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
       ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'ngGridDataService',

@@ -8,17 +8,14 @@ using System.Web.Routing;
 using System.Web.SessionState;
 using Orchard.Environment.ShellBuilders.Models;
 using Orchard.Mvc.Routes;
-using Orchard.ContentManagement.MetaData;
 
 namespace Coevery.Core
 {
     public class Routes : IRouteProvider {
         private readonly ShellBlueprint _blueprint;
-        private readonly IContentDefinitionManager _contentDefinitionManager;
 
-        public Routes(ShellBlueprint blueprint, IContentDefinitionManager contentDefinitionManager) {
+        public Routes(ShellBlueprint blueprint) {
             _blueprint = blueprint;
-            _contentDefinitionManager = contentDefinitionManager;
         }
 
         public void GetRoutes(ICollection<RouteDescriptor> routes) {
@@ -49,10 +46,10 @@ namespace Coevery.Core
             yield return new RouteDescriptor
             {
                 Route = new Route(
-                    "CoeveryAdmin",
+                    "SystemAdmin",
                     new RouteValueDictionary {
                         {"area", "Coevery.Core"},
-                        {"controller", "CoeveryAdmin"},
+                        {"controller", "SystemAdmin"},
                         {"action", "Index"}
                     },
                     new RouteValueDictionary(),
@@ -85,11 +82,29 @@ namespace Coevery.Core
                         },
                         new MvcRouteHandler())
                 };
+
+                yield return new RouteDescriptor {
+                    Priority = -10,
+                    SessionState = defaultSessionState,
+                    Route = new Route(
+                        "SystemAdmin/" + displayPath + "/{action}/{id}",
+                        new RouteValueDictionary {
+                            {"area", areaName},
+                            {"controller", "SystemAdmin"},
+                            {"action", "index"},
+                            {"id", ""}
+                        },
+                        new RouteValueDictionary(),
+                        new RouteValueDictionary {
+                            {"area", areaName}
+                        },
+                        new MvcRouteHandler())
+                };
             }
 
             yield return new RouteDescriptor {
                 Priority = -11,
-                Route = new CoreRoute()
+                Route = new DefaultRoute()
             };
         }
     }

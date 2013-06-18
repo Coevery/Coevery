@@ -148,8 +148,6 @@
     <Compile Include="Indexing\IndexingTaskExecutorTests.cs" />
     <Compile Include="Indexing\LuceneIndexProviderTests.cs" />
     <Compile Include="Indexing\LuceneSearchBuilderTests.cs" />
-    <Compile Include="Leads\TodoControllerTests.cs" />
-    <Compile Include="Leads\TodoListsControllerTests.cs" />
     <Compile Include="Media\Extensions\MediaHelpersTests.cs" />
     <Compile Include="Media\Services\MediaServiceTests.cs" />
     <Compile Include="Packaging\Services\FileBasedProjectSystemTests.cs" />
@@ -198,10 +196,6 @@
     <ProjectReference Include="..\Orchard.Web\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Orchard.Web\Modules\Coevery.Leads\Coevery.Leads.csproj">
-      <Project>{162a25b1-d2ca-472d-8563-e54b1599cb24}</Project>
-      <Name>Coevery.Leads</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Web\Modules\Lucene\Lucene.csproj">
       <Project>{D5D447D7-EF8E-43A6-B9A4-3B025DD9F45D}</Project>
@@ -305,9 +299,6 @@
     <EmbeddedResource Include="Packaging\Services\Hello.World.csproj.txt" />
     <EmbeddedResource Include="Recipes\Services\FoldersData\Sample1\Module.txt" />
     <EmbeddedResource Include="Recipes\Services\FoldersData\Sample1\Recipes\cms.recipe.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Leads\TodoListsControllerTests.cs.orig" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

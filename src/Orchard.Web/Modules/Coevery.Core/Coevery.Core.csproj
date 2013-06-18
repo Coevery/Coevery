@@ -84,7 +84,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\SysAdminController.cs" />
+    <Compile Include="Admin\SystemAdminAttribute.cs" />
+    <Compile Include="Admin\SystemAdminFilter.cs" />
+    <Compile Include="Admin\SystemAdminMenu.cs" />
+    <Compile Include="Admin\SystemAdminThemeSelector.cs" />
+    <Compile Include="Admin\SystemMenuFilter.cs" />
+    <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Controllers\ContentViewTemplateController.cs" />
     <Compile Include="Controllers\NGgridController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -108,7 +113,7 @@
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\ViewPartService.cs" />
     <Compile Include="ListViewShape.cs" />
-    <Compile Include="CoreRoute.cs" />
+    <Compile Include="DefaultRoute.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
     <Compile Include="ViewModels\CommonListViewModel.cs" />
     <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
@@ -141,9 +146,7 @@
     </Content>
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Start\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
@@ -152,10 +155,6 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coevery.AdminNavigation\Coevery.AdminNavigation.csproj">
-      <Project>{F39623E9-FDE8-4764-AF6B-2AD66ECE646B}</Project>
-      <Name>Coevery.AdminNavigation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
@@ -211,7 +210,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SysAdmin\Index.cshtml" />
+    <Content Include="Views\SystemAdmin\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
