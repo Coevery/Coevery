@@ -18,8 +18,7 @@
                     }
                 })
                 .state('Create', {
-                    parent: 'List',
-                    url: '/Create',
+                    url: '/{Module:[a-zA-Z]+}/Create',
                     templateUrl: function(params) {
                         return "Coevery/" + params.Module + '/ViewTemplate/Create/' + params.Module;
                     },
@@ -30,8 +29,7 @@
                     }
                 })
                 .state('Detail', {
-                    parent: 'List',
-                    url: '/{Id:[0-9a-zA-Z]+}',
+                    url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
                     templateUrl: function(params) {
                         return "Coevery/" + params.Module + '/ViewTemplate/Edit/' + params.Id;
                     },
