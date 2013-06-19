@@ -1,0 +1,168 @@
+﻿@using System.ComponentModel
+@model Coevery.Projections.ViewModels.ProjectionEditViewModel
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 style="background-image: none;">View Detail <span>show view detail information</span></h1>
+</header>
+@{
+    var sortedBy = new BindingList<SelectListItem>();
+    sortedBy.Add(new SelectListItem { Selected = true, Text = "Name" });
+    sortedBy.Add(new SelectListItem { Selected = false, Text = "Age" });
+
+    var sortMode = new BindingList<SelectListItem>();
+    sortMode.Add(new SelectListItem { Selected = true, Text = "Desc" });
+    sortMode.Add(new SelectListItem { Selected = false, Text = "Asc" });
+}
+
+<section ng-controller="EntityDetailCtrl">
+    <div class="page-actions">
+        <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+        <button type="button" class="btn" ng-click="exit()">Exit</button>
+    </div>
+    <section id="main-content">
+        <div class="row-fluid">
+            <div class="span12">
+                <div>
+                    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { subId = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                                                          FormMethod.Post,
+                                                          new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
+                    {
+
+                        <fieldset>
+                            <legend>
+                                <h5>General Info</h5>
+                            </legend>
+                            <div class="row-fluid">
+                                <div class="control-group">
+                                    <div class="span6">
+                                        <label class="control-label " for="inputName">Name</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "span8", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+
+                                    <div class="span6">
+                                        <label class="control-label " for="inputName">DisplayName</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span8" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <section class="control-group">
+                                    <div class="span6">
+                                        <label class="control-label" for="inputName">VisableTo</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(m => m.VisableTo, new BindingList<SelectListItem>(), string.Empty, new { @class = "span8" })
+                                        </div>
+                                    </div>
+
+                                    <div class="span6">
+                                        <label class="control-label" for="inputName">PageRowCount</label>
+                                        <div class="controls">
+                                            <input type="number" class="span4" />
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>
+                                <h5>Select Fields to Display</h5>
+                            </legend>
+                            <div class="row-fluid">
+                                <div class="control-group">
+                                    <div class="span6 widget">
+                                        <div class="widget-content">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Fields</th>
+                                                        <th class="rightCell">
+                                                            <button class="btn-link" type="button">Add All</button></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var oneField in Model.AllFields)
+                                                    {
+                                                        var proptertyTypes = Model.LayoutViewModel.Properties.Select(c => c.Type).ToList();
+                                                        string labelClass = "label hide";
+                                                        string buttonClass = "block";
+                                                        string fieldName = oneField.Name.TextHint.Replace(":Value", string.Empty);
+                                                        string unSelectedFieldLabelId = "UnSelectedLabelField" + fieldName;
+                                                        string unSelectedFieldButtonId = "UnSelectedButtonField" + fieldName;
+                                                        if (proptertyTypes.Contains(oneField.Type))
+                                                        {
+                                                            labelClass = "label";
+                                                            buttonClass = "none";
+                                                        }
+                                                        <tr>
+                                                            <td>@fieldName</td>
+                                                            <td class="rightCell">
+                                                                <span id="@unSelectedFieldLabelId" class="@labelClass">Added</span>
+                                                                <span id="@unSelectedFieldButtonId" style="display:@buttonClass">
+                                                                    <button class="btn-link" ng-click="addfield('@fieldName')" type="button">Add</button>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="span6 widget">
+                                        <div class="widget-content">
+                                            <h5>Drag and drop to reorder</h5>
+                                            <input id="picklist" name="picklist" type="hidden" />
+                                            <div class="sortable-list">
+                                                <ul id="sortable">
+                                                    @foreach (var Property in Model.LayoutViewModel.Properties)
+                                                    {
+                                                        string selectedItemId = "SelectedField" + Property.DisplayText;
+                                                        <li id="@selectedItemId" style=" background: url(@Href("~/Themes/MooncakeAdmin/Styles/Coevery/images/cache.gif")) no-repeat 5px;
+    padding-left: 18px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 1px solid #ccc;
+    cursor: move;
+    zoom: 1;
+    margin-top: 5px;" ><span style="margin-left: 3px;">@Property.DisplayText</span>
+                                                            <div class="pull-right">
+                                                                <button class="btn-link" type="button" ng-click="removefield('@Property.DisplayText')">Remove</button>
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="span6">
+                                        <label class="control-label " for="SortedBy">Sorted By</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(m => m.SortedBy, sortedBy, string.Empty, new { @class = "span4", @id = "sortby" })
+                                            @Html.DropDownListFor(m => m.SortMode, sortMode, string.Empty, new { @class = "span4" })
+                                            <input type="button" class="btn btn-small" name="Preview" value="Preview" ng-click="preview()" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <section class="gridStyle" ng-grid="gridOptions"></section>
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<script>
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+        $('.sortable-list ul').sortable({
+            placeholder: 'placeholder',
+            forcePlaceholderSize: true
+        });
+    });
+</script>
+
