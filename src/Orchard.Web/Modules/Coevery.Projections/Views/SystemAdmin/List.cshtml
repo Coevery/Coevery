@@ -1,0 +1,29 @@
+﻿<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">List of Views <span>Display all views</span></h1>
+</header>
+<section ng-controller="EntityListCtrl">
+    <div class="page-actions">
+        <button class="btn btn-success" ng-click="add()">
+            <i class="icon-plus"></i>&nbsp;@T("Add")
+        </button>
+        <button class="btn" ng-click="getAll()">
+            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+        </button>
+    </div>
+    <section id="main-content">
+        <div class="row-fluid">
+            <section class="span12">
+                <section class="gridStyle" ng-grid="gridOptions"></section>
+            </section>
+        </div>
+    </section>
+</section>
+
+<script>
+    $(function() {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+   
+</script>
+
+
