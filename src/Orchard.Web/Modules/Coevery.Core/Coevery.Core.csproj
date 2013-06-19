@@ -89,6 +89,7 @@
     <Compile Include="Admin\SystemAdminMenu.cs" />
     <Compile Include="Admin\SystemAdminThemeSelector.cs" />
     <Compile Include="Admin\SystemMenuFilter.cs" />
+    <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Controllers\ContentViewTemplateController.cs" />
     <Compile Include="Controllers\NGgridController.cs" />
@@ -125,6 +126,7 @@
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\app\adminapp.js" />
     <Content Include="Scripts\app\couchPotatoService.js" />
+    <Content Include="Scripts\app\detourService.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />

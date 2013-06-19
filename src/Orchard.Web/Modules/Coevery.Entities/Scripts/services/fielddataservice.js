@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-define(['core/app/couchPotatoService'], function (couchPotato) {
-    couchPotato.registerFactory([
+define(['core/app/detourService'], function (detour) {
+    detour.registerFactory([
         'fieldDataService',
         ['$rootScope', '$resource', function ($rootScope, $resource) {
             return $resource('api/entities/field/:Name',

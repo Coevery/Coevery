@@ -5,7 +5,6 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Entities/Scripts/service
         'EntityListCtrl',
         ['$scope', 'logger', '$state', '$stateParams', '$resource', 'entityDataService', 'fieldDataService',
             function($scope, logger, $state, $stateParams, entityDataService, fieldDataService) {
-                var name = $stateParams.Id;
 
                 var fieldColumnDefs = [
                     { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-hide="row.getProperty(\'IsSystemField\')" ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
@@ -63,9 +62,13 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Entities/Scripts/service
                         keyboard: true
                     });
                 };
+                
+                var entityName = $stateParams.Id;
+                
                 $scope.deleteField = function() {
                     $('#myModal').modal('hide');
-                    fieldDataService.delete({ name: deleteField, parentname: name }, function () {
+ 
+                    fieldDataService.delete({ name: deleteField, parentname: entityName }, function () {
                         $scope.getAllField();
                         logger.success("Delete the field successful.");
                     }, function() {
@@ -78,31 +81,31 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Entities/Scripts/service
                 };
 
                 $scope.add = function() {
-                    $state.transitionTo('SubCreate', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Create' });
+                    $state.transitionTo('SubCreate', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'Create' });
                 };
 
                 $scope.edit = function(fieldName) {
-                    $state.transitionTo('SubDetail', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'Edit', SubId: fieldName });
+                    $state.transitionTo('SubDetail', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'Edit', SubId: fieldName });
                 };
 
                 $scope.gotoDependency = function() {
-                    $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Field', View: 'DependencyList' });
+                    $state.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'DependencyList' });
                 };
                 $scope.editOneToMany = function() {
-                    $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Relationship', View: 'EditOneToMany' });
+                    $state.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Relationship', View: 'EditOneToMany' });
                 };
                 $scope.editManyToMany = function() {
-                    $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Relationship', View: 'EditManyToMany' });
+                    $state.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Relationship', View: 'EditManyToMany' });
                 };
                 $scope.listViewDesigner = function() {
-                    $state.transitionTo('SubList', { Module: 'Metadata', Id: name, SubModule: 'Projection', View: 'List' });
+                    $state.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Projection', View: 'List' });
                 };
                 $scope.formDesigner = function() {
-                    location.href = 'Metadata/FormDesignerViewTemplate/Index/' + name;
+                    location.href = 'Metadata/FormDesignerViewTemplate/Index/' + entityName;
                 };
 
                 $scope.getAllField = function() {
-                    var metaData = entityDataService.get({ name: name }, function () {
+                    var metaData = entityDataService.get({ name: entityName }, function () {
                         $scope.item = metaData;
                         $scope.myData = metaData.Fields;
                         $.each($scope.myData, function() {

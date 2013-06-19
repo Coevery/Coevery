@@ -52,59 +52,42 @@
 //            }]);
 
 
-define([], function () {
+define(['angular-detour'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.couchPotato', 'ui.compat', 'coevery.layout']);
-    coevery.config(['$stateProvider', '$routeProvider', '$urlRouterProvider', '$couchPotatoProvider', '$locationProvider', '$provide',
-        function ($stateProvider, $routeProvider, $urlRouterProvider, $couchPotatoProvider, $locationProvider, $provide) {
-
-            $stateProvider
-                .state('List', {
-                    url: '/{Module:[a-zA-Z]+}',
-                    templateUrl: function(params) {
-                        return "SystemAdmin/" + params.Module + '/List';
-                    },
-                    resolve: {
-                        dummy: ['$q', '$rootScope', '$stateParams', function($q, $rootScope, $stateParams) {
-                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['Modules/Coevery.' + $stateParams.Module + '/Scripts/controllers/listcontroller']);
-                        }]
-                    }
-                })
-                .state('Create', {
-                    url: '/{Module:[a-zA-Z]+}/Create',
-                    templateUrl: function(params) {
-                        return "SystemAdmin/" + params.Module + '/Create';
-                    },
-                    resolve: {
-                        dummy: ['$q', '$rootScope', '$stateParams', function($q, $rootScope, $stateParams) {
-                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['Modules/Coevery.' + $stateParams.Module + '/Scripts/controllers/editcontroller']);
-                        }]
-                    }
-                })
-                .state('Detail', {
-                    url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
-                    templateUrl: function (params) {
-                        return "SystemAdmin/" + params.Module + '/Edit/' + params.Id;
-                    },
-                    resolve: {
-                        dummy: ['$q', '$rootScope', '$stateParams', function($q, $rootScope, $stateParams) {
-                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['Modules/Coevery.' + $stateParams.Module + '/Scripts/controllers/detailcontroller']);
-                        }]
-                    }
-                });
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'coevery.layout']);
+    coevery.config(['$locationProvider', '$provide', '$detourProvider',
+        function ($locationProvider, $provide, $detourProvider) {
+            $detourProvider.loader = {
+                lazy: {
+                    enabled: true,
+                    routeUrl: 'api/CoeveryCore/Route',
+                    stateUrl: 'svc/getState'
+                },
+                crossDomain: true,
+                httpMethod: 'GET'
+            };
         }]);
 
-    coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato',
-        function ($rootScope, $state, $stateParams, $couchPotato) {
-            //"cheating" so that couchPotato is available in requirejs
+    coevery.run(['$rootScope', '$detour', '$stateParams',
+        function ($rootScope, $detour, $stateParams) {
+
+            //"cheating" so that detour is available in requirejs
             //define modules -- we want run-time registration of components
             //to take place within those modules because it allows
             //for them to have their own dependencies also be lazy-loaded.
             //this is what requirejs is good at.
-            coevery.couchPotato = $couchPotato;
-            $rootScope.$state = $state;
+
+            //if not using any dependencies properties in detour states,
+            //then this is not necessary
+            coevery.detour = $detour;
+
+            //the sample reads from the current $detour.state
+            //and $stateParams in its templates
+            //that it the only reason this is necessary
+            $rootScope.$detour = $detour;
             $rootScope.$stateParams = $stateParams;
+            
             $rootScope.i18nextOptions = {
                 resGetPath: 'i18n/__ns_____lng__.json',
                 lowerCaseLng: true,

@@ -1,10 +1,10 @@
 ﻿'use strict';
 
-define(['core/app/couchPotatoService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/generationservice'], function (couchPotato) {
-    couchPotato.registerController([
+define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/generationservice'], function (detour) {
+    detour.registerController([
       'EntityListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'entityDataService', 'generationService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, entityDataService, generationService) {
+      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', 'generationService',
+      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService, generationService) {
           var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
           $scope.mySelections = [];
           
@@ -39,11 +39,11 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Entities/Scripts/service
           };
 
           $scope.add = function () {
-              $state.transitionTo('Create', { Module: 'Entities' });
+              $detour.transitionTo('Create', { Module: 'Entities' });
           };
 
           $scope.edit = function (entityName) {
-              $state.transitionTo('Detail', { Module: 'Metadata', Id: entityName });
+              $detour.transitionTo('Detail', { Module: 'Metadata', Id: entityName });
           };
 
           $scope.getAllMetadata = function () {

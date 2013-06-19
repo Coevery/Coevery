@@ -65,13 +65,14 @@
   <ItemGroup>
     <Content Include="Scripts\angular-couchPotato.js" />
     <Content Include="Scripts\angular-couchPotato.min.js" />
+    <Content Include="Scripts\angular-detour.amd.js" />
+    <Content Include="Scripts\angular-detour.amd.min.js" />
     <Content Include="Scripts\angular-mobile.js" />
     <Content Include="Scripts\angular-mobile.min.js" />
     <Content Include="Scripts\angular-ui-router.js" />
     <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\i18next-1.6.3.js" />
     <Content Include="Scripts\i18next-1.6.3.min.js" />
-    <Content Include="Scripts\localize.js" />
     <Content Include="Scripts\ng-grid-2.0.5.debug.js" />
     <Content Include="Scripts\ng-grid-2.0.5.min.js" />
     <Content Include="Scripts\ng-grid-2.0.6.debug.js" />

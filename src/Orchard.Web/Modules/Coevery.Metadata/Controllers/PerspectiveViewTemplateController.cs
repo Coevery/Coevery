@@ -144,7 +144,8 @@ namespace Coevery.Metadata.Controllers
                  menuPart.MenuPosition = Position.GetNext(_navigationManager.BuildMenu(menu));
                  menuPart.Menu = menu;
                  menuPart.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
-                 menuPart.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
+                 // todo: MenuItemPart FeatureId
+                 //menuPart.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
                  Services.ContentManager.Create(menuPart);
                  if (!menuPart.ContentItem.Has<IPublishingControlAspect>() && !menuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
                      _contentManager.Publish(menuPart.ContentItem);
@@ -153,7 +154,8 @@ namespace Coevery.Metadata.Controllers
                  var contentItem = _contentManager.Get(navigationId, VersionOptions.DraftRequired);
                  contentItem.As<MenuPart>().MenuText = pluralContentTypeName;
                  contentItem.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
-                 contentItem.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
+                 // todo: MenuItemPart FeatureId
+                 //contentItem.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
                  _contentManager.Publish(contentItem);
              }
              return new HttpStatusCodeResult(HttpStatusCode.OK);
