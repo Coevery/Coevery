@@ -78,7 +78,7 @@ define([], function () {
                     },
                     resolve: {
                         dummy: ['$q', '$rootScope', '$stateParams', function($q, $rootScope, $stateParams) {
-                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['Modules/Coevery.' + $stateParams.Module + '/Scripts/controllers/detailcontroller']);
+                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['Modules/Coevery.' + $stateParams.Module + '/Scripts/controllers/editcontroller']);
                         }]
                     }
                 })
