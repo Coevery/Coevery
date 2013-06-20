@@ -97,6 +97,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Drivers\DynamicContentsDriver.cs" />
     <Compile Include="Handlers\DynamicContentsHandler.cs" />
+    <Compile Include="Models\ClientRoute.cs" />
     <Compile Include="Models\ViewPartRecord.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
@@ -111,6 +112,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Providers\NavigationQueryProvider.cs" />
+    <Compile Include="Services\ClientRouteProvider.cs" />
+    <Compile Include="Services\IClientRouteProvider.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\ViewPartService.cs" />
     <Compile Include="ListViewShape.cs" />

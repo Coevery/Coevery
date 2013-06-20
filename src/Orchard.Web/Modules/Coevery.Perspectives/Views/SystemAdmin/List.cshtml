@@ -1,0 +1,26 @@
+﻿<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 style="background-image: none;">Perspective Management <span>An perspective is a group of navigation items that work as a unit to provide functionality</span></h1>
+</header>
+
+<section ng-controller="PerspectivesListCtrl">
+    <div class="page-actions">
+        <button type="button" class="btn btn-success" ng-click="addPerspective()">Add Perspective</button>
+        <button class="btn" ng-click="getAllPerspective()">
+            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+        </button>
+    </div>
+    <section id="main-content">
+         <div class="row-fluid">
+            <section class="span12">
+                <section class="gridStyle" ng-grid="gridOptions"></section>
+            </section>
+        </div>
+    </section>
+</section>
+<script>
+    $(document).ready(
+        function () {
+            $('.page-actions').affix({ offset: { top: 71 } });
+        }
+    );
+</script>

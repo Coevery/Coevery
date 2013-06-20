@@ -258,3 +258,11 @@
 
 @tag.EndElement
 
+@using (Script.Foot())
+ {
+     <script type="text/javascript">
+         $(document).ready(function () {
+             $('body').css("overflow", "hidden");
+         });
+     </script>
+ }
