@@ -17,6 +17,14 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
               { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString },
               { field: 'IsDeployed', displayName: t('IsDeployed') }];
+          
+          $scope.pagingOptions = {
+              pageSizes: [250, 500, 1000],
+              pageSize: 250,
+              currentPage: 1
+          };
+
+          $scope.totalServerItems = 2;
 
           $scope.gridOptions = {
               data: 'myData',
@@ -25,7 +33,11 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               showColumnMenu: true,
               enableColumnResize: true,
               enableColumnReordering: true,
-              columnDefs: metadataColumnDefs
+              columnDefs: metadataColumnDefs,
+              enablePaging: true,
+              showFooter: true,
+              pagingOptions: $scope.pagingOptions,
+              totalServerItems:"totalServerItems"
           };
 
           $scope.delete = function (entityName) {
@@ -49,6 +61,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           $scope.getAllMetadata = function () {
               var metadatas = entityDataService.query(function () {
                   $scope.myData = metadatas;
+                  $scope.totalServerItems = metadatas.length;
               }, function () {
                   logger.error("Failed to fetched Metadata.");
               });

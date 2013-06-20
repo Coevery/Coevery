@@ -25,6 +25,13 @@ namespace Coevery.Core.Controllers
                             dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/listcontroller" }
                         }
                     },
+                    EntityCreate = new {
+                        definition = new {
+                            url = "/Entities/Create",
+                            templateUrl = "SystemAdmin/Entities/Create",
+                            controller = "EntityDetailCtrl",
+                            dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/detailcontroller" }
+                        }},
                     EntityDetail = new {
                         definition = new {
                             url = "/Entities/{Id:[0-9a-zA-Z]+}",
