@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.cs" />
+    <Compile Include="Controllers\OptionItemsController.cs" />
     <Compile Include="Controllers\PerspectiveController.cs" />
     <Compile Include="Controllers\FieldViewTemplateController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\controllers\itemscontroller.js" />
     <Content Include="Scripts\controllers\perspectivecreatecontroller.js" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
@@ -358,6 +360,9 @@
     <Content Include="Views\PerspectiveViewTemplate\CreatePerspective.cshtml">
       <SubType>Code</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FieldViewTemplate\Items.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

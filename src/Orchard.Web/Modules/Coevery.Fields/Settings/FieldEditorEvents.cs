@@ -1,5 +1,4 @@
-﻿using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Builders;
+﻿using Orchard.ContentManagement.MetaData.Builders;
 
 namespace Coevery.Fields.Settings {
     public class FieldEditorEvents : ContentDefinitionEditorEventsBase {

@@ -114,6 +114,7 @@
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
     <Compile Include="Settings\FieldEditorEvents.cs" />
+    <Compile Include="Settings\IContentDefinitionEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldSettings.cs" />
     <Compile Include="Settings\FieldSettings.cs" />

@@ -7,10 +7,11 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
-    public class BooleanFieldListModeEvents : FieldEditorEvents {
+    public class BooleanFieldEditorEvents : FieldEditorEvents {
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
-            if (definition.FieldDefinition.Name == "BooleanField") {
+            if (definition.FieldDefinition.Name == "BooleanField"
+                || definition.FieldDefinition.Name == "BooleanFieldCreate") {
                 var model = definition.Settings.GetModel<BooleanFieldSettings>();
                 yield return DefinitionTemplate(model);
             }
@@ -35,6 +36,10 @@ namespace Coevery.Fields.Settings {
             }
 
             yield return DefinitionTemplate(model);
+        }
+
+        public override IEnumerable<TemplateViewModel> PartFieldEditorCreate(ContentPartFieldDefinitionBuilder builder, string partName, IUpdateModel updateModel) {
+            return PartFieldEditorUpdate(builder, updateModel);
         }
     }
 }

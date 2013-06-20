@@ -6,10 +6,11 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
-    public class CoeveryTextFieldListModeEvents : FieldEditorEvents {
+    public class CoeveryTextFieldEditorEvents : FieldEditorEvents {
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
-            if (definition.FieldDefinition.Name == "CoeveryTextField") {
+            if (definition.FieldDefinition.Name == "CoeveryTextField"
+                || definition.FieldDefinition.Name == "CoeveryTextFieldCreate") {
                 var model = definition.Settings.GetModel<CoeveryTextFieldSettings>();
                 yield return DefinitionTemplate(model);
             }
@@ -27,6 +28,10 @@ namespace Coevery.Fields.Settings {
             }
 
             yield return DefinitionTemplate(model);
+        }
+
+        public override IEnumerable<TemplateViewModel> PartFieldEditorCreate(ContentPartFieldDefinitionBuilder builder, string partName, IUpdateModel updateModel) {
+            return PartFieldEditorUpdate(builder, updateModel);
         }
     }
 }

@@ -38,7 +38,10 @@
         $state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
     };
 
-    $('#DisplayName').keyup(function () {
+    $('#DisplayName').keyup(copyName);
+    $('#DisplayName').blur(copyName);
+
+    function copyName() {
         var names = $('#DisplayName').val().split(' ');
         var fieldName = '';
         $.each(names, function () {
@@ -46,6 +49,6 @@
         });
         $scope.fieldName = fieldName;
         $scope.$apply();
-    });
+    }
 }
 //@ sourceURL=Coevery.Metadata/editfieldinfocontroller.js

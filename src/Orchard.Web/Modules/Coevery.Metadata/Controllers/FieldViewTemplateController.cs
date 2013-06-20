@@ -18,6 +18,7 @@ using Orchard.Data;
 using Orchard.Localization;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
+using IContentDefinitionEditorEvents = Coevery.Fields.Settings.IContentDefinitionEditorEvents;
 
 namespace Coevery.Metadata.Controllers {
     public class FieldViewTemplateController : Controller, IUpdateModel {
@@ -53,17 +54,6 @@ namespace Coevery.Metadata.Controllers {
         public ActionResult Edit(string id, string subId) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
                 return new HttpUnauthorizedResult();
-
-            //var fieldDefinition = _partFieldDefinitionRepository.Get(f => f.Name == "Sport");
-            //var item = new OptionItemRecord {
-            //    Value = "Baseball",
-            //    ContentPartFieldDefinitionRecord = fieldDefinition
-            //};
-            //_optionItemRepository.Create(item);
-
-            var items = _optionItemRepository.Table
-                .Where(x => x.ContentPartFieldDefinitionRecord.Name == "Sport")
-                .Select(x => x);
 
             var typeViewModel = _contentDefinitionService.GetType(id);
             if (typeViewModel == null) {
@@ -133,18 +123,6 @@ namespace Coevery.Metadata.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
-            //var partViewModel = _contentDefinitionService.GetPart(id);
-
-            //if (partViewModel == null)
-            //{
-            //    //id passed in might be that of a type w/ no implicit field
-            //    var typeViewModel = _contentDefinitionService.GetType(id);
-            //    if (typeViewModel != null)
-            //        partViewModel = new EditPartViewModel(new ContentPartDefinition(id));
-            //    else
-            //        return HttpNotFound();
-            //}
-
             var viewModel = new AddFieldViewModel {
                 Fields = _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName),
             };
@@ -177,12 +155,15 @@ namespace Coevery.Metadata.Controllers {
             return View(viewModel);
         }
 
+        public ActionResult Items(string id, string subId) {
+            return View();
+        }
+
         public ActionResult EditFieldInfo(string id, string subId) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
-            var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId), string.Empty, new SettingsDictionary());
-            //var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId + "Display"), string.Empty, new SettingsDictionary());
+            var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId + "Create"), string.Empty, new SettingsDictionary());
             var templates = _contentDefinitionEditorEvents.PartFieldEditor(definition);
 
             var viewModel = new AddFieldViewModel {
@@ -258,7 +239,7 @@ namespace Coevery.Metadata.Controllers {
             var edit = new EditPartFieldViewModel {
                 Name = viewModel.Name
             };
-            _contentDefinitionService.AlterField(typeViewModel.Name, edit, this);
+            _contentDefinitionService.CreateField(typeViewModel.Name, edit, this);
             typeViewModel = _contentDefinitionService.GetType(id);
             var field = typeViewModel.Fields.First(f => f.Name == viewModel.Name);
             CheckData(field);
