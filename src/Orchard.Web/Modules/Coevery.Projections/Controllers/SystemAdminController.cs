@@ -48,7 +48,17 @@ namespace Coevery.Projections.Controllers
             }
 
            var viewModel = _projectionService.CreateTempProjection(id);
-           return RedirectToAction("Edit", new { subId = viewModel.Id });
+           return View(viewModel);
+        }
+
+        [HttpPost, ActionName("Create")]
+        [FormValueRequired("submit.Save")]
+        public ActionResult CreatePOST(int subId, ProjectionEditViewModel viewModel, string picklist, string returnUrl)
+        {
+            var pickArray = picklist.Split(new char[] { '$' }).Where(c => !string.IsNullOrEmpty(c)).ToList();
+            pickArray = pickArray.Select(c => c + ":Value").ToList();
+            bool suc = _projectionService.EditPost(subId, viewModel, pickArray);
+            return new EmptyResult();
         }
 
         public ActionResult Edit(int id)

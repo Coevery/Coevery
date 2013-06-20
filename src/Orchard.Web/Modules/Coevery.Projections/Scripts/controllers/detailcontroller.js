@@ -1,14 +1,16 @@
 ﻿'use strict';
-define(['core/app/couchPotatoService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice'], function (couchPotato) {
+define(['core/app/couchPotatoService'
+        , 'Modules/Coevery.Projections/Scripts/services/projectiondataservice'
+        , 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function (couchPotato) {
     couchPotato.registerController([
-      'EntityDetailCtrl',
-      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource', '$element', '$compile', 'projectionDataService',
-      function ($timeout, $scope, logger, $state, $stateParams, $resource, $element, $compile, projectionDataService) {
+      'ProjectionDetailCtrl',
+      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource', '$element', '$compile', 'projectionDataService','viewmodelDataService',
+      function ($timeout, $scope, logger, $state, $stateParams, $resource, $element, $compile, projectionDataService, viewmodelDataService) {
           var name = $stateParams.Id;
-          var isNew = (name || name == '') ? false : true;
           $scope.mySelections = [];
-          $scope.filedCoumns = [];
-
+          $scope.fieldCoumns = [];
+          $scope.SelectedColumns = [];
+          
           $scope.gridOptions = {
               data: 'myData',
               selectedItems: $scope.mySelections,
@@ -16,27 +18,24 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Projections/Scripts/serv
               showColumnMenu: true,
               enableColumnResize: true,
               enableColumnReordering: true,
-              columnDefs: 'filedCoumns'
+              columnDefs: 'fieldCoumns'
           };
 
           $scope.preview = function () {
-              var selectedFieldItems = $('#sortable >li');
-              var index = 0;
-              $scope.filedCoumns = [];
-              selectedFieldItems.each(function (k, v) {
-                  var fieldName = v.id.replace('SelectedField', '');
-                  $scope.filedCoumns[index] = { field: fieldName, displayName: fieldName };
-                  index++;
-              });
+              $scope.fieldCoumns = [];
+              for (var i = 0; i<$scope.SelectedColumns.length; i++) {
+                  var fieldName = $scope.SelectedColumns[i].FieldName;
+                  $scope.fieldCoumns[i] = { field: fieldName, displayName: fieldName };
+              }
+             
           };
 
           $scope.save = function () {
-              var selectedFieldItems = $('#sortable >li');
               var pickListValue = '';
-              selectedFieldItems.each(function (k, v) {
-                  var fieldName = v.id.replace('SelectedField', '');
+              for (var i = 0; i<$scope.SelectedColumns.length; i++) {
+                  var fieldName = $scope.SelectedColumns[i].FieldName;
                   pickListValue += fieldName + '$';
-              });
+              }
               $('#picklist')[0].value = pickListValue;
               $.ajax({
                   url: myForm.action,
@@ -57,23 +56,42 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Projections/Scripts/serv
           };
 
           $scope.addfield = function (fieldName) {
-              var elementTemp = '<li id="SelectedField' + fieldName + '" class="ui-state-default">' + fieldName + '';
-              elementTemp += '<div class="pull-right">';
-              elementTemp += '<button class="btn-link" type="button"  ng-click="removefield(\'' + fieldName + '\')">Remove</button>';
-              elementTemp += '</div>';
-              elementTemp += '</li>';
-              $compile(elementTemp)($scope).appendTo($('#sortable'));
-              $('#UnSelectedLabelField' + fieldName).removeClass('label hide');
-              $('#UnSelectedLabelField' + fieldName).addClass('label');
-              $('#UnSelectedButtonField' + fieldName).css('display', 'none');
+              var selectedField = { FieldName: fieldName };
+              $scope.SelectedColumns.splice($scope.SelectedColumns.length, 0, selectedField);
+             
           };
 
-          $scope.removefield = function (fieldName) {
-              $('#SelectedField' + fieldName).remove();
-              $('#UnSelectedLabelField' + fieldName).removeClass('label');
-              $('#UnSelectedLabelField' + fieldName).addClass('label hide');
-              $('#UnSelectedButtonField' + fieldName).css('display', 'block');
+          $scope.removefield = function (index) {
+              $scope.SelectedColumns.splice(index, 1);
           };
+
+          $scope.LabelClass = function (fieldName) {
+              for (var i = 0; i < $scope.SelectedColumns.length; i++) {
+                  if ($scope.SelectedColumns[i].FieldName == fieldName) return 'label';
+              }
+              return 'label hide';
+          };
+          
+          $scope.ButtonStyle = function (fieldName) {
+              for (var i = 0; i < $scope.SelectedColumns.length; i++) {
+                  if ($scope.SelectedColumns[i].FieldName == fieldName)
+                      return {'display':'none'};
+              }
+              return { 'display': 'block' };
+          };
+          
+     
+
+          $scope.InitSeletedFieldData = function() {
+              var viewModel = viewmodelDataService.query({ id: $stateParams.Id }, function () {
+                  for (var i = 0; i < viewModel.length; i++) {
+                      $scope.addfield(viewModel[i].FieldName);
+                  }
+              }, function () {
+                  
+              });
+          };
+          $scope.InitSeletedFieldData();
       }]
     ]);
 });

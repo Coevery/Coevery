@@ -4,26 +4,31 @@ using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using Coevery.Metadata.Services;
-using Coevery.Metadata.ViewModels;
+using Coevery.Perspectives.Services;
+using Coevery.Perspectives.ViewModels;
 using Orchard;
-using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
 using Orchard.ContentManagement.MetaData;
+using Orchard.Core.Contents.Controllers;
 using Orchard.Core.Contents.Settings;
 using Orchard.Core.Navigation.Models;
 using Orchard.Core.Title.Models;
+using Orchard.DisplayManagement;
 using Orchard.Environment.Configuration;
 using Orchard.Localization;
 using Orchard.Logging;
+using Orchard.Security;
+using Orchard.Themes;
 using Orchard.UI.Navigation;
 using Orchard.Utility;
+using Orchard.ContentManagement;
+using IContentManager = Orchard.ContentManagement.IContentManager;
+using VersionOptions = Orchard.ContentManagement.VersionOptions;
 
-namespace Coevery.Metadata.Controllers
+namespace Coevery.Perspectives.Controllers
 {
-    public class PerspectiveViewTemplateController : Controller, IUpdateModel
+    public class SystemAdminController : Controller
     {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -32,7 +37,7 @@ namespace Coevery.Metadata.Controllers
         private readonly ShellSettings _settings;
         private readonly IContentManager _contentManager;
         private readonly INavigationManager _navigationManager;
-        public PerspectiveViewTemplateController(
+        public SystemAdminController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
@@ -64,14 +69,14 @@ namespace Coevery.Metadata.Controllers
         }
 
 
-        public ActionResult CreatePerspective()
+        public ActionResult Create()
         {
             PerspectiveViewModel model = new PerspectiveViewModel();
             return View(model);
         }
 
-        [HttpPost, ActionName("CreatePerspective")]
-        public ActionResult CreatePerspectivePOST(PerspectiveViewModel model) 
+        [HttpPost, ActionName("Create")]
+        public ActionResult CreatePOST(PerspectiveViewModel model) 
         {
             var contentItem = _contentManager.New("Menu");
             contentItem.As<TitlePart>().Title = model.Title;
@@ -81,7 +86,7 @@ namespace Coevery.Metadata.Controllers
         }
 
 
-        public ActionResult EditPerspective(int id)
+        public ActionResult Edit(int id)
         {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
             PerspectiveViewModel model = new PerspectiveViewModel();
@@ -90,8 +95,8 @@ namespace Coevery.Metadata.Controllers
             return View(model);
         }
 
-        [HttpPost, ActionName("EditPerspective")]
-        public ActionResult EditPerspectivePOST(int id,PerspectiveViewModel model) 
+        [HttpPost, ActionName("Edit")]
+        public ActionResult EditPOST(int id,PerspectiveViewModel model) 
         {
             var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
             contentItem.As<TitlePart>().Title = model.Title;
@@ -158,17 +163,5 @@ namespace Coevery.Metadata.Controllers
              }
              return new HttpStatusCodeResult(HttpStatusCode.OK);
          }
-
-
-        bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties)
-        {
-            return TryUpdateModel(model, prefix, includeProperties, excludeProperties);
-        }
-
-        void IUpdateModel.AddModelError(string key, LocalizedString errorMessage)
-        {
-            ModelState.AddModelError(key, errorMessage.ToString());
-        }
     }
 }
-

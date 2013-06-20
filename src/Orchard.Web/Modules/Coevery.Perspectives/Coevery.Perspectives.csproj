@@ -6,12 +6,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C8EA0D61-05BA-404F-B658-F75DB9DE2D61}</ProjectGuid>
+    <ProjectGuid>{7BF518B5-DC57-4E5D-99C4-553DF5D89FF4}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Coevery.Projections</RootNamespace>
-    <AssemblyName>Coevery.Projections</AssemblyName>
+    <RootNamespace>Coevery.Perspectives</RootNamespace>
+    <AssemblyName>Coevery.Perspectives</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <FileUpgradeFlags>
@@ -75,6 +75,7 @@
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,21 +89,32 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ViewModelController.cs" />
+    <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Extensions\PerspectiveExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Services\IProjectionService.cs" />
-    <Compile Include="Services\ProjectionService.cs" />
-    <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
-    <Content Include="Scripts\controllers\editcontroller.js" />
+    <Compile Include="Services\ContentDefinitionService.cs" />
+    <Compile Include="Services\IContentDefinitionService.cs" />
+    <Compile Include="Services\IPlacementService.cs" />
+    <Compile Include="Services\PlacementService.cs" />
+    <Compile Include="Settings\PlacementSettings.cs" />
+    <Compile Include="ViewModels\CreatePartViewModel.cs" />
+    <Compile Include="ViewModels\EditFieldViewModel.cs" />
+    <Compile Include="ViewModels\EditPartFieldViewModel.cs" />
+    <Compile Include="ViewModels\EditPartViewModel.cs" />
+    <Compile Include="ViewModels\EditTypePartViewModel.cs" />
+    <Compile Include="ViewModels\EditTypeViewModel.cs" />
+    <Compile Include="ViewModels\NavigationViewModel.cs" />
+    <Compile Include="ViewModels\PerspectiveViewModel.cs" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
+    <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\services\viewmodeldataservice.js" />
-    <Content Include="Scripts\services\projectiondataservice.js" />
+    <Content Include="Scripts\services\navigationdataservice.js" />
+    <Content Include="Scripts\services\perspectivedataservice.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
-    <Compile Include="Controllers\ProjectionController.cs" />
+    <Compile Include="Controllers\PerspectiveController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
@@ -128,6 +140,10 @@
       <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
       <Name>Orchard.Projections</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Themes\Orchard.Themes.csproj">
+      <Project>{cde24a24-01d3-403c-84b9-37722e18dfb7}</Project>
+      <Name>Orchard.Themes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
       <Project>{6f759635-13d7-4e94-bcc9-80445d63f117}</Project>
       <Name>Orchard.Tokens</Name>
@@ -141,19 +157,18 @@
   <ItemGroup>
     <Folder Include="Drivers\" />
     <Folder Include="Handlers\" />
-    <Folder Include="Settings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\EditNavigationItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\StaicEdit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
