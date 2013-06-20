@@ -39,7 +39,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           $scope.add = function () {
-              $detour.transitionTo('Create', { Module: 'Entities' });
+              $detour.transitionTo('EntityCreate', { Module: 'Entities' });
           };
 
           $scope.edit = function (entityName) {

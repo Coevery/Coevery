@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-define(['core/app/couchPotatoService'], function (couchPotato) {
-    couchPotato.registerController([
+define(['core/app/detourService'], function (detour) {
+    detour.registerController([
       'EntityEditCtrl',
       ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource', '$element',
       function ($timeout, $scope, logger, $state, $stateParams, $resource, $element) {
@@ -17,7 +17,7 @@ define(['core/app/couchPotatoService'], function (couchPotato) {
           };
 
           $scope.exit = function () {
-              $state.transitionTo('List', { Module: 'Entities' });
+              $state.transitionTo('EntityList', { Module: 'Entities' });
           };
       }]
     ]);

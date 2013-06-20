@@ -47,6 +47,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Orchard.Users\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -64,6 +68,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\aspnetwebapi\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -84,6 +89,7 @@
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Permissions.cs" />
+    <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
@@ -120,6 +126,10 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coevery.Core\Coevery.Core.csproj">
+      <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
+      <Name>Coevery.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Media\Orchard.Media.csproj">
       <Project>{D9A7B330-CD22-4DA1-A95A-8DE1982AD8EB}</Project>

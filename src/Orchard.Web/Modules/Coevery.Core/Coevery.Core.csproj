@@ -112,7 +112,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Providers\NavigationQueryProvider.cs" />
-    <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\IClientRouteProvider.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\ViewPartService.cs" />

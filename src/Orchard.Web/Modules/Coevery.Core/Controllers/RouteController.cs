@@ -24,34 +24,6 @@ namespace Coevery.Core.Controllers
             var json = JsonConvert.SerializeObject(routes);
             var resp = new HttpResponseMessage { Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json") };
             return resp;
-                            dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/listcontroller" }
-                        }
-                    },
-                    EntityDetail = new {
-                        definition = new {
-                            url = "/Entities/{Id:[0-9a-zA-Z]+}",
-                            @abstract = true,
-                            templateUrl = new JRaw("function(params) { return 'SystemAdmin/Entities/Detail/' + params.Id;}"),
-                            controller = "EntityDetailCtrl",
-                            dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/detailcontroller" }
-                        },
-                        children = new {
-                            Fields = new {
-                                definition = new {
-                                    url = "",
-                                    templateUrl = "SystemAdmin/Entities/Fields",
-                                    controller = "FieldsCtrl",
-                                    dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/fieldscontroller" }
-                                }
-                            },
-                            Relationships = new {
-                                definition = new {
-                                    url = "/Relationships",
-                                    templateUrl = "SystemAdmin/Entities/Relationships",
-                                    controller = "RelationshipsCtrl",
-                                    dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/relationshipscontroller" }
-                                }
-                            }
         }
 
         private object GetRoutes()
