@@ -97,7 +97,9 @@
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
+    <Content Include="Scripts\controllers\fieldscontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
+    <Content Include="Scripts\controllers\relationshipscontroller.js" />
     <Content Include="Scripts\services\entitydataservice.js" />
     <Content Include="Scripts\services\fielddataservice.js" />
     <Content Include="Scripts\services\generationservice.js" />
@@ -145,6 +147,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Fields.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Relationships.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

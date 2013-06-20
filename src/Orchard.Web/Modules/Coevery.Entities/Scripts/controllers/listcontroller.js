@@ -5,7 +5,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
       'EntityListCtrl',
       ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', 'generationService',
       function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService, generationService) {
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
+          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Entities/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
           $scope.mySelections = [];
           
           var t = function (str) {
@@ -43,7 +43,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           $scope.edit = function (entityName) {
-              $detour.transitionTo('Detail', { Module: 'Metadata', Id: entityName });
+              $detour.transitionTo('EntityDetail', { Id: entityName });
           };
 
           $scope.getAllMetadata = function () {

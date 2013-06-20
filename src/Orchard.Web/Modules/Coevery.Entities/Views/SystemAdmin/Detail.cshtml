@@ -1,5 +1,4 @@
 ﻿@model Coevery.Entities.ViewModels.EditTypeViewModel
-
 <header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 style="background-image: none;">Entity Detail <span>show entity detail information</span></h1>
 </header>
@@ -46,56 +45,17 @@
             <div class="span12">
                 <div class="widget">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab-001" data-toggle="tab">Fields</a></li>
-                        <li><a href="#tab-002" data-toggle="tab">Relationships</a></li>
+                        <li data-ng-class="{ active: $detour.includes('EntityDetail.Fields') }"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
+                        <li data-ng-class="{ active: $detour.includes('EntityDetail.Relationships') }"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab-001">
-                            <div class="btn-toolbar">
-                                <button class="btn btn-success" ng-click="add()">
-                                    <i class="icon-plus"></i> New Field
-                                </button>
-                                <button class="btn" ng-click="gotoDependency()">Field Dependency</button>
+                        <div class="tab-pane active">
+                            <div class="ng-cloak" ui-view ng-animate="'fade'">
                             </div>
-                            @*<h4>System Fields</h4>*@
-                            <div class="row-fluid">
-                                <section class="gridStyle" ng-grid="gridOptions"></section>
-                            </div>
-                            @*<h4>User Fields</h4>
-                            <div class="row-fluid">
-                                <section class="gridStyle" ng-grid="userFields"></section>
-                            </div>*@
-                        </div>
-                        <div class="tab-pane" id="tab-002">
-                            <div class="btn-toolbar">
-                                <div class="btn-group">
-                                    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                        <i class="icon-plus"></i> Add <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="" ng-click="editOneToMany()"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
-                                        <li><a href="" ng-click="editManyToMany()"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <section class="gridStyle" ng-grid="relationshipGrid"></section>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Confirm</h3>
-        </div>
-        <div class="modal-body">
-            <p>You really want to delete this field?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-            <button class="btn btn-primary" ng-click="deleteField()">Yes</button>
         </div>
     </section>
 </section>

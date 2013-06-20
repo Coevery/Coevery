@@ -125,6 +125,26 @@ namespace Coevery.Entities.Controllers
             return RedirectToAction("List");
         }
 
+        public ActionResult Detail(string id) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
+                return new HttpUnauthorizedResult();
+
+            var typeViewModel = _contentDefinitionService.GetType(id);
+
+            if (typeViewModel == null)
+                return HttpNotFound();
+
+            return View(typeViewModel);
+        }
+
+        public ActionResult Fields() {
+            return View();
+        }
+
+        public ActionResult Relationships() {
+            return View();
+        }
+
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);
         }

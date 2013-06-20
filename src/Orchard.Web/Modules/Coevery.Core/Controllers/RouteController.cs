@@ -17,12 +17,39 @@ namespace Coevery.Core.Controllers
             var route = new {
                 f = "/404",
                 t = new {
-                    List = new {
-                        d = new {
+                    EntityList = new {
+                        definition = new {
                             url = "/Entities",
                             templateUrl = "SystemAdmin/Entities/List",
                             controller = "EntityListCtrl",
-                            dependencies = new[] {"Modules/Coevery.Entities/Scripts/controllers/listcontroller"}
+                            dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/listcontroller" }
+                        }
+                    },
+                    EntityDetail = new {
+                        definition = new {
+                            url = "/Entities/{Id:[0-9a-zA-Z]+}",
+                            @abstract = true,
+                            templateUrl = new JRaw("function(params) { return 'SystemAdmin/Entities/Detail/' + params.Id;}"),
+                            controller = "EntityDetailCtrl",
+                            dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/detailcontroller" }
+                        },
+                        children = new {
+                            Fields = new {
+                                definition = new {
+                                    url = "",
+                                    templateUrl = "SystemAdmin/Entities/Fields",
+                                    controller = "FieldsCtrl",
+                                    dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/fieldscontroller" }
+                                }
+                            },
+                            Relationships = new {
+                                definition = new {
+                                    url = "/Relationships",
+                                    templateUrl = "SystemAdmin/Entities/Relationships",
+                                    controller = "RelationshipsCtrl",
+                                    dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/relationshipscontroller" }
+                                }
+                            }
                         }
                     }
                 }

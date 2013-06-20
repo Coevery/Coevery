@@ -1596,12 +1596,20 @@
                         config.useXDomain = true;
                     }
                     else {
-                        config = httpConfig;
+                        config = angular.copy(httpConfig, config);
                     }
 
-                    $http({ method: loader.httpMethod, url: requestUrl, config: config }).
+                    config.transformResponse = function (data) {
+                        var json = eval('(' + data + ')');
+                        return json;
+                    };
+
+                    config = angular.extend(config, { method: loader.httpMethod, url: requestUrl });
+
+                    $http(config).
                       success(function (data, status, headers, config) {
-                          deferred.resolve(angular.fromJson(data));
+                          //deferred.resolve(angular.fromJson(data));
+                          deferred.resolve(data);
                       }).
                       error(function (data, status, headers, config) {
                           deferred.resolve(null);
