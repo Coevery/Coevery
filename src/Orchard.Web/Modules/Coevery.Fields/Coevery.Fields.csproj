@@ -52,6 +52,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -73,8 +74,10 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
+    <Compile Include="Drivers\CurrencyFieldDriver.cs" />
     <Compile Include="Drivers\SelectFieldDriver.cs" />
     <Compile Include="FieldEditWrapper.cs" />
+    <Compile Include="Fields\CurrencyField.cs" />
     <Compile Include="Fields\SelectField.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +116,8 @@
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="Settings\CurrencyFieldEditorEvents.cs" />
+    <Compile Include="Settings\CurrencyFieldSettings.cs" />
     <Compile Include="Settings\FieldEditorEvents.cs" />
     <Compile Include="Settings\IContentDefinitionEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldEditorEvents.cs" />
@@ -139,6 +144,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\SelectFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Currency.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Currency.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\CurrencyFieldSettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
