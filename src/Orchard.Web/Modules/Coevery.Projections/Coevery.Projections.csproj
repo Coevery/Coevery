@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ViewModelController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
@@ -115,6 +116,10 @@
     <ProjectReference Include="..\..\Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coevery.Core\Coevery.Core.csproj">
+      <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
+      <Name>Coevery.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>

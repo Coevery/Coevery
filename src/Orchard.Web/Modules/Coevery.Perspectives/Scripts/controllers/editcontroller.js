@@ -1,9 +1,9 @@
 ﻿'use strict';
-define(['core/app/couchPotatoService'],function (couchPotato) {
-    couchPotato.registerController([
-      'PerspectivesEditCtrl',
-      ['$timeout', '$scope', 'logger', '$state',
-      function ($timeout, $scope, logger, $state) {
+define(['core/app/detourService'], function (detour) {
+    detour.registerController([
+      'PerspectiveEditCtrl',
+      ['$timeout', '$scope', 'logger', '$detour',
+      function ($timeout, $scope, logger, $detour) {
 
           $scope.save = function () {
               $.ajax({
@@ -17,7 +17,7 @@ define(['core/app/couchPotatoService'],function (couchPotato) {
           };
           
           $scope.exit = function () {
-              $state.transitionTo('List', { Module: 'Perspectives'});
+              $detour.transitionTo('PerspectiveList');
           };
       }]
     ]);

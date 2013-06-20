@@ -1,10 +1,11 @@
 ﻿'use strict';
 
-define(['core/app/couchPotatoService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice'], function (couchPotato) {
-    couchPotato.registerController([
-      'EntityListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'projectionDataService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, projectionDataService) {
+define(['core/app/detourService',
+        'Modules/Coevery.Projections/Scripts/services/projectiondataservice'], function (detour) {
+    detour.registerController([
+      'ProjectionListCtrl',
+      ['$rootScope', '$scope', 'logger',  '$detour', '$resource', '$stateParams', 'projectionDataService',
+      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, projectionDataService) {
           var moduleName = $stateParams.Module;
           $stateParams.Id = 'Leads';
           var t = function (str) {
@@ -39,11 +40,11 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Projections/Scripts/serv
           };
 
           $scope.add = function () {
-              $state.transitionTo('Create', { Module: 'Projections', Id: $stateParams.Id });
+              $detour.transitionTo('ProjectionCreate', { Module: 'Projections'});
           };
 
           $scope.edit = function (id) {
-              $state.transitionTo('Detail', { Module: 'Projections', Id: id});
+              $detour.transitionTo('ProjectionDetail/', { Id: id });
           };
 
           $scope.getAll = function () {

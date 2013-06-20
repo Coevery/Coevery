@@ -13,10 +13,10 @@
     sortMode.Add(new SelectListItem { Selected = false, Text = "Asc" });
 }
 
-<section ng-controller="ProjectionEditCtrl">
+<section>
     <div class="page-actions">
-        <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
-        <button type="button" class="btn" ng-click="exit()">Exit</button>
+        <button type="button" class="btn btn-primary" data-ng-click="save()">Save</button>
+        <button type="button" class="btn" data-ng-click="exit()">Exit</button>
     </div>
     <section id="main-content">
         <div class="row-fluid">

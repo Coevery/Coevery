@@ -1,11 +1,11 @@
 ﻿'use strict';
-define(['core/app/couchPotatoService'
+define(['core/app/detourService'
         , 'Modules/Coevery.Projections/Scripts/services/projectiondataservice'
-        , 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function (couchPotato) {
-    couchPotato.registerController([
+        , 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function (detour) {
+            detour.registerController([
       'ProjectionDetailCtrl',
-      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource', '$element', '$compile', 'projectionDataService','viewmodelDataService',
-      function ($timeout, $scope, logger, $state, $stateParams, $resource, $element, $compile, projectionDataService, viewmodelDataService) {
+      ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource',  'projectionDataService', 'viewmodelDataService',
+      function ($timeout, $scope, logger, $detour, $stateParams, $resource, projectionDataService, viewmodelDataService) {
           var name = $stateParams.Id;
           $scope.mySelections = [];
           $scope.fieldCoumns = [];
@@ -52,7 +52,7 @@ define(['core/app/couchPotatoService'
           };
 
           $scope.exit = function () {
-              $state.transitionTo('List', { Module: 'Projections'});
+              $detour.transitionTo('ProjectionList');
           };
 
           $scope.addfield = function (fieldName) {

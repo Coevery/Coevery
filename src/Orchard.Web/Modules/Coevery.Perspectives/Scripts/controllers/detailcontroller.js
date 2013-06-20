@@ -1,20 +1,20 @@
 ﻿'use strict';
-define(['core/app/couchPotatoService',
+define(['core/app/detourService',
         'Modules/Coevery.Perspectives/Scripts/services/perspectivedataservice',
-        'Modules/Coevery.Perspectives/Scripts/services/navigationdataservice'],function (couchPotato) {
-    couchPotato.registerController([
-      'PerspectivesDetailCtrl',
-      ['$timeout', '$scope', 'logger', '$state', '$stateParams',
+        'Modules/Coevery.Perspectives/Scripts/services/navigationdataservice'], function (detour) {
+            detour.registerController([
+      'PerspectiveDetailCtrl',
+      ['$timeout', '$scope', 'logger', '$detour', '$stateParams',
           '$resource', 
           'perspectiveDataService',
           'navigationDataService',
-      function ($timeout, $scope, logger, $state, $stateParams, $resource,perspectiveDataService, navigationDataService) {
+      function ($timeout, $scope, logger, $detour, $stateParams, $resource, perspectiveDataService, navigationDataService) {
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
           var perpectiveId = $stateParams.Id;
 
           $scope.exit = function () {
-              $state.transitionTo('List', { Module: 'Perspectives'});
+              $detour.transitionTo('PerspectiveList');
           };
 
           $scope.save = function () {
@@ -51,13 +51,13 @@ define(['core/app/couchPotatoService',
           
 
           $scope.addNavigationItem = function () {
-              $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: 0, View: 'EditNavigationItem' });
+              $detour.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: 0, View: 'EditNavigationItem' });
           };
 
           
 
           $scope.edit = function (navigationId) {
-              $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: navigationId, View: 'EditNavigationItem' });
+              $detour.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: navigationId, View: 'EditNavigationItem' });
           };
 
           $scope.delete = function (navigationId) {

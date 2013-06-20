@@ -1,9 +1,9 @@
 ﻿'use strict';
-define(['core/app/couchPotatoService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice'], function (couchPotato) {
-    couchPotato.registerController([
+define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice'], function (detour) {
+    detour.registerController([
       'ProjectionEditCtrl',
-      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource', '$element', '$compile', 'projectionDataService',
-      function ($timeout, $scope, logger, $state, $stateParams, $resource, $element, $compile, projectionDataService) {
+      ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource',  'projectionDataService',
+      function ($timeout, $scope, logger, $detour, $stateParams, $resource, projectionDataService) {
           var name = $stateParams.Id;
           var isNew = (name || name == '') ? false : true;
           $scope.mySelections = [];
@@ -53,7 +53,7 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Projections/Scripts/serv
           };
 
           $scope.exit = function () {
-              $state.transitionTo('List', { Module: 'Projections'});
+              $detour.transitionTo('ProjectionList');
           };
 
           $scope.addfield = function (fieldName) {

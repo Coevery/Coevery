@@ -1,9 +1,9 @@
 ﻿'use strict';
-define(['core/app/couchPotatoService', 'Modules/Coevery.Perspectives/Scripts/services/perspectivedataservice'], function (couchPotato) {
-    couchPotato.registerController([
-      'PerspectivesListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'perspectiveDataService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, perspectiveDataService) {
+define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services/perspectivedataservice'], function (detour) {
+    detour.registerController([
+      'PerspectiveListCtrl',
+      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'perspectiveDataService',
+      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, perspectiveDataService) {
           var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
@@ -37,11 +37,11 @@ define(['core/app/couchPotatoService', 'Modules/Coevery.Perspectives/Scripts/ser
           };
 
           $scope.addPerspective = function () {
-              $state.transitionTo('Create', { Module: 'Perspectives'});
+              $detour.transitionTo('PerspectiveCreate', { Module: 'Perspectives' });
           };
 
           $scope.edit = function (id) {
-              $state.transitionTo('Detail', { Module: 'Perspectives', Id: id});
+              $detour.transitionTo('PerspectiveDetail', { Id: id });
           };
 
 
