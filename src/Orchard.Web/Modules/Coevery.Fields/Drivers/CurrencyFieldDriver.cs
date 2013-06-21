@@ -18,7 +18,7 @@ namespace Coevery.Fields.Drivers {
             Services = services;
             T = NullLocalizer.Instance;
             DisplayName = "Currency";
-            Description = "Allows users to enter any combination of letters and numbers.";
+            Description = "Allows users to enter currency number.";
         }
 
         public Localizer T { get; set; }

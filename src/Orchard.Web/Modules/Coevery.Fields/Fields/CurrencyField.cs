@@ -8,7 +8,7 @@ namespace Coevery.Fields.Fields {
         public decimal? Value {
             get { return Storage.Get<decimal?>(); }
 
-            set { Storage.Set(value); }
+            set { Storage.Set(value??0M); }
         }
     }
 }
