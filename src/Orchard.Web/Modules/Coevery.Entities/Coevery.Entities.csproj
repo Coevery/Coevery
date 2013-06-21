@@ -92,6 +92,7 @@
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
+    <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
     <Compile Include="Settings\DynamicTypeSettings.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
