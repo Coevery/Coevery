@@ -29,8 +29,6 @@ namespace Coevery.Fields.Settings {
             var model = new BooleanFieldSettings();
             if (updateModel.TryUpdateModel(model, "BooleanFieldSettings", null, null)) {
                 UpdateSettings(model, builder, "BooleanFieldSettings");
-                builder.WithSetting("BooleanFieldSettings.OnLabel", model.OnLabel);
-                builder.WithSetting("BooleanFieldSettings.OffLabel", model.OffLabel);
                 builder.WithSetting("BooleanFieldSettings.SelectionMode", model.SelectionMode.ToString());
                 builder.WithSetting("BooleanFieldSettings.DefaultValue", model.DefaultValue.ToString());
             }

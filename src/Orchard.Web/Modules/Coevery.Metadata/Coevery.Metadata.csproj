@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.cs" />
+    <Compile Include="Controllers\FieldDependencyController.cs" />
     <Compile Include="Controllers\OptionItemsController.cs" />
     <Compile Include="Controllers\PerspectiveController.cs" />
     <Compile Include="Controllers\FieldViewTemplateController.cs" />
@@ -151,11 +152,13 @@
     <Compile Include="Controllers\UserViewController.cs" />
     <Compile Include="Controllers\ProjectionViewTemplateController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
+    <Compile Include="Migrations.cs" />
     <Compile Include="NavigationMenu.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
+    <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\ContentDefinitionService.cs">
@@ -204,6 +207,7 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\controllers\dependencycreatecontroller.js" />
     <Content Include="Scripts\controllers\itemscontroller.js" />
     <Content Include="Scripts\controllers\perspectivecreatecontroller.js" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
@@ -363,6 +367,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FieldViewTemplate\Items.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FieldViewTemplate\CreateDependency.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
