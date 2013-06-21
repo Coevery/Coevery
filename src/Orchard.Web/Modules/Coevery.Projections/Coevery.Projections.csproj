@@ -94,7 +94,6 @@
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
-    <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\services\viewmodeldataservice.js" />
@@ -156,9 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\StaicEdit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

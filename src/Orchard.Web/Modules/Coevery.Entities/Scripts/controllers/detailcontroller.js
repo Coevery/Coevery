@@ -13,7 +13,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.listViewDesigner = function() {
-                    $detour.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Projection', View: 'List' });
+                    $detour.transitionTo('ProjectionList', { EntityName: entityName });
                 };
                 $scope.formDesigner = function() {
                     location.href = 'Metadata/FormDesignerViewTemplate/Index/' + entityName;

@@ -39,26 +39,14 @@ namespace Coevery.Projections.Controllers
             return View();
         }
 
-        public ActionResult Create(string id)
-        {
+        public ActionResult Create(string id) {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            if (pluralService.IsPlural(id))
-            {
+            if (pluralService.IsPlural(id)) {
                 id = pluralService.Singularize(id);
             }
 
-           var viewModel = _projectionService.CreateTempProjection(id);
-           return View(viewModel);
-        }
-
-        [HttpPost, ActionName("Create")]
-        [FormValueRequired("submit.Save")]
-        public ActionResult CreatePOST(int subId, ProjectionEditViewModel viewModel, string picklist, string returnUrl)
-        {
-            var pickArray = picklist.Split(new char[] { '$' }).Where(c => !string.IsNullOrEmpty(c)).ToList();
-            pickArray = pickArray.Select(c => c + ":Value").ToList();
-            bool suc = _projectionService.EditPost(subId, viewModel, pickArray);
-            return new EmptyResult();
+            var viewModel = _projectionService.CreateTempProjection(id);
+            return View("Edit", viewModel);
         }
 
         public ActionResult Edit(int id)
