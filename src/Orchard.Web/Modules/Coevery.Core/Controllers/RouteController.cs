@@ -24,6 +24,13 @@ namespace Coevery.Core.Controllers
             var json = JsonConvert.SerializeObject(routes);
             var resp = new HttpResponseMessage { Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json") };
             return resp;
+                    EntityCreate = new {
+                        definition = new {
+                            url = "/Entities/Create",
+                            templateUrl = "SystemAdmin/Entities/Create",
+                            controller = "EntityDetailCtrl",
+                            dependencies = new[] { "Modules/Coevery.Entities/Scripts/controllers/detailcontroller" }
+                        }},
         }
 
         private object GetRoutes()

@@ -6,11 +6,11 @@
 <section id="main-content">
     <div class="row-fluid">
         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                  new { @class = "form-horizontal", @ng_controller = "EntityEditCtrl" })) {
+                                                  new { @class = "form-horizontal"})) {
             @Html.ValidationSummary()
             <section class="page-actions">
                 <button class="btn btn-primary" data-ng-click="save()">Save</button>
-                <button class="btn" data-ng-click="exit()">Exit</button>
+                <button class="btn" data-ng-click="exit()">Back</button>
             </section>
             <section class="control-group">
                 <label class="control-label" for="DisplayName">@T("Display Name")</label>
