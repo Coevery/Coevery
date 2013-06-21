@@ -2,7 +2,11 @@
     <h1 id="main-heading" style="background-image: none;">@T("Metadata") <span>Metadata List</span></h1>
 </header>
 <section data-ng-controller="EntityListCtrl">
-    <div class="page-actions">
+    <section id="main-content">
+        <div class="row-fluid">
+            
+            <section class="span12">
+                    <div class="page-actions">
         <button class="btn btn-success" ng-click="add()">
             <i class="icon-plus"></i>&nbsp;@T("Add")
         </button>
@@ -13,9 +17,6 @@
             <i class="icon-refresh"></i>&nbsp;@T("Refresh")
         </button>
     </div>
-    <section id="main-content">
-        <div class="row-fluid">
-            <section class="span12">
                 <section class="gridStyle" data-ng-grid="gridOptions"></section>
             </section>
         </div>

@@ -3,13 +3,14 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'EntityEditCtrl',
-      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource', '$element',
-      function ($timeout, $scope, logger, $state, $stateParams, $resource, $element) {
+      ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource',
+      function ($timeout, $scope, logger, $detour, $stateParams, $resource) {
           $scope.save = function () {
+              var element = angular.element(myForm);
               $.ajax({
-                  url: $element.attr('action'),
-                  type: $element.attr('method'),
-                  data: $element.serialize() + '&submit.Save=Save',
+                  url: element.attr('action'),
+                  type: element.attr('method'),
+                  data: element.serialize() + '&submit.Save=Save',
                   success: function (result) {
                       $timeout($scope.exit, 0);
                   }
@@ -17,7 +18,7 @@ define(['core/app/detourService'], function (detour) {
           };
 
           $scope.exit = function () {
-              $state.transitionTo('EntityList', { Module: 'Entities' });
+              $detour.transitionTo('EntityList');
           };
       }]
     ]);

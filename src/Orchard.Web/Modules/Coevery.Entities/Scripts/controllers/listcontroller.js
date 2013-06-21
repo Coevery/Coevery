@@ -55,7 +55,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           $scope.edit = function (entityName) {
-              $detour.transitionTo('EntityDetail', { Id: entityName });
+              $detour.transitionTo('EntityEdit', { Id: entityName });
           };
 
           $scope.getAllMetadata = function () {

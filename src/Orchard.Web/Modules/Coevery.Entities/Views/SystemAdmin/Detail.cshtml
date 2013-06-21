@@ -5,9 +5,9 @@
 
 <section>
     <section data-spy="affix" data-offset-top="71" class="page-actions">
+        <button type="button" class="btn" data-ng-click="exit()">Back</button>
         <button type="button" class="btn btn-primary">Edit</button>
-        <button type="button" class="btn">Remove</button>
-        <button type="button" class="btn" data-ng-click="exit()">Exit</button>
+        <button type="button" class="btn">Delete</button>
         <button type="button" class="btn" data-ng-click="listViewDesigner()">List View Designer</button>
         <button type="button" class="btn" data-ng-click="formDesigner()">Form Designer</button>
     </section>
@@ -16,20 +16,19 @@
         <div class="row-fluid">
             <div class="span12">
                 <div>
-                    @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" })) {
-                        // todo: come up with real itemtype definitions and locations for said definitions
-                        @Html.ValidationSummary()
+                    @using (Html.BeginFormAntiForgeryPost(new { @class = "form-horizontal" })) {
+                        <section class="control-group">
+                            <label class="control-label">Entity Id</label>
+                            <div class="controls">
+                                @Model.Name
+                            </div>
+                        </section>
                         <section class="control-group">
                             <label class="control-label" for="inputName">Name</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
-                                <span class="hint">@T("Content Type Id: {0}", Model.Name)</span>
+                                <label>
+                                @Model.DisplayName</label>
                             </div>
-                            @* todo: if we continue to go down the midrodata route, some helpers would be nice *@
-                            <meta itemprop="DisplayName" content="@Model.DisplayName" />
-                            @* has unintended consequences (renamging the type) - changing the name creates a new type of that name *@
-                            <meta itemprop="Id" content="@Model.Name" />
-                            @Html.HiddenFor(m => m.Name)
                         </section>
                         <section class="control-group">
                             <label class="control-label">Setting</label>

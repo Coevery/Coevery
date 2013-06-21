@@ -24,6 +24,14 @@ namespace Coevery.Entities.Services
                                         .Controller("EntityEditCtrl")
                                         .Dependencies("controllers/editcontroller"));
 
+            builder.Create("EntityEdit",
+                           Feature,
+                           route => route
+                                        .Url("/Entities/{Id:[0-9a-zA-Z]+}/Edit")
+                                        .TemplateUrl("function(params) { return 'SystemAdmin/Entities/Edit/' + params.Id;}")
+                                        .Controller("EntityEditCtrl")
+                                        .Dependencies("controllers/editcontroller"));
+
             builder.Create("EntityDetail",
                            Feature,
                            route => route

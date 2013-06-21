@@ -13,7 +13,8 @@
         <div class="row-fluid">
             <div class="span12">
                 <div>
-                    @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, new { @class = "form-horizontal" })) {
+                    @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, 
+                        new { @class = "form-horizontal", id="myForm" })) {
                         // todo: come up with real itemtype definitions and locations for said definitions
                         @Html.ValidationSummary()
                         <section class="control-group">
