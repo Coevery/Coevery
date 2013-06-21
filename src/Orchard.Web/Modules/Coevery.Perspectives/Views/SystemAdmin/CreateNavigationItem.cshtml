@@ -11,7 +11,7 @@
     </div>
     <section id="main-content">
         <div class="row-fluid">
-            @using (Html.BeginFormAntiForgeryPost(Url.Action("EditNavigationItem", new {perspectiveId=Model.PrespectiveId,navigationId=Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+            @using (Html.BeginFormAntiForgeryPost(Url.Action("CreateNavigationItem", new {perspectiveId=Model.PrespectiveId,navigationId=Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                   FormMethod.Post,
                                                   new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
             {

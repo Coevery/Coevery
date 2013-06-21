@@ -48,16 +48,12 @@ define(['core/app/detourService',
               columnDefs: navigationColumnDefs
           };
 
-          
-
           $scope.addNavigationItem = function () {
-              $detour.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: 0, View: 'EditNavigationItem' });
+              $detour.transitionTo('CreateNavigationItem', { Id: perpectiveId });
           };
 
-          
-
           $scope.edit = function (navigationId) {
-              $detour.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Perspective', Id: perpectiveId, SubId: navigationId, View: 'EditNavigationItem' });
+              $detour.transitionTo('EditNavigationItem', {Id:perpectiveId, NId: navigationId });
           };
 
           $scope.delete = function (navigationId) {
