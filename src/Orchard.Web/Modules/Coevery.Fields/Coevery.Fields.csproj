@@ -52,6 +52,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -73,8 +74,18 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
+    <Compile Include="Drivers\EmailFieldDriver.cs" />
+    <Compile Include="Drivers\UrlFieldDriver.cs" />
+    <Compile Include="Drivers\PhoneFieldDriver.cs" />
+    <Compile Include="Drivers\NumberFieldDriver.cs" />
+    <Compile Include="Drivers\CurrencyFieldDriver.cs" />
     <Compile Include="Drivers\SelectFieldDriver.cs" />
     <Compile Include="FieldEditWrapper.cs" />
+    <Compile Include="Fields\UrlField.cs" />
+    <Compile Include="Fields\EmailField.cs" />
+    <Compile Include="Fields\PhoneField.cs" />
+    <Compile Include="Fields\NumberField.cs" />
+    <Compile Include="Fields\CurrencyField.cs" />
     <Compile Include="Fields\SelectField.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +124,16 @@
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="Settings\EmailFieldEditorEvents.cs" />
+    <Compile Include="Settings\EmailFieldSettings.cs" />
+    <Compile Include="Settings\UrlFieldEditorEvents.cs" />
+    <Compile Include="Settings\UrlFieldSettings.cs" />
+    <Compile Include="Settings\PhoneFieldEditorEvents.cs" />
+    <Compile Include="Settings\PhoneFieldSettings.cs" />
+    <Compile Include="Settings\NumberFieldEditorEvents.cs" />
+    <Compile Include="Settings\NumberFieldSettings.cs" />
+    <Compile Include="Settings\CurrencyFieldEditorEvents.cs" />
+    <Compile Include="Settings\CurrencyFieldSettings.cs" />
     <Compile Include="Settings\FieldEditorEvents.cs" />
     <Compile Include="Settings\IContentDefinitionEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldEditorEvents.cs" />
@@ -139,6 +160,51 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\SelectFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Currency.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Currency.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\CurrencyFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\NumberFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Number.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Number.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\PhoneFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Phone.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Phone.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\UrlFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\EmailFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Url.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Email.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Url.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Email.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
