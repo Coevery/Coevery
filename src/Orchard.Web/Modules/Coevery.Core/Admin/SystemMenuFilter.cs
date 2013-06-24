@@ -9,7 +9,8 @@ using Orchard.UI.Navigation;
 
 namespace Coevery.Core.Admin {
     public class SystemMenuFilter : FilterProvider, IResultFilter {
-        private readonly INavigationManager _navigationManager;private readonly IWorkContextAccessor _workContextAccessor;
+        private readonly INavigationManager _navigationManager; 
+        private readonly IWorkContextAccessor _workContextAccessor;
         private readonly dynamic _shapeFactory;
 
         public SystemMenuFilter(INavigationManager navigationManager,

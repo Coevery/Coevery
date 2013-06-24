@@ -3,15 +3,15 @@
     <h1 id="main-heading" style="background-image: none;">Meta Detail <span>Metadata add/edit</span></h1>
 </header>
 
+<section class="page-actions">
+    <button class="btn" data-ng-click="exit()">Back</button>
+    <button class="btn btn-primary" data-ng-click="save()">Save</button>
+</section>
 <section id="main-content">
     <div class="row-fluid">
         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                  new { @class = "form-horizontal", id="myForm"})) {
+                                              new { @class = "form-horizontal", id="myForm"})) {
             @Html.ValidationSummary()
-            <section class="page-actions">
-                <button class="btn" data-ng-click="exit()">Back</button>
-                <button class="btn btn-primary" data-ng-click="save()">Save</button>
-                </section>
             <section class="control-group">
                 <label class="control-label" for="DisplayName">@T("Display Name")</label>
                 <div class="controls">
@@ -36,14 +36,14 @@
     </div>
 </section>
 
-<script type="text/javascript">
+<script>
     $(function () {
         $('.page-actions').affix({ offset: { top: 71 } });
     });
 </script>
 
 @using (Script.Foot()) {
-    <script type="text/javascript">
+    <script>
         //<![CDATA[
         $(function () {
             var $name = $("#@Html.FieldIdFor(m => m.Name)");

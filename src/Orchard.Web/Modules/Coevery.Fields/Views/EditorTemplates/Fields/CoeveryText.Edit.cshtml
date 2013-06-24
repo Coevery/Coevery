@@ -8,7 +8,7 @@
 <label class="span3 title" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
 <div class="span9">
     <div class="control span12">
-        <input type="text" id="@Html.FieldIdFor(m => m.Value)" name="@Html.FieldNameFor(m => m.Value)" value="@Model.Value"@if (settings.Required) {<text> required</text> } @if (settings.MaxLength > 1) {<text> maxlength="@settings.MaxLength"</text>} />
+        <input class="span12" type="text" id="@Html.FieldIdFor(m => m.Value)" name="@Html.FieldNameFor(m => m.Value)" value="@Model.Value"@if (settings.Required) {<text> required</text> } @if (settings.MaxLength > 1) {<text> maxlength="@settings.MaxLength"</text>} />
         @Html.ValidationMessageFor(m => m.Value)
     </div>
 </div>

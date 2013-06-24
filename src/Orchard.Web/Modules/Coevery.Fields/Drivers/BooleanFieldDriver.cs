@@ -38,10 +38,10 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, BooleanField field, dynamic shapeHelper) {
             // if the content item is new, assign the default value
-            if(!part.HasDraft() && !part.HasPublished()) {
-                var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
-                field.Value = settings.DefaultValue;
-            }
+            //if(!part.HasDraft() && !part.HasPublished()) {
+            //    var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
+            //    field.Value = settings.DefaultValue;
+            //}
 
             return ContentShape("Fields_Boolean_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));

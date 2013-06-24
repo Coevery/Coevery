@@ -1,29 +1,26 @@
-﻿<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
+﻿<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 id="main-heading" style="background-image: none;">@T("Metadata") <span>Metadata List</span></h1>
 </header>
-<section data-ng-controller="EntityListCtrl">
-    <section id="main-content">
-        <div class="row-fluid">
-            
-            <section class="span12">
-                    <div class="page-actions">
-        <button class="btn btn-success" ng-click="add()">
-            <i class="icon-plus"></i>&nbsp;@T("Add")
-        </button>
-        <button class="btn" data-ng-click="generate()">
-            <i class="icos-arrow-down"></i>&nbsp;@T("Generate")
-        </button>
-        <button class="btn" data-ng-click="getAllMetadata()">
-            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
-        </button>
+<section class="page-actions">
+    <button class="btn btn-success" ng-click="add()">
+        <i class="icon-plus"></i>&nbsp;@T("Add")
+    </button>
+    <button class="btn" data-ng-click="generate()">
+        <i class="icos-arrow-down"></i>&nbsp;@T("Generate")
+    </button>
+    <button class="btn" data-ng-click="getAllMetadata()">
+        <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+    </button>
+</section>
+<section id="main-content">
+    <div class="row-fluid">
+        <section class="span12">
+            <section class="gridStyle" data-ng-grid="gridOptions"></section>
+        </section>
     </div>
-                <section class="gridStyle" data-ng-grid="gridOptions"></section>
-            </section>
-        </div>
-    </section>
 </section>
 
-<script type="text/javascript">
+<script>
     $(function () {
         $('.page-actions').affix({ offset: { top: 71 } });
     });

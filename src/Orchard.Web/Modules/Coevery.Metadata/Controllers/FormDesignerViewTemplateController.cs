@@ -11,18 +11,14 @@ using Orchard.Logging;
 using Orchard.Themes;
 using System.Linq;
 
-namespace Coevery.Metadata.Controllers
-{
-
-    public class FormDesignerViewTemplateController : Controller
-    {
+namespace Coevery.Metadata.Controllers {
+    public class FormDesignerViewTemplateController : Controller {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
         public FormDesignerViewTemplateController(
             IOrchardServices orchardServices,
-            IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
-        {
+            IContentManager contentManager, IContentDefinitionManager contentDefinitionManager) {
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
             Services = orchardServices;
@@ -33,11 +29,9 @@ namespace Coevery.Metadata.Controllers
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        [SystemAdmin]
-        public ActionResult Index(string id, string returnUrl)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
+        [SystemAdmin, Themed]
+        public ActionResult Index(string id, string returnUrl) {
+            if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
@@ -57,6 +51,5 @@ namespace Coevery.Metadata.Controllers
 
             return View((object)viewModel);
         }
-
     }
 }
