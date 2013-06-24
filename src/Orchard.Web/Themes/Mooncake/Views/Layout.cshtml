@@ -168,9 +168,8 @@
                                     </div>
                                     <ul class="dropdown-menu">
                                         <li title="" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
-                                            <a href="@Href("~/CoeveryAdmin")">
-                                                <i style="background-position: center;"></i>
-                                                后台
+                                            <a href="@Href("~/SystemAdmin")">
+                                                <i style="background-position: center;"></i>后台
                                             </a>
                                         </li>
                                     </ul>
@@ -245,9 +244,9 @@
 </div>
 
 <div class="navbar navbar-fixed-bottom footerNavbar">
-    <div class="navbar-inner" style="background: transparent; border: none;">
+    <div class="navbar-inner" style="background: transparent; border: none;border-top:1px solid #ccc; min-height: 0px;">
         <div class="container footerContainer">
-            <footer id="footer" style="border: none;">
+            <footer id="footer" style="border: none;padding:3px;">
                 <div class="footer-left">novasoftware - <a href="http://www.novasoftware.cn/">http://www.novasoftware.cn/</a></div>
                 <div class="footer-right">
                     <p>Copyright 2013. All Rights Reserved.</p>
@@ -259,3 +258,11 @@
 
 @tag.EndElement
 
+@using (Script.Foot())
+ {
+     <script type="text/javascript">
+         $(document).ready(function () {
+             $('body').css("overflow", "hidden");
+         });
+     </script>
+ }

@@ -1,14 +1,14 @@
 require.config({
     baseUrl: '/OrchardLocal',
     paths: {
-        core: 'Modules/Coevery.Core/Scripts'
+        core: 'Modules/Coevery.Core/Scripts',
+        app: 'Modules/Coevery.Core/Scripts/app/' + appPrefix() + 'app'
     }
 });
 
 
-require(['core/app/app', 'core/app/logger'], function (app) {
+require(['app', 'core/app/logger'], function (app) {
     'use strict';
-    debugger;
     
     var config = requirejs.s.contexts._.config;
     

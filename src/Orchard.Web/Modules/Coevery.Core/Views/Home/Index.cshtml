@@ -24,7 +24,8 @@
 
 @using (Script.Foot()) {
     <script type="text/javascript">
-    //<![CDATA[
+        //<![CDATA[
+        function appPrefix() { return ''; }
         (function() {
             var load = requirejs.load;
             requirejs.load = function(context, moduleId, url) {

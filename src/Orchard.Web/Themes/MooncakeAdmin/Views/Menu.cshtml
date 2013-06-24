@@ -2,49 +2,22 @@
 @using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
 
-<ul class="menu">
-    @foreach (var firstLevelMenuItem in Model) {
-        IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-
-        string sectionHeaderTextHint = firstLevelMenuItem.Text.TextHint;
-
-        if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild) {
-            <li>
-                <span title="@firstLevelMenuItem.Text">
-                    <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
-                    <span class="nav-title">@firstLevelMenuItem.Text</span>
-                </span>
-                <ul class="inner-nav">
-                    @foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
-                        string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-                        var firstOfTheThird = ((IEnumerable<dynamic>) secondLevelMenuItem).FirstOrDefault();
-                        var secondLevelUrl = secondLevelMenuItem.Href;
-                        if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
-                            secondLevelUrl = firstOfTheThird.Href;
-                        }
-                        <li ng-class="{ active: $state.params.Moudle == '@secondLevelMenuItem.Text.TextHint'}">
-                            <a href="@secondLevelUrl">
-                                <i class="icol-@secondLevelTextHint.HtmlClassify()"></i>
-                                @secondLevelMenuItem.Text
-                            </a>
-                        </li>
-                    }
-                </ul>
+@{
+    // odd formatting in this file is to cause more attractive results in the output.
+    var items = Enumerable.Cast<dynamic>((System.Collections.IEnumerable)Model);
+}
+@{
+    if (items.Any()) {
+        <ul class="menu">
+            @DisplayChildren(Model)
+            <li id="sidebar-toggle-wrap">
+                <span id="sidebar-toggle" class="toggled" onclick=" ToggleButtonClick() "><span></span></span>
             </li>
-        }
-        else {
-            <li>
-                <a href="@firstLevelMenuItem.Href">
-                    <i class="icon-@sectionHeaderTextHint.HtmlClassify()"></i>
-                    <span class="nav-title">@firstLevelMenuItem.Text</span>
-                </a>
-            </li>
-        }
+        </ul>
     }
-    <li id="sidebar-toggle-wrap"><span id="sidebar-toggle" class="toggled" onclick="ToggleButtonClick()"><span></span></span></li>
-</ul>
-@using (Script.Foot())
-{
+}
+
+@using (Script.Foot()) {
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {

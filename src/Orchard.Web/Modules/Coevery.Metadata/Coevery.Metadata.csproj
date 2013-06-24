@@ -145,7 +145,6 @@
     <Compile Include="Controllers\FieldViewTemplateController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
-    <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
     <Compile Include="Controllers\PerspectiveViewTemplateController.cs" />
     <Compile Include="Controllers\RelationshipViewTemplateController.cs" />
@@ -178,8 +177,6 @@
     <Compile Include="Services\PlacementService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="Services\StereotypeService.cs" />
-    <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
-    <Compile Include="Settings\DynamicTypeSettings.cs" />
     <Compile Include="Settings\PlacementSettings.cs" />
     <Compile Include="ViewModels\AddPartsViewModel.cs" />
     <Compile Include="Controllers\FormDesignerViewTemplateController.cs" />
@@ -289,10 +286,6 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coevery.AdminNavigation\Coevery.AdminNavigation.csproj">
-      <Project>{F39623E9-FDE8-4764-AF6B-2AD66ECE646B}</Project>
-      <Name>Coevery.AdminNavigation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Coevery.Core\Coevery.Core.csproj">
       <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
       <Name>Coevery.Core</Name>
@@ -324,7 +317,6 @@
     <Content Include="Scripts\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\DefinitionTemplates\DynamicTypeSettingsViewModel.cshtml" />
     <Content Include="Views\FormDesignerViewTemplate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

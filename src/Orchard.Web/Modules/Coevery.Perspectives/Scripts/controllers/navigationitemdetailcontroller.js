@@ -1,0 +1,26 @@
+﻿'use strict';
+define(['core/app/detourService'], function (detour) {
+    detour.registerController([
+       'NavigationItemDetailCtrl',
+       ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource',
+       function ($timeout, $scope, logger, $detour, $stateParams, $resource) {
+           
+           $scope.exit = function () {
+               $detour.transitionTo('PerspectiveEdit', { Id: $stateParams.Id });
+           };
+
+           $scope.save = function () {
+               $.ajax({
+                   url: myForm.action,
+                   type: myForm.method,
+                   data: $(myForm).serialize() + '&submit.Save=Save',
+                   success: function (result) {
+                       logger.success("Perspective Saved.");
+                   }
+               });
+           };
+       }]
+    ]);
+});
+
+//@ sourceURL=Coevery.Perspectives/navigationitemdetailcontroller.js

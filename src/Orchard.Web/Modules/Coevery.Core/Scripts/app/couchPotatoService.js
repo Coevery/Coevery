@@ -1,3 +1,3 @@
-define(['core/app/app'], function(app) {
+define(['app'], function(app) {
     return app.couchPotato;
 });
