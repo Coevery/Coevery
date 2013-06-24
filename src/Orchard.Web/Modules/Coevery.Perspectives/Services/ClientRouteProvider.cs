@@ -2,68 +2,64 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Coevery.Core.ClientRoute;
 using Coevery.Core.Models;
 using Coevery.Core.Services;
 using Newtonsoft.Json.Linq;
 using Orchard;
+using Orchard.Environment.Extensions.Models;
 
 namespace Coevery.Perspectives.Services
 {
     public class ClientRouteProvider : IClientRouteProvider
     {
+        public virtual Feature Feature { get; set; }
 
-        public void GetClientRoutes(ICollection<ClientRoute> clientRoutes)
+        public void Discover(ClientRouteBuilder builder)
         {
-            foreach (var clientRoute in GetClientRoutes())
-                clientRoutes.Add(clientRoute);
-        }
+            builder.Create("PerspectiveList",
+                           Feature,
+                           route => route
+                                        .Url("/Perspectives")
+                                        .TemplateUrl("'SystemAdmin/Perspectives/List'")
+                                        .Controller("PerspectiveListCtrl")
+                                        .Dependencies("controllers/listcontroller"));
 
-        public IEnumerable<ClientRoute> GetClientRoutes() {
-            var baseClientRoute = BaseClientRoute.GetClientRoutes("Perspective", "Perspectives");
-            foreach (var clientRoute in baseClientRoute) {
-                yield return clientRoute;
-            }
-            baseClientRoute.First(c => c.StateName == "PerspectiveDetail").ClientRouteInfo.children = new Dictionary<string, ClientRouteInfo> {
-                {
-                    "EditNavigationItem", new ClientRouteInfo {
-                        definition = new Definition {
-                            url = "/Navigation/{NId:[0-9a-zA-Z]+}",
-                            templateUrl = new JRaw("function(params) { return 'SystemAdmin/Perspectives/EditNavigationItem/' + params.NId;}"),
-                            controller = "NavigationItemDetailCtrl",
-                            dependencies = new[] {"Modules/Coevery.Perspectives/Scripts/controllers/navigationitemdetailcontroller"}
-                        }
-                    }
-                }
-            };
-            yield return new ClientRoute
-            {
-                StateName = "EditNavigationItem",
-                ClientRouteInfo = new ClientRouteInfo
-                {
-                    definition = new Definition
-                    {
-                        url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{NId:[0-9a-zA-Z]+}",
-                        templateUrl = new JRaw("function(params) { return 'SystemAdmin/Perspectives/EditNavigationItem/' + params.NId;}"),
-                        controller = "NavigationItemDetailCtrl",
-                        dependencies = new[] { "Modules/Coevery.Perspectives/Scripts/controllers/navigationitemdetailcontroller" }
-                    }
-                }
-            };
+            builder.Create("PerspectiveCreate",
+                           Feature,
+                           route => route
+                                        .Url("/Perspectives/Create")
+                                        .TemplateUrl("'SystemAdmin/Perspectives/Create'")
+                                        .Controller("PerspectiveDetailCtrl")
+                                        .Dependencies("controllers/editcontroller"));
 
-            yield return new ClientRoute
-            {
-                StateName = "CreateNavigationItem",
-                ClientRouteInfo = new ClientRouteInfo
-                {
-                    definition = new Definition
-                    {
-                        url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create",
-                        templateUrl = new JRaw("function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}"),
-                        controller = "NavigationItemCreateCtrl",
-                        dependencies = new[] { "Modules/Coevery.Perspectives/Scripts/controllers/navigationitemcreatecontroller" }
-                    }
-                }
-            };
+            builder.Create("PerspectiveEdit",
+                           Feature,
+                           route => route
+                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}")
+                                        .TemplateUrl("function(params) { return 'SystemAdmin/Perspectives/Edit/' + params.Id;}")
+                                        .Controller("PerspectiveDetailCtrl")
+                                        .Dependencies("controllers/detailcontroller")
+                );
+
+            builder.Create("EditNavigationItem",
+                           Feature,
+                           route => route
+                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{NId:[0-9a-zA-Z]+}")
+                                        .TemplateUrl("function(params) { return 'SystemAdmin/Perspectives/EditNavigationItem/' + params.NId;}")
+                                        .Controller("NavigationItemDetailCtrl")
+                                        .Dependencies("controllers/navigationitemdetailcontroller")
+                );
+
+            builder.Create("CreateNavigationItem",
+                           Feature,
+                           route => route
+                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create")
+                                        .TemplateUrl("function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}")
+                                        .Controller("NavigationItemCreateCtrl")
+                                        .Dependencies("controllers/navigationitemcreatecontroller")
+                );
+
         }
     }
 }

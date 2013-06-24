@@ -41,7 +41,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           };
 
           $scope.edit = function (id) {
-              $detour.transitionTo('PerspectiveDetail', { Id: id });
+              $detour.transitionTo('PerspectiveEdit', { Id: id });
           };
 
 

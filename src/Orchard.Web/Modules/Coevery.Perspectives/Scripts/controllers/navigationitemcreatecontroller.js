@@ -6,7 +6,7 @@ define(['core/app/detourService'], function (detour) {
        function ($timeout, $scope, logger, $detour, $stateParams, $resource) {
            
            $scope.exit = function () {
-               $detour.transitionTo('PerspectiveDetail', { Id: $stateParams.Id});
+               $detour.transitionTo('PerspectiveEdit', { Id: $stateParams.Id });
            };
 
            $scope.save = function () {

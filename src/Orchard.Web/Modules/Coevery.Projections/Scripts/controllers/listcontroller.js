@@ -29,6 +29,10 @@ define(['core/app/detourService',
                             columnDefs: columnDefs
                         };
 
+                        $scope.exit = function () {
+                            $detour.transitionTo('EntityDetail', { Id: $stateParams.EntityName });
+                        };
+                        
                         $scope.delete = function(id) {
                             projectionDataService.delete({ Id: id }, function() {
                                 $scope.getAll();
