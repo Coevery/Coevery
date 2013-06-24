@@ -4,7 +4,7 @@
         public uint DecimalPlaces { get; set; }
         public double DefaultValue { get; set; }
 
-        public NumberFieldSettings()
+        public NumberFieldSettings():base()
         {
             Length = 18;
             DecimalPlaces = 0;

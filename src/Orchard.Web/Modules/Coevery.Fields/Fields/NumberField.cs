@@ -6,7 +6,6 @@ namespace Coevery.Fields.Fields
 {
     public class NumberField : ContentField
     {
-
         public double? Value
         {
             get { return Storage.Get<double?>(); }

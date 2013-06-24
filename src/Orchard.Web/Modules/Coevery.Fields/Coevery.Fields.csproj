@@ -74,6 +74,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
+    <Compile Include="Drivers\DatetimeFieldDriver.cs" />
+    <Compile Include="Drivers\DateFieldDriver.cs" />
     <Compile Include="Drivers\EmailFieldDriver.cs" />
     <Compile Include="Drivers\UrlFieldDriver.cs" />
     <Compile Include="Drivers\PhoneFieldDriver.cs" />
@@ -81,6 +83,8 @@
     <Compile Include="Drivers\CurrencyFieldDriver.cs" />
     <Compile Include="Drivers\SelectFieldDriver.cs" />
     <Compile Include="FieldEditWrapper.cs" />
+    <Compile Include="Fields\DatetimeField.cs" />
+    <Compile Include="Fields\DateField.cs" />
     <Compile Include="Fields\UrlField.cs" />
     <Compile Include="Fields\EmailField.cs" />
     <Compile Include="Fields\PhoneField.cs" />
@@ -124,6 +128,10 @@
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="Settings\DatetimeFieldEditorEvents.cs" />
+    <Compile Include="Settings\DatetimeFieldSettings.cs" />
+    <Compile Include="Settings\DateFieldEditorEvents.cs" />
+    <Compile Include="Settings\DateFieldSettings.cs" />
     <Compile Include="Settings\EmailFieldEditorEvents.cs" />
     <Compile Include="Settings\EmailFieldSettings.cs" />
     <Compile Include="Settings\UrlFieldEditorEvents.cs" />
@@ -205,6 +213,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fields\Email.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Date.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\DateFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Date.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Datetime.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Datetime.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\DatetimeFieldSettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

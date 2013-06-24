@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
+﻿
 namespace Coevery.Fields.Settings {
     public class EmailFieldSettings : FieldSettings {
         public string DefaultValue { get; set; }

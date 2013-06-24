@@ -1,0 +1,18 @@
+﻿@model Coevery.Fields.Settings.DateFieldSettings
+@using Coevery.Fields.Settings;
+
+<section class="control-group">  
+    <label class="control-label" for="dateDefault">
+        Default Value
+    </label>
+    <div class="controls">
+        @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12",id="dateDefault"})
+        <script>
+            $(document).ready(function () {
+                var defaultDate = $("#dateDefault");
+                defaultDate.datepicker();
+                defaultDate.val("");
+            });
+        </script>
+    </div>
+</section>

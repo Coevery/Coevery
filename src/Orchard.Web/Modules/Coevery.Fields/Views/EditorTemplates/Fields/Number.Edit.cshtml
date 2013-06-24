@@ -25,6 +25,5 @@
             @if(settings.Length > 1) {<text> maxlength="@settings.Length.ToString()+@settings.DecimalPlaces.ToString()+1"</text>} 
         />
         @Html.ValidationMessageFor(m => m.Value)
-        <span class="hint">@settings.Hint</span>
     </div>
 </div>
