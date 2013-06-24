@@ -1,0 +1,23 @@
+﻿<div class="btn-toolbar">
+    <button class="btn btn-success" ng-click="add()">
+        <i class="icon-plus"></i>New Field
+    </button>
+    <button class="btn" ng-click="gotoDependency()">Field Dependency</button>
+</div>
+<div class="row-fluid">
+    <section class="gridStyle" ng-grid="gridOptions"></section>
+</div>
+
+<section id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Confirm</h3>
+    </div>
+    <div class="modal-body">
+        <p>You really want to delete this field?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+        <button class="btn btn-primary" ng-click="deleteField()">Yes</button>
+    </div>
+</section>

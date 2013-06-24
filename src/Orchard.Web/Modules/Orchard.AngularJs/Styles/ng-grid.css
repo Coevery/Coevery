@@ -16,7 +16,7 @@
   user-select: none;
 }
 .ngViewport {
-  overflow: auto;
+  overflow:visible;
   min-height: 20px;
 }
 .ngCanvas {

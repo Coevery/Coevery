@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Coevery.Fields.Records;
 using Coevery.Fields.Settings;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
@@ -11,10 +10,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard;
-using Orchard.ContentManagement.ViewModels;
 using Orchard.Core.Contents.Controllers;
-using Orchard.Core.Settings.Metadata.Records;
-using Orchard.Data;
 using Orchard.Localization;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
@@ -25,22 +21,16 @@ namespace Coevery.Metadata.Controllers {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
-        private readonly IRepository<OptionItemRecord> _optionItemRepository;
-        private readonly IRepository<ContentPartFieldDefinitionRecord> _partFieldDefinitionRepository;
 
         public FieldViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents,
-            IRepository<OptionItemRecord> optionItemRepository,
-            IRepository<ContentPartFieldDefinitionRecord> partFieldDefinitionRepository) {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
-            _optionItemRepository = optionItemRepository;
-            _partFieldDefinitionRepository = partFieldDefinitionRepository;
             T = NullLocalizer.Instance;
         }
 
@@ -131,6 +121,10 @@ namespace Coevery.Metadata.Controllers {
         }
 
         public ActionResult DependencyList(string id) {
+            return View();
+        }
+
+        public ActionResult CreateDependency(string id) {
             var typeViewModel = _contentDefinitionService.GetType(id);
             var controlFields = new List<EditPartFieldViewModel>();
             var dependentFields = new List<EditPartFieldViewModel>();
@@ -153,6 +147,11 @@ namespace Coevery.Metadata.Controllers {
                 DependentFields = dependentFields
             };
             return View(viewModel);
+        }
+
+        public ActionResult EditDependency(string id, string subId) {
+
+            return null;
         }
 
         public ActionResult Items(string id, string subId) {

@@ -38,10 +38,10 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, BooleanField field, dynamic shapeHelper) {
             // if the content item is new, assign the default value
-            if(!part.HasDraft() && !part.HasPublished()) {
-                var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
-                field.Value = settings.DefaultValue;
-            }
+            //if(!part.HasDraft() && !part.HasPublished()) {
+            //    var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
+            //    field.Value = settings.DefaultValue;
+            //}
 
             return ContentShape("Fields_Boolean_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
@@ -50,9 +50,9 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Editor(ContentPart part, BooleanField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
-                if (settings.Required && !field.Value.HasValue) {
-                    updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
-                }
+                //if (settings.Required && !field.Value.HasValue) {
+                //    updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
+                //}
             }
 
             return Editor(part, field, shapeHelper);

@@ -84,7 +84,7 @@
     <Content Include="Recipes\blog.recipe.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Recipes\Lead.recipe.xml">
+    <Content Include="Recipes\coevery.recipe.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Recipes\default.recipe.xml" />

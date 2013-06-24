@@ -10,22 +10,18 @@ using Orchard;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Localization;
 
-namespace Coevery.Metadata.Controllers
-{
-    public class LayoutController : ApiController
-    {
+namespace Coevery.Metadata.Controllers {
+    public class LayoutController : ApiController {
         private IContentDefinitionManager _contentDefinitionManager;
 
         public LayoutController(
             IContentDefinitionManager contentDefinitionManager
-            )
-        {
+            ) {
             _contentDefinitionManager = contentDefinitionManager;
         }
 
         // GET api/leads/lead/5
-        public virtual object Get(string id)
-        {
+        public virtual object Get(string id) {
             var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
             if (contentTypeDefinition == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -34,8 +30,7 @@ namespace Coevery.Metadata.Controllers
                                 ? contentTypeDefinition.Settings["Layout"]
                                 : null;
 
-            var layoutInfo = new
-            {
+            var layoutInfo = new {
                 id,
                 layout
             };
@@ -50,12 +45,10 @@ namespace Coevery.Metadata.Controllers
 
             var layout = data.Get("layout");
 
-            if (contentTypeDefinition.Settings.ContainsKey("Layout"))
-            {
+            if (contentTypeDefinition.Settings.ContainsKey("Layout")) {
                 contentTypeDefinition.Settings["Layout"] = layout;
             }
-            else
-            {
+            else {
                 contentTypeDefinition.Settings.Add("Layout", layout);
             }
 

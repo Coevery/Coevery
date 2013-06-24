@@ -1,4 +1,4 @@
-﻿define(['core/app/app'], function (app) {
+﻿define(['app'], function (app) {
     app.factory('logger', function ($window) {
         var logger = {
             error: error,

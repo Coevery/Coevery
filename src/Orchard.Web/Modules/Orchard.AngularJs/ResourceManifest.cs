@@ -24,11 +24,11 @@ namespace Orchard.AngularJS
 
             manifest.DefineScript("angular_couchPotato").SetUrl("angular-couchPotato.min.js", "angular-couchPotato.js").SetVersion("0.0.4").SetDependencies("angular_UI_Router");
 
-            manifest.DefineScript("angular_Localize").SetUrl("localize.js").SetDependencies("angular");
-
             manifest.DefineScript("require").SetUrl("require.min.js", "require.js").SetVersion("2.1.6");
 
             manifest.DefineScript("i18next").SetUrl("i18next-1.6.3.min.js", "i18next-1.6.3.js").SetVersion("1.6.3");
+
+            manifest.DefineScript("angular_detour").SetUrl("angular-detour.amd.min.js", "angular-detour.amd.js").SetVersion("0.3.1").SetDependencies("angular", "require");
         }
     }
 }

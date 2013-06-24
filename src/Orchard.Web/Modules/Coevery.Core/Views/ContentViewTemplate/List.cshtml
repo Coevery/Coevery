@@ -7,7 +7,7 @@
 }
 
 <section data-ng-controller="GeneralListCtrl">
-    <section id="main-content" style="margin-top: 10px;">
+    <section id="main-content" style="margin-top: 10px; padding-right: 2px;">
         <div style="float: left;">
             <button class="btn btn-success" data-ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;@T("Add")
@@ -75,28 +75,28 @@
             </div>
         </div>
 
-        <div id="filterCollapse" class="accordion" style="margin-top: 40px; display:none;">
-            <div class="accordion-group">
-                <div class="accordion-heading" style="background-color: rgb(255,237,135);">
-                    <div class="accordion-toggle" style="cursor: auto;">
-                        <a  style="background: transparent;" data-toggle="collapse"
-                            
-                            data-parent="#demo-accordion-01" href="#collapse-01">
-                            <span class="btn" style="background: transparent;" ng-click="expendCollapse()"><i id="collapseBtn" class="icon-collapse-down"></i></span>
-                        </a>
-                        <span style="background: transparent;">过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
-                        <span style="background: transparent;"><a id="closeFilterLink" ng-click="closeFilterCollapse()" style="cursor:pointer; background: transparent; color: rgb(51,84,127);">Close</a></span>
-                    </div>
+        <div class="scrollDiv" ng-style="GetScrollHeight()">
+            <div id="filterCollapse" class="accordion" style="margin-top: 10px;margin-bottom: 10px; display: none;">
+                <div class="accordion-group">
+                    <div class="accordion-heading" style="background-color: rgb(255,237,135);">
+                        <div class="accordion-toggle" style="cursor: auto;">
+                            <a style="background: transparent;" data-toggle="collapse"
+                                data-parent="#demo-accordion-01" href="#collapse-01">
+                                <span class="btn" style="background: transparent; border: 0px;" ng-click="expendCollapse()"><i id="collapseBtn" class="icon-collapse-down"></i></span>
+                            </a>
+                            <span style="background: transparent;">过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
+                            <span style="background: transparent; float: right;"><a id="closeFilterLink" ng-click="closeFilterCollapse()" style="cursor: pointer; background: transparent; font-size: 25px; color: rgb(51,84,127);">×</a></span>
+                        </div>
 
-                </div>
-                <div id="collapse-01" class="collapse">
-                    <div class="accordion-inner" style="padding: 0px;">
-                        <div class="widget" style="margin-bottom: 0px;">
-                            <div class="widget-content form-container" style="background-color: rgb(255,246,195);">
+                    </div>
+                    <div id="collapse-01" class="collapse" style="background-color: rgb(255,246,195);">
+                        <div class="accordion-inner" style="padding: 0px;">
+
+                            <div class="widget-content form-container">
                                 <form class="form-horizontal">
-                                    
-                                    <div ng-repeat="filter in filters" id="input_cloning_template{{filter.id}}" class="control-group" idtemplate="input_cloning_template">
-                                        <div class="btn-toolbar" style="margin: 0px;">
+
+                                    <div ng-repeat="filter in filters" id="input_cloning_template{{filter.id}}" class="control-group" style="border-top: 0px; border-bottom: 1px solid #ccc; padding: 5px 20px 5px 20px; margin: 0px;" idtemplate="input_cloning_template">
+                                        <div class="btn-toolbar" style="margin: 0px; float: left;">
                                             <div class="btn-group">
                                                 <button class="btn dropdown-toggle" data-toggle="dropdown">
                                                     <span>总费用{{filter.id}}</span>
@@ -119,10 +119,10 @@
                                             </div>
                                             <input type="text" id="input_cloning_0_input" name="text[0]" idtemplate="input_cloning_%23index%23_input" nametemplate="text%5B%23index%23%5D">
                                         </div>
-                                        <span class="close" id="input_cloning_remove_current" ng-click="removeFilter($index)" style="display: inline;">×</span>
+                                        <span class="close" id="input_cloning_remove_current" ng-click="removeFilter($index)" style="display: inline; float: right;">×</span>
                                     </div>
 
-                                    <div class="control-group">
+                                    <div class="control-group" style="border-top: 0px; padding-top: 15px; padding-left: 22px;">
                                         <div style="float: left;">
                                             <span class="btn btn-mini" id="input_cloning_add" ng-click="addFilter()"><i class="icon-plus"></i></span><span>&nbsp;Add another</span>
                                         </div>
@@ -147,16 +147,17 @@
                                     </div>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row-fluid">
-            <section class="span12" style="margin-top: 10px;">
-                <section class="gridStyle" ng-grid="gridOptions"></section>
-                @*@Display(Model.ListViewModel)*@
-            </section>
+            <div class="row-fluid">
+                <section class="span12" style="margin-top: 10px;">
+                    <section class="gridStyle" ng-grid="gridOptions"  ></section>
+                    @*@Display(Model.ListViewModel)*@
+                </section>
+            </div>
         </div>
     </section>
 </section>

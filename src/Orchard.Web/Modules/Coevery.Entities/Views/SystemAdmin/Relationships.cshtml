@@ -1,0 +1,12 @@
+﻿<div class="btn-toolbar">
+    <div class="btn-group">
+        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-plus"></i>Add <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="" ng-click="editOneToMany()"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
+            <li><a href="" ng-click="editManyToMany()"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
+        </ul>
+    </div>
+</div>
+<section class="gridStyle" ng-grid="relationshipGrid"></section>

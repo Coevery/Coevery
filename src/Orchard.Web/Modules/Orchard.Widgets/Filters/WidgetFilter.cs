@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Coevery.AdminNavigation;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
 using Orchard.Core.Settings.Models;
 using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.Mvc.Filters;
+using Orchard.Themes;
 using Orchard.UI.Admin;
 using Orchard.Widgets.Models;
 using Orchard.Widgets.Services;
@@ -46,8 +46,8 @@ namespace Orchard.Widgets.Filters {
             if (workContext == null ||
                 workContext.Layout == null ||
                 workContext.CurrentSite == null ||
-                AdminFilter.IsApplied(filterContext.RequestContext)||
-                CoeveryAdminFilter.IsApplied(filterContext.RequestContext)) {
+                AdminFilter.IsApplied(filterContext.RequestContext) ||
+                !ThemeFilter.IsApplied(filterContext.RequestContext)) {
                 return;
             }
 
