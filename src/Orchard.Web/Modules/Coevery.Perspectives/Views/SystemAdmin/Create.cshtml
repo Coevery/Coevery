@@ -1,51 +1,40 @@
 ﻿@using System.ComponentModel
 @model Coevery.Perspectives.ViewModels.PerspectiveViewModel
-
 <header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 style="background-image: none;">Perspective Detail <span>show perspective detail information</span></h1>
 </header>
-
-<section>
-    <div class="page-actions">
-        <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
-        <button type="button" class="btn" ng-click="exit()">Exit</button>
-    </div>
-    <section id="main-content">
-        <div class="row-fluid">
-             @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                          FormMethod.Post,
-                                                          new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
-            {
-                @* <section class="control-group">
-                    <label class="control-label" for="displayLabel">
-                        Display Label
-                    </label>
-                    <div class="controls">
-                        <input type="text" class="span12" id="displayLabel" ng-model="displayLabel">
+<section id="main-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <button class="btn" data-ng-click="exit()">Back</button>
+                        <button class="btn btn-primary" data-ng-click="save()">Save</button>
                     </div>
-                </section>*@
-                 <section class="control-group">
-                    <label class="control-label" for="Title">Title</label>
-                    <div class="controls">
-                        @Html.TextBoxFor(m => m.Title, new { @class = "span12" })
-                        <span class="hint">title</span>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-content form-container detail-container">
+                    <div class="form-horizontal no-border">
+                        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new {id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"]}),
+                                                              FormMethod.Post,
+                                                              new {@class = "form-horizontal", @name = "myForm", @ng_submit = "save()"})) {
+                            <section class="control-group">
+                                <label class="control-label">Title</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.Title, new {@class = "span12"})
+                                </div>
+                            </section>
+                        }
                     </div>
-                </section>
-                @*  <section class="control-group">
-                    <label class="control-label" for="description">
-                        Description
-                    </label>
-                    <div class="controls">
-                        <textarea class="span12" id="description" ng-model="description"></textarea>
-                    </div>
-                </section>*@
-            }
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 </section>
-
 <script>
-    $(function() {
+    $(function () {
         $('.page-actions').affix({ offset: { top: 71 } });
     });
 </script>
