@@ -589,6 +589,8 @@
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-vi.js" />
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-CN.js" />
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
+    <Content Include="Scripts\uniform\jquery.uniform.js" />
+    <Content Include="Scripts\uniform\jquery.uniform.min.js" />
     <Content Include="Styles\bootstrap\bootstrap-responsive.css" />
     <Content Include="Styles\bootstrap\bootstrap-responsive.min.css" />
     <Content Include="Styles\bootstrap\bootstrap.css" />
@@ -1948,8 +1950,6 @@
     <Content Include="Styles\uniform\images\bg-input-focus.png" />
     <Content Include="Styles\uniform\images\bg-input.png" />
     <Content Include="Styles\uniform\images\sprite.png" />
-    <Content Include="Styles\uniform\jquery.uniform.js" />
-    <Content Include="Styles\uniform\jquery.uniform.min.js" />
     <Content Include="Styles\utils.css" />
     <Content Include="Styles\widget.css" />
     <Content Include="Theme.png" />

@@ -9,13 +9,14 @@
     Script.Require("angular");
     Script.Require("angularResource");
     Script.Require("ngGrid");
+    Script.Require("ui_utils");
     Script.Require("require");
     Script.Require("angular_detour");
     Script.Require("i18next");
     Script.Include("directives/angularjs-i18next-directive.js");
 }
 
-<div ng-show="{{$state.transition}}">Loading...</div>
+<div ng-show="{{$detour.transition}}">Loading...</div>
 <section  class="ng-cloak"  ui-view ng-animate="'fade'">
 </section>
 @using (Script.Foot()) {

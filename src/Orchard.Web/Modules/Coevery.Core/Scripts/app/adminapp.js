@@ -1,7 +1,7 @@
 ﻿define(['angular-detour'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'coevery.layout']);
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.layout']);
     coevery.config(['$locationProvider', '$provide', '$detourProvider',
         function ($locationProvider, $provide, $detourProvider) {
             $detourProvider.loader = {

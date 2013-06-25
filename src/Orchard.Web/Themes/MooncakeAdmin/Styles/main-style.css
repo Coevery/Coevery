@@ -29,12 +29,6 @@
 @import url("statistic.css");
 @import url("invoice.css");
 
-/* Extra Stylesheets
-================================================== */
-@import url("mail.css");
-@import url("profile.css");
-@import url("gallery.css");
-
 /* Plugin Stylesheets
 ================================================== */
 @import url("plugins/elfinder.css");
@@ -43,8 +37,3 @@
 /* IE Stylesheets
 ================================================== */
 @import url("lt-ie9.css");
-
-/* Demo Stylesheets
-================================================== */
-@import url("demo.css");
-@import url("customizer.css");

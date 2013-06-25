@@ -4,6 +4,31 @@
     background-color: #fff;
 }
 
+.ui-scrollfix {
+    position: fixed;
+}
+
+.widget[class~="ui-scrollfix"] {
+   position: fixed;
+}
+
+.widget .widget-content .btn-toolbar
+{
+    padding-left: 10px;
+}
+
+.widget .form-container .no-border .control-group
+{
+    padding: 0;
+    border: 0;
+    margin: 16px 20px;
+}
+
+.controls > fieldset > .radio:first-child,
+.controls > fieldset > .checkbox:first-child {
+  padding-top: 5px;
+}
+
 .ng-cloak {
     display: none;
 }

@@ -5,34 +5,46 @@
 
 <section id="main-content">
     <div class="row-fluid">
-        @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                  new { @class = "form-horizontal", id="myForm"})) {
-            @Html.ValidationSummary()
-            <section class="page-actions">
-                <button class="btn" data-ng-click="exit()">Back</button>
-                <button class="btn btn-primary" data-ng-click="save()">Save</button>
-                </section>
-            <section class="control-group">
-                <label class="control-label" for="DisplayName">@T("Display Name")</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
-                    <span class="hint">@T("Content Type Id: {0}", Model.Name)</span>
+        <div class="span12">
+            <div class="widget toolbarContainer">
+                <div class="widget-content no-padding" style="background-color: #f5f5f5;">
+                    <div class="btn-toolbar">
+                    <button class="btn" data-ng-click="exit()">Back</button>
+                        <button class="btn btn-primary" data-ng-click="save()">Save</button>
+                        </div>
                 </div>
-            </section>
-            <section class="control-group">
-                <label class="control-label" for="Name">@T("Content Type Id")</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "span12" })
-                    <span class="hint">@T("Technical name of the type.")</span>
+            </div>
+            <div class="widget">
+                <div class="widget-content form-container">
+                    <div class="form-horizontal no-border">
+                        @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+                                                              new {  id = "myForm" })) {
+                            @Html.ValidationSummary()
+                            <section class="control-group">
+                                <label class="control-label" for="DisplayName">@T("Display Name")</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label" for="Name">@T("Content Type Id")</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12" })
+                                    <span class="help-block">@T("Technical name of the type.")</span>
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Setting</label>
+                                <div class="controls">
+                                    @{Html.RenderTemplates(Model.Templates); }
+                                </div>
+                            </section>
+                        }
+                    </div>
+
                 </div>
-            </section>
-            <section class="control-group">
-                <label class="control-label">Setting</label>
-                <div class="controls">
-                    @{Html.RenderTemplates(Model.Templates); }
-                </div>
-            </section>
-        }
+            </div>
+        </div>
     </div>
 </section>
 
