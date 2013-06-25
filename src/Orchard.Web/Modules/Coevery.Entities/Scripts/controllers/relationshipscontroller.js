@@ -26,10 +26,10 @@ define(['core/app/detourService'], function (detour) {
                 ];
 
                 $scope.editOneToMany = function () {
-                    $detour.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Relationship', View: 'EditOneToMany' });
+                    $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id });
                 };
                 $scope.editManyToMany = function () {
-                    $detour.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Relationship', View: 'EditManyToMany' });
+                    $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id });
                 };
             }]
     ]);

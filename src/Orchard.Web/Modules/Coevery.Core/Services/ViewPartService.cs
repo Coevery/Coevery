@@ -1,6 +1,7 @@
 ﻿using Orchard.ContentManagement;
 using System.Linq;
 using Orchard.ContentManagement.MetaData;
+using Orchard.ContentManagement.Records;
 using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 using Coevery.Core.Models;
@@ -25,11 +26,12 @@ namespace Coevery.Core.Services
 
         public int GetProjectionId(string entityType)
         {
-            var viewPartRecord = _viewPartRepository.Fetch(t => t.ContentTypeDefinitionRecord.Name == entityType).FirstOrDefault();
+            var typeDefinitionRecord = _contentDefinitionManager.Get(t => t.Name == entityType);
+            var viewPartRecord = _viewPartRepository.Fetch(t => t.ContentTypeDefinitionRecord_id == typeDefinitionRecord.Id).FirstOrDefault();
 
             if (viewPartRecord != null)
             {
-                return viewPartRecord.ProjectionPartRecord.Id;
+                return viewPartRecord.ProjectionPartRecord_id;
             }
             else
             {
@@ -42,19 +44,18 @@ namespace Coevery.Core.Services
         {
             var typeDefinitionRecord = _contentDefinitionManager.Get(t => t.Name == entityType);
             var projectionPartRecord = _contentManager.Get(t => t.Id == projectionId);
-            ViewPartRecord viewPartRecord = _viewPartRepository.Get(t => t.ContentTypeDefinitionRecord.Name == entityType);
-            if (viewPartRecord == null)
-            {
+            ViewPartRecord viewPartRecord = _viewPartRepository.Get(t => t.ContentTypeDefinitionRecord_id == typeDefinitionRecord.Id);
+            if (viewPartRecord == null) {
                 viewPartRecord = new ViewPartRecord
                 {
-                    ContentTypeDefinitionRecord = typeDefinitionRecord,
-                    ProjectionPartRecord = projectionPartRecord
+                    ContentTypeDefinitionRecord_id = typeDefinitionRecord.Id,
+                    ProjectionPartRecord_id = projectionPartRecord.Id
                 };
                 _viewPartRepository.Create(viewPartRecord);
             }
             else
             {
-                viewPartRecord.ProjectionPartRecord = projectionPartRecord;
+                viewPartRecord.ProjectionPartRecord_id = projectionPartRecord.Id;
             }
            
         }

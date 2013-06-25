@@ -1,0 +1,22 @@
+﻿@using Orchard.Utility.Extensions
+@model Coevery.Fields.ViewModels.FieldDependencyViewModel
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">Field Dependency <span>Define dependencies between fields</span></h1>
+</header>
+
+<section class="page-actions">
+    <button class="btn" ng-click="back()">Back</button>
+    <button class="btn btn-success" ng-click="add()">
+        <i class="icon-plus"></i>&nbsp;New
+    </button>
+</section>
+
+<section id="main-content">
+    <section class="gridStyle" ng-grid="gridOptions"></section>
+</section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

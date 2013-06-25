@@ -18,7 +18,7 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('ProjectionList', { EntityName: $stateParams.Id });
                 };
                 $scope.formDesigner = function() {
-                    location.href = 'Metadata/FormDesignerViewTemplate/Index/' + $stateParams.Id;
+                    location.href = 'FormDesigner/SystemAdmin/Index/' + $stateParams.Id;
                 };
             }]
     ]);

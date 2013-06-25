@@ -7,7 +7,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
             function ($scope, logger, $detour, $stateParams, entityDataService, fieldDataService) {
 
                 var fieldColumnDefs = [
-                    { field: '', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-hide="row.getProperty(\'IsSystemField\')" ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
+                    { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-hide="row.getProperty(\'IsSystemField\')" ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
                     { field: 'DisplayName', displayName: 'Field Label' },
                     { field: 'Name', displayName: 'Field Name' },
                     { field: 'Type', displayName: 'Type' },
@@ -44,18 +44,14 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     });
                 };
 
-
                 $scope.add = function () {
-                    //$detour.transitionTo('SubCreate', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'Create' });
-                    $detour.transitionTo('EntityCreate', { Module: 'Entities' });
+                    $detour.transitionTo('FieldCreateChooseType', { EntityName: entityName });
                 };
-
                 $scope.edit = function (fieldName) {
-                    $detour.transitionTo('SubDetail', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'Edit', SubId: fieldName });
+                    $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
                 };
-
                 $scope.gotoDependency = function () {
-                    $detour.transitionTo('SubList', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'DependencyList' });
+                    $detour.transitionTo('FieldDependencyList', { EntityName: entityName });
                 };
 
                 $scope.getAllField = function () {

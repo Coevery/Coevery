@@ -11,12 +11,15 @@ define(['core/app/detourService',
                             var result = i18n.t(str);
                             return result;
                         };
-
+                        var actionTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>';
+                        actionTemplate += '&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a>';
+                        actionTemplate += '&nbsp;<a ng-click="setDefault(row.getProperty(col.field))">Default</a></div>';
                         var columnDefs = [
-                            { field: 'ContentId', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
+                            { field: 'ContentId', displayName: 'Actions', width: 130, cellTemplate: actionTemplate },
                             { field: 'ContentId', displayName: t('Id') },
                             { field: 'EntityType', displayName: t('EntityType') },
-                            { field: 'DisplayName', displayName: t('DisplayName') }];
+                            { field: 'DisplayName', displayName: t('DisplayName') },
+                            { field: 'Default', displayName: t('Default') }];
                         $scope.mySelections = [];
 
                         $scope.gridOptions = {
@@ -30,7 +33,8 @@ define(['core/app/detourService',
                         };
 
                         $scope.exit = function () {
-                            $detour.transitionTo('EntityDetail', { Id: $stateParams.EntityName });
+                            //$detour.transitionTo('EntityDetail', { Id: $stateParams.EntityName });
+                            location.href = 'SystemAdmin#/Entities/' + $stateParams.EntityName;
                         };
                         
                         $scope.delete = function(id) {
@@ -48,6 +52,15 @@ define(['core/app/detourService',
 
                         $scope.edit = function(id) {
                             $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
+                        };
+
+                        $scope.setDefault = function (id) {
+                            var result = projectionDataService.save({ Id: id, EntityType: $stateParams.EntityName }, function () {
+                                $scope.getAll();
+                            }, function () {
+                                
+                            });
+                           
                         };
 
                         $scope.getAll = function() {

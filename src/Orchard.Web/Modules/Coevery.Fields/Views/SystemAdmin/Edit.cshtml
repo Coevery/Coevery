@@ -1,0 +1,120 @@
+﻿@using Orchard.Utility.Extensions
+@model Coevery.Fields.ViewModels.EditPartFieldViewModel
+@{
+    var fieldSettingsPrefix = Model.FieldDefinition.Name + "Settings.";
+    bool hasItems = Model.FieldDefinition.Name == "SelectField" || Model.FieldDefinition.Name == "MultiSelectField";
+    bool isSystemField = bool.Parse(Model.Settings[fieldSettingsPrefix + "IsSystemField"]);
+}
+
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">Field Detail <span>Edit field information</span></h1>
+</header>
+
+<section class="page-actions">
+    <button class="btn" ng-click="exit()">Back</button>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    @if (hasItems) {
+        <button class="btn" ng-click="viewItems()">View Items</button>
+    }
+</section>
+
+<section id="main-content">
+    <div class="row-fluid">
+        @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+                                                  new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()", @id = "field-info-form" })) {
+            @Html.ValidationSummary()
+            <fieldset>
+                <legend>
+                    <h5>General Information</h5>
+                </legend>
+                <section class="control-group">
+                    <label class="control-label" for="DisplayName">@T("Field Label")</label>
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus" })
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label" for="Name">@T("Field Name")</label>
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "span12", disabled = "disabled" })
+                        @Html.HiddenFor(m => m.Name)
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label" for="FieldTypeName">@T("Field Type")</label>
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.FieldDefinition.Name, new { @class = "span12", disabled = "disabled" })
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label">
+                        Options
+                    </label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            @if (isSystemField) {
+                                @Html.Hidden(fieldSettingsPrefix + "Required", Model.Settings[fieldSettingsPrefix + "Required"]);
+                                @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]), new { disabled = "disabled" });
+                            }
+                            else {
+                                @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]));
+                            }
+                            @T("Required")
+                        </label>
+                        <label class="checkbox">
+                            @if (isSystemField) {
+                                @Html.Hidden(fieldSettingsPrefix + "ReadOnly", Model.Settings[fieldSettingsPrefix + "ReadOnly"]);
+                                @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]), new { disabled = "disabled" });
+                            }
+                            else {
+                                @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]));
+                            }
+                            @("Read-Only")
+                        </label>
+                        <label class="checkbox">
+                            @if (isSystemField) {
+                                @Html.Hidden(fieldSettingsPrefix + "AlwaysInLayout", Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]);
+                                @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]), new { disabled = "disabled" });
+                            }
+                            else {
+                                @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]));
+                            }
+                            @T("Always In Layout")
+                        </label>
+                        <label class="checkbox">
+                            @if (isSystemField) {
+                                @Html.Hidden(fieldSettingsPrefix + "IsAudit", Model.Settings[fieldSettingsPrefix + "IsAudit"]);
+                                @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]), new { disabled = "disabled" });
+                            }
+                            else {
+                                @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]));
+                            }
+                            @T("IsAudit")
+                        </label>
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label" for="helpText">
+                        @T("Help Text")
+                    </label>
+                    <div class="controls">
+                        @Html.TextArea(fieldSettingsPrefix + "HelpText", Model.Settings[fieldSettingsPrefix + "HelpText"], new { @class = "span12" })
+                    </div>
+                </section>
+            </fieldset>
+            <fieldset>
+                <legend>
+                    <h5>Field Information</h5>
+                </legend>
+                @{Html.RenderTemplates(Model.Templates);}
+            </fieldset>
+            @Html.Hidden(fieldSettingsPrefix + "IsSystemField", Model.Settings[fieldSettingsPrefix + "IsSystemField"])
+        }
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

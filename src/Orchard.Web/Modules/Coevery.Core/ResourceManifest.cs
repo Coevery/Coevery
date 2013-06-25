@@ -15,7 +15,6 @@ namespace Coevery.Core
             manifest.DefineScript("CommonContext").SetUrl("app/context.js");
             manifest.DefineScript("CoeveryAdminApp").SetUrl("app/adminapp.js");
             manifest.DefineStyle("Module").SetUrl("module.js");
-            manifest.DefineScript("AdminLogger").SetUrl("app/adminlogger.js");
         }
     }
 }
