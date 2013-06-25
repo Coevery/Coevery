@@ -1,11 +1,14 @@
-﻿ManyToManyDetailCtrl.$inject = ['$rootScope', '$scope', 'logger', '$state', 'localize', '$resource', '$stateParams'];
-
-function ManyToManyDetailCtrl($rootScope, $scope, logger, $state, localize, $resource, $stateParams) {
-    $scope.showPrimaryList = true;
-    $scope.showRelatedList = true;
-    $scope.exit = function () {
-        $state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
-    };
-}
-
-//@ sourceURL=Coevery.Metadata/manytomanydetailcontroller.js
+﻿'use strict';
+define(['core/app/detourService'], function (detour) {
+    detour.registerController([
+        'EditManyToManyCtrl',
+        ['$scope', 'logger', '$detour', '$stateParams',
+            function ($scope, logger, $detour, $stateParams) {
+                $scope.showPrimaryList = true;
+                $scope.showRelatedList = true;
+                $scope.exit = function () {
+                    $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
+                };
+            }]
+    ]);
+});

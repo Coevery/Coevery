@@ -1,0 +1,37 @@
+﻿@using Orchard.Utility.Extensions
+@model Coevery.Fields.ViewModels.AddFieldViewModel
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">Field Detail <span>Field add/edit</span></h1>
+</header>
+
+<section class="page-actions">
+    <button class="btn" ng-click="exit()">Back</button>
+    <button class="btn" ng-click="next()">Next</button>
+</section>
+
+<section id="main-content">
+    <h5>Step 1. Choose the field type</h5>
+    <div class="row-fluid">
+        <form id="field-type-form">
+            @{
+                foreach (var field in Model.Fields) {
+                <section class="control-group">
+                    <div class="controls">
+                        <label class="radio">
+                            <input type="radio" ng-model="fieldType" value="@field.FieldTypeName">
+                            @field.DisplayName
+                            <span class="help-inline">@field.Description</span>
+                        </label>
+                    </div>
+                </section>
+                }
+            }
+        </form>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

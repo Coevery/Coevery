@@ -139,27 +139,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminMenu.cs" />
-    <Compile Include="Controllers\FieldDependencyController.cs" />
-    <Compile Include="Controllers\OptionItemsController.cs" />
     <Compile Include="Controllers\PerspectiveController.cs" />
-    <Compile Include="Controllers\FieldViewTemplateController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
     <Compile Include="Controllers\PerspectiveViewTemplateController.cs" />
-    <Compile Include="Controllers\RelationshipViewTemplateController.cs" />
+    <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Controllers\UserViewController.cs" />
     <Compile Include="Controllers\ProjectionViewTemplateController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
-    <Compile Include="Migrations.cs" />
     <Compile Include="NavigationMenu.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Extensions\MetadataExtensions.cs" />
-    <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -204,16 +200,11 @@
     <Compile Include="ViewModels\ListContentTypesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\controllers\dependencycreatecontroller.js" />
-    <Content Include="Scripts\controllers\itemscontroller.js" />
     <Content Include="Scripts\controllers\perspectivecreatecontroller.js" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\perspectivedetailcontroller.js" />
-    <Content Include="Scripts\controllers\dependencylistcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
-    <Content Include="Scripts\controllers\editfieldinfocontroller.js" />
-    <Content Include="Scripts\controllers\fieldeditcontroller.js" />
     <Content Include="Scripts\controllers\navigationitemdetailcontroller.js" />
     <Content Include="Scripts\controllers\perspectivelistcontroller.js" />
     <Content Include="Scripts\controllers\userviewdetailcontroller.js" />
@@ -233,8 +224,6 @@
     <Content Include="Module.txt" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
-    <Content Include="Scripts\controllers\fielddetailcontroller.js" />
-    <Content Include="Scripts\controllers\fieldlistcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\formdesigner\contextmenu.js" />
@@ -252,10 +241,6 @@
     <Content Include="Styles\perspective\jquery.minicolors.css" />
     <Content Include="Styles\perspective\jquery.minicolors.png" />
     <Content Include="Views\EditorTemplates\ContentTypePart.ascx" />
-    <Content Include="Views\FieldViewTemplate\List.cshtml" />
-    <Content Include="Views\FieldViewTemplate\Create.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Views\DisplayTemplates\EditTypeViewModel.cshtml" />
     <Content Include="Views\DisplayTemplates\EditPartViewModel.cshtml" />
     <Content Include="Views\DisplayTemplates\Field.cshtml" />
@@ -320,9 +305,6 @@
     <Content Include="Views\FormDesignerViewTemplate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FieldViewTemplate\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\ViewTemplate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -330,12 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ProjectionViewTemplate\StaicEdit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\FieldViewTemplate\EditFieldInfo.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\FieldViewTemplate\DependencyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\PerspectiveViewTemplate\EditPerspective.cshtml" />
@@ -347,10 +323,10 @@
     <Content Include="Views\PerspectiveViewTemplate\EditNavigationItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\RelationshipViewTemplate\EditManyToMany.cshtml" />
+    <Content Include="Views\SystemAdmin\EditManyToMany.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\RelationshipViewTemplate\EditOneToMany.cshtml" />
+    <Content Include="Views\SystemAdmin\EditOneToMany.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\PerspectiveViewTemplate\CreatePerspective.cshtml">
@@ -358,10 +334,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FieldViewTemplate\Items.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\FieldViewTemplate\CreateDependency.cshtml" />
+    <Folder Include="Records\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
