@@ -18,7 +18,7 @@ define(['core/app/detourService'], function (detour) {
           };
 
           $scope.exit = function () {
-              $detour.transitionTo('EntityList');
+              $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.Id });
           };
       }]
     ]);

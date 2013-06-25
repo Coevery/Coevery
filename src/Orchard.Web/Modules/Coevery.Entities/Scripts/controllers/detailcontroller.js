@@ -6,17 +6,19 @@ define(['core/app/detourService'], function (detour) {
         ['$scope', 'logger', '$detour', '$stateParams', '$resource',
             function ($scope, logger, $detour, $stateParams) {
 
-                var entityName = $stateParams.Id;
-
                 $scope.exit = function() {
                     $detour.transitionTo('EntityList');
                 };
+                
+                $scope.edit = function () {
+                    $detour.transitionTo('EntityEdit', { Id: $stateParams.Id });
+                };
 
                 $scope.listViewDesigner = function() {
-                    $detour.transitionTo('ProjectionList', { EntityName: entityName });
+                    $detour.transitionTo('ProjectionList', { EntityName: $stateParams.Id });
                 };
                 $scope.formDesigner = function() {
-                    location.href = 'Metadata/FormDesignerViewTemplate/Index/' + entityName;
+                    location.href = 'Metadata/FormDesignerViewTemplate/Index/' + $stateParams.Id;
                 };
             }]
     ]);
