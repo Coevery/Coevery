@@ -18,34 +18,6 @@
                 </div>
             </div>
             <div class="widget">
-            <div class="widget-content table-container">
-                <table class="table table-striped table-detail-view">
-                    <tbody>
-                        <tr>
-                            <th>Name</th>
-                            <td>Republic of Korea</td>
-                        </tr>
-                        <tr>
-                            <th>Capital</th>
-                            <td>Seoul</td>
-                        </tr>
-                        <tr>
-                            <th>Official language(s)</th>
-                            <td>Korean</td>
-                        </tr>
-                        <tr>
-                            <th>Official scripts</th>
-                            <td>Hangul</td>
-                        </tr>
-                        <tr>
-                            <th>National Foundation Day</th>
-                            <td>October 3, 2333 BC</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-            <div class="widget">
                 <div class="widget-content form-container">
                     <div class="form-horizontal no-border">
                         <section class="control-group">
@@ -72,8 +44,8 @@
 
             <div class="widget">
                 <ul class="nav nav-tabs">
-                    <li data-ng-class="{ active: $detour.includes('EntityDetail.Fields') }"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
-                    <li data-ng-class="{ active: $detour.includes('EntityDetail.Relationships') }"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
+                    <li data-ng-class="{active: $uiRoute}" data-ui-route="#/Entities/{{$stateParams.Id}}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
+                    <li data-ng-class="{active: $uiRoute}" data-ui-route="#/Entities/{{$stateParams.Id}}/Relationships"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active">
