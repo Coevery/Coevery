@@ -15,6 +15,8 @@
             };
         }]);
 
+    coevery.value('$anchorScroll', angular.noop);
+
     coevery.run(['$rootScope', '$detour', '$stateParams', '$templateCache',
         function($rootScope, $detour, $stateParams, $templateCache) {
 
