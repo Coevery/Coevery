@@ -28,11 +28,22 @@ namespace Coevery.Core {
         {
             SchemaBuilder.CreateTable("ViewPartRecord",
                table => table
-                   .ContentPartRecord()
+                   .Column<int>("Id",column=>column.PrimaryKey().Identity())
                    .Column<int>("ContentTypeDefinitionRecord_id")
                    .Column<int>("ProjectionPartRecord_id")
                );
             return 2;
+        }
+
+        public int UpdateFrom2() {
+            SchemaBuilder.DropTable("ViewPartRecord");
+            SchemaBuilder.CreateTable("ViewPartRecord",
+               table => table
+                   .Column<int>("Id",column=>column.PrimaryKey().Identity())
+                   .Column<int>("ContentTypeDefinitionRecord_id")
+                   .Column<int>("ProjectionPartRecord_id")
+               );
+            return 3;
         }
     
     }

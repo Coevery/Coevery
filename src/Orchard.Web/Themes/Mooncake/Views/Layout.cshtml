@@ -195,23 +195,31 @@
         <div id="content-outer">
             <div class="btn-toolbar" id="FirstMenu" style="border: 0; width: 100%; margin-top: 10px;">
                 <div class="btn-group" style="border: 0; float: left; margin-top: 15px;">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(252, 252, 252);">
-                        <i style="background-position: center;"></i><span id="FirstMenuText" style="font-size: 25px;">Sales</span>
-                        <span class="caret"></span>
-                    </button>
+                    @if (Model.Navigation != null && Model.Navigation.Items.Count > 0)
+                    {
+                        var menu = Model.Navigation.Items[0];
+                        if (menu.Items.Count > 0)
+                        {
+                            <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(252, 252, 252);">
+                                <i style="background-position: center;"></i><span id="FirstMenuText" style="font-size: 25px;">@menu.Items[0].Text.Text</span>
+                                <span class="caret"></span>
+                            </button>
 
-                    <ul class="dropdown-menu">
+                            <ul class="dropdown-menu">
 
-                        <li title="Sales" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
-                            <i style="background-position: center;"></i>
-                            Sales
-                        </li>
-                        <li title="Home" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
-                            <i style="background-position: center;"></i>
-                            Home
-                        </li>
 
-                    </ul>
+                                @foreach (var item in menu.Items)
+                                {
+                                    <li title="@item.Text.Text" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
+                                        <i style="background-position: center;"></i>
+                                        @item.Text.Text
+                                    </li>
+                                }
+
+                            </ul>
+                        }
+
+                    }
                 </div>
                 <div style="float: left; margin-top: 10px;">
                     <header class="main-header_BG main-header" style="background-image: none; margin-bottom: 0;">
@@ -244,9 +252,9 @@
 </div>
 
 <div class="navbar navbar-fixed-bottom footerNavbar">
-    <div class="navbar-inner" style="background: transparent; border: none;border-top:1px solid #ccc; min-height: 0px;">
+    <div class="navbar-inner" style="background: transparent; border: none; border-top: 1px solid #ccc; min-height: 0px;">
         <div class="container footerContainer">
-            <footer id="footer" style="border: none;padding:3px;">
+            <footer id="footer" style="border: none; padding: 3px;">
                 <div class="footer-left">novasoftware - <a href="http://www.novasoftware.cn/">http://www.novasoftware.cn/</a></div>
                 <div class="footer-right">
                     <p>Copyright 2013. All Rights Reserved.</p>
@@ -259,10 +267,10 @@
 @tag.EndElement
 
 @using (Script.Foot())
- {
-     <script type="text/javascript">
-         $(document).ready(function () {
-             $('body').css("overflow", "hidden");
-         });
-     </script>
- }
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').css("overflow", "hidden");
+        });
+    </script>
+}
