@@ -30,14 +30,15 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               data: 'myData',
               selectedItems: $scope.mySelections,
               multiSelect: false,
-              showColumnMenu: true,
+              enableRowSelection: false,
               enableColumnResize: true,
               enableColumnReordering: true,
               columnDefs: metadataColumnDefs,
               enablePaging: true,
               showFooter: true,
               pagingOptions: $scope.pagingOptions,
-              totalServerItems:"totalServerItems"
+              totalServerItems: "totalServerItems",
+              footerTemplate: 'Coevery/Entities/GridTemplate/DefaultFooterTemplate'
           };
 
           $scope.delete = function (entityName) {
