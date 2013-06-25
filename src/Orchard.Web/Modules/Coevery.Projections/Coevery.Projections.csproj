@@ -89,9 +89,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ViewModelController.cs" />
+    <Compile Include="Drivers\LayoutPropertyPartDriver.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Handlers\LayoutPropertyPartHandler.cs" />
+    <Compile Include="Migrations.cs" />
+    <Compile Include="Models\LayoutPropertyPart.cs" />
+    <Compile Include="Models\LayoutPropertyRecord.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
+    <Compile Include="Services\ILayoutPropertyService.cs" />
     <Compile Include="Services\IProjectionService.cs" />
+    <Compile Include="Services\LayoutPropertyService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
@@ -143,8 +150,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Drivers\" />
-    <Folder Include="Handlers\" />
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>

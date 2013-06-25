@@ -6,12 +6,17 @@
 </header>
 @{
     var sortedBy = new BindingList<SelectListItem>();
-    sortedBy.Add(new SelectListItem { Selected = true, Text = "Name" });
-    sortedBy.Add(new SelectListItem { Selected = false, Text = "Age" });
+    Model.AllFields.ToList().ForEach(c => {
+        sortedBy.Add(new SelectListItem { Selected = (c.Name.TextHint.Replace(":Value", string.Empty) == Model.SortedBy), Text = c.Name.TextHint.Replace(":Value", string.Empty) });
+    });
 
     var sortMode = new BindingList<SelectListItem>();
-    sortMode.Add(new SelectListItem { Selected = true, Text = "Desc" });
-    sortMode.Add(new SelectListItem { Selected = false, Text = "Asc" });
+    sortMode.Add(new SelectListItem { Selected = Model.SortMode == "Desc", Text = "Desc" });
+    sortMode.Add(new SelectListItem { Selected = Model.SortMode == "Asc", Text = "Asc" });
+
+    var VisableTo = new BindingList<SelectListItem>();
+    VisableTo.Add(new SelectListItem { Selected = Model.VisableTo == "All", Text = "All" });
+    VisableTo.Add(new SelectListItem { Selected = Model.VisableTo == "Me", Text = "Me" });
 }
 
 <section ng-controller="ProjectionDetailCtrl">
@@ -23,7 +28,7 @@
         <div class="row-fluid">
             <div class="span12">
                 <div>
-                    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { subId = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { Id = Model.Id, EntityName = Model.Name, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                           FormMethod.Post,
                                                           new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
                     {
@@ -52,14 +57,14 @@
                                     <div class="span6">
                                         <label class="control-label" for="inputName">VisableTo</label>
                                         <div class="controls">
-                                            @Html.DropDownListFor(m => m.VisableTo, new BindingList<SelectListItem>(), string.Empty, new { @class = "span8" })
+                                            @Html.DropDownListFor(m => m.VisableTo, VisableTo, string.Empty, new { @class = "span8",@id = "visableto" })
                                         </div>
                                     </div>
 
                                     <div class="span6">
-                                        <label class="control-label" for="inputName">PageRowCount</label>
+                                        <label class="control-label">PageRowCount</label>
                                         <div class="controls">
-                                            <input type="number" class="span4" />
+                                            @Html.TextBoxFor(m=>m.PageRowCount,new {@type="number", @class = "span4" })
                                         </div>
                                     </div>
                                 </section>
@@ -78,7 +83,7 @@
                                                     <tr>
                                                         <th>Fields</th>
                                                         <th class="rightCell">
-                                                            <button class="btn-link" type="button">Add All</button></th>
+                                                            <button class="btn-link" ng-click="AddAll()" type="button">Add All</button></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -86,7 +91,7 @@
                                                     {
                                                         string fieldName = oneField.Name.TextHint.Replace(":Value", string.Empty);
                                                         <tr>
-                                                            <td>@fieldName</td>
+                                                            <td name="unselectedField">@fieldName</td>
                                                             <td class="rightCell">
                                                                 <span  ng-class="LabelClass('@fieldName')">Added</span>
                                                                 <span  ng-style="ButtonStyle('@fieldName')">
@@ -127,7 +132,7 @@
                                         <label class="control-label " for="SortedBy">Sorted By</label>
                                         <div class="controls">
                                             @Html.DropDownListFor(m => m.SortedBy, sortedBy, string.Empty, new { @class = "span4", @id = "sortby" })
-                                            @Html.DropDownListFor(m => m.SortMode, sortMode, string.Empty, new { @class = "span4" })
+                                            @Html.DropDownListFor(m => m.SortMode, sortMode, string.Empty, new { @class = "span4",@id="sortmode" })
                                             <input type="button" class="btn btn-small" name="Preview" value="Preview" ng-click="preview()" />
                                         </div>
                                     </div>

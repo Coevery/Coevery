@@ -27,7 +27,7 @@
         if (firstLevelIndex == 0) {displayCss = "block";}
         firstLevelIndex++;
         <ul class="menu" id="@firstLevelMenuItem.Text" style="display:@displayCss;">
-            @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 1 || !firstLevelMenuItem.LinkToFirstChild) {
+            @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 0 || !firstLevelMenuItem.LinkToFirstChild) {
                 foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
                     string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
                     var firstOfTheThird = ((IEnumerable<dynamic>) secondLevelMenuItem).FirstOrDefault();
@@ -35,12 +35,18 @@
                     if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
                         secondLevelUrl = firstOfTheThird.Href;
                     }
+                    var filePaht = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
+                    var backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico");
+                    if (!File.Exists(filePaht))
+                    {
+                        backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/Home.ico");
+                    }
                     <li id="@secondLevelMenuItem.Text">
                         <a href="@secondLevelUrl">
                             <span title="@secondLevelMenuItem.Text">
 
                                 <i class="icon-home" 
-                                   style="width: 32px; height: 32px; background-position: center; background-image: url(@Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico"));"></i>
+                                   style="width: 32px; height: 32px; background-position: center; background-image: url(@backUrl);"></i>
                                 <span class="nav-title">@secondLevelMenuItem.Text</span>
                             </span>
                         </a>
