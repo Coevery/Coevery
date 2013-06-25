@@ -11,7 +11,8 @@
             $(document).ready(function () {
                 var defaultDate = $("#dateDefault");
                 defaultDate.datepicker();
-                defaultDate.val("");
+                var nonDisplayed = /(\d+) \d+:\d+:\d+/i;
+                defaultDate.val(defaultDate.val().replace(nonDisplayed, "$1"));
             });
         </script>
     </div>
