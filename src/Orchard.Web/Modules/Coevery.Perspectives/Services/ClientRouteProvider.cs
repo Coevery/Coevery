@@ -30,7 +30,7 @@ namespace Coevery.Perspectives.Services
                            route => route
                                         .Url("/Perspectives/Create")
                                         .TemplateUrl("'SystemAdmin/Perspectives/Create'")
-                                        .Controller("PerspectiveDetailCtrl")
+                                        .Controller("PerspectiveEditCtrl")
                                         .Dependencies("controllers/editcontroller"));
 
             builder.Create("PerspectiveEdit",
