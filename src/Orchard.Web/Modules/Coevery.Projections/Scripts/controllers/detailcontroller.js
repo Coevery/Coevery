@@ -63,6 +63,18 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                     $scope.SelectedColumns.splice(index, 1);
                 };
 
+                $scope.AddAll = function() {
+                    $.each($('td[name = "unselectedField"]'), function (i, v) {
+                        var fieldName = $(v).text();
+                        var exsitsItem = $($scope.SelectedColumns).filter(function () {
+                            return this.FieldName == fieldName;
+                        }).first();
+                        if (exsitsItem.length <= 0) {
+                            $scope.addfield(fieldName);
+                        }
+                    });
+                };
+
                 $scope.LabelClass = function(fieldName) {
                     for (var i = 0; i < $scope.SelectedColumns.length; i++) {
                         if ($scope.SelectedColumns[i].FieldName == fieldName) return 'label';

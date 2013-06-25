@@ -12,9 +12,7 @@ namespace Coevery.Perspectives.Services
         public void GetNavigation(NavigationBuilder builder) {
             builder.AddImageSet("Admin")
                    .Add(T("Admin"), "3",
-                        menu => {
-                            menu.Add(T("Manage Perspectives"),"1", item => item.Url("~/SystemAdmin#/Perspectives"));
-                        });
+                        menu => menu.Add(T("Manage Perspectives"),"1", item => item.Url("~/SystemAdmin#/Perspectives")));
         }
     }
 }

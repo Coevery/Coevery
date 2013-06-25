@@ -58,7 +58,7 @@
                         <input type="checkbox" value="true" name="@Html.NameOf(m => m.Queries[index].IsChecked)"/>
                     </td>
                     <td>
-                        @Html.ActionLink(entry.Name, "Edit", new { id = entry.QueryId }) 
+                        @Html.ActionLink("fefe", "Edit", new { id = entry.QueryId }) 
                     </td>
                     <td>
                         @Html.ActionLink(T("Properties").ToString(), "Edit", new { Area = "Contents", id = entry.QueryId, returnurl = HttpContext.Current.Request.RawUrl }) |

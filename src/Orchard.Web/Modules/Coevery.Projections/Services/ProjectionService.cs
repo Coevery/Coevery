@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
@@ -34,7 +36,8 @@ namespace Coevery.Projections.Services
         private readonly IContentManager _contentManager;
         private readonly IFormManager _formManager;
         private readonly ITransactionManager _transactionManager;
-        private readonly IRepository<LayoutRecord> _layoutRepository; 
+        private readonly IRepository<LayoutRecord> _layoutRepository;
+        private readonly ILayoutPropertyService _layoutPropertyService;
 
         public ProjectionService(
              IOrchardServices services,
@@ -45,7 +48,8 @@ namespace Coevery.Projections.Services
             IContentManager contentManager,
             IFormManager formManager,
             ITransactionManager transactionManager,
-            IRepository<LayoutRecord> layoutRepository)
+            IRepository<LayoutRecord> layoutRepository,
+            ILayoutPropertyService layoutPropertyService)
         {
             _services = services;
             _siteService = siteService;
@@ -56,7 +60,7 @@ namespace Coevery.Projections.Services
             _transactionManager = transactionManager;
             _layoutRepository = layoutRepository;
             Services = services;
-
+            _layoutPropertyService = layoutPropertyService;
             T = NullLocalizer.Instance;
             Shape = shapeFactory;
         }
@@ -64,6 +68,19 @@ namespace Coevery.Projections.Services
         dynamic Shape { get; set; }
         public IOrchardServices Services { get; set; }
         public Localizer T { get; set; }
+
+        public ProjectionEditViewModel GetTempProjection(string entityType)
+        {
+            ProjectionEditViewModel viewModel = new ProjectionEditViewModel();
+            viewModel.Name = entityType;
+            viewModel.DisplayName = string.Empty;
+
+            //Get all field
+            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
+            string category = entityType + "ContentFields";
+            viewModel.AllFields = allFields.Where(t => t.Category == category);
+            return viewModel;
+        }
 
         public ProjectionEditViewModel CreateTempProjection(string entityType)
         {
@@ -116,8 +133,7 @@ namespace Coevery.Projections.Services
         }
 
 
-        public ProjectionEditViewModel GetProjectionViewModel(int id)
-        {
+        public ProjectionEditViewModel GetProjectionViewModel(int id) {
             ProjectionEditViewModel viewModel = new ProjectionEditViewModel();
             //Get Projection&QueryPart
             var projectionItem = _contentManager.Get(id,VersionOptions.Latest);
@@ -139,6 +155,19 @@ namespace Coevery.Projections.Services
             string category = viewModel.Name + "ContentFields";
             viewModel.AllFields = allFields.Where(t => t.Category == category).ToList();
 
+            var sortCriteria = queryPart.SortCriteria.FirstOrDefault();
+            if (sortCriteria != null) {
+                viewModel.SortedBy = sortCriteria.Type;
+                Regex regex = new Regex("<Sort>(.+?)</Sort>");
+                var matche = regex.Match(sortCriteria.State);
+                viewModel.SortMode = matche.Value.Contains("true")? "Desc" : "Asc";
+            }
+
+            var layoutPropertyPart = _layoutPropertyService.GetLayoutPropertyByQueryid(queryPart.Id);
+            if (layoutPropertyPart != null) {
+                viewModel.VisableTo = layoutPropertyPart.VisableTo;
+                viewModel.PageRowCount = layoutPropertyPart.PageRowCount;
+            }
             return viewModel;
         }
 
@@ -184,6 +213,29 @@ namespace Coevery.Projections.Services
                 layoutRecord.Properties.Add(propertyRecord);
             }
             layoutRecord.State = this.GetLayoutState(queryPart.Id, layoutRecord.Properties.Count, layoutRecord.Description);
+
+
+            // sort
+            queryPart.SortCriteria.Clear();
+            if (!string.IsNullOrEmpty(viewModel.SortedBy))
+            {
+                var sortCriterionRecord = new SortCriterionRecord
+                {
+                    Category = category,
+                    Type = viewModel.SortedBy,
+                    Position = queryPart.SortCriteria.Count,
+                    State = GetSortState(viewModel.SortedBy, viewModel.SortMode),
+                    Description = viewModel.SortedBy + " " + viewModel.SortMode
+                };
+                queryPart.SortCriteria.Add(sortCriterionRecord);
+            }
+
+            // VisableTo and pageRowCount
+            LayoutPropertyRecord lpRecord = new LayoutPropertyRecord();
+            lpRecord.VisableTo = viewModel.VisableTo;
+            lpRecord.PageRowCount = viewModel.PageRowCount;
+            lpRecord.QueryPartRecord_id = queryPart.Id;
+            _layoutPropertyService.CreateLayoutProperty(lpRecord);
             return true;
         }
 
@@ -195,6 +247,12 @@ namespace Coevery.Projections.Services
                   <__RequestVerificationToken>POESz5zBfaUfKi7nV-DN7HBjHfMa6SDP08I_cFQu5y6_iV_PXniWPAJQOFVXsajUk2hk_QMrKZ8fLDCxATbMmuJuNUK_rhBRq2DIld2IJ0E-yGca8Jw8Ma_dWrri63fgR5hmVq1rfuOGFtEM1YJaZUSlgOHVe7RH1GKag_vA2nQ1</__RequestVerificationToken>
                 </Form>";
             return string.Format(format, entityType);
+        }
+
+        private string GetSortState(string description,string sortMode)
+        {
+            string format = @"<Form><Description>{0}</Description><Sort>{1}</Sort></Form>";
+            return string.Format(format, description, sortMode == "Desc" ? "true" : "false");
         }
 
         private string GetPropertyState(string filedName)

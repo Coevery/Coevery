@@ -3,45 +3,54 @@
     <h1 style="background-image: none;">Entity Detail <span>show entity detail information</span></h1>
 </header>
 
-<section data-spy="affix" data-offset-top="71" class="page-actions">
-    <button class="btn" data-ng-click="exit()">Back</button>
-    <button class="btn btn-primary" data-ng-click="save()">Save</button>
-</section>
+<script type="text/javascript">
+    $(function () {
+        $('.toolbar-Container').affix({ offset: { top: 71 } });
+    });
+</script>
 
 <section id="main-content">
     <div class="row-fluid">
         <div class="span12">
-            <div>
-                @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                        new { @class = "form-horizontal", id = "myForm" })) {
-                    // todo: come up with real itemtype definitions and locations for said definitions
-                    @Html.ValidationSummary()
-                    <section class="control-group">
-                        <label class="control-label" for="inputName">Name</label>
-                        <div class="controls">
-                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
-                            <span class="hint">@T("Content Type Id: {0}", Model.Name)</span>
-                        </div>
-                        @* todo: if we continue to go down the midrodata route, some helpers would be nice *@
-                        <meta itemprop="DisplayName" content="@Model.DisplayName" />
-                        @* has unintended consequences (renamging the type) - changing the name creates a new type of that name *@
-                        <meta itemprop="Id" content="@Model.Name" />
-                        @Html.HiddenFor(m => m.Name)
-                    </section>
-                    <section class="control-group">
-                        <label class="control-label">Setting</label>
-                        <div class="controls">
-                            @{Html.RenderTemplates(Model.Templates); }
-                        </div>
-                    </section>
-                }
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <button class="btn" data-ng-click="exit()">Back</button>
+                        <button class="btn btn-primary" data-ng-click="save()">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-content form-container">
+                    <div class="form-horizontal no-border">
+                        @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+                                                              new { id = "myForm" })) {
+                            @Html.ValidationSummary()
+                            <section class="control-group">
+                                <label class="control-label" for="inputName">Name</label>
+                                <div class="controls">
+                                    <span class="control-label">@T(Model.Name)</span>
+                                </div>
+                                <meta itemprop="Id" content="@Model.Name" />
+                                @Html.HiddenFor(m => m.Name)
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label" for="DisplayName">Display Name</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                                </div>
+                                <meta itemprop="DisplayName" content="@Model.DisplayName" />
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Setting</label>
+                                <div class="controls">
+                                    @{Html.RenderTemplates(Model.Templates); }
+                                </div>
+                            </section>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
-<script>
-    $(function () {
-        $('.page-actions').affix({ offset: { top: 71 } });
-    });
-</script>

@@ -1,27 +1,35 @@
 ﻿<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
-    <h1 id="main-heading" style="background-image: none;">@T("Metadata") <span>Metadata List</span></h1>
+    <h1 id="main-heading" style="background-image: none;">@T("Entities") <span>List of Entities</span></h1>
 </header>
-<section class="page-actions">
-    <button class="btn btn-success" ng-click="add()">
-        <i class="icon-plus"></i>&nbsp;@T("Add")
-    </button>
-    <button class="btn" data-ng-click="generate()">
-        <i class="icos-arrow-down"></i>&nbsp;@T("Generate")
-    </button>
-    <button class="btn" data-ng-click="getAllMetadata()">
-        <i class="icon-refresh"></i>&nbsp;@T("Refresh")
-    </button>
-</section>
 <section id="main-content">
     <div class="row-fluid">
-        <section class="span12">
-            <section class="gridStyle" data-ng-grid="gridOptions"></section>
-        </section>
+        <div class="span12">
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <button class="btn btn-success" ng-click="add()">
+                            <i class="icon-plus"></i>&nbsp;@T("Add")
+                        </button>
+                        <button class="btn" data-ng-click="generate()">
+                            <i class="icos-arrow-down"></i>&nbsp;@T("Generate")
+                        </button>
+                        <button class="btn" data-ng-click="getAllMetadata()">
+                            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-content table-container">
+                    <section class="gridStyle" data-ng-grid="gridOptions"></section>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<script>
+<script type="text/javascript">
     $(function () {
-        $('.page-actions').affix({ offset: { top: 71 } });
+        $('.toolbar-Container').affix({ offset: { top: 71 } });
     });
 </script>

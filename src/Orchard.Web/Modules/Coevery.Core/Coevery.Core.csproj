@@ -98,6 +98,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Drivers\DynamicContentsDriver.cs" />
+    <Compile Include="FrontMenu\FrontMenuFilter.cs" />
+    <Compile Include="FrontMenu\FrontMenu.cs" />
+    <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
+    <Compile Include="FrontMenu\FrontMenuThemeSelector.cs" />
+    <Compile Include="FrontMenu\FrontMenuAttribute.cs" />
     <Compile Include="Handlers\DynamicContentsHandler.cs" />
     <Compile Include="Models\ViewPartRecord.cs" />
     <Compile Include="Routes.cs" />

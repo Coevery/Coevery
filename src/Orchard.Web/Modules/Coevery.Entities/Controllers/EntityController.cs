@@ -40,7 +40,8 @@ namespace Coevery.Entities.Controllers {
                         let fields = type.Fields.Select(f => new { f.Name, f.DisplayName, FieldType = f.FieldDefinition.Name.CamelFriendly(), IsSystemField = bool.Parse(f.Settings[f.FieldDefinition.Name + "Settings.IsSystemField"]) })
                         where type.Name == name
                         select new { type.DisplayName, type.Name, setting.IsDeployed, Fields = fields };
-            return query.SingleOrDefault();
+            var entityType = query.SingleOrDefault();
+            return entityType;
         }
     }
 }

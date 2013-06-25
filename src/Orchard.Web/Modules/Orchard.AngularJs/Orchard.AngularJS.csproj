@@ -77,6 +77,10 @@
     <Content Include="Scripts\ng-grid-2.0.6.min.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\require.min.js" />
+    <Content Include="Scripts\ui-utils-ieshiv.js" />
+    <Content Include="Scripts\ui-utils-ieshiv.min.js" />
+    <Content Include="Scripts\ui-utils.js" />
+    <Content Include="Scripts\ui-utils.min.js" />
     <Content Include="Styles\images\glyphicons-halflings-white.png" />
     <Content Include="Styles\images\glyphicons-halflings.png" />
     <Content Include="Styles\jquery.pnotify.css" />

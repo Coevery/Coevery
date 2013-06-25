@@ -4,7 +4,7 @@
     DateTime? value = (DateTime?)Model.ContentField.Value;
     
     if (value.HasValue) {
-        string valueToDisplay = value.ToString("MM/dd/yyyy hh:mm tt");
+        string valueToDisplay = value.Value.ToString("MM/dd/yyyy hh:mm tt");
         if(!string.IsNullOrWhiteSpace(valueToDisplay))
         {
             string name = Model.ContentField.DisplayName;
