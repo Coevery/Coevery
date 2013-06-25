@@ -131,6 +131,59 @@ function exit() {
     }
 
     var coevery = angular.module('coevery', ['ngResource']);
+    coevery.factory('logger', function ($window) {
+        var logger = {
+            error: error,
+            info: info,
+            success: success,
+            notice: notice,
+            log: log
+        };
+
+        function error(message) {
+            $.pnotify({
+                title: 'Error',
+                text: message,
+                type: 'error'
+            });
+            log("Error: " + message);
+        };
+
+        function info(message) {
+            $.pnotify({
+                title: 'Information',
+                text: message,
+                type: 'info'
+            });
+            log("Info: " + message);
+        };
+
+        function success(message) {
+            $.pnotify({
+                title: 'Success',
+                text: message,
+                type: 'success'
+            });
+            log("Success: " + message);
+        };
+
+        function notice(message) {
+            $.pnotify({
+                title: 'Notice',
+                text: message
+            });
+            log("Notice: " + message);
+        };
+
+        // IE and google chrome workaround
+        // http://code.google.com/p/chromium/issues/detail?id=48662
+        function log() {
+            var console = $window.console;
+            !!console && console.log && console.log.apply && console.log.apply(console, arguments);
+        }
+
+        return logger;
+    });
     coevery.directive('fdToolsSection', function() {
         return {
             template: '<p fd-tools-section fd-draggable class="alert alert-info"><span class="title" ng-transclude></span></p>',

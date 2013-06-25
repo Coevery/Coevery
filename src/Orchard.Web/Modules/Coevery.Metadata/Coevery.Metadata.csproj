@@ -175,7 +175,6 @@
     <Compile Include="Services\StereotypeService.cs" />
     <Compile Include="Settings\PlacementSettings.cs" />
     <Compile Include="ViewModels\AddPartsViewModel.cs" />
-    <Compile Include="Controllers\FormDesignerViewTemplateController.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
@@ -226,10 +225,6 @@
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\formdesigner\contextmenu.js" />
-    <Content Include="Scripts\formdesigner\jsutils.js" />
-    <Content Include="Scripts\formdesigner\linq.js" />
-    <Content Include="Scripts\formdesigner\main.js" />
     <Content Include="Scripts\i18n\resources-locale_default.js" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.js" />
     <Content Include="Styles\formdesigner\css\formdesigner.css" />
@@ -300,9 +295,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\FormDesignerViewTemplate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ViewTemplate\Edit.cshtml" />

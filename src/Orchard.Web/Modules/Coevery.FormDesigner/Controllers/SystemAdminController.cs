@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using Coevery.Core.Admin;
@@ -9,14 +8,13 @@ using Orchard.ContentManagement.MetaData;
 using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.Themes;
-using System.Linq;
 
-namespace Coevery.Metadata.Controllers {
-    public class FormDesignerViewTemplateController : Controller {
+namespace Coevery.FormDesigner.Controllers {
+    public class SystemAdminController : Controller {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
-        public FormDesignerViewTemplateController(
+        public SystemAdminController(
             IOrchardServices orchardServices,
             IContentManager contentManager, IContentDefinitionManager contentDefinitionManager) {
             _contentManager = contentManager;
