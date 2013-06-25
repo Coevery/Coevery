@@ -17,7 +17,6 @@ using Orchard.Localization;
 using Orchard.UI;
 using Orchard.UI.Navigation;
 using Orchard.Utility.Extensions;
-using System.Linq;
 
 namespace Coevery.Metadata.Controllers {
     public class PerspectiveController : ApiController {

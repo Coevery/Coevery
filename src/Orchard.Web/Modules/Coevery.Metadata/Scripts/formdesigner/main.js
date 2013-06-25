@@ -1,5 +1,12 @@
 ﻿//$(function () {
-    'use strict';
+'use strict';
+
+function exit() {
+    console.log('test');
+    var url = location.href.substr(0, location.href.lastIndexOf('#'));
+    var entityName = url.substr(url.lastIndexOf('/') + 1);
+    location.href = '/OrchardLocal/SystemAdmin#/Entities/' + entityName;
+}
 
     function LayoutContext($resource) {
         return $resource(
@@ -946,6 +953,11 @@
                 //restrict: 'E',
                 link: function(scope, element, attrs) {
                     var url = $location.absUrl();
+                    //todo: this url need modify
+                    var sharpIndex = url.lastIndexOf('#');
+                    if (sharpIndex > 0) {
+                        url = url.substr(0, sharpIndex);
+                    }
                     var moduleId = url.substr(url.lastIndexOf('/') + 1);
                     element.click(function() {
                         var layoutString = '';

@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Coevery.Fields.Settings;
 using Coevery.Metadata.Services;
 using Coevery.Metadata.ViewModels;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard;
-using Orchard.ContentManagement.ViewModels;
 using Orchard.Core.Contents.Controllers;
 using Orchard.Localization;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
+using IContentDefinitionEditorEvents = Coevery.Fields.Settings.IContentDefinitionEditorEvents;
 
 namespace Coevery.Metadata.Controllers {
     public class FieldViewTemplateController : Controller, IUpdateModel {
@@ -87,17 +88,17 @@ namespace Coevery.Metadata.Controllers {
             }
 
             var typeViewModel = _contentDefinitionService.GetType(id);
+            var field = typeViewModel.Fields.FirstOrDefault(f => f.Name == viewModel.Name);
+            if (field == null) {
+                return HttpNotFound();
+            }
+
+            CheckData(field);
             if (!ModelState.IsValid) {
                 string displayName = viewModel.DisplayName;
                 viewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == viewModel.Name);
                 viewModel.DisplayName = displayName;
                 return View(viewModel);
-            }
-
-            var field = _contentDefinitionManager.GetPartDefinition(id).Fields.FirstOrDefault(x => x.Name == viewModel.Name);
-
-            if (field == null) {
-                return HttpNotFound();
             }
 
             field.DisplayName = viewModel.DisplayName;
@@ -112,18 +113,6 @@ namespace Coevery.Metadata.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
-            //var partViewModel = _contentDefinitionService.GetPart(id);
-
-            //if (partViewModel == null)
-            //{
-            //    //id passed in might be that of a type w/ no implicit field
-            //    var typeViewModel = _contentDefinitionService.GetType(id);
-            //    if (typeViewModel != null)
-            //        partViewModel = new EditPartViewModel(new ContentPartDefinition(id));
-            //    else
-            //        return HttpNotFound();
-            //}
-
             var viewModel = new AddFieldViewModel {
                 Fields = _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName),
             };
@@ -132,6 +121,10 @@ namespace Coevery.Metadata.Controllers {
         }
 
         public ActionResult DependencyList(string id) {
+            return View();
+        }
+
+        public ActionResult CreateDependency(string id) {
             var typeViewModel = _contentDefinitionService.GetType(id);
             var controlFields = new List<EditPartFieldViewModel>();
             var dependentFields = new List<EditPartFieldViewModel>();
@@ -156,12 +149,20 @@ namespace Coevery.Metadata.Controllers {
             return View(viewModel);
         }
 
+        public ActionResult EditDependency(string id, string subId) {
+
+            return null;
+        }
+
+        public ActionResult Items(string id, string subId) {
+            return View();
+        }
+
         public ActionResult EditFieldInfo(string id, string subId) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
 
-            var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId), string.Empty, new SettingsDictionary());
-            //var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId + "Display"), string.Empty, new SettingsDictionary());
+            var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(subId + "Create"), string.Empty, new SettingsDictionary());
             var templates = _contentDefinitionEditorEvents.PartFieldEditor(definition);
 
             var viewModel = new AddFieldViewModel {
@@ -191,8 +192,7 @@ namespace Coevery.Metadata.Controllers {
                     return HttpNotFound();
                 }
             }
-            var edited = new EditPartFieldViewModel();
-            TryUpdateModel(edited);
+
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
             viewModel.Name = viewModel.Name ?? String.Empty;
@@ -235,9 +235,13 @@ namespace Coevery.Metadata.Controllers {
                 return Create(id);
             }
 
+            var edit = new EditPartFieldViewModel {
+                Name = viewModel.Name
+            };
+            _contentDefinitionService.CreateField(typeViewModel.Name, edit, this);
             typeViewModel = _contentDefinitionService.GetType(id);
-            _contentDefinitionService.AlterField(typeViewModel.Name, edited, this);
-
+            var field = typeViewModel.Fields.First(f => f.Name == viewModel.Name);
+            CheckData(field);
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
                 return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
@@ -254,6 +258,35 @@ namespace Coevery.Metadata.Controllers {
 
         void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
+        }
+
+        private void CheckData(EditPartFieldViewModel serverField) {
+            var settingsStr = serverField.FieldDefinition.Name + "Settings.";
+            var clientSettings = new FieldSettings();
+            TryUpdateModel(clientSettings, "BooleanFieldSettings");
+
+            var serverSettings = new FieldSettings {
+                IsSystemField = bool.Parse(serverField.Settings[settingsStr + "IsSystemField"]),
+                Required = bool.Parse(serverField.Settings[settingsStr + "Required"]),
+                ReadOnly = bool.Parse(serverField.Settings[settingsStr + "ReadOnly"]),
+                AlwaysInLayout = bool.Parse(serverField.Settings[settingsStr + "AlwaysInLayout"])
+            };
+
+            if (clientSettings.IsSystemField != serverSettings.IsSystemField) {
+                ModelState.AddModelError("IsSystemField", T("Can't modify the IsSystemField field.").ToString());
+            }
+
+            if (serverSettings.IsSystemField) {
+                if (clientSettings.Required != serverSettings.Required) {
+                    ModelState.AddModelError("Required", T("Can't modify the Required field.").ToString());
+                }
+                if (clientSettings.ReadOnly != serverSettings.ReadOnly) {
+                    ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
+                }
+                if (clientSettings.AlwaysInLayout != serverSettings.AlwaysInLayout) {
+                    ModelState.AddModelError("AlwaysInLayout", T("Can't modify the AlwaysInLayout field.").ToString());
+                }
+            }
         }
     }
 }

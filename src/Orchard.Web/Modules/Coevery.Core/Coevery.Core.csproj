@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
+    <Content Include="Scripts\app\adminlogger.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\app\adminapp.js" />

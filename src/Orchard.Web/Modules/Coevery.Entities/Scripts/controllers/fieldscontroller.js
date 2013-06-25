@@ -46,7 +46,8 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
 
                 $scope.add = function () {
-                    $detour.transitionTo('SubCreate', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'Create' });
+                    //$detour.transitionTo('SubCreate', { Module: 'Metadata', Id: entityName, SubModule: 'Field', View: 'Create' });
+                    $detour.transitionTo('EntityCreate', { Module: 'Entities' });
                 };
 
                 $scope.edit = function (fieldName) {

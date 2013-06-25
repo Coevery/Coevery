@@ -1,0 +1,68 @@
+﻿@{
+    Script.Include("controllers/itemscontroller.js");
+}
+@Display.FootScripts()
+
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">Items <span>field's items.</span></h1>
+</header>
+<section ng-controller="ItemsCtrl">
+    <section class="page-actions">
+        <button class="btn btn-success" ng-click="add()">
+            <i class="icon-plus"></i>&nbsp;Add
+        </button>
+        <button class="btn" ng-click="back()">Back</button>
+    </section>
+    <section id="main-content">
+        <div class="row-fluid">
+            <section class="gridStyle" ng-grid="gridOptions"></section>
+        </div>
+    </section>
+    <section id="deleteModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Confirm</h3>
+        </div>
+        <div class="modal-body">
+            <p>You really want to delete this item?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">No</button>
+            <button class="btn btn-primary" ng-click="deleteItem()">Yes</button>
+        </div>
+    </section>
+    <section id="editModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Item</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputValue">Value</label>
+                    <div class="controls">
+                        <input id="inputValue" type="text" ng-model="itemValue"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputIsDefault">Is Default</label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input id="inputIsDefault" type="checkbox" ng-model="itemIsDefault"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">No</button>
+            <button class="btn btn-primary" ng-click="editFunc()">Yes</button>
+        </div>
+    </section>
+</section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

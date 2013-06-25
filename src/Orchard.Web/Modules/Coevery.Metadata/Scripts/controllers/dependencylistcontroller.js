@@ -1,12 +1,15 @@
 ﻿function DependencyListCtrl($scope, logger, localize, $state, $stateParams, $resource) {
-    $('.step1').hide();
-    $('.step2').hide();
+    var entityName = $stateParams.Id;
+    var FieldDependency = $resource(
+        'api/metadata/FieldDependency',
+        {},
+        { update: { method: 'PUT' } }
+    );
 
     var fieldColumnDefs = [
-        { field: 'ContentId', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a>Delete</a></div>' },
-        { field: 'ControlField', displayName: 'Control Field' },
-        { field: 'DependentField', displayName: 'Dependent Field' },
-        { field: 'ModifiedBy', displayName: 'Modified By' }
+        { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
+        { field: 'ControlFieldName', displayName: 'Control Field' },
+        { field: 'DependentFieldName', displayName: 'Dependent Field' }
     ];
 
     $scope.gridOptions = {
@@ -17,29 +20,24 @@
         columnDefs: fieldColumnDefs
     };
 
-    $scope.myData = [
-        { ControlField: 'IsClosed', DependentField: 'Status', ModifiedBy: 'Zhang Junnan, 2013-5-15' }
-    ];
-
-    $scope.add = function() {
-        $('.step0').hide();
-        $('.step1').show();
+    $scope.add = function () {
+        $state.transitionTo('SubList', { Module: 'Metadata', Id: $stateParams.Id, SubModule: 'Field', View: 'CreateDependency' });
     };
-    $scope.back = function() {
+    $scope.back = function () {
         $state.transitionTo('Detail', { Module: 'Metadata', Id: $stateParams.Id });
     };
-    $scope.next = function() {
-        $('.step1').hide();
-        $('.step2').show();
+    $scope.delete = function (itemId) {
+        FieldDependency.delete({ Id: itemId });
     };
-    $scope.prev = function() {
-        $('.step1').show();
-        $('.step2').hide();
+
+    $scope.getOptionItems = function () {
+        var items = FieldDependency.query({ EntityName: entityName }, function () {
+            $scope.myData = items;
+        }, function () {
+            logger.error("Get items failed.");
+        });
     };
-    $scope.exit = function() {
-        $('.step0').show();
-        $('.step1').hide();
-    };
+    $scope.getOptionItems();
 }
 
 //@ sourceURL=Coevery.Metadata/dependencylistcontroller.js

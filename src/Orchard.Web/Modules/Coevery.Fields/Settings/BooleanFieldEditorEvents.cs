@@ -7,10 +7,11 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
-    public class BooleanFieldListModeEvents : ContentDefinitionEditorEventsBase {
+    public class BooleanFieldEditorEvents : FieldEditorEvents {
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
-            if (definition.FieldDefinition.Name == "BooleanField") {
+            if (definition.FieldDefinition.Name == "BooleanField"
+                || definition.FieldDefinition.Name == "BooleanFieldCreate") {
                 var model = definition.Settings.GetModel<BooleanFieldSettings>();
                 yield return DefinitionTemplate(model);
             }
@@ -27,19 +28,16 @@ namespace Coevery.Fields.Settings {
 
             var model = new BooleanFieldSettings();
             if (updateModel.TryUpdateModel(model, "BooleanFieldSettings", null, null)) {
-                builder.WithSetting("BooleanFieldSettings.HelpText", model.HelpText);
-                builder.WithSetting("BooleanFieldSettings.Required", model.Required.ToString());
-                builder.WithSetting("BooleanFieldSettings.ReadOnly", model.ReadOnly.ToString());
-                builder.WithSetting("BooleanFieldSettings.AlwaysInLayout", model.AlwaysInLayout.ToString());
-                builder.WithSetting("BooleanFieldSettings.IsSystemField", model.IsSystemField.ToString());
-                builder.WithSetting("BooleanFieldSettings.IsAudit", model.IsAudit.ToString());
-                builder.WithSetting("BooleanFieldSettings.OnLabel", model.OnLabel);
-                builder.WithSetting("BooleanFieldSettings.OffLabel", model.OffLabel);
+                UpdateSettings(model, builder, "BooleanFieldSettings");
                 builder.WithSetting("BooleanFieldSettings.SelectionMode", model.SelectionMode.ToString());
                 builder.WithSetting("BooleanFieldSettings.DefaultValue", model.DefaultValue.ToString());
             }
 
             yield return DefinitionTemplate(model);
+        }
+
+        public override IEnumerable<TemplateViewModel> PartFieldEditorCreate(ContentPartFieldDefinitionBuilder builder, string partName, IUpdateModel updateModel) {
+            return PartFieldEditorUpdate(builder, updateModel);
         }
     }
 }

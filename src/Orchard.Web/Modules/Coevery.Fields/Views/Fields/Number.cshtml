@@ -1,0 +1,14 @@
+﻿@using Coevery.Fields.Settings;
+@using Orchard.Utility.Extensions;
+@{
+    double? value = (double?)Model.ContentField.Value;
+    if (value.HasValue)
+    {
+        string valueToDisplay = value.ToString();
+        if (!string.IsNullOrWhiteSpace(valueToDisplay))
+        {
+            string name = Model.ContentField.DisplayName;
+            <p class="text-field">@T(name): @valueToDisplay</p>
+        }
+    }
+}
