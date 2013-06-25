@@ -41,7 +41,7 @@
     border-top: none;
 }
 
-.widget .form-container.detail-container .no-border .control-group > * {
+.widget .form-container.detail-container .no-border .control-group * {
     padding-left: 20px;
     font-size: 12px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
