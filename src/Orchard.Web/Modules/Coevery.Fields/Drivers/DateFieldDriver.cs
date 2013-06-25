@@ -59,7 +59,7 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override void Exporting(ContentPart part, DateField field, ExportContentContext context) {
-            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value.Value.ToShortDateString());
+            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value);
         }
 
         protected override void Describe(DescribeMembersContext context) {

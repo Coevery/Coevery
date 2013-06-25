@@ -4,7 +4,7 @@
     DateTime? value = (DateTime?)Model.ContentField.Value;
     
     if (value.HasValue) {
-        string valueToDisplay = value.ToShortDateString();
+        string valueToDisplay = value.Value.ToShortDateString();
         if(!string.IsNullOrWhiteSpace(valueToDisplay))
         {
             string name = Model.ContentField.DisplayName;

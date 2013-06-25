@@ -177,7 +177,8 @@
             $(document).ready(function () {
                 var defaultDatetime = $("#datetimeDefault");
                 defaultDatetime.datetimepicker({ ampm: true });
-                defaultDatetime.val("");
+                var nonDisplayed = /\d+( [am|pm])/i;
+                defaultDatetime.val( defaultDatetime.val().replace(nonDisplayed, "$1") );
             });
         </script>
     </div>
