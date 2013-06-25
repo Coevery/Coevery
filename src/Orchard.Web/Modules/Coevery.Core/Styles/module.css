@@ -17,6 +17,12 @@
     padding-left: 10px;
 }
 
+.widget.toolbar-Container .widget-content
+{
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
 .widget .form-container .no-border .control-group
 {
     padding: 0;
