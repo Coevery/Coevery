@@ -79,7 +79,8 @@ namespace Coevery.Core.Controllers
 
             // sanity check so that content items with ProjectionPart can't be added here, or it will result in an infinite loop
             contentItems = contentItems.Where(x => !x.Has<ProjectionPart>()).ToList();
-
+            //var ids = contentItems.Select(c => c.Id);
+            //contentItems = _contentManager.GetMany<ContentItem>(ids, VersionOptions.Latest, QueryHints.Empty).ToList();
             var layoutComponents = contentItems.Select(
                 contentItem =>
                 {

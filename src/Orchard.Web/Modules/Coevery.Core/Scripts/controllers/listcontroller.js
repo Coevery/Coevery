@@ -64,7 +64,9 @@
           });
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-
+          $scope.Refresh = function() {
+              $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+          };
 
           $scope.GetScrollHeight = function () {
               var height = document.height - 220;
@@ -154,26 +156,7 @@
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
 
-          //$scope.createnewview = function () {
-          //    $state.transitionTo('SubCreate', { Module: 'Metadata', SubModule: 'Projection', Id: $stateParams.Module });
-          //};
-
-          //$scope.editview = function () {
-          //    $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Projection', View: 'Edit', Id: $stateParams.Module, SubId: viewId });
-          //};
-
-          //$scope.getAll = function () {
-          //    var records = commonDataService.query(function() {
-          //        //$scope.myData = records;
-          //        $scope.myData = [{ 'Id': 1, 'Topic': 't1', 'StatusCode': '1', 'FirstName': 's1', 'LastName': 'c1' },
-          //            { 'Id': 2, 'Topic': 't2', 'StatusCode': '2', 'FirstName': 's2', 'LastName': 'c2' }
-          //        ];
-          //    }, function () {
-          //        logger.error("Failed to fetched records for " + moduleName);
-          //    });
-          //};
-
-          //$scope.getAll();
+          
       }]
     ]);
 });

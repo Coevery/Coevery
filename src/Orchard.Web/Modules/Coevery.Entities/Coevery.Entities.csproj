@@ -87,6 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Controllers\GenerationController.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
