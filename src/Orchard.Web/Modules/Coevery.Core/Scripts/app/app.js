@@ -56,6 +56,18 @@
                 lowerCaseLng: true,
                 ns: 'resources-locale'
             };
+            
+            $rootScope.defaultGridOptions = {
+                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 200 })],
+                multiSelect: false,
+                enableRowSelection: false,
+                enableColumnResize: true,
+                enableColumnReordering: true,
+                enablePaging: true,
+                showFooter: true,
+                totalServerItems: "totalServerItems",
+                footerTemplate: 'Coevery/CoeveryCore/GridTemplate/DefaultFooterTemplate'
+            };
         }
     ]);
 

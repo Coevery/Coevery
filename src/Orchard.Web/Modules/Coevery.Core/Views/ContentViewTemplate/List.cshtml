@@ -76,7 +76,7 @@
         </div>
 
         <div class="scrollDiv" ng-style="GetScrollHeight()">
-            <div id="filterCollapse" class="accordion" style="margin-top: 10px;margin-bottom: 10px; display: none;">
+            <div id="filterCollapse" class="accordion" style="margin-top: 10px; margin-bottom: 10px; display: none;">
                 <div class="accordion-group">
                     <div class="accordion-heading" style="background-color: rgb(255,237,135);">
                         <div class="accordion-toggle" style="cursor: auto;">
@@ -152,11 +152,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row-fluid">
-                <section class="span12" style="margin-top: 10px;">
-                    <section class="gridStyle" ng-grid="gridOptions"  ></section>
-                    @*@Display(Model.ListViewModel)*@
-                </section>
+            <div class="row-fluid" style="margin-top: 10px">
+                <div class="widget">
+                    <div class="widget-content">
+                        <section class="gridStyle" ng-grid="gridOptions"></section>
+                        @*@Display(Model.ListViewModel)*@
+                    </div>
+                </div>
             </div>
         </div>
     </section>

@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/optionitemsdataservice'], function (detour) {
     detour.registerController([
         'ItemsCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$resource', 'optionItemsDataService',
-            function ($scope, logger, $detour, $stateParams, $resource, optionItemsDataService) {
+        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$resource', 'optionItemsDataService',
+            function ($rootScope, $scope, logger, $detour, $stateParams, $resource, optionItemsDataService) {
                 var entityName = $stateParams.EntityName;
                 var fieldName = $stateParams.FieldName;
 
@@ -13,11 +13,19 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/optio
                     { field: 'IsDefault', displayName: 'Is Default', cellTemplate: '<div class="ngSelectionCell" ng-class="col.colIndex()"><span ng-cell-text><input type="checkbox" ng-checked="row.entity[col.field]" disabled></span></div>' }
                 ];
 
+                $scope.pagingOptions = {
+                    pageSizes: [250, 500, 1000],
+                    pageSize: 250,
+                    currentPage: 1
+                };
+                $scope.totalServerItems = 2;
                 $scope.gridOptions = {
                     data: 'myData',
                     multiSelect: false,
-                    columnDefs: optionColumnDefs
+                    columnDefs: optionColumnDefs,
+                    pagingOptions: $scope.pagingOptions
                 };
+                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 $scope.back = function () {
                     $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
@@ -92,6 +100,7 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/optio
 
                 $scope.getOptionItems = function () {
                     var items = optionItemsDataService.query({ EntityName: entityName, FieldName: fieldName }, function () {
+                        $scope.totalServerItems = items.length;
                         $scope.myData = items;
                     }, function () {
                         logger.error("Get items failed.");

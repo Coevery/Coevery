@@ -6,11 +6,11 @@
           var moduleName = $rootScope.$stateParams.Module;
 
           $scope.pagingOptions = {
-              pageNumber: [],
-              pageSize: 13,
-              totalServerItems: 0,
+              pageSizes: [250, 500, 1000],
+              pageSize: 250,
               currentPage: 1
           };
+       
           $scope.setPagingData = function (data, page, pageSize) {
               var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
               var maxRow = data.length;
@@ -56,6 +56,7 @@
               pagingOptions: $scope.pagingOptions,
               columnDefs: "myColumns"
           };
+          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           var gridColumns = ngGridDataService.query(function () {
               $scope.myColumns = gridColumns;
