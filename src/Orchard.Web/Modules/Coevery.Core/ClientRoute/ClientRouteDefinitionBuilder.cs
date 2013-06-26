@@ -12,6 +12,7 @@ namespace Coevery.Core.ClientRoute {
         private readonly string _name;
         private string _url;
         private string _templateUrl;
+        private string _templateProvider;
         private string _controller;
         private string[] _dependencies;
         private bool? _abstract;
@@ -29,6 +30,11 @@ namespace Coevery.Core.ClientRoute {
 
         public ClientRouteDefinitionBuilder TemplateUrl(string templateUrl) {
             _templateUrl = templateUrl;
+            return this;
+        }
+
+        public ClientRouteDefinitionBuilder TemplateProvider(string templateProvider) {
+            _templateProvider = templateProvider;
             return this;
         }
 
@@ -79,6 +85,9 @@ namespace Coevery.Core.ClientRoute {
             }
             if (_templateUrl != null) {
                 definition.templateUrl = new JRaw(_templateUrl);
+            }
+            if (_templateProvider != null) {
+                definition.templateProvider = new JRaw(_templateProvider);
             }
             if (_controller != null) {
                 definition.controller = _controller;

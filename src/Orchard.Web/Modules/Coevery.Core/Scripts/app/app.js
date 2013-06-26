@@ -8,9 +8,10 @@
             $stateProvider
                 .state('List', {
                     url: '/{Module:[a-zA-Z]+}',
-                    templateUrl: function(params) {
-                        return "Coevery/" + params.Module + '/ViewTemplate/List/' + params.Module;
-                    },
+                    templateProvider: ['$http', '$stateParams', function ($http, $stateParams) {
+                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/List/' + $stateParams.Module; 
+                        return $http.get(url).then(function(response) { return response.data; });
+                    }],
                     resolve: {
                         dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
                             return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/listcontroller']);
@@ -19,7 +20,7 @@
                 })
                 .state('Create', {
                     url: '/{Module:[a-zA-Z]+}/Create',
-                    templateUrl: function(params) {
+                    templateUrl: function (params) {
                         return "Coevery/" + params.Module + '/ViewTemplate/Create/' + params.Module;
                     },
                     resolve: {
@@ -30,9 +31,10 @@
                 })
                 .state('Detail', {
                     url: '/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}',
-                    templateUrl: function(params) {
-                        return "Coevery/" + params.Module + '/ViewTemplate/Edit/' + params.Id;
-                    },
+                    templateProvider: ['$http', '$stateParams', function ($http, $stateParams) {
+                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/Edit/' + $stateParams.Id;
+                        return $http.get(url).then(function (response) { return response.data; });
+                    }],
                     resolve: {
                         dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
                             return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
