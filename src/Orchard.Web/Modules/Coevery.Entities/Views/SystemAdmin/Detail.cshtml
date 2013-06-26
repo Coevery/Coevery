@@ -18,29 +18,26 @@
                 </div>
             </div>
             <div class="widget">
-                <div class="widget-content form-container detail-container">
-                    <div class="form-horizontal no-border">
-                        <section class="control-group">
-                            <label class="control-label">Name</label>
-                            <div class="controls">
-                                <span class="control-label">@Model.Name</span>
-                            </div>
-                        </section>
-                        <section class="control-group">
-                            <label class="control-label" for="inputName">Display Name</label>
-                            <div class="controls">
-                                <span class="control-label">@Model.DisplayName</span>
-                            </div>
-                        </section>
-                        <section class="control-group">
-                            <label class="control-label">Setting</label>
-                            <div class="controls">
-                                @{Html.RenderTemplates(Model.Templates); }
-                            </div>
-                        </section>
-                    </div>
+                <div class="widget-content table-container">
+                    <table class="table table-detail-view">
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <th>Display Name</th>
+                                <td>@Model.DisplayName</td>
+                            </tr>
+                            <tr>
+                                <th>Setting</th>
+                                <td>@{Html.RenderTemplates(Model.Templates); }</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
 
             <div class="widget">
                 <ul class="nav nav-tabs">
