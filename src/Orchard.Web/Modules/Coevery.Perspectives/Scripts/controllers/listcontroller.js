@@ -20,12 +20,10 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           $scope.gridOptions = {
               data: 'myData',
               selectedItems: $scope.mySelections,
-              multiSelect: false,
-              showColumnMenu: true,
-              enableColumnResize: true,
-              enableColumnReordering: true,
               columnDefs: perspectiveColumnDefs
           };
+          
+          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (id) {
               perspectiveDataService.delete({ Id: id }, function () {
