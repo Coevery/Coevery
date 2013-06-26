@@ -43,7 +43,6 @@
             };
             
             $rootScope.defaultGridOptions = {
-                data: 'myData',
                 plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 200 })],
                 multiSelect: false,
                 enableRowSelection: false,

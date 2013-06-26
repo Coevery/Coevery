@@ -24,13 +24,11 @@ define(['core/app/detourService',
 
                         $scope.gridOptions = {
                             data: 'myData',
-                            //showSelectionCheckbox: true,
                             selectedItems: $scope.mySelections,
-                            multiSelect: true,
-                            enableColumnResize: true,
-                            enableColumnReordering: true,
                             columnDefs: columnDefs
                         };
+                        
+                        angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                         $scope.exit = function () {
                             //$detour.transitionTo('EntityDetail', { Id: $stateParams.EntityName });

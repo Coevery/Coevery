@@ -3,8 +3,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'RelationshipsCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams',
-            function ($scope, logger, $detour, $stateParams) {
+        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams',
+            function ($rootScope, $scope, logger, $detour, $stateParams) {
 
                 var relationshipColumnDefs = [
                     { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a>Delete</a></div>' },
@@ -13,12 +13,14 @@ define(['core/app/detourService'], function (detour) {
                     { field: 'RelatedEntity', displayName: 'Related Entity' },
                     { field: 'Type', displayName: 'Type' }
                 ];
-                $scope.relationshipGrid = {
+                
+                $scope.relationshipGridOptions = {
                     data: 'relationships',
-                    multiSelect: false,
-                    enableColumnReordering: true,
                     columnDefs: relationshipColumnDefs
                 };
+                
+                angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);
+
                 $scope.relationships = [
                     { Name: 'Leads_Accounts', PrimaryEntity: 'Lead', RelatedEntity: 'Account', Type: 'One to Many' },
                     { Name: 'Leads_Opportunities', PrimaryEntity: 'Lead', RelatedEntity: 'Opportunity', Type: 'One to Many' },

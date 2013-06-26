@@ -3,8 +3,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/fielddataservice'], function (detour) {
     detour.registerController([
         'FieldsCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', 'entityDataService', 'fieldDataService',
-            function ($scope, logger, $detour, $stateParams, entityDataService, fieldDataService) {
+        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', 'entityDataService', 'fieldDataService',
+            function ($rootScope, $scope, logger, $detour, $stateParams, entityDataService, fieldDataService) {
 
                 var fieldColumnDefs = [
                     { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-hide="row.getProperty(\'IsSystemField\')" ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
@@ -17,10 +17,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.gridOptions = {
                     data: 'myData',
-                    multiSelect: false,
-                    enableColumnReordering: true,
                     columnDefs: fieldColumnDefs
                 };
+                
+                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 var deleteField;
                 $scope.delete = function (fieldName) {
