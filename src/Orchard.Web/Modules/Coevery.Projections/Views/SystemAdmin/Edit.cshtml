@@ -36,50 +36,55 @@
                                                           new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
             {
                 <div class="widget">
-                    <div class="widget-content form-container detail-container">
+                    <div class="widget-content form-container">
                         <div class="form-horizontal no-border">
                             <fieldset>
                                 <legend style="height: 35px;">
                                     <h5 style="margin: 0px;">General Info</h5>
                                 </legend>
-                                <section class="control-group span6">
-                                    <label class="control-label">Name</label>
-                                    <div class="controls">
-                                        @Html.TextBoxFor(m => m.Name, new { @class = "span8", @disabled = "disabled" })
-                                    </div>
-                                </section>
-                                <section class="control-group span6">
-                                    <label class="control-label">DisplayName</label>
-                                    <div class="controls">
-                                        @Html.TextBoxFor(m => m.DisplayName, new { @class = "span8" })
-                                    </div>
-                                </section>
-                                <section class="control-group span6">
 
-                                    <label class="control-label">VisableTo</label>
-                                    <div class="controls">
-                                        @Html.DropDownListFor(m => m.VisableTo, VisableTo, string.Empty, new { @class = "span8", @id = "visableto" })
+                                <section class="control-group">
+                                    <div class="span6">
+                                        <label class="control-label">Name</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "span8", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <label class="control-label">DisplayName</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span8" })
+                                        </div>
                                     </div>
                                 </section>
-                                <section class="control-group span6">
-                                    <label class="control-label">PageRowCount</label>
-                                    <div class="controls">
-                                        @Html.TextBoxFor(m => m.PageRowCount, new { @type = "number", @class = "span8" })
-                                    </div>
 
+
+                                <section class="control-group">
+                                    <div class="span6">
+                                        <label class="control-label">VisableTo</label>
+                                        <div class="controls">
+                                            @Html.DropDownListFor(m => m.VisableTo, VisableTo, string.Empty, new { @class = "span8", @id = "visableto" })
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <label class="control-label">PageRowCount</label>
+                                        <div class="controls">
+                                            @Html.TextBoxFor(m => m.PageRowCount, new { @type = "number", @class = "span8" })
+                                        </div>
+                                    </div>
                                 </section>
                             </fieldset>
                         </div>
                     </div>
                 </div>
                 <div class="widget">
-                    <div class="widget-content form-container detail-container">
+                    <div class="widget-content form-container">
                         <div class="form-horizontal no-border">
                             <fieldset>
                                 <legend style="height: 35px;">
                                     <h5 style="margin: 0px;">Select Fields to Display</h5>
                                 </legend>
-                                <div class="row-fluid" >
+                                <div class="row-fluid">
                                     <div class="control-group" style="margin-top: 10px;">
                                         <div class="span6">
                                             <div class="widget-content">
@@ -117,12 +122,12 @@
                                                 <div class="sortable-list">
                                                     <ul id="sortable">
                                                         <li ng-repeat="selectedColumn in SelectedColumns"  style=" background: url(@Href("~/Themes/MooncakeAdmin/Styles/Coevery/images/cache.gif")) no-repeat 5px;  padding-left: 18px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  padding-bottom: 5px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  padding-top: 5px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  border: 1px solid #ccc;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  cursor: move;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  zoom: 1;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  margin-top: 5px;"><span style="margin-left: 3px;">{{selectedColumn.FieldName}}</span>
+padding-bottom: 5px;
+padding-top: 5px;
+border: 1px solid #ccc;
+cursor: move;
+zoom: 1;
+margin-top: 5px;"><span style="margin-left: 3px;">{{selectedColumn.FieldName}}</span>                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                                             <div class="pull-right">
                                                                 <button class="btn-link" type="button" ng-click="removefield($index)">Remove</button>
                                                             </div>
@@ -134,7 +139,7 @@
                                         </div>
 
                                         <div class="clearfix"></div>
-                                        <div class="span6">
+                                        <div class="span6" style="margin-top: 5px;">
                                             <label class="control-label " for="SortedBy">Sorted By</label>
                                             <div class="controls">
                                                 @Html.DropDownListFor(m => m.SortedBy, sortedBy, string.Empty, new { @class = "span4", @id = "sortby" })

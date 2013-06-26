@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="widget">
-                <div class="widget-content form-container detail-container">
+                <div class="widget-content form-container">
                     <div class="form-horizontal no-border">
                         @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                               FormMethod.Post,
