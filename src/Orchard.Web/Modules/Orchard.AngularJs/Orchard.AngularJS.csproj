@@ -75,6 +75,7 @@
     <Content Include="Scripts\i18next-1.6.3.min.js" />
     <Content Include="Scripts\ng-grid-2.0.6.debug.js" />
     <Content Include="Scripts\ng-grid-2.0.6.min.js" />
+    <Content Include="Scripts\ng-grid-flexible-height.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\require.min.js" />
     <Content Include="Scripts\ui-utils-ieshiv.js" />

@@ -13,7 +13,8 @@ namespace Orchard.AngularJS
             manifest.DefineScript("angularResource").SetUrl("angular-resource.min.js", "angular-resource.js").SetVersion("1.0.5")
                     .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.js", true);
 
-            manifest.DefineScript("ngGrid").SetUrl("ng-grid-2.0.6.min.js", "ng-grid-2.0.6.debug.js").SetVersion("2.0.6");
+            manifest.DefineScript("ng_grid_flexible_height").SetUrl("ng-grid-flexible-height.js", "ng-grid-flexible-height.js");
+            manifest.DefineScript("ngGrid").SetUrl("ng-grid-2.0.6.min.js", "ng-grid-2.0.6.debug.js").SetVersion("2.0.6").SetDependencies("ng_grid_flexible_height");
             manifest.DefineStyle("ngGrid").SetUrl("ng-grid.css");
 
             manifest.DefineScript("pnotify").SetUrl("jquery.pnotify.min.js", "jquery.pnotify.js").SetVersion("1.2.2");

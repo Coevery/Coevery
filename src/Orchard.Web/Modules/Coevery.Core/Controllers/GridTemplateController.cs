@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Coevery.Entities.Controllers {
+namespace Coevery.Core.Controllers {
 
     public class GridTemplateController : Controller {
 

@@ -29,17 +29,11 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           $scope.gridOptions = {
               data: 'myData',
               selectedItems: $scope.mySelections,
-              multiSelect: false,
-              enableRowSelection: false,
-              enableColumnResize: true,
-              enableColumnReordering: true,
               columnDefs: metadataColumnDefs,
-              enablePaging: true,
-              showFooter: true,
-              pagingOptions: $scope.pagingOptions,
-              totalServerItems: "totalServerItems",
-              footerTemplate: 'Coevery/Entities/GridTemplate/DefaultFooterTemplate'
+              pagingOptions: $scope.pagingOptions
           };
+          
+          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (entityName) {
               entityDataService.delete({ name: entityName }, function () {
