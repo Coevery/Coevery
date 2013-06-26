@@ -1,5 +1,4 @@
 ﻿.gridStyle {
-    height: 482px;
     background-color: #fff;
 }
 
@@ -35,6 +34,11 @@
 .gridStyle.dataTables_wrapper .dt_footer
 {
     border-width: 0;
+}
+
+.dt_footer.ngFooterPanel {
+    background-color: #fff;
+    border-top: 0;
 }
 
 .ng-cloak {
