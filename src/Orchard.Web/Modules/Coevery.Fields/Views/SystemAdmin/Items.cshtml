@@ -2,14 +2,19 @@
     <h1 id="main-heading" style="background-image: none;">Items <span>field's items.</span></h1>
 </header>
 
-<section class="page-actions">
-    <button class="btn" ng-click="back()">Back</button>
-    <button class="btn btn-success" ng-click="add()">
-        <i class="icon-plus"></i>&nbsp;Add
-    </button>
-</section>
-
 <section id="main-content">
+    <div class="row-fluid">
+        <div class="widget toolbar-Container">
+            <div class="widget-content">
+                <div class="btn-toolbar">
+                    <button class="btn" ng-click="back()">Back</button>
+                    <button class="btn btn-success" ng-click="add()">
+                        <i class="icon-plus"></i>&nbsp;Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row-fluid">
         <section class="gridStyle" ng-grid="gridOptions"></section>
     </div>
