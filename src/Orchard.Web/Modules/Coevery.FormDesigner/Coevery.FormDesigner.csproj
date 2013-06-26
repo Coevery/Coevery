@@ -59,13 +59,8 @@
     <Reference Include="System.Web.Routing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ResourceManifest.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
-    <Content Include="Scripts\contextmenu.js" />
-    <Content Include="Scripts\jsutils.js" />
-    <Content Include="Scripts\linq.js" />
-    <Content Include="Scripts\main.js" />
-    <Content Include="Styles\docs.css" />
+    <Content Include="Scripts\controllers\formdesignercontroller.js" />
     <Content Include="Styles\formdesigner.css" />
     <Content Include="Styles\images\alwaysdisplay12.gif" />
     <Content Include="Styles\images\arrow.png" />
@@ -74,7 +69,6 @@
     <Content Include="Styles\images\required12.gif" />
     <Content Include="Styles\images\split.png" />
     <Content Include="Styles\images\wrenchRemove.png" />
-    <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
@@ -104,6 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

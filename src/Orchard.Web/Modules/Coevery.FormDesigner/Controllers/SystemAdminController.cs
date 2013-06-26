@@ -27,7 +27,6 @@ namespace Coevery.FormDesigner.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        [SystemAdmin, Themed]
         public ActionResult Index(string id, string returnUrl) {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);

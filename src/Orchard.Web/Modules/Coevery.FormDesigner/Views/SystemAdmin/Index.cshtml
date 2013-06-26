@@ -1,167 +1,84 @@
-﻿@*@model Coevery.Metadata.ViewModels.FormDesignerViewModel*@
-@{
-    Script.Require("jQuery");
-    Script.Require("jQueryUI");
-    Script.Require("pnotify");
-    Script.Require("angular");
-    Script.Require("angularResource");
-
-    Script.Require("FormDesignerJsutils");
-    //Script.Require("FormDesignerLinq");
-    //Script.Require("FormDesignerContextMenu");
-    Script.Require("FormDesignerMain");
-
-    Style.Require("pnotify");
+﻿@{
     Style.Include("formdesigner.css");
-    Style.Require("Module");
-    Style.Require("Affix");
 }
-@*@Display.FootScripts()
-@Display.StylesheetLinks()*@
+@Display.StylesheetLinks()
 
 <header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 style="background-image: none;">Form Designer <span>manage the detail page layout</span></h1>
 </header>
 
-<section data-ng-app="coevery">
-    <div data-spy="affix" data-offset-top="71" class="page-actions">
-        <button type="button" class="btn" onclick="exit()">Back</button>
-        <button fd-save-layout-button class="btn btn-primary">Save Layout</button>
-        <button class="btn">Reset Layout</button>
-    </div>
-    <section id="main-content">
-        <div class="row-fluid">
-            <div class="span3">
-                @*class="bs-docs-sidenav"*@
-                @*<div data-spy="affix" data-offset-top="10" data-offset-bottom="10" class="bs-docs-sidenav">*@
-                @*<div style="position: fixed;z-index: 51">*@
-                <div id="test" style="z-index: 51" class="bs-docs-sidenav">
-                    <section id="toolboxes" class="widget">
-                        <header class="widget-header light">
-                            <span class="title">
-                                <div class="btn-group" data-toggle="buttons-radio">
-                                    <a class="btn active" href="#layoutTools" data-toggle="tab">Layout</a>
-                                    <a class="btn" href="#fieldTools" data-toggle="tab">Fields</a>
-                                </div>
-                            </span>
-                            @*<div class="toolbar">
-                            <ul class="nav nav-pills">
-                                <li class="active"><a href="#layoutTools" data-toggle="tab">Layout</a></li>
-                                <li><a href="#fieldTools" data-toggle="tab">Fields</a></li>
-                            </ul>
-                        </div>*@
-                            @*<div class="toolbar">
-                            <div class="btn-group auto-open">
-                                <span class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <i class="icon-pencil"></i>Action <i class="caret"></i>
-                                </span>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a fd-save-layout-button href="#">Save Layout</a></li>
-                                    <li><a href="#">Resume Layout</a></li>
-                                    <li><a href="#">Reset Layout</a></li>
-                                </ul>
-                            </div>
-                        </div>*@
-                        </header>
-
-                        <div class="toolbar form-toolbar">
-                            <form class="form-search">
-                                <input type="text" class="span11 search-query" placeholder="Search...">
-                                <span class="close" style="padding-top: 5px">&times;</span>
-                            </form>
-                        </div>
-                        <section class="widget-content form-container">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="layoutTools">
-                                    <fd-tools-section section-columns="1" section-columns-width="6">100% Section</fd-tools-section>
-                                    <fd-tools-section section-columns="2" section-columns-width="3">25% + 75% Section</fd-tools-section>
-                                    <fd-tools-section section-columns="2" section-columns-width="4">33% + 67% Section</fd-tools-section>
-                                    <fd-tools-section section-columns="2" section-columns-width="6">50% + 50% Section</fd-tools-section>
-                                    <fd-tools-section section-columns="2" section-columns-width="8">67% + 33% Section</fd-tools-section>
-                                    <fd-tools-section section-columns="2" section-columns-width="9">75% + 25% Section</fd-tools-section>
-                                    <fd-tools-field field-display-name="Blank Space" field-empty></fd-tools-field>
-                                    <fd-tools-field field-display-name="Text" field-text></fd-tools-field>
-                                </div>
-                                <div class="tab-pane" id="fieldTools">
-                                    @{
-                                        foreach (var field in Model.Fields) {
-                                        @:<fd-tools-field field-display-name="@field.DisplayName" field-name="@field.Name"></fd-tools-field>
-                                    }
-                                    }
-                                </div>
-                            </div>
-                        </section>
-                    </section>
+<section id="main-content">
+    <div class="row-fluid">
+        <div class="widget toolbar-Container">
+            <div class="widget-content">
+                <div class="btn-toolbar">
+                    <button type="button" class="btn" ng-click="exit()">Back</button>
+                    <button fd-save-layout-button class="btn btn-primary">Save Layout</button>
+                    <button class="btn">Reset Layout</button>
                 </div>
             </div>
-            <div class="span9">
-                <div id="form-designer">
-                    <fd-form>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span3">
+            <div id="test" style="z-index: 51" class="bs-docs-sidenav">
+                <section id="toolboxes" class="widget">
+                    <header class="widget-header light">
+                        <span class="title">
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <a class="btn active" href="#layoutTools" data-toggle="tab">Layout</a>
+                                <a class="btn" href="#fieldTools" data-toggle="tab">Fields</a>
+                            </div>
+                        </span>
+                    </header>
+
+                    <div class="toolbar form-toolbar">
+                        <form class="form-search">
+                            <input type="text" class="span11 search-query" placeholder="Search...">
+                            <span class="close" style="padding-top: 5px">&times;</span>
+                        </form>
+                    </div>
+                    <section class="widget-content form-container">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="layoutTools">
+                                <fd-tools-section section-columns="1" section-columns-width="6">100% Section</fd-tools-section>
+                                <fd-tools-section section-columns="2" section-columns-width="3">25% + 75% Section</fd-tools-section>
+                                <fd-tools-section section-columns="2" section-columns-width="4">33% + 67% Section</fd-tools-section>
+                                <fd-tools-section section-columns="2" section-columns-width="6">50% + 50% Section</fd-tools-section>
+                                <fd-tools-section section-columns="2" section-columns-width="8">67% + 33% Section</fd-tools-section>
+                                <fd-tools-section section-columns="2" section-columns-width="9">75% + 25% Section</fd-tools-section>
+                                <fd-tools-field field-display-name="Blank Space" field-empty></fd-tools-field>
+                                <fd-tools-field field-display-name="Text" field-text></fd-tools-field>
+                            </div>
+                            <div class="tab-pane" id="fieldTools">
+                                @{
+                                    foreach (var field in Model.Fields) {
+                                    @:<fd-tools-field field-display-name="@field.DisplayName" field-name="@field.Name"></fd-tools-field>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </div>
+        <div class="span9">
+            <div id="form-designer">
+                <fd-form>
                     @{ Output.Write(Model.Layout); }
                 </fd-form>
-                </div>
             </div>
         </div>
-        @*<fd-field-properties-dialog></fd-field-properties-dialog>*@
-        <fd-section-properties-dialog></fd-section-properties-dialog>
+    </div>
+    @*<fd-field-properties-dialog></fd-field-properties-dialog>*@
+    <fd-section-properties-dialog></fd-section-properties-dialog>
 
-        @*<div id="sectionPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="fieldPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Section Properties</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Field Properties</h3>
         </div>
         <div class="modal-body">
-            <form class="form-horizontal">
-                <div class="control-group">
-                    <label class="control-label">Section Title</label>
-                    <div class="controls">
-                        <input type="text" ng-model="currentSection.title" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Section Layout</label>
-                    <div class="controls">
-                        <label class="radio">
-                            <input type="radio" ng-model="currentSection.columns" value="1" />1-Columns
-                        </label>
-                        <label class="radio">
-                            <input type="radio" ng-model="currentSection.columns" value="2" />2-Columns
-                        </label>
-                    </div>
-                </div>
-                <div class="control-group" ng-show="currentSection.columns==2">
-                    <label class="control-label">Columns Width</label>
-                    <div class="controls">
-                        <label class="radio">
-                            <input type="radio" ng-model="currentSection.columnsWidth" value="3" />25% + 75%
-                        </label>
-                        <label class="radio">
-                            <input type="radio" ng-model="currentSection.columnsWidth" value="4" />33% + 67%
-                        </label>
-                        <label class="radio">
-                            <input type="radio" ng-model="currentSection.columnsWidth" value="6" />50% + 50%
-                        </label>
-                        <label class="radio">
-                            <input type="radio" ng-model="currentSection.columnsWidth" value="8" />67% + 33%
-                        </label>
-                        <label class="radio">
-                            <input type="radio" ng-model="currentSection.columnsWidth" value="9" />75% + 25%
-                        </label>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-            <button class="btn btn-primary">Ok</button>
-        </div>
-    </div>*@
-
-        <div id="fieldPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Field Properties</h3>
-            </div>
-            <div class="modal-body">
-                @*<form class="form-horizontal">
+            @*<form class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label">Field Settings</label>
                     <div class="controls">
@@ -174,33 +91,32 @@
                     </div>
                 </div>
             </form>*@
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Exit</button>
-                <button class="btn btn-primary">Ok</button>
-            </div>
         </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Exit</button>
+            <button class="btn btn-primary">Ok</button>
+        </div>
+    </div>
 
-        <div id="textPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Text Properties</h3>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="control-group">
-                        <label class="control-label">Display Text</label>
-                        <div class="controls">
-                            <input type="text" ng-model="currentSection.title" />
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Exit</button>
-                <button class="btn btn-primary">Ok</button>
-            </div>
+    <div id="textPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Text Properties</h3>
         </div>
-    </section>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Display Text</label>
+                    <div class="controls">
+                        <input type="text" ng-model="currentSection.title" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Exit</button>
+            <button class="btn btn-primary">Ok</button>
+        </div>
+    </div>
 </section>
 
 @foreach (var item in Model.Content.Content.Items) {
@@ -208,4 +124,3 @@
         Output.Write(Display(item));
     }
 }
-@*@Display(Model.Content)*@

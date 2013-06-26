@@ -3,7 +3,7 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'EntityDetailCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$resource',
+        ['$scope', 'logger', '$detour', '$stateParams',
             function ($scope, logger, $detour, $stateParams) {
 
                 $scope.exit = function() {
@@ -18,7 +18,7 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('ProjectionList', { EntityName: $stateParams.Id });
                 };
                 $scope.formDesigner = function() {
-                    location.href = 'FormDesigner/SystemAdmin/Index/' + $stateParams.Id;
+                    $detour.transitionTo('FormDesigner', { EntityName: $stateParams.Id });
                 };
             }]
     ]);
