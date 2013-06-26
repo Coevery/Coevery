@@ -1,22 +1,30 @@
 ﻿<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 style="background-image: none;">Perspective Management <span>An perspective is a group of navigation items that work as a unit to provide functionality</span></h1>
 </header>
-
-<section>
-    <div class="page-actions">
-        <button type="button" class="btn btn-success" ng-click="addPerspective()">Add Perspective</button>
-        <button class="btn" ng-click="getAllPerspective()">
-            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
-        </button>
-    </div>
-    <section id="main-content">
-         <div class="row-fluid">
-            <section class="span12">
-                <section class="gridStyle" ng-grid="gridOptions"></section>
-            </section>
+<section id="main-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <button class="btn btn-success" ng-click="addPerspective()">
+                            <i class="icon-plus"></i>&nbsp;@T("Add")
+                        </button>
+                        <button class="btn" ng-click="getAllPerspective()">
+                            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-content table-container">
+                    <section class="gridStyle" data-ng-grid="gridOptions"></section>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 </section>
+
 <script>
     $(document).ready(
         function () {

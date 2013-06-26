@@ -91,6 +91,7 @@
     <Compile Include="Admin\SystemMenuFilter.cs" />
     <Compile Include="ClientRoute\ClientRouteBuilder.cs" />
     <Compile Include="ClientRoute\ClientRouteDefinitionBuilder.cs" />
+    <Compile Include="Controllers\GridTemplateController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Controllers\ContentViewTemplateController.cs" />
@@ -157,6 +158,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\CreateAction.cshtml" />
     <Content Include="Views\GridLink.cshtml" />
+    <Content Include="Views\GridTemplate\DefaultFooterTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

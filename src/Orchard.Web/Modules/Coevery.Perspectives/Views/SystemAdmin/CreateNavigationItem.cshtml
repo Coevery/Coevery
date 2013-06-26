@@ -3,44 +3,49 @@
 <header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 style="background-image: none;">Navigation Item Detail <span>show navigation item detail information</span></h1>
 </header>
-
-<section>
-    <div class="page-actions">
-        <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
-        <button type="button" class="btn" ng-click="exit()">Exit</button>
-    </div>
-    <section id="main-content">
-        <div class="row-fluid">
-            @using (Html.BeginFormAntiForgeryPost(Url.Action("CreateNavigationItem", new {perspectiveId=Model.PrespectiveId,navigationId=Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+<section id="main-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <button class="btn" data-ng-click="exit()">Back</button>
+                        <button class="btn btn-primary" data-ng-click="save()">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-content form-container detail-container">
+                    <div class="form-horizontal no-border">
+                        @using (Html.BeginFormAntiForgeryPost(Url.Action("CreateNavigationItem", new { perspectiveId = Model.PrespectiveId, navigationId = Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                   FormMethod.Post,
                                                   new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
-            {
-                <section class="control-group">
-                    <label class="control-label" enable="false" for="Title">Title</label>
-                    <div class="controls">
-                        @Html.TextBoxFor(m => m.Title, new {@readonly = "readonly", @class = "span12" })
-                    </div>
-                </section>
-                 <section class="control-group">
-                    <label class="control-label" enable="false" for="Title">Title</label>
-                    <div class="controls">
-                        @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label" for="color">Color</label>
-                    <div class="controls">
-                        <input id="color" type="text" class="minicolors">
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label">
-                        Icon
-                    </label>
-                    <div class="controls">
-                        <input type="file" id="input04" data-provide="fileinput">
-                    </div>
-                </section>@*
+                        {
+                            <section class="control-group">
+                                <label class="control-label">Title</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.Title, new { @readonly = "readonly", @class = "span12" })
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Entity</label>
+                                <div class="controls">
+                                    @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Color</label>
+                                <div class="controls">
+                                    <input id="color" type="text" class="minicolors">
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Icon</label>
+                                <div class="controls">
+                                    <input type="file" id="input04" data-provide="fileinput">
+                                </div>
+                            </section>
+@*
                 <section class="control-group">
                     <label class="control-label" for="description">
                         Description
@@ -49,11 +54,14 @@
                         <textarea class="span12" id="description" ng-model="description"></textarea>
                     </div>
                 </section>*@
-            }
-
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 </section>
+
 <script>
     $(document).ready(
         function () {

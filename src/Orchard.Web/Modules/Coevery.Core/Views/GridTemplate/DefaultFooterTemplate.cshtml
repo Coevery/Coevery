@@ -1,0 +1,64 @@
+﻿<div class="dt_footer">
+    <div class="row-fluid">
+        <div class="span4">
+            <div class="dataTables_info" id="demo-dtable-02_info">{{"Showing $0 to $1 of $2 entries" | format: [pagingOptions.pageSize * (pagingOptions.currentPage-1), 
+                pagingOptions.pageSize * pagingOptions.currentPage>maxRows()?maxRows():pagingOptions.pageSize * pagingOptions.currentPage, 
+                maxRows() ]  }}</div>
+        </div>
+        <div class="span8">
+            <div class="dataTables_paginate pagination">
+                <ul>
+                    <li class="prev" ng-class="{'disabled': cantPageBackward()}"><a href="#">← Previous</a></li>
+                    <li ng-repeat="page in maxPages()" ng-class="{'active': pagingOptions.currentPage == {{page}}}">
+                        <a href="#">{{page}}</a>
+                    </li>
+                    <li class="next" ng-class="{'disabled': cantPageForward()}"><a href="#">Next → </a></li>
+                </ul>
+            </div>
+            <div class="dataTables_paginate">
+                <span>{{i18n.ngPageSizeLabel}}</span>
+                <select style="height: 27px; width: 100px"  ng-model="pagingOptions.pageSize">
+                    <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div ng-show="showFooter" class="ngFooterPanel" ng-class="{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}" ng-style="footerStyle()">
+    <div class="ngTotalSelectContainer">
+        <div class="ngFooterTotalItems" ng-class="{'ngNoMultiSelect': !multiSelect}">
+            <span class="ngLabel">{{i18n.ngTotalItemsLabel}} {{maxRows()}}</span><span ng-show="filterText.length > 0" class="ngLabel">({{i18n.ngShowingItemsLabel}} {{totalFilteredItemsLength()}})</span>
+        </div>
+        <div class="ngFooterSelectedItems" ng-show="multiSelect">
+            <span class="ngLabel">{{i18n.ngSelectedItemsLabel}} {{selectedItems.length}}</span>
+        </div>
+    </div>
+    <div class="ngPagerContainer" style="float: right; margin-top: 10px;" ng-show="enablePaging" ng-class="{'ngNoMultiSelect': !multiSelect}">
+        <div style="float: left; margin-right: 10px;" class="ngRowCountPicker">
+            <span style="float: left; margin-top: 3px;" class="ngLabel">{{i18n.ngPageSizeLabel}}</span>
+            <select style="float: left; height: 27px; width: 100px" ng-model="pagingOptions.pageSize">
+                <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
+            </select>
+        </div>
+        <div style="float: left; margin-right: 10px; line-height: 25px;" class="ngPagerControl" style="float: left; min-width: 135px;">
+            <button class="ngPagerButton" ng-click="pageToFirst()" ng-disabled="cantPageBackward()" title="{{i18n.ngPagerFirstTitle}}">
+                <div class="ngPagerFirstTriangle">
+                    <div class="ngPagerFirstBar"></div>
+                </div>
+            </button>
+            <button class="ngPagerButton" ng-click="pageBackward()" ng-disabled="cantPageBackward()" title="{{i18n.ngPagerPrevTitle}}">
+                <div class="ngPagerFirstTriangle ngPagerPrevTriangle"></div>
+            </button>
+            <input class="ngPagerCurrent" type="number" style="width: 50px; height: 24px; margin-top: 1px; padding: 0 4px;" ng-model="pagingOptions.currentPage" />
+            <button class="ngPagerButton" ng-click="pageForward()" ng-disabled="cantPageForward()" title="{{i18n.ngPagerNextTitle}}">
+                <div class="ngPagerLastTriangle ngPagerNextTriangle"></div>
+            </button>
+            <button class="ngPagerButton" ng-click="pageToLast()" ng-disabled="cantPageToLast()" title="{{i18n.ngPagerLastTitle}}">
+                <div class="ngPagerLastTriangle">
+                    <div class="ngPagerLastBar"></div>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+*@
