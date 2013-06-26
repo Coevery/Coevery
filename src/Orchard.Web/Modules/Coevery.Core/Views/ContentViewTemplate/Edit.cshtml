@@ -6,21 +6,23 @@
     var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
 }
 
-@*<header id="main-header" class="page-header" style="background-image: none;margin-bottom: 0;">
-    <h1>@typeDisplayName Detail <span>@typeDisplayName edit</span></h1>
-</header>*@
 <section data-ng-controller="GeneralDetailCtrl">
-    <section data-spy="affix" data-offset-top="71" class="page-actions">
-        <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
-        <input type="button" value="Exit" class="btn" data-ng-click="exit()" />
-    </section>
     <section id="main-content">
+        <div class="row-fluid">
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <input type="button" value="Back" class="btn" ng-click="exit()" />
+                        <input type="submit" name="submit.Save" value="Save" class="btn btn-primary" ng-click="save()">
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row-fluid">
             <section class="span12 widget">
                 <section class="widget-content form-container">
                     @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                      FormMethod.Post, new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()", @ng_controller = "CommonDetailCtrl" }))
-                    {
+                                                          FormMethod.Post, new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" })) {
                         @Html.ValidationSummary()
                         // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
 

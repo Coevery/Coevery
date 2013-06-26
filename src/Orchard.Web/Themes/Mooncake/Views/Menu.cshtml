@@ -26,7 +26,7 @@
         string displayCss = "none";
         if (firstLevelIndex == 0) {displayCss = "block";}
         firstLevelIndex++;
-        <ul class="menu" id="@firstLevelMenuItem.Text" style="display:@displayCss;">
+        <ul class="menu"   id="@firstLevelMenuItem.Text"  style="display:@displayCss;">
             @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 0 || !firstLevelMenuItem.LinkToFirstChild) {
                 foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
                     string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
@@ -41,10 +41,9 @@
                     {
                         backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/Home.ico");
                     }
-                    <li id="@secondLevelMenuItem.Text">
+                    <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl">
                         <a href="@secondLevelUrl">
                             <span title="@secondLevelMenuItem.Text">
-
                                 <i class="icon-home" 
                                    style="width: 32px; height: 32px; background-position: center; background-image: url(@backUrl);"></i>
                                 <span class="nav-title">@secondLevelMenuItem.Text</span>
@@ -58,15 +57,15 @@
 }
 @using (Script.Foot())
  {
-     <script type="text/javascript">
-         $(document).ready(function () {
-             $("#FirstMenu .dropdown-menu>li").click(function () {
-                 var $li = $(this);
-                 var action = $li[0].title;
-                 $("#navigation .menu").css('display', 'none');
-                 $("#navigation #" + action).css('display', 'block');
-                 $("#FirstMenu .btn-group #FirstMenuText").text(action);
-             });
-         });
-     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#FirstMenu .dropdown-menu>li").click(function () {
+                var $li = $(this);
+                var action = $li[0].title;
+                $("#navigation .menu").css('display', 'none');
+                $("#navigation #" + action).css('display', 'block');
+                $("#FirstMenu .btn-group #FirstMenuText").text(action);
+            });
+        });
+    </script>
  }
