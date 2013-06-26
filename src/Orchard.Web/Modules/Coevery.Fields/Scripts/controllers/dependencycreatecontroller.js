@@ -1,27 +1,17 @@
 ﻿'use strict';
-define(['core/app/detourService'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/fielddependencydataservice', 'Modules/Coevery.Fields/Scripts/services/optionitemsdataservice'], function (detour) {
     detour.registerController([
         'FieldDependencyCreateCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$resource',
-            function ($scope, logger, $detour, $stateParams, $resource) {
+        ['$scope', 'logger', '$detour', '$stateParams', '$resource', 'fieldDependencyDataService', 'optionItemsDataService',
+            function ($scope, logger, $detour, $stateParams, $resource, fieldDependencyDataService, optionItemsDataService) {
                 var entityName = $stateParams.EntityName;
-                var FieldDependency = $resource(
-                    'api/fields/FieldDependency',
-                    {},
-                    { update: { method: 'PUT' } }
-                );
-                var OptionItems = $resource(
-                    'api/fields/OptionItems',
-                    {},
-                    { update: { method: 'PUT' } }
-                );
 
                 $('.step2').hide();
                 $scope.next = function () {
                     if ($('option[value=' + $scope.controlField + ']').attr('field_type') == 'BooleanField') {
                         $scope.controlFieldItems = [{ Value: 'True', Id: 'True' }, { Value: 'False', Id: 'False' }];
                     } else {
-                        var controlFieldItems = OptionItems.query({
+                        var controlFieldItems = optionItemsDataService.query({
                             EntityName: entityName,
                             FieldName: $scope.controlField
                         }, function () {
@@ -31,7 +21,7 @@ define(['core/app/detourService'], function (detour) {
                         });
                     }
 
-                    var dependentFieldItems = OptionItems.query({
+                    var dependentFieldItems = optionItemsDataService.query({
                         EntityName: entityName,
                         FieldName: $scope.dependentField
                     }, function () {
@@ -50,7 +40,7 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('FieldDependencyList', { EntityName: entityName });
                 };
                 $scope.save = function () {
-                    var test = new FieldDependency();
+                    var test = new fieldDependencyDataService();
                     var value = '';
                     $.each($scope.controlFieldItems, function () {
                         var dependentFieldValue = '';

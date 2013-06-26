@@ -1,17 +1,11 @@
 ﻿'use strict';
-define(['core/app/detourService'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/optionitemsdataservice'], function (detour) {
     detour.registerController([
         'ItemsCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$resource',
-            function ($scope, logger, $detour, $stateParams, $resource) {
+        ['$scope', 'logger', '$detour', '$stateParams', '$resource', 'optionItemsDataService',
+            function ($scope, logger, $detour, $stateParams, $resource, optionItemsDataService) {
                 var entityName = $stateParams.EntityName;
                 var fieldName = $stateParams.FieldName;
-
-                var OptionItems = $resource(
-                    'api/fields/OptionItems',
-                    {},
-                    { update: { method: 'PUT' } }
-                );
 
                 var optionColumnDefs = [
                     { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.entity)">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
@@ -51,7 +45,7 @@ define(['core/app/detourService'], function (detour) {
                 };
                 function createItemFunc() {
                     $('#editModal').modal('hide');
-                    var newItem = new OptionItems();
+                    var newItem = new optionItemsDataService();
                     newItem.Value = $scope.itemValue;
                     newItem.IsDefault = $scope.itemIsDefault;
                     newItem.$save({
@@ -88,7 +82,7 @@ define(['core/app/detourService'], function (detour) {
                 };
                 $scope.deleteItem = function () {
                     $('#deleteModal').modal('hide');
-                    OptionItems.delete({ Id: deleteItemId }, function () {
+                    optionItemsDataService.delete({ Id: deleteItemId }, function () {
                         $scope.getOptionItems();
                         logger.success("Delete the item successful.");
                     }, function () {
@@ -97,7 +91,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.getOptionItems = function () {
-                    var items = OptionItems.query({ EntityName: entityName, FieldName: fieldName }, function () {
+                    var items = optionItemsDataService.query({ EntityName: entityName, FieldName: fieldName }, function () {
                         $scope.myData = items;
                     }, function () {
                         logger.error("Get items failed.");

@@ -1,15 +1,10 @@
 ﻿'use strict';
-define(['core/app/detourService'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/fielddependencydataservice'], function (detour) {
     detour.registerController([
         'FieldDependencyListCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$resource',
-            function ($scope, logger, $detour, $stateParams, $resource) {
+        ['$scope', 'logger', '$detour', '$stateParams', '$resource', 'fieldDependencyDataService',
+            function ($scope, logger, $detour, $stateParams, $resource, fieldDependencyDataService) {
                 var entityName = $stateParams.EntityName;
-                var FieldDependency = $resource(
-                    'api/fields/FieldDependency',
-                    {},
-                    { update: { method: 'PUT' } }
-                );
 
                 var fieldColumnDefs = [
                     { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
@@ -32,11 +27,11 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
                 $scope.delete = function (itemId) {
-                    FieldDependency.delete({ Id: itemId });
+                    fieldDependencyDataService.delete({ Id: itemId });
                 };
 
                 $scope.getOptionItems = function () {
-                    var items = FieldDependency.query({ EntityName: entityName }, function () {
+                    var items = fieldDependencyDataService.query({ EntityName: entityName }, function () {
                         $scope.myData = items;
                     }, function () {
                         logger.error("Get items failed.");
