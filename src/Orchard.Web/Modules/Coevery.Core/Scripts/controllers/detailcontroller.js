@@ -24,7 +24,7 @@
               $state.transitionTo('List', { Module: moduleName });
           };
 
-          $scope.on('$viewContentLoaded', function () {
+          $scope.$on('$viewContentLoaded', function () {
           });
       }]
     ]);
