@@ -4,18 +4,19 @@
       ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams', '$element', 'commonDataService',
       function ($timeout, $rootScope, $scope, logger, $state, $stateParams, $element, commonDataService) {
           var moduleName = $rootScope.$stateParams.Module;
+          
 
           $scope.save = function () {
               $.ajax({
-                  url: $element.attr('action'),
-                  type: $element.attr('method'),
-                  data: $element.serialize() + '&submit.Save=Save',
+                  url: myForm.action,
+                  type: myForm.method,
+                  data: $(myForm).serialize() + '&submit.Save=Save',
                   success: function (result) {
                       $timeout($scope.exit, 0);
                   }
               });
           };
-
+         
           $scope.change = function () {
 
           };

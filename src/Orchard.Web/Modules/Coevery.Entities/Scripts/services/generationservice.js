@@ -10,7 +10,7 @@ define(['core/app/detourService'], function (detour) {
         'generationService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
             return $resource(
-                'api/metadata/Generation/:Name',
+                'api/entities/Generation/:Name',
                 { Name: '@Name' },
                 { update: { method: 'PUT' } });
         }]

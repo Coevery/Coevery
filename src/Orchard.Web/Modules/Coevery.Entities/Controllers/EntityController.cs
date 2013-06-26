@@ -33,12 +33,11 @@ namespace Coevery.Entities.Controllers {
 
         // GET api/Entities/Entity/:entityName
         public object Get(string name) {
-            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
                         let fields = type.Fields.Select(f => new { f.Name, f.DisplayName, FieldType = f.FieldDefinition.Name.CamelFriendly(), IsSystemField = bool.Parse(f.Settings[f.FieldDefinition.Name + "Settings.IsSystemField"]) })
-                        where type.Name == name
                         select new { type.DisplayName, type.Name, setting.IsDeployed, Fields = fields };
             var entityType = query.SingleOrDefault();
             return entityType;

@@ -20,7 +20,7 @@
                 <div class="widget-content">
                     <div class="btn-toolbar">
                         <input type="button" value="Back" class="btn" ng-click="exit()" />
-                        <input type="submit" name="submit.Save" value="Save" class="btn btn-primary">
+                        <input type="submit" name="submit.Save" value="Save" ng-click="save()" class="btn btn-primary">
                     </div>
                 </div>
             </div>
@@ -29,7 +29,10 @@
             <section class="span12 widget">
                 <section class="widget-content form-container">
                     @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                          FormMethod.Post, new { @class = "form-horizontal no-border", @name = "myForm", @ng_submit = "save()" })) {
+                                                          FormMethod.Post,
+                                                          new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" }))
+                    {
+            
                         @Html.ValidationSummary()
                         // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
 
