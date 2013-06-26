@@ -5,11 +5,12 @@
       function ($timeout, $rootScope, $scope, logger, $state, $stateParams, $element, commonDataService) {
           var moduleName = $rootScope.$stateParams.Module;
 
+          var myForm = $('[name=myForm]');
           $scope.save = function () {
               $.ajax({
-                  url: $element.attr('action'),
-                  type: $element.attr('method'),
-                  data: $element.serialize() + '&submit.Save=Save',
+                  url: myForm.attr('action'),
+                  type: myForm.attr('method'),
+                  data: myForm.serialize() + '&submit.Save=Save',
                   success: function (result) {
                       $timeout($scope.exit, 0);
                   }
