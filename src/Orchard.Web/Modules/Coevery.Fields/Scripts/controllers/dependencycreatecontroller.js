@@ -55,6 +55,8 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                         EntityName: entityName,
                         ControlFieldName: $scope.controlField,
                         DependentFieldName: $scope.dependentField
+                    }, function () {
+                        logger.success('Save success.');
                     });
                 };
             }]

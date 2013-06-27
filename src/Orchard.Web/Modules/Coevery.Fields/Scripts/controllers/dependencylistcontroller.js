@@ -35,7 +35,10 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
                 $scope.delete = function (itemId) {
-                    fieldDependencyDataService.delete({ Id: itemId });
+                    fieldDependencyDataService.delete({ Id: itemId }, function() {
+                        logger.success('Delete success.');
+                        $scope.getOptionItems();
+                    });
                 };
 
                 $scope.getOptionItems = function () {
