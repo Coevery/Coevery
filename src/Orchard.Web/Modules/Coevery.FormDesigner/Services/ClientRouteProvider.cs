@@ -10,7 +10,10 @@ namespace Coevery.FormDesigner.Services {
                           Feature,
                           route => route
                                        .Url("/FormDesigner/{EntityName:[0-9a-zA-Z]+}")
-                                       .TemplateUrl("function(params) { return 'SystemAdmin/FormDesigner/Index/' + params.EntityName; }")
+                                       .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/FormDesigner/Index/' + $stateParams.EntityName; 
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]")
                                        .Controller("FormDesignerCtrl")
                                        .Dependencies("controllers/formdesignercontroller"));
         }
