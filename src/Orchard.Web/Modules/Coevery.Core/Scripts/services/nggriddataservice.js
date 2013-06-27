@@ -9,9 +9,8 @@ define(['core/app/couchPotatoService'], function(couchPotato) {
     couchPotato.registerFactory([
        'ngGridDataService',
        ['$rootScope', '$resource', function ($rootScope, $resource) {
-           var moduleName = $rootScope.$stateParams.Module;
            return $resource('api/CoeveryCore/NGgrid/:contentType:contentId',
-               { contentType: moduleName },
+               { contentType: '@contentType' },
                { contentId: '@ContentId' },
                { update: { method: 'PUT' } });
        }]

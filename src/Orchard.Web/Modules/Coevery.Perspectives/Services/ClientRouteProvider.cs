@@ -36,9 +36,21 @@ namespace Coevery.Perspectives.Services
             builder.Create("PerspectiveEdit",
                            Feature,
                            route => route
-                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}")
+                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Edit")
                                         .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
                                                 var url = 'SystemAdmin/Perspectives/Edit/' + $stateParams.Id; 
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]")
+                                        .Controller("PerspectiveEditCtrl")
+                                        .Dependencies("controllers/editcontroller")
+                );
+
+            builder.Create("PerspectiveDetail",
+                           Feature,
+                           route => route
+                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}")
+                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Perspectives/Detail/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]")
                                         .Controller("PerspectiveDetailCtrl")
@@ -53,8 +65,8 @@ namespace Coevery.Perspectives.Services
                                                 var url = 'SystemAdmin/Perspectives/EditNavigationItem/' + $stateParams.NId; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]")
-                                        .Controller("NavigationItemDetailCtrl")
-                                        .Dependencies("controllers/navigationitemdetailcontroller")
+                                        .Controller("NavigationItemEditCtrl")
+                                        .Dependencies("controllers/navigationitemeditcontroller")
                 );
 
             builder.Create("CreateNavigationItem",
@@ -62,8 +74,8 @@ namespace Coevery.Perspectives.Services
                            route => route
                                         .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create")
                                         .TemplateUrl("function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}")
-                                        .Controller("NavigationItemCreateCtrl")
-                                        .Dependencies("controllers/navigationitemcreatecontroller")
+                                        .Controller("NavigationItemEditCtrl")
+                                        .Dependencies("controllers/navigationitemeditcontroller")
                 );
 
         }
