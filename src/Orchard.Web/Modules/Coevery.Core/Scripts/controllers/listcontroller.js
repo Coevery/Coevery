@@ -29,7 +29,7 @@
 
           $scope.getPagedDataAsync = function (pageSize, page) {
               setTimeout(function () {
-                  var records = commonDataService.query(function () {
+                  var records = commonDataService.query({ contentType: moduleName }, function () {
                       $scope.setPagingData(records, page, pageSize);
                   }, function () {
                       logger.error("Failed to fetched records for " + moduleName);
@@ -58,7 +58,7 @@
           };
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
-          var gridColumns = ngGridDataService.query(function () {
+          var gridColumns = ngGridDataService.query({ contentType: moduleName }, function () {
               $scope.myColumns = gridColumns;
           }, function () {
               $scope.myColumns = [];
