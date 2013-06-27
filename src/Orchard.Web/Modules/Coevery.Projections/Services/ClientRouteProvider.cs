@@ -36,7 +36,10 @@ namespace Coevery.Projections.Services
                            Feature,
                            route => route
                                         .Url("/Projections/{EntityName:[0-9a-zA-Z]+}/{Id:[0-9a-zA-Z]+}")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Projections/Edit/' + params.Id;}")
+                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Projections/Edit/' + $stateParams.Id; 
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]")
                                         .Controller("ProjectionDetailCtrl")
                                         .Dependencies("controllers/detailcontroller")
                 );

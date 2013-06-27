@@ -3,11 +3,13 @@ using Orchard.Environment.Extensions.Models;
 
 namespace Coevery.Entities.Services
 {
-    public class ClientRouteProvider : IClientRouteProvider {
+    public class ClientRouteProvider : IClientRouteProvider
+    {
 
         public virtual Feature Feature { get; set; }
 
-        public void Discover(ClientRouteBuilder builder) {
+        public void Discover(ClientRouteBuilder builder)
+        {
             builder.Create("EntityList",
                            Feature,
                            route => route
@@ -28,7 +30,10 @@ namespace Coevery.Entities.Services
                            Feature,
                            route => route
                                         .Url("/Entities/{Id:[0-9a-zA-Z]+}/Edit")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Entities/Edit/' + params.Id;}")
+                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Entities/Edit/' + $stateParams.Id; 
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]")
                                         .Controller("EntityEditCtrl")
                                         .Dependencies("controllers/editcontroller"));
 
@@ -37,7 +42,10 @@ namespace Coevery.Entities.Services
                            route => route
                                         .Url("/Entities/{Id:[0-9a-zA-Z]+}")
                                         .Abstract(true)
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Entities/Detail/' + params.Id;}")
+                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Entities/Detail/' + $stateParams.Id; 
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]")
                                         .Controller("EntityDetailCtrl")
                                         .Dependencies("controllers/detailcontroller")
                                         .Children("Fields",
