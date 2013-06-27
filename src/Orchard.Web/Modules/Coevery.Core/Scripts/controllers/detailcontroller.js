@@ -12,7 +12,7 @@
                   type: myForm.attr('method'),
                   data: myForm.serialize() + '&submit.Save=Save',
                   success: function (result) {
-                      $timeout($scope.exit, 0);
+                      $scope.exit();
                   }
               });
           };

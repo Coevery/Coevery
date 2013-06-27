@@ -1,12 +1,5 @@
 ﻿@using Orchard.ContentManagement
 @using Orchard.Utility.Extensions
-
-@{
-    Script.Require("CommonContext");
-    Script.Require("CommonDetailController");
-}
-@Display.FootScripts()
-
 @{
     ContentItem contentItem = Model.ContentItem;
     var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
@@ -43,7 +36,7 @@
 </section>
 @Display(Model)
 
-<script type="text/javascript">
+<script>
     $(function () {
         $('.page-actions').affix({ offset: { top: 71 } });
     });
