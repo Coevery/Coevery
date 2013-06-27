@@ -1,0 +1,55 @@
+﻿@using System.ComponentModel
+@model Coevery.Perspectives.ViewModels.PerspectiveViewModel
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 style="background-image: none;">Perspective Detail <span>show perspective detail information</span></h1>
+</header>
+
+<section id="main-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <button class="btn" data-ng-click="exit()">Back</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="editPerspective()">Edit</button>
+                        <button type="button" class="btn" data-ng-click="deletePerspective()">Delete</button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-content table-container">
+                    <table class="table table-detail-view">
+                        <tbody>
+                            <tr>
+                                <th>Title</th>
+                                <td>@Model.Title</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-content">
+                    <div class="btn-toolbar" style="padding-left: 0px;">
+                        <button class="btn btn-success" ng-click="addNavigationItem()">
+                            <i class="icon-plus"></i>&nbsp;Add Navigation
+                        </button>
+                    </div>
+                    <div class="row-fluid">
+                        <section class="gridStyle" ng-grid="gridOptions"></section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

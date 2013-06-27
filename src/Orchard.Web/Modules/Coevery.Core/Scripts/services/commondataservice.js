@@ -9,9 +9,8 @@ define(['core/app/couchPotatoService'], function(couchPotato) {
     couchPotato.registerFactory([
         'commonDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            var moduleName = $rootScope.$stateParams.Module;
             return $resource('api/CoeveryCore/Common/:contentType:contentId',
-                { contentType: moduleName },
+                { contentType: '@contentType' },
                 { contentId: '@ContentId' },
                 { update: { method: 'PUT' } });
         }]

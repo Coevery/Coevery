@@ -28,7 +28,7 @@
           };
 
           $scope.getPagedDataAsync = function (pageSize, page) {
-              var records = commonDataService.query(function () {
+              var records = commonDataService.query({ contentType: moduleName }, function () {
                   $scope.setPagingData(records, page, pageSize);
               }, function () {
                   logger.error("Failed to fetched records for " + moduleName);
@@ -56,7 +56,7 @@
           };
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
-          var gridColumns = ngGridDataService.query(function () {
+          var gridColumns = ngGridDataService.query({ contentType: moduleName }, function () {
               $scope.myColumns = gridColumns;
           }, function () {
               $scope.myColumns = [];
@@ -108,7 +108,7 @@
           };
 
           $scope.delete = function (id) {
-              commonDataService.delete({ contentType: id }, function () {
+              commonDataService.delete({ contentId: id }, function () {
                   $scope.Refresh();
                   logger.success('Delete the ' + moduleName + ' successful.');
               }, function () {

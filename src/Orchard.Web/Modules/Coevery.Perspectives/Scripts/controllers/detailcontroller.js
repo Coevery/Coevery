@@ -56,6 +56,11 @@ define(['core/app/detourService',
           $scope.edit = function (navigationId) {
               $detour.transitionTo('EditNavigationItem', {Id:perpectiveId, NId: navigationId });
           };
+          
+          $scope.editPerspective = function () {
+              $detour.transitionTo('PerspectiveEdit', { Id: perpectiveId });
+          };
+          
 
           $scope.delete = function (navigationId) {
               perspectiveDataService.delete({ Id: navigationId }, function () {
