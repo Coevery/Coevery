@@ -31,8 +31,7 @@ define(['core/app/detourService',
                         angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                         $scope.exit = function () {
-                            //$detour.transitionTo('EntityDetail', { Id: $stateParams.EntityName });
-                            location.href = 'SystemAdmin#/Entities/' + $stateParams.EntityName;
+                            $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.EntityName });
                         };
                         
                         $scope.delete = function(id) {

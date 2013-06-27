@@ -1,12 +1,14 @@
 ﻿<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 id="main-heading" style="background-image: none;">List of Views <span>Display all views</span></h1>
 </header>
+
 <section id="main-content">
     <div class="row-fluid">
         <div class="span12">
             <div class="widget toolbar-Container">
                 <div class="widget-content">
                     <div class="btn-toolbar">
+                        <button class="btn" ng-click="exit()">Back</button>
                         <button class="btn btn-success" ng-click="add()">
                             <i class="icon-plus"></i>&nbsp;@T("Add")
                         </button>
@@ -26,10 +28,9 @@
 </section>
 
 <script>
-    $(function() {
+    $(function () {
         $('.page-actions').affix({ offset: { top: 71 } });
     });
-   
 </script>
 
 
