@@ -69,14 +69,6 @@
               $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           };
 
-          $scope.GetScrollHeight = function () {
-              var height = document.height - 220;
-              return {"height":height +"px"};
-          };
-          
-
-          
-
 
           //var t = function (str) {
           //    var result = i18n.t(str);
