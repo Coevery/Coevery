@@ -10,12 +10,12 @@
               pageSize: 250,
               currentPage: 1
           };
-       
+
           $scope.setPagingData = function (data, page, pageSize) {
               var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
               var maxRow = data.length;
               var maxPages = Math.ceil(maxRow / $scope.pagingOptions.pageSize);
-            
+
               $scope.pagingOptions.pageNumber = [];
               for (var index = 0; index < maxPages; index++) {
                   $scope.pagingOptions.pageNumber[index] = index + 1;
@@ -28,13 +28,11 @@
           };
 
           $scope.getPagedDataAsync = function (pageSize, page) {
-              setTimeout(function () {
-                  var records = commonDataService.query(function () {
-                      $scope.setPagingData(records, page, pageSize);
-                  }, function () {
-                      logger.error("Failed to fetched records for " + moduleName);
-                  });
-              }, 100);
+              var records = commonDataService.query({ contentType: moduleName }, function () {
+                  $scope.setPagingData(records, page, pageSize);
+              }, function () {
+                  logger.error("Failed to fetched records for " + moduleName);
+              });
           };
 
           $scope.$watch('pagingOptions', function (newVal, oldVal) {
@@ -58,40 +56,20 @@
           };
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
-          var gridColumns = ngGridDataService.query(function () {
+          var gridColumns = ngGridDataService.query({ contentType: moduleName }, function () {
               $scope.myColumns = gridColumns;
           }, function () {
               $scope.myColumns = [];
           });
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-          $scope.Refresh = function() {
+          $scope.Refresh = function () {
               $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           };
-
 
           //var t = function (str) {
           //    var result = i18n.t(str);
           //    return result;
-          //};
-
-          //var columnDefs = [{ field: 'Id', displayName: t('Id') },
-          //      { field: 'Topic', displayName: t('Topic') },
-          //      { field: 'StatusCode', displayName: t('StatusCode') },
-          //      { field: 'FirstName', displayName: t('FirstName') },
-          //      { field: 'LastName', displayName: t('LastName') }];
-
-
-          //$scope.mySelections = [];
-
-          //$scope.gridOptions = {
-          //    data: 'myData',
-          //    selectedItems: $scope.mySelections,
-          //    multiSelect: false,
-          //    showColumnMenu: true,
-          //    enableColumnResize: true,
-          //    enableColumnReordering: true,
-          //    columnDefs: columnDefs
           //};
 
           var idIndex = 1;
@@ -129,16 +107,13 @@
               $('#collapseBtn').click();
           };
 
-          $scope.delete = function () {
-              if ($scope.mySelections.length > 0) {
-                  commonDataService.delete({ contentType: $scope.mySelections[0].ContentId }, function () {
-                      $scope.mySelections.pop();
-                      $scope.getAll();
-                      logger.success('Delete the ' + moduleName + ' successful.');
-                  }, function () {
-                      logger.error('Failed to delete the lead.');
-                  });
-              }
+          $scope.delete = function (id) {
+              commonDataService.delete({ contentId: id }, function () {
+                  $scope.Refresh();
+                  logger.success('Delete the ' + moduleName + ' successful.');
+              }, function () {
+                  logger.error('Failed to delete the lead.');
+              });
           };
 
           $scope.add = function () {
@@ -148,8 +123,6 @@
           $scope.edit = function (id) {
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
-
-          
       }]
     ]);
 });

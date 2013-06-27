@@ -5,7 +5,7 @@ define(['core/app/detourService'], function (detour) {
         ['$scope', 'logger', '$detour', '$stateParams',
             function ($scope, logger, $detour, $stateParams) {
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
+                    $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.EntityName });
                 };
 
             }]

@@ -53,6 +53,14 @@ namespace Coevery.Fields.Services {
                                  .TemplateUrl("function(params) { return 'SystemAdmin/Fields/CreateDependency/' + params.EntityName; }")
                                  .Controller("FieldDependencyCreateCtrl")
                                  .Dependencies("controllers/dependencycreatecontroller"));
+
+            builder.Create("FieldDependencyEdit",
+                    Feature,
+                    route => route
+                                 .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/{DependencyID:[0-9]+}")
+                                 .TemplateUrl("function(params) { return 'SystemAdmin/Fields/CreateDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }")
+                                 .Controller("FieldDependencyEditCtrl")
+                                 .Dependencies("controllers/dependencyeditcontroller"));
         }
     }
 }

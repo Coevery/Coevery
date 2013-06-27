@@ -246,6 +246,31 @@ namespace Coevery.Fields.Controllers {
             return View(viewModel);
         }
 
+        public ActionResult EditDependency(string id) {
+            var typeViewModel = _contentDefinitionService.GetType(id);
+            var controlFields = new List<EditPartFieldViewModel>();
+            var dependentFields = new List<EditPartFieldViewModel>();
+            foreach (var field in typeViewModel.Fields) {
+                switch (field.FieldDefinition.Name) {
+                    case "SelectField":
+                        controlFields.Add(field);
+                        dependentFields.Add(field);
+                        break;
+                    case "MultiSelectField":
+                        dependentFields.Add(field);
+                        break;
+                    case "BooleanField":
+                        controlFields.Add(field);
+                        break;
+                }
+            }
+            var viewModel = new FieldDependencyViewModel {
+                ControlFields = controlFields,
+                DependentFields = dependentFields
+            };
+            return View(viewModel);
+        }
+
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);
         }

@@ -4,7 +4,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
       'PerspectiveListCtrl',
       ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'perspectiveDataService',
       function ($rootScope, $scope, logger, $detour, $resource, $stateParams, perspectiveDataService) {
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Metadata/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
+          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Perspectives/{{row.entity.Id}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
           var t = function (str) {

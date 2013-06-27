@@ -76,7 +76,8 @@ namespace Coevery.Fields.Controllers {
             dependencyRecord = new FieldDependencyRecord {
                 Entity = partDefinition,
                 ControlField = controlField,
-                DependentField = dependentField
+                DependentField = dependentField,
+                Value = dependencyValue
             };
             _fieldDependencyRepository.Create(dependencyRecord);
 

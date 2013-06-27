@@ -105,6 +105,15 @@ namespace Coevery.Perspectives.Controllers
         }
 
 
+        public ActionResult Detail(int id)
+        {
+            var contentItem = _contentManager.Get(id, VersionOptions.Latest);
+            PerspectiveViewModel model = new PerspectiveViewModel();
+            model.Title = contentItem.As<TitlePart>().Title;
+            model.Id = contentItem.As<TitlePart>().Id;
+            return View(model);
+        }
+
         public ActionResult EditNavigationItem(int id)
         {
 

@@ -110,8 +110,7 @@
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\controllers\navigationitemcreatecontroller.js" />
-    <Content Include="Scripts\controllers\navigationitemdetailcontroller.js" />
+    <Content Include="Scripts\controllers\navigationitemeditcontroller.js" />
     <Content Include="Scripts\services\navigationdataservice.js" />
     <Content Include="Scripts\services\perspectivedataservice.js" />
     <Content Include="Web.config" />
@@ -177,6 +176,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\CreateNavigationItem.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
