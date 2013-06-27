@@ -26,7 +26,7 @@
         string displayCss = "none";
         if (firstLevelIndex == 0) {displayCss = "block";}
         firstLevelIndex++;
-        <ul class="menu"   id="@firstLevelMenuItem.Text"  style="display:@displayCss;">
+        <ul class="menu"   id="@firstLevelMenuItem.Text" >
             @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 0 || !firstLevelMenuItem.LinkToFirstChild) {
                 foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
                     string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;

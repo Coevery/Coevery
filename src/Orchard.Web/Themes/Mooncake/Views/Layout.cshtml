@@ -144,26 +144,21 @@
                         </div>
                     </div>
                     <div id="header-functions" class="pull-right">
-                        <div id="user-info" class="clearfix" style="margin-top: 2px;">
-                            <div class="btn-toolbar">
-                                <div class="btn-group">
-                                    <div class="btn dropdown-toggle" data-toggle="dropdown" style="border: none; color: #ffffff; background: rgb(48, 48, 48);">
-                                        <i style="background-position: center;"></i><span>liuleibao</span>
-                                        <span class="caret" style="border-top: 4px solid #ffffff;"></span>
-                                    </div>
-                                    <ul class="dropdown-menu">
-                                        <li title="" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
-                                            <a href="@Href("~/SystemAdmin/#/Entities")">
-                                                <i style="background-position: center;"></i>后台
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="avatar">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                                        <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt="Avatar">
-                                    </a>
-                                </div>
+                        <div id="user-info" class="clearfix">
+                            <span class="info">
+                                Welcome
+                                <span class="name">Shana-chan</span>
+                            </span>
+                            <div class="avatar">
+                                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt="Avatar">
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="#"><i class="icol-user"></i> My Profile</a></li>
+                                    <li><a href="@Href("~/SystemAdmin/#/Entities")"><i class="icol-application-key"></i> Admin</a></li>                                        
+                                    <li class="divider"></li>
+                                    <li><a href="#"><i class="icol-key"></i> Logout</a></li>
+                                </ul>
                             </div>
                         </div>
                         <div id="logout-ribbon">
@@ -195,11 +190,6 @@
                                 </li>
                                 menuIndex++;
                             }
-                            <li><input type="radio" id="ex4_1" name="ex4" value="1" checked><label for="ex4_1"><strong>New York</strong></label>
-                            </li>
-                            <li><input type="radio" id="ex4_2" name="ex4" value="2"><label for="ex4_2">Moscow</label></li>
-                            <li><input type="radio" id="ex4_3" name="ex4" value="3"><label for="ex4_3">Tokyo</label></li>
-                            <li><input type="radio" id="ex4_4" name="ex4" value="4"><label for="ex4_4">Paris</label></li>
                         </ul>
                     }
                 }

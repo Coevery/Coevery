@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function(detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource', 'projectionDataService', 'viewmodelDataService',
-            function($timeout, $scope, logger, $detour, $stateParams, $resource, projectionDataService, viewmodelDataService) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource', 'projectionDataService', 'viewmodelDataService',
+            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, projectionDataService, viewmodelDataService) {
                 var name = $stateParams.Id;
                 $scope.mySelections = [];
                 $scope.fieldCoumns = [];
@@ -12,12 +12,10 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 $scope.gridOptions = {
                     data: 'myData',
                     selectedItems: $scope.mySelections,
-                    multiSelect: false,
-                    showColumnMenu: true,
-                    enableColumnResize: true,
-                    enableColumnReordering: true,
                     columnDefs: 'fieldCoumns'
                 };
+                
+                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 $scope.preview = function() {
                     $scope.fieldCoumns = [];

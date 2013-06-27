@@ -1026,6 +1026,7 @@ body {
     #wrapper #content.sidebar-minimized #main
     {
         margin-left: 70px;
+        margin-top: 20px;
     }
 
     #wrapper #content.sidebar-minimized #content-inner
@@ -1060,8 +1061,8 @@ body {
             #wrapper #sidebar #navigation ul.menu > li > span
             {
                 font-size: 32px;
-                padding: 6px 5px 11px 5px;
-                width: 77px;
+                /*padding: 6px 5px 11px 5px;*/
+                /*width: 77px;*/
             }
 
             #wrapper #sidebar #navigation ul.menu > li > .inner-nav

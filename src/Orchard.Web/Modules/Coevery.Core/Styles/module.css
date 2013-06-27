@@ -13,6 +13,11 @@
 .widget .widget-content .btn-toolbar
 {
     padding-left: 10px;
+    padding-right: 10px;
+}
+
+.btn-toolbar>div>.btn+.btn {
+    margin-left: 5px;
 }
 
 .widget.toolbar-Container .widget-content
@@ -29,6 +34,10 @@
 .controls > fieldset > .radio:first-child,
 .controls > fieldset > .checkbox:first-child {
     padding-top: 5px;
+}
+
+.widget .form-container > .form-horizontal > fieldset:first-child legend {
+    border-top: 0;
 }
 
 .gridStyle .dt_footer
