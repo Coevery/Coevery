@@ -1,7 +1,6 @@
 ﻿@functions {
     // To support the layout classifaction below. Implementing as a razor function because we can, could otherwise be a Func<string[], string, string> in the code block following.
-    string CalcuClassify(string[] zoneNames, string classNamePrefix)
-    {
+    string CalcuClassify(string[] zoneNames, string classNamePrefix) {
         var zoneCounter = 0;
         var zoneNumsFilled = string.Join("", zoneNames.Select(zoneName => { ++zoneCounter; return Model[zoneName] != null ? zoneCounter.ToString() : ""; }).ToArray());
         return HasText(zoneNumsFilled) ? classNamePrefix + zoneNumsFilled : "";
@@ -13,27 +12,17 @@
 
     SetMeta("X-UA-Compatible", "IE=edge,chrome=1");
     Style.Include("http://fonts.googleapis.com/css?family=Lobster&subset=latin");
-    Style.Include("layout.css");
     Style.Include("bootstrap/bootstrap.min.css");
+    Style.Include("bootstrap/bootstrap-responsive.min.css");
+    Style.Require("jQueryUI_Orchard");
     Style.Include("uniform/css/uniform.default.css");
     Style.Include("fonts/icomoon/style.css");
     Style.Include("main-style.css");
-    Style.Include("icons.css");
-    Style.Include("coevery/css/menuicons.css");
-    Style.Include("widget.css");
-    Style.Include("form.css");
-    Style.Include("table.css");
-    Style.Include("misc.css");
-    Style.Include("site.css");
-    Style.Include("ui.css");
-
-    Style.Include("picklist.css");
-
 
     Script.Require("jQuery");
     Script.Include("js/libs/bootstrap.min.js");
+    Script.Include("js/dropdown.js");
     Script.Include("js/demo/picklist.js");
-    Style.Require("jQueryUI_Orchard").AtHead();
 
     /* Some useful shortcuts or settings
     ***************************************************************/
@@ -45,22 +34,19 @@
 
     //Add classes to the wrapper div to toggle aside widget zones on and off
     var asideClass = CalcuClassify(new[] { "AsideFirst", "AsideSecond" }, "aside-"); // for aside-1, aside-2 or aside-12 if any of the aside zones are filled
-    if (HasText(asideClass))
-    {
+    if (HasText(asideClass)) {
         Model.Classes.Add(asideClass);
     }
 
     //Add classes to the wrapper div to toggle tripel widget zones on and off
     var tripelClass = CalcuClassify(new[] { "TripelFirst", "TripelSecond", "TripelThird" }, "tripel-"); // for tripel-1, triple-2, etc. if any of the tripel zones are filled
-    if (HasText(tripelClass))
-    {
+    if (HasText(tripelClass)) {
         Model.Classes.Add(tripelClass);
     }
 
     //Add classes to the wrapper div to toggle quad widget zones on and off
     var footerQuadClass = CalcuClassify(new[] { "FooterQuadFirst", "FooterQuadSecond", "FooterQuadThird", "FooterQuadFourth" }, "split-"); // for quad-1, quad-2, etc. if any of the quad zones are filled
-    if (HasText(footerQuadClass))
-    {
+    if (HasText(footerQuadClass)) {
         Model.Classes.Add(footerQuadClass);
     }
 
@@ -79,8 +65,7 @@
 }
 @tag.StartElement
 
-@if (Model.Header != null)
-{
+@if (Model.Header != null) {
     <header id="header" class="navbar navbar-inverse">
         <div class="navbar-inner">
             <div class="container">
@@ -118,7 +103,7 @@
                                         <li>
                                             <a href="#">
                                                 <span class="thumbnail">
-                                                    <img src="images/pp.jpg" alt=""></span>
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt=""></span>
                                                 <span class="details">
                                                     <strong>John Doe</strong> commented on your photo
                                                     <span class="time">13 minutes ago</span>
@@ -128,7 +113,7 @@
                                         <li>
                                             <a href="#">
                                                 <span class="thumbnail">
-                                                    <img src="images/pp.jpg" alt=""></span>
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt=""></span>
                                                 <span class="details">
                                                     <strong>Jane Roe</strong> commented on your photo
                                                     <span class="time">27 minutes ago</span>
@@ -138,7 +123,7 @@
                                         <li>
                                             <a href="#">
                                                 <span class="thumbnail">
-                                                    <img src="images/pp.jpg" alt=""></span>
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt=""></span>
                                                 <span class="details">
                                                     <strong>Billy John</strong> commented on your photo
                                                     <span class="time">43 minutes ago</span>
@@ -168,7 +153,7 @@
                                     </div>
                                     <ul class="dropdown-menu">
                                         <li title="" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
-                                            <a href="@Href("~/SystemAdmin")">
+                                            <a href="@Href("~/SystemAdmin/#/Entities")">
                                                 <i style="background-position: center;"></i>后台
                                             </a>
                                         </li>
@@ -190,58 +175,50 @@
         </div>
     </header>
 }
-<div id="content-wrap">
-    <div id="content" class="sidebar-minimized toggled">
-        <div id="content-outer">
-            <div class="btn-toolbar" id="FirstMenu" style="border: 0; width: 100%; margin-top: 10px;">
-                <div class="btn-group" style="border: 0; float: left; margin-top: 15px;">
-                    @if (Model.Navigation != null && Model.Navigation.Items.Count > 0)
-                    {
-                        var menu = Model.Navigation.Items[0];
-                        if (menu.Items.Count > 0)
-                        {
-                            <button class="btn dropdown-toggle" data-toggle="dropdown" style="border: 0; background: rgb(252, 252, 252);">
-                                <i style="background-position: center;"></i><span id="FirstMenuText" style="font-size: 25px;">@menu.Items[0].Text.Text</span>
-                                <span class="caret"></span>
-                            </button>
-
-                            <ul class="dropdown-menu">
-
-
-                                @foreach (var item in menu.Items)
-                                {
-                                    <li  title="@item.Text.Text" style="cursor: pointer; margin-left: 2px; padding: 3px 20px;">
-                                        <i style="background-position: center;"></i>
-                                        @item.Text.Text
-                                    </li>
-                                }
-
-                            </ul>
-                        }
-
+<header id="page-header" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="dropdown pull-left">
+                @if (Model.Navigation != null && Model.Navigation.Items.Count > 0) {
+                    var menu = Model.Navigation.Items[0];
+                    if (menu.Items.Count > 0) {
+                        <a class="brand dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                            <span data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
+                            @{
+                                var menuIndex = 0;
+                            }
+                            @foreach (var item in menu.Items) {
+                                <li>
+                                    <input type="radio" id="menu_@menuIndex" name="ex4" value="1"><label for="menu_@menuIndex"><strong>@item.Text.Text</strong></label>
+                                </li>
+                                menuIndex++;
+                            }
+                            <li><input type="radio" id="ex4_1" name="ex4" value="1" checked><label for="ex4_1"><strong>New York</strong></label>
+                            </li>
+                            <li><input type="radio" id="ex4_2" name="ex4" value="2"><label for="ex4_2">Moscow</label></li>
+                            <li><input type="radio" id="ex4_3" name="ex4" value="3"><label for="ex4_3">Tokyo</label></li>
+                            <li><input type="radio" id="ex4_4" name="ex4" value="4"><label for="ex4_4">Paris</label></li>
+                        </ul>
                     }
-                </div>
-                <div style="float: left; margin-top: 10px;">
-                    <header class="main-header_BG main-header" style="background-image: none; margin-bottom: 0;">
-                        <h1>Lead <span>Display all Leads</span></h1>
-                    </header>
-                </div>
-
-
-                <div style="padding-top: 70px;">
-                    <hr style="height: 1px; margin: 0px; background-color: rgb(204,204,204);" />
-                </div>
-
+                }
             </div>
+        </div>
+    </div>
+</header>
+<div id="content-wrap">
+    <div id="content" class="sidebar-minimized">
+        <div id="content-outer">
             <div id="content-inner">
-                <aside id="sidebar" style="overflow-x: visible; overflow-y: visible;">
+                <aside id="sidebar">
                     <nav id="navigation" class="collapse">
-                        @if (Model.Navigation != null)
-                        {
+                        @if (Model.Navigation != null) {
                             @Zone(Model.Navigation)
                         }
                     </nav>
                 </aside>
+
                 <div id="sidebar-separator"></div>
                 <section id="main" class="clearfix">
                     @Zone(Model.Content)
@@ -250,27 +227,21 @@
         </div>
     </div>
 </div>
-
-<div class="navbar navbar-fixed-bottom footerNavbar">
-    <div class="navbar-inner" style="background: transparent; border: none; border-top: 1px solid #ccc; min-height: 0px;">
-        <div class="container footerContainer">
-            <footer id="footer" style="border: none; padding: 3px;">
-                <div class="footer-left">novasoftware - <a href="http://www.novasoftware.cn/">http://www.novasoftware.cn/</a></div>
-                <div class="footer-right">
-                    <p>Copyright 2013. All Rights Reserved.</p>
-                </div>
-            </footer>
+<div id="footer">
+    <div class="navbar navbar-fixed-bottom">
+        <div class="navbar-inner">
+            <div class="container">
+                <footer style="margin: 10px">
+                    <div class="row">
+                        <div class="footer-left">Nova Software - <a href="http://www.novasoftware.cn">http://www.novasoftware.cn</a></div>
+                        <div class="footer-right">
+                            <p>Copyright 2013. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
     </div>
 </div>
 
 @tag.EndElement
-
-@using (Script.Foot())
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('body').css("overflow", "hidden");
-        });
-    </script>
-}

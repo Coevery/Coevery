@@ -25,9 +25,12 @@ screen < 767px
 /* Body
 ================================================== */
 
-body
-{
-    background: url(images/layout/bg/white_tiles.png);
+body {
+    /*background: url(images/layout/bg/white_tiles.png);*/
+    background: url(images/layout/content-bg.png);
+    background-position: left top;
+    background-size: 70px 1px;
+    background-repeat: repeat-y;
     color: #444;
     padding: 0;
 }
@@ -466,14 +469,25 @@ body
                 display: block;
             }
 
+/* page-header
+================================================== */
+#page-header {
+    margin-top: 69px;
+    z-index: 999;
+}
+
+#page-header .container {
+    margin-left: 10px;
+}
+
 /* Content Wrapper
 ================================================== */
 
 #wrapper #content-wrap
 {
-    padding: 62px 0 0 0;
-    border: solid #ddd;
-    border-width: 0 1px;
+    padding: 110px 0 0 0;
+    /*border: solid #ddd;
+    border-width: 0 1px;*/
 }
 
 #wrapper #content,
@@ -495,7 +509,6 @@ body
 {
     position: relative;
     background: #fff;
-    min-height: 720px;
 }
 
 #wrapper #content-inner
@@ -929,8 +942,12 @@ body
     color: #444;
     font-size: 11px;
     line-height: 2;
-    border-top: 1px solid #ddd;
+    /*border-top: 1px solid #ddd;*/
     *zoom: 1;
+}
+
+#footer .navbar-inner {
+    background: url(images/layout/bg/white_tiles.png);
 }
 
     #footer:after,
@@ -1000,25 +1017,24 @@ body
             padding-left: 6px;
         }
 
-        /* Hidden Sidebar */
-        #wrapper #content.sidebar-minimized #sidebar
-        {
-            width: 90px; /*changed:70px*/
-            min-height: 500px;
-        }
+	/* Hidden Sidebar */
+    #wrapper #content.sidebar-minimized #sidebar
+    {
+        width: 70px;
+    }
 
-        #wrapper #content.sidebar-minimized #main
-        {
-            margin-left: 90px; /*changed:70px*/
-        }
+    #wrapper #content.sidebar-minimized #main
+    {
+        margin-left: 70px;
+    }
 
-        #wrapper #content.sidebar-minimized #content-inner
-        {
-            background-image: url(images/layout/content-bg.png);
-            background-position: left top;
-            background-size: 90px 1px; /*70px*/
-        }
-        /* End Hidden Sidebar */
+    #wrapper #content.sidebar-minimized #content-inner
+    {
+        background-image: url(images/layout/content-bg.png);
+        background-position: left top;
+        background-size: 70px 1px;
+    }
+	/* End Hidden Sidebar */
 
         #wrapper #content-inner
         {
@@ -1187,13 +1203,7 @@ body
 @media (min-width: 481px) and (max-width: 979px)
 {
 
-    
-    #wrapper #content-outer
-    {
-        min-height: 300px;
-    }
-
-    #wrapper #sidebar #navigation ul.menu > li
+    #wrapper #sidebar #navigation > ul > li
     {
         position: relative;
     }

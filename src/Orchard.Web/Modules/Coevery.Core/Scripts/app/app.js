@@ -63,21 +63,6 @@
 
 });
 
-//function SetActiveMenu(module) {
-//    if (!$(".menu>#" + module).hasClass("active")) {
-//        $(".menu>li.active").removeClass("active");
-//        var $li = $(".menu>#" + module);
-//        $li.addClass("active");
-//        if (!$li.parent()) return;
-//        var $liParent = $li.parent();
-//        if ($liParent[0] && $("#navigation #" + $liParent[0].id).css('display') != 'block') {
-//            $("#navigation .menu").css('display', 'none');
-//            $("#navigation #" + $liParent[0].id).css('display', 'block');
-//            $("#FirstMenu .btn-group #FirstMenuText").text($liParent[0].id);
-//        }
-//    }
-//}
-
 
 angular.module('coevery.layout', [])
     .directive('fdSection', function() {
