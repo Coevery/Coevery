@@ -37,7 +37,10 @@ namespace Coevery.Perspectives.Services
                            Feature,
                            route => route
                                         .Url("/Perspectives/{Id:[0-9a-zA-Z]+}")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Perspectives/Edit/' + params.Id;}")
+                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Perspectives/Edit/' + $stateParams.Id; 
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]")
                                         .Controller("PerspectiveDetailCtrl")
                                         .Dependencies("controllers/detailcontroller")
                 );
@@ -46,7 +49,10 @@ namespace Coevery.Perspectives.Services
                            Feature,
                            route => route
                                         .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{NId:[0-9a-zA-Z]+}")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Perspectives/EditNavigationItem/' + params.NId;}")
+                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Perspectives/EditNavigationItem/' + $stateParams.NId; 
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]")
                                         .Controller("NavigationItemDetailCtrl")
                                         .Dependencies("controllers/navigationitemdetailcontroller")
                 );

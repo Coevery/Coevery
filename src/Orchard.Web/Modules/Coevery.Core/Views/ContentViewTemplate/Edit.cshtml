@@ -22,7 +22,7 @@
             <section class="span12 widget">
                 <section class="widget-content form-container">
                     @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                          FormMethod.Post, new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" })) {
+                                                          FormMethod.Post, new { @class = "form-horizontal no-border", @name = "myForm", @ng_submit = "save()" })) {
                         @Html.ValidationSummary()
                         // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
 

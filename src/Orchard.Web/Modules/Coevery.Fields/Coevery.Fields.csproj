@@ -93,6 +93,8 @@
     <Content Include="Scripts\controllers\dependencylistcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Scripts\controllers\itemscontroller.js" />
+    <Content Include="Scripts\services\optionitemsdataservice.js" />
+    <Content Include="Scripts\services\fielddependencydataservice.js" />
     <Content Include="Styles\media-gallery-admin.css" />
     <Content Include="Styles\datetime.css" />
     <Content Include="Styles\Images\move.gif" />

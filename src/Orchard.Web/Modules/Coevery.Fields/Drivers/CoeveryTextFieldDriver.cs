@@ -46,9 +46,9 @@ namespace Coevery.Fields.Drivers {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
 
-                if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
-                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
-                }
+                //if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
+                //    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+                //}
             }
 
             return Editor(part, field, shapeHelper);

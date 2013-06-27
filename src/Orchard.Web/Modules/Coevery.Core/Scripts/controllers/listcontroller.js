@@ -6,11 +6,11 @@
           var moduleName = $rootScope.$stateParams.Module;
 
           $scope.pagingOptions = {
-              pageNumber: [],
-              pageSize: 13,
-              totalServerItems: 0,
+              pageSizes: [250, 500, 1000],
+              pageSize: 250,
               currentPage: 1
           };
+       
           $scope.setPagingData = function (data, page, pageSize) {
               var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
               var maxRow = data.length;
@@ -56,6 +56,7 @@
               pagingOptions: $scope.pagingOptions,
               columnDefs: "myColumns"
           };
+          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           var gridColumns = ngGridDataService.query(function () {
               $scope.myColumns = gridColumns;
@@ -64,15 +65,9 @@
           });
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-
-
-          $scope.GetScrollHeight = function () {
-              var height = document.height - 220;
-              return {"height":height +"px"};
+          $scope.Refresh = function() {
+              $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           };
-          
-
-          
 
 
           //var t = function (str) {
@@ -154,26 +149,7 @@
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
 
-          //$scope.createnewview = function () {
-          //    $state.transitionTo('SubCreate', { Module: 'Metadata', SubModule: 'Projection', Id: $stateParams.Module });
-          //};
-
-          //$scope.editview = function () {
-          //    $state.transitionTo('SubDetail', { Module: 'Metadata', SubModule: 'Projection', View: 'Edit', Id: $stateParams.Module, SubId: viewId });
-          //};
-
-          //$scope.getAll = function () {
-          //    var records = commonDataService.query(function() {
-          //        //$scope.myData = records;
-          //        $scope.myData = [{ 'Id': 1, 'Topic': 't1', 'StatusCode': '1', 'FirstName': 's1', 'LastName': 'c1' },
-          //            { 'Id': 2, 'Topic': 't2', 'StatusCode': '2', 'FirstName': 's2', 'LastName': 'c2' }
-          //        ];
-          //    }, function () {
-          //        logger.error("Failed to fetched records for " + moduleName);
-          //    });
-          //};
-
-          //$scope.getAll();
+          
       }]
     ]);
 });

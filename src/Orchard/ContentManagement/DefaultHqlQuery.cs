@@ -266,7 +266,7 @@ namespace Orchard.ContentManagement {
 
             // no order clause was specified
             if (firstSort) {
-                sb.Append("order by Id");
+                //sb.Append("order by Id");
             }
 
             return sb.ToString();

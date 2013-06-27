@@ -1,15 +1,10 @@
 ﻿'use strict';
-define(['core/app/detourService'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/fielddependencydataservice'], function (detour) {
     detour.registerController([
         'FieldDependencyListCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$resource',
-            function ($scope, logger, $detour, $stateParams, $resource) {
+        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$resource', 'fieldDependencyDataService',
+            function ($rootScope, $scope, logger, $detour, $stateParams, $resource, fieldDependencyDataService) {
                 var entityName = $stateParams.EntityName;
-                var FieldDependency = $resource(
-                    'api/fields/FieldDependency',
-                    {},
-                    { update: { method: 'PUT' } }
-                );
 
                 var fieldColumnDefs = [
                     { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
@@ -17,13 +12,21 @@ define(['core/app/detourService'], function (detour) {
                     { field: 'DependentFieldName', displayName: 'Dependent Field' }
                 ];
 
+                $scope.pagingOptions = {
+                    pageSizes: [250, 500, 1000],
+                    pageSize: 250,
+                    currentPage: 1
+                };
+
                 $scope.gridOptions = {
                     data: 'myData',
                     selectedItems: $scope.mySelections,
                     multiSelect: false,
                     enableColumnReordering: true,
-                    columnDefs: fieldColumnDefs
+                    columnDefs: fieldColumnDefs,
+                    pagingOptions: $scope.pagingOptions
                 };
+                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 $scope.add = function () {
                     $detour.transitionTo('FieldDependencyCreate', { EntityName: entityName });
@@ -32,11 +35,15 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
                 $scope.delete = function (itemId) {
-                    FieldDependency.delete({ Id: itemId });
+                    fieldDependencyDataService.delete({ Id: itemId }, function() {
+                        logger.success('Delete success.');
+                        $scope.getOptionItems();
+                    });
                 };
 
                 $scope.getOptionItems = function () {
-                    var items = FieldDependency.query({ EntityName: entityName }, function () {
+                    var items = fieldDependencyDataService.query({ EntityName: entityName }, function () {
+                        $scope.totalServerItems = items.length;
                         $scope.myData = items;
                     }, function () {
                         logger.error("Get items failed.");

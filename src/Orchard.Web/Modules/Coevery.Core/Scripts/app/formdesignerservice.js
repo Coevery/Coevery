@@ -1,12 +1,70 @@
-﻿//$(function () {
-'use strict';
+﻿define([], function () {
+    function newGuid() {
+        var guid = "";
+        for (var i = 1; i <= 32; i++) {
+            var n = Math.floor(Math.random() * 16.0).toString(16);
+            guid += n;
+            if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                guid += "-";
+        }
+        return guid;
+    }
 
-function exit() {
-    console.log('test');
-    var url = location.href.substr(0, location.href.lastIndexOf('#'));
-    var entityName = url.substr(url.lastIndexOf('/') + 1);
-    location.href = '/OrchardLocal/SystemAdmin#/Entities/' + entityName;
-}
+    String.prototype.format = function () {
+        var args = arguments;
+        return this.replace(/\{(\d+)\}/g,
+            function (match, paren) {
+                return args[paren];
+            });
+    };
+
+    if (typeof (Array.prototype.indexOf) != "function") {
+        Array.prototype.indexOf = function (item, startIndex) {
+            var index = startIndex == undefined ? 0 : startIndex;
+            if (window.isNaN(index)) {
+                throw "the startIndex is not a number";
+            }
+
+            var arrLength = this.length;
+            if (index < 0) {
+                index += arrLength;
+            }
+            if (index < 0) {
+                index = 0;
+            }
+
+            for (var i = index; i < this.length; i++) {
+                if (this[i] === item) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
+
+    if (typeof (Array.prototype.lastIndexOf) != "function") {
+        Array.prototype.lastIndexOf = function (item, startIndex) {
+            var index = parseInt(startIndex);
+            if (window.isNaN(index)) {
+                throw "the startIndex is not a number";
+            }
+
+            var arrLength = this.length;
+            if (index < 0) {
+                index += arrLength;
+            }
+            if (index >= this.length) {
+                index = this.length - 1;
+            }
+
+            for (var i = index; i >= 0; i--) {
+                if (this[i] === item) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
 
     function LayoutContext($resource) {
         return $resource(
@@ -46,7 +104,7 @@ function exit() {
         //if ($(this).is('fieldset')) {
         //    helper.css('background-color', 'white');
         //}
-        
+
         return helper;
     }
 
@@ -60,7 +118,7 @@ function exit() {
             itemElem.addClass('alert-error');
         }
     }
-    
+
     function clearMark(item) {
         var itemElem = $(item);
         itemElem.removeClass('markedAbove');
@@ -130,78 +188,25 @@ function exit() {
         return $('<fd-row>' + columnsString + '</fd-row>');
     }
 
-    var coevery = angular.module('coevery', ['ngResource']);
-    coevery.factory('logger', function ($window) {
-        var logger = {
-            error: error,
-            info: info,
-            success: success,
-            notice: notice,
-            log: log
-        };
-
-        function error(message) {
-            $.pnotify({
-                title: 'Error',
-                text: message,
-                type: 'error'
-            });
-            log("Error: " + message);
-        };
-
-        function info(message) {
-            $.pnotify({
-                title: 'Information',
-                text: message,
-                type: 'info'
-            });
-            log("Info: " + message);
-        };
-
-        function success(message) {
-            $.pnotify({
-                title: 'Success',
-                text: message,
-                type: 'success'
-            });
-            log("Success: " + message);
-        };
-
-        function notice(message) {
-            $.pnotify({
-                title: 'Notice',
-                text: message
-            });
-            log("Notice: " + message);
-        };
-
-        // IE and google chrome workaround
-        // http://code.google.com/p/chromium/issues/detail?id=48662
-        function log() {
-            var console = $window.console;
-            !!console && console.log && console.log.apply && console.log.apply(console, arguments);
-        }
-
-        return logger;
-    });
-    coevery.directive('fdToolsSection', function() {
-        return {
-            template: '<p fd-tools-section fd-draggable class="alert alert-info"><span class="title" ng-transclude></span></p>',
-            replace: true,
-            restrict: 'E',
-            transclude: true,
-            link: function (scope, element, attrs) {
-                //var columnCount = attrs.sectionColumns;
-                //var titleElem = element.children();
-                //titleElem.text(columnCount + '-Column Section');
-            }
-        };
-    })
+    angular.module('coevery.formdesigner', ['ngResource'])
+        .directive('fdToolsSection', function () {
+            return {
+                template: '<p fd-tools-section fd-draggable class="alert alert-info"><span class="title" ng-transclude></span></p>',
+                replace: true,
+                restrict: 'E',
+                transclude: true,
+                link: function (scope, element, attrs) {
+                    //var columnCount = attrs.sectionColumns;
+                    //var titleElem = element.children();
+                    //titleElem.text(columnCount + '-Column Section');
+                }
+            };
+        })
         .directive('fdToolsField', function ($rootScope) {
             $rootScope.inLayoutFields || ($rootScope.inLayoutFields = []);
-            $rootScope.$watch(function(scope) {
+            $rootScope.$watch(function (scope) {
                 return scope.inLayoutFields.join(',');
-            }, function(newValue, oldValue) {
+            }, function (newValue, oldValue) {
                 var currentFields = newValue ? newValue.split(',') : [];
                 var oldFields = oldValue ? oldValue.split(',') : [];
                 if (newValue.length == oldValue.length) {
@@ -245,7 +250,7 @@ function exit() {
                     return differentItems;
                 }
             });
-            
+
             return {
                 template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
                 replace: true,
@@ -258,11 +263,11 @@ function exit() {
         })
         .directive('fdForm', function ($compile, $rootScope) {
             return {
-                template: '<div fd-form class="row-fluid"><section class="span12"><form class="form-horizontal" ng-transclude></form></section></div>',
+                template: '<div fd-form class="row-fluid"><section class="span12 widget"><section class="widget-content form-container"><form class="form-horizontal no-border" ng-transclude></form></section></section></div>',
                 replace: true,
                 restrict: 'E',
                 transclude: true,
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
 
@@ -270,7 +275,7 @@ function exit() {
                     element.find('form:first').droppable({
                         accept: '[fd-section], [fd-tools-section]',
                         tolerance: "pointer",
-                        drop: function(event, ui) {
+                        drop: function (event, ui) {
                             $rootScope.dragHandler = null;
 
                             var markedSection = $(this).find('.marked, .markedAbove').closest('[fd-section]');
@@ -290,7 +295,7 @@ function exit() {
                                 lastMarked = null;
                                 return;
                             }
-                            
+
                             if (!markedSection.length) {
                                 $(this).append(dragItem);
                                 clearMark(lastMarked);
@@ -306,7 +311,7 @@ function exit() {
                             clearMark(lastMarked);
                             lastMarked = null;
                         },
-                        over: function(event, ui) {
+                        over: function (event, ui) {
                             //setDragEffect(ui.helper, true);
                             $rootScope.dragHandler = function (dragEvent, dragUi) {
                                 markSection({
@@ -316,7 +321,7 @@ function exit() {
                             };
                             $rootScope.dragHandler(event, ui);
                         },
-                        out: function(event, ui) {
+                        out: function (event, ui) {
                             $rootScope.dragHandler = null;
                             //setDragEffect(ui.helper, false);
                             clearMark(lastMarked);
@@ -355,11 +360,11 @@ function exit() {
         })
         .directive('fdSection', function ($compile, $rootScope) {
             return {
-                template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend fd-hoverable class="clearfix"><h5 class="span9 title"></h5><div class="span3 tools"><fd-tool-property></fd-tool-property><fd-tool-remove></fd-tool-remove></div></legend><div fd-field-container ng-transclude></div></fieldset>',
+                template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend fd-hoverable class="clearfix"><div class="span9 title"></div><div class="span3 tools"><fd-tool-property></fd-tool-property><fd-tool-remove></fd-tool-remove></div></legend><div fd-field-container ng-transclude></div></fieldset>',
                 replace: true,
                 restrict: 'E',
                 transclude: true,
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
                     var sectionHeader = element.find('legend:first');
@@ -369,15 +374,15 @@ function exit() {
                     sectionHeader.dblclick(openPropertyDialog);
 
                     var watchList = [];
-                    var watch = $rootScope.$watch(function() {
+                    var watch = $rootScope.$watch(function () {
                         return element.attr('section-title');
-                    }, function(newValue) {
+                    }, function (newValue) {
                         sectionHeader.find('.title:first').text(newValue);
                     });
                     watchList.push(watch);
-                    watch = $rootScope.$watch(function() {
+                    watch = $rootScope.$watch(function () {
                         return element.attr('section-columns');
-                    }, function(newValue, oldValue) {
+                    }, function (newValue, oldValue) {
                         if (newValue == oldValue) {
                             return;
                         }
@@ -390,7 +395,7 @@ function exit() {
                             var rightFields = rightColumns.find('[fd-field]');
                             var leftColumns = rows.children('[fd-column]:nth-child(1)');
                             var leftEmptyColumns = leftColumns.filter(':not(:has([fd-field]))');
-                            rightFields.each(function(i) {
+                            rightFields.each(function (i) {
                                 if (i < leftEmptyColumns.length) {
                                     $(leftEmptyColumns[i]).append(this);
                                 } else {
@@ -400,7 +405,7 @@ function exit() {
                                     newRow.children('[fd-column]').append(this);
                                 }
                             });
-                            leftColumns.each(function() {
+                            leftColumns.each(function () {
                                 removeSpanClass(this);
                                 $(this).addClass('span12');
                             });
@@ -408,11 +413,11 @@ function exit() {
                         } else {
                             var leftWidth = parseInt(section.attr('section-columns-width'));
                             var columns = rows.children('[fd-column]');
-                            columns.each(function() {
+                            columns.each(function () {
                                 removeSpanClass(this);
                                 $(this).addClass('span' + leftWidth);
                             });
-                            rows.each(function() {
+                            rows.each(function () {
                                 var row = $(this);
                                 var newColumn = $('<fd-column></fd-column>');
                                 row.append(newColumn);
@@ -434,21 +439,21 @@ function exit() {
                         var leftColumns = rows.children('[fd-column]:nth-child(1)');
                         var rightColumns = rows.children('[fd-column]:nth-child(2)');
 
-                        leftColumns.each(function() {
+                        leftColumns.each(function () {
                             removeSpanClass(this);
                             $(this).addClass('span' + width);
                         });
-                        rightColumns.each(function() {
+                        rightColumns.each(function () {
                             removeSpanClass(this);
                             $(this).addClass('span' + (12 - width));
                         });
                     });
                     watchList.push(watch);
 
-                    sectionHeader[0].hoverOverHandler = function() {
+                    sectionHeader[0].hoverOverHandler = function () {
                         $(this).find('.tools:first').show();
                     };
-                    sectionHeader[0].hoverOutHandler = function() {
+                    sectionHeader[0].hoverOutHandler = function () {
                         $(this).find('.tools:first').hide();
                     };
                     sectionHeader.find('.tools:first')[0].toolProperty = openPropertyDialog;
@@ -462,14 +467,14 @@ function exit() {
                     }
 
                     function removeSection() {
-                        $.each(watchList, function() {
+                        $.each(watchList, function () {
                             this();
                         });
                         var fields = element.find('[fd-field]');
-                        fields.each(function() {
+                        fields.each(function () {
                             this.removeField(true);
                         });
-                      
+
                         element.remove();
                     }
 
@@ -487,20 +492,20 @@ function exit() {
                 }
             };
         })
-        .directive('fdRow', function($compile) {
+        .directive('fdRow', function ($compile) {
             return {
                 template: '<div fd-row class="control-group" ng-transclude></div>',
                 replace: true,
                 restrict: 'E',
                 transclude: true,
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
                     adjustRowHeight(element);
                 }
             };
         })
-        .directive('fdColumn', function($compile) {
+        .directive('fdColumn', function ($compile) {
             return {
                 template: '<div fd-column ng-transclude></div>',
                 replace: true,
@@ -524,7 +529,7 @@ function exit() {
                 }
             };
         })
-        .directive('fdField', function($compile, $rootScope) {
+        .directive('fdField', function ($compile, $rootScope) {
             return {
                 template: '<div fd-field fd-hoverable fd-draggable class="clearfix"></div>',
                 replace: true,
@@ -609,7 +614,7 @@ function exit() {
                     changeToRequired(attrs.fieldRequired != null);
 
                     var columnTool = $('<div fd-tool-column></div>');
-                    columnTool.click(function() {
+                    columnTool.click(function () {
                         var column = element.parent();
                         var otherColumn = column.siblings();
                         if (element.attr('merged') != null) {
@@ -635,14 +640,14 @@ function exit() {
                     var watchList = [];
                     var watch = $rootScope.$watch(function () {
                         return element.attr('field-required');
-                    }, function(newValue) {
+                    }, function (newValue) {
                         changeToRequired(newValue != null);
                     });
                     watchList.push(watch);
-                    
-                    element[0].hoverOverHandler = function() {
+
+                    element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
-                        
+
                         var columnCount = parseInt($(this).parents('[fd-section]:first').attr('section-columns'));
                         $(this).find('[fd-tool-column]').removeClass('merge');
                         $(this).find('[fd-tool-column]').removeClass('split');
@@ -659,7 +664,7 @@ function exit() {
 
                         $(this).find('.tools').show();
                     };
-                    element[0].hoverOutHandler = function() {
+                    element[0].hoverOutHandler = function () {
                         $(this).removeClass('highlight');
                         $(this).find('.tools').hide();
                     };
@@ -669,7 +674,7 @@ function exit() {
                     //element[0].removeWatchListeners = removeWatchListeners;
 
                     element.dblclick(openPropertyDialog);
-                    
+
                     function openPropertyDialog() {
                         var field = element;
                         $rootScope.currentField = {
@@ -688,10 +693,10 @@ function exit() {
                             this();
                         });
                     }
-                    
+
                     function removeField(removeAll) {
                         removeWatchListeners();
-                        
+
                         var column = element.parents('[fd-column]:first');
                         var field = element;
                         var fieldIndex = $.inArray(field.attr('field-name'), $rootScope.inLayoutFields);
@@ -700,7 +705,7 @@ function exit() {
                         field.remove();
                         removeAll || moveNextColumns(column);
                     }
-                   
+
                     function changeToRequired(required) {
                         if (required) {
                             if (!element.find('.required-image').length) {
@@ -711,7 +716,7 @@ function exit() {
                             element.find('.required-image').remove();
                         }
                     }
-                    
+
                     function changeToAlwaysOnLayout(required) {
                         if (required) {
                             if (!element.find('.layout-image').length) {
@@ -721,7 +726,7 @@ function exit() {
                             element.find('[fd-tool-remove]').remove();
                         } else {
                             element.find('.layout-image').remove();
-                            
+
                             var removeItem = $('<fd-tool-remove></fd-tool-remove>');
                             element.find('.tools').append(removeItem);
                             $compile(removeItem)(scope);
@@ -730,18 +735,18 @@ function exit() {
                 }
             };
         })
-        .directive('fdToolRemove', function($compile) {
+        .directive('fdToolRemove', function ($compile) {
             return {
                 template: '<div fd-tool-remove fd-hoverable class="remove" data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Remove"></div>',
                 replace: true,
                 restrict: 'E',
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     //element.tooltip();
-                    
+
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
                     };
-                    element[0].hoverOutHandler = function() {
+                    element[0].hoverOutHandler = function () {
                         $(this).removeClass('highlight');
                     };
                     element.click(function () {
@@ -751,7 +756,7 @@ function exit() {
                 }
             };
         })
-        .directive('fdToolProperty', function($compile) {
+        .directive('fdToolProperty', function ($compile) {
             return {
                 template: '<div fd-tool-property fd-hoverable class="property" data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Properties"></div>',
                 replace: true,
@@ -759,14 +764,14 @@ function exit() {
                 link: function (scope, element, attrs) {
                     //element.tooltip();
 
-                    element[0].hoverOverHandler = function() {
+                    element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
                     };
-                    element[0].hoverOutHandler = function() {
+                    element[0].hoverOutHandler = function () {
                         $(this).removeClass('highlight');
                     };
 
-                    element.click(function() {
+                    element.click(function () {
                         var toolsContainer = element.parent()[0];
                         toolsContainer.toolProperty && toolsContainer.toolProperty();
                     });
@@ -779,7 +784,7 @@ function exit() {
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
-                    element.find('.btn-primary').click(function(parameters) {
+                    element.find('.btn-primary').click(function (parameters) {
                         $rootScope.currentField.readonly
                             ? $rootScope.currentField.field.attr('field-readonly', '')
                             : $rootScope.currentField.field.removeAttr('field-readonly');
@@ -793,33 +798,33 @@ function exit() {
                 }
             };
         })
-    .directive('fdSectionPropertiesDialog', function ($rootScope) {
-        return {
-            template: '<div id="sectionPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Section Properties</h3></div><div class="modal-body"><form class="form-horizontal"><div class="control-group"><label class="control-label">Section Title</label><div class="controls"><input type="text" ng-model="currentSection.title" /></div></div><div class="control-group"><label class="control-label">Section Layout</label><div class="controls"><label class="radio"><input type="radio" ng-model="currentSection.columns" value="1" />1-Columns                        </label><label class="radio"><input type="radio" ng-model="currentSection.columns" value="2" />2-Columns                        </label></div></div><div class="control-group" ng-show="currentSection.columns==2"><label class="control-label">Columns Width</label><div class="controls"><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="3" />25% + 75%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="4" />33% + 67%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="6" />50% + 50%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="8" />67% + 33%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="9" />75% + 25%                        </label></div></div></form></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><button class="btn btn-primary">Ok</button></div></div>',
-            replace: true,
-            restrict: 'E',
-            link: function(scope, element, attrs) {
-                element.find('.btn-primary').click(function() {
-                    $rootScope.currentSection.section.attr('section-columns', $rootScope.currentSection.columns);
-                    $rootScope.currentSection.section.attr('section-title', $rootScope.currentSection.title);
-                    $rootScope.currentSection.section.attr('section-columns-width', $rootScope.currentSection.columnsWidth);
-                    $rootScope.$apply();
-                    $('#sectionPropertiesDialog').modal('hide');
-                });
-            }
-        };
-    })
+        .directive('fdSectionPropertiesDialog', function ($rootScope) {
+            return {
+                template: '<div id="sectionPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Section Properties</h3></div><div class="modal-body"><form class="form-horizontal"><div class="control-group"><label class="control-label">Section Title</label><div class="controls"><input type="text" ng-model="currentSection.title" /></div></div><div class="control-group"><label class="control-label">Section Layout</label><div class="controls"><label class="radio"><input type="radio" ng-model="currentSection.columns" value="1" />1-Columns                        </label><label class="radio"><input type="radio" ng-model="currentSection.columns" value="2" />2-Columns                        </label></div></div><div class="control-group" ng-show="currentSection.columns==2"><label class="control-label">Columns Width</label><div class="controls"><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="3" />25% + 75%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="4" />33% + 67%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="6" />50% + 50%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="8" />67% + 33%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="9" />75% + 25%                        </label></div></div></form></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><button class="btn btn-primary">Ok</button></div></div>',
+                replace: true,
+                restrict: 'E',
+                link: function (scope, element, attrs) {
+                    element.find('.btn-primary').click(function () {
+                        $rootScope.currentSection.section.attr('section-columns', $rootScope.currentSection.columns);
+                        $rootScope.currentSection.section.attr('section-title', $rootScope.currentSection.title);
+                        $rootScope.currentSection.section.attr('section-columns-width', $rootScope.currentSection.columnsWidth);
+                        $rootScope.$apply();
+                        $('#sectionPropertiesDialog').modal('hide');
+                    });
+                }
+            };
+        })
         .directive('fdFieldContainer', function ($compile, $rootScope) {
             return {
                 restrict: 'A',
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     var lastColumn = null;
 
                     element.droppable({
                         accept: '[fd-field], [fd-tools-field]',
                         tolerance: "pointer",
                         hoverClass: 'drop-hover',
-                        drop: function(event, ui) {
+                        drop: function (event, ui) {
                             $rootScope.dragHandler = null;
 
                             var markedColumn = $(this).find('.marked, .markedAbove');
@@ -832,7 +837,7 @@ function exit() {
                                 dragItem.attr('field-name', ui.draggable.attr('field-name'));
                                 $compile(dragItem)(scope);
                                 $rootScope.$apply();
-                            }  else {
+                            } else {
                                 dragItem = ui.draggable;
                             }
 
@@ -875,7 +880,7 @@ function exit() {
                             clearMark(lastColumn);
                             lastColumn = null;
                         },
-                        over: function(event, ui) {
+                        over: function (event, ui) {
                             //setDragEffect(ui.helper, true);
                             $rootScope.dragHandler = function (dragEvent, dragUi) {
                                 markColumn({
@@ -885,7 +890,7 @@ function exit() {
                             };
                             $rootScope.dragHandler(event, ui);
                         },
-                        out: function(event, ui) {
+                        out: function (event, ui) {
                             $rootScope.dragHandler = null;
                             //setDragEffect(ui.helper, false);
                             clearMark(lastColumn);
@@ -896,7 +901,7 @@ function exit() {
                     function markColumn(position) {
                         var rows = element.children('[fd-row]');
                         var columnCount = parseInt(element.parents('[fd-section]:first').attr('section-columns'));
-                        
+
                         //var columnWidth = rows.width() / columnCount;
                         //var columnIndex = Math.floor((position.x - rows.offset().left) / columnWidth);
                         var columnIndex;
@@ -945,7 +950,7 @@ function exit() {
 
             return {
                 restrict: 'A',
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     element.css('cursor', 'move');
                     element.draggable({
                         revert: "invalid",
@@ -956,23 +961,23 @@ function exit() {
                         tolerance: 'pointer',
                         distance: 10,
                         //scroll: false,
-                        start: function(event, ui) {
+                        start: function (event, ui) {
                             $rootScope.enableHover = false;
                             setZIndex(ui.helper);
                             $(event.target).addClass('dragging');
                         },
-                        stop: function(event, ui) {
+                        stop: function (event, ui) {
                             $rootScope.enableHover = true;
                             $(event.target).removeClass('dragging');
                         },
-                        drag: function(event, ui) {
+                        drag: function (event, ui) {
                             if ($rootScope.dragHandler) {
                                 $rootScope.dragHandler(event, ui);
                             }
                         }
                     });
 
-                    element[0].disableDraggable = function() {
+                    element[0].disableDraggable = function () {
                         element.css('cursor', 'default');
                         $(this).draggable("disable");
                     };
@@ -986,46 +991,39 @@ function exit() {
         .directive('fdHoverable', function ($rootScope) {
             return {
                 restrict: 'A',
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     $rootScope.enableHover = true;
                     element.hover(
-                        function() {
+                        function () {
                             $rootScope.enableHover && this.hoverOverHandler && this.hoverOverHandler();
                         },
-                        function() {
+                        function () {
                             this.hoverOutHandler && this.hoverOutHandler();
                         }
                     );
                 }
             };
         })
-        .directive('fdSaveLayoutButton', function ($resource, $location, logger) {
+        .directive('fdSaveLayoutButton', function ($resource, logger, $stateParams) {
             return {
                 //template: '<button class="btn">Save</button>',
                 //replace: true,
                 //restrict: 'E',
-                link: function(scope, element, attrs) {
-                    var url = $location.absUrl();
-                    //todo: this url need modify
-                    var sharpIndex = url.lastIndexOf('#');
-                    if (sharpIndex > 0) {
-                        url = url.substr(0, sharpIndex);
-                    }
-                    var moduleId = url.substr(url.lastIndexOf('/') + 1);
-                    element.click(function() {
+                link: function (scope, element, attrs) {
+                    element.click(function () {
                         var layoutString = '';
                         var sections = $('[fd-form]').find('[fd-section]');
-                        sections.each(function() {
+                        sections.each(function () {
                             if ($(this).find('[fd-field]').length) {
                                 var columnCount = $(this).attr('section-columns');
                                 var width = $(this).attr('section-columns-width');
                                 var sectionTitle = $(this).attr('section-title');
                                 layoutString += '<fd-section section-columns="' + columnCount + '" section-columns-width="' + width + '" section-title="' + sectionTitle + '">';
                                 var rows = $(this).find('[fd-row]');
-                                rows.each(function() {
+                                rows.each(function () {
                                     layoutString += '<fd-row>';
                                     var columns = $(this).find('[fd-column]');
-                                    columns.each(function() {
+                                    columns.each(function () {
                                         layoutString += '<fd-column>';
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
@@ -1041,30 +1039,12 @@ function exit() {
                                 layoutString += '</fd-section>';
                             }
                         });
-
-                        $.post('/OrchardLocal/api/metadata/layout/' + moduleId, { id: moduleId, layout: layoutString }, function() {
+                        var entityName = $stateParams.EntityName;
+                        $.post('/OrchardLocal/api/metadata/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
                             logger.success('Save success');
                         });
                     });
                 }
             };
         });
-
-    //angular.bootstrap($('[ng-app]'), ['coevery.layout']);
-    //angular.bootstrap($('fd-form'), ['coevery.layout']);
-//});
-
-
-//@ sourceURL=Coevery.Metadata/main.js
-
-    setTimeout(function() {
-        $('#test').affix({
-            offset: {
-                top: function () {
-                    //var height = $(window).height() - 71 - 90;
-                    //return $('#form-designer').height() > height ? 71 : 1000;
-                    return $('#form-designer').height() > $('#test').height() ? 71 : 1000;
-                },
-            }
-        });
-    }, 100);
+});

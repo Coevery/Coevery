@@ -254,7 +254,7 @@ namespace Coevery.Core.Controllers
 
         private ActionResult EditPOST(int id, string returnUrl, Action<ContentItem> conditionallyPublish)
         {
-            var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
+            var contentItem = _contentManager.Get(id, VersionOptions.Latest);
 
             if (contentItem == null)
                 return HttpNotFound();

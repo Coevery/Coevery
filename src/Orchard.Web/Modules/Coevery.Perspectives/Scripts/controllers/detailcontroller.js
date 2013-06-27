@@ -4,11 +4,11 @@ define(['core/app/detourService',
         'Modules/Coevery.Perspectives/Scripts/services/navigationdataservice'], function (detour) {
             detour.registerController([
       'PerspectiveDetailCtrl',
-      ['$timeout', '$scope', 'logger', '$detour', '$stateParams',
+      ['$rootScope', '$timeout', '$scope', 'logger', '$detour', '$stateParams',
           '$resource', 
           'perspectiveDataService',
           'navigationDataService',
-      function ($timeout, $scope, logger, $detour, $stateParams, $resource, perspectiveDataService, navigationDataService) {
+      function ($rootScope, $timeout, $scope, logger, $detour, $stateParams, $resource, perspectiveDataService, navigationDataService) {
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
           var perpectiveId = $stateParams.Id;
@@ -47,6 +47,7 @@ define(['core/app/detourService',
               enableColumnReordering: true,
               columnDefs: navigationColumnDefs
           };
+          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.addNavigationItem = function () {
               $detour.transitionTo('CreateNavigationItem', { Id: perpectiveId });

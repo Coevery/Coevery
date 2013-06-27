@@ -134,6 +134,7 @@
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\context.js" />
     <Content Include="Scripts\app\adminapp.js" />
+    <Content Include="Scripts\app\formdesignerservice.js" />
     <Content Include="Scripts\app\couchPotatoService.js" />
     <Content Include="Scripts\app\detourService.js" />
     <Content Include="Scripts\app\logger.js" />
