@@ -14,6 +14,7 @@ using Coevery.Core.Services;
 using Newtonsoft.Json.Linq;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData;
 using Orchard.DisplayManagement.Implementation;
 using Orchard.Forms.Services;
 using Orchard.Localization;
@@ -34,12 +35,16 @@ namespace Coevery.Core.Controllers
         private readonly IViewPartService _projectionService;
         private readonly ILayoutAwareViewEngine _layoutAwareViewEngine;
         private readonly IWorkContextAccessor _workContextAccessor;
+        private readonly IProjectionManager _projectionManager;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
         public NGgridController(IContentManager iContentManager,
+
             IOrchardServices orchardServices,
             ILayoutAwareViewEngine layoutAwareViewEngine,
             IViewPartService projectionService, 
             IDisplayManager displayManager, 
-            IWorkContextAccessor workContextAccessor)
+            IWorkContextAccessor workContextAccessor, 
+            IProjectionManager projectionManager, IContentDefinitionManager contentDefinitionManager)
         {
             _contentManager = iContentManager;
             Services = orchardServices;
@@ -47,6 +52,8 @@ namespace Coevery.Core.Controllers
             _projectionService = projectionService;
             _displayManager = displayManager;
             _workContextAccessor = workContextAccessor;
+            _projectionManager = projectionManager;
+            _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
         }
         public Localizer T { get; set; }
@@ -87,7 +94,7 @@ namespace Coevery.Core.Controllers
             int viewId = _projectionService.GetProjectionId(id);
             var columns = GetViewColumns(viewId);
             string actionTemplate = GetGridTemplate("CreateAction",new ViewDataDictionary());
-
+           
             List<object> ngColumns = new List<object>();
             ngColumns.Add(new { field = "ContentId", displayName = "Actions", width = 150, cellTemplate = actionTemplate });
             ngColumns.Add(new { field = "ContentId", displayName = T("Id").Text });
@@ -100,14 +107,12 @@ namespace Coevery.Core.Controllers
             ViewDataDictionary viewData = new ViewDataDictionary();
             viewData.Add("ModuleName", moduleName);
             string cellVarTemp = GetGridTemplate("GridLink", viewData); //"<div><a href =\"Coevery#/" + moduleName + "/{{{{row.entity.ContentId}}}}\" class=\"ngCellText\">{{{{row.entity.{0}}}}}</a></div>';";
-            foreach (var col in columns)
-            {
+            foreach (var col in columns) {
                 string cellTemplae = string.Empty;
                 if (col.LinkToContent) {
-                    cellTemplae = string.Format(cellVarTemp, col.Description);
+                    cellTemplae = string.Format(cellVarTemp, col.Type);
                 }
-                ngColumns.Add(new { field = col.Description, displayName = T(col.Description).Text, cellTemplate = cellTemplae });
-
+                ngColumns.Add(new { field = col.Type, displayName = T(col.Description).Text, cellTemplate = cellTemplae });
             }
             return ngColumns;
         }

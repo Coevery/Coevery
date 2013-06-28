@@ -27,7 +27,7 @@ namespace Coevery.Projections.Controllers {
         {
             ProjectionEditViewModel viewModel = _projectionService.GetProjectionViewModel(id);
             List<JObject> re = new List<JObject>();
-             viewModel.LayoutViewModel.Properties.Select(c=>c.DisplayText).ToList().ForEach(c => {
+             viewModel.LayoutViewModel.Properties.Select(c=>c.Type).ToList().ForEach(c => {
                  JObject reObJ = new JObject();
                  reObJ["FieldName"] = c;
                  re.Add(reObJ);

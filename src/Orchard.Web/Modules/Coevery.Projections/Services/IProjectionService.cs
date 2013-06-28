@@ -16,6 +16,6 @@ namespace Coevery.Projections.Services
         ProjectionEditViewModel GetTempProjection(string entityType);
         AdminEditViewModel GetQueryViewModel(QueryPart query);
         ProjectionEditViewModel GetProjectionViewModel(int id);
-        bool EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
+        bool EditPost(int id,string entityName, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
     }
 }
