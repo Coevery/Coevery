@@ -71,7 +71,8 @@ namespace Coevery.Core.Controllers
             var layout = part.Record.LayoutRecord;
             var tokens = new Dictionary<string, object> { { "Content", part.ContentItem } };
             var allFielDescriptors = _projectionManager.DescribeProperties().ToList();
-            var fieldDescriptors = layout.Properties.OrderBy(p => p.Position).Select(p => allFielDescriptors.SelectMany(x => x.Descriptors).Select(d => new { Descriptor = d, Property = p }).FirstOrDefault(x => x.Descriptor.Category == p.Category && x.Descriptor.Type == p.Type)).ToList();
+            var fieldDescriptors = layout.Properties.OrderBy(p => p.Position).Select(p => allFielDescriptors.SelectMany(x => x.Descriptors).Select(d => new { Descriptor = d, Property = p })
+                .FirstOrDefault(x => x.Descriptor.Category == p.Category && x.Descriptor.Type.Replace(entityType+".", string.Empty).StartsWith(p.Type))).ToList();
             var tokenizedDescriptors = fieldDescriptors.Select(fd => new { fd.Descriptor, fd.Property, State = FormParametersHelper.ToDynamic(_tokenizer.Replace(fd.Property.State, tokens)) }).ToList();
 
             // execute the query
@@ -84,8 +85,6 @@ namespace Coevery.Core.Controllers
             var layoutComponents = contentItems.Select(
                 contentItem =>
                 {
-
-                    var contentItemMetadata = Services.ContentManager.GetItemMetadata(contentItem);
                     var result = new JObject();
                     result["ContentId"] = contentItem.Id;
                      tokenizedDescriptors.ForEach(
@@ -98,11 +97,9 @@ namespace Coevery.Core.Controllers
                             };
                             var val = d.Descriptor.Property(fieldContext, contentItem);
                             var text = val==null? string.Empty : val.ToString();
-                            result[d.Property.Description] = text;
+                            result[d.Property.Type] = text;
                         });
                     return result;
-
-
                 }).ToList();
             return layoutComponents;
         }

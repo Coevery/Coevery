@@ -69,9 +69,7 @@ namespace Coevery.Projections.Controllers
                 id = model.Id;
             }
             var pickArray = picklist.Split(new char[] { '$' }).Where(c => !string.IsNullOrEmpty(c)).ToList();
-            pickArray = pickArray.Select(c => c + ":Value").ToList();
-            bool suc = _projectionService.EditPost(id, viewModel, pickArray);
-
+            bool suc = _projectionService.EditPost(id,entityName, viewModel, pickArray);
             return new EmptyResult();
         }
     }

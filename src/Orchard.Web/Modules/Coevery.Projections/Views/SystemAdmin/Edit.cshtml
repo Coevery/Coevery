@@ -8,7 +8,7 @@
     var sortedBy = new BindingList<SelectListItem>();
     Model.AllFields.ToList().ForEach(c =>
     {
-        sortedBy.Add(new SelectListItem { Selected = (c.Name.TextHint.Replace(":Value", string.Empty) == Model.SortedBy), Text = c.Name.TextHint.Replace(":Value", string.Empty) });
+        sortedBy.Add(new SelectListItem { Selected = (c.Name == Model.SortedBy), Text = c.Name });
     });
 
     var sortMode = new BindingList<SelectListItem>();
@@ -99,7 +99,7 @@
                                                     <tbody>
                                                         @foreach (var oneField in Model.AllFields)
                                                         {
-                                                            string fieldName = oneField.Name.TextHint.Replace(":Value", string.Empty);
+                                                            string fieldName = oneField.Name;
                                                             <tr>
                                                                 <td name="unselectedField">@fieldName</td>
                                                                 <td class="rightCell">

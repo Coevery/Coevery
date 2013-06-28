@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.ViewModels;
 
@@ -13,7 +14,7 @@ namespace Coevery.Projections.ViewModels
         {
             QueryViewModel = new AdminEditViewModel();
             LayoutViewModel = new LayoutEditViewModel();
-            AllFields = new List<PropertyDescriptor>();
+            AllFields = new List<ContentPartFieldDefinition>();
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,7 +22,7 @@ namespace Coevery.Projections.ViewModels
 
         public AdminEditViewModel QueryViewModel { get; set; }
         public LayoutEditViewModel LayoutViewModel { get; set; }
-        public IEnumerable<PropertyDescriptor> AllFields { get; set; }
+        public IEnumerable<ContentPartFieldDefinition> AllFields { get; set; }
         public string VisableTo { get; set; }
         public int PageRowCount { get; set; }
         public string SortedBy { get; set; }
