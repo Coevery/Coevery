@@ -101,18 +101,17 @@
     <Content Include="Scripts\js\demo\wysiwyg.js" />
     <Content Include="Scripts\js\docs.js" />
     <Content Include="Scripts\js\dropdown.js" />
+    <Content Include="Scripts\js\jquery.mousewheel.js" />
     <Content Include="Scripts\js\libs\bootstrap.js" />
     <Content Include="Scripts\js\libs\bootstrap.min.js" />
     <Content Include="Scripts\js\libs\excanvas.js" />
     <Content Include="Scripts\js\libs\excanvas.min.js" />
-    <Content Include="Scripts\js\libs\jquery-1.8.3.js" />
-    <Content Include="Scripts\js\libs\jquery-1.8.3.min.js" />
-    <Content Include="Scripts\js\libs\jquery.mousewheel.js" />
-    <Content Include="Scripts\js\libs\jquery.mousewheel.min.js" />
     <Content Include="Scripts\js\libs\jquery.placeholder.js" />
     <Content Include="Scripts\js\libs\jquery.placeholder.min.js" />
     <Content Include="Scripts\js\login.js" />
+    <Content Include="Scripts\js\perfect-scrollbar.js" />
     <Content Include="Scripts\js\setup.js" />
+    <Content Include="Scripts\js\sidebar.js" />
     <Content Include="Scripts\js\template.js" />
     <Content Include="Scripts\jui\css\images\ui-datepicker-bg.png" />
     <Content Include="Scripts\jui\css\images\ui-datepicker-circle.png" />
@@ -1842,6 +1841,7 @@
     <Content Include="Styles\images\invoice\maestro.png" />
     <Content Include="Styles\images\invoice\mastercard.png" />
     <Content Include="Styles\images\invoice\visa.png" />
+    <Content Include="Styles\images\layout\aside-right-shadow.jpg" />
     <Content Include="Styles\images\layout\bg\arches.png" />
     <Content Include="Styles\images\layout\bg\blu_stripes.png" />
     <Content Include="Styles\images\layout\bg\bright_squares.png" />
@@ -1930,6 +1930,7 @@
     <Content Include="Styles\main-style.css" />
     <Content Include="Styles\misc.css" />
     <Content Include="Styles\mooncake.min.css" />
+    <Content Include="Styles\perfect-scrollbar.css" />
     <Content Include="Styles\picklist.css" />
     <Content Include="Styles\plugins\elfinder.css" />
     <Content Include="Styles\plugins\fullcalendar.css" />
