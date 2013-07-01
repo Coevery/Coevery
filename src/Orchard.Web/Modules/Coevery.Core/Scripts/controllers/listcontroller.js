@@ -47,13 +47,67 @@
               }
           }, true);
 
+          var rowTemplate = '<div ng-mouseover="mouseOverState(row,true)" style="overflow:visible;" ng-click="rowClick(row,renderedRows,col)" ng-mouseout="mouseOverState(row,false)" ng-style="{\'cursor\': row.cursor, \'z-index\': col.zIndex() }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}" ng-cell></div>';
           $scope.gridOptions = {
               data: 'myData',
               enablePaging: true,
               showFooter: true,
+              multiSelect: true,
+              rowTemplate: rowTemplate,
               pagingOptions: $scope.pagingOptions,
               columnDefs: "myColumns"
           };
+
+         
+
+          $scope.toolButtonDisplay = false;
+          $scope.checkedIds = [];
+          $scope.checkChange = function (checkAll,rows) {
+              if (checkAll)
+              {
+                  //check all
+                  $.each(rows, function (i, v) {
+                      v.checked = rows.allSelected;
+                  });
+              }
+              var checkItems = $(rows).filter(function () {
+                  return this.checked;
+              });
+              rows.allSelected = checkItems.length == rows.length;
+              $scope.toolButtonDisplay = checkItems.length > 0;
+              $scope.checkedIds = [];
+              $.each(checkItems, function (i, v) {
+                  $scope.checkedIds[i] = v.entity.ContentId;
+              });
+              
+              if (!checkAll && $scope.checkedIds.length > 1)
+              {
+                  $scope.mouseOverState(this.row, false);
+              }
+          };
+          
+          $scope.mouseOverState = function (row, isOver) {
+              if ($scope.checkedIds.length > 1) {
+                  row.MouseOve = false;
+                  return;
+              }
+              row.MouseOve = isOver;
+          };
+
+          $scope.rowClick = function (row, rows, col) {
+              if (col.index <= 0) return;
+              $.each(rows, function (i, v) {
+                  if(v != row)
+                  v.checked = false;
+              });
+              if ($scope.checkedIds.length <= 1) {
+                  if (!row.checked) row.checked = true;
+                  else row.checked = false;
+              }
+              $scope.checkChange(false, rows);
+              $scope.mouseOverState(row, true);
+          };
+          
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           var gridColumns = ngGridDataService.query({ contentType: moduleName }, function () {
@@ -64,6 +118,7 @@
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           $scope.Refresh = function () {
+              
               $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           };
 
@@ -107,7 +162,13 @@
               $('#collapseBtn').click();
           };
 
+
+         
+          
           $scope.delete = function (id) {
+              if (!id) {
+                  id = $scope.checkedIds.toString();
+              }
               commonDataService.delete({ contentId: id }, function () {
                   $scope.Refresh();
                   logger.success('Delete the ' + moduleName + ' successful.');

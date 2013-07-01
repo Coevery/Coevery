@@ -8,13 +8,20 @@
 
 <section data-ng-controller="GeneralListCtrl">
     <section id="main-content" style="margin-top: 10px; padding-right: 2px;">
-        <div style="float: left;">
+        <div style="float: left;width: 50%;">
             <button class="btn btn-success" data-ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;@T("Add")
             </button>
-            <button class="btn" data-ng-click="Refresh()">
-                <i class="icon-refresh"></i>&nbsp;@T("Refresh")
-            </button>
+            <span  ng-style="{'display':toolButtonDisplay?'none':''}">
+                <button class="btn" data-ng-click="Refresh()">
+                    <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+                </button>
+            </span>
+            <span ng-style="{'display':toolButtonDisplay?'':'none'}">
+                <button class="btn" data-ng-click="delete()">
+                    <i class="icon-remove"></i>&nbsp;@T("Delete")
+                </button>
+            </span>
         </div>
         <div class="btn-toolbar" style="margin: 0px; float: right;">
             <div class="btn-group">

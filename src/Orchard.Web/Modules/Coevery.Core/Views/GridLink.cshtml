@@ -1,3 +1,38 @@
-﻿<div>
-    <a href ="Coevery#/@ViewData["ModuleName"].ToString()/{{{{row.entity.ContentId}}}}" class="ngCellText">{{{{row.entity.{0}}}}}</a>
+﻿<div style="margin-top: 5px;" title="{{{{row.entity.{0}}}}}">
+    <div class="GridTemplateCell" ng-style="{{visibility:row.MouseOve?'visible':'hidden'}}">
+        <div class="gridTemplateButtons" ng-style="{{left:col.width-90}}">
+            <ul>
+                <li class="icon-edit" ng-click="edit(row.entity.ContentId)" title="编辑"></li>
+                <li class="icon-remove" ng-click="delete(row.entity.ContentId)" title="删除"></li>
+                <li class="icon-collapse-down" data-toggle="dropdown" title="更多"></li>
+                <ul class="dropdown-menu pull-right"style="width: 100px;">
+                    <li>关联</li>
+                </ul>
+                @* <li>
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                            <span>更多</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="">
+                            <li title="" style="cursor: pointer;">
+                                <a>查看</a>
+                            </li>
+                            <li title="" style="cursor: pointer;">
+                                <a>关联</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>*@
+            </ul>
+
+        </div>
+    </div>
+    <div class="gridTemplateText" ng-style="{{width:row.MouseOve?50:col.width}}">
+        <a href ="Coevery#/@ViewData["ModuleName"].ToString()/{{{{row.entity.ContentId}}}}"  
+            style="cursor: pointer;">{{{{row.entity.{0}}}}}
+        </a>
+    </div>
 </div>
+
+
