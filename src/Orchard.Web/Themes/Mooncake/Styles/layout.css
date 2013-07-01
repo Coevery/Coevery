@@ -27,10 +27,6 @@ screen < 767px
 
 body {
     /*background: url(images/layout/bg/white_tiles.png);*/
-    background: url(images/layout/content-bg.png);
-    background-position: left top;
-    background-size: 70px 1px;
-    background-repeat: repeat-y;
     color: #444;
     padding: 0;
 }
@@ -514,10 +510,6 @@ body {
 #wrapper #content-inner
 {
     position: relative;
-    background-image: url(images/layout/content-bg-plain.png);
-    background-size: 251px 1px;
-    background-position: -25px top;
-    background-repeat: repeat-y;
 }
 
 /* Sidebar
@@ -657,11 +649,6 @@ body {
     overflow: hidden;
 }
 
-#wrapper #content.sidebar-minimized #content-inner
-{
-    background-image: url(images/layout/content-bg.png);
-    background-size: 70px 1px;
-}
 
 #wrapper #content.sidebar-minimized #sidebar #navigation ul.menu
 {
@@ -682,32 +669,38 @@ body {
     position: relative;
 }
 
-    #wrapper #sidebar #navigation ul.menu > li
+    #wrapper #sidebar #navigation ul > li
     {
         list-style: none;
         margin: 0;
-        max-width: 45px;
         cursor: pointer;
         display: block;
     }
 
-        #wrapper #sidebar #navigation ul.menu > li > a,
+        /*#wrapper #sidebar #navigation ul.menu > li > a,
         #wrapper #sidebar #navigation ul.menu > li > span
         {
             margin: 0;
             line-height: 1;
             padding: 9px 0;
-            text-align: center;
             color: #bfbfbf;
             display: block;
             border: 1px solid transparent;
             font-size: 22px;
-        }
+        }*/
 
-        #wrapper #sidebar #navigation ul.menu > li .nav-title
+        #wrapper #sidebar #navigation ul > li > a,
+        #wrapper #sidebar #navigation ul > li > span
         {
-            display: none;
+            color: #444;
             line-height: 1;
+            display: block;
+            font-size: 11px;
+            padding: 12px 17px 12px 5px;
+
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
 #wrapper #sidebar #navigation ul li:hover > a,
@@ -717,8 +710,8 @@ body {
     text-decoration: none;
 }
 
-#wrapper #sidebar #navigation ul.menu > li.active > a,
-#wrapper #sidebar #navigation ul.menu > li.active > span
+#wrapper #sidebar #navigation ul > li.active > a,
+#wrapper #sidebar #navigation ul > li.active > span
 {
     color: #ffffff;
     border: 1px solid #3f9dce;
@@ -734,71 +727,15 @@ body {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
 }
 
-#wrapper #sidebar #navigation ul.menu > li > .inner-nav
-{
-    top: 0;
-    right: 0;
-    left: 45px;
-    position: absolute;
-    display: none;
-}
-
-#wrapper #sidebar #navigation ul.menu > li.active > .inner-nav
-{
-    display: block;
-}
-
-#wrapper #sidebar #navigation .inner-nav,
-#wrapper #sidebar #navigation .inner-nav > li
-{
-    list-style: none;
-    margin: 0;
-}
-
-#wrapper #sidebar #navigation .inner-nav
-{
-    border-bottom: 1px solid #fff;
-}
-
-    #wrapper #sidebar #navigation .inner-nav > li:first-child > a,
-    #wrapper #sidebar #navigation .inner-nav > li:first-child > span
+    #wrapper #sidebar #navigation ul > li:first-child > a,
+    #wrapper #sidebar #navigation ul > li:first-child > span
     {
         border-top: 0;
     }
 
-    #wrapper #sidebar #navigation .inner-nav > li > a,
-    #wrapper #sidebar #navigation .inner-nav > li > span
-    {
-        color: #444;
-        line-height: 1;
-        display: block;
-        font-size: 11px;
-        padding: 12px 17px 12px 5px;
-        border-bottom: 1px solid #ddd;
-        border-top: 1px solid #fff;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    #wrapper #sidebar #navigation .inner-nav > li.active > a,
-    #wrapper #sidebar #navigation .inner-nav > li.active > span,
-    #wrapper #sidebar #navigation .inner-nav > li:hover > a,
-    #wrapper #sidebar #navigation .inner-nav > li:hover > span
-    {
-        background-color: #fff;
-        color: #444;
-    }
-
-    #wrapper #sidebar #navigation .inner-nav > li.active > a,
-    #wrapper #sidebar #navigation .inner-nav > li.active > span
-    {
-        margin-right: -1px;
-    }
-
-    #wrapper #sidebar #navigation .inner-nav > li > a [class^="icon-"],
-    #wrapper #sidebar #navigation .inner-nav > li > a [class^="icol-"],
-    #wrapper #sidebar #navigation .inner-nav > li > a [class^="icos-"]
+    #wrapper #sidebar #navigation ul > li > a [class^="icon-"],
+    #wrapper #sidebar #navigation ul > li > a [class^="icol-"],
+    #wrapper #sidebar #navigation ul > li > a [class^="icos-"]
     {
         font-size: 16px;
         margin: 0 4px 0 8px;
@@ -1020,34 +957,21 @@ body {
 	/* Hidden Sidebar */
     #wrapper #content.sidebar-minimized #sidebar
     {
-        width: 70px;
+        width: 210px;
+        background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
+        border-right: #c6c8cc 1px solid;
     }
 
     #wrapper #content.sidebar-minimized #main
     {
-        margin-left: 70px;
-        margin-top: 20px;
+        margin-left: 210px;
     }
 
-    #wrapper #content.sidebar-minimized #content-inner
-    {
-        background-image: url(images/layout/content-bg.png);
-        background-position: left top;
-        background-size: 70px 1px;
-    }
 	/* End Hidden Sidebar */
 
         #wrapper #content-inner
         {
             border-top: 0;
-            background-image: url(images/layout/content-bg-plain-gt1200.png);
-            background-position: left top;
-            background-size: 286px 1px;
-        }
-
-        #wrapper #sidebar #navigation ul.menu > li
-        {
-            max-width: 70px;
         }
 
             #wrapper #sidebar #navigation ul.menu > li .nav-title
@@ -1057,20 +981,12 @@ body {
                 margin-top: 3px;
             }
 
-            #wrapper #sidebar #navigation ul.menu > li > a,
-            #wrapper #sidebar #navigation ul.menu > li > span
-            {
-                font-size: 32px;
-                /*padding: 6px 5px 11px 5px;*/
-                /*width: 77px;*/
-            }
-
             #wrapper #sidebar #navigation ul.menu > li > .inner-nav
             {
                 left: 70px;
             }
 
-        #wrapper #sidebar #navigation .inner-nav > li > a
+        #wrapper #sidebar #navigation > li > a
         {
             padding: 12px 17px 12px 30px;
         }
@@ -1121,8 +1037,6 @@ body {
 
     #wrapper #content #content-inner
     {
-        background-image: url(images/layout/content-bg.png);
-        background-size: 70px 1px;
     }
 
     #wrapper #content,
@@ -1500,8 +1414,8 @@ body {
                             margin-right: 6px;
                         }
 
-                    #wrapper #sidebar #navigation ul.menu > li.active > span,
-                    #wrapper #sidebar #navigation ul.menu > li.active > a
+                    #wrapper #sidebar #navigation ul > li.active > span,
+                    #wrapper #sidebar #navigation ul > li.active > a
                     {
                         background: none;
                         color: #bfbfbf;
@@ -1593,35 +1507,15 @@ body {
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5)
 {
-    #wrapper #content-inner
-    {
-        background-image: url(images/@2x/layout/content-bg-plain.png);
-    }
 
-    #wrapper #content.sidebar-minimized #content-inner
-    {
-        background-image: url(images/@2x/layout/content-bg.png);
-    }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) and (min-width: 1281px), only screen and (-moz-min-device-pixel-ratio: 1.5) and (min-width: 1281px), only screen and (-o-min-device-pixel-ratio: 3/2) and (min-width: 1281px), only screen and (min-device-pixel-ratio: 1.5) and (min-width: 1281px)
 {
-    #wrapper #content.sidebar-minimized #content-inner
-    {
-        background-image: url(images/@2x/layout/content-bg.png);
-    }
 
-    #wrapper #content-inner
-    {
-        border-top: 0;
-        background-image: url(images/@2x/layout/content-bg-plain-gt1200.png);
-    }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) and (max-width: 979px), only screen and (-moz-min-device-pixel-ratio: 1.5) and (max-width: 979px), only screen and (-o-min-device-pixel-ratio: 3/2) and (max-width: 979px), only screen and (min-device-pixel-ratio: 1.5) and (max-width: 979px)
 {
-    #wrapper #content #content-inner
-    {
-        background-image: url(images/@2x/layout/content-bg.png);
-    }
+
 }

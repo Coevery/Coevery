@@ -43,11 +43,9 @@
                     }
                     <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl">
                         <a href="@secondLevelUrl">
-                            <span title="@secondLevelMenuItem.Text">
-                                <i class="icon-home" 
+                            <i class="icon-home" 
                                    style="width: 32px; height: 32px; background-position: center; background-image: url(@backUrl);"></i>
-                                <span class="nav-title">@secondLevelMenuItem.Text</span>
-                            </span>
+                                @secondLevelMenuItem.Text
                         </a>
                     </li>
                 }

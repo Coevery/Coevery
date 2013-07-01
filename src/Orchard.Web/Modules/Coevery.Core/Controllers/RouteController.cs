@@ -23,19 +23,6 @@ namespace Coevery.Core.Controllers
         // GET api/route
         public HttpResponseMessage Get() {
             var routes = GetRoutes();
-            //var buidler = new RouteBuidler();
-            //buidler.Create("EntityDetail",
-            //               definition => definition
-            //                                 .Url("/Entities/{Id:[0-9a-zA-Z]+}")
-            //                                 .TemplateUrl("function(params) { return 'SystemAdmin/Entities/Detail/' + params.Id;}")
-            //                                 .Controller("EntityDetailCtrl")
-            //                                 .Dependencies("Modules/Coevery.Entities/Scripts/controllers/detailcontroller")
-            //                                 .Children("Fields",
-            //                                           children => children
-            //                                                           .TemplateUrl("SystemAdmin/Entities/Fields")
-            //                                                           .Controller("FieldsCtrl")
-            //                                                           .Dependencies("Modules/Coevery.Entities/Scripts/controllers/fieldscontroller")));
-            //var route = buidler.Build();
 
             var json = JsonConvert.SerializeObject(routes);
             var message = new HttpResponseMessage {Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")};
