@@ -93,12 +93,12 @@ namespace Coevery.Core.Controllers
 
             int viewId = _projectionService.GetProjectionId(id);
             var columns = GetViewColumns(viewId);
-            string actionTemplate = GetGridTemplate("CreateAction",new ViewDataDictionary());
-           
-            List<object> ngColumns = new List<object>();
-            ngColumns.Add(new { field = "ContentId", displayName = "Actions", width = 150, cellTemplate = actionTemplate });
-            ngColumns.Add(new { field = "ContentId", displayName = T("Id").Text });
 
+            List<object> ngColumns = new List<object>();
+
+            string checkBoxTemplate = GetGridTemplate("GridCheckBox", new ViewDataDictionary());
+            string headerCheckBoxTemplate = GetGridTemplate("GridHeaderCheckBox", new ViewDataDictionary());
+            ngColumns.Add(new {width = 30, headerCellTemplate = headerCheckBoxTemplate, cellTemplate = checkBoxTemplate });
             string moduleName = id;
             if (pluralService.IsSingular(moduleName))
             {
@@ -106,7 +106,7 @@ namespace Coevery.Core.Controllers
             }
             ViewDataDictionary viewData = new ViewDataDictionary();
             viewData.Add("ModuleName", moduleName);
-            string cellVarTemp = GetGridTemplate("GridLink", viewData); //"<div><a href =\"Coevery#/" + moduleName + "/{{{{row.entity.ContentId}}}}\" class=\"ngCellText\">{{{{row.entity.{0}}}}}</a></div>';";
+            string cellVarTemp = GetGridTemplate("GridLink", viewData); 
             foreach (var col in columns) {
                 string cellTemplae = string.Empty;
                 if (col.LinkToContent) {

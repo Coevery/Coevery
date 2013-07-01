@@ -19,8 +19,15 @@
 }
 
 
-.icon-collapse-up:before{content:url(../images/up.png);}
-.icon-collapse-down:before{content:url(../images/down.png);}
+.icon-collapse-up:before
+{
+    content: url(../images/up.png);
+}
+
+.icon-collapse-down:before
+{
+    content: url(../images/down.png);
+}
 /*Home*/
 
 /*admin*/
@@ -89,14 +96,60 @@
     background: url(../../images/layout/bg/white_tiles.png);
     border: none !important;
 }
+
 .footerContainer
 {
     width: 88% !important;
     border: none;
-    
 }
 
 .scrollDiv
 {
-    overflow-y: auto;overflow-x: hidden;width:100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+
+.GridTemplateCell
+{
+    position: absolute;
+    height: 6px;
+}
+
+.gridTemplateText
+{
+    padding: 0;
+    float: left;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    _display: inline;
+    _margin-top: 3px;
+}
+
+.gridTemplateButtons
+{
+    position: relative;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+.more-sfile-inner
+{
+    background: none repeat scroll 0 0 #FFF;
+    border: 1px solid #CFCFCF;
+    box-shadow: 0 2px 3px #CFCFCF;
+    border-radius: 3px;
+}
+
+.more-sfile-menu
+{
+    display: none;
+    left: -28px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100px;
+    padding: 28px 0 0;
 }
