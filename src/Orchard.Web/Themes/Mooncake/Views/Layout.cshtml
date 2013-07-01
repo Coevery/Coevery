@@ -145,8 +145,7 @@
                     </div>
                     <div id="header-functions" class="pull-right">
                         <div id="user-info" class="clearfix">
-                            <span class="info">
-                                Welcome
+                            <span class="info">Welcome
                                 <span class="name">Shana-chan</span>
                             </span>
                             <div class="avatar">
@@ -154,10 +153,10 @@
                                     <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt="Avatar">
                                 </a>
                                 <ul class="dropdown-menu pull-right">
-                                    <li><a href="#"><i class="icol-user"></i> My Profile</a></li>
-                                    <li><a href="@Href("~/SystemAdmin/#/Entities")"><i class="icol-application-key"></i> Admin</a></li>                                        
+                                    <li><a href="#"><i class="icol-user"></i>&nbsp;My Profile</a></li>
+                                    <li><a href="@Href("~/SystemAdmin/#/Entities")"><i class="icol-application-key"></i>&nbsp;Admin</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#"><i class="icol-key"></i> Logout</a></li>
+                                    <li><a href="#"><i class="icol-key"></i>&nbsp;Logout</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -177,7 +176,7 @@
                 @if (Model.Navigation != null && Model.Navigation.Items.Count > 0) {
                     var menu = Model.Navigation.Items[0];
                     if (menu.Items.Count > 0) {
-                        <a class="brand dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                        <a id="page-nav-selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
                             <span data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
@@ -194,9 +193,107 @@
                     }
                 }
             </div>
+            <div id="page-title">
+                Lead
+            </div>
+            <div id="page-left-actions">
+                <button class="btn btn-small">Back</button>
+                <button class="btn btn-small btn-success">
+                    <i class="icon-plus"></i>&nbsp;Add
+                </button>
+                <button class="btn btn-small">
+                    <i class="icon-refresh"></i>&nbsp;Refresh
+                </button>
+                <div class="btn-group">
+                    <button class="btn btn-small">Follow</button>
+                    <button class="btn btn-small">Edit</button>
+                    <button class="btn btn-small">Delete</button>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                        More
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Convert</a></li>
+                        <li><a href="#">Disabled</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="page-right-actions">
+            </div>
         </div>
     </div>
 </header>
+<style>
+    #wrapper #content-wrap {
+        padding: 116px 0 0 0;
+    }
+
+    #page-header .container {
+        margin-right: 40px;
+        width: auto;
+    }
+
+    #page-header #page-nav-selector {
+        float: left;
+        padding: 13px 20px 13px;
+        font-size: 20px;
+        font-weight: 200;
+        color: #777;
+        -webkit-text-shadow: 0 1px 0 #fff;
+        text-shadow: 0 1px 0 #fff;
+    }
+
+        #page-header #page-nav-selector:hover,
+        #page-header #page-nav-selector:focus {
+            text-decoration: none;
+        }
+
+    #page-header #page-title {
+        margin: 11px 100px 11px 50px;
+        font-size: 24px;
+        line-height: 24px;
+        float: left;
+    }
+
+    #page-header #page-left-actions,
+    #page-header #page-right-actions {
+        font-size: 0;
+    }
+
+    #page-header #page-left-actions {
+        float: left;
+    }
+
+        #page-header #page-left-actions > .btn,
+        #page-header #page-left-actions > .btn-group {
+            margin: 10px 10px 10px 0;
+        }
+
+    #page-header .btn {
+        min-width: 70px;
+    }
+
+    #page-header #page-right-actions {
+        float: right;
+    }
+
+        #page-header #page-right-actions > .btn,
+        #page-header #page-right-actions > .btn-group {
+            margin: 10px 0 10px 10px;
+        }
+
+    @@media (min-width: 1200px) {
+    }
+
+    @@media (max-width: 979px) {
+        #page-header .container {
+            margin-right: 15px;
+            margin-left: 0;
+        }
+    }
+</style>
 <div id="content-wrap">
     <div id="content" class="sidebar-minimized">
         <div id="content-outer">
