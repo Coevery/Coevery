@@ -175,16 +175,17 @@
 <header id="page-header" class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <div class="dropdown pull-left">
-                @if (Model.Navigation != null && Model.Navigation.Items.Count > 0) {
-                    var menu = Model.Navigation.Items[0];
-                    if (menu.Items.Count > 0) {
-                        <a id="page-nav-selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+            <div id="nav-selector">
+                <div class="dropdown">
+                    @if (Model.Navigation != null && Model.Navigation.Items.Count > 0) {
+                        var menu = Model.Navigation.Items[0];
+                        if (menu.Items.Count > 0) {
+                        <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
                             <span data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
                             @{
-                                var menuIndex = 0;
+                            var menuIndex = 0;
                             }
                             @foreach (var item in menu.Items) {
                                 <li>
@@ -193,13 +194,13 @@
                                 menuIndex++;
                             }
                         </ul>
+                        }
                     }
-                }
+                </div>
             </div>
-            <div id="page-title">
-                Lead
-            </div>
-            <div id="page-left-actions">
+            @*<h1 id="page-title">Lead
+            </h1>*@
+            <div id="page-actions">
                 <button class="btn btn-small">Back</button>
                 <button class="btn btn-small btn-success">
                     <i class="icon-plus"></i>&nbsp;Add
@@ -223,69 +224,76 @@
                     </ul>
                 </div>
             </div>
-            <div id="page-right-actions">
-            </div>
         </div>
     </div>
 </header>
 <style>
     #wrapper #content-wrap {
-        padding: 116px 0 0 0;
+        padding: 118px 0 0 0;
     }
 
     #page-header .container {
+        margin-left: 0;
         margin-right: 40px;
         width: auto;
     }
 
-    #page-header #page-nav-selector {
+    #page-header #nav-selector {
         float: left;
-        padding: 13px 20px 13px;
-        font-size: 20px;
-        font-weight: 200;
-        color: #777;
-        -webkit-text-shadow: 0 1px 0 #fff;
-        text-shadow: 0 1px 0 #fff;
+        width: 171px;
+        padding: 13px 20px;
     }
 
-        #page-header #page-nav-selector:hover,
-        #page-header #page-nav-selector:focus {
-            text-decoration: none;
+        #page-header #nav-selector #selector {
+            font-size: 20px;
+            font-weight: 200;
+            color: #777;
+            -webkit-text-shadow: 0 1px 0 #fff;
+            text-shadow: 0 1px 0 #fff;
         }
 
+            #page-header #nav-selector #selector:hover,
+            #page-header #nav-selector #selector:focus {
+                text-decoration: none;
+            }
+
+            #page-header #nav-selector #selector > span {
+                white-space: nowrap;
+                overflow: hidden;
+                max-width: 161px;
+                display: inline-block;
+                -ms-text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+            }
+
     #page-header #page-title {
-        margin: 11px 100px 11px 50px;
+        margin: 11px 90px 11px 40px;
         font-size: 24px;
         line-height: 24px;
         float: left;
     }
 
-    #page-header #page-left-actions,
-    #page-header #page-right-actions {
+    #page-header #page-actions {
+        margin-left: 40px;
+
+        float: left;
         font-size: 0;
     }
 
-    #page-header #page-left-actions {
-        float: left;
-    }
-
-        #page-header #page-left-actions > .btn,
-        #page-header #page-left-actions > .btn-group {
-            margin: 10px 10px 10px 0;
+        #page-header #page-actions > .btn,
+        #page-header #page-actions > .btn-group {
+            margin: 10px 0 10px 10px;
         }
+
+            #page-header #page-actions > .btn:first-child,
+            #page-header #page-actions > .btn-group:first-child {
+                margin-left: 0;
+            }
 
     #page-header .btn {
         min-width: 70px;
     }
-
-    #page-header #page-right-actions {
-        float: right;
-    }
-
-        #page-header #page-right-actions > .btn,
-        #page-header #page-right-actions > .btn-group {
-            margin: 10px 0 10px 10px;
-        }
 
     @@media (min-width: 1200px) {
     }
@@ -293,7 +301,6 @@
     @@media (max-width: 979px) {
         #page-header .container {
             margin-right: 15px;
-            margin-left: 0;
         }
     }
 </style>
