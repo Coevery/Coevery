@@ -101,7 +101,6 @@
     <Content Include="Scripts\js\demo\wysiwyg.js" />
     <Content Include="Scripts\js\docs.js" />
     <Content Include="Scripts\js\dropdown.js" />
-    <Content Include="Scripts\js\jquery.mousewheel.js" />
     <Content Include="Scripts\js\libs\bootstrap.js" />
     <Content Include="Scripts\js\libs\bootstrap.min.js" />
     <Content Include="Scripts\js\libs\excanvas.js" />

@@ -12,12 +12,12 @@
 <head>
     <meta charset="utf-8" />
     <title>@Html.Title(title, siteName)</title>
+    <script>(function (d) { d.className = "dyn" + d.className.substring(6, d.className.length); })(document.documentElement);</script>
     @Display(Model.Head)
 </head>
 <body data-show-sidebar-toggle-button="true" data-fixed-sidebar="false">
     @* Layout (template) is in the Body zone @ the default position (nothing, zero, zilch) *@
     @Display(Model.Body)
     @Display(Model.Tail)
-    <script>(function (d) { d.className = "dyn" + d.className.substring(6, d.className.length); })(document.documentElement);</script>
 </body>
 </html>
