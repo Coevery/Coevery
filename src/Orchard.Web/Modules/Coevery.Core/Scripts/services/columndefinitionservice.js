@@ -7,9 +7,9 @@ define(['core/app/couchPotatoService'], function(couchPotato) {
 
     //Although this is an AngularJS factory I prefer the term "service" for data operations
     couchPotato.registerFactory([
-       'ngGridDataService',
+       'columnDefinitionService',
        ['$rootScope', '$resource', function ($rootScope, $resource) {
-           return $resource('api/CoeveryCore/NGgrid/:contentType:contentId',
+           return $resource('api/CoeveryCore/ColumnDefinition/:contentType:contentId',
                { contentType: '@contentType' },
                { contentId: '@ContentId' },
                { update: { method: 'PUT' } });

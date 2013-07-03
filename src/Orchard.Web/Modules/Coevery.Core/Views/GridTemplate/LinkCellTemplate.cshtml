@@ -1,0 +1,17 @@
+﻿<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">
+    <div @*ng-style="{{width:row.MouseOve?50:col.width}}"*@>
+        <span class="btn-link" href="#" ng-click="edit(row.entity.ContentId)" ng-cell-text>{{COL_FIELD}}</span>
+    </div>
+    <div class="GridTemplateCell" @*ng-style="{{visibility:row.MouseOve?'visible':'hidden'}}"*@>
+        <div class="gridTemplateButtons" @*ng-style="{{left:col.width-90}}"*@>
+            <ul>
+                <li class="icon-edit" ng-click="edit(row.entity.ContentId)" title="编辑"></li>
+                <li class="icon-remove" ng-click="delete(row.entity.ContentId)" title="删除"></li>
+                <li class="icon-collapse-down" data-toggle="dropdown" title="更多"></li>
+                <ul class="dropdown-menu pull-right" style="width: 100px;">
+                    <li>关联</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 using Coevery.Core.Services;
 using Newtonsoft.Json;
@@ -99,12 +100,12 @@ namespace Coevery.Core.Controllers
                             };
                             var shape = d.Descriptor.Property(fieldContext, contentItem);
                             var text = shape == null ? string.Empty : shape.ToString();
-                            result[d.Property.Type] = text;
+                            var filedName = d.Property.GetFiledName();
+                            result[filedName] = text;
                         });
                     return result;
                 }).ToList();
             return layoutComponents;
         }
-
     }
 }
