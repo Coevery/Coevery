@@ -59,8 +59,22 @@
                 ns: 'resources-locale'
             };
             
+            function getMin() {
+                var minHeight = window.innerHeight -
+                    $("#header").outerHeight() -
+                    $("#main-header").outerHeight() -
+                    $(".widget.toolbar-Container").outerHeight() -
+                    $(".widget-content.table-container").parent().outerHeight() -
+                    $("#footer").outerHeight();
+
+                if (minHeight < 200) {
+                    minHeight = 200;
+                }
+                return minHeight;
+            }
+
             $rootScope.defaultGridOptions = {
-                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 200 })],
+                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getMin })],
                 multiSelect: false,
                 enableRowSelection: false,
                 enableColumnResize: true,
