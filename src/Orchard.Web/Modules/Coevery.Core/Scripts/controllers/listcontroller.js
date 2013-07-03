@@ -1,8 +1,8 @@
-﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/nggriddataservice'], function (couchPotato) {
+﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'ngGridDataService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService, ngGridDataService) {
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
           var moduleName = $rootScope.$stateParams.Module;
 
           $scope.pagingOptions = {
@@ -10,7 +10,7 @@
               pageSize: 250,
               currentPage: 1
           };
-
+          
           $scope.setPagingData = function (data, page, pageSize) {
               var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
               var maxRow = data.length;
@@ -47,18 +47,25 @@
               }
           }, true);
 
+          $scope.columnDefs = [];
+          var gridColumns = columnDefinitionService.query({ contentType: moduleName }, function () {
+              $scope.columnDefs = gridColumns;
+          }, function () {});
+
           var rowTemplate = '<div ng-mouseover="mouseOverState(row,true)" style="overflow:visible;" ng-click="rowClick(row,renderedRows,col)" ng-mouseout="mouseOverState(row,false)" ng-style="{\'cursor\': row.cursor, \'z-index\': col.zIndex() }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}" ng-cell></div>';
           $scope.gridOptions = {
               data: 'myData',
               enablePaging: true,
               showFooter: true,
               multiSelect: true,
-              rowTemplate: rowTemplate,
+              enableRowSelection: true,
+              showSelectionCheckbox:true,
+              //rowTemplate: rowTemplate,
               pagingOptions: $scope.pagingOptions,
-              columnDefs: "myColumns"
+              columnDefs: "columnDefs"
           };
 
-         
+          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.toolButtonDisplay = false;
           $scope.checkedIds = [];
@@ -107,14 +114,6 @@
               $scope.checkChange(false, rows);
               $scope.mouseOverState(row, true);
           };
-          
-          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
-
-          var gridColumns = ngGridDataService.query({ contentType: moduleName }, function () {
-              $scope.myColumns = gridColumns;
-          }, function () {
-              $scope.myColumns = [];
-          });
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           $scope.Refresh = function () {

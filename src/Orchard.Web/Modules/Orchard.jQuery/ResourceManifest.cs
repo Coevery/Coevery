@@ -10,6 +10,8 @@ namespace Orchard.jQuery {
             manifest.DefineScript("jQueryMigrate").SetUrl("jquery-migrate-1.1.1.min.js", "jquery-migrate-1.1.1.js").SetVersion("1.1.1")
                 .SetCdn("//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.1.1.min.js", "//ajax.aspnetcdn.com/ajax/jquery.migrate/jquery-migrate-1.1.1.js", true);
 
+            manifest.DefineScript("jQueryMousewheel").SetUrl("jquery.mousewheel.js", "jquery.mousewheel.js").SetVersion("3.1.3");
+            
             // Full jQuery UI bundle
             manifest.DefineScript("jQueryUI").SetUrl("jquery-ui.min.js", "jquery-ui.js").SetVersion("1.9.2").SetDependencies("jQuery")
                 .SetCdn("//ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js", "//ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.js", true);
