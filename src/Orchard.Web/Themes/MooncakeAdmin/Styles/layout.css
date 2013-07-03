@@ -32,6 +32,18 @@ body
     padding: 0;
 }
 
+#loading {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -35px;
+    display: none;
+    background: gold;
+    padding: 0.3em;
+    font-weight: bold;
+    z-index: 1000;
+}
+
 #wrapper
 {
     max-width: 1536px;

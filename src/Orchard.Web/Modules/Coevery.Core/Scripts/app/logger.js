@@ -1,4 +1,13 @@
 ﻿define(['app'], function (app) {
+    $.pnotify.defaults.history = false;
+    $.pnotify.defaults.history = false;
+    $.pnotify.defaults.before_open = function (pnotify) {
+        pnotify.css({
+            //"top": ($(window).height() / 2) - (pnotify.height() / 2),
+            "top": 75,
+            "left": ($(window).width() / 2) - (pnotify.width() / 2)
+        });
+    };
     app.factory('logger', function ($window) {
         var logger = {
             error: error,

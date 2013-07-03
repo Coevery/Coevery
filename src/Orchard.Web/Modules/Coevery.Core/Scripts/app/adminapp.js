@@ -1,7 +1,7 @@
 ﻿define(['angular-detour', 'core/app/formdesignerservice'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner']);
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner', 'SharedServices']);
     coevery.config(['$locationProvider', '$provide', '$detourProvider',
         function ($locationProvider, $provide, $detourProvider) {
             $detourProvider.loader = {
