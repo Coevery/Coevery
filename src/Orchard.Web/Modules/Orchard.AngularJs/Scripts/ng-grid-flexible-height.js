@@ -3,7 +3,7 @@ function ngGridFlexibleHeightPlugin(opts) {
     self.grid = null;
     self.scope = null;
     self.init = function (scope, grid) {
-        self.grid = grid; ngGridFlexibleHeightPlugin
+        self.grid = grid;
         self.scope = scope;
         var recalcHeightForData = function () { setTimeout(innerRecalcForData, 1); };
         var innerRecalcForData = function () {
@@ -14,24 +14,21 @@ function ngGridFlexibleHeightPlugin(opts) {
             if (scope.baseViewportHeight == null || scope.baseViewportHeight === 0) {
                 scope.baseViewportHeight = self.grid.$viewport.height();
             }
-            //if (scope.baseViewportHeight > naturalHeight) {
             if (opts != null) {
                 if (opts.minHeight != null) {
+                    var tempMin;
                     if ($.isFunction(opts.minHeight)) {
-                        var tempMin = (opts.minHeight() > 200) ? opts.minHeight() : 200;
-                        if ((naturalHeight + extraHeight) < tempMin) {
-                            naturalHeight = tempMin - extraHeight - 2;
-                            //alert(tempMin);
-                        }
+                        tempMin = opts.minHeight();
+                    } else {
+                        tempMin = opts.minHeight;
                     }
-                    else if ((naturalHeight + extraHeight) < opts.minHeight) {
-                        naturalHeight = opts.minHeight - extraHeight - 2;
+                    if ((naturalHeight + extraHeight) < tempMin) {
+                        naturalHeight = tempMin - extraHeight - 2;
                     }
                 }
             }
             self.grid.$viewport.css('height', (naturalHeight + 2) + 'px');
             self.grid.$root.css('height', (naturalHeight + extraHeight + 2) + 'px');
-            //}
             self.grid.refreshDomSizes();
         };
         scope.catHashKeys = function () {

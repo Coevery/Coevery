@@ -49,11 +49,10 @@
                     $(".widget.toolbar-Container").outerHeight() -
                     $("table.table-container").parent().parent().outerHeight() -
                     $("#footer").outerHeight();
-                //alert(window.innerHeight);
-                //alert($("#main-header").outerHeight());
-                //alert($(".widget.toolbar-Container").outerHeight());
-                //alert($("table.table-container").parent().parent().outerHeight());
-                //alert($("#footer").outerHeight());
+
+                if (minHeight < 200) {
+                    minHeight = 200;
+                }    
                 return minHeight;
             }
             
