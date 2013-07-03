@@ -3,7 +3,7 @@ function ngGridFlexibleHeightPlugin(opts) {
     self.grid = null;
     self.scope = null;
     self.init = function (scope, grid) {
-        self.grid = grid;ngGridFlexibleHeightPlugin
+        self.grid = grid; ngGridFlexibleHeightPlugin
         self.scope = scope;
         var recalcHeightForData = function () { setTimeout(innerRecalcForData, 1); };
         var innerRecalcForData = function () {
@@ -17,12 +17,14 @@ function ngGridFlexibleHeightPlugin(opts) {
             //if (scope.baseViewportHeight > naturalHeight) {
             if (opts != null) {
                 if (opts.minHeight != null) {
-                    if ($.isFunction(opts.minHeight) && (naturalHeight + extraHeight) < opts.minHeight()) {
-                        var tempMin = (opts.minHeight > opts.minHeight()) ? opts.minHeight : opts.minHeight();
+                    if ($.isFunction(opts.minHeight)) {
+                        var tempMin = (opts.minHeight() > 200) ? opts.minHeight() : 200;
                         if ((naturalHeight + extraHeight) < tempMin) {
                             naturalHeight = tempMin - extraHeight - 2;
+                            //alert(tempMin);
                         }
-                    } else if ((naturalHeight + extraHeight) < opts.minHeight) {
+                    }
+                    else if ((naturalHeight + extraHeight) < opts.minHeight) {
                         naturalHeight = opts.minHeight - extraHeight - 2;
                     }
                 }
