@@ -36,6 +36,16 @@
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }*/
 
+#loading {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: none;
+    background: gold;
+    padding: 0.3em;
+    font-weight: bold;
+}
+
 #wrapper #content-wrap {
     padding: 69px 0 0 0;
 }

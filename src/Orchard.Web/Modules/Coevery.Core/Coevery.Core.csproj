@@ -147,6 +147,7 @@
     <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />
+    <Content Include="Scripts\services\loadingservice.js" />
     <Content Include="Styles\module.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
