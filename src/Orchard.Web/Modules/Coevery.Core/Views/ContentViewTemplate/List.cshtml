@@ -1,4 +1,35 @@
-﻿<section id="main-content" data-ng-controller="GeneralListCtrl">
+﻿<header id="page-header" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <div id="page-actions">
+                <button class="btn btn-small">Back</button>
+                <button class="btn btn-small btn-success">
+                    <i class="icon-plus"></i>&nbsp;Add
+                </button>
+                <button class="btn btn-small">
+                    <i class="icon-refresh"></i>&nbsp;Refresh
+                </button>
+                <div class="btn-group">
+                    <button class="btn btn-small">Follow</button>
+                    <button class="btn btn-small">Edit</button>
+                    <button class="btn btn-small">Delete</button>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                        More
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Convert</a></li>
+                        <li><a href="#">Disabled</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="main-content" data-ng-controller="GeneralListCtrl">
     <div class="row-fluid">
         <div class="span12">
             <div class="widget toolbar-Container">
