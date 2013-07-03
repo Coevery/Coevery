@@ -152,8 +152,7 @@
                     </div>
                     <div id="header-functions" class="pull-right">
                         <div id="user-info" class="clearfix">
-                            <span class="info">
-                                Welcome
+                            <span class="info">Welcome
                                 <span class="name">Shana-chan</span>
                             </span>
                             <div class="avatar">
@@ -161,10 +160,10 @@
                                     <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt="Avatar">
                                 </a>
                                 <ul class="dropdown-menu pull-right">
-                                    <li><a href="#"><i class="icol-user"></i> My Profile</a></li>
-                                    <li><a href="@Href("~/SystemAdmin/#/Entities")"><i class="icol-application-key"></i> Admin</a></li>                                        
+                                    <li><a href="#"><i class="icol-user"></i>&nbsp;My Profile</a></li>
+                                    <li><a href="@Href("~/SystemAdmin/#/Entities")"><i class="icol-application-key"></i>&nbsp;Admin</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#"><i class="icol-key"></i> Logout</a></li>
+                                    <li><a href="#"><i class="icol-key"></i>&nbsp;Logout</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -177,33 +176,7 @@
         </div>
     </header>
 }
-<header id="page-header" class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <div class="dropdown pull-left">
-                @if (Model.Navigation != null && Model.Navigation.Items.Count > 0) {
-                    var menu = Model.Navigation.Items[0];
-                    if (menu.Items.Count > 0) {
-                        <a class="brand dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                            <span data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
-                            @{
-                                var menuIndex = 0;
-                            }
-                            @foreach (var item in menu.Items) {
-                                <li>
-                                    <input type="radio" id="menu_@menuIndex" name="ex4" value="1"><label for="menu_@menuIndex"><strong>@item.Text.Text</strong></label>
-                                </li>
-                                menuIndex++;
-                            }
-                        </ul>
-                    }
-                }
-            </div>
-        </div>
-    </div>
-</header>
+
 <div id="content-wrap">
     <div id="content" class="sidebar-minimized">
         <div id="content-outer">

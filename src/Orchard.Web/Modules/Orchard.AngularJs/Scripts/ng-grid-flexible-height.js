@@ -1,4 +1,4 @@
-function ngGridFlexibleHeightPlugin (opts) {
+function ngGridFlexibleHeightPlugin(opts) {
     var self = this;
     self.grid = null;
     self.scope = null;
@@ -14,15 +14,21 @@ function ngGridFlexibleHeightPlugin (opts) {
             if (scope.baseViewportHeight == null || scope.baseViewportHeight === 0) {
                 scope.baseViewportHeight = self.grid.$viewport.height();
             }
-            //if (scope.baseViewportHeight > naturalHeight) {
-                if (opts != null) {
-                    if (opts.minHeight != null && (naturalHeight + extraHeight) < opts.minHeight) {
-                        naturalHeight = opts.minHeight - extraHeight - 2;
+            if (opts != null) {
+                if (opts.minHeight != null) {
+                    var tempMin;
+                    if ($.isFunction(opts.minHeight)) {
+                        tempMin = opts.minHeight();
+                    } else {
+                        tempMin = opts.minHeight;
+                    }
+                    if ((naturalHeight + extraHeight) < tempMin) {
+                        naturalHeight = tempMin - extraHeight - 2;
                     }
                 }
-                self.grid.$viewport.css('height', (naturalHeight + 2) + 'px');
-                self.grid.$root.css('height', (naturalHeight + extraHeight + 2) + 'px');
-            //}
+            }
+            self.grid.$viewport.css('height', (naturalHeight + 2) + 'px');
+            self.grid.$root.css('height', (naturalHeight + extraHeight + 2) + 'px');
             self.grid.refreshDomSizes();
         };
         scope.catHashKeys = function () {
