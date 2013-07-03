@@ -53,10 +53,12 @@ namespace Coevery.Core.Controllers
             return re;
         }
 
-        public void Delete(int id)
-        {
-            var contentItem = _contentManager.Get(id, VersionOptions.Latest);
-            _contentManager.Remove(contentItem);
+        public void Delete(string id) {
+            string[] idList = id.Split(new char[] { ',' });
+            foreach (var idItem in idList) {
+                var contentItem = _contentManager.Get(int.Parse(idItem), VersionOptions.Latest);
+                _contentManager.Remove(contentItem);
+            } 
         }
 
         private IEnumerable<JObject> GetLayoutComponents(string entityType)

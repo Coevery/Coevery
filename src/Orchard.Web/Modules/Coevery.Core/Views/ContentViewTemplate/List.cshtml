@@ -39,9 +39,19 @@
                             <button class="btn btn-success" data-ng-click="add()">
                                 <i class="icon-plus"></i>&nbsp;@T("Add")
                             </button>
-                            <button class="btn" data-ng-click="Refresh()">
-                                <i class="icon-refresh"></i>&nbsp;@T("Refresh")
-                            </button>
+                            <span ng-style="{'display':toolButtonDisplay?'none':''}">
+                                <button class="btn" data-ng-click="Refresh()">
+                                    <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+                                </button>
+                            </span>
+                            <span ng-style="{'display':toolButtonDisplay?'':'none'}">
+                                 <button class="btn" data-ng-click="edit()"  ng-disabled="checkedIds.length > 1">
+                                    <i class="icon-edit"></i>&nbsp;@T("Edit")
+                                </button>
+                                <button class="btn" data-ng-click="delete()">
+                                    <i class="icon-remove"></i>&nbsp;@T("Delete")
+                                </button>
+                            </span>
                         </div>
                         <div class="pull-right">
                             <div class="btn-group">
