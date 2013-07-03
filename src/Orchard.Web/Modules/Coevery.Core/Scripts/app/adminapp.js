@@ -42,8 +42,23 @@
                 ns: 'resources-locale'
             };
             
+            function getMin() {
+                var minHeight = window.innerHeight -
+                    $("#header").outerHeight()-
+                    $("#main-header").outerHeight() -
+                    $(".widget.toolbar-Container").outerHeight() -
+                    $("table.table-container").parent().parent().outerHeight() -
+                    $("#footer").outerHeight();
+                //alert(window.innerHeight);
+                //alert($("#main-header").outerHeight());
+                //alert($(".widget.toolbar-Container").outerHeight());
+                //alert($("table.table-container").parent().parent().outerHeight());
+                //alert($("#footer").outerHeight());
+                return minHeight;
+            }
+            
             $rootScope.defaultGridOptions = {
-                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 200 })],
+                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getMin })],
                 multiSelect: false,
                 enableRowSelection: false,
                 enableColumnResize: true,
