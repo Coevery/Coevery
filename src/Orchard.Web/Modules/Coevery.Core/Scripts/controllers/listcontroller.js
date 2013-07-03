@@ -4,6 +4,7 @@
       ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
       function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
           var moduleName = $rootScope.$stateParams.Module;
+          $scope.moduleName = moduleName;
 
           $scope.pagingOptions = {
               pageSizes: [250, 500, 1000],

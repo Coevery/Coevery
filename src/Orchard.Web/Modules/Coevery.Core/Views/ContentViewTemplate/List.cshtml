@@ -24,95 +24,93 @@
 </div>
 
 <section id="main-content" data-ng-controller="GeneralListCtrl">
-    <header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0; margin-left: 0px">
-        <h1 style="background-image: none;">Entity Detail <span>show entity detail information</span></h1>
+    <header id="page-title">
+        <h1>{{moduleName}} <span>show all data</span></h1>
     </header>
 
     <div class="row-fluid">
-        <div class="span12">
-            <div class="widget toolbar-Container">
-                <div class="widget-content">
-                    <div class="btn-toolbar clearfix">
-                        <div class="pull-left">
-                            <button class="btn btn-success" data-ng-click="add()">
-                                <i class="icon-plus"></i>&nbsp;@T("Add")
-                            </button>
-                            <span ng-style="{'display':toolButtonDisplay?'none':''}">
-                                <button class="btn" data-ng-click="Refresh()">
-                                    <i class="icon-refresh"></i>&nbsp;@T("Refresh")
-                                </button>
-                            </span>
-                            <span ng-style="{'display':toolButtonDisplay?'':'none'}">
-                                <button class="btn" data-ng-click="edit()" ng-disabled="checkedIds.length > 1">
-                                    <i class="icon-edit"></i>&nbsp;@T("Edit")
-                                </button>
-                                <button class="btn" data-ng-click="delete()">
-                                    <i class="icon-remove"></i>&nbsp;@T("Delete")
-                                </button>
-                            </span>
-                        </div>
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <span>过滤器</span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" style="">
+        <div class="btn-toolbar clearfix">
+            <div class="pull-left">
+                <button class="btn btn-success" data-ng-click="add()">
+                    <i class="icon-plus"></i>&nbsp;@T("Add")
+                </button>
+                <span ng-style="{'display':toolButtonDisplay?'none':''}">
+                    <button class="btn" data-ng-click="Refresh()">
+                        <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+                    </button>
+                </span>
+                <span ng-style="{'display':toolButtonDisplay?'':'none'}">
+                    <button class="btn" data-ng-click="edit()" ng-disabled="checkedIds.length > 1">
+                        <i class="icon-edit"></i>&nbsp;@T("Edit")
+                    </button>
+                    <button class="btn" data-ng-click="delete()">
+                        <i class="icon-remove"></i>&nbsp;@T("Delete")
+                    </button>
+                </span>
+            </div>
+            <div class="pull-right">
+                <div class="btn-group">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                        <span>过滤器</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" style="">
 
-                                    <li title="" style="cursor: pointer;">
-                                        <a ng-click="openFilterCollapse(1)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                                        </a>
-                                    </li>
-                                    <li title="" style="cursor: pointer;">
-                                        <a ng-click="openFilterCollapse(2)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                                        </a>
-                                    </li>
-                                    <li title="" style="cursor: pointer;">
-                                        <a ng-click="openFilterCollapse(3)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
-                                        </a>
-                                    </li>
-                                    <li title="">
-                                        <hr style="margin: 0px;" />
-                                    </li>
-                                    <li title="" style="cursor: pointer;"><a>创建过滤器</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="btn-group">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <span>View</span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" style="">
-                                    <li title="" style="cursor: pointer;"><a>创建View</a>
-                                    </li>
-                                    <li title="">
-                                        <hr style="margin: 0px;" />
-                                    </li>
-                                    <li title="" style="cursor: pointer;">
-                                        <a>List View<div style="float: right; text-decoration: underline;">删除</div>
-                                        </a>
-                                    </li>
-                                    <li title="" style="cursor: pointer;">
-                                        <a>Chart View<div style="float: right; text-decoration: underline;">删除</div>
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </div>
-
-                            <div class="input-append" style="margin: 0px 0px 0px 10px;">
-                                <input type="text" style="width: 150px;">
-                                <button type="button" class="btn">
-                                    <i class="icol-magnifier"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                        <li title="" style="cursor: pointer;">
+                            <a ng-click="openFilterCollapse(1)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                            </a>
+                        </li>
+                        <li title="" style="cursor: pointer;">
+                            <a ng-click="openFilterCollapse(2)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                            </a>
+                        </li>
+                        <li title="" style="cursor: pointer;">
+                            <a ng-click="openFilterCollapse(3)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                            </a>
+                        </li>
+                        <li title="">
+                            <hr style="margin: 0px;" />
+                        </li>
+                        <li title="" style="cursor: pointer;"><a>创建过滤器</a>
+                        </li>
+                    </ul>
                 </div>
 
+                <div class="btn-group">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                        <span>View</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" style="">
+                        <li title="" style="cursor: pointer;"><a>创建View</a>
+                        </li>
+                        <li title="">
+                            <hr style="margin: 0px;" />
+                        </li>
+                        <li title="" style="cursor: pointer;">
+                            <a>List View<div style="float: right; text-decoration: underline;">删除</div>
+                            </a>
+                        </li>
+                        <li title="" style="cursor: pointer;">
+                            <a>Chart View<div style="float: right; text-decoration: underline;">删除</div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="input-append" style="margin: 0px 0px 0px 10px;">
+                    <input type="text" style="width: 150px;">
+                    <button type="button" class="btn">
+                        <i class="icol-magnifier"></i>
+                    </button>
+                </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
             <div>
                 <div id="filterCollapse" class="accordion" style="margin-top: 10px; margin-bottom: 10px; display: none;">
                     <div class="accordion-group">
