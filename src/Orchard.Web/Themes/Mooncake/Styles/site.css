@@ -35,3 +35,87 @@
      -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }*/
+
+#wrapper #content-wrap {
+    padding: 69px 0 0 0;
+}
+
+#wrapper #main {
+    padding-bottom: 0;
+}
+
+#main-content {
+    margin-top: 47px;
+}
+
+#wrapper #content.sidebar-minimized #sidebar {
+    overflow: visible;
+    z-index: 1000;
+}
+
+/*First Navigation Selector*/
+#nav-selector {
+    padding: 13px 20px;
+    border-bottom: 1px solid rgb(200, 200, 200);
+    -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+}
+
+    #nav-selector #selector {
+        display: block;
+        font-size: 20px;
+        font-weight: 200;
+        color: #777;
+        -webkit-text-shadow: 0 1px 0 #fff;
+        text-shadow: 0 1px 0 #fff;
+    }
+
+        #nav-selector #selector:hover,
+        #nav-selector #selector:focus {
+            text-decoration: none;
+        }
+
+        #nav-selector #selector > span {
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 160px;
+            display: inline-block;
+            -ms-text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+        }
+
+/*Page Actions*/
+#page-header {
+    margin-left: 211px;
+}
+
+    #page-header .container {
+        margin-left: 0;
+        margin-right: 40px;
+        width: auto;
+    }
+
+    #page-header .navbar-inner {
+        background: #f7f7f7;
+    }
+
+    #page-header .btn {
+        min-width: 70px;
+    }
+
+    #page-header #page-actions {
+        margin-left: 40px;
+        float: left;
+        font-size: 0;
+    }
+
+        #page-header #page-actions > .btn,
+        #page-header #page-actions > .btn-group {
+            margin: 10px 0 10px 10px;
+        }
+
+            #page-header #page-actions > .btn:first-child,
+            #page-header #page-actions > .btn-group:first-child {
+                margin-left: 0;
+            }
