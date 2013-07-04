@@ -18,7 +18,7 @@
     coevery.value('$anchorScroll', angular.noop);
 
     coevery.run(['$rootScope', '$detour', '$stateParams', '$templateCache',
-        function($rootScope, $detour, $stateParams, $templateCache) {
+        function ($rootScope, $detour, $stateParams, $templateCache) {
 
             //"cheating" so that detour is available in requirejs
             //define modules -- we want run-time registration of components
@@ -41,15 +41,12 @@
                 lowerCaseLng: true,
                 ns: 'resources-locale'
             };
-            
-            function getMin() {
-                var minHeight = window.innerHeight -
-                    $("#header").outerHeight() -
-                    $("#main-header").outerHeight() -
-                    $(".widget.toolbar-Container").outerHeight() -
-                    $(".widget-content.table-container").parent().outerHeight() -
-                    $("#footer").outerHeight();
 
+            function getGridMinHeight() {
+                var yOffset = $(".gridStyle.ng-scope.ngGrid").offset().top;
+                var minHeight = window.innerHeight -
+                    yOffset -
+                    $("#footer").outerHeight(true);
                 if (minHeight < 200) {
                     minHeight = 200;
                 }
@@ -57,7 +54,7 @@
             }
 
             $rootScope.defaultGridOptions = {
-                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getMin })],
+                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getGridMinHeight })],
                 multiSelect: false,
                 enableRowSelection: false,
                 enableColumnResize: true,

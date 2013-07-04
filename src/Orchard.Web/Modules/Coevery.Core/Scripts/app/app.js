@@ -59,14 +59,12 @@
                 ns: 'resources-locale'
             };
             
-            function getMin() {
+            function getGridMinHeight() {
+                var yOffset = $(".gridStyle.ng-scope.ngGrid").offset().top;
                 var minHeight = window.innerHeight -
-                    $("#header").outerHeight() -
-                    $("#main-header").outerHeight() -
-                    $(".widget.toolbar-Container").outerHeight() -
-                    $(".widget-content.table-container").parent().outerHeight() -
-                    $("#footer").outerHeight();
-
+                    yOffset -
+                    $("#footer").outerHeight(true) -
+                    $(".navbar.navbar-fixed-bottom").outerHeight(true);
                 if (minHeight < 200) {
                     minHeight = 200;
                 }
@@ -74,7 +72,7 @@
             }
 
             $rootScope.defaultGridOptions = {
-                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getMin })],
+                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getGridMinHeight })],
                 //multiSelect: false,
                 //enableRowSelection: false,
                 enableColumnResize: true,
