@@ -1,83 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Coevery.Core.ClientRoute;
-using Coevery.Core.Models;
-using Coevery.Core.Services;
-using Newtonsoft.Json.Linq;
-using Orchard;
-using Orchard.Environment.Extensions.Models;
+﻿using Coevery.Core.ClientRoute;
 
 namespace Coevery.Perspectives.Services
 {
     public class ClientRouteProvider : IClientRouteProvider
     {
-        public virtual Feature Feature { get; set; }
-
-        public void Discover(ClientRouteBuilder builder)
+        public void Discover(ClientRouteTableBuilder builder)
         {
-            builder.Create("PerspectiveList",
-                           Feature,
-                           route => route
-                                        .Url("/Perspectives")
-                                        .TemplateUrl("'SystemAdmin/Perspectives/List'")
-                                        .Controller("PerspectiveListCtrl")
-                                        .Dependencies("controllers/listcontroller"));
+            builder.Describe("PerspectiveList")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Perspectives";
+                       descriptor.TemplateUrl = "'SystemAdmin/Perspectives/List'";
+                       descriptor.Controller = "PerspectiveListCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/listcontroller"};
+                   });
 
-            builder.Create("PerspectiveCreate",
-                           Feature,
-                           route => route
-                                        .Url("/Perspectives/Create")
-                                        .TemplateUrl("'SystemAdmin/Perspectives/Create'")
-                                        .Controller("PerspectiveEditCtrl")
-                                        .Dependencies("controllers/editcontroller"));
-
-            builder.Create("PerspectiveEdit",
-                           Feature,
-                           route => route
-                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Edit")
-                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+            builder.Describe("PerspectiveCreate")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Perspectives/Create";
+                       descriptor.TemplateUrl = "'SystemAdmin/Perspectives/Create'";
+                       descriptor.Controller = "PerspectiveEditCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/editcontroller"};
+                   });
+            builder.Describe("PerspectiveEdit")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Edit";
+                       descriptor.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                                                 var url = 'SystemAdmin/Perspectives/Edit/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
-                                          }]")
-                                        .Controller("PerspectiveEditCtrl")
-                                        .Dependencies("controllers/editcontroller")
-                );
+                                          }]";
+                       descriptor.Controller = "PerspectiveEditCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/editcontroller"};
+                   });
 
-            builder.Create("PerspectiveDetail",
-                           Feature,
-                           route => route
-                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}")
-                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+            builder.Describe("PerspectiveDetail")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}";
+                       descriptor.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                                                 var url = 'SystemAdmin/Perspectives/Detail/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
-                                          }]")
-                                        .Controller("PerspectiveDetailCtrl")
-                                        .Dependencies("controllers/detailcontroller")
-                );
+                                          }]";
+                       descriptor.Controller = "PerspectiveDetailCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/detailcontroller"};
+                   });
 
-            builder.Create("EditNavigationItem",
-                           Feature,
-                           route => route
-                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{NId:[0-9a-zA-Z]+}")
-                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+            builder.Describe("EditNavigationItem")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{NId:[0-9a-zA-Z]+}";
+                       descriptor.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                                                 var url = 'SystemAdmin/Perspectives/EditNavigationItem/' + $stateParams.NId; 
                                                 return $http.get(url).then(function(response) { return response.data; });
-                                          }]")
-                                        .Controller("NavigationItemEditCtrl")
-                                        .Dependencies("controllers/navigationitemeditcontroller")
-                );
+                                          }]";
+                       descriptor.Controller = "NavigationItemEditCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/navigationitemeditcontroller"};
+                   });
 
-            builder.Create("CreateNavigationItem",
-                           Feature,
-                           route => route
-                                        .Url("/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}")
-                                        .Controller("NavigationItemEditCtrl")
-                                        .Dependencies("controllers/navigationitemeditcontroller")
-                );
-
+            builder.Describe("CreateNavigationItem")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}";
+                       descriptor.Controller = "NavigationItemEditCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/navigationitemeditcontroller"};
+                   });
         }
     }
 }

@@ -12,7 +12,7 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
                 $scope.prev = function () {
-                    $detour.transitionTo('FieldCreateChooseType', { EntityName: entityName });
+                    $detour.transitionTo('EntityDetail.Fields.Create', { EntityName: entityName });
                 };
                 $scope.back = function () {
                     $('.step2').show();

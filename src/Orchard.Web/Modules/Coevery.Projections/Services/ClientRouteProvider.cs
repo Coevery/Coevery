@@ -13,37 +13,33 @@ namespace Coevery.Projections.Services
 {
     public class ClientRouteProvider : IClientRouteProvider {
 
-        public virtual Feature Feature { get; set; }
+        public void Discover(ClientRouteTableBuilder builder) {
+            builder.Describe("ProjectionList")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}";
+                       descriptor.TemplateUrl = "'SystemAdmin/Projections/List'";
+                       descriptor.Controller = "ProjectionListCtrl";
+                       descriptor.Dependencies = new[] {"controllers/listcontroller"};
+                   });
 
-        public void Discover(ClientRouteBuilder builder) {
-            builder.Create("ProjectionList",
-                           Feature,
-                           route => route
-                                        .Url("/Projections/{EntityName:[0-9a-zA-Z]+}")
-                                        .TemplateUrl("'SystemAdmin/Projections/List'")
-                                        .Controller("ProjectionListCtrl")
-                                        .Dependencies("controllers/listcontroller"));
+            builder.Describe("ProjectionCreate")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/Create";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Projections/Create/' + params.EntityName;}";
+                       descriptor.Controller = "ProjectionDetailCtrl";
+                       descriptor.Dependencies = new[] {"controllers/detailcontroller"};
+                   });
 
-            builder.Create("ProjectionCreate",
-                           Feature,
-                           route => route
-                                        .Url("/Projections/{EntityName:[0-9a-zA-Z]+}/Create")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Projections/Create/' + params.EntityName;}")
-                                        .Controller("ProjectionDetailCtrl")
-                                        .Dependencies("controllers/detailcontroller"));
-
-            builder.Create("ProjectionEdit",
-                           Feature,
-                           route => route
-                                        .Url("/Projections/{EntityName:[0-9a-zA-Z]+}/{Id:[0-9a-zA-Z]+}")
-                                        .TemplateProvider(@"['$http', '$stateParams', function ($http, $stateParams) {
+            builder.Describe("ProjectionEdit")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/{Id:[0-9a-zA-Z]+}";
+                       descriptor.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                                                 var url = 'SystemAdmin/Projections/Edit/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
-                                          }]")
-                                        .Controller("ProjectionDetailCtrl")
-                                        .Dependencies("controllers/detailcontroller")
-                );
-
+                                          }]";
+                       descriptor.Controller = "ProjectionDetailCtrl";
+                       descriptor.Dependencies = new[] {"controllers/detailcontroller"};
+                   });
         }
     }
 }
