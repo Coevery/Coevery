@@ -138,3 +138,25 @@
     -webkit-text-shadow: none;
     text-shadow: none;
 }
+
+/*Edit View*/
+.edit-view {
+    background-color: #f8f8f8;
+}
+
+    .edit-view section header {
+        padding: 5px 16px;
+        background-color: rgba(138, 158, 190, 0.8);
+    }
+
+        .edit-view section header h5 {
+            margin: 0;
+        }
+
+    .edit-view .data-row {
+        margin: 10px 0;
+    }
+
+    .edit-view form {
+        margin: 0;
+    }

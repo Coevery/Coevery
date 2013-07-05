@@ -109,7 +109,7 @@
 
 .btn [class^="icon-"],
 .btn-group a [class^="icon-"] {
-    vertical-align: text-top;
+    vertical-align: text-bottom;
 }
 
 

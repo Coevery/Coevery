@@ -93,15 +93,19 @@
 angular.module('coevery.layout', [])
     .directive('fdSection', function() {
         return {
-            template: '<fieldset fd-section><legend class="title">Section Title</legend><div ng-transclude></div></fieldset>',
+            template: '<section fd-section><header><h5>Section Title</h5></header><div ng-transclude></div></section>',
             replace: true,
             restrict: 'E',
-            transclude: true
+            transclude: true,
+            link: function (scope, element, attrs) {
+                var sectionHeader = element.find('header h5');
+                sectionHeader.text(attrs.sectionTitle);
+            }
         };
     })
     .directive('fdRow', function() {
         return {
-            template: '<div fd-row class="control-group" ng-transclude></div>',
+            template: '<div fd-row class="data-row clearfix" ng-transclude></div>',
             replace: true,
             restrict: 'E',
             transclude: true

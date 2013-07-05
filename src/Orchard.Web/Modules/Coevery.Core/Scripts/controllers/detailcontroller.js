@@ -4,6 +4,7 @@
       ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams', '$element', 'commonDataService',
       function ($timeout, $rootScope, $scope, logger, $state, $stateParams, $element, commonDataService) {
           var moduleName = $rootScope.$stateParams.Module;
+          $scope.moduleName = moduleName;
 
           var myForm = $('[name=myForm]');
           $scope.save = function () {
