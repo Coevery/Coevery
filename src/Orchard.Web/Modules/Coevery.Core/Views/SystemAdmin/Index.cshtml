@@ -14,10 +14,12 @@
     Script.Require("angular_detour");
     Script.Require("i18next");
     Script.Include("directives/angularjs-i18next-directive.js");
+    Script.Include("services/loadingservice.js");
+    Script.Require("ui_bootstrap");
 }
 
-<div ng-show="{{$detour.transition}}">Loading...</div>
-<section  class="ng-cloak"  ui-view ng-animate="'fade'">
+<div id="loading">Loading...</div>
+<section  class="ng-cloak"  ui-view>
 </section>
 @using (Script.Foot()) {
     <script type="text/javascript">

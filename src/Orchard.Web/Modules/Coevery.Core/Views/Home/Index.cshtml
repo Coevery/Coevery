@@ -7,20 +7,20 @@
     Script.Require("jQuery");
     Script.Require("jQueryUI");
     Script.Require("jQueryMousewheel");
-    
+
     Script.Require("pnotify");
     Script.Require("angular");
     Script.Require("angularResource");
-    
+
     Script.Require("angular_UI_Router");
     Script.Require("angular_couchPotato");
     Script.Require("ngGrid");
     Script.Require("ui_utils");
     Script.Require("i18next");
     Script.Include("directives/angularjs-i18next-directive.js");
+    Script.Include("services/loadingservice.js");
 }
-
-<div data-ng-show="{{$state.transition}}">Loading...</div>
+<div id="loading">Loading...</div>
 <section class="ng-cloak" data-ui-view>
 </section>
 
@@ -28,9 +28,9 @@
     <script type="text/javascript">
         //<![CDATA[
         function appPrefix() { return ''; }
-        (function() {
+        (function () {
             var load = requirejs.load;
-            requirejs.load = function(context, moduleId, url) {
+            requirejs.load = function (context, moduleId, url) {
                 //modify url here, then call original load
                 return load(context, moduleId, url);
             };
@@ -39,6 +39,6 @@
             //Now load code.
             require(['@Url.Content("~/Modules/Coevery.Core/scripts/app/main.js")']);
         }());
-    //]]>
+        //]]>
     </script>
 }

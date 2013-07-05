@@ -3,64 +3,63 @@ using Orchard.Environment.Extensions.Models;
 
 namespace Coevery.Fields.Services {
     public class ClientRouteProvider : IClientRouteProvider {
-        public virtual Feature Feature { get; set; }
 
-        public void Discover(ClientRouteBuilder builder) {
-            builder.Create("FieldCreateChooseType",
-                           Feature,
-                           route => route
-                                        .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Create")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Fields/CreateChooseType/' + params.EntityName; }")
-                                        .Controller("FieldCreateChooseTypeCtrl")
-                                        .Dependencies("controllers/createchoosetypecontroller"));
+        public void Discover(ClientRouteTableBuilder builder) {
+            builder.Describe("EntityDetail.Fields.Create")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Create";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateChooseType/' + params.EntityName; }";
+                       descriptor.Controller = "FieldCreateChooseTypeCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/createchoosetypecontroller"};
+                   });
 
-            builder.Create("FieldCreateEditInfo",
-                           Feature,
-                           route => route
-                                        .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Create/{FieldTypeName:[0-9a-zA-Z]+}")
-                                        .TemplateUrl("function(params) { return 'SystemAdmin/Fields/CreateEditInfo/' + params.EntityName + '?FieldTypeName=' + params.FieldTypeName; }")
-                                        .Controller("FieldCreateEditInfoCtrl")
-                                        .Dependencies("controllers/createeditinfocontroller"));
+            builder.Describe("FieldCreateEditInfo")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Create/{FieldTypeName:[0-9a-zA-Z]+}";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateEditInfo/' + params.EntityName + '?FieldTypeName=' + params.FieldTypeName; }";
+                       descriptor.Controller = "FieldCreateEditInfoCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/createeditinfocontroller"};
+                   });
 
-            builder.Create("FieldEdit",
-                          Feature,
-                          route => route
-                                       .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+}")
-                                       .TemplateUrl("function(params) { return 'SystemAdmin/Fields/Edit/' + params.EntityName + '?FieldName=' + params.FieldName; }")
-                                       .Controller("FieldEditCtrl")
-                                       .Dependencies("controllers/editcontroller"));
+            builder.Describe("FieldEdit")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+}";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Edit/' + params.EntityName + '?FieldName=' + params.FieldName; }";
+                       descriptor.Controller = "FieldEditCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/editcontroller"};
+                   });
+            builder.Describe("FieldItems")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Items/{FieldName:[0-9a-zA-Z]+}";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Items/' + params.EntityName; }";
+                       descriptor.Controller = "ItemsCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/itemscontroller"};
+                   });
 
-            builder.Create("FieldItems",
-                         Feature,
-                         route => route
-                                      .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Items/{FieldName:[0-9a-zA-Z]+}")
-                                      .TemplateUrl("function(params) { return 'SystemAdmin/Fields/Items/' + params.EntityName; }")
-                                      .Controller("ItemsCtrl")
-                                      .Dependencies("controllers/itemscontroller"));
+            builder.Describe("FieldDependencyList")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/DependencyList/' + params.EntityName; }";
+                       descriptor.Controller = "FieldDependencyListCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/dependencylistcontroller"};
+                   });
 
-            builder.Create("FieldDependencyList",
-                      Feature,
-                      route => route
-                                   .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies")
-                                   .TemplateUrl("function(params) { return 'SystemAdmin/Fields/DependencyList/' + params.EntityName; }")
-                                   .Controller("FieldDependencyListCtrl")
-                                   .Dependencies("controllers/dependencylistcontroller"));
+            builder.Describe("FieldDependencyCreate")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/Create";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateDependency/' + params.EntityName; }";
+                       descriptor.Controller = "FieldDependencyCreateCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/dependencycreatecontroller"};
+                   });
 
-            builder.Create("FieldDependencyCreate",
-                    Feature,
-                    route => route
-                                 .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/Create")
-                                 .TemplateUrl("function(params) { return 'SystemAdmin/Fields/CreateDependency/' + params.EntityName; }")
-                                 .Controller("FieldDependencyCreateCtrl")
-                                 .Dependencies("controllers/dependencycreatecontroller"));
+            builder.Describe("FieldDependencyEdit")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/{DependencyID:[0-9]+}";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }";
+                       descriptor.Controller = "FieldDependencyEditCtrl";
+                       descriptor.Dependencies = new string[] {"controllers/dependencyeditcontroller"};
+                   });
 
-            builder.Create("FieldDependencyEdit",
-                    Feature,
-                    route => route
-                                 .Url("/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/{DependencyID:[0-9]+}")
-                                 .TemplateUrl("function(params) { return 'SystemAdmin/Fields/CreateDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }")
-                                 .Controller("FieldDependencyEditCtrl")
-                                 .Dependencies("controllers/dependencyeditcontroller"));
         }
     }
 }

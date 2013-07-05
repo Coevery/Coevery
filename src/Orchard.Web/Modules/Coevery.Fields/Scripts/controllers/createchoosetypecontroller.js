@@ -4,6 +4,19 @@ define(['core/app/detourService'], function (detour) {
         'FieldCreateChooseTypeCtrl',
         ['$scope', 'logger', '$detour', '$stateParams',
             function ($scope, logger, $detour, $stateParams) {
+                
+                $scope.shouldBeOpen = true;
+
+                $scope.close = function () {
+                    $scope.shouldBeOpen = false;
+                };
+
+                $scope.opts = {
+                    backdropFade: true,
+                    dialogFade: true
+                };
+
+
                 var entityName = $stateParams.EntityName;
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });

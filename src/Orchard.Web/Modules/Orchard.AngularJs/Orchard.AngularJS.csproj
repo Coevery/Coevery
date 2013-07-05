@@ -78,6 +78,8 @@
     <Content Include="Scripts\ng-grid-flexible-height.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\require.min.js" />
+    <Content Include="Scripts\ui-bootstrap-tpls-0.4.0.js" />
+    <Content Include="Scripts\ui-bootstrap-tpls-0.4.0.min.js" />
     <Content Include="Scripts\ui-utils-ieshiv.js" />
     <Content Include="Scripts\ui-utils-ieshiv.min.js" />
     <Content Include="Scripts\ui-utils.js" />

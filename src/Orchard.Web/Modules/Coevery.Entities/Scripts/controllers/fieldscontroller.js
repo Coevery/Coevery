@@ -45,7 +45,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.add = function () {
-                    $detour.transitionTo('FieldCreateChooseType', { EntityName: entityName });
+                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
                 };
                 $scope.edit = function (fieldName) {
                     $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });

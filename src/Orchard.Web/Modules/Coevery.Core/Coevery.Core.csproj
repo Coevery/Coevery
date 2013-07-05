@@ -42,10 +42,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\autofac\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Orchard.Users\bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -89,8 +93,13 @@
     <Compile Include="Admin\SystemAdminMenu.cs" />
     <Compile Include="Admin\SystemAdminThemeSelector.cs" />
     <Compile Include="Admin\SystemMenuFilter.cs" />
-    <Compile Include="ClientRoute\ClientRouteBuilder.cs" />
+    <Compile Include="ClientRoute\ClientRouteAlteration.cs" />
+    <Compile Include="ClientRoute\ClientRouteAlterationBuilder.cs" />
+    <Compile Include="ClientRoute\ClientRouteDescriptor.cs" />
     <Compile Include="ClientRoute\ClientRouteDefinitionBuilder.cs" />
+    <Compile Include="ClientRoute\ClientRouteTableBuilder.cs" />
+    <Compile Include="ClientRoute\DefaultClientRouteTableManager.cs" />
+    <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
     <Compile Include="Controllers\GridTemplateController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
@@ -147,6 +156,7 @@
     <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />
+    <Content Include="Scripts\services\loadingservice.js" />
     <Content Include="Styles\module.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
