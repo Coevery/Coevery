@@ -167,6 +167,7 @@
 
     .edit-view .data-row {
         margin: 10px 0;
+        padding: 0 20px;
     }
 
     .edit-view form {
