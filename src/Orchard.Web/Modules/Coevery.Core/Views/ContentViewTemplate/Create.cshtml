@@ -19,16 +19,14 @@
 
         <div class="row-fluid">
             <section class="edit-view span12">
-                <section class="">
-                    @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                           FormMethod.Post, new { @class = "", @name = "myForm" })) {
-                        @Html.ValidationSummary()
-                        // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
+                    @Html.ValidationSummary()
+                    // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
 
 
-                        Output.Write(Model.Layout);
-                    }
-                </section>
+                    Output.Write(Model.Layout);
+                }
             </section>
         </div>
     </section>

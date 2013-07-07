@@ -22,7 +22,7 @@
 .ngViewport {
     overflow: visible;
     min-height: 20px;
-    background-color: rgba(243, 243, 243, .85);
+    /*background-color: rgba(243, 243, 243, .85);*/
 }
 
 .ngCanvas {

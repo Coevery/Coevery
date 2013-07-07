@@ -40,6 +40,18 @@
                             return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
                         }]
                     }
+                })
+                .state('View', {
+                    url: '/{Module:[a-zA-Z]+}/View/{Id:[0-9a-zA-Z]+}',
+                    templateProvider: ['$http', '$stateParams', function ($http, $stateParams) {
+                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/View/' + $stateParams.Id;
+                        return $http.get(url).then(function (response) { return response.data; });
+                    }],
+                    resolve: {
+                        dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
+                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
+                        }]
+                    }
                 });
         }]);
 
@@ -93,7 +105,7 @@
 angular.module('coevery.layout', [])
     .directive('fdSection', function() {
         return {
-            template: '<section fd-section><header><h5>Section Title</h5></header><div ng-transclude></div></section>',
+            template: '<fieldset fd-section class="data-section"><header><legend><h5>Section Title</h5></legend></header><div ng-transclude></div></fieldset>',
             replace: true,
             restrict: 'E',
             transclude: true,

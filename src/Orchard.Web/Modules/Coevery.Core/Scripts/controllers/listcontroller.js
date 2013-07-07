@@ -187,6 +187,12 @@
               }
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
+          $scope.view = function (id) {
+              if (!id && $scope.checkedIds.length > 0) {
+                  id = $scope.checkedIds[0];
+              }
+              $state.transitionTo('View', { Module: moduleName, Id: id });
+          };
       }]
     ]);
 });
