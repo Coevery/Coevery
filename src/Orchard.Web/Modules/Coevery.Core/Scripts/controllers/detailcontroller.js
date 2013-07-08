@@ -7,13 +7,14 @@
           $scope.moduleName = moduleName;
 
           var myForm = $('[name=myForm]');
-          $scope.save = function () {
+          $scope.save = function (isBack) {
               $.ajax({
                   url: myForm.attr('action'),
                   type: myForm.attr('method'),
                   data: myForm.serialize() + '&submit.Save=Save',
                   success: function (result) {
-                      $scope.exit();
+                      if (isBack)
+                        $scope.exit();
                   }
               });
           };
@@ -22,6 +23,11 @@
 
           };
 
+          $scope.edit = function () {
+              var id = $rootScope.$stateParams.Id;
+              $state.transitionTo('Detail', { Module: moduleName, Id: id });
+          };
+          
           $scope.exit = function () {
               $state.transitionTo('List', { Module: moduleName });
           };
