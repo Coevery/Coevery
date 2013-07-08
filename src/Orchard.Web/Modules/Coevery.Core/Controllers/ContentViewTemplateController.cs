@@ -233,6 +233,10 @@ namespace Coevery.Core.Controllers
             });
         }
 
+        public ActionResult View(int id) {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Remove(int id, string returnUrl)
         {

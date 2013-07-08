@@ -131,6 +131,7 @@
 
 /*Page Title*/
 #page-title h1 {
+    float: left;
     font-size: 24px;
     color: #444;
     margin: 0;
@@ -139,37 +140,116 @@
     text-shadow: -1px -1px #f0f0f0;
 }
 
-#page-title span {
-    color: #777;
-    font-size: 11px;
-    font-weight: normal;
-    padding-left: 6px;
-    margin-left: 6px;
-    border-left: 1px dotted #aaa;
-    line-height: 1;
-    -webkit-text-shadow: none;
-    text-shadow: none;
+    #page-title h1 > span {
+        color: #777;
+        font-size: 11px;
+        font-weight: normal;
+        padding-left: 6px;
+        margin-left: 6px;
+        border-left: 1px dotted #aaa;
+        line-height: 1;
+        -webkit-text-shadow: none;
+        text-shadow: none;
+    }
+
+#page-title .btn-toolbar {
+    float: right;
+    margin: 17px 0;
 }
 
 /*Edit View*/
 .edit-view {
-    background-color: #f8f8f8;
+    /*background-color: #f8f8f8;*/
 }
 
     .edit-view section header {
-        padding: 5px 16px;
-        background-color: rgba(138, 158, 190, 0.8);
+        /*padding: 5px 16px;
+        background-color: rgba(138, 158, 190, 0.8);*/
     }
 
         .edit-view section header h5 {
-            margin: 0;
+            /*margin: 0;*/
         }
+
+            .edit-view section header h5.sub {
+                -webkit-text-shadow: none;
+                text-shadow: none;
+            }
+
+            .edit-view section header h5 span {
+                background-color: #fff;
+            }
 
     .edit-view .data-row {
         margin: 10px 0;
         padding: 0 20px;
     }
 
+        .edit-view .data-row .control-label {
+            text-align: left;
+            width: 120px;
+            float: left;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+
+        .edit-view .data-row .controls {
+            margin-left: 140px;
+        }
+
     .edit-view form {
         margin: 0;
     }
+
+        .edit-view form > .data-section {
+            margin-top: 20px;
+        }
+
+            .edit-view form > .data-section:first-child {
+                margin-top: 0;
+            }
+
+/*View Mode*/
+.view-mode {
+}
+
+    .view-mode legend {
+        margin: 0;
+    }
+
+    .view-mode .data-row {
+        padding: 10px 20px;
+    }
+
+        .view-mode .data-row + .data-row {
+            border-top: 1px solid #ececec;
+        }
+
+        .view-mode .data-row .control-label {
+            text-align: left;
+            width: 120px;
+            float: left;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+
+        .view-mode .data-row .controls {
+            margin-left: 140px;
+        }
+
+            .view-mode .data-row .controls .control-text {
+                padding-top: 5px;
+                display: block;
+            }
+
+    .view-mode form {
+        margin: 0;
+    }
+
+        .view-mode form > .data-section {
+            margin-top: 20px;
+        }
+
+            .view-mode form > .data-section:first-child {
+                margin-top: 0;
+            }
