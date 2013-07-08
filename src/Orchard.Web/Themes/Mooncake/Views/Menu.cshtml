@@ -40,13 +40,13 @@
                     if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
                         secondLevelUrl = firstOfTheThird.Href;
                     }
-                    var filePaht = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
+                    var filePath = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
                     var backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico");
-                    if (!File.Exists(filePaht))
+                    if (!File.Exists(filePath))
                     {
                         backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/Home.ico");
                     }
-                    <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl">
+                    <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
                         <a href="@secondLevelUrl">
                             <i class="icon-home" 
                                    style="width: 32px; height: 32px; background-position: center; background-image: url(@backUrl);"></i>
