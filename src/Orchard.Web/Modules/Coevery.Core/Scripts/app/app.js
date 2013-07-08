@@ -49,7 +49,7 @@
                     }],
                     resolve: {
                         dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
-                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
+                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/viewcontroller']);
                         }]
                     }
                 });
