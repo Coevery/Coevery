@@ -26,7 +26,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
 
                 };
 
-                $scope.save = function() {
+                $scope.save = function(isBack) {
                     var pickListValue = '';
                     for (var i = 0; i < $scope.SelectedColumns.length; i++) {
                         var fieldName = $scope.SelectedColumns[i].FieldName;
@@ -38,7 +38,9 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         type: myForm.method,
                         data: $(myForm).serialize() + '&submit.Save=Save',
                         success: function(result) {
-                            logger.success("Layout Saved.");
+                            //logger.success("Layout Saved.");
+                            if (isBack)
+                                $scope.exit();
                         }
                     });
                 };
