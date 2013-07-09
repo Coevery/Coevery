@@ -2,11 +2,11 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateEditInfoCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams','$location',
-            function ($scope, logger, $detour, $stateParams, $location) {
+        ['$scope', 'logger', '$stateParams', '$location',
+            function ($scope, logger, $stateParams, $location) {
                 var entityName = $stateParams.Id;
 
-                $scope.open = function() {
+                $scope.open = function () {
                     $(".step3").hide();
                     $scope.shouldBeOpen = true;
                 };
@@ -28,16 +28,11 @@ define(['core/app/detourService'], function (detour) {
                 });
 
                 $scope.exit = function () {
-                    //$detour.transitionTo('EntityDetail.Fields', { Id: entityName });
-                    
                     $location.url("/Entities/" + entityName.toString());
                     $scope.close();
                 };
                 $scope.prev = function () {
-                    //$detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
- 
                     $scope.$emit('toStep1');
-                    
                 };
                 $scope.back = function () {
                     $('.step2').show();

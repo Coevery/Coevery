@@ -17,7 +17,6 @@ namespace Coevery.Fields.Services {
                    .Configure(descriptor => {
                        descriptor.Url = "/Create/{FieldTypeName:[0-9a-zA-Z]+}";
                        descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateEditInfo/' + params.Id + '?FieldTypeName=' + params.FieldTypeName; }";
-                       //descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateEditInfo/' + params.FieldTypeName; }";
                        descriptor.Controller = "FieldCreateEditInfoCtrl";
                        descriptor.Dependencies = new string[] {"controllers/createeditinfocontroller"};
                    });

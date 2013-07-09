@@ -47,8 +47,8 @@
                 var minHeight = window.innerHeight -
                     yOffset -
                     $("#footer").outerHeight(true);
-                if (minHeight < 200) {
-                    minHeight = 200;
+                if (minHeight < 100) {
+                    minHeight = 100;
                 }
                 return minHeight;
             }

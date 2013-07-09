@@ -16,14 +16,18 @@ function ngGridFlexibleHeightPlugin(opts) {
             }
             if (opts != null) {
                 if (opts.minHeight != null) {
-                    var tempMin;
-                    if ($.isFunction(opts.minHeight)) {
-                        tempMin = opts.minHeight();
-                    } else {
-                        tempMin = opts.minHeight;
-                    }
-                    if ((naturalHeight + extraHeight) < tempMin) {
-                        naturalHeight = tempMin - extraHeight - 2;
+                    var findGrids = $(".gridStyle.ng-scope.ngGrid");              
+
+                    if (findGrids.last().find(self.grid.$viewport).length != 0) {
+                        var tempMin;
+                        if ($.isFunction(opts.minHeight)) {
+                            tempMin = opts.minHeight();
+                        } else {
+                            tempMin = opts.minHeight;
+                        }
+                        if ((naturalHeight + extraHeight) < tempMin) {
+                            naturalHeight = tempMin - extraHeight - 2;
+                        }
                     }
                 }
             }

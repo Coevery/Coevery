@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateChooseTypeCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$location',
-            function ($scope, logger, $detour, $stateParams, $location) {
+        ['$scope', 'logger', '$stateParams', '$location',
+            function ($scope, logger, $stateParams, $location) {
 
                 var entityName = $stateParams.Id;
                 $scope.open = function () {
@@ -22,7 +22,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.fieldType = $('#field-type-form input:first').val();
-                $scope.$on('toStep2Done', function() {
+                $scope.$on('toStep2Done', function () {
                     $scope.close();
                     $(".modal-backdrop").remove();
                 });
@@ -30,14 +30,11 @@ define(['core/app/detourService'], function (detour) {
 
                     $location.url("/Entities/" + entityName.toString());
                     $scope.close();
-                    //$detour.transitionTo('EntityDetail.Fields', { Id: entityName });                  
                 };
 
                 $scope.next = function () {
                     if ($scope.fieldType) {
-                        
                         $scope.$emit('toStep2', $scope.fieldType);
-                        
                     }
                 };
             }]
