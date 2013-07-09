@@ -2,17 +2,42 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateEditInfoCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams',
-            function ($scope, logger, $detour, $stateParams) {
-                var entityName = $stateParams.EntityName;
-                
-                $('.step3').hide();
+        ['$scope', 'logger', '$detour', '$stateParams','$location',
+            function ($scope, logger, $detour, $stateParams, $location) {
+                var entityName = $stateParams.Id;
+
+                $scope.open = function() {
+                    $(".step3").hide();
+                    $scope.shouldBeOpen = true;
+                };
+
+                $scope.close = function () {
+                    $scope.shouldBeOpen = false;
+                };
+
+                $scope.opts = {
+                    backdrop: false,
+                    backdropFade: false,
+                    dialogFade: true,
+                    backdropClick: false
+                };
+
+                $scope.$on('toStep1Done', function () {
+                    $scope.close();
+                    $(".modal-backdrop").remove();
+                });
 
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    //$detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    
+                    $location.url("/Entities/" + entityName.toString());
+                    $scope.close();
                 };
                 $scope.prev = function () {
-                    $detour.transitionTo('EntityDetail.Fields.Create', { EntityName: entityName });
+                    //$detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
+ 
+                    $scope.$emit('toStep1');
+                    
                 };
                 $scope.back = function () {
                     $('.step2').show();
@@ -36,6 +61,8 @@ define(['core/app/detourService'], function (detour) {
                             logger.error('Failed');
                         }
                     });
+                    $location.url("/Entities/" + entityName.toString());
+                    $scope.close();
                 };
 
                 $('#DisplayName').keyup(copyName);
