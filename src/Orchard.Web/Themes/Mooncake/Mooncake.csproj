@@ -105,6 +105,7 @@
     <Content Include="Scripts\js\libs\bootstrap.min.js" />
     <Content Include="Scripts\js\libs\excanvas.js" />
     <Content Include="Scripts\js\libs\excanvas.min.js" />
+    <Content Include="Scripts\js\libs\hovermenu.js" />
     <Content Include="Scripts\js\libs\jquery.placeholder.js" />
     <Content Include="Scripts\js\libs\jquery.placeholder.min.js" />
     <Content Include="Scripts\js\login.js" />
@@ -1921,6 +1922,7 @@
     <Content Include="Styles\images\preloaders\7.gif" />
     <Content Include="Styles\images\preloaders\8.gif" />
     <Content Include="Styles\images\preloaders\9.gif" />
+    <Content Include="Styles\images\twisty_sprite.png" />
     <Content Include="Styles\images\vlabels.png" />
     <Content Include="Styles\layout.css" />
     <Content Include="Styles\login.css" />

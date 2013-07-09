@@ -30,7 +30,7 @@ using Orchard.Utility;
 
 namespace Coevery.Projections.Services
 {
-    public class ProjectionService:IProjectionService
+    public class ProjectionService : IProjectionService
     {
         private readonly IOrchardServices _services;
         private readonly ISiteService _siteService;
@@ -82,7 +82,7 @@ namespace Coevery.Projections.Services
 
             //Get all field
             var contentPart = _contentDefinitionManager.GetPartDefinition(entityType);
-            viewModel.AllFields = contentPart == null ? new BindingList<ContentPartFieldDefinition>() : contentPart.Fields; 
+            viewModel.AllFields = contentPart == null ? new BindingList<ContentPartFieldDefinition>() : contentPart.Fields;
             return viewModel;
         }
 
@@ -97,8 +97,8 @@ namespace Coevery.Projections.Services
             var queryItem = _contentManager.New("Query");
             var projectionPart = projectionItem.As<ProjectionPart>();
             var queryPart = queryItem.As<QueryPart>();
-           // projectionPart.Record.QueryPartRecord = queryPart.Record;
-          
+            // projectionPart.Record.QueryPartRecord = queryPart.Record;
+
             _contentManager.Create(projectionItem, VersionOptions.Draft);
             _contentManager.Create(queryItem, VersionOptions.Draft);
             projectionPart.Record.QueryPartRecord = queryPart.Record;
@@ -110,11 +110,11 @@ namespace Coevery.Projections.Services
             var queryViewModel = this.GetQueryViewModel(queryPart);
             viewModel.QueryViewModel = queryViewModel;
             viewModel.Id = projectionItem.Id;
-            
+
             //Create ng-grid layout for query
             var layoutViewModel = this.CreateTempLayout(queryPart, "", "ngGrid");
             viewModel.LayoutViewModel = layoutViewModel;
-            if(layoutViewModel != null)projectionPart.Record.LayoutRecord = queryPart.Layouts[0];
+            if (layoutViewModel != null) projectionPart.Record.LayoutRecord = queryPart.Layouts[0];
 
             //Create filter  for query
             var filterGroup = new FilterGroupRecord();
@@ -136,10 +136,11 @@ namespace Coevery.Projections.Services
         }
 
 
-        public ProjectionEditViewModel GetProjectionViewModel(int id) {
+        public ProjectionEditViewModel GetProjectionViewModel(int id)
+        {
             ProjectionEditViewModel viewModel = new ProjectionEditViewModel();
             //Get Projection&QueryPart
-            var projectionItem = _contentManager.Get(id,VersionOptions.Latest);
+            var projectionItem = _contentManager.Get(id, VersionOptions.Latest);
             var projectionPart = projectionItem.As<ProjectionPart>();
             var queryId = projectionPart.Record.QueryPartRecord.Id;
             var queryItem = _contentManager.Get(queryId, VersionOptions.Latest);
@@ -148,7 +149,7 @@ namespace Coevery.Projections.Services
             viewModel.Name = projectionItem.As<TitlePart>().Title;
             viewModel.DisplayName = queryPart.Name;
             viewModel.QueryViewModel = this.GetQueryViewModel(queryPart);
-           
+
             //Get LayoutViewModel;
             LayoutRecord layoutRecord = projectionPart.Record.LayoutRecord;
             viewModel.LayoutViewModel = this.GetLayoutEditViewModel(layoutRecord);
@@ -158,15 +159,18 @@ namespace Coevery.Projections.Services
             viewModel.AllFields = contentPart == null ? new BindingList<ContentPartFieldDefinition>() : contentPart.Fields;
 
             var sortCriteria = queryPart.SortCriteria.FirstOrDefault();
-            if (sortCriteria != null) {
+            if (sortCriteria != null)
+            {
                 viewModel.SortedBy = sortCriteria.Type;
                 Regex regex = new Regex("<Sort>(.+?)</Sort>");
                 var matche = regex.Match(sortCriteria.State);
-                viewModel.SortMode = matche.Value.Contains("true")? "Desc" : "Asc";
+                viewModel.SortMode = matche.Value.Contains("true") ? "Desc" : "Asc";
             }
 
             var layoutPropertyPart = _layoutPropertyService.GetLayoutPropertyByQueryid(queryPart.Id);
-            if (layoutPropertyPart != null) {
+
+            if (layoutPropertyPart != null)
+            {
                 viewModel.VisableTo = layoutPropertyPart.VisableTo;
                 viewModel.PageRowCount = layoutPropertyPart.PageRowCount;
             }
@@ -175,7 +179,7 @@ namespace Coevery.Projections.Services
 
         public bool EditPost(int id, string entityName, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds)
         {
-            if(pickedFileds == null)pickedFileds = new List<string>();
+            if (pickedFileds == null) pickedFileds = new List<string>();
             var projectionItem = _contentManager.Get(id, VersionOptions.Latest);
             var projectionPart = projectionItem.As<ProjectionPart>();
             var queryId = projectionPart.Record.QueryPartRecord.Id;
@@ -191,11 +195,11 @@ namespace Coevery.Projections.Services
             layoutRecord.Properties.Clear();
 
 
-            var contentPart = _contentDefinitionManager.GetPartDefinition(entityName);
-            var allFields = contentPart == null ? new BindingList<ContentPartFieldDefinition>() : contentPart.Fields;
+            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
             string category = projectionItem.As<TitlePart>().Title + "ContentFields";
-            foreach (var property in pickedFileds) {
-                var field = allFields.FirstOrDefault(c => c.Name == property);
+            foreach (var property in pickedFileds)
+            {
+                var field = allFields.FirstOrDefault(c =>c.Category==category && c.Type.StartsWith(projectionItem.As<TitlePart>().Title + "." + property));
                 if (field == null)
                 {
                     throw new Exception("selected field not found:" + property);
@@ -203,8 +207,8 @@ namespace Coevery.Projections.Services
                 var propertyRecord = new PropertyRecord
                 {
                     Category = category,
-                    Type = property,
-                    Description = field.DisplayName,
+                    Type = field.Type,
+                    Description = field.Name.Text.Split(':').Length > 0?field.Name.Text.Split(':')[0]:string.Empty,
                     Position = layoutRecord.Properties.Count,
                     State = GetPropertyState(property),
                     LinkToContent = layoutRecord.Properties.Count == 0
@@ -248,7 +252,7 @@ namespace Coevery.Projections.Services
             return string.Format(format, entityType);
         }
 
-        private string GetSortState(string description,string sortMode)
+        private string GetSortState(string description, string sortMode)
         {
             string format = @"<Form><Description>{0}</Description><Sort>{1}</Sort></Form>";
             return string.Format(format, description, sortMode == "Desc" ? "true" : "false");
@@ -288,12 +292,12 @@ namespace Coevery.Projections.Services
                   <PreserveLines>false</PreserveLines>
                   <__RequestVerificationToken>ciDAMpqWekeZ9akUdP45wrGCR-RbzW3fKdnX3IztKQZd1zVqvBQLpNHgueKedAEt6YyEZ3kGF1zFcuvCaFedP2XovGdniK5wpqg5TMcxICtLElQDw14kWyePWJx4KI4Wqw8usNPgLFlXNRSQWIcBbv3JNZ5ITLKNigxo4znvIrk1</__RequestVerificationToken>
                     </Form>";
-            return string.Format(format,filedName);
+            return string.Format(format, filedName);
         }
 
-        private string GetLayoutState(int queryId, int columnCount,string desc)
+        private string GetLayoutState(int queryId, int columnCount, string desc)
         {
-            Dictionary<string,string> datas = new Dictionary<string, string>();
+            Dictionary<string, string> datas = new Dictionary<string, string>();
             datas.Add("QueryId", queryId.ToString());
             datas.Add("Category", "Html");
             datas.Add("Type", "ngGrid");
@@ -346,23 +350,23 @@ namespace Coevery.Projections.Services
             var fieldEntries = new List<PropertyEntry>();
             foreach (var field in layoutRecord.Properties)
             {
-              
-                    fieldEntries.Add(
-                        new PropertyEntry
-                        {
-                            Category = field.Category,
-                            Type = field.Type,
-                            PropertyRecordId = field.Id,
-                            DisplayText = field.Description,
-                            Position = field.Position
-                        });
-                
+
+                fieldEntries.Add(
+                    new PropertyEntry
+                    {
+                        Category = field.Category,
+                        Type = field.Type,
+                        PropertyRecordId = field.Id,
+                        DisplayText = field.Description,
+                        Position = field.Position
+                    });
+
             }
             viewModel.Properties = fieldEntries.OrderBy(f => f.Position).ToList();
             return viewModel;
         }
 
-        private LayoutEditViewModel CreateTempLayout(QueryPart query,string category, string type)
+        private LayoutEditViewModel CreateTempLayout(QueryPart query, string category, string type)
         {
             LayoutEditViewModel model = new LayoutEditViewModel();
             model.Category = category;
@@ -474,6 +478,6 @@ namespace Coevery.Projections.Services
             return viewModel;
         }
 
-       
+
     }
 }

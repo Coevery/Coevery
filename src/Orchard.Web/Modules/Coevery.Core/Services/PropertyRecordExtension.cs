@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using Orchard.Projections.Models;
+using Orchard.Projections.ViewModels;
 
 namespace Coevery.Core {
     public static class PropertyRecordExtension {

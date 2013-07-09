@@ -5,14 +5,15 @@ define(['core/app/detourService'], function (detour) {
       'EntityEditCtrl',
       ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource',
       function ($timeout, $scope, logger, $detour, $stateParams, $resource) {
-          $scope.save = function () {
+          $scope.save = function (isBack) {
               var element = angular.element(myForm);
               $.ajax({
                   url: element.attr('action'),
                   type: element.attr('method'),
                   data: element.serialize() + '&submit.Save=Save',
                   success: function (result) {
-                      $timeout($scope.exit, 0);
+                      if (isBack)
+                        $timeout($scope.exit, 0);
                   }
               });
           };
