@@ -76,6 +76,7 @@
     <Content Include="Scripts\ng-grid-2.0.6.debug.js" />
     <Content Include="Scripts\ng-grid-2.0.6.min.js" />
     <Content Include="Scripts\ng-grid-flexible-height.js" />
+    <Content Include="Scripts\ng-grid-row-selection.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\require.min.js" />
     <Content Include="Scripts\ui-bootstrap-tpls-0.4.0.js" />

@@ -8,15 +8,15 @@ namespace Coevery.Fields.Services {
             builder.Describe("EntityDetail.Fields.Create")
                    .Configure(descriptor => {
                        descriptor.Url = "/Create";
-                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateChooseType/' + params.EntityName; }";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateChooseType/' + params.Id; }";
                        descriptor.Controller = "FieldCreateChooseTypeCtrl";
                        descriptor.Dependencies = new string[] {"controllers/createchoosetypecontroller"};
                    });
 
-            builder.Describe("FieldCreateEditInfo")
+            builder.Describe("EntityDetail.Fields.CreateEditInfo")
                    .Configure(descriptor => {
-                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Create/{FieldTypeName:[0-9a-zA-Z]+}";
-                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateEditInfo/' + params.EntityName + '?FieldTypeName=' + params.FieldTypeName; }";
+                       descriptor.Url = "/Create/{FieldTypeName:[0-9a-zA-Z]+}";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateEditInfo/' + params.Id + '?FieldTypeName=' + params.FieldTypeName; }";
                        descriptor.Controller = "FieldCreateEditInfoCtrl";
                        descriptor.Dependencies = new string[] {"controllers/createeditinfocontroller"};
                    });

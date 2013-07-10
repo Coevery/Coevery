@@ -1,20 +1,30 @@
 ﻿define(['core/app/couchPotatoService', 'core/services/commondataservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralDetailCtrl',
-      ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams', '$element', 'commonDataService',
-      function ($timeout, $rootScope, $scope, logger, $state, $stateParams, $element, commonDataService) {
+      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state','$http',
+      function ($timeout, $rootScope, $scope, $q, logger, $state, $http) {
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
 
-          var myForm = $('[name=myForm]');
-          $scope.save = function () {
-              $.ajax({
-                  url: myForm.attr('action'),
-                  type: myForm.attr('method'),
-                  data: myForm.serialize() + '&submit.Save=Save',
-                  success: function (result) {
-                      $scope.exit();
-                  }
+          $scope.save = function() {
+              var form = angular.element(myForm);
+              var promise = $http({
+                  url: form.attr('action'),
+                  method: "POST",
+                  data: form.serialize() + '&submit.Save=Save',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+              }).then(function() {
+                  logger.success('Save succeeded.');
+              }, function(reason) {
+                  logger.success('Save Failed： ' + reason);
+              });
+              return promise;
+          };
+
+          $scope.saveAndBack = function() {
+              var promise = $scope.save();
+              promise.then(function() {
+                  $scope.exit();
               });
           };
 
@@ -22,6 +32,11 @@
 
           };
 
+          $scope.edit = function () {
+              var id = $rootScope.$stateParams.Id;
+              $state.transitionTo('Detail', { Module: moduleName, Id: id });
+          };
+          
           $scope.exit = function () {
               $state.transitionTo('List', { Module: moduleName });
           };

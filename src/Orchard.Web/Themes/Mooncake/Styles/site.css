@@ -61,7 +61,6 @@
 }
 
 #wrapper #content.sidebar-minimized #sidebar {
-    overflow: visible;
     z-index: 1000;
     position: fixed;
 }
@@ -190,7 +189,7 @@
             width: 120px;
             float: left;
             padding-top: 5px;
-            font-weight: bold;
+            color: #777;
         }
 
         .edit-view .data-row .controls {
@@ -213,12 +212,36 @@
 .view-mode {
 }
 
-    .view-mode legend {
+    .view-mode header {
         margin: 0;
+        border-bottom: 1px solid #ebaf59;
     }
 
+        .view-mode header h5 {
+            display: inline-block;
+        }
+
+        .view-mode header .show-button,
+        .view-mode header .hide-button {
+            margin-right: 4px;
+            background-repeat: no-repeat;
+            background-image: url('images/twisty_sprite.png');
+            height: 11px;
+            width: 11px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .view-mode header .show-button {
+            background-position: 0 -11px;
+        }
+
+        .view-mode header .hide-button {
+            background-position: 0 0;
+        }
+
     .view-mode .data-row {
-        padding: 10px 20px;
+        padding: 5px 20px;
     }
 
         .view-mode .data-row + .data-row {
@@ -230,7 +253,7 @@
             width: 120px;
             float: left;
             padding-top: 5px;
-            font-weight: bold;
+            color: #777;
         }
 
         .view-mode .data-row .controls {
@@ -253,3 +276,19 @@
             .view-mode form > .data-section:first-child {
                 margin-top: 0;
             }
+
+/*Related List*/
+.related-list {
+    margin-top: 20px;
+    border-top: 2px solid #ebaf59;
+}
+
+    .related-list > header > h5 {
+        margin-right: 40px;
+        display: inline-block;
+    }
+
+    .related-list > header > .btn-toolbar {
+        display: inline-block;
+        font-size: 14px;
+    }

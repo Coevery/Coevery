@@ -1,0 +1,224 @@
+.row
+{
+    margin-top: 10px;
+}
+
+@media (min-width: 768px) and (max-width: 1281px)
+{
+    #wrapper #content.sidebar-minimized #main
+    {
+        margin-left: 45px !important;
+    }
+
+    #page-actions
+    {
+        margin-left: 151px;
+        padding: 0 24px;
+    }
+
+    #wrapper #main #main-content
+    {
+        padding: 0 24px 0 134px;
+    }
+
+    #wrapper #content.sidebar-minimized #sidebar
+    {
+        width: 150px;
+        background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
+        border-right: #c6c8cc 1px solid;
+    }
+
+    #nav-selector #selector > span
+    {
+        max-width: 100px;
+    }
+
+    .navbar-inner
+    {
+        padding: 0px !important;
+    }
+
+    .navbar-fixed-bottom
+    {
+        position: fixed;
+    }
+
+    .row
+    {
+        margin-left: 20px;
+        *zoom: 1;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px)
+{
+    #page-actions
+    {
+        margin-left: 45px;
+        padding: 0 20px;
+    }
+
+
+    #wrapper #content.sidebar-minimized #sidebar
+    {
+        width: 45px;
+        background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
+        border-right: #c6c8cc 1px solid;
+    }
+
+    #first-menu-title
+    {
+        display: none !important;
+    }
+
+    .navbar-fixed-bottom
+    {
+        position: fixed;
+    }
+
+    .navbar-inner
+    {
+        padding: 0px !important;
+    }
+
+    .row
+    {
+        margin-left: 5px;
+        margin-top: 0px;
+        *zoom: 1;
+    }
+
+    #wrapper #sidebar #navigation ul > li > a [class^="icon-"],
+    #wrapper #sidebar #navigation ul > li > a [class^="icol-"],
+    #wrapper #sidebar #navigation ul > li > a [class^="icos-"]
+    {
+        margin: 0 4px 0 0px;
+    }
+
+    #header #header-right
+    {
+        padding: 0px;
+    }
+
+    .row-fluid .span4
+    {
+        width: 31.623931623931625%;
+        *width: 31.570740134569924%;
+        float: left;
+    }
+
+    .row-fluid .span8
+    {
+        width: 65.74585635359117%;
+        *width: 65.69266486422946%;
+        float: left;
+    }
+}
+
+@media (max-width: 481px)
+{
+    #wrapper #content.sidebar-minimized #sidebar
+    {
+        position: relative;
+        height: auto !important;
+    }
+
+    #wrapper #sidebar #navigation ul.menu > li
+    {
+        background-color: rgba(255, 255, 255, 0.05);
+        line-height: 18px;
+        list-style: none;
+        cursor: pointer;
+        border-top:none;
+        border-bottom: none;
+    }
+
+    #wrapper #sidebar #navigation ul.menu > li > a
+    {
+        padding: 3px 15px;
+        color: #ddd;
+    }
+    
+    #wrapper #sidebar #navigation  ul.menu > li:hover > a 
+    {
+        background-color: rgba(148, 219, 255, 0.2);
+    }
+
+    #wrapper #sidebar #navigation ul.menu > li > a [class^="icon-"] 
+    {
+        vertical-align: middle !important;
+    }
+
+    #wrapper #sidebar #navigation ul.menu 
+    {
+        border: none;
+    }
+
+    #wrapper #sidebar #navigation ul > li.active > a
+    {
+        margin-right: -1px;
+        background: none;
+        background-image: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    #nav-selector 
+    {
+        border-bottom: none;
+        padding: 5px 20px;
+    }
+
+    #page-actions
+    {
+        margin-top: 0px;
+        z-index: 999;
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin-left: 0px;
+        padding: 0;
+    }
+
+    #main-content
+    {
+        margin-top: 0px;
+    }
+
+    .navbar-fixed-bottom
+    {
+        position: fixed;
+        height: 60px;
+    }
+
+    .row
+    {
+        margin-left: 5px;
+        margin-top: 0px;
+        *zoom: 1;
+    }
+
+    #page-title .btn-toolbar
+    {
+        float: left;
+        margin: 10px 0;
+    }
+
+    .dataTables_paginate
+    {
+        float: left;
+    }
+
+    .caret
+    {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        vertical-align: top;
+        border-top: 4px solid #fff;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+        content: "";
+    }
+}

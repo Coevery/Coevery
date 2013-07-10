@@ -1,9 +1,12 @@
 ﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
+      ['$rootScope', '$scope','$parse', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
+      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
           var moduleName = $rootScope.$stateParams.Module;
+          
+          var primaryKeyGetter = $parse('ContentId');
+          
           $scope.moduleName = moduleName;
 
           $scope.pagingOptions = {
@@ -53,15 +56,16 @@
               $scope.columnDefs = gridColumns;
           }, function () {});
 
-          var rowTemplate = '<div ng-mouseover="mouseOverState(row,true)" style="overflow:visible;" ng-click="rowClick(row,renderedRows,col)" ng-mouseout="mouseOverState(row,false)" ng-style="{\'cursor\': row.cursor, \'z-index\': col.zIndex() }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell {{col.cellClass}}" ng-cell></div>';
+          $scope.selectedItems = [];
+          
           $scope.gridOptions = {
               data: 'myData',
               enablePaging: true,
               showFooter: true,
               multiSelect: true,
               enableRowSelection: true,
-              showSelectionCheckbox:true,
-              //rowTemplate: rowTemplate,
+              showSelectionCheckbox: true,
+              selectedItems: $scope.selectedItems,
               pagingOptions: $scope.pagingOptions,
               columnDefs: "columnDefs"
           };
@@ -69,52 +73,6 @@
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.toolButtonDisplay = false;
-          $scope.checkedIds = [];
-          $scope.checkChange = function (checkAll,rows) {
-              if (checkAll)
-              {
-                  //check all
-                  $.each(rows, function (i, v) {
-                      v.checked = rows.allSelected;
-                  });
-              }
-              var checkItems = $(rows).filter(function () {
-                  return this.checked;
-              });
-              rows.allSelected = checkItems.length == rows.length;
-              $scope.toolButtonDisplay = checkItems.length > 0;
-              $scope.checkedIds = [];
-              $.each(checkItems, function (i, v) {
-                  $scope.checkedIds[i] = v.entity.ContentId;
-              });
-              
-              if (!checkAll && $scope.checkedIds.length > 1)
-              {
-                  $scope.mouseOverState(this.row, false);
-              }
-          };
-          
-          $scope.mouseOverState = function (row, isOver) {
-              if ($scope.checkedIds.length > 1) {
-                  row.MouseOve = false;
-                  return;
-              }
-              row.MouseOve = isOver;
-          };
-
-          $scope.rowClick = function (row, rows, col) {
-              if (col.index <= 0) return;
-              $.each(rows, function (i, v) {
-                  if(v != row)
-                  v.checked = false;
-              });
-              if ($scope.checkedIds.length <= 1) {
-                  if (!row.checked) row.checked = true;
-                  else row.checked = false;
-              }
-              $scope.checkChange(false, rows);
-              $scope.mouseOverState(row, true);
-          };
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           $scope.Refresh = function () {
@@ -161,15 +119,17 @@
               $scope.expendCollapse();
               $('#collapseBtn').click();
           };
-
-
-         
           
           $scope.delete = function (id) {
-              if (!id) {
-                  id = $scope.checkedIds.toString();
+              var ids = [];
+              if (id) {
+                  ids.push(id);
+              } else {
+                  angular.forEach($scope.selectedItems, function (entity) {
+                      ids.push(primaryKeyGetter(entity));
+                  }, ids);
               }
-              commonDataService.delete({ contentId: id }, function () {
+              commonDataService.delete({ contentId: ids }, function () {
                   $scope.Refresh();
                   logger.success('Delete the ' + moduleName + ' successful.');
               }, function () {
@@ -182,14 +142,14 @@
           };
 
           $scope.edit = function (id) {
-              if (!id && $scope.checkedIds.length > 0) {
-                  id = $scope.checkedIds[0];
+              if (!id && $scope.selectedItems.length > 0) {
+                  id = primaryKeyGetter($scope.selectedItems[0]);
               }
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
           $scope.view = function (id) {
-              if (!id && $scope.checkedIds.length > 0) {
-                  id = $scope.checkedIds[0];
+              if (!id && $scope.selectedItems.length > 0) {
+                  id = primaryKeyGetter($scope.selectedItems[0]);
               }
               $state.transitionTo('View', { Module: moduleName, Id: id });
           };

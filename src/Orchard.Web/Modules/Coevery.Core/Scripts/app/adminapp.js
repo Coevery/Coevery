@@ -42,11 +42,29 @@
                 ns: 'resources-locale'
             };
 
-            function getGridMinHeight() {
-                var yOffset = $(".gridStyle.ng-scope.ngGrid").offset().top;
-                var minHeight = window.innerHeight -
-                    yOffset -
+            function getGridMinHeight(currentGrid) {
+                var findGrids = $(".gridStyle.ng-scope.ngGrid");
+                var availHeight = window.innerHeight -
+                    $("#header").outerHeight(true) -
                     $("#footer").outerHeight(true);
+                var currentGridNumber = 0;
+                if (isNaN(availHeight)) {
+                    alert("Wrong variable used!");
+                }
+
+                for (var index = 0; index < findGrids.length; index++) {
+                    var tempGrid = findGrids.eq(-index - 1);
+                    availHeight -= tempGrid.height();
+                    if (tempGrid.find(currentGrid) != 0) {
+                        currentGridNumber = index + 1;
+                    }
+                }
+
+                //Decide whether current grid can use auto minHight;
+                if (availHeight < 0 || currentGridNumber > Math.ceil((availHeight - findGrids.last().offset().top) % 100)) {
+                    return 150;
+                }
+                var minHeight = availHeight - currentGrid.offset().top + currentGrid.parent().height();
                 if (minHeight < 200) {
                     minHeight = 200;
                 }

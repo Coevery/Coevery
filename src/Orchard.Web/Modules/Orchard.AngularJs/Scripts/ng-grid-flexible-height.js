@@ -16,9 +16,10 @@ function ngGridFlexibleHeightPlugin(opts) {
             }
             if (opts != null) {
                 if (opts.minHeight != null) {
+                    var currentGrid = self.grid.$viewport;
                     var tempMin;
                     if ($.isFunction(opts.minHeight)) {
-                        tempMin = opts.minHeight();
+                        tempMin = opts.minHeight(currentGrid);
                     } else {
                         tempMin = opts.minHeight;
                     }
