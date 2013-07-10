@@ -167,10 +167,10 @@
     <Content Include="Views\SystemAdmin\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\Fields.cshtml" />
+    <Content Include="Views\SystemAdmin\Relationships.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\Relationships.cshtml" />
+    <Content Include="Views\SystemAdmin\Fields.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

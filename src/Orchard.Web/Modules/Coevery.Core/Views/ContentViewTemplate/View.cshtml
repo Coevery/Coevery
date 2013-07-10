@@ -1,10 +1,10 @@
 ﻿@using Orchard.ContentManagement
 @using Orchard.Utility.Extensions
 
-<section data-ng-controller="GeneralDetailCtrl">
+<section data-ng-controller="GeneralViewCtrl">
     <div id="page-actions">
         <button class="btn btn-small" ng-click="exit()">Back</button>
-        <button class="btn btn-small" ng-click="edit()">Edit</button>
+        <button class="btn btn-small btn-primary" ng-click="edit()">Edit</button>
     </div>
 
     <section id="main-content">
@@ -15,52 +15,112 @@
         <div class="row-fluid">
             <section class="view-mode span12">
                 <form>
-                    <fieldset>
+                    <section>
                         <header>
-                            <legend>
-                                <h5>General Info</h5>
-                            </legend>
+                            <span class="show-button"></span>
+                            <h5>General Info</h5>
                         </header>
                         <div class="data-row clearfix">
                             <div class="span6">
-                                <label class="title control-label" for="Lead_Topic_Value">Topic</label>
+                                <span class="title control-label">Topic</span>
                                 <div class="control controls">
                                     <span class="control-text">Need a new website</span>
                                 </div>
                             </div>
                             <div class="span6">
-                                <label class="title control-label" for="Lead_IsChina_Value">IsChina</label>
+                                <span class="title control-label">IsChina</span>
                                 <div class="control controls">
                                     <label class="checkbox" for="Lead_IsChina_Value">
-                                        <input type="checkbox" id="Lead_IsChina_Value" value="true" name="Lead.IsChina.Value">
-                                        <input name="Lead.IsChina.Value" type="hidden" value="false">
-                                        True
+                                        <input type="checkbox" id="Lead_IsChina_Value" value="true" name="Lead.IsChina.Value" checked>
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="data-row clearfix">
                             <div class="span6">
-                                <label class="title control-label" for="Lead_FirstName_Value">FirstName</label>
+                                <span class="title control-label">FirstName</span>
                                 <div class="control controls">
                                     <span class="control-text">Will</span>
                                 </div>
                             </div>
                             <div class="span6">
-                                <label class="title control-label" for="Lead_LastName_Value">LastName</label>
+                                <span class="title control-label">LastName</span>
                                 <div class="control controls">
                                     <label class="checkbox" for="Lead_LastName_Value">
                                         <input type="checkbox" id="Lead_LastName_Value" value="true" name="Lead.LastName.Value">
-                                        <input name="Lead.LastName.Value" type="hidden" value="false">
-                                        True
                                     </label>
                                 </div>
                             </div>
                         </div>
-                    </fieldset>
+                    </section>
+                    <section>
+                        <header>
+                            <span class="show-button"></span>
+                            <h5>General Info</h5>
+                        </header>
+                        <div class="data-row clearfix">
+                            <div class="span6">
+                                <span class="title control-label">Topic</span>
+                                <div class="control controls">
+                                    <span class="control-text">Need a new website</span>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <span class="title control-label">IsChina</span>
+                                <div class="control controls">
+                                    <label class="checkbox" for="Lead_IsChina_Value">
+                                        <input type="checkbox" id="Lead_IsChina_Value" value="true" name="Lead.IsChina.Value" checked>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="data-row clearfix">
+                            <div class="span6">
+                                <span class="title control-label">FirstName</span>
+                                <div class="control controls">
+                                    <span class="control-text">Will</span>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <span class="title control-label">LastName</span>
+                                <div class="control controls">
+                                    <label class="checkbox" for="Lead_LastName_Value">
+                                        <input type="checkbox" id="Lead_LastName_Value" value="true" name="Lead.LastName.Value">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </form>
             </section>
         </div>
+
+        <section class="row-fluid related-list">
+            <header>
+                <h5>Open Activities</h5>
+                <div class="btn-toolbar">
+                    <button class="btn btn-small btn-success">
+                        <i class="icon-plus"></i>&nbsp;New Task
+                    </button>
+                    <button class="btn btn-small btn-success">
+                        <i class="icon-plus"></i>&nbsp;New Event
+                    </button>
+                </div>
+            </header>
+            <div class="gridStyle" data-ng-grid="openActivitiesOptions"></div>
+        </section>
+
+        <section class="row-fluid related-list">
+            <header>
+                <h5>Notes</h5>
+                <div class="btn-toolbar">
+                    <button class="btn btn-small btn-success">
+                        <i class="icon-plus"></i>&nbsp;New Note
+                    </button>
+                </div>
+            </header>
+            <div class="gridStyle" data-ng-grid="notesOptions"></div>
+        </section>
     </section>
 </section>
 

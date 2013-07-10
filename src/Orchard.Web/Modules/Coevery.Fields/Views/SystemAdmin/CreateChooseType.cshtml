@@ -1,6 +1,6 @@
 ﻿@using Orchard.Utility.Extensions
 @model Coevery.Fields.ViewModels.AddFieldViewModel
-<div modal="shouldBeOpen" close="close()" options="opts">
+<div ng-init="open()" modal="shouldBeOpen" close="close()" options="opts">
     <div class="modal-header">
         <h3>Add new Field</h3>
     </div>
@@ -11,7 +11,8 @@
                 <div class="widget-content form-container">
                     <form id="field-type-form" class="no-border">
                         @{
-                            foreach (var field in Model.Fields) {
+                            foreach (var field in Model.Fields)
+                            {
                             <section class="control-group">
                                 <div class="controls">
                                     <label class="radio">
@@ -33,4 +34,3 @@
         <button class="btn" ng-click="next()">Next</button>
     </div>
 </div>
-

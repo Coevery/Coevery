@@ -11,14 +11,16 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
 
-                $scope.save = function () {
+                $scope.save = function (isBack) {
                     var form = $('#field-info-form');
                     $.ajax({
                         url: form.attr('action'),
                         type: form.attr('method'),
                         data: form.serialize(),
                         success: function (result) {
-                            logger.success('Success');
+                            //logger.success('Success');
+                            if (isBack)
+                                $scope.exit();
                         }
                     });
                 };

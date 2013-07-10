@@ -5,13 +5,15 @@ define(['core/app/detourService'], function (detour) {
       ['$timeout', '$scope', 'logger', '$detour',
       function ($timeout, $scope, logger, $detour) {
 
-          $scope.save = function () {
+          $scope.save = function (isBack) {
               $.ajax({
                   url: myForm.action,
                   type: myForm.method,
                   data: $(myForm).serialize() + '&submit.Save=Save',
                   success: function (result) {
-                      logger.success("Perspective Saved.");
+                      //logger.success("Perspective Saved.");
+                      if (isBack)
+                          $scope.exit();
                   }
               });
           };

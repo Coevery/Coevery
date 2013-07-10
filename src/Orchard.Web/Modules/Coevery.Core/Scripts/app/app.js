@@ -49,7 +49,7 @@
                     }],
                     resolve: {
                         dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
-                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
+                            return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/viewcontroller']);
                         }]
                     }
                 });
@@ -77,8 +77,8 @@
                     yOffset -
                     $("#footer").outerHeight(true) -
                     $(".navbar.navbar-fixed-bottom").outerHeight(true);
-                if (minHeight < 200) {
-                    minHeight = 200;
+                if (minHeight < 100) {
+                    minHeight = 100;
                 }
                 return minHeight;
             }

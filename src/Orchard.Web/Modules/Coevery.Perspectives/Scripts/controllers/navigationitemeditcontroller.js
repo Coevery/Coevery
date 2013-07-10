@@ -9,13 +9,15 @@ define(['core/app/detourService'], function (detour) {
                $detour.transitionTo('PerspectiveDetail', { Id: $stateParams.Id });
            };
 
-           $scope.save = function () {
+           $scope.save = function (isBack) {
                $.ajax({
                    url: myForm.action,
                    type: myForm.method,
                    data: $(myForm).serialize() + '&submit.Save=Save',
                    success: function (result) {
-                       logger.success("Perspective Saved.");
+                       //logger.success("Perspective Saved.");
+                       if (isBack)
+                           $scope.exit();
                    }
                });
            };

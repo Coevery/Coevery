@@ -3,9 +3,10 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/fielddataservice'], function (detour) {
     detour.registerController([
         'FieldsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', 'entityDataService', 'fieldDataService',
-            function ($rootScope, $scope, logger, $detour, $stateParams, entityDataService, fieldDataService) {
+        ['$rootScope', '$scope', 'logger', '$location', '$detour', '$stateParams', 'entityDataService', 'fieldDataService',
+            function ($rootScope, $scope, logger, $location, $detour, $stateParams, entityDataService, fieldDataService) {
 
+                var entityName = $stateParams.Id;
                 var fieldColumnDefs = [
                     { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-hide="row.getProperty(\'IsSystemField\')" ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
                     { field: 'DisplayName', displayName: 'Field Label' },
@@ -15,11 +16,21 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     { field: 'ControlField', displayName: 'Control Field' }
                 ];
 
+                $scope.$on('toStep2', function (event, fieldInfo) {
+                    $scope.$broadcast('toStep2Done');
+                    $location.url("/Entities/" + entityName.toString() + "/Create/" + fieldInfo);
+                });
+
+                $scope.$on('toStep1', function () {
+                    $scope.$broadcast('toStep1Done');
+                    $location.url("/Entities/" + entityName.toString() + "/Create");                  
+                });
+
                 $scope.gridOptions = {
                     data: 'myData',
                     columnDefs: fieldColumnDefs
                 };
-                
+
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 var deleteField;
@@ -31,7 +42,9 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     });
                 };
 
-                var entityName = $stateParams.Id;
+                $scope.add = function () {
+                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
+                };
 
                 $scope.deleteField = function () {
                     $('#myModal').modal('hide');
@@ -44,9 +57,6 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     });
                 };
 
-                $scope.add = function () {
-                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
-                };
                 $scope.edit = function (fieldName) {
                     $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
                 };
