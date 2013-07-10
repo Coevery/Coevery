@@ -6,7 +6,7 @@
 
         $(window).resize(function() {
             sidebar.css("height", $(window).height() - 114);
-            $('#Demo').perfectScrollbar('update');
+            $('#sidebar').perfectScrollbar('update');
         });
     });
 })(jQuery, window);

@@ -61,7 +61,6 @@
 }
 
 #wrapper #content.sidebar-minimized #sidebar {
-    overflow: visible;
     z-index: 1000;
     position: fixed;
 }
