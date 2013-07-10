@@ -62,11 +62,11 @@
 
                 //Decide whether current grid can use auto minHight;
                 if (availHeight < 0 || currentGridNumber > Math.ceil((availHeight - findGrids.last().offset().top) % 100)) {
-                    return 0;
+                    return 150;
                 }
                 var minHeight = availHeight - currentGrid.offset().top + currentGrid.parent().height();
-                if (minHeight < 100) {
-                    minHeight = 100;
+                if (minHeight < 200) {
+                    minHeight = 200;
                 }
                 return minHeight;
             }

@@ -32,7 +32,7 @@
 
 			this.bindEventHandlers();
 
-			this.updateSidebarNav( $( '#sidebar #navigation > ul > li.active' ).first(), true );
+			this.updateSidebarNav( $( '#sidebarItems > ul > li.active' ).first(), true );
 
 			this.options.showSidebarToggleButton && this.attachSidebarToggleButton();
 			this.options.fixedSidebar && $.fn.affix && $('#sidebar').affix({
@@ -57,10 +57,10 @@
 			var toggleButton = $( '<li id="sidebar-toggle-wrap"><span id="sidebar-toggle"><span></span></span></li>' );
 
 			toggleButton
-				.appendTo( '#wrapper #sidebar #navigation > ul' )
+				.appendTo( '#wrapper #sidebarItems > ul' )
 				.children( '#sidebar-toggle' )
 				.on( 'click.template', function(e) {
-					if( !!$( '#sidebar #navigation > ul > li.active:first .inner-nav' ).length ) {
+				    if (!!$('#sidebarItems > ul > li.active:first .inner-nav').length) {
 						$(this).parents( '#content' )
 							.toggleClass( 'sidebar-minimized' )
 						.end()
@@ -68,7 +68,7 @@
 					}
 					e.preventDefault();
 				})
-				.toggleClass( 'disabled', !$( '#sidebar #navigation > ul > li.active:first .inner-nav' ).length )
+				.toggleClass('disabled', !$('#sidebarItems > ul > li.active:first .inner-nav').length)
 				.toggleClass( 'toggled', $( '#wrapper #content' ).hasClass( 'sidebar-minimized' ) );
 		}, 
 
@@ -84,7 +84,7 @@
 
 			var self = this;
 			// Sidebar Navigation
-			$( '#sidebar #navigation > ul > li' )
+			$( '#sidebarItems > ul > li' )
 				.filter(':not(#sidebar-toggle-wrap)')
 				.on( 'click.template', ' > a, > span', function( e ) {
 					if( $(this).is('a') && undefined !== $(this).attr('href') )
@@ -131,7 +131,7 @@
 				.toggleClass( 'toggled', $( '#content' ).hasClass( 'sidebar-minimized' ) );
 
 			nav = nav.children( '.inner-nav' ).get(0);
-			$( '#wrapper #sidebar #navigation > ul' )
+			$( '#wrapper #sidebarItems > ul' )
 				.css( 'minHeight', nav? $( nav ).outerHeight() : '');
 		}
 	};
