@@ -3,14 +3,14 @@
 
     var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.couchPotato', 'ui.compat', 'ui.utils', 'coevery.layout', 'SharedServices']);
     coevery.config(['$stateProvider', '$routeProvider', '$urlRouterProvider', '$couchPotatoProvider', '$locationProvider', '$provide',
-        function($stateProvider, $routeProvider, $urlRouterProvider, $couchPotatoProvider, $locationProvider, $provide) {
+        function ($stateProvider, $routeProvider, $urlRouterProvider, $couchPotatoProvider, $locationProvider, $provide) {
 
             $stateProvider
                 .state('List', {
                     url: '/{Module:[a-zA-Z]+}',
                     templateProvider: ['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/List/' + $stateParams.Module; 
-                        return $http.get(url).then(function(response) { return response.data; });
+                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/List/' + $stateParams.Module;
+                        return $http.get(url).then(function (response) { return response.data; });
                     }],
                     resolve: {
                         dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
@@ -24,7 +24,7 @@
                         return "Coevery/" + params.Module + '/ViewTemplate/Create/' + params.Module;
                     },
                     resolve: {
-                        dummy: ['$q', '$rootScope', '$stateParams', function($q, $rootScope, $stateParams) {
+                        dummy: ['$q', '$rootScope', '$stateParams', function ($q, $rootScope, $stateParams) {
                             return $couchPotatoProvider.resolveDependencies($q, $rootScope, ['core/controllers/detailcontroller']);
                         }]
                     }
@@ -56,7 +56,7 @@
         }]);
 
     coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato',
-        function($rootScope, $state, $stateParams, $couchPotato) {
+        function ($rootScope, $state, $stateParams, $couchPotato) {
             //"cheating" so that couchPotato is available in requirejs
             //define modules -- we want run-time registration of components
             //to take place within those modules because it allows
@@ -70,13 +70,31 @@
                 lowerCaseLng: true,
                 ns: 'resources-locale'
             };
-            
-            function getGridMinHeight() {
-                var yOffset = $(".gridStyle.ng-scope.ngGrid").offset().top;
-                var minHeight = window.innerHeight -
-                    yOffset -
+
+            function getGridMinHeight(currentGrid) {
+                var findGrids = $(".gridStyle.ng-scope.ngGrid");
+                var availHeight = window.innerHeight -
+                    $("#header").outerHeight(true) -
                     $("#footer").outerHeight(true) -
                     $(".navbar.navbar-fixed-bottom").outerHeight(true);
+                var currentGridNumber = 0;
+                if (isNaN(availHeight)) {
+                    alert("Wrong variable used!");
+                }
+
+                for (var index = 0; index < findGrids.length; index++) {
+                    var tempGrid = findGrids.eq(-index - 1);
+                    availHeight -= tempGrid.height();
+                    if (tempGrid.find(currentGrid) != 0) {
+                        currentGridNumber = index + 1;
+                    }
+                }
+
+                //Decide whether current grid can use auto minHight;
+                if (currentGridNumber > Math.floor((availHeight - findGrids.last().offset().top) % 100)) {
+                    return 0;
+                }
+                var minHeight = availHeight - currentGrid.offset().top + currentGrid.parent().height();
                 if (minHeight < 100) {
                     minHeight = 100;
                 }
@@ -103,7 +121,7 @@
 
 
 angular.module('coevery.layout', [])
-    .directive('fdSection', function() {
+    .directive('fdSection', function () {
         return {
             template: '<fieldset fd-section class="data-section"><header><legend><h5>Section Title</h5></legend></header><div ng-transclude></div></fieldset>',
             replace: true,
@@ -115,7 +133,7 @@ angular.module('coevery.layout', [])
             }
         };
     })
-    .directive('fdRow', function() {
+    .directive('fdRow', function () {
         return {
             template: '<div fd-row class="data-row clearfix" ng-transclude></div>',
             replace: true,
@@ -123,33 +141,33 @@ angular.module('coevery.layout', [])
             transclude: true
         };
     })
-    .directive('fdColumn', function() {
+    .directive('fdColumn', function () {
         return {
             template: '<div fd-column ng-transclude></div>',
             replace: true,
             restrict: 'E',
             transclude: true,
-            link: function(scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 var columnCount = parseInt(element.parents('[fd-section]:first').attr('section-columns'));
                 var width = 12 / columnCount;
                 element.addClass('span' + width);
             }
         };
     })
-    .directive('fdField', function() {
+    .directive('fdField', function () {
         return {
             template: '<div fd-field></div>',
             replace: true,
             restrict: 'E',
-            link: function(scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]');
                 element.html(template.text());
             }
         };
     });
 
-$(function() {
-    $('body').on("submit", 'form', function(event) {
+$(function () {
+    $('body').on("submit", 'form', function (event) {
         event.preventDefault();
     });
 });
