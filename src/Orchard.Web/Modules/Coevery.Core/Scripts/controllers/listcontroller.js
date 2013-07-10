@@ -1,9 +1,12 @@
 ﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
+      ['$rootScope', '$scope','$parse', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
+      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
           var moduleName = $rootScope.$stateParams.Module;
+          
+          var primaryKeyGetter = $parse('ContentId');
+          
           $scope.moduleName = moduleName;
 
           $scope.pagingOptions = {
@@ -118,10 +121,15 @@
           };
           
           $scope.delete = function (id) {
-              if (!id) {
-                  id = $scope.checkedIds.toString();
+              var ids = [];
+              if (id) {
+                  ids.push(id);
+              } else {
+                  angular.forEach($scope.selectedItems, function (entity) {
+                      ids.push(primaryKeyGetter(entity));
+                  }, ids);
               }
-              commonDataService.delete({ contentId: id }, function () {
+              commonDataService.delete({ contentId: ids }, function () {
                   $scope.Refresh();
                   logger.success('Delete the ' + moduleName + ' successful.');
               }, function () {
@@ -134,14 +142,14 @@
           };
 
           $scope.edit = function (id) {
-              if (!id && $scope.checkedIds.length > 0) {
-                  id = $scope.checkedIds[0];
+              if (!id && $scope.selectedItems.length > 0) {
+                  id = primaryKeyGetter($scope.selectedItems[0]);
               }
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
           $scope.view = function (id) {
-              if (!id && $scope.checkedIds.length > 0) {
-                  id = $scope.checkedIds[0];
+              if (!id && $scope.selectedItems.length > 0) {
+                  id = primaryKeyGetter($scope.selectedItems[0]);
               }
               $state.transitionTo('View', { Module: moduleName, Id: id });
           };

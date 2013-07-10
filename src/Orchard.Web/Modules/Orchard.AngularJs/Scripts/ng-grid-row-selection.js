@@ -13,6 +13,8 @@
                 if (element.type == "checkbox" && element.parentElement.className == "ngSelectionCell ng-scope") {
                     return true;
                 }
+                if ($(element).hasClass("btn-link")) return false;
+                if ($(element).parent().hasClass("row-actions")) return false;
                 var selectionProvider = row.selectionProvider;
                 selectionProvider.toggleSelectAll(false, true);
             }
