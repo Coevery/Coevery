@@ -102,9 +102,7 @@
             }
 
             $rootScope.defaultGridOptions = {
-                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getGridMinHeight })],
-                //multiSelect: false,
-                //enableRowSelection: false,
+                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: getGridMinHeight }), new ngGridRowSelectionPlugin()],
                 enableColumnResize: true,
                 enableColumnReordering: true,
                 enablePaging: true,
