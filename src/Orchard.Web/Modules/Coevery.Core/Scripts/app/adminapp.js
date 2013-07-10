@@ -59,9 +59,9 @@
                         currentGridNumber = index + 1;
                     }
                 }
-                
+
                 //Decide whether current grid can use auto minHight;
-                if (currentGridNumber > Math.floor((availHeight - findGrids.last().offset().top) % 100)) {
+                if (availHeight < 0 || currentGridNumber > Math.ceil((availHeight - findGrids.last().offset().top) % 100)) {
                     return 0;
                 }
                 var minHeight = availHeight - currentGrid.offset().top + currentGrid.parent().height();
