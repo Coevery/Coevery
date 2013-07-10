@@ -25,7 +25,6 @@
               var promise = $scope.save();
               promise.then(function() {
                   $scope.exit();
-              }, function() {
               });
           };
 

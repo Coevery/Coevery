@@ -24,10 +24,10 @@
     Script.Require("jQuery");
     Script.Require("jQueryUI");
     Script.Require("jQueryMousewheel");
-    
+
     Script.Include("js/libs/bootstrap.min.js");
     Script.Include("js/perfect-scrollbar.js");
-    Script.Include("js/sidebar.js");
+    Script.Include("js/navigation.js");
     Script.Include("js/dropdown.js");
     Script.Include("js/demo/picklist.js");
     Script.Include("js/libs/hovermenu.js");
@@ -183,11 +183,9 @@
         <div id="content-outer">
             <div id="content-inner">
                 <aside id="sidebar">
-                    <nav id="navigation" class="collapse">
-                        @if (Model.Navigation != null) {
-                            @Zone(Model.Navigation)
-                        }
-                    </nav>
+                    @if (Model.Navigation != null) {
+                        @Zone(Model.Navigation)
+                    }
                 </aside>
 
                 <div id="sidebar-separator"></div>
