@@ -1,14 +1,12 @@
-﻿;(function($, window) {
-    $(function() {
-        var sidebar = $("#sidebarItems");
-        sidebar.css("height", $(window).height() - $("#nav-selector").height() - 114);
-        //sidebar.css("width", $("#sidebar").width());
-        sidebar.css("overflow","hidden");
-        $('#sidebarItems').perfectScrollbar();
+﻿; (function ($, window) {
+    $(function () {
+        var sidebar = $("#navigation");
+        sidebar.css("height", $(window).height() - $("#nav-selector").outerHeight() - 110);
+        $('#navigation').perfectScrollbar();
 
-        $(window).resize(function() {
-            sidebar.css("height", $(window).height() - $("#nav-selector").height() - 114);
-            $('#sidebarItems').perfectScrollbar('update');
+        $(window).resize(function () {
+            sidebar.css("height", $(window).height() - $("#nav-selector").outerHeight() - 110);
+            $('#navigation').perfectScrollbar('update');
         });
     });
 })(jQuery, window);
