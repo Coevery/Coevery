@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldEditCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams',
-            function ($scope, logger, $detour, $stateParams) {
+        ['$scope', 'logger', '$detour', '$stateParams','$http',
+            function ($scope, logger, $detour, $stateParams,$http) {
                 var entityName = $stateParams.EntityName;
                 var fieldName = $stateParams.FieldName;
                 
@@ -11,17 +11,26 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
 
-                $scope.save = function (isBack) {
-                    var form = $('#field-info-form');
-                    $.ajax({
+                $scope.save = function () {
+                    var form = angular.element(myForm);
+                    var promise = $http({
                         url: form.attr('action'),
-                        type: form.attr('method'),
-                        data: form.serialize(),
-                        success: function (result) {
-                            //logger.success('Success');
-                            if (isBack)
-                                $scope.exit();
-                        }
+                        method: "POST",
+                        data: form.serialize() + '&submit.Save=Save',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function () {
+                        logger.success('Save succeeded.');
+                    }, function (reason) {
+                        logger.success('Save Failed： ' + reason);
+                    });
+                    return promise;
+                };
+                
+                $scope.saveAndBack = function () {
+                    var promise = $scope.save();
+                    promise.then(function () {
+                        $scope.exit();
+                    }, function () {
                     });
                 };
 

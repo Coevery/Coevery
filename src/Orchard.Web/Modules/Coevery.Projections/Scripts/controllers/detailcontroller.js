@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function(detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource', 'projectionDataService', 'viewmodelDataService',
-            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, projectionDataService, viewmodelDataService) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource','$http', 'projectionDataService', 'viewmodelDataService',
+            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource,$http, projectionDataService, viewmodelDataService) {
                 var name = $stateParams.Id;
                 $scope.mySelections = [];
                 $scope.fieldCoumns = [];
@@ -26,25 +26,35 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
 
                 };
 
-                $scope.save = function(isBack) {
+                $scope.save = function() {
                     var pickListValue = '';
                     for (var i = 0; i < $scope.SelectedColumns.length; i++) {
                         var fieldName = $scope.SelectedColumns[i].FieldName;
                         pickListValue += fieldName + '$';
                     }
                     $('#picklist')[0].value = pickListValue;
-                    $.ajax({
-                        url: myForm.action,
-                        type: myForm.method,
-                        data: $(myForm).serialize() + '&submit.Save=Save',
-                        success: function(result) {
-                            //logger.success("Layout Saved.");
-                            if (isBack)
-                                $scope.exit();
-                        }
+                    var form = angular.element(myForm);
+                    var promise = $http({
+                        url: form.attr('action'),
+                        method: "POST",
+                        data: form.serialize() + '&submit.Save=Save',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function () {
+                        logger.success('Save succeeded.');
+                    }, function (reason) {
+                        logger.success('Save Failed： ' + reason);
                     });
+                    return promise;
                 };
 
+                $scope.saveAndBack = function () {
+                    var promise = $scope.save();
+                    promise.then(function () {
+                        $scope.exit();
+                    }, function () {
+                    });
+                };
+                
                 $scope.change = function() {
 
                 };
