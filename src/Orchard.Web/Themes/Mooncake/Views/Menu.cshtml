@@ -8,11 +8,11 @@
             var menu = Model;
             
             <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                <span data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
+                <span id="first-menu-title" data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
             </a>
             <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
                 @{
-                    var menuIndex = 0;
+            var menuIndex = 0;
                 }
                 @foreach (var item in menu.Items) {
                     <li>
@@ -24,42 +24,45 @@
         }
     </div>
 </div>
-@{
-    int firstLevelIndex = 0;
-    foreach (var firstLevelMenuItem in Model) {
-        IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-        string displayCss = "none";
-        if (firstLevelIndex == 0) {displayCss = "block";}
-        firstLevelIndex++;
+
+
+<nav id="navigation" style="position: relative; overflow: hidden;">
+    @{
+        int firstLevelIndex = 0;
+        foreach (var firstLevelMenuItem in Model) {
+            IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
+            string displayCss = "none";
+            if (firstLevelIndex == 0) { displayCss = "block"; }
+            firstLevelIndex++;
         <ul class="menu"   id="@firstLevelMenuItem.Text" >
             @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 0 || !firstLevelMenuItem.LinkToFirstChild) {
                 foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
                     string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-                    var firstOfTheThird = ((IEnumerable<dynamic>) secondLevelMenuItem).FirstOrDefault();
+                    var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
                     var secondLevelUrl = secondLevelMenuItem.Href;
                     if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
                         secondLevelUrl = firstOfTheThird.Href;
                     }
-                    var filePaht = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
+                    var filePath = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
                     var backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico");
-                    if (!File.Exists(filePaht))
-                    {
+                    if (!File.Exists(filePath)) {
                         backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/Home.ico");
                     }
-                    <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl">
-                        <a href="@secondLevelUrl">
-                            <i class="icon-home" 
+                <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
+                    <a href="@secondLevelUrl">
+                        <i class="icon-home" 
                                    style="width: 32px; height: 32px; background-position: center; background-image: url(@backUrl);"></i>
-                                @secondLevelMenuItem.Text
-                        </a>
-                    </li>
+                        @secondLevelMenuItem.Text
+                    </a>
+                </li>
                 }
             }
         </ul>
+        }
     }
-}
-@using (Script.Foot())
- {
+</nav>
+
+@using (Script.Foot()) {
     <script type="text/javascript">
         $(document).ready(function () {
             $("#FirstMenu .dropdown-menu>li").click(function () {
@@ -71,4 +74,4 @@
             });
         });
     </script>
- }
+}

@@ -7,7 +7,7 @@
     <div class="row-fluid">
         <div id="page-toolbar">
             <button type="button" class="btn" data-ng-click="exit()">Back</button>
-            <button type="button" class="btn btn-primary" data-ng-click="edit()">Edit</button>
+            <button type="button" class="btn" data-ng-click="edit()">Edit</button>
             <button type="button" class="btn">Delete</button>
             <button type="button" class="btn" data-ng-click="listViewDesigner()">List View Designer</button>
             <button type="button" class="btn" data-ng-click="formDesigner()">Form Designer</button>
@@ -40,8 +40,8 @@
 
             <div class="widget">
                 <ul class="nav nav-tabs">
-                    <li data-ng-class="{active: $uiRoute}" data-ui-route="#/Entities/{{$stateParams.Id}}/?.*"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
-                    <li data-ng-class="{active: $uiRoute}" data-ui-route="#/Entities/{{$stateParams.Id}}/Relationships"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
+                    <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
+                    <li data-ng-class="{active: $detour.includes('EntityDetail.Relationships')}"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active">

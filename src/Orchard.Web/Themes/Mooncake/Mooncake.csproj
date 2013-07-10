@@ -111,7 +111,7 @@
     <Content Include="Scripts\js\login.js" />
     <Content Include="Scripts\js\perfect-scrollbar.js" />
     <Content Include="Scripts\js\setup.js" />
-    <Content Include="Scripts\js\sidebar.js" />
+    <Content Include="Scripts\js\navigation.js" />
     <Content Include="Scripts\js\template.js" />
     <Content Include="Scripts\jui\css\images\ui-datepicker-bg.png" />
     <Content Include="Scripts\jui\css\images\ui-datepicker-circle.png" />
@@ -593,6 +593,7 @@
     <Content Include="Styles\bootstrap\bootstrap.css" />
     <Content Include="Styles\bootstrap\bootstrap.min.css" />
     <Content Include="Styles\button.css" />
+    <Content Include="Styles\sitewidget.css" />
     <Content Include="Styles\dropdowns.css" />
     <Content Include="Styles\error.css" />
     <Content Include="Styles\error.min.css" />

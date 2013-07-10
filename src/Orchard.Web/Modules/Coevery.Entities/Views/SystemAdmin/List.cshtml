@@ -3,22 +3,14 @@
 </header>
 <section id="main-content">
     <div class="row-fluid">
+        <div id="page-toolbar">
+            <button type="button" class="btn btn-success" data-ng-click="add()"><i class="icon-plus"></i>&nbsp;@T("Add")</button>
+            <button type="button" class="btn" data-ng-click="generate()"><i class="icos-arrow-down"></i>&nbsp;@T("Generate")</button>
+            <button type="button" class="btn" data-ng-click="getAllMetadata()"><i class="icon-refresh"></i>&nbsp;@T("Refresh")</button>>
+        </div>
+    </div>
+    <div class="row-fluid">
         <div class="span12">
-            <div class="widget toolbar-Container">
-                <div class="widget-content">
-                    <div class="btn-toolbar">
-                        <button class="btn btn-success" ng-click="add()">
-                            <i class="icon-plus"></i>&nbsp;@T("Add")
-                        </button>
-                        <button class="btn" data-ng-click="generate()">
-                            <i class="icos-arrow-down"></i>&nbsp;@T("Generate")
-                        </button>
-                        <button class="btn" data-ng-click="getAllMetadata()">
-                            <i class="icon-refresh"></i>&nbsp;@T("Refresh")
-                        </button>
-                    </div>
-                </div>
-            </div>
             <div class="widget">
                 <div class="widget-content">
                     <section class="gridStyle" data-ng-grid="gridOptions"></section>
