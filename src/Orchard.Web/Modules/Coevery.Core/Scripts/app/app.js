@@ -125,7 +125,7 @@ angular.module('coevery.layout', [])
     })
     .directive('fdColumn', function() {
         return {
-            template: '<div fd-column ng-transclude></div>',
+            template: '<div fd-column class="data-column" ng-transclude></div>',
             replace: true,
             restrict: 'E',
             transclude: true,
