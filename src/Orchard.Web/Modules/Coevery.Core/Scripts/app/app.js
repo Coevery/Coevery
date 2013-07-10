@@ -75,8 +75,7 @@
                 var findGrids = $(".gridStyle.ng-scope.ngGrid");
                 var availHeight = window.innerHeight -
                     $("#header").outerHeight(true) -
-                    $("#footer").outerHeight(true) -
-                    $(".navbar.navbar-fixed-bottom").outerHeight(true);
+                    $("#footer").outerHeight(true);
                 var currentGridNumber = 0;
                 if (isNaN(availHeight)) {
                     alert("Wrong variable used!");
@@ -91,12 +90,12 @@
                 }
 
                 //Decide whether current grid can use auto minHight;
-                if (currentGridNumber > Math.floor((availHeight - findGrids.last().offset().top) % 100)) {
-                    return 0;
+                if (availHeight < 0 || currentGridNumber > Math.ceil((availHeight - findGrids.last().offset().top) % 100)) {
+                    return 150;
                 }
                 var minHeight = availHeight - currentGrid.offset().top + currentGrid.parent().height();
-                if (minHeight < 100) {
-                    minHeight = 100;
+                if (minHeight < 200) {
+                    minHeight = 200;
                 }
                 return minHeight;
             }

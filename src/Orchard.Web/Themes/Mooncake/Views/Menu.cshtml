@@ -4,7 +4,8 @@
 
 <div id="nav-selector">
     <div class="dropdown">
-        @if (Model.Items.Count > 0) {
+        @if (Model.Items.Count > 0)
+        {
             var menu = Model;
             
             <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
@@ -12,9 +13,10 @@
             </a>
             <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
                 @{
-                    var menuIndex = 0;
+            var menuIndex = 0;
                 }
-                @foreach (var item in menu.Items) {
+                @foreach (var item in menu.Items)
+                {
                     <li>
                         <input type="radio" id="menu_@menuIndex" name="ex4" value="1"><label for="menu_@menuIndex"><strong>@item.Text.Text</strong></label>
                     </li>
@@ -24,42 +26,49 @@
         }
     </div>
 </div>
-@{
-    int firstLevelIndex = 0;
-    foreach (var firstLevelMenuItem in Model) {
-        IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-        string displayCss = "none";
-        if (firstLevelIndex == 0) {displayCss = "block";}
-        firstLevelIndex++;
-        <ul class="menu"   id="@firstLevelMenuItem.Text" >
-            @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 0 || !firstLevelMenuItem.LinkToFirstChild) {
-                foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
-                    string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-                    var firstOfTheThird = ((IEnumerable<dynamic>) secondLevelMenuItem).FirstOrDefault();
-                    var secondLevelUrl = secondLevelMenuItem.Href;
-                    if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
-                        secondLevelUrl = firstOfTheThird.Href;
-                    }
-                    var filePath = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
-                    var backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico");
-                    if (!File.Exists(filePath))
+<div id="sidebarItems">
+    @{
+        int firstLevelIndex = 0;
+        foreach (var firstLevelMenuItem in Model)
+        {
+            IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
+            string displayCss = "none";
+            if (firstLevelIndex == 0) { displayCss = "block"; }
+            firstLevelIndex++;
+            <ul class="menu"   id="@firstLevelMenuItem.Text" >
+                @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 0 || !firstLevelMenuItem.LinkToFirstChild)
+                {
+                    foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav))
                     {
-                        backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/Home.ico");
-                    }
-                    <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
-                        <a href="@secondLevelUrl">
-                            <i class="icon-home" 
+                        string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
+                        var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
+                        var secondLevelUrl = secondLevelMenuItem.Href;
+                        if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url)))
+                        {
+                            secondLevelUrl = firstOfTheThird.Href;
+                        }
+                        var filePath = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
+                        var backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico");
+                        if (!File.Exists(filePath))
+                        {
+                            backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/Home.ico");
+                        }
+                        <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
+                            <a href="@secondLevelUrl">
+                                <i class="icon-home" 
                                    style="width: 32px; height: 32px; background-position: center; background-image: url(@backUrl);"></i>
                                 @secondLevelMenuItem.Text
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    }
                 }
-            }
-        </ul>
+            </ul>
+        }
     }
-}
+</div>
+
 @using (Script.Foot())
- {
+{
     <script type="text/javascript">
         $(document).ready(function () {
             $("#FirstMenu .dropdown-menu>li").click(function () {
@@ -71,4 +80,4 @@
             });
         });
     </script>
- }
+}
