@@ -125,18 +125,48 @@
 
     #wrapper #sidebar #navigation ul.menu > li
     {
-        height: 35px;
+        background-color: rgba(255, 255, 255, 0.05);
+        line-height: 18px;
+        list-style: none;
+        cursor: pointer;
+        border-top:none;
+        border-bottom: none;
     }
 
     #wrapper #sidebar #navigation ul.menu > li > a
     {
         padding: 3px 15px;
-        
+        color: #ddd;
+    }
+    
+    #wrapper #sidebar #navigation  ul.menu > li:hover > a 
+    {
+        background-color: rgba(148, 219, 255, 0.2);
     }
 
     #wrapper #sidebar #navigation ul.menu > li > a [class^="icon-"] 
     {
         vertical-align: middle !important;
+    }
+
+    #wrapper #sidebar #navigation ul.menu 
+    {
+        border: none;
+    }
+
+    #wrapper #sidebar #navigation ul > li.active > a
+    {
+        margin-right: -1px;
+        background: none;
+        background-image: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+    #nav-selector 
+    {
+        border-bottom: none;
+        padding: 5px 20px;
     }
 
     #page-actions
