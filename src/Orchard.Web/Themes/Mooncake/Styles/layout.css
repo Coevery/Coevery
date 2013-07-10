@@ -961,7 +961,7 @@ body {
         background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
         border-right: #c6c8cc 1px solid;
     }
-
+    
     #wrapper #content.sidebar-minimized #main
     {
         margin-left: 211px;
@@ -1062,7 +1062,7 @@ body {
         min-height: 0 !important;
     }
 
-        #wrapper #sidebar #navigation ul.menu > li > span,
+        /*#wrapper #sidebar #navigation ul.menu > li > span,
         #wrapper #sidebar #navigation ul.menu > li > a,
         #wrapper #sidebar #navigation ul.menu > li.active > span,
         #wrapper #sidebar #navigation ul.menu > li.active > a
@@ -1070,7 +1070,7 @@ body {
             border: none;
             background: none;
             color: #bfbfbf;
-        }
+        }*/
 
         #wrapper #sidebar #navigation ul.menu > li:hover > span,
         #wrapper #sidebar #navigation ul.menu > li:hover > a
@@ -1414,7 +1414,7 @@ body {
                             margin-right: 6px;
                         }
 
-                    #wrapper #sidebar #navigation ul > li.active > span,
+                    /*#wrapper #sidebar #navigation ul > li.active > span,
                     #wrapper #sidebar #navigation ul > li.active > a
                     {
                         background: none;
@@ -1423,7 +1423,7 @@ body {
                         -webkit-box-shadow: none;
                         -moz-box-shadow: none;
                         box-shadow: none;
-                    }
+                    }*/
 
                     #wrapper #sidebar #navigation ul.menu > li .nav-title
                     {
@@ -1504,6 +1504,8 @@ body {
             padding-right: 15px;
         }
 }
+
+
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5)
 {
