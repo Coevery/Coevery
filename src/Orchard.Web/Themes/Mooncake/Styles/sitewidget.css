@@ -1,0 +1,110 @@
+@media (min-width: 768px) and (max-width: 1281px)
+{
+    #wrapper #content.sidebar-minimized #main
+    {
+        margin-left: 45px !important;
+    }
+
+    #page-actions
+    {
+        margin-left: 151px;
+        padding: 0 24px;
+    }
+
+    #wrapper #main #main-content
+    {
+        padding: 0 24px 0 134px;
+    }
+
+    #wrapper #content.sidebar-minimized #sidebar
+    {
+        width: 150px;
+        background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
+        border-right: #c6c8cc 1px solid;
+    }
+
+    #nav-selector #selector > span
+    {
+        max-width: 100px;
+    }
+
+    .navbar-inner
+    {
+        padding: 0px !important;
+    }
+
+    .navbar-fixed-bottom
+    {
+        position: fixed;
+    }
+
+    .row
+    {
+        margin-left: 20px;
+        *zoom: 1;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px)
+{
+    #page-actions
+    {
+        margin-left: 45px;
+        padding: 0 20px;
+    }
+
+
+    #wrapper #content.sidebar-minimized #sidebar
+    {
+        width: 45px;
+        background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
+        border-right: #c6c8cc 1px solid;
+    }
+
+    #first-menu-title
+    {
+        display: none !important;
+    }
+
+    .navbar-fixed-bottom
+    {
+        position: fixed;
+    }
+
+    .navbar-inner
+    {
+        padding: 0px !important;
+    }
+
+    .row
+    {
+        margin-left: 5px;
+        *zoom: 1;
+    }
+
+    #wrapper #sidebar #navigation ul > li > a [class^="icon-"],
+    #wrapper #sidebar #navigation ul > li > a [class^="icol-"],
+    #wrapper #sidebar #navigation ul > li > a [class^="icos-"]
+    {
+        margin: 0 4px 0 0px;
+    }
+
+    #header #header-right
+    {
+        padding: 0px;
+    }
+
+    .row-fluid .span4
+    {
+        width: 31.623931623931625%;
+        *width: 31.570740134569924%;
+        float: left;
+    }
+
+    .row-fluid .span8
+    {
+        width: 65.74585635359117%;
+        *width: 65.69266486422946%;
+        float: left;
+    }
+}
