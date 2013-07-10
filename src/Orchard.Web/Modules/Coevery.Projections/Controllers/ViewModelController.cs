@@ -14,6 +14,7 @@ using Orchard.ContentManagement;
 using Orchard.Core.Title.Models;
 using Orchard.Localization;
 using Orchard.Projections.Models;
+using Orchard.Projections.Services;
 using Orchard.Utility.Extensions;
 using Coevery.Core;
 
@@ -21,10 +22,13 @@ namespace Coevery.Projections.Controllers {
     public class ViewModelController : ApiController {
         private readonly IProjectionService _projectionService;
         private readonly IContentManager _contentManager;
+        private readonly IProjectionManager _projectionManager;
+
          public ViewModelController(IProjectionService projectionService, 
-             IContentManager contentManager) {
+             IContentManager contentManager, IProjectionManager projectionManager) {
              _projectionService = projectionService;
              _contentManager = contentManager;
+             _projectionManager = projectionManager;
          }
 
         public IEnumerable<JObject> Get(int id)
@@ -49,10 +53,11 @@ namespace Coevery.Projections.Controllers {
             var projectionItem = _contentManager.Get(projectionId, VersionOptions.Latest);
             var projectionPart = projectionItem.As<ProjectionPart>();
             var queryPartRecord = projectionPart.Record.QueryPartRecord;
-
             if (queryPartRecord.Layouts.Count == 0)
                 return properties;
-            properties = queryPartRecord.Layouts[0].Properties;
+            string category = projectionItem.As<TitlePart>().Title + "ContentFields";
+            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors).Where(c => c.Category == category);
+            properties = queryPartRecord.Layouts[0].Properties.Where(c=>allFields.Select(d=>d.Type).Contains(c.Type)).ToList();
             return properties;
         }
     }
