@@ -17,4 +17,10 @@
             navigation.removeClass('in');
             navigation.css('height', 0);
         });
+    $('#header #header-search .search-query')
+				.add($('.dropdown-menu')
+				.find(':input'))
+				.on('click.template', function (e) {
+				    e.stopPropagation();
+				});
 })(window.jQuery);
