@@ -5,25 +5,24 @@
 </header>
 <section id="main-content">
     <div class="row-fluid">
+        <div id="page-toolbar">
+            <button type="button" class="btn" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn" data-ng-click="save()">Save</button>
+        </div>
+    </div>
+
+    <div class="row-fluid">
         <div class="span12">
-            <div class="widget toolbar-Container">
-                <div class="widget-content">
-                    <div class="btn-toolbar">
-                        <button class="btn" data-ng-click="exit()">Back</button>
-                        <button class="btn btn-primary" data-ng-click="save()">Save</button>
-                    </div>
-                </div>
-            </div>
             <div class="widget">
                 <div class="widget-content form-container">
                     <div class="form-horizontal no-border">
-                        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new {id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"]}),
+                        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                               FormMethod.Post,
-                                                              new {@class = "form-horizontal", @name = "myForm", @ng_submit = "save()"})) {
+                                                              new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" })) {
                             <section class="control-group">
                                 <label class="control-label">Title</label>
                                 <div class="controls">
-                                    @Html.TextBoxFor(m => m.Title, new {@class = "span12"})
+                                    @Html.TextBoxFor(m => m.Title, new { @class = "span12" })
                                 </div>
                             </section>
                         }
