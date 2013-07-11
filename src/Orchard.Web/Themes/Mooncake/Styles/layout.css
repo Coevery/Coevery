@@ -515,25 +515,28 @@ body {
 /* Sidebar
 ================================================== */
 
-#wrapper #sidebar
+#wrapper #sidebar 
 {
     float: left;
-    width: 225px;
+    width: 150px;
     padding-right: 1px;
     z-index: 600;
     position: relative;
+    background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
+    border-right: #c6c8cc 1px solid;
 }
     #wrapper #sidebar.affix
     {
         position: fixed;
         float: none;
         top: 69px;
+        bottom: 0;
     }
 
     /* Sidebar Toggle
 ================================================== */
 
-    #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap
+    #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap
     {
         padding: 3px;
         display: inline-block;
@@ -561,7 +564,7 @@ body {
         box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
     }
 
-        #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap #sidebar-toggle.disabled span
+        #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap #sidebar-toggle.disabled span
         {
             cursor: default;
             opacity: 0.5;
@@ -569,7 +572,7 @@ body {
             filter: alpha(opacity=50);
         }
 
-        #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap #sidebar-toggle
+        #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap #sidebar-toggle
         {
             display: inline-block;
             *display: inline;
@@ -590,7 +593,7 @@ body {
             border-radius: 100px;
         }
 
-            #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap #sidebar-toggle span
+            #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap #sidebar-toggle span
             {
                 display: block;
                 width: 25px;
@@ -608,14 +611,14 @@ body {
                 border-radius: 100px;
             }
 
-            #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap #sidebar-toggle:active:not(.disabled) span
+            #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap #sidebar-toggle:active:not(.disabled) span
             {
                 -webkit-box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
                 -moz-box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
                 box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
             }
 
-            #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap #sidebar-toggle span:after
+            #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap #sidebar-toggle span:after
             {
                 font-family: 'IcoMoon';
                 content: "\f0d9";
@@ -632,32 +635,11 @@ body {
                 margin-left: -8px;
             }
 
-            #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap #sidebar-toggle.toggled span:after
+            #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap #sidebar-toggle.toggled span:after
             {
                 content: "\f0da";
                 margin-left: -7px;
             }
-
-/* Hidden Sidebar
-================================================== */
-
-#wrapper #content.sidebar-minimized #sidebar
-{
-    width: 45px;
-    padding-right: 0;
-    overflow: hidden;
-}
-
-
-#wrapper #content.sidebar-minimized #sidebar #navigation ul.menu
-{
-    min-height: 0 !important;
-}
-
-#wrapper #content.sidebar-minimized #main
-{
-    margin-left: 45px;
-}
 
 /* Navigation
 ================================================== */
@@ -671,23 +653,21 @@ body {
     left: 0;
 }
 
-#wrapper #sidebar #navigation ul.menu
+#wrapper #sidebar #navigation ul
 {
     margin: 0;
     position: relative;
 }
 
-    #wrapper #sidebar #navigation ul > li
-    {
+    #wrapper #sidebar #navigation ul > li {
         list-style: none;
         margin: 0;
         cursor: pointer;
         display: block;
     }
 
-        /*#wrapper #sidebar #navigation ul.menu > li > a,
-        #wrapper #sidebar #navigation ul.menu > li > span
-        {
+        #wrapper #sidebar #navigation ul > li > a,
+        #wrapper #sidebar #navigation ul > li > span {
             margin: 0;
             line-height: 1;
             padding: 9px 0;
@@ -695,21 +675,18 @@ body {
             display: block;
             border: 1px solid transparent;
             font-size: 22px;
-        }*/
-
-        #wrapper #sidebar #navigation ul > li > a,
-        #wrapper #sidebar #navigation ul > li > span
-        {
-            color: #444;
-            line-height: 1;
-            display: block;
-            font-size: 11px;
-            padding: 12px 17px 12px 5px;
-
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
         }
+
+    #wrapper #sidebar #navigation > ul > li .nav-title {
+        font-size: 11px;
+        line-height: 1;
+    }
+
+    #wrapper #sidebar #navigation > ul > li > a,
+    #wrapper #sidebar #navigation > ul > li > span {
+        font-size: 32px;
+        padding: 6px 5px 11px 5px;
+    }
 
 #wrapper #sidebar #navigation ul li:hover > a,
 #wrapper #sidebar #navigation ul li:hover > span
@@ -741,20 +718,12 @@ body {
         border-top: 0;
     }
 
-    #wrapper #sidebar #navigation ul > li > a [class^="icon-"],
-    #wrapper #sidebar #navigation ul > li > a [class^="icol-"],
-    #wrapper #sidebar #navigation ul > li > a [class^="icos-"]
-    {
-        font-size: 16px;
-        margin: 0 4px 0 8px;
-    }
-
 /* Main
 ================================================== */
 
 #wrapper #main
 {
-    margin-left: 226px;
+    margin-left: 152px;
     margin-bottom: 0;
     padding-bottom: 40px;
 }
@@ -823,6 +792,31 @@ body {
                 vertical-align: text-top;
             }
 
+    #wrapper #main #page-actions {
+        position: fixed;
+        width: 100%;
+        padding: 0 40px;
+        background-color: #f7f7f7;
+        -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+        border-bottom: 1px solid #d4d4d4;
+        font-size: 0;
+    }
+
+        #wrapper #main #page-actions .btn {
+            min-width: 70px;
+        }
+
+        #wrapper #main #page-actions > .btn,
+        #wrapper #main #page-actions > .btn-group {
+            margin: 10px 0 10px 10px;
+        }
+
+            #wrapper #main #page-actions > .btn:first-child,
+            #wrapper #main #page-actions > .btn-group:first-child {
+                margin-left: 0;
+            }
+
     /* Main Content
 ================================================== */
 
@@ -831,6 +825,7 @@ body {
         float: left;
         width: 100%;
         padding: 0 40px;
+        margin-top: 47px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         -ms-box-sizing: border-box;
@@ -926,76 +921,36 @@ body {
 /* Media Queries
 ================================================== */
 
-@media (min-width: 1281px)
-{
-    #header #header-right
-    {
+@media (min-width: 1281px) {
+    #header #header-right {
         margin-left: 274px;
     }
 
-        #header #header-right .navbar-search .search-query
-        {
+        #header #header-right .navbar-search .search-query {
             width: 210px;
         }
 
-    #wrapper
-    {
+    #wrapper {
         margin: 0 auto;
         padding: 0;
     }
 
-        #wrapper #sidebar
-        {
-            width: 285px;
+        #wrapper #sidebar {
+            width: 210px;
             padding-right: 1px;
         }
 
-        #wrapper #main
-        {
-            margin-left: 286px;
+        #wrapper #main {
+            margin-left: 212px;
         }
 
-        #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap
-        {
+        #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap {
             padding: 5px;
             padding-left: 6px;
         }
 
-	/* Hidden Sidebar */
-    #wrapper #content.sidebar-minimized #sidebar
-    {
-        width: 210px;
-        background: #F0F0F0 url('images/layout/aside-right-shadow.jpg') right top repeat-y;
-        border-right: #c6c8cc 1px solid;
-    }
-    
-    #wrapper #content.sidebar-minimized #main
-    {
-        margin-left: 211px;
-    }
-
-	/* End Hidden Sidebar */
-
-        #wrapper #content-inner
-        {
+        #wrapper #content-inner {
             border-top: 0;
-        }
-
-            #wrapper #sidebar #navigation ul.menu > li .nav-title
-            {
-                display: block;
-                font-size: 11px;
-                margin-top: 3px;
-            }
-
-            #wrapper #sidebar #navigation ul.menu > li > .inner-nav
-            {
-                left: 70px;
-            }
-
-        #wrapper #sidebar #navigation ul.menu > li > a
-        {
-            padding: 12px 17px 12px 30px;
         }
 }
 
@@ -1033,17 +988,13 @@ body {
 
     #wrapper #main
     {
-        margin-left: 45px;
+        margin-left: 46px;
     }
 
     #wrapper #content-wrap
     {
         padding: 69px 0 0;
         border: 0;
-    }
-
-    #wrapper #content #content-inner
-    {
     }
 
     #wrapper #content,
@@ -1056,47 +1007,42 @@ body {
         border-radius: 0;
     }
 
-        #wrapper #content #sidebar,
-        #wrapper #content.sidebar-minimized #sidebar
+        #wrapper #content #sidebar
         {
             width: 45px;
             padding-right: 0;
             overflow: visible;
         }
 
-    #wrapper #sidebar #navigation ul.menu
+        #wrapper #content #sidebar #nav-selector > .dropdown > a > span {
+            display: none;
+        }
+
+    #wrapper #sidebar #navigation ul
     {
         min-height: 0 !important;
     }
 
-        /*#wrapper #sidebar #navigation ul.menu > li > span,
-        #wrapper #sidebar #navigation ul.menu > li > a,
-        #wrapper #sidebar #navigation ul.menu > li.active > span,
-        #wrapper #sidebar #navigation ul.menu > li.active > a
+        #wrapper #sidebar #navigation ul > li > span,
+        #wrapper #sidebar #navigation ul > li > a,
+        #wrapper #sidebar #navigation ul > li.active > span,
+        #wrapper #sidebar #navigation ul > li.active > a
         {
             border: none;
             background: none;
             color: #bfbfbf;
-        }*/
+        }
 
-        #wrapper #sidebar #navigation ul.menu > li:hover > span,
-        #wrapper #sidebar #navigation ul.menu > li:hover > a
+        #wrapper #sidebar #navigation ul > li:hover > span,
+        #wrapper #sidebar #navigation ul > li:hover > a
         {
             color: #999;
         }
 
-        #wrapper #sidebar #navigation ul.menu > li.active > .inner-nav
-        {
-            display: none;
-        }
 
-        #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li.active > a,
-        #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li.active > span,
-        #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li:hover > a,
-        #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li:hover > span
-        {
-            background-color: rgba(148, 219, 255, 0.2);
-        }
+    #wrapper #sidebar #navigation > ul > li .nav-title {
+        display: none;
+    }
 
     #wrapper #main #main-header .breadcrumb,
     #wrapper #main #main-header h1,
@@ -1116,7 +1062,7 @@ body {
         }
 
     #wrapper #sidebar-separator,
-    #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap
+    #wrapper #sidebar #navigation ul > #sidebar-toggle-wrap
     {
         display: none;
     }
@@ -1124,66 +1070,7 @@ body {
 
 @media (min-width: 481px) and (max-width: 979px) {
 
-    #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav {
-        display: block;
-        opacity: 1;
-        right: auto;
-        position: absolute;
-        padding-left: 14px;
-    }
-
-        #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav:after,
-        #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav:before {
-            content: '';
-            position: absolute;
-            border: solid transparent;
-            top: 14px;
-            left: 1px;
-        }
-
-        #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav:before {
-            border-width: 6px;
-            left: 2px;
-            top: 15px;
-            border-right-color: #fff;
-        }
-
-        #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav:after {
-            z-index: -1;
-            border-right-color: #000;
-            border-width: 7px;
-        }
-
-        #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li {
-            background-color: #fff;
-            width: 250px;
-            -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-            -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li > a,
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li > span {
-                background-image: none;
-                border: 1px solid #ccc;
-                border-bottom: 0;
-            }
-
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li:first-child,
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li:first-child > a,
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li:first-child > span {
-                -webkit-border-radius: 6px 6px 0 0;
-                -moz-border-radius: 6px 6px 0 0;
-                border-radius: 6px 6px 0 0;
-            }
-
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li:last-child,
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li:last-child > a,
-            #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li:last-child > span {
-                -webkit-border-radius: 0 0 6px 6px;
-                -moz-border-radius: 0 0 6px 6px;
-                border-radius: 0 0 6px 6px;
-            }
+    
 }
 
 @media (max-width: 767px)
@@ -1327,15 +1214,13 @@ body {
         margin-top: -69px;
     }
 
-    #wrapper #content #main,
-    #wrapper #content.sidebar-minimized #main
+    #wrapper #content #main
     {
         margin-left: 0;
         clear: both;
     }
 
-    #wrapper #content #sidebar,
-    #wrapper #content.sidebar-minimized #sidebar
+    #wrapper #content #sidebar
     {
         max-width: none;
         width: 100%;
@@ -1344,6 +1229,7 @@ body {
         border-top: 1px solid #111;
         padding-bottom: 8px;
         position: relative;
+        background-image: none;
         background-color: #222;
         -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.25);
         -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.25);
@@ -1360,6 +1246,14 @@ body {
             top: 0;
         }
 
+            #wrapper #sidebar {
+                border-right: none;
+            }
+
+    #wrapper #content #sidebar #nav-selector > .dropdown > a > span {
+        display: inline;
+    }
+
         #wrapper #sidebar #navigation
         {
             height: 0;
@@ -1367,12 +1261,12 @@ body {
             width: 100%;
         }
 
-            #wrapper #sidebar #navigation ul.menu
+            #wrapper #sidebar #navigation ul
             {
                 border-bottom: 1px solid #333;
             }
 
-                #wrapper #sidebar #navigation ul.menu > li
+                #wrapper #sidebar #navigation ul > li
                 {
                     width: auto;
                     max-width: none;
@@ -1381,8 +1275,8 @@ body {
                     background-color: #222;
                 }
 
-                    #wrapper #sidebar #navigation ul.menu > li > span,
-                    #wrapper #sidebar #navigation ul.menu > li > a
+                    #wrapper #sidebar #navigation ul > li > span,
+                    #wrapper #sidebar #navigation ul > li > a
                     {
                         text-align: left;
                         padding: 12px 15px;
@@ -1390,8 +1284,8 @@ body {
                         font-size: 12px;
                     }
 
-                        #wrapper #sidebar #navigation ul.menu > li > span [class^="icon-"],
-                        #wrapper #sidebar #navigation ul.menu > li > a [class^="icon-"]
+                        #wrapper #sidebar #navigation ul > li > span [class^="icon-"],
+                        #wrapper #sidebar #navigation ul > li > a [class^="icon-"]
                         {
                             font-size: 16px;
                             vertical-align: text-top;
@@ -1409,13 +1303,13 @@ body {
                         box-shadow: none;
                     }*/
 
-                    #wrapper #sidebar #navigation ul.menu > li .nav-title
+                    #wrapper #sidebar #navigation ul > li .nav-title
                     {
                         display: inline;
                     }
 
-                    #wrapper #sidebar #navigation ul.menu > li.open > .inner-nav,
-                    #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav
+                    #wrapper #sidebar #navigation ul > li.open > .inner-nav,
+                    #wrapper #sidebar #navigation ul > li:hover > .inner-nav
                     {
                         opacity: 1;
                         -moz-opacity: 1;
@@ -1426,51 +1320,50 @@ body {
                         border-top: 1px solid #222;
                     }
 
-                    #wrapper #sidebar #navigation ul.menu > li:hover > a,
-                    #wrapper #sidebar #navigation ul.menu > li:hover > span,
-                    #wrapper #sidebar #navigation ul.menu > li.open > a,
-                    #wrapper #sidebar #navigation ul.menu > li.open > span,
-                    #wrapper #sidebar #navigation ul.menu > li.open .nav-title
+                    #wrapper #sidebar #navigation ul > li:hover > a,
+                    #wrapper #sidebar #navigation ul > li:hover > span,
+                    #wrapper #sidebar #navigation ul > li.open > a,
+                    #wrapper #sidebar #navigation ul > li.open > span,
+                    #wrapper #sidebar #navigation ul > li.open .nav-title
                     {
                         color: #fff;
                     }
 
-                    #wrapper #sidebar #navigation ul.menu > li.open > .inner-nav
+                    #wrapper #sidebar #navigation ul > li.open > .inner-nav
                     {
                         display: block;
                         border-bottom: 0;
                         border-top: 1px solid #111;
                     }
 
-                    #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li.active > a,
-                    #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li.active > span
+                    #wrapper #sidebar #navigation ul > li > .inner-nav > li.active > a,
+                    #wrapper #sidebar #navigation ul > li > .inner-nav > li.active > span
                     {
                         color: #ddd;
                         background-color: transparent;
                     }
 
-                    #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li
+                    #wrapper #sidebar #navigation ul > li > .inner-nav > li
                     {
                         background-color: rgba(255, 255, 255, 0.05);
                     }
 
-                    #wrapper #sidebar #navigation ul.menu > li > .inner-nav li:hover > a,
-                    #wrapper #sidebar #navigation ul.menu > li > .inner-nav li:hover > span
+                    #wrapper #sidebar #navigation ul > li > .inner-nav li:hover > a,
+                    #wrapper #sidebar #navigation ul > li > .inner-nav li:hover > span
                     {
                         background-color: rgba(148, 219, 255, 0.2);
                     }
 
-                    #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li > a,
-                    #wrapper #sidebar #navigation ul.menu > li > .inner-nav > li > span,
-                    #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li > a,
-                    #wrapper #sidebar #navigation ul.menu > li:hover > .inner-nav > li > span
+                    #wrapper #sidebar #navigation ul > li > .inner-nav > li > a,
+                    #wrapper #sidebar #navigation ul > li > .inner-nav > li > span,
+                    #wrapper #sidebar #navigation ul > li:hover > .inner-nav > li > a,
+                    #wrapper #sidebar #navigation ul > li:hover > .inner-nav > li > span
                     {
                         border: none;
                         color: #ddd;
                     }
 
-    #wrapper #content #content-inner,
-    #wrapper #content #content.sidebar-minimized #content-inner
+    #wrapper #content #content-inner
     {
         background: none;
     }
@@ -1487,6 +1380,15 @@ body {
             padding-left: 15px;
             padding-right: 15px;
         }
+
+    #wrapper #main #page-actions {
+        position: static;
+        width: auto;
+    }
+
+    #wrapper #main #main-content {
+        margin-top: 0;
+    }
 }
 
 
