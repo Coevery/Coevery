@@ -662,6 +662,15 @@ body {
 /* Navigation
 ================================================== */
 
+#wrapper #sidebar #navigation {
+    position: absolute;
+    overflow: hidden;
+    top: 47px;
+    bottom: 40px;
+    right: 0;
+    left: 0;
+}
+
 #wrapper #sidebar #navigation ul.menu
 {
     margin: 0;

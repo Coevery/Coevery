@@ -1,12 +1,13 @@
 ﻿;(function($, window) {
     $(function() {
-        var sidebar = $("#navigation");
-        sidebar.css("height", $(window).height() - $("#nav-selector").outerHeight() - 110);
+        var nav = $("#navigation");
+        //nav.css("height", $(window).height() - $("#nav-selector").outerHeight() - 110);
         $('#navigation').perfectScrollbar();
 
-        $(window).resize(function() {
-            sidebar.css("height", $(window).height() - $("#nav-selector").outerHeight() - 110);
-            $('#navigation').perfectScrollbar('update');
-        });
+        //$(window).resize(function() {
+        //    nav.css("height", $(window).height() - $("#nav-selector").outerHeight() - 110);
+        //    $('#navigation').perfectScrollbar('update');
+        //    $('#navigation').perfectScrollbar('destroy');
+        //});
     });
 })(jQuery, window);

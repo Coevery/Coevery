@@ -63,6 +63,8 @@
 #wrapper #content.sidebar-minimized #sidebar {
     z-index: 1000;
     position: fixed;
+    top: 69px;
+    bottom: 0;
 }
 
 /*First Navigation Selector*/
