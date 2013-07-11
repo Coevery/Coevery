@@ -1045,6 +1045,7 @@ body {
         display: none;
     }
 
+    #wrapper #main #page-actions,
     #wrapper #main #main-header .breadcrumb,
     #wrapper #main #main-header h1,
     #wrapper #main #main-content
@@ -1384,10 +1385,10 @@ body {
         margin: 0 0 30px 0;
     }
 
+        #wrapper #main #page-actions,
         #wrapper #main #main-header .breadcrumb,
         #wrapper #main #main-header h1,
-        #wrapper #main #main-content
-        {
+        #wrapper #main #main-content {
             padding-left: 15px;
             padding-right: 15px;
         }
