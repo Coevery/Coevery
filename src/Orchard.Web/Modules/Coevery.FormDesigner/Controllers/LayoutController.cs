@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
-using Coevery.FormDesigner.Services;
 using Orchard.ContentManagement.MetaData;
 
 namespace Coevery.FormDesigner.Controllers {
@@ -47,8 +46,6 @@ namespace Coevery.FormDesigner.Controllers {
 
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
 
-            var layoutManager = new LayoutManager(_contentDefinitionManager);
-            layoutManager.DeleteField(id, "Topic");
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
