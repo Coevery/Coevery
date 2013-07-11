@@ -35,7 +35,6 @@ define(['core/app/detourService',
           
           var navigationColumnDefs = [
               { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
-              { field: 'Id', displayName: t('Id') },
               { field: 'DisplayName', displayName: t('DisplayName') }];
 
           $scope.gridOptions = {

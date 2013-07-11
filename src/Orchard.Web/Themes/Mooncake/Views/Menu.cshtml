@@ -12,7 +12,7 @@
             </a>
             <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
                 @{
-            var menuIndex = 0;
+                    var menuIndex = 0;
                 }
                 @foreach (var item in menu.Items) {
                     <li>
@@ -25,8 +25,7 @@
     </div>
 </div>
 
-
-<nav id="navigation" style="position: relative; overflow: hidden;">
+<nav id="navigation">
     @{
         int firstLevelIndex = 0;
         foreach (var firstLevelMenuItem in Model) {
@@ -50,9 +49,9 @@
                     }
                 <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
                     <a href="@secondLevelUrl">
-                        <i class="icon-home" 
-                                   style="width: 32px; height: 32px; background-position: center; background-image: url(@backUrl);"></i>
-                        @secondLevelMenuItem.Text
+                        <i class="icon-home" ></i>
+                        @*style="background-image: url(@backUrl);"*@
+                        <span class="nav-title">@secondLevelMenuItem.Text</span>
                     </a>
                 </li>
                 }

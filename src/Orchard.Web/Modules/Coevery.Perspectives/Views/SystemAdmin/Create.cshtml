@@ -18,7 +18,7 @@
                     <div class="form-horizontal no-border">
                         @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                               FormMethod.Post,
-                                                              new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" })) {
+                                                              new { @class = "form-horizontal", @name = "myForm"})) {
                             <section class="control-group">
                                 <label class="control-label">Title</label>
                                 <div class="controls">

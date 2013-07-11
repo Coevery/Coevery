@@ -56,15 +56,6 @@
     padding-bottom: 0;
 }
 
-#main-content {
-    margin-top: 47px;
-}
-
-#wrapper #content.sidebar-minimized #sidebar {
-    z-index: 1000;
-    position: fixed;
-}
-
 /*First Navigation Selector*/
 #nav-selector {
     padding: 13px 20px;
@@ -73,21 +64,16 @@
     box-shadow: 0 1px 10px rgba(0,0,0,0.1);
 }
 
-    #nav-selector #selector {
+    #nav-selector > .dropdown > a {
         display: block;
         font-size: 20px;
         font-weight: 200;
         color: #777;
         -webkit-text-shadow: 0 1px 0 #fff;
         text-shadow: 0 1px 0 #fff;
+        text-decoration: none;
     }
-
-        #nav-selector #selector:hover,
-        #nav-selector #selector:focus {
-            text-decoration: none;
-        }
-
-        #nav-selector #selector > span {
+        #nav-selector > .dropdown > a > span {
             white-space: nowrap;
             overflow: hidden;
             max-width: 160px;
@@ -95,37 +81,6 @@
             -ms-text-overflow: ellipsis;
             -o-text-overflow: ellipsis;
             text-overflow: ellipsis;
-        }
-
-/*Page Actions*/
-#page-actions {
-    margin-top: 69px;
-    z-index: 999;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    margin-left: 211px;
-    padding: 0 40px;
-    background-color: #f7f7f7;
-    -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-    box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-    border-bottom: 1px solid #d4d4d4;
-    font-size: 0;
-}
-
-    #page-actions .btn {
-        min-width: 70px;
-    }
-
-    #page-actions > .btn,
-    #page-actions > .btn-group {
-        margin: 10px 0 10px 10px;
-    }
-
-        #page-actions > .btn:first-child,
-        #page-actions > .btn-group:first-child {
-            margin-left: 0;
         }
 
 /*Page Title*/
