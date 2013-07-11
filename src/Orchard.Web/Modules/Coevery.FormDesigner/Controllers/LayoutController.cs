@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Web;
 using System.Web.Http;
-using Orchard;
+using Coevery.FormDesigner.Services;
 using Orchard.ContentManagement.MetaData;
-using Orchard.Localization;
 
-namespace Coevery.Metadata.Controllers {
+namespace Coevery.FormDesigner.Controllers {
     public class LayoutController : ApiController {
         private IContentDefinitionManager _contentDefinitionManager;
 
-        public LayoutController(
-            IContentDefinitionManager contentDefinitionManager
-            ) {
+        public LayoutController(IContentDefinitionManager contentDefinitionManager) {
             _contentDefinitionManager = contentDefinitionManager;
         }
 
@@ -54,6 +47,8 @@ namespace Coevery.Metadata.Controllers {
 
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
 
+            var layoutManager = new LayoutManager(_contentDefinitionManager);
+            layoutManager.DeleteField(id, "Topic");
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

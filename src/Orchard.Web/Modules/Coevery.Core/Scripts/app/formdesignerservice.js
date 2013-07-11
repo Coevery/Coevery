@@ -1038,7 +1038,7 @@
                             }
                         });
                         var entityName = $stateParams.EntityName;
-                        $.post('/OrchardLocal/api/metadata/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
+                        $.post('/OrchardLocal/api/formdesigner/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
                             logger.success('Save success');
                         });
                     });

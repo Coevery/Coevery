@@ -141,7 +141,6 @@
     <Compile Include="AdminMenu.cs" />
     <Compile Include="Controllers\PerspectiveController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
-    <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
     <Compile Include="Controllers\PerspectiveViewTemplateController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
