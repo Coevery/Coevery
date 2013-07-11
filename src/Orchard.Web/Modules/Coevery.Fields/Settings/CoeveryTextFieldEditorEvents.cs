@@ -25,6 +25,7 @@ namespace Coevery.Fields.Settings {
             if (updateModel.TryUpdateModel(model, "CoeveryTextFieldSettings", null, null)) {
                 UpdateSettings(model, builder, "CoeveryTextFieldSettings");
                 builder.WithSetting("CoeveryTextFieldSettings.MaxLength", model.MaxLength.ToString());
+                builder.WithSetting("CoeveryTextFieldSettings.PlaceHolderText", model.PlaceHolderText);
             }
 
             yield return DefinitionTemplate(model);

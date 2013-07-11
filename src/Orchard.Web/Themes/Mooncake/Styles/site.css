@@ -111,57 +111,55 @@
     margin: 17px 0;
 }
 
-/*Edit View*/
-.edit-view {
-    /*background-color: #f8f8f8;*/
+/*Edit Mode*/
+.edit-mode {
 }
 
-    .edit-view section header {
-        /*padding: 5px 16px;
-        background-color: rgba(138, 158, 190, 0.8);*/
-    }
-
-        .edit-view section header h5 {
-            /*margin: 0;*/
-        }
-
-            .edit-view section header h5.sub {
-                -webkit-text-shadow: none;
-                text-shadow: none;
-            }
-
-            .edit-view section header h5 span {
-                background-color: #fff;
-            }
-
-    .edit-view .data-row {
+    .edit-mode .data-row {
         margin: 10px 0;
         padding: 0 20px;
     }
 
-        .edit-view .data-row .control-label {
-            text-align: left;
+        .edit-mode .data-row .control-label {
+            text-align: right;
             width: 120px;
             float: left;
             padding-top: 5px;
-            color: #777;
         }
 
-        .edit-view .data-row .controls {
+            .edit-mode .data-row .control-label.required:before {
+                content: "*";
+                color: red;
+                margin-right: 5px;
+                vertical-align: text-top;
+                font-weight: bold;
+                font-size: 20px;
+                line-height: 24px;
+            }
+
+        .edit-mode .data-row .controls {
             margin-left: 140px;
         }
 
-    .edit-view form {
+    .edit-mode form {
         margin: 0;
     }
 
-        .edit-view form > .data-section {
+        .edit-mode form > .data-section {
             margin-top: 20px;
         }
 
-            .edit-view form > .data-section:first-child {
+            .edit-mode form > .data-section:first-child {
                 margin-top: 0;
             }
+
+    .edit-mode .control-group {
+        margin: 0;
+    }
+
+        .edit-mode .control-group.error {
+            color: #b94a48;
+        }
 
 /*View Mode*/
 .view-mode {
@@ -204,7 +202,7 @@
         }
 
         .view-mode .data-row .control-label {
-            text-align: left;
+            text-align: right;
             width: 120px;
             float: left;
             padding-top: 5px;

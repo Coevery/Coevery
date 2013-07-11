@@ -16,6 +16,7 @@
 
 [fd-field] {
     /*padding: 16px 0;*/
+    position: relative;
 }
 
 [fd-form] [fd-section] [fd-row].control-group {
@@ -41,37 +42,43 @@
     overflow: auto;
 }
 
-.tools div {
-    height: 18px;
-    width: 20px;
-    cursor: pointer;
-    /*margin-top: 5px;*/
-    float: right;
+.tools {
+    position: absolute;
+    right: 0px;
+    top: 5px;
 }
 
-.tools .merge {
-    background-image: url(images/merge.png);
-    background-repeat: no-repeat;
-    background-position: 2px 2px;
-}
+    .tools div {
+        height: 18px;
+        width: 20px;
+        cursor: pointer;
+        /*margin-top: 5px;*/
+        float: right;
+    }
 
-.tools .split {
-    background-image: url(images/split.png);
-    background-repeat: no-repeat;
-    background-position: 2px 2px;
-}
+    .tools .merge {
+        background-image: url(images/merge.png);
+        background-repeat: no-repeat;
+        background-position: 2px 2px;
+    }
 
-.tools .remove {
-    background-image: url(images/wrenchRemove.png);
-    background-repeat: no-repeat;
-    background-position: 2px -14px;
-}
+    .tools .split {
+        background-image: url(images/split.png);
+        background-repeat: no-repeat;
+        background-position: 2px 2px;
+    }
 
-.tools .property {
-    background-image: url(images/wrenchRemove.png);
-    background-repeat: no-repeat;
-    background-position: 2px 2px;
-}
+    .tools .remove {
+        background-image: url(images/wrenchRemove.png);
+        background-repeat: no-repeat;
+        background-position: 2px -14px;
+    }
+
+    .tools .property {
+        background-image: url(images/wrenchRemove.png);
+        background-repeat: no-repeat;
+        background-position: 2px 2px;
+    }
 
 .title img {
     width: 12px;
