@@ -15,6 +15,7 @@
 /* Core Stylesheets
 ================================================== */
 @import url("layout.css");
+@import url("layout-responsive.css");
 @import url("widget.css");
 @import url("form.css");
 @import url("table.css");
@@ -22,7 +23,6 @@
 @import url("misc.css");
 @import url("utils.css");
 @import url("site.css");
-@import url("sitewidget.css");
 @import url("dropdowns.css");
 
 /* Elements Stylesheets
