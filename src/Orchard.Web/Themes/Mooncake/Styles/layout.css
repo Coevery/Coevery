@@ -801,6 +801,7 @@ body {
         box-shadow: 0 1px 10px rgba(0,0,0,0.1);
         border-bottom: 1px solid #d4d4d4;
         font-size: 0;
+        z-index: 10;
     }
 
         #wrapper #main #page-actions .btn {
@@ -1069,8 +1070,13 @@ body {
 }
 
 @media (min-width: 481px) and (max-width: 979px) {
+    #wrapper #content #sidebar #nav-selector {
+        padding: 13px 10px;
+    }
 
-    
+        #wrapper #content #sidebar #nav-selector > .dropdown > a {
+            padding: 0 5px;
+        }
 }
 
 @media (max-width: 767px)
@@ -1127,6 +1133,11 @@ body {
         float: none;
         display: block;
         text-align: center;
+    }
+}
+@media (max-width: 510px) {
+    #header #header-functions #logout-ribbon {
+        display: none;
     }
 }
 
