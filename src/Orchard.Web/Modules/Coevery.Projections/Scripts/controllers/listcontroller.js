@@ -16,7 +16,6 @@ define(['core/app/detourService',
                         actionTemplate += '&nbsp;<a ng-click="setDefault(row.getProperty(col.field))">Default</a></div>';
                         var columnDefs = [
                             { field: 'ContentId', displayName: 'Actions', width: 130, cellTemplate: actionTemplate },
-                            { field: 'ContentId', displayName: t('Id') },
                             { field: 'EntityType', displayName: t('EntityType') },
                             { field: 'DisplayName', displayName: t('DisplayName') },
                             { field: 'Default', displayName: t('Default') }];

@@ -14,7 +14,6 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           
           var perspectiveColumnDefs = [
               { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
-              { field: 'Id', displayName: 'Id' },
               { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString }];
 
           $scope.gridOptions = {
