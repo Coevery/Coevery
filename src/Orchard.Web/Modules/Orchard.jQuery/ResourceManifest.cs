@@ -12,7 +12,6 @@ namespace Orchard.jQuery {
 
             manifest.DefineScript("jQueryMousewheel").SetUrl("jquery.mousewheel.js", "jquery.mousewheel.js").SetVersion("3.1.3");
             manifest.DefineScript("jQueryValidate").SetUrl("jquery.validate.min.js", "jquery.validate.js");
-            manifest.DefineScript("jQueryValidateUnobtrusive").SetUrl("jquery.validate.unobtrusive.min.js", "jquery.validate.unobtrusive.js");
             
             // Full jQuery UI bundle
             manifest.DefineScript("jQueryUI").SetUrl("jquery-ui.min.js", "jquery-ui.js").SetVersion("1.9.2").SetDependencies("jQuery")

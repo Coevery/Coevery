@@ -140,7 +140,7 @@ angular.module('coevery.layout', [])
     })
     .directive('fdColumn', function () {
         return {
-            template: '<div fd-column class="data-column" ng-transclude></div>',
+            template: '<div fd-column ng-transclude></div>',
             replace: true,
             restrict: 'E',
             transclude: true,
@@ -153,7 +153,7 @@ angular.module('coevery.layout', [])
     })
     .directive('fdField', function () {
         return {
-            template: '<div fd-field></div>',
+            template: '<div fd-field class="control-group"></div>',
             replace: true,
             restrict: 'E',
             link: function (scope, element, attrs) {

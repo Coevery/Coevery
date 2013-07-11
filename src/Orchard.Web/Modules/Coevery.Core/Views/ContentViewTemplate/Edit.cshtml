@@ -19,7 +19,7 @@
         </header>
 
         <div class="row-fluid">
-            <section class="edit-view span12">
+            <section class="edit-mode span12">
                 @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                           FormMethod.Post, new { @name = "myForm", @ng_submit = "save()" })) {
                     @Html.ValidationSummary()

@@ -156,43 +156,23 @@
     margin: 17px 0;
 }
 
-/*Edit View*/
-.edit-view {
-    /*background-color: #f8f8f8;*/
+/*Edit Mode*/
+.edit-mode {
 }
 
-    .edit-view section header {
-        /*padding: 5px 16px;
-        background-color: rgba(138, 158, 190, 0.8);*/
-    }
-
-        .edit-view section header h5 {
-            /*margin: 0;*/
-        }
-
-            .edit-view section header h5.sub {
-                -webkit-text-shadow: none;
-                text-shadow: none;
-            }
-
-            .edit-view section header h5 span {
-                background-color: #fff;
-            }
-
-    .edit-view .data-row {
+    .edit-mode .data-row {
         margin: 10px 0;
         padding: 0 20px;
     }
 
-        .edit-view .data-row .control-label {
+        .edit-mode .data-row .control-label {
             text-align: right;
             width: 120px;
             float: left;
             padding-top: 5px;
-            color: #777;
         }
 
-            .edit-view .data-row .control-label.required:before {
+            .edit-mode .data-row .control-label.required:before {
                 content: "*";
                 color: red;
                 margin-right: 5px;
@@ -202,36 +182,29 @@
                 line-height: 24px;
             }
 
-        .edit-view .data-row .controls {
+        .edit-mode .data-row .controls {
             margin-left: 140px;
         }
 
-    .edit-view form {
+    .edit-mode form {
         margin: 0;
     }
 
-        .edit-view form > .data-section {
+        .edit-mode form > .data-section {
             margin-top: 20px;
         }
 
-            .edit-view form > .data-section:first-child {
+            .edit-mode form > .data-section:first-child {
                 margin-top: 0;
             }
 
-    /*.edit-view .data-column.error label,
-    .edit-view .data-column.error .help-block,
-    .edit-view .data-column.error .help-inline {
-        color: #b94a48;
+    .edit-mode .control-group {
+        margin: 0;
     }
 
-    .edit-view .data-column.error input,
-    .edit-view .data-column.error select,
-    .edit-view .data-column.error textarea {
-        border-color: #b94a48;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    }*/
+        .edit-mode .control-group.error {
+            color: #b94a48;
+        }
 
 /*View Mode*/
 .view-mode {
