@@ -3,7 +3,8 @@
         'GeneralViewCtrl',
         ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams', '$element', 'commonDataService',
             function ($timeout, $rootScope, $scope, logger, $state, $stateParams, $element, commonDataService) {
-                var moduleName = $rootScope.$stateParams.Module;
+                var moduleName = $stateParams.Module;
+                var id = $stateParams.Id;
                 $scope.moduleName = moduleName;
 
                 $scope.openActivitiesOptions = {
@@ -44,6 +45,9 @@
 
                 $scope.exit = function () {
                     $state.transitionTo('List', { Module: moduleName });
+                };
+                $scope.edit = function () {
+                    $state.transitionTo('Detail', { Module: moduleName, Id: id });
                 };
             }]
     ]);
