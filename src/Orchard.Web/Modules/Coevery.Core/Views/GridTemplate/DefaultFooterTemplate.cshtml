@@ -6,7 +6,7 @@
                 maxRows() ]  }}</div>
         </div>
         <div class="span8">
-            <div class="dataTables_paginate pagination">
+            <div class="dataTables_paginate pagination pagination-small">
                 <ul>
                     <li class="prev" ng-class="{'disabled': cantPageBackward()}"><a href="#">← Previous</a></li>
                     <li ng-repeat="page in maxPages()" ng-class="{'active': pagingOptions.currentPage == {{page}}}">
@@ -16,8 +16,8 @@
                 </ul>
             </div>
             <div class="dataTables_paginate">
-                <span>{{i18n.ngPageSizeLabel}}</span>
-                <select style="height: 27px; width: 100px"  ng-model="pagingOptions.pageSize">
+                <span style="display: inline-block;margin-top: 2px;vertical-align: top;">{{i18n.ngPageSizeLabel}}</span>
+                <select style="height: 26px; width: 100px"  ng-model="pagingOptions.pageSize">
                     <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
                 </select>
             </div>
