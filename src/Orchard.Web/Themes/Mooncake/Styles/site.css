@@ -48,10 +48,6 @@
     z-index: 1000;
 }
 
-#wrapper #content-wrap {
-    padding: 69px 0 0 0;
-}
-
 #wrapper #main {
     padding-bottom: 0;
 }
@@ -73,6 +69,7 @@
         text-shadow: 0 1px 0 #fff;*/
         text-decoration: none;
     }
+
         #nav-selector > .dropdown > a > span {
             white-space: nowrap;
             overflow: hidden;
