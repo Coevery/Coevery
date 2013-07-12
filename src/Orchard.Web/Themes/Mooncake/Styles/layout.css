@@ -1023,7 +1023,7 @@ body {
         min-height: 0 !important;
     }
 
-        #wrapper #sidebar #navigation ul > li > span,
+        /*#wrapper #sidebar #navigation ul > li > span,
         #wrapper #sidebar #navigation ul > li > a,
         #wrapper #sidebar #navigation ul > li.active > span,
         #wrapper #sidebar #navigation ul > li.active > a
@@ -1031,7 +1031,7 @@ body {
             border: none;
             background: none;
             color: #bfbfbf;
-        }
+        }*/
 
         #wrapper #sidebar #navigation ul > li:hover > span,
         #wrapper #sidebar #navigation ul > li:hover > a
