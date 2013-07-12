@@ -73,9 +73,10 @@
 
             $('#nav-selector .dropdown-menu')
                 .on('click.template', ' > li', function(e) {
-                    var target = $(this).attr('data-target');
-                    var parent = $(this).attr('data-parent');
+                    var target = $(this).attr('data-nav-target');
+                    var parent = $(this).attr('data-nav-parent');
                     $(parent).find('.collapse').collapse('hide');
+                    $(target).collapse('show');
                 });
 
             // Collapsible Boxes

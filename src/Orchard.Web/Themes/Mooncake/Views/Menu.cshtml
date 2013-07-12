@@ -13,7 +13,7 @@
             <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
                 @foreach (var item in menu.Items) {
                     string idText = ((string)item.Text.TextHint).ToSafeName();
-                    <li data-toggle="collapse" data-target="#@idText" data-parent="#navigation">
+                    <li data-nav-target="#@idText" data-nav-parent="#navigation">
                         <input type="radio" id="menu_@idText" name="ex4" value="@idText"><label for="menu_@idText"><strong>@item.Text.Text</strong></label>
                     </li>
                 }
