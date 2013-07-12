@@ -1142,6 +1142,14 @@ body {
     }
 }
 
+@media (min-width: 481px)
+{
+    #wrapper #sidebar #navigation
+    {
+        height: auto !important;
+    }
+}
+
 @media (max-width: 480px)
 {
     #header
@@ -1266,12 +1274,16 @@ body {
         display: inline;
     }
 
-        #wrapper #sidebar #navigation
-        {
-            height: 0;
-            overflow: hidden;
-            width: 100%;
-        }
+    #wrapper #sidebar #navigation {
+        height: 0;
+        overflow: hidden;
+        width: 100%;
+        position: static;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        left: auto;
+    }
 
             #wrapper #sidebar #navigation ul
             {
