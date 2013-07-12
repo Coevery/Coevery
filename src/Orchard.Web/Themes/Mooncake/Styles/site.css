@@ -52,34 +52,6 @@
     padding-bottom: 0;
 }
 
-/*First Navigation Selector*/
-#nav-selector {
-    padding: 13px 20px;
-    border-bottom: 1px solid rgb(200, 200, 200);
-    -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-    box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-}
-
-    #nav-selector > .dropdown > a {
-        display: block;
-        font-size: 20px;
-        font-weight: 200;
-        color: #777;
-        /*-webkit-text-shadow: 0 1px 0 #fff;
-        text-shadow: 0 1px 0 #fff;*/
-        text-decoration: none;
-    }
-
-        #nav-selector > .dropdown > a > span {
-            white-space: nowrap;
-            overflow: hidden;
-            max-width: 160px;
-            display: inline-block;
-            -ms-text-overflow: ellipsis;
-            -o-text-overflow: ellipsis;
-            text-overflow: ellipsis;
-        }
-
 /*Page Title*/
 #page-title h1 {
     float: left;
