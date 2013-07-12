@@ -64,22 +64,20 @@
 				});
 
             var self = this;
-            // Sidebar Navigation
-            //$('#sidebar #navigation > ul > li')
-			//	.filter(':not(#sidebar-toggle-wrap)')
-			//	.on('click.template', ' > a, > span', function (e) {
-			//	    if ($(this).is('a') && undefined !== $(this).attr('href'))
-			//	        return;
-
-			//	    self.updateSidebarNav($(this).parent());
-			//	    e.stopPropagation();
-			//	});
-            
+           
             $('#sidebar #navigation > ul > li')
 				.on('click.template', ' > a, > span', function (e) {
 				    $('#navigation').collapse('hide');
 				    e.stopPropagation();
 				});
+
+            $('#nav-selector .dropdown-menu')
+                .on('click.template', ' > li', function(e) {
+                    var target = $(this).attr('data-nav-target');
+                    var parent = $(this).attr('data-nav-parent');
+                    $(parent).find('.collapse').collapse('hide');
+                    $(target).collapse('show');
+                });
 
             // Collapsible Boxes
             $('.widget .widget-header [data-toggle=widget]')

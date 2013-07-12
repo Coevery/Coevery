@@ -11,14 +11,11 @@
                 <span id="first-menu-title" data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
             </a>
             <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
-                @{
-                    var menuIndex = 0;
-                }
                 @foreach (var item in menu.Items) {
-                    <li>
-                        <input type="radio" id="menu_@menuIndex" name="ex4" value="1"><label for="menu_@menuIndex"><strong>@item.Text.Text</strong></label>
+                    string idText = ((string)item.Text.TextHint).ToSafeName();
+                    <li data-nav-target="#@idText" data-nav-parent="#navigation">
+                        <input type="radio" id="menu_@idText" name="ex4" value="@idText"><label for="menu_@idText"><strong>@item.Text.Text</strong></label>
                     </li>
-                    menuIndex++;
                 }
             </ul>
         }
@@ -27,50 +24,27 @@
 
 <nav id="navigation">
     @{
-        int firstLevelIndex = 0;
         foreach (var firstLevelMenuItem in Model) {
             IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-            string displayCss = "none";
-            if (firstLevelIndex == 0) { displayCss = "block"; }
-            firstLevelIndex++;
-        <ul class="menu"   id="@firstLevelMenuItem.Text" >
-            @if (secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav).Count() > 0 || !firstLevelMenuItem.LinkToFirstChild) {
-                foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
-                    string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-                    var firstOfTheThird = ((IEnumerable<dynamic>)secondLevelMenuItem).FirstOrDefault();
-                    var secondLevelUrl = secondLevelMenuItem.Href;
-                    if (firstOfTheThird != null && secondLevelMenuItem.LinkToFirstChild && (firstOfTheThird.RouteValues != null || HasText(firstOfTheThird.Url))) {
-                        secondLevelUrl = firstOfTheThird.Href;
+            string idText = firstLevelMenuItem.Text.TextHint;
+            idText = idText.ToSafeName();
+            var isFirst = ((IEnumerable<dynamic>) Model).ToList().IndexOf(firstLevelMenuItem) == 0;
+            var inClass = isFirst ? "in" : string.Empty;
+            <ul class="collapse @inClass" id="@idText" >
+                @if (secondLevelMenuItems.Any(menuItem => !menuItem.LocalNav) || !firstLevelMenuItem.LinkToFirstChild) {
+                    foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
+                        string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
+
+                        var secondLevelUrl = secondLevelMenuItem.Href;
+                        <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
+                            <a href="@secondLevelUrl" title="@secondLevelTextHint">
+                                <i class="icon-home" ></i>
+                                <span class="nav-title">@secondLevelMenuItem.Text</span>
+                            </a>
+                        </li>
                     }
-                    var filePath = System.AppDomain.CurrentDomain.BaseDirectory + "Themes\\Mooncake\\Styles\\Coevery\\images\\" + secondLevelMenuItem.Text + ".ico";
-                    var backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/" + secondLevelMenuItem.Text + ".ico");
-                    if (!File.Exists(filePath)) {
-                        backUrl = Href("~/Themes/Mooncake/Styles/Coevery/images/Home.ico");
-                    }
-                <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
-                    <a href="@secondLevelUrl">
-                        <i class="icon-home" ></i>
-                        @*style="background-image: url(@backUrl);"*@
-                        <span class="nav-title">@secondLevelMenuItem.Text</span>
-                    </a>
-                </li>
                 }
-            }
-        </ul>
+            </ul>
         }
     }
 </nav>
-
-@using (Script.Foot()) {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#FirstMenu .dropdown-menu>li").click(function () {
-                var $li = $(this);
-                var action = $li[0].title;
-                $("#navigation .menu").css('display', 'none');
-                $("#navigation #" + action).css('display', 'block');
-                $("#FirstMenu .btn-group #FirstMenuText").text(action);
-            });
-        });
-    </script>
-}
