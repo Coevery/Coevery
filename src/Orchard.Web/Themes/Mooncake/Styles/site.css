@@ -76,7 +76,6 @@
     }
 
 #page-title .btn-toolbar {
-    float: right;
     margin: 17px 0;
 }
 
@@ -214,3 +213,22 @@
         display: inline-block;
         font-size: 14px;
     }
+
+/*Page Actions*/
+#page-actions h1 {
+    font-size: 24px;
+    margin: 3px 0;
+}
+
+    #page-actions h1 span {
+        font-size: 11px;
+        line-height: 1;
+        font-weight: normal;
+        border-left: 1px dotted #aaa;
+        padding-left: 5px;
+    }
+
+#page-actions #actions {
+    margin-left: 30px;
+    display: none;
+}
