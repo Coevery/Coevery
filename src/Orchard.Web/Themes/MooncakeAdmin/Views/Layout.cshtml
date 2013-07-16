@@ -19,12 +19,14 @@
     Style.Include("uniform/css/uniform.default.css");
     Style.Include("fonts/icomoon/style.css");
     Style.Include("main-style.css");
+    Style.Include("site.css");
     
     Script.Require("jQuery");
     Script.Include("js/libs/bootstrap.min.js");
     Script.Include("uniform/jquery.uniform.js");
     Script.Include("js/demo/picklist.js");
     Script.Include("js/template.js");
+    Script.Include("js/setup.js");
     /* Some useful shortcuts or settings
     ***************************************************************/
 
@@ -194,11 +196,17 @@
         </div>
     </div>
 </div>
+@*
 <footer id="footer">
     <div class="footer-left">novasoftware - <a href="http://www.novasoftware.cn/">http://www.novasoftware.cn/</a></div>
     <div class="footer-right">
         <p>Copyright 2013. All Rights Reserved.</p>
     </div>
+</footer>*@
+<footer>
+    <p class="pull-left">Nova Software - <a href="http://www.novasoftware.cn">http://www.novasoftware.cn</a></p>
+    <p class="pull-right">Copyright 2013. All Rights Reserved.</p>
 </footer>
+
 @tag.EndElement
 

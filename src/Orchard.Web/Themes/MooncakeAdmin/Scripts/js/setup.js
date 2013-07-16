@@ -152,6 +152,16 @@
 				}
 			});
 		}
+	
+	    // Gridview row menu
+		$(document)
+            .on('mouseover.ngRow', '.ngGrid .ngRow', function (e) {
+                $(this).find('.row-actions').removeClass('hide');
+            });
+		$(document)
+            .on('mouseout.ngRow', '.ngGrid .ngRow', function (e) {
+                $(this).find('.row-actions').addClass('hide');
+            });
 	});
 	
 }) (jQuery, window, document);
