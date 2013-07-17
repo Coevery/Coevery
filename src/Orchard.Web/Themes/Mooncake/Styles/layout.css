@@ -26,7 +26,6 @@ screen < 767px
 ================================================== */
 
 body {
-    /*background: url(images/layout/bg/white_tiles.png);*/
     color: #444;
     padding: 0;
 }
@@ -608,7 +607,7 @@ body {
                     margin: 0;
                     line-height: 1;
                     padding: 9px 0;
-                    color: #bfbfbf;
+                    color: #333;
                     display: block;
                     border: 1px solid transparent;
                     font-size: 22px;
@@ -1205,6 +1204,7 @@ footer {
                     text-align: left;
                     padding: 12px 15px;
                     border: none;
+                    color: #bfbfbf;
                     font-size: 12px;
                 }
 

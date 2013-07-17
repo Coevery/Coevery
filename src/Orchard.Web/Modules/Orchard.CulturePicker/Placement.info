@@ -1,0 +1,9 @@
+﻿<Placement>
+    <Place Parts_CulturePicker="Content:1"/>
+    <Match DisplayType="Detail">
+      <Place Parts_Localization_ContentTranslations="-"/>
+    </Match>
+    <Match DisplayType="Summary">
+      <Place Parts_Localization_ContentTranslations_Summary="-"/>
+    </Match>
+</Placement>
