@@ -42,4 +42,34 @@ angular.module('coevery.layout', [])
                 element.html(template.text());
             }
         };
+    })
+    .directive('btnActions',function() {
+        return {
+            template: '<div btn-actions ng-transclude ng-style="BtnActionLeft()" class="btn-toolbar pull-left"></div>',
+            replace: true,
+            scope: {},
+            restrict: 'E',
+            transclude: true,
+            controller: ['$scope', '$element', '$attrs', '$transclude', '$window', function ($scope, $element, $attrs, $transclude, $window) {
+                $scope.BtnActionLeft = function () {
+                    if ($element.hasClass('btn-fixed')) {
+                        var left = $('#page-actions>h1').offset().left;
+                        var width = $('#page-actions>h1').width();
+                        btnLeft = left + width + 20;
+                        return { left: btnLeft };
+                    } else {
+                        return { left: 'auto' };
+                    }
+                };
+                angular.element($window).bind("scroll", function () {
+                    var scrollTop = $(window).scrollTop();
+                    if (scrollTop > 35) {
+                        $element.addClass('btn-fixed');
+                    } else {
+                        $element.removeClass('btn-fixed');
+                    }
+                    $element.css('left', $scope.BtnActionLeft().left);
+                });
+            }]
+        };
     });

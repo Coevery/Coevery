@@ -3,13 +3,15 @@
 
 <section data-ng-controller="GeneralViewCtrl">
     <div id="page-actions">
-        <button class="btn btn-small" ng-click="exit()">Back</button>
-        <button class="btn btn-small btn-primary" ng-click="edit()">Edit</button>
+        <h1 class="pull-left">{{moduleName}} <span>view a data</span></h1>
     </div>
 
     <section id="main-content">
         <header id="page-title" class="clearfix">
-            <h1>{{moduleName}} <span>view a data</span></h1>
+            <btn-actions>
+                <button class="btn btn-small" ng-click="exit()">Back</button>
+                <button class="btn btn-small btn-primary" ng-click="edit()">Edit</button>
+             </btn-actions>
         </header>
 
         <div class="row-fluid">
