@@ -8,11 +8,6 @@
 
           $scope.moduleName = moduleName;
 
-          $(window).scroll(function () {
-              var scrollTop = $(window).scrollTop();
-              scrollTop > 43 ? $('#actions').slideDown(100) : $('#actions').slideUp(100);
-          });
-          
           $scope.pagingOptions = {
               pageSizes: [250, 500, 1000],
               pageSize: 250,
