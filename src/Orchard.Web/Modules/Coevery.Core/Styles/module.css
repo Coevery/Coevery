@@ -16,7 +16,7 @@
 }
 
 .btn-toolbar > div > .btn + .btn {
-    margin-left: 5px;
+    /*margin-left: 5px;*/
 }
 
 .widget.toolbar-Container .widget-content {

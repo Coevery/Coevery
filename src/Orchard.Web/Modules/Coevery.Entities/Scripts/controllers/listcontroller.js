@@ -5,19 +5,24 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
       'EntityListCtrl',
       ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', 'generationService',
       function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService, generationService) {
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Entities/{{row.entity.Name}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
-          $scope.mySelections = [];
-          
+          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
+              '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
+              '<ul class="row-actions pull-right hide">' +
+              '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+              '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+              '</ul>' +
+              '</div>';
+          $scope.selectedItems = [];
+
           var t = function (str) {
               var result = i18n.t(str);
               return result;
           };
-          
+
           var metadataColumnDefs = [
-              { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
               { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString },
               { field: 'IsDeployed', displayName: t('IsDeployed') }];
-          
+
           $scope.pagingOptions = {
               pageSizes: [250, 500, 1000],
               pageSize: 250,
@@ -28,16 +33,23 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
           $scope.gridOptions = {
               data: 'myData',
-              selectedItems: $scope.mySelections,
+              enablePaging: true,
+              showFooter: true,
+              multiSelect: true,
+              enableRowSelection: true,
+              showSelectionCheckbox: true,
+              selectedItems: $scope.selectedItems,
               columnDefs: metadataColumnDefs,
               pagingOptions: $scope.pagingOptions
           };
-          
+
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (entityName) {
               entityDataService.delete({ name: entityName }, function () {
-                  $scope.mySelections.pop();
+                  if ($scope.selectedItems.length != 0) {
+                      $scope.selectedItems.pop();
+                  }                  
                   $scope.getAllMetadata();
                   logger.success("Delete the metadata successful.");
               }, function () {
@@ -47,6 +59,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
           $scope.add = function () {
               $detour.transitionTo('EntityCreate', { Module: 'Entities' });
+          };
+          
+          $scope.view = function (entityName) {
+              $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
           };
 
           $scope.edit = function (entityName) {
