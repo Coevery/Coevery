@@ -1,0 +1,125 @@
+﻿@using System.Globalization
+@using Q42.DbTranslations.Helpers
+@using Q42.DbTranslations.ViewModels
+@model CultureGroupDetailsViewModel
+@{
+  Layout.Title = Model.Culture + " Localization";
+  Script.Require("jQuery");
+}
+
+@using (Script.Foot())
+{ 
+  <script>
+  //<![CDATA[
+    $(window).load(function () {
+      //$('#translations input, #translations textarea').addClass('default');
+      $('#translations input, #translations textarea').blur(function (evt) {
+        $(this).removeClass().addClass('saving');
+        // save new value to database
+        var newValue = $(this).val();
+        var url = @Html.Raw(string.Format("\"{0}\"", Url.Action("update")));
+        var postdata = { culture: '@Model.Culture', id: $(this).data('id'), value: newValue, __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val() }
+        $.post(url, postdata, onsuccess).error(function (e) { console.log(url, postdata, e); alert("error in " + url + "\n\n" + e.responseText); });
+      });
+
+      $('.items input, .items textarea').bind('focus',function() {
+        $(this).removeClass().addClass('flux');
+      });
+
+      indicateValidatedCells(true); // indicate validity for all cells on page load
+    });
+
+    function indicateValidatedCells(checkAll) {
+      var filter = '';
+      checkAll ? filter = 'input,textarea' : filter = '.saving,.flux';
+      $('.items').find(filter).each(function (i, e) {
+        if ($(e).val() != '' || $(e).attr('placeholder') != undefined) {
+          $(e).removeClass().addClass('valid');
+        } else {
+          $(e).removeClass().addClass('invalid');
+        }
+      });
+    }
+
+    function displayFlushCacheMessage() {
+      if ($('.message-fixed').length)
+        return;
+
+      $('#main').append('<div class="message message-Warning message-fixed">@T("Translation cache needs to be flushed. <a href=\"{0}\">Click here to flush!</a>", Url.Action("FlushCache", "Admin", new { area = "Q42.DbTranslations", redirectUrl = Request.Url.PathAndQuery }))</div>');
+      $('.message-fixed').css('left', ($("body").width() / 2 - $('.message-fixed').width() / 2) + "px");
+    }
+
+    function onsuccess(data, textStatus, jqXHR) {
+      // todo vinkie
+      indicateValidatedCells(false);
+      displayFlushCacheMessage();
+    }
+  //]]>
+  </script>
+}
+
+<style>
+  #translations td { vertical-align: top; }
+  #translations input  
+  {
+    width: 95%; 
+    padding-left: 20px; 
+    border-width: 1px;
+    border-style: solid;
+    border-color: #BFBEBB #E7E6E3 #E7E6E3 #BFBEBB;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+  }
+  #translations textarea { width: 95%; height: 100px; padding-left: 20px; }
+  
+  #translations input, #translations textarea { background: #fdf5bc; }
+  #translations .valid { background:#fff url(/Modules/Q42.DbTranslations/Content/form-valid.gif) no-repeat 2px 50%; }
+  #translations .saving { background:#fff url(/Modules/Q42.DbTranslations/Content/loader.gif) no-repeat 2px 50%; } 
+  #translations .invalid { background: none; background-color: #FDF5BC; }
+  #translations .flux { background: none; background-color: white; }
+
+  .message-fixed { position:fixed; top:-10px; }
+
+</style>
+
+@Html.AntiForgeryTokenOrchard()
+
+<div class="content">
+  @Html.ActionLink(T("Back to {0}", Model.Culture).Text, "Culture", new { culture = Model.Culture })
+  <h2>@LocalizationHelpers.GetPoFileName(Model.CurrentGroupPath) in @Model.Culture</h2>
+  <div id="translations">
+    <table class="items">
+      <tr>
+        <th width="50%">@T("Key")</th>
+        <th width="50%">@T("Value in {0}", Model.Culture)</th>
+      </tr>
+      @foreach (var translationGroup in Model.CurrentGroupTranslations)
+      {
+        <tr>
+          <th colspan="2">@translationGroup.Key</th>
+        </tr>
+        foreach (var translation in translationGroup.OrderBy(t => t.Key))
+        {
+          <tr>
+            <td @if (translation.OriginalString != translation.LocalString)
+                { <text>title="@translation.OriginalString" </text> }>@Q42.DbTranslations.Services.LocalizationService.ImportPoText(translation.Key)</td>
+            <td>
+              @if (!Model.CanTranslate)
+              {
+                @translation.LocalString
+              }
+              else if (translation.OriginalString.Contains('\n') || (translation.LocalString != null && translation.LocalString.Length > 70))
+              {
+                <textarea data-id="@translation.Id" name="@translation.Id">@translation.LocalString</textarea>
+              }else {
+                <input type="text" value="@translation.LocalString" name="@translation.Id" 
+                  data-id="@translation.Id" @if (@translation.OriginalString != translation.Key) {<text>placeholder="@translation.OriginalString"</text>} />
+              }
+            </td>
+          </tr>
+        }
+      }
+    </table>
+  </div>
+</div>
