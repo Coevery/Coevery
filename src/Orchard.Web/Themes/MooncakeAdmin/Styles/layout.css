@@ -815,7 +815,10 @@ body {
 
             #wrapper #main #page-actions > .btn:first-child,
             #wrapper #main #page-actions > .btn-group:first-child {
-                margin-left: 0;
+                margin-left: 0px;
+            }
+            #wrapper #main #page-actions > .btn-group > button:first-child {
+                margin-left: 10px;
             }
 
     /* Main Content

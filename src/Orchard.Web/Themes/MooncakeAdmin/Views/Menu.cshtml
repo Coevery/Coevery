@@ -8,12 +8,12 @@
 }
 @{
     if (items.Any()) {
-        <ul class="menu">
-            @DisplayChildren(Model)
-            <li id="sidebar-toggle-wrap">
-                <span id="sidebar-toggle" class="toggled" onclick=" ToggleButtonClick() "><span></span></span>
-            </li>
-        </ul>
+    <ul class="menu">
+        @DisplayChildren(Model)
+        <li id="sidebar-toggle-wrap">
+            <span id="sidebar-toggle" class="toggled" onclick=" ToggleButtonClick() "><span></span></span>
+        </li>
+    </ul>
     }
 }
 
@@ -30,7 +30,15 @@
                 $(".menu>li.active").removeClass("active");
                 $li.addClass("active");
             });
+
+            var emptyLi;
+            emptyLi = $('.menu>li:not(:has(ul))');
+            $('.menu>li:not(:has(ul))').click(function () {
+                $(location).attr('href', '/OrchardLocal/Coevery');
+            })
+
         });
+
         function ToggleButtonClick() {
             if (!!$('#sidebar #navigation .menu >li.active:first .inner-nav').length) {
                 $('#content')

@@ -8,7 +8,7 @@
             var menu = Model;
             
             <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                <span id="first-menu-title" data-label-placement>@menu.Items[0].Text.Text</span><b class="caret"></b>
+                <span id="first-menu-title" data-label-placement title="@menu.Items[0].Text.Text">@menu.Items[0].Text.Text</span><b class="caret"></b>
             </a>
             <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
                 @foreach (var item in menu.Items) {

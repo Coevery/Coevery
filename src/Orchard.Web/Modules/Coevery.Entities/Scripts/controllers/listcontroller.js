@@ -12,17 +12,12 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
               '</ul>' +
               '</div>';
-          $scope.mySelections = [];
+          $scope.selectedItems = [];
 
           var t = function (str) {
               var result = i18n.t(str);
               return result;
           };
-
-          //var metadataColumnDefs = [
-          //    { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
-          //    { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString },
-          //    { field: 'IsDeployed', displayName: t('IsDeployed') }];
 
           var metadataColumnDefs = [
               { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString },
@@ -43,7 +38,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               multiSelect: true,
               enableRowSelection: true,
               showSelectionCheckbox: true,
-              selectedItems: $scope.mySelections,
+              selectedItems: $scope.selectedItems,
               columnDefs: metadataColumnDefs,
               pagingOptions: $scope.pagingOptions
           };
@@ -52,7 +47,9 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
           $scope.delete = function (entityName) {
               entityDataService.delete({ name: entityName }, function () {
-                  $scope.mySelections.pop();
+                  if ($scope.selectedItems.length != 0) {
+                      $scope.selectedItems.pop();
+                  }                  
                   $scope.getAllMetadata();
                   logger.success("Delete the metadata successful.");
               }, function () {
