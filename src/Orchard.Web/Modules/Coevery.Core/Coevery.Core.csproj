@@ -155,6 +155,7 @@
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
     <None Include="Scripts\i18n\resources-locale_en-us.json" />
     <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
+    <Content Include="Scripts\directives\layout-directive.js" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />
     <Content Include="Scripts\services\loadingservice.js" />

@@ -25,12 +25,13 @@
     Script.Require("jQueryUI");
     Script.Require("jQueryMousewheel");
 
-    Script.Include("js/libs/bootstrap.min.js");
+    Script.Include("js/libs/bootstrap.js");
     Script.Include("js/perfect-scrollbar.js");
-    Script.Include("js/navigation.js");
+    Script.Include("js/template.js");
+    Script.Include("js/setup.js");
     Script.Include("js/dropdown.js");
     Script.Include("js/demo/picklist.js");
-    Script.Include("js/libs/hovermenu.js");
+    Script.Require("jQueryValidate");
 
     /* Some useful shortcuts or settings
     ***************************************************************/
@@ -182,7 +183,7 @@
     <div id="content" class="sidebar-minimized">
         <div id="content-outer">
             <div id="content-inner">
-                <aside id="sidebar">
+                <aside id="sidebar" class="affix">
                     @if (Model.Navigation != null) {
                         @Zone(Model.Navigation)
                     }
@@ -196,21 +197,11 @@
         </div>
     </div>
 </div>
-<div id="footer">
-    <div class="navbar navbar-fixed-bottom">
-        <div class="navbar-inner">
-            <div class="container">
-                <footer>
-                    <div class="row">
-                        <div class="footer-left">Nova Software - <a href="http://www.novasoftware.cn">http://www.novasoftware.cn</a></div>
-                        <div class="footer-right">
-                            <p>Copyright 2013. All Rights Reserved.</p>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        </div>
-    </div>
-</div>
+
+<footer>
+    <p class="pull-left">Nova Software - <a href="http://www.novasoftware.cn">http://www.novasoftware.cn</a></p>
+    <p class="pull-right">Copyright 2013. All Rights Reserved.</p>
+</footer>
+
 
 @tag.EndElement

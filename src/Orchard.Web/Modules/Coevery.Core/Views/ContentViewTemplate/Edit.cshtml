@@ -14,12 +14,12 @@
     </div>
 
     <section id="main-content">
-        <header id="page-title">
+        <header id="page-title" class="clearfix">
             <h1>{{moduleName}} <span>create a data</span></h1>
         </header>
 
         <div class="row-fluid">
-            <section class="edit-view span12">
+            <section class="edit-mode span12">
                 @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                           FormMethod.Post, new { @name = "myForm", @ng_submit = "save()" })) {
                     @Html.ValidationSummary()

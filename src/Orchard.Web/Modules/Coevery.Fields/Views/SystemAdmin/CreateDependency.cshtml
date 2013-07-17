@@ -6,14 +6,16 @@
 
 <section id="main-content">
     <div class="row-fluid">
-        <div class="btn-toolbar step1">
-            <button class="btn" data-ng-click="exit()">Back</button>
-            <button class="btn" data-ng-click="next()">Next</button>
-        </div>
-        <div class="btn-toolbar step2">
-            <button class="btn" data-ng-click="exit()">Back</button>
-            <button class="btn" data-ng-click="prev()">Previous</button>
-            <button class="btn btn-primary" data-ng-click="save()">Save</button>
+        <div id="page-toolbar">
+            <div class="step1">
+                <button class="btn" data-ng-click="exit()">Back</button>
+                <button class="btn" data-ng-click="next()">Next</button>
+            </div>
+            <div class="step2">
+                <button class="btn" data-ng-click="exit()">Back</button>
+                <button class="btn" data-ng-click="prev()">Previous</button>
+                <button class="btn btn-primary" data-ng-click="save()">Save</button>
+            </div>
         </div>
     </div>
 
@@ -28,8 +30,7 @@
                         </label>
                         <div class="controls">
                             <select class="span12" data-ng-model="controlField">
-                                @foreach (var field in Model.ControlFields)
-                                {
+                                @foreach (var field in Model.ControlFields) {
                                     @Html.SelectOption(field.Name, false, field.DisplayName, new { field_type = field.FieldDefinition.Name })
                                 }
                             </select>
@@ -41,8 +42,7 @@
                         </label>
                         <div class="controls">
                             <select class="span12" data-ng-model="dependentField">
-                                @foreach (var field in Model.DependentFields)
-                                {
+                                @foreach (var field in Model.DependentFields) {
                                     @Html.SelectOption(field.Name, false, field.DisplayName)
                                 }
                             </select>

@@ -1,20 +1,24 @@
 ﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope','$parse', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
+      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
       function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
           var moduleName = $rootScope.$stateParams.Module;
-          
           var primaryKeyGetter = $parse('ContentId');
-          
+
           $scope.moduleName = moduleName;
 
+          $(window).scroll(function () {
+              var scrollTop = $(window).scrollTop();
+              scrollTop > 43 ? $('#actions').slideDown(100) : $('#actions').slideUp(100);
+          });
+          
           $scope.pagingOptions = {
               pageSizes: [250, 500, 1000],
               pageSize: 250,
               currentPage: 1
           };
-          
+
           $scope.setPagingData = function (data, page, pageSize) {
               var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
               var maxRow = data.length;
@@ -54,10 +58,10 @@
           $scope.columnDefs = [];
           var gridColumns = columnDefinitionService.query({ contentType: moduleName }, function () {
               $scope.columnDefs = gridColumns;
-          }, function () {});
+          }, function () { });
 
           $scope.selectedItems = [];
-          
+
           $scope.gridOptions = {
               data: 'myData',
               enablePaging: true,
@@ -76,7 +80,7 @@
 
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           $scope.Refresh = function () {
-              
+
               $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           };
 
@@ -119,7 +123,7 @@
               $scope.expendCollapse();
               $('#collapseBtn').click();
           };
-          
+
           $scope.delete = function (id) {
               var ids = [];
               if (id) {

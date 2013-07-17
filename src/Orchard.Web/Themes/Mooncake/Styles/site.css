@@ -48,85 +48,9 @@
     z-index: 1000;
 }
 
-#wrapper #content-wrap {
-    padding: 69px 0 0 0;
-}
-
 #wrapper #main {
     padding-bottom: 0;
 }
-
-#main-content {
-    margin-top: 47px;
-}
-
-#wrapper #content.sidebar-minimized #sidebar {
-    z-index: 1000;
-    position: fixed;
-}
-
-/*First Navigation Selector*/
-#nav-selector {
-    padding: 13px 20px;
-    border-bottom: 1px solid rgb(200, 200, 200);
-    -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-    box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-}
-
-    #nav-selector #selector {
-        display: block;
-        font-size: 20px;
-        font-weight: 200;
-        color: #777;
-        -webkit-text-shadow: 0 1px 0 #fff;
-        text-shadow: 0 1px 0 #fff;
-    }
-
-        #nav-selector #selector:hover,
-        #nav-selector #selector:focus {
-            text-decoration: none;
-        }
-
-        #nav-selector #selector > span {
-            white-space: nowrap;
-            overflow: hidden;
-            max-width: 160px;
-            display: inline-block;
-            -ms-text-overflow: ellipsis;
-            -o-text-overflow: ellipsis;
-            text-overflow: ellipsis;
-        }
-
-/*Page Actions*/
-#page-actions {
-    margin-top: 69px;
-    z-index: 999;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    margin-left: 211px;
-    padding: 0 40px;
-    background-color: #f7f7f7;
-    -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-    box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-    border-bottom: 1px solid #d4d4d4;
-    font-size: 0;
-}
-
-    #page-actions .btn {
-        min-width: 70px;
-    }
-
-    #page-actions > .btn,
-    #page-actions > .btn-group {
-        margin: 10px 0 10px 10px;
-    }
-
-        #page-actions > .btn:first-child,
-        #page-actions > .btn-group:first-child {
-            margin-left: 0;
-        }
 
 /*Page Title*/
 #page-title h1 {
@@ -152,61 +76,58 @@
     }
 
 #page-title .btn-toolbar {
-    float: right;
     margin: 17px 0;
 }
 
-/*Edit View*/
-.edit-view {
-    /*background-color: #f8f8f8;*/
+/*Edit Mode*/
+.edit-mode {
 }
 
-    .edit-view section header {
-        /*padding: 5px 16px;
-        background-color: rgba(138, 158, 190, 0.8);*/
-    }
-
-        .edit-view section header h5 {
-            /*margin: 0;*/
-        }
-
-            .edit-view section header h5.sub {
-                -webkit-text-shadow: none;
-                text-shadow: none;
-            }
-
-            .edit-view section header h5 span {
-                background-color: #fff;
-            }
-
-    .edit-view .data-row {
+    .edit-mode .data-row {
         margin: 10px 0;
         padding: 0 20px;
     }
 
-        .edit-view .data-row .control-label {
-            text-align: left;
+        .edit-mode .data-row .control-label {
+            text-align: right;
             width: 120px;
             float: left;
             padding-top: 5px;
-            color: #777;
         }
 
-        .edit-view .data-row .controls {
+            .edit-mode .data-row .control-label.required:before {
+                content: "*";
+                color: red;
+                margin-right: 5px;
+                vertical-align: text-top;
+                font-weight: bold;
+                font-size: 20px;
+                line-height: 24px;
+            }
+
+        .edit-mode .data-row .controls {
             margin-left: 140px;
         }
 
-    .edit-view form {
+    .edit-mode form {
         margin: 0;
     }
 
-        .edit-view form > .data-section {
+        .edit-mode form > .data-section {
             margin-top: 20px;
         }
 
-            .edit-view form > .data-section:first-child {
+            .edit-mode form > .data-section:first-child {
                 margin-top: 0;
             }
+
+    .edit-mode .control-group {
+        margin: 0;
+    }
+
+        .edit-mode .control-group.error {
+            color: #b94a48;
+        }
 
 /*View Mode*/
 .view-mode {
@@ -249,7 +170,7 @@
         }
 
         .view-mode .data-row .control-label {
-            text-align: left;
+            text-align: right;
             width: 120px;
             float: left;
             padding-top: 5px;
@@ -292,3 +213,22 @@
         display: inline-block;
         font-size: 14px;
     }
+
+/*Page Actions*/
+#page-actions h1 {
+    font-size: 24px;
+    margin: 3px 0;
+}
+
+    #page-actions h1 span {
+        font-size: 11px;
+        line-height: 1;
+        font-weight: normal;
+        border-left: 1px dotted #aaa;
+        padding-left: 5px;
+    }
+
+#page-actions #actions {
+    margin-left: 30px;
+    display: none;
+}

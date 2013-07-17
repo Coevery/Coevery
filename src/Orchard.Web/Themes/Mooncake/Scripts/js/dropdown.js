@@ -51,6 +51,7 @@
         var caret = $toggle.find('.caret');
 
         $toggle.html(text || '&nbsp;');
+        $toggle.attr("title", $toggle.text());
         if (caret.length)
             $toggle.append(' ') && caret.appendTo($toggle);
 

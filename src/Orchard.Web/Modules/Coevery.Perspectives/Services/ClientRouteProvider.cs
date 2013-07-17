@@ -43,6 +43,15 @@ namespace Coevery.Perspectives.Services
                        descriptor.Dependencies = new string[] {"controllers/detailcontroller"};
                    });
 
+            builder.Describe("CreateNavigationItem")
+                   .Configure(descriptor =>
+                   {
+                       descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}";
+                       descriptor.Controller = "NavigationItemEditCtrl";
+                       descriptor.Dependencies = new string[] { "controllers/navigationitemeditcontroller" };
+                   });
+
             builder.Describe("EditNavigationItem")
                    .Configure(descriptor => {
                        descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{NId:[0-9a-zA-Z]+}";
@@ -54,13 +63,7 @@ namespace Coevery.Perspectives.Services
                        descriptor.Dependencies = new string[] {"controllers/navigationitemeditcontroller"};
                    });
 
-            builder.Describe("CreateNavigationItem")
-                   .Configure(descriptor => {
-                       descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create";
-                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}";
-                       descriptor.Controller = "NavigationItemEditCtrl";
-                       descriptor.Dependencies = new string[] {"controllers/navigationitemeditcontroller"};
-                   });
+            
         }
     }
 }

@@ -3,19 +3,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Entities.Services;
+using Coevery.FormDesigner.Services;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Localization;
 using Orchard.Utility.Extensions;
 
-namespace Coevery.Entities.Controllers
-{
-    public class FieldController : ApiController
-    {
+namespace Coevery.Entities.Controllers {
+    public class FieldController : ApiController {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        public FieldController(IContentDefinitionService contentDefinitionService, 
-            IContentDefinitionManager contentDefinitionManager)
-        {
+        public FieldController(IContentDefinitionService contentDefinitionService,
+            IContentDefinitionManager contentDefinitionManager) {
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
@@ -26,13 +24,14 @@ namespace Coevery.Entities.Controllers
         // GET api/metadata/field
         public object Get(string name) {
             var type = _contentDefinitionService.GetType(name);
-            return type.Fields.Select(f => new {f.DisplayName, Name = f.FieldDefinition.Name.CamelFriendly()}).ToList();
+            return type.Fields.Select(f => new { f.DisplayName, Name = f.FieldDefinition.Name.CamelFriendly() }).ToList();
         }
 
         // DELETE api/metadata/field/name
-        public virtual HttpResponseMessage Delete(string name, string parentname)
-        {
+        public virtual HttpResponseMessage Delete(string name, string parentname) {
             _contentDefinitionService.RemoveFieldFromPart(name, parentname);
+            var layoutManager = new LayoutManager(_contentDefinitionManager);
+            layoutManager.DeleteField(parentname, name);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

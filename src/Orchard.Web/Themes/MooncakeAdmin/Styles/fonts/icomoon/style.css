@@ -38,7 +38,7 @@
 .icon-remove:before{content:"\f00d";}
 .icon-off:before{content:"\f011";}
 .icon-trash:before{content:"\f014";}
-.icon-general:before{content:"\f015";}
+.icon-home:before{content:"\f015";}
 .icon-road:before{content:"\f018";}
 .icon-volume-off:before{content:"\f026";}
 .icon-volume-down:before{content:"\f027";}
@@ -216,7 +216,7 @@
 .icon-broadcast:before{content:"\e011";}
 .icon-cog:before{content:"\e012";}
 .icon-cog-2:before{content:"\e013";}
-.icon-general-2:before{content:"\e014";}
+.icon-home-2:before{content:"\e014";}
 .icon-file-pdf:before{content:"\e015";}
 .icon-file-openoffice:before{content:"\e016";}
 .icon-file-word:before{content:"\e017";}

@@ -601,9 +601,7 @@
                     template = template.replace(/<(input|select|textarea)/ig, '<$1 disabled');
                     element.html(template);
                     var control = element.find('.control');
-                    control.removeClass('span12');
-                    control.addClass('span9');
-                    control.after('<div class="span3 tools"></div>');
+                    control.after('<div class="tools"></div>');
 
                     var propertyItem = $('<fd-tool-property></fd-tool-property>');
                     element.find('.tools').append(propertyItem);
@@ -1040,7 +1038,7 @@
                             }
                         });
                         var entityName = $stateParams.EntityName;
-                        $.post('/OrchardLocal/api/metadata/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
+                        $.post('/OrchardLocal/api/formdesigner/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
                             logger.success('Save success');
                         });
                     });
