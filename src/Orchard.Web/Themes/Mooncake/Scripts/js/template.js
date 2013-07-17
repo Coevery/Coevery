@@ -75,6 +75,8 @@
                 .on('click.template', ' > li', function(e) {
                     var target = $(this).attr('data-nav-target');
                     var parent = $(this).attr('data-nav-parent');
+                    $(parent).find('.collapse').collapse({ toggle: false });
+                    $(target).collapse({ toggle: false });
                     $(parent).find('.collapse').collapse('hide');
                     $(target).collapse('show');
                 });
