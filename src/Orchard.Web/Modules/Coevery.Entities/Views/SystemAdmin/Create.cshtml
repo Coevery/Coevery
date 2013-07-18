@@ -1,19 +1,24 @@
 @model Coevery.Entities.ViewModels.EditTypeViewModel
-<div id="page-actions">
-    <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
-    <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
-</div>
-<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0; padding-top: 47px;">
-    <h1 id="main-heading" style="background-image: none;">Meta Detail <span>Metadata add/edit</span></h1>
-</header>
+<section>
+    <div id="page-actions">
+        <h1 class="pull-left">@T("Meta Detail") <span>Metadata add/edit</span></h1>
+    </div>
+</section>
 
-<section id="main-content">
+
+<section id="main-content" style="margin-top:47px">
+    <header id="page-title" class="clearfix">
+        <btn-actions>
+                <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+        <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
+            </btn-actions>
+    </header>
+
     <div class="row-fluid">
         <div class="span12">
             <div class="form-horizontal">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                              new { id = "myForm" }))
-                        {
+                                                              new { id = "myForm" })) {
                     @Html.ValidationSummary()
                     <section class="control-group">
                         <label class="control-label" for="DisplayName">@T("Display Name")</label>
@@ -22,9 +27,9 @@
                         </div>
                     </section>
                     <section class="control-group">
-                                <label class="control-label" for="Name">@T("Name")</label>
+                        <label class="control-label" for="Name">@T("Name")</label>
                         <div class="controls">
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12", @id = "FieldName" })
+                            @Html.TextBoxFor(m => m.Name, new { @class = "span12", @id = "FieldName" })
                             <span class="help-block">@T("Technical name of the type.")</span>
                         </div>
                     </section>
@@ -51,40 +56,40 @@
     //<![CDATA[
     $(function () {
         var $name = $("#@Html.FieldIdFor(m => m.Name)");
-            var $displayName = $("#@Html.FieldIdFor(m => m.DisplayName)");
-            var jsonUrl = "@Url.Action("ContentTypeName", "Admin", new RouteValueDictionary { { "Area", "Orchard.ContentTypes" } })";
-            var version = 0;
+        var $displayName = $("#@Html.FieldIdFor(m => m.DisplayName)");
+        var jsonUrl = "@Url.Action("ContentTypeName", "Admin", new RouteValueDictionary { { "Area", "Orchard.ContentTypes" } })";
+        var version = 0;
 
-            var nameAltered;
-            $name.keypress(function () {
-                nameAltered = true;
-            });
+        var nameAltered;
+        $name.keypress(function () {
+            nameAltered = true;
+        });
 
-            var compute = function () {
-                // stop processing automatically if altered by the user
-                if (nameAltered) {
-                    return true;
-                }
+        var compute = function () {
+            // stop processing automatically if altered by the user
+            if (nameAltered) {
+                return true;
+            }
 
-                $.post(jsonUrl, {
-                    displayName: $displayName.val(),
-                    version: ++version,
-                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+            $.post(jsonUrl, {
+                displayName: $displayName.val(),
+                version: ++version,
+                __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+            },
+                function (data) {
+                    if (version == data.version) {
+                        $name.val(data.result);
+                    }
                 },
-                    function (data) {
-                        if (version == data.version) {
-                            $name.val(data.result);
-                        }
-                    },
-                    "json"
-                );
-            };
+                "json"
+            );
+        };
 
-            //pull technical name input from tab order
-            $name.attr("tabindex", -1);
+        //pull technical name input from tab order
+        $name.attr("tabindex", -1);
 
-            $displayName.keyup(compute);
-            $displayName.blur(compute);
-        })
-        //]]>
+        $displayName.keyup(compute);
+        $displayName.blur(compute);
+    })
+    //]]>
 </script>

@@ -6,22 +6,23 @@
     bool isSystemField = bool.Parse(Model.Settings[fieldSettingsPrefix + "IsSystemField"]);
 }
 
-<div id="page-actions">
-    <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+<section>
+    <div id="page-actions">
+        <h1 class="pull-left">@T("Field Detail") <span>Edit field information</span></h1>
+    </div>
+</section>
+
+<section id="main-content" style="margin-top:47px">
+    <header id="page-title" class="clearfix">
+        <btn-actions>
+                <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
     <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
     <button class="btn btn-small btn-primary" data-ng-click="saveAndBack()">Save & Back</button>
-    @if (hasItems) {
-        <button class="btn btn-small" data-ng-click="viewItems()">View Items</button>
-    }
-</div>
-<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0; padding-top: 47px;">
-    <h1 id="main-heading" style="background-image: none;">Field Detail <span>Edit field information</span></h1>
-</header>
-
-<section id="main-content">
+            </btn-actions>
+    </header>
     <div class="row-fluid">
         <div class="span12">
-             <div class="form-horizontal no-border">
+            <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
                                               new { @class = "form-horizontal no-border", @name = "myForm", @ng_submit = "save()", @id = "field-info-form" })) {
                     @Html.ValidationSummary()

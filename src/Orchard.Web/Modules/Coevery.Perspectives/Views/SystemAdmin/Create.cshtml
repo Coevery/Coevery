@@ -1,13 +1,18 @@
 ﻿@using System.ComponentModel
 @model Coevery.Perspectives.ViewModels.PerspectiveViewModel
-<div id="page-actions">
-    <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+<section>
+    <div id="page-actions">
+        <h1 class="pull-left">@T("Perspective Detail ") <span>show perspective detail information</span></h1>
+    </div>
+</section>
+
+<section id="main-content" style="margin-top:47px">
+    <header id="page-title" class="clearfix">
+        <btn-actions>
+                <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
     <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
-</div>
-<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0; padding-top: 47px;">
-    <h1 style="background-image: none;">Perspective Detail <span>show perspective detail information</span></h1>
-</header>
-<section id="main-content">
+            </btn-actions>
+    </header>
     <div class="row-fluid">
         <div class="span12">
             <div class="form-horizontal no-border">
