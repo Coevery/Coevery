@@ -789,8 +789,8 @@ body {
             }
 
     #wrapper #main #page-actions {
+        padding: 0px 0px;
         margin: 0 40px;
-        padding: 10px 0;
         border-bottom: 1px solid #d4d4d4;
         position: fixed;
         right: 0;
@@ -798,7 +798,6 @@ body {
         background-color: white;
         z-index: 10;
     }
-
         #wrapper #main #page-actions.affix {
             -webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
             box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
