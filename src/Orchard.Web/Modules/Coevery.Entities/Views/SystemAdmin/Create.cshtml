@@ -17,7 +17,8 @@
                 <div class="widget-content form-container">
                     <div class="form-horizontal no-border">
                         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                              new { id = "myForm" })) {
+                                                              new { id = "myForm" }))
+                        {
                             @Html.ValidationSummary()
                             <section class="control-group">
                                 <label class="control-label" for="DisplayName">@T("Display Name")</label>
@@ -26,9 +27,9 @@
                                 </div>
                             </section>
                             <section class="control-group">
-                                <label class="control-label" for="Name">@T("Content Type Id")</label>
+                                <label class="control-label" for="Name">@T("Name")</label>
                                 <div class="controls">
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12" })
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12", @id = "FieldName" })
                                     <span class="help-block">@T("Technical name of the type.")</span>
                                 </div>
                             </section>
@@ -53,11 +54,11 @@
     });
 </script>
 
-@using (Script.Foot()) {
-    <script type="text/javascript">
-        //<![CDATA[
-        $(function () {
-            var $name = $("#@Html.FieldIdFor(m => m.Name)");
+
+<script type="text/javascript">
+    //<![CDATA[
+    $(function () {
+        var $name = $("#@Html.FieldIdFor(m => m.Name)");
             var $displayName = $("#@Html.FieldIdFor(m => m.DisplayName)");
             var jsonUrl = "@Url.Action("ContentTypeName", "Admin", new RouteValueDictionary { { "Area", "Orchard.ContentTypes" } })";
             var version = 0;
@@ -94,5 +95,4 @@
             $displayName.blur(compute);
         })
         //]]>
-    </script>
-}
+</script>

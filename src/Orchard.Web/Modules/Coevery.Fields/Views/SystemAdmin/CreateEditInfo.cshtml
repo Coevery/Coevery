@@ -10,7 +10,7 @@
             <div class="widget">
                 <div class="widget-content form-container">
                     @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                          new { @class = "form-horizontal no-border", @id = "field-info-form" }))
+                                                          new { @class = "form-horizontal no-border", @id = "field-info-form", @name = "myForm" }))
                     {
                         <fieldset>
                             <legend>Information</legend>
@@ -26,8 +26,8 @@
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.Name)">
                                     @T("Field Name")
                                 </label>
-                                <div class="controls">
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12", ng_model = "fieldName" })
+                                <div class="controls toValidate">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12 nameisnotid required", id = "inputFieldName", ng_model = "fieldName" })
                                 </div>
                             </section>
                             <section class="control-group">
@@ -67,6 +67,8 @@
                             <legend>Field Information</legend>
                             @{ Html.RenderTemplates(Model.TypeTemplates); }
                         </fieldset>
+                        HtmlHelper.ClientValidationEnabled = true;
+                        HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
                     }
                 </div>
             </div>
@@ -139,15 +141,35 @@
         </div>
     </div>
 
-    <div class="modal-footer step3">
-        <button class="btn" ng-click="back()">Back</button>
-        <button class="btn " ng-click="exit()">Don't Save</button>
-        <button class="btn btn-primary" ng-click="save()">Save</button>
-    </div>
-
     <div class="modal-footer step2">
         <button class="btn" ng-click="prev()">Back</button>
         <button class="btn" ng-click="next()">Next</button>
 
     </div>
+
+    <div class="modal-footer step3">
+        <button class="btn" ng-click="back()">Back</button>
+        <button class="btn " ng-click="exit()">Don't Save</button>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div>
+    
+    <script type="text/javascript">
+        $(function () {
+            //Validation
+         
+            $.validator.addMethod("nameisnotid", function (value) {
+                return !(value.toLowerCase() == "id");
+            }, "FieldName should not be 'id'");
+            $.validator.classRuleSettings.nameisnotid = { nameisnotid: true };
+
+            $("#field-info-form").validate({
+                ignore: "*:not('.toValidate *')",
+                onfocusout: function (element, event) {
+                    if (element.id == "inputFieldName") {
+                        this.form();
+                    }
+                },
+            });
+        });
+    </script>
 </div>

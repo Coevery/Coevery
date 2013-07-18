@@ -5,6 +5,22 @@ define(['core/app/detourService'], function (detour) {
         ['$scope', 'logger', '$stateParams', '$location',
             function ($scope, logger, $stateParams, $location) {
                 var entityName = $stateParams.Id;
+                var checkValid = function (form) {
+                    var validator = form.validate();
+                    if (!validator) {
+                        return false;
+                    }
+                    if (!validator.form()) {
+                        return false;
+                    }
+                    if (!validator.element("#inputFieldName")) {
+                        return false;
+                    }
+                    return true;
+                };
+
+
+                //Scope method              
 
                 $scope.open = function () {
                     $(".step3").hide();
@@ -38,12 +54,19 @@ define(['core/app/detourService'], function (detour) {
                     $('.step2').show();
                     $('.step3').hide();
                 };
+
                 $scope.next = function () {
+                    if (!checkValid($("#field-info-form"))) {
+                        return;
+                    }
                     $('.step2').hide();
                     $('.step3').show();
                 };
 
                 $scope.save = function () {
+                    if (!checkValid($("#field-info-form"))) {
+                        return;
+                    }
                     var form = $('#field-info-form');
                     $.ajax({
                         url: form.attr('action'),
@@ -74,3 +97,4 @@ define(['core/app/detourService'], function (detour) {
             }]
     ]);
 });
+

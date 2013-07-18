@@ -47,34 +47,6 @@
     //Modify page-action width when resize
     $(function () {
         $("#main-content").css("margin-top", $("#page-actions").outerHeight(true));
-
-        var tempWidth = $("#main-content").width();
-        var tempWindow = $(window).innerWidth();
-        if (tempWindow > 979) {
-            tempWidth -= 80;
-        } else if (tempWindow > 498) {
-            tempWidth -= 40;
-        }
-        else {
-            tempWidth -= 45;
-        }
-        $("#page-actions").width(tempWidth);
-        $(window).resize(function () {
-            tempWidth = $("#main-content .ngGrid.gridStyle").width();
-            tempWindow = $(window).innerWidth();
-            if (tempWindow > 979) {
-                tempWidth -= 80;
-            } else if (tempWindow > 498) {
-                tempWidth -= 40;
-            }
-            else if (tempWindow > 480) {
-                tempWidth -= 0;
-            }
-            else {
-                tempWidth -= 30;
-            }
-            $("#page-actions").width(tempWidth);
-        });
     });
 </script>
 

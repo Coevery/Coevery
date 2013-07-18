@@ -73,6 +73,7 @@ namespace Coevery.Fields.Controllers {
 
             var partViewModel = _contentDefinitionService.GetPart(id);
             var typeViewModel = _contentDefinitionService.GetType(id);
+
             if (partViewModel == null) {
                 // id passed in might be that of a type w/ no implicit field
                 if (typeViewModel != null) {
@@ -95,6 +96,11 @@ namespace Coevery.Fields.Controllers {
 
             if (String.IsNullOrWhiteSpace(viewModel.Name)) {
                 ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
+            }
+
+            if (viewModel.Name.ToLower() == "id")
+            {
+                ModelState.AddModelError("Name", T("The Field Name can't be any case of 'Id'.").ToString());
             }
 
             if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {

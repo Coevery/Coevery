@@ -791,8 +791,9 @@ body {
     #wrapper #main #page-actions {
         position: fixed;
         padding: 0 40px;
-        width: 100%;
-        margin: 0 39px;
+        /*width: 100%;*/
+        right: 39px;
+        left: 327px;
         background-color: #f7f7f7;
         -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
         box-shadow: 0 1px 10px rgba(0,0,0,0.1);
@@ -1099,7 +1100,8 @@ footer {
         padding-right: 20px;
     }
     #wrapper #main #page-actions {
-        margin: 0 19px;
+        right: 19px;
+        left: 65px;
     }
 
         #wrapper #main #main-header h1 span {
@@ -1455,7 +1457,7 @@ footer {
     #wrapper #main #page-actions {
         position: static;
         width: auto;
-        margin: 0 14px;
+        margin: 0 15px;
     }
 
     footer .pull-left,
