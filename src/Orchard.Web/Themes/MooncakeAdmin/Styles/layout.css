@@ -789,8 +789,13 @@ body {
             }
 
     #wrapper #main #page-actions {
+        padding: 0px 0px;
         margin: 0 40px;
-        padding: 10px 0;
+        position: fixed;
+        padding: 0 40px;
+        /*width: 100%;*/
+        right: 39px;
+        left: 327px;
         border-bottom: 1px solid #d4d4d4;
         position: fixed;
         right: 0;
@@ -798,7 +803,6 @@ body {
         background-color: white;
         z-index: 10;
     }
-
         #wrapper #main #page-actions.affix {
             -webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
             box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
@@ -1105,8 +1109,8 @@ footer {
     }
 
     #wrapper #main #page-actions {
-        left: 45px;
-        margin: 0 19px;
+        right: 19px;
+        left: 65px;
     }
 
     #wrapper #main #main-header h1 span {
@@ -1462,7 +1466,7 @@ footer {
     #wrapper #main #page-actions {
         position: static;
         width: auto;
-        margin: 0 14px;
+        margin: 0 15px;
     }
 
     footer .pull-left,

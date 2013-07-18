@@ -1,30 +1,59 @@
 ﻿@using Orchard.Utility.Extensions
 @model Coevery.Fields.ViewModels.FieldDependencyViewModel
-<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
-    <h1 id="main-heading" style="background-image: none;">Field Dependency <span>Define dependencies between fields</span></h1>
-</header>
-
-<section id="main-content">
-    <div class="row-fluid">
-        <div id="page-toolbar">
-            <button class="btn" data-ng-click="back()">Back</button>
-            <button class="btn btn-success" data-ng-click="add()">
-                <i class="icon-plus"></i>&nbsp;New
-            </button>
+<section>
+    <section>
+        <div id="page-actions">
+            <h1 id="main-heading" class="pull-left" style="background-image: none;">Field Dependency <span>Define dependencies between fields</span></h1>
         </div>
-    </div>
-
-    <div class="row-fluid">
-        <div class="widget">
-            <div class="widget-content">
-                <section class="gridStyle" ng-grid="gridOptions"></section>
-            </div>
+    </section>
+    <section id="main-content">
+        <header id="page-title" class="clearfix">
+            <btn-actions>
+                <button class="btn btn-small " data-ng-click="back()">Back</button>
+                <button class="btn btn-small btn-success" data-ng-click="add()">
+                    <i class="icon-plus"></i>&nbsp;New
+                </button>
+            </btn-actions>
+        </header>
+        <div class="row-fluid">
+            <section class="gridStyle" ng-grid="gridOptions"></section>
         </div>
-    </div>
+    </section>
 </section>
-
 <script type="text/javascript">
     $(function () {
-        $('.page-actions').affix({ offset: { top: 71 } });
+        $("#main-content").css("margin-top", $("#page-actions").outerHeight(true));
+
+        var tempWidth = $("#main-content").width();
+        var tempWindow = $(window).innerWidth();
+        if (tempWindow > 979) {
+            tempWidth -= 100;
+        } else if (tempWindow > 498) {
+            tempWidth -= 60;
+        }
+        else if (tempWindow > 480) {
+            tempWidth -= 0;
+        }
+        else {
+            tempWidth -= 45;
+        }
+        $("#page-actions").width(tempWidth);
+        $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
+        $(window).resize(function () {
+            tempWidth = $("#main-content .ngGrid.gridStyle").width();
+            tempWindow = $(window).innerWidth();
+            if (tempWindow > 979) {
+                tempWidth -= 80;
+            } else if (tempWindow > 498) {
+                tempWidth -= 40;
+            }
+            else if (tempWindow > 480) {
+                tempWidth -= 0;
+            }
+            else {
+                tempWidth -= 30;
+            }
+            $("#page-actions").width(tempWidth);
+        });
     });
 </script>

@@ -51,7 +51,7 @@ namespace Coevery.Entities.Controllers
                 return new HttpUnauthorizedResult();
 
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
-            viewModel.Name = viewModel.Name ?? String.Empty;
+            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
 
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
