@@ -1,0 +1,8 @@
+Name: Q42.DbTranslations
+AntiForgery: enabled
+Author: Lukasvan3L, Jaap Taal @ Q42
+Website: https://github.com/Q42/Orchard-DbTranslations/wiki/Orchard-Database-Translations
+Version: 1.3.2
+OrchardVersion: 1.3.0
+Description: Enables interface translation feature directly in Orchard's admin panels instead of .po files
+Category: Localization

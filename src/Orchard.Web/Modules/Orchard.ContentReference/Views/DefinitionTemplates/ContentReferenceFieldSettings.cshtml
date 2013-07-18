@@ -1,0 +1,23 @@
+﻿@model Contrib.ContentReference.Settings.ContentReferenceFieldSettings
+@using Contrib.ContentReference.Settings
+<fieldset>
+    <label class="forpicker" for="@Html.FieldIdFor(m => m.QueryId)">@T("Query for selectable content")</label>    
+    <select id="@Html.FieldIdFor(m => m.QueryId)" name="@Html.FieldNameFor(m => m.QueryId)">
+        @foreach(var item in Model.QueryList) {
+            @Html.SelectOption(item.Value, item.Selected, item.Text)
+        }
+    </select> 
+    <span class="hint">@T("This query determines what content items are selectable by the user.")</span>
+</fieldset>
+<fieldset>
+    <div>
+        @Html.CheckBoxFor(m => m.DisplayAsLink) <label for="@Html.FieldIdFor(m => m.DisplayAsLink)" class="forcheckbox">@T("Display as link")</label>
+        <span class="hint">@T("Check to make the item text link to the item.")</span>
+    </div>
+</fieldset>
+<fieldset>
+    <div>
+        @Html.CheckBoxFor(m => m.Required) <label for="@Html.FieldIdFor(m => m.Required)" class="forcheckbox">@T("Required value")</label>
+        <span class="hint">@T("Check to require a content item to be referenced.")</span>
+    </div>
+</fieldset>

@@ -1340,6 +1340,9 @@ var ngGrid = function ($scope, options, sortService, domUtilityService, $filter,
         //Row height of rows in grid.
         rowHeight: 30,
         
+        //Row border height of rows in grid
+        rowBorderHeight:1,
+
         //Define a row template to customize output. See github wiki for more details.
         rowTemplate: undefined,
         
@@ -2049,7 +2052,7 @@ var ngRow = function (entity, config, selectionProvider, rowIndex, $utils) {
 	this.cursor = this.config.enableRowSelection ? 'pointer' : 'default';
 	this.beforeSelectionChange = config.beforeSelectionChangeCallback;
 	this.afterSelectionChange = config.afterSelectionChangeCallback;
-	this.offsetTop = this.rowIndex * config.rowHeight;
+	this.offsetTop = this.rowIndex * (config.rowHeight + config.rowBorderHeight);
 	this.rowDisplayIndex = 0;
 };
 
@@ -2135,7 +2138,8 @@ var ngRowFactory = function (grid, $scope, domUtilityService, $templateCache, $u
         afterSelectionChangeCallback: grid.config.afterSelectionChange,
         jqueryUITheme: grid.config.jqueryUITheme,
         enableCellSelection: grid.config.enableCellSelection,
-        rowHeight: grid.config.rowHeight
+        rowHeight: grid.config.rowHeight,
+        rowBorderHeight: grid.config.rowBorderHeight
     };
 
     self.renderedRange = new ngRange(0, grid.minRowsToRender() + EXCESS_ROWS);
@@ -2216,7 +2220,7 @@ var ngRowFactory = function (grid, $scope, domUtilityService, $templateCache, $u
         for (var i = self.renderedRange.topRow; i < self.renderedRange.bottomRow; i++) {
             if (grid.filteredRows[i]) {
                 grid.filteredRows[i].rowIndex = i;
-                grid.filteredRows[i].offsetTop = i * grid.config.rowHeight;
+                grid.filteredRows[i].offsetTop = i * (grid.config.rowHeight + grid.config.rowBorderHeight);
                 rowArr.push(grid.filteredRows[i]);
             }
         }
@@ -2721,10 +2725,10 @@ var ngStyleProvider = function($scope, grid) {
         return { "width": (grid.rootDim.outerWidth) + "px", "height": grid.config.headerRowHeight + "px" };
     };
     $scope.groupPanelStyle = function () {
-        return { "width": (grid.rootDim.outerWidth) + "px", "height": "32px" };
+        return { "width": (grid.rootDim.outerWidth*1 + grid.config.rowBorderHeight) + "px", "height": "32px" };
     };
     $scope.viewportStyle = function() {
-        return { "width": grid.rootDim.outerWidth + "px", "height": $scope.viewportDimHeight() + "px" };
+        return { "width": grid.rootDim.outerWidth + "px", "height": ($scope.viewportDimHeight()*1 + 1) + "px" };
     };
     $scope.footerStyle = function() {
         return { "width": grid.rootDim.outerWidth + "px", "height": $scope.footerRowHeight + "px" };

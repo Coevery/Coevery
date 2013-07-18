@@ -8,12 +8,12 @@
 }
 @{
     if (items.Any()) {
-        <ul class="menu">
-            @DisplayChildren(Model)
-            <li id="sidebar-toggle-wrap">
-                <span id="sidebar-toggle" class="toggled" onclick=" ToggleButtonClick() "><span></span></span>
-            </li>
-        </ul>
+    <ul class="menu">
+        @DisplayChildren(Model)
+        <li id="sidebar-toggle-wrap">
+            <span id="sidebar-toggle" class="toggled" onclick=" ToggleButtonClick() "><span></span></span>
+        </li>
+    </ul>
     }
 }
 
@@ -22,7 +22,7 @@
         //<![CDATA[
         $(document).ready(function () {
             $(".menu>li:nth-child(2)").addClass("active");
-            $(".menu>li:not(:last)").click(function () {
+            $(".menu>li:not(:last):has(ul)").click(function () {
                 var $li = $(this);
                 if ($li.hasClass("active")) {
                     return;
@@ -30,7 +30,17 @@
                 $(".menu>li.active").removeClass("active");
                 $li.addClass("active");
             });
+            
+            $(".menu>li:not(:last,:has(ul))").click(function () {
+                var $li = $(this);
+                var $lia = $li.find('a');
+                if ($lia)
+                {
+                    $(location).attr('href', $lia[0].href); 
+                }
+            })
         });
+
         function ToggleButtonClick() {
             if (!!$('#sidebar #navigation .menu >li.active:first .inner-nav').length) {
                 $('#content')

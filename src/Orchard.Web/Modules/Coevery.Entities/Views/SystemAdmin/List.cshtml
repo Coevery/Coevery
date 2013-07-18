@@ -1,41 +1,31 @@
 ﻿<section>
     <section>
         <div id="page-actions">
-            <button class="btn btn-small btn-success" data-ng-click="add()">
-                <i class="icon-plus"></i>Add
-            </button>
-            <button class="btn btn-small btn-success" data-ng-click="generate()">
-                <i class="icos-arrow-down"></i>Generate
-            </button>
-            <button class="btn btn-small" data-ng-click="getAllMetadata()">
-                <i class="icon-refresh"></i>Refresh
-            </button>
-            <div class="btn-group" ng-show="selectedItems.length > 0">
-                <button class="btn btn-small" data-ng-click="edit(selectedItems[0].Name)" ng-disabled="selectedItems.length > 1">
-                    <i class="icon-edit"></i>Edit
-                </button>
-                <button class="btn btn-small" data-ng-click="delete(selectedItems[0].Name)">
-                    <i class="icon-remove"></i>Delete
-                </button>
-            </div>
-            @*<div class="btn-group">
-                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                    More
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Convert</a></li>
-                    <li><a href="#">Disabled</a></li>
-                </ul>
-            </div>*@
+                <h1 class="pull-left">@T("Entities") <span>List of Entities</span></h1>
         </div>
     </section>
-
     <section id="main-content">
         <header id="page-title" class="clearfix">
-            <h1>@T("Entities") <span>List of Entities</span></h1>
+            <btn-actions>
+                <button class="btn btn-small btn-success" data-ng-click="add()">
+                    <i class="icon-plus"></i>Add
+                </button>
+                <button class="btn btn-small btn-success" data-ng-click="generate()">
+                    <i class="icos-arrow-down"></i>Generate
+                </button>
+                <button class="btn btn-small" data-ng-click="getAllMetadata()">
+                    <i class="icon-refresh"></i>Refresh
+                </button>
+                <div class="btn-group" ng-show="selectedItems.length > 0">
+                    <button class="btn btn-small" data-ng-click="edit(selectedItems[0].Name)" ng-disabled="selectedItems.length > 1">
+                        <i class="icon-edit"></i>Edit
+                    </button>
+                    <button class="btn btn-small" data-ng-click="delete(selectedItems[0].Name)">
+                        <i class="icon-remove"></i>Delete
+                    </button>
+                </div>
+            </btn-actions>
         </header>
-
         <div class="row-fluid">
             <section class="gridStyle" data-ng-grid="gridOptions"></section>
         </div>
@@ -46,5 +36,6 @@
     //Modify page-action width when resize
     $(function () {
         $("#main-content").css("margin-top", $("#page-actions").outerHeight(true));
+        $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
     });
 </script>

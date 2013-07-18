@@ -789,20 +789,24 @@ body {
             }
 
     #wrapper #main #page-actions {
+        padding: 0px 0px;
+        margin: 0 40px;
         position: fixed;
         padding: 0 40px;
         /*width: 100%;*/
         right: 39px;
         left: 327px;
-        background-color: #f7f7f7;
-        -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-        box-shadow: 0 1px 10px rgba(0,0,0,0.1);
         border-bottom: 1px solid #d4d4d4;
-        border-left: 1px solid #d4d4d4;
-        border-right: 1px solid #d4d4d4;
-        font-size: 0;
+        position: fixed;
+        right: 0;
+        left: 226px;
+        background-color: white;
         z-index: 10;
     }
+        #wrapper #main #page-actions.affix {
+            -webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
+        }
 
         #wrapper #main #page-actions .btn {
             min-width: 70px;
@@ -810,7 +814,7 @@ body {
 
         #wrapper #main #page-actions > .btn,
         #wrapper #main #main-content #page-actions > .btn-group {
-            margin: 10px 0 10px 10px;
+            margin-left: 5px;
         }
 
             #wrapper #main #page-actions > .btn:first-child,
@@ -1005,6 +1009,10 @@ footer {
         #wrapper #sidebar #navigation .inner-nav > li > a {
             padding: 12px 17px 12px 30px;
         }
+
+        #wrapper #main #page-actions {
+            left: 286px;
+        }
 }
 
 @media (max-width: 979px) {
@@ -1099,18 +1107,19 @@ footer {
         padding-left: 20px;
         padding-right: 20px;
     }
+
     #wrapper #main #page-actions {
         right: 19px;
         left: 65px;
     }
 
-        #wrapper #main #main-header h1 span {
-            display: block;
-            padding: 0;
-            border: 0;
-            line-height: 1.5;
-            margin: 0;
-        }
+    #wrapper #main #main-header h1 span {
+        display: block;
+        padding: 0;
+        border: 0;
+        line-height: 1.5;
+        margin: 0;
+    }
 
     #wrapper #sidebar-separator,
     #wrapper #sidebar #navigation ul.menu > #sidebar-toggle-wrap {
