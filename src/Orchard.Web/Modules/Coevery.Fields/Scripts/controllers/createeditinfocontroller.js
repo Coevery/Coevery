@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateEditInfoCtrl',
-        ['$scope', 'logger', '$stateParams', '$location',
-            function ($scope, logger, $stateParams, $location) {
+        ['$scope', 'logger', '$stateParams', '$detour',
+            function ($scope, logger, $stateParams, $detour) {
                 var entityName = $stateParams.Id;
                 var checkValid = function (form) {
                     var validator = form.validate();
@@ -19,33 +19,17 @@ define(['core/app/detourService'], function (detour) {
                     return true;
                 };
 
-
+                $(".step3").hide();
                 //Scope method              
 
-                $scope.open = function () {
-                    $(".step3").hide();
-                    $scope.shouldBeOpen = true;
-                };
+                //$scope.$on('toStep1Done', function () {
 
-                $scope.close = function () {
-                    $scope.shouldBeOpen = false;
-                };
-
-                $scope.opts = {
-                    backdrop: false,
-                    backdropFade: false,
-                    dialogFade: true,
-                    backdropClick: false
-                };
-
-                $scope.$on('toStep1Done', function () {
-                    $scope.close();
-                    $(".modal-backdrop").remove();
-                });
+                //    $scope.$parent.openDialog();
+                //    $(".modal-backdrop").remove();
+                //});
 
                 $scope.exit = function () {
-                    $location.url("/Entities/" + entityName.toString());
-                    $scope.close();
+                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
                 $scope.prev = function () {
                     $scope.$emit('toStep1');
@@ -79,21 +63,16 @@ define(['core/app/detourService'], function (detour) {
                             logger.error('Failed');
                         }
                     });
-                    $location.url("/Entities/" + entityName.toString());
-                    $scope.close();
+                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
 
-                $('#DisplayName').keyup(copyName);
-                $('#DisplayName').blur(copyName);
-                function copyName() {
-                    var names = $('#DisplayName').val().split(' ');
-                    var fieldName = '';
-                    $.each(names, function () {
-                        fieldName += this;
-                    });
-                    $scope.fieldName = fieldName;
-                    $scope.$apply();
-                }
+                $scope.$on('$destroy', function () {
+                    if ($detour.current.name != 'EntityDetail.Fields.Create') {
+                        $scope.closeDialog();
+                    }
+                });
+
+                $scope.openDialog();
             }]
     ]);
 });

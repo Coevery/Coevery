@@ -3,8 +3,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/fielddataservice'], function (detour) {
     detour.registerController([
         'FieldsCtrl',
-        ['$rootScope', '$scope', 'logger', '$location', '$detour', '$stateParams', 'entityDataService', 'fieldDataService',
-            function ($rootScope, $scope, logger, $location, $detour, $stateParams, entityDataService, fieldDataService) {
+        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$dialog', 'entityDataService', 'fieldDataService',
+            function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, entityDataService, fieldDataService) {
 
                 var entityName = $stateParams.Id;
                 var fieldColumnDefs = [
@@ -16,15 +16,17 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     { field: 'ControlField', displayName: 'Control Field' }
                 ];
 
-                $scope.$on('toStep2', function (event, fieldInfo) {
-                    $scope.$broadcast('toStep2Done');
-                    $location.url("/Entities/" + entityName.toString() + "/Create/" + fieldInfo);
-                });
-
-                $scope.$on('toStep1', function () {
-                    $scope.$broadcast('toStep1Done');
-                    $location.url("/Entities/" + entityName.toString() + "/Create");                  
-                });
+                function test() {
+                    return $('#modalTemplate').children();
+                }
+                $scope.opts = {
+                    backdrop: true,
+                    backdropFade: true,
+                    dialogFade: true,
+                    backdropClick: true,
+                    keyboard: true,
+                    template: test, // OR: templateUrl: 'path/to/view.html',
+                };
 
                 $scope.gridOptions = {
                     data: 'myData',
@@ -33,6 +35,45 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
+                //Dialog action
+
+                $scope.$on('toStep2', function (event, fieldInfo) {
+                    $detour.transitionTo('EntityDetail.Fields.CreateEditInfo', { Id: entityName, FieldTypeName: fieldInfo });
+                });
+
+                $scope.$on('toStep1', function () {
+                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });                 
+                });
+
+                $scope.dialog = null;
+
+                $scope.$watch('dialog._open', function(newValue, oldValue) {
+                    if (newValue == false && oldValue == true &&
+                        ($detour.current.name == 'EntityDetail.Fields.Create' ||
+                            $detour.current.name == 'EntityDetail.Fields.CreateEditInfo')) {
+                        $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    }
+                });
+
+                $scope.openDialog = function () {
+                    if ($scope.dialog) {
+                        $scope.dialog.modalEl.html(test());
+                    } else {
+                        $scope.dialog = $dialog.dialog($scope.opts);
+                        $scope.dialog.open();
+                    }
+                };
+                $scope.closeDialog = function () {
+                    $scope.dialog.close();
+                    $scope.dialog = null;
+                };
+
+                //Page action
+
+                $scope.add = function () {
+                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
+                };
+
                 var deleteField;
                 $scope.delete = function (fieldName) {
                     deleteField = fieldName;
@@ -40,10 +81,6 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                         backdrop: 'static',
                         keyboard: true
                     });
-                };
-
-                $scope.add = function () {
-                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
                 };
 
                 $scope.deleteField = function () {

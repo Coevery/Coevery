@@ -96,6 +96,10 @@
 {
 }
 
+    .edit-mode legend {
+        border-bottom: 1px solid #ebaf59;
+    }
+
     .edit-mode .data-row
     {
         margin: 10px 0;
