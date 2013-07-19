@@ -96,6 +96,10 @@
 {
 }
 
+    .edit-mode legend {
+        border-bottom: 1px solid #ebaf59;
+    }
+
     .edit-mode .data-row
     {
         margin: 10px 0;
@@ -238,7 +242,7 @@
 .related-list
 {
     margin-top: 20px;
-    border-top: 2px solid #ebaf59;
+    border-top: 2px solid #41b7d8;
 }
 
     .related-list > header > h5
