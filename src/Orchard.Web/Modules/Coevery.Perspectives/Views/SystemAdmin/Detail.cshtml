@@ -1,54 +1,69 @@
 ﻿@using System.ComponentModel
 @model Coevery.Perspectives.ViewModels.PerspectiveViewModel
-<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
-    <h1 style="background-image: none;">Perspective Detail <span>show perspective detail information</span></h1>
-</header>
-
-<section id="main-content">
-    <div class="row-fluid">
-        <div id="page-toolbar">
-            <button type="button" class="btn" data-ng-click="exit()">Back</button>
-            <button type="button" class="btn" data-ng-click="editPerspective()">Edit</button>
-            <button type="button" class="btn" data-ng-click="deletePerspective()">Delete</button>
+<section>
+    <section>
+        <div id="page-actions">
+            <h1 class="pull-left" style="background-image: none;">Perspective Detail <span>show perspective detail information</span></h1>
         </div>
-    </div>
-
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="widget">
-                <div class="widget-content table-container">
-                    <table class="table table-detail-view">
-                        <tbody>
-                            <tr>
-                                <th>Title</th>
-                                <td>@Model.Title</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="widget">
-                <div class="widget-content">
-                    <div class="btn-toolbar" style="padding-left: 0px;">
-                        <button class="btn btn-success" ng-click="addNavigationItem()">
-                            <i class="icon-plus"></i>&nbsp;Add Navigation
-                        </button>
+    </section>
+    <section id="main-content">
+        <header id="page-title" class="clearfix">
+            <btn-actions>
+                <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+                <button type="button" class="btn btn-small" data-ng-click="editPerspective()">Edit</button>
+                <button type="button" class="btn btn-small" data-ng-click="deletePerspective()">Delete</button>
+            </btn-actions>
+            <div class="min-height"></div>
+        </header>
+        <div class="row-fluid">
+            <section class="view-mode span12">
+                <section>
+                    <header>
+                        <span class="show-button"></span>
+                        <h5>General Info</h5>
+                    </header>
+                    <div class="data-row clearfix">
+                        <div class="span12">
+                            <span class="title control-label">Title1</span>
+                            <div class="control controls">
+                                <span class="control-text">@Model.Title</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row-fluid">
-                        <section class="gridStyle" ng-grid="gridOptions"></section>
+                </section>
+            </section>
+            @*            <div class="span12">
+                <div class="widget">
+                    <div class="widget-content table-container">
+                        <table class="table table-detail-view">
+                            <tbody>
+                                <tr>
+                                    <th>Title</th>
+                                    <td>@Model.Title</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
-    </div>
+        <section class="row-fluid related-list">
+            <header>
+                <h5>Navigations</h5>
+                <div class="btn-toolbar" style="padding-left: 0px;">
+                    <button class="btn btn-success" ng-click="addNavigationItem()">
+                        <i class="icon-plus"></i>&nbsp;Add Navigation
+                    </button>
+                </div>
+            </header>
+            <section class="gridStyle" ng-grid="gridOptions"></section>
+        </section>
+    </section>
 </section>
-
 <script type="text/javascript">
     $(function () {
-        $('.page-actions').affix({ offset: { top: 71 } });
+        $("#main-content").css("margin-top", $("#page-actions").outerHeight(true));
+        $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
+        //$('.page-actions').affix({ offset: { top: 71 } });
     });
 </script>

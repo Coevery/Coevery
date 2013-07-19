@@ -1,45 +1,56 @@
-﻿#navigation header {
+﻿#navigation header
+{
     display: none;
 }
 
-.navbar-inner {
+.navbar-inner
+{
     min-height: 69px;
 }
 
-.icon-form:before {
+.icon-form:before
+{
     content: "\f03a";
 }
 
-.icon-statistics:before {
+.icon-statistics:before
+{
     content: "\e0a2";
 }
 
-.icol-static-tables {
+.icol-static-tables
+{
     background-position: -160px -208px;
 }
 
-.icol-responsive-tables {
+.icol-responsive-tables
+{
     background-position: -448px -96px;
 }
 
-.icol-creative-version {
+.icol-creative-version
+{
     background-position: -496px -160px;
 }
 
-.icol-form-layouts {
+.icol-form-layouts
+{
     background-position: -384px -112px;
 }
 
-.icol-form-elements {
+.icol-form-elements
+{
     background-position: -48px -240px;
 }
 
 #navigation .widget:after,
-#navigation .widget:before {
+#navigation .widget:before
+{
     content: none;
 }
 
-#page-title h1 {
+#page-title h1
+{
     float: left;
     font-size: 24px;
     color: #444;
@@ -49,7 +60,8 @@
     text-shadow: -1px -1px #f0f0f0;
 }
 
-    #page-title h1 > span {
+    #page-title h1 > span
+    {
         color: #777;
         font-size: 11px;
         font-weight: normal;
@@ -63,7 +75,8 @@
 /* ------------------------------------------------------------------------ */
 /* SystemAdmin Buttons  */
 /* ------------------------------------------------------------------------ */
-#page-actions h1 span {
+#page-actions h1 span
+{
     border-left: 1px dotted #AAAAAA;
     font-size: 11px;
     font-weight: normal;
@@ -71,7 +84,8 @@
     padding-left: 5px;
 }
 
-#page-actions h1 span {
+#page-actions h1 span
+{
     display: inline-block;
     max-width: 200px;
     overflow: hidden;
@@ -79,24 +93,31 @@
     white-space: nowrap;
 }
 
-#page-actions h1 {
+#page-actions h1
+{
     font-size: 24px;
     margin: 3px 0;
 }
 
-#page-title .btn-toolbar {
+#page-title .btn-toolbar
+{
     margin: 17px 0;
 }
 
-#page-title .btn-fixed {
+#page-title .btn-fixed
+{
     position: fixed;
     top: 65px;
     z-index: 999;
 }
-#page-title .btn-toolbar {
+
+#page-title .btn-toolbar
+{
     margin: 15px 0;
 }
-#page-title div.min-height {
+
+#page-title div.min-height
+{
     min-height: 56px;
 }
 /*#wrapper .sidebar-minimized #main #page-actions {
@@ -106,9 +127,107 @@
 /* End SystemAdmin Buttons  */
 /* ------------------------------------------------------------------------ */
 
-.form-fontstyle fieldset legend {
+.form-fontstyle fieldset legend
+{
     font-family: inherit;
     font-weight: bold;
     color: inherit;
     font-size: 14px;
 }
+
+
+/*--------------------------------------------------------------------------*/
+/* View Mode*/
+/*--------------------------------------------------------------------------*/
+
+.view-mode header
+{
+    margin: 0;
+    border-bottom: 1px solid #ebaf59;
+}
+
+.view-mode header h5
+{
+    display: inline-block;
+}
+
+.view-mode header .show-button,
+.view-mode header .hide-button
+{
+    margin-right: 4px;
+    background-repeat: no-repeat;
+    background-image: url('images/twisty_sprite.png');
+    height: 11px;
+    width: 11px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.view-mode header .show-button
+{
+    background-position: 0 -11px;
+}
+
+.view-mode .data-row
+{
+    padding: 5px 20px;
+}
+
+.view-mode .data-row + .data-row
+{
+    border-top: 1px solid #ececec;
+}
+
+        .view-mode .data-row .control-label
+        {
+            text-align: right;
+            width: 120px;
+            float: left;
+            padding-top: 5px;
+            color: #777;
+        }
+
+        .view-mode .data-row .controls
+        {
+            margin-left: 140px;
+        }
+
+            .view-mode .data-row .controls .control-text
+            {
+                padding-top: 5px;
+                display: block;
+            }
+
+    .view-mode form
+    {
+        margin: 0;
+    }
+
+        .view-mode form > .data-section
+        {
+            margin-top: 20px;
+        }
+
+            .view-mode form > .data-section:first-child
+            {
+                margin-top: 0;
+            }
+            
+/*Related List*/
+.related-list
+{
+    margin-top: 20px;
+    border-top: 2px solid #41b7d8;
+}
+
+    .related-list > header > h5
+    {
+        margin-right: 40px;
+        display: inline-block;
+    }
+
+    .related-list > header > .btn-toolbar
+    {
+        display: inline-block;
+        font-size: 14px;
+    }
