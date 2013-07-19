@@ -50,6 +50,15 @@ namespace Coevery.Fields.Controllers {
             return View(viewModel);
         }
 
+        public ActionResult FieldName(string displayName, int version)
+        {
+            return Json(new
+            {
+                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                version = version
+            });
+        }
+
         public ActionResult CreateEditInfo(string id, string fieldTypeName) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
@@ -88,7 +97,7 @@ namespace Coevery.Fields.Controllers {
 
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
-            viewModel.Name = viewModel.Name ?? String.Empty;
+            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
 
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
