@@ -1,16 +1,39 @@
 ﻿#navigation header {
     display: none;
 }
+
 .navbar-inner {
     min-height: 69px;
 }
-.icon-form:before{content:"\f03a";}
-.icon-statistics:before{content:"\e0a2";}
-.icol-static-tables {background-position: -160px -208px;}
-.icol-responsive-tables {background-position: -448px -96px;}
-.icol-creative-version {background-position: -496px -160px;}
-.icol-form-layouts {background-position: -384px -112px;}
-.icol-form-elements{background-position: -48px -240px;}
+
+.icon-form:before {
+    content: "\f03a";
+}
+
+.icon-statistics:before {
+    content: "\e0a2";
+}
+
+.icol-static-tables {
+    background-position: -160px -208px;
+}
+
+.icol-responsive-tables {
+    background-position: -448px -96px;
+}
+
+.icol-creative-version {
+    background-position: -496px -160px;
+}
+
+.icol-form-layouts {
+    background-position: -384px -112px;
+}
+
+.icol-form-elements {
+    background-position: -48px -240px;
+}
+
 #navigation .widget:after,
 #navigation .widget:before {
     content: none;
@@ -47,32 +70,44 @@
     line-height: 1;
     padding-left: 5px;
 }
-#page-actions h1 span{
+
+#page-actions h1 span {
     display: inline-block;
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 #page-actions h1 {
     font-size: 24px;
     margin: 3px 0;
 }
+
 #page-title .btn-toolbar {
     margin: 17px 0;
 }
+
 #page-title .btn-fixed {
     position: fixed;
     top: 65px;
     z-index: 999;
 }
+
 #page-title .btn-toolbar {
     margin: 17px 0;
 }
- 
+
 /*#wrapper .sidebar-minimized #main #page-actions {
     left: 70px;
 }*/
 /* ------------------------------------------------------------------------ */
 /* End SystemAdmin Buttons  */
 /* ------------------------------------------------------------------------ */
+
+.form-fontstyle fieldset legend {
+    font-family: inherit;
+    font-weight: bold;
+    color: inherit;
+    font-size: 14px;
+}
