@@ -45,6 +45,15 @@ namespace Coevery.Entities.Controllers
             return View(typeViewModel);
         }
 
+        public ActionResult EntityName(string displayName, int version)
+        {
+            return Json(new
+            {
+                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                version = version
+            });
+        }
+
         [HttpPost, ActionName("Create")]
         public ActionResult CreatePOST(EditTypeViewModel viewModel) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
@@ -75,7 +84,7 @@ namespace Coevery.Entities.Controllers
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-                return View(viewModel);
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
             _contentDefinitionService.AlterType(viewModel, this);

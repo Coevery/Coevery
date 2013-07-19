@@ -49,18 +49,18 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               entityDataService.delete({ name: entityName }, function () {
                   if ($scope.selectedItems.length != 0) {
                       $scope.selectedItems.pop();
-                  }                  
+                  }
                   $scope.getAllMetadata();
                   logger.success("Delete the metadata successful.");
-              }, function () {
-                  logger.error("Failed to delete the metadata.");
+              }, function (reason) {
+                  logger.error("Failed to delete the metadata." + reason);
               });
           };
 
           $scope.add = function () {
               $detour.transitionTo('EntityCreate', { Module: 'Entities' });
           };
-          
+
           $scope.view = function (entityName) {
               $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
           };
