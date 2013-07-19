@@ -67,9 +67,11 @@
     z-index: 999;
 }
 #page-title .btn-toolbar {
-    margin: 17px 0;
+    margin: 15px 0;
 }
- 
+#page-title div.min-height {
+    min-height: 56px;
+}
 /*#wrapper .sidebar-minimized #main #page-actions {
     left: 70px;
 }*/
