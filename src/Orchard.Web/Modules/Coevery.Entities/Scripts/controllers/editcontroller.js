@@ -5,7 +5,25 @@ define(['core/app/detourService'], function (detour) {
       'EntityEditCtrl',
       ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http',
       function ($timeout, $scope, logger, $detour, $stateParams, $resource, $http) {
+          
+          var checkValid = function (form) {
+              var validator = form.validate();
+              if (!validator) {
+                  return false;
+              }
+              if (!validator.form()) {
+                  return false;
+              }
+              if (!validator.element("#EntityName")) {
+                  return false;
+              }
+              return true;
+          };
+
           $scope.save = function () {
+              if (!checkValid($("#myForm"))) {
+                  return null;
+              }
               var form = angular.element(myForm);
               var promise = $http({
                   url: form.attr('action'),
@@ -15,13 +33,16 @@ define(['core/app/detourService'], function (detour) {
               }).then(function () {
                   logger.success('Save succeeded.');
               }, function (reason) {
-                  logger.success('Save Failed： ' + reason);
+                  logger.error('Save Failed： ' + reason);
               });
               return promise;
           };
 
           $scope.saveAndBack = function () {
               var promise = $scope.save();
+              if (!promise) {
+                  return;
+              }
               promise.then(function () {
                   $scope.exit();
               }, function () {

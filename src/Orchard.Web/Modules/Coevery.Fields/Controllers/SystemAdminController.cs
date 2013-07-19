@@ -50,6 +50,15 @@ namespace Coevery.Fields.Controllers {
             return View(viewModel);
         }
 
+        public ActionResult FieldName(string displayName, int version)
+        {
+            return Json(new
+            {
+                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                version = version
+            });
+        }
+
         public ActionResult CreateEditInfo(string id, string fieldTypeName) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
@@ -73,6 +82,7 @@ namespace Coevery.Fields.Controllers {
 
             var partViewModel = _contentDefinitionService.GetPart(id);
             var typeViewModel = _contentDefinitionService.GetType(id);
+
             if (partViewModel == null) {
                 // id passed in might be that of a type w/ no implicit field
                 if (typeViewModel != null) {
@@ -87,7 +97,7 @@ namespace Coevery.Fields.Controllers {
 
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
-            viewModel.Name = viewModel.Name ?? String.Empty;
+            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
 
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
@@ -95,6 +105,11 @@ namespace Coevery.Fields.Controllers {
 
             if (String.IsNullOrWhiteSpace(viewModel.Name)) {
                 ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
+            }
+
+            if (viewModel.Name.ToLower() == "id")
+            {
+                ModelState.AddModelError("Name", T("The Field Name can't be any case of 'Id'.").ToString());
             }
 
             if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {

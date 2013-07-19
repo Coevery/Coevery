@@ -37,3 +37,38 @@
         -webkit-text-shadow: none;
         text-shadow: none;
     }
+/* ------------------------------------------------------------------------ */
+/* SystemAdmin Buttons  */
+/* ------------------------------------------------------------------------ */
+#page-actions h1 span {
+    border-left: 1px dotted #AAAAAA;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+#page-actions h1 span{
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#page-actions h1 {
+    font-size: 24px;
+    margin: 3px 0;
+}
+#page-title .btn-toolbar {
+    margin: 17px 0;
+}
+#page-title .btn-fixed {
+    position: fixed;
+    top: 65px;
+    z-index: 999;
+}
+#page-title .btn-toolbar {
+    margin: 17px 0;
+}
+/* ------------------------------------------------------------------------ */
+/* End SystemAdmin Buttons  */
+/* ------------------------------------------------------------------------ */

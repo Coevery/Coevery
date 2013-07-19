@@ -10,7 +10,7 @@
             <div class="widget">
                 <div class="widget-content form-container">
                     @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                          new { @class = "form-horizontal no-border", @id = "field-info-form" }))
+                                                          new { @class = "form-horizontal no-border", @id = "field-info-form", @name = "myForm" }))
                     {
                         <fieldset>
                             <legend>Information</legend>
@@ -18,16 +18,16 @@
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.DisplayName)">
                                     @T("Field Label")
                                 </label>
-                                <div class="controls">
-                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus", ng_model = "fieldLabel" })
+                                <div class="controls toValidate">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus", ng_model = "fieldLabel" })
                                 </div>
                             </section>
                             <section class="control-group">
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.Name)">
                                     @T("Field Name")
                                 </label>
-                                <div class="controls">
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12", ng_model = "fieldName" })
+                                <div class="controls toValidate">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12 nameisnotid required safename", id = "inputFieldName", ng_model = "fieldName" })
                                 </div>
                             </section>
                             <section class="control-group">
@@ -139,15 +139,85 @@
         </div>
     </div>
 
+    <div class="modal-footer step2">
+        <button class="btn" ng-click="prev()">Back</button>
+        <button class="btn" ng-click="next()">Next</button>
+
+    </div>
+
     <div class="modal-footer step3">
         <button class="btn" ng-click="back()">Back</button>
         <button class="btn " ng-click="exit()">Don't Save</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
     </div>
 
-    <div class="modal-footer step2">
-        <button class="btn" ng-click="prev()">Back</button>
-        <button class="btn" ng-click="next()">Next</button>
+    <script type="text/javascript">
+        $(function () {
+            //Validation
 
-    </div>
+            //([A-Za-z][\w,-]){0,128}
+
+            $.validator.addMethod("nameisnotid", function (value) {
+                return !(value.toLowerCase() == "id");
+            }, "FieldName should not be 'id'");
+            $.validator.classRuleSettings.nameisnotid = { nameisnotid: true };
+            
+            $.validator.addMethod("safename", function (value) {
+                return (/^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value));
+            }, "FieldName is not legal!");
+            $.validator.classRuleSettings.safename = { safename: true };
+
+            var validator = $("#field-info-form").validate({
+                ignore: "*:not('.toValidate *')",
+                onfocusout: function (element) {
+                    if (element.type == "text") {
+                        this.form();
+                    }
+                },
+            });
+
+            //Auto get name
+            var $name = $("#inputFieldName");
+            var $displayName = $(".labelForName");
+            var jsonUrl = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Fields" } })";
+            var version = 0;
+
+            var nameAltered;
+            $name.keyup(function () {
+                if (!$name.val()) {
+                    nameAltered = false;
+                } else {
+                    nameAltered = true;
+                }
+            });
+
+            var compute = function () {
+                // stop processing automatically if altered by the user
+                if (nameAltered) {
+                    return;
+                }
+
+                $.post(jsonUrl, {
+                    displayName: $displayName.val(),
+                    version: ++version,
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                },
+                    function (data) {
+                        if (version == data.version) {
+                            $name.val(data.result);
+                        }
+                    },
+                    "json"
+                );
+            };
+
+            //pull technical name input from tab order
+            $name.attr("tabindex", -1);
+
+            $displayName.keyup(function () {
+                compute();
+                validator.form();
+            });
+        });
+    </script>
 </div>

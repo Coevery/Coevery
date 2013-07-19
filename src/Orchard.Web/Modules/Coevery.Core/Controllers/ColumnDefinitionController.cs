@@ -24,6 +24,7 @@ using Orchard.Mvc.ViewEngines.ThemeAwareness;
 using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Models;
 using System.Linq;
+using Orchard.Projections.Services;
 using Orchard.Tokens;
 
 namespace Coevery.Core.Controllers
@@ -34,18 +35,19 @@ namespace Coevery.Core.Controllers
         private readonly IViewPartService _projectionService;
         private readonly ILayoutAwareViewEngine _layoutAwareViewEngine;
         private readonly IWorkContextAccessor _workContextAccessor;
-
+        private readonly IProjectionManager _projectionManager;
         public ColumnDefinitionController(IContentManager iContentManager,
             IOrchardServices orchardServices,
             IViewPartService projectionService, 
             ILayoutAwareViewEngine layoutAwareViewEngine, 
-            IWorkContextAccessor workContextAccessor)
+            IWorkContextAccessor workContextAccessor, IProjectionManager projectionManager)
         {
             _contentManager = iContentManager;
             Services = orchardServices;
             _projectionService = projectionService;
             _layoutAwareViewEngine = layoutAwareViewEngine;
             _workContextAccessor = workContextAccessor;
+            _projectionManager = projectionManager;
             T = NullLocalizer.Instance;
         }
         public Localizer T { get; set; }
@@ -115,7 +117,9 @@ namespace Coevery.Core.Controllers
 
             if (queryPartRecord.Layouts.Count == 0) 
                 return properties;
-            properties = queryPartRecord.Layouts[0].Properties;
+            var allFielDescriptors = _projectionManager.DescribeProperties().ToList();
+            var fieldDescriptors = queryPartRecord.Layouts[0].Properties.OrderBy(p => p.Position).Select(p => allFielDescriptors.SelectMany(x => x.Descriptors).Select(d => new { Descriptor = d, Property = p }).FirstOrDefault(x => x.Descriptor.Category == p.Category && x.Descriptor.Type == p.Type)).ToList();
+            properties = fieldDescriptors.Where(c => c != null).Select(c=>c.Property).ToList();
             return properties;
         }
 

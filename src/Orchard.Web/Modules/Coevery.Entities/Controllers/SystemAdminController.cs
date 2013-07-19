@@ -45,13 +45,22 @@ namespace Coevery.Entities.Controllers
             return View(typeViewModel);
         }
 
+        public ActionResult EntityName(string displayName, int version)
+        {
+            return Json(new
+            {
+                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                version = version
+            });
+        }
+
         [HttpPost, ActionName("Create")]
         public ActionResult CreatePOST(EditTypeViewModel viewModel) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
                 return new HttpUnauthorizedResult();
 
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
-            viewModel.Name = viewModel.Name ?? String.Empty;
+            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
 
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
@@ -75,7 +84,7 @@ namespace Coevery.Entities.Controllers
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-                return View(viewModel);
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
             _contentDefinitionService.AlterType(viewModel, this);
