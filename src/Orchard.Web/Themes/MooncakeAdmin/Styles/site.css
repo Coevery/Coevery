@@ -69,6 +69,10 @@
 #page-title .btn-toolbar {
     margin: 17px 0;
 }
+ 
+/*#wrapper .sidebar-minimized #main #page-actions {
+    left: 70px;
+}*/
 /* ------------------------------------------------------------------------ */
 /* End SystemAdmin Buttons  */
 /* ------------------------------------------------------------------------ */
