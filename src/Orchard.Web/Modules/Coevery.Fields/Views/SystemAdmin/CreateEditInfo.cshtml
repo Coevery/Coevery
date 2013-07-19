@@ -18,8 +18,8 @@
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.DisplayName)">
                                     @T("Field Label")
                                 </label>
-                                <div class="controls">
-                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus", ng_model = "fieldLabel" })
+                                <div class="controls toValidate">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus", ng_model = "fieldLabel" })
                                 </div>
                             </section>
                             <section class="control-group">
@@ -27,7 +27,7 @@
                                     @T("Field Name")
                                 </label>
                                 <div class="controls toValidate">
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12 nameisnotid required", id = "inputFieldName", ng_model = "fieldName" })
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12 nameisnotid required safename", id = "inputFieldName", ng_model = "fieldName" })
                                 </div>
                             </section>
                             <section class="control-group">
@@ -67,8 +67,6 @@
                             <legend>Field Information</legend>
                             @{ Html.RenderTemplates(Model.TypeTemplates); }
                         </fieldset>
-                        HtmlHelper.ClientValidationEnabled = true;
-                        HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
                     }
                 </div>
             </div>
@@ -152,23 +150,73 @@
         <button class="btn " ng-click="exit()">Don't Save</button>
         <button class="btn btn-primary" ng-click="save()">Save</button>
     </div>
-    
+
     <script type="text/javascript">
         $(function () {
             //Validation
-         
+
+            //([A-Za-z][\w,-]){0,128}
+
             $.validator.addMethod("nameisnotid", function (value) {
                 return !(value.toLowerCase() == "id");
             }, "FieldName should not be 'id'");
             $.validator.classRuleSettings.nameisnotid = { nameisnotid: true };
+            
+            $.validator.addMethod("safename", function (value) {
+                return (/^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value));
+            }, "FieldName is not legal!");
+            $.validator.classRuleSettings.safename = { safename: true };
 
-            $("#field-info-form").validate({
+            var validator = $("#field-info-form").validate({
                 ignore: "*:not('.toValidate *')",
-                onfocusout: function (element, event) {
-                    if (element.id == "inputFieldName") {
+                onfocusout: function (element) {
+                    if (element.type == "text") {
                         this.form();
                     }
                 },
+            });
+
+            //Auto get name
+            var $name = $("#inputFieldName");
+            var $displayName = $(".labelForName");
+            var jsonUrl = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Fields" } })";
+            var version = 0;
+
+            var nameAltered;
+            $name.keyup(function () {
+                if (!$name.val()) {
+                    nameAltered = false;
+                } else {
+                    nameAltered = true;
+                }
+            });
+
+            var compute = function () {
+                // stop processing automatically if altered by the user
+                if (nameAltered) {
+                    return;
+                }
+
+                $.post(jsonUrl, {
+                    displayName: $displayName.val(),
+                    version: ++version,
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                },
+                    function (data) {
+                        if (version == data.version) {
+                            $name.val(data.result);
+                        }
+                    },
+                    "json"
+                );
+            };
+
+            //pull technical name input from tab order
+            $name.attr("tabindex", -1);
+
+            $displayName.keyup(function () {
+                compute();
+                validator.form();
             });
         });
     </script>
