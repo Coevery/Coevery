@@ -1,8 +1,9 @@
 ﻿@using Orchard.Utility.Extensions
 @model Coevery.Fields.ViewModels.AddFieldViewModel
-<div ng-init="open()" modal="shouldBeOpen" close="close()" options="opts">
+<div>
     <div class="modal-header">
-        <h3>Add new Field</h3>
+        <button type="button" class="close" ng-click="exit()">&#215</button>
+        <h3>Add new Field</h3>      
     </div>
     <div class="modal-body">
         <h5>Step 1. Choose the field type</h5>

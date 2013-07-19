@@ -2,34 +2,13 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateChooseTypeCtrl',
-        ['$scope', 'logger', '$stateParams', '$location',
-            function ($scope, logger, $stateParams, $location) {
-
+        ['$scope', 'logger', '$stateParams', '$detour',
+            function ($scope, logger, $stateParams, $detour) {
                 var entityName = $stateParams.Id;
-                $scope.open = function () {
-                    $scope.shouldBeOpen = true;
-                };
+                $scope.fieldType = $('#field-type-form input[type=radio]:checked').val();
 
-                $scope.close = function () {
-                    $scope.shouldBeOpen = false;
-                };
-
-                $scope.opts = {
-                    backdrop: false,
-                    backdropFade: false,
-                    dialogFade: true,
-                    backdropClick: false
-                };
-
-                $scope.fieldType = $('#field-type-form input:first').val();
-                $scope.$on('toStep2Done', function () {
-                    $scope.close();
-                    $(".modal-backdrop").remove();
-                });
                 $scope.exit = function () {
-
-                    $location.url("/Entities/" + entityName.toString());
-                    $scope.close();
+                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
 
                 $scope.next = function () {
@@ -37,6 +16,14 @@ define(['core/app/detourService'], function (detour) {
                         $scope.$emit('toStep2', $scope.fieldType);
                     }
                 };
+
+                $scope.$on('$destroy', function () {
+                    if ($detour.current.name != 'EntityDetail.Fields.CreateEditInfo') {
+                        $scope.closeDialog();
+                    }
+                });
+                
+                $scope.openDialog();
             }]
     ]);
 });

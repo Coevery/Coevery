@@ -99,13 +99,11 @@
             );
         };
 
-        //pull technical name input from tab order
-        $name.attr("tabindex", -1);
-
-        $displayName.keyup(function() {
+        $displayName.keyup(function () {
             compute();
-            validator.form();
+            setTimeout(function () {
+                validator.form();
+            }, 100);
         });
-
     });
 </script>
