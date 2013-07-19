@@ -1,0 +1,80 @@
+﻿@using System.Globalization
+@using Q42.DbTranslations.ViewModels
+@model CultureIndexViewModel
+@{
+  Layout.Title = "Database translations";
+}
+
+<div class="content">  
+  <h2>@T("Import translations from orchardproject.net")</h2>
+  <p>@T("The newest version of translations is automatically downloaded from www.orchardproject.net and installed into the database.")</p>
+  <table class="items">
+    <th>@T("Culture")</th>
+    <th>@T("Action")</th>
+    @foreach (var translation in Model.TranslationStates.OrderBy(c => c.Key))
+    {
+      var culture = CultureInfo.GetCultureInfoByIetfLanguageTag(translation.Key);
+      <tr>
+        <td>
+          @Html.ActionLink(
+              culture.IetfLanguageTag + " - " + culture.DisplayName,
+              "Culture",
+              new { culture = culture.Name })
+        </td>
+        <td>
+          <a href="@Url.Action("ImportLiveOrchardPo", new { culture = culture })">@T("Click here to fill this culture using a *.po.zip file from www.orchardproject.net.")</a>
+        </td>
+      </tr>
+    }
+  </table>
+</div>
+
+<p>&nbsp;</p>
+  
+<div class="content">
+  @using (Html.BeginForm(new { action = "ImportCurrentPos" }))
+  {
+    @Html.AntiForgeryTokenOrchard()
+    <h2>@T("Import existing *.po files")</h2>
+    <p>@T("Already have translation po files installed? Import them into the database!")</p>
+    <label><input type="checkbox" name="overwrite" value="true" /> overwrite existing values</label>
+    <input type="submit" class="button" value="@T("Import!")" />
+  }
+</div>
+<p>&nbsp;</p>
+
+
+<div class="content">
+  <h2>@T("Generate from source")</h2>
+  <p>@T("Developing a module and want to add new translations to the database?<br />Existing translations will not be altered, only new translatable strings will be added.")</p>
+  @Html.ActionLink(T("Generate from source").Text, "FromSource", null, new { @class = "button" })
+</div>
+  
+<p>&nbsp;</p>
+  
+<div class="content">
+  <h2>@T("Upload a new or updated translation file"):</h2>
+  <p>@T("The community is constantly adding new languages and translations, downloadable at <a target=\"_blank\" href=\"http://www.orchardproject.net/localize\">orchardproject.net/localize</a>. You can import the newest version of these *.po.zip files here.")</p>
+  <form action="@Url.Action("Upload")" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryTokenOrchard()
+    <input type="file" class="fileupload" name="pofile" />
+    <input type="submit" class="button" name="submit" value="@T("Upload")" />
+  </form>
+</div>
+
+<p>&nbsp;</p>
+<div class="content">
+  <h2>@T("Manually add translations")</h2>
+  <p>@T("Missing a specific translation? Add it here!")</p>
+  <form action="@Url.Action("ManualAdd")" method="post">
+    @Html.AntiForgeryTokenOrchard()
+    <label>@T("Context (i.e. ~/Core/Common/Module.txt)")</label>
+    <input type="text" name="record.Context" placeholder="@T("Context")" />
+    <label>@T("Path of the file (i.e. Core/App_Data/Localization/{0}/orchard.core.po)")</label>
+    <input type="text" name="record.Path" placeholder="@T("Path")" />
+    <label>@T("Translatable string (i.e. 'Translate me!')")</label>
+    <input type="text" name="record.StringKey" placeholder="@T("Translatable string")" />
+    <br />
+    <input type="submit" class="button" name="submit" value="@T("Submit")" />
+  </form>
+</div>
