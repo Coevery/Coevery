@@ -80,6 +80,7 @@ namespace Coevery.Core.Controllers
             var tokens = new Dictionary<string, object> { { "Content", part.ContentItem } };
             var allFielDescriptors = _projectionManager.DescribeProperties().ToList();
             var fieldDescriptors = layout.Properties.OrderBy(p => p.Position).Select(p => allFielDescriptors.SelectMany(x => x.Descriptors).Select(d => new { Descriptor = d, Property = p }).FirstOrDefault(x => x.Descriptor.Category == p.Category && x.Descriptor.Type == p.Type)).ToList();
+            fieldDescriptors = fieldDescriptors.Where(c => c != null).ToList();
             var tokenizedDescriptors = fieldDescriptors.Select(fd => new { fd.Descriptor, fd.Property, State = FormParametersHelper.ToDynamic(_tokenizer.Replace(fd.Property.State, tokens)) }).ToList();
 
             // execute the query
