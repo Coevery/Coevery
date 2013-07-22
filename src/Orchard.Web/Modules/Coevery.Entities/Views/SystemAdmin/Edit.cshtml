@@ -24,29 +24,32 @@
         <div class="span12">
             <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                              new { id = "myForm" })) {
+                                                              new { @class = "form-fontstyle", id = "myForm" })) {
                     @Html.ValidationSummary()
-                    <section class="control-group">
-                        <label class="control-label" for="inputName">Name</label>
-                        <div class="controls">
-                            <span class="control-label">@T(Model.Name)</span>
-                        </div>
-                        <meta itemprop="Id" content="@Model.Name" />
-                        @Html.HiddenFor(m => m.Name)
-                    </section>
-                    <section class="control-group">
-                        <label class="control-label" for="DisplayName">Display Name</label>
-                        <div class="controls">
-                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
-                        </div>
-                        <meta itemprop="DisplayName" content="@Model.DisplayName" />
-                    </section>
-                    <section class="control-group">
-                        <label class="control-label">Setting</label>
-                        <div class="controls">
-                            @{Html.RenderTemplates(Model.Templates); }
-                        </div>
-                    </section>
+                    <fieldset>
+                        <legend>General Information</legend>
+                        <section class="control-group">
+                            <label class="control-label" for="inputName">Name</label>
+                            <div class="controls">
+                                <span class="control-label">@T(Model.Name)</span>
+                            </div>
+                            <meta itemprop="Id" content="@Model.Name" />
+                            @Html.HiddenFor(m => m.Name)
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label" for="DisplayName">Display Name</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
+                            </div>
+                            <meta itemprop="DisplayName" content="@Model.DisplayName" />
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">Setting</label>
+                            <div class="controls">
+                                @{Html.RenderTemplates(Model.Templates); }
+                            </div>
+                        </section>
+                    </fieldset>
                 }
             </div>
         </div>
