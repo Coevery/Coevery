@@ -1926,6 +1926,7 @@
     <Content Include="Styles\images\preloaders\7.gif" />
     <Content Include="Styles\images\preloaders\8.gif" />
     <Content Include="Styles\images\preloaders\9.gif" />
+    <Content Include="Styles\images\twisty_sprite.png" />
     <Content Include="Styles\images\vlabels.png" />
     <Content Include="Styles\invoice.css" />
     <Content Include="Styles\invoice.print.css" />
