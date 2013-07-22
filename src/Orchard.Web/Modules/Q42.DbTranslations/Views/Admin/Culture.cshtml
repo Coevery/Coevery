@@ -6,21 +6,22 @@
 @using (Script.Foot())
 { 
   <script>
-    $(document).ready(function () {
-      $('.contribute-banner').live('click', function (e) {
-        e.preventDefault();
-        var contInset = $('.contribute-inset');
-        if (contInset.hasClass('hidden')) {
-          contInset.fadeIn(200).removeClass('hidden');
-        } else {
-          contInset.fadeOut(200).addClass('hidden');
-        }
+      $(document).ready(function () {
+          $(document).on('click.cluture.translation', '.contribute-banner', function(e) {
+              e.preventDefault();
+              var contInset = $('.contribute-inset');
+              if (contInset.hasClass('hidden')) {
+                  contInset.fadeIn(200).removeClass('hidden');
+              } else {
+                  contInset.fadeOut(200).addClass('hidden');
+              }
+          });
+
+          $(document).on('click.cluture.translation', '.close-inset', function(e) {
+              e.preventDefault();
+              $('.contribute-inset').fadeOut(200).addClass('hidden');
+          });
       });
-      $('.close-inset').live('click', function (e) {
-        e.preventDefault();
-        $('.contribute-inset').fadeOut(200).addClass('hidden');
-      });
-    });
   </script>
 }
 <style>

@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Web.config" />
+    <Content Include="Styles\menu.Translations-admin.css" />
     <Content Include="Views\Admin\Export.cshtml" />
     <Content Include="Views\Admin\Import.cshtml" />
     <Content Include="Views\Admin\Culture.cshtml" />
@@ -134,6 +135,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Admin\Search.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
