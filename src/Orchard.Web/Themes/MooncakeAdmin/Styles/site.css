@@ -133,6 +133,7 @@
     font-weight: bold;
     color: inherit;
     font-size: 14px;
+    border-bottom: 1px solid #ebaf59;
 }
 
 
@@ -178,41 +179,41 @@
     border-top: 1px solid #ececec;
 }
 
-        .view-mode .data-row .control-label
-        {
-            text-align: right;
-            width: 120px;
-            float: left;
-            padding-top: 5px;
-            color: #777;
-        }
+.view-mode .data-row .control-label
+{
+    text-align: right;
+    width: 120px;
+    float: left;
+    padding-top: 5px;
+    color: #777;
+}
 
-        .view-mode .data-row .controls
-        {
-            margin-left: 140px;
-        }
+.view-mode .data-row .controls
+{
+    margin-left: 140px;
+}
 
-            .view-mode .data-row .controls .control-text
-            {
-                padding-top: 5px;
-                display: block;
-            }
+.view-mode .data-row .controls .control-text
+{
+    padding-top: 5px;
+    display: block;
+}
 
-    .view-mode form
-    {
-        margin: 0;
-    }
+.view-mode form
+{
+    margin: 0;
+}
 
-        .view-mode form > .data-section
-        {
-            margin-top: 20px;
-        }
+.view-mode form > .data-section
+{
+    margin-top: 20px;
+}
 
-            .view-mode form > .data-section:first-child
-            {
-                margin-top: 0;
-            }
-            
+.view-mode form > .data-section:first-child
+{
+    margin-top: 0;
+}
+
 /*Related List*/
 .related-list
 {
@@ -220,14 +221,39 @@
     border-top: 2px solid #41b7d8;
 }
 
-    .related-list > header > h5
-    {
-        margin-right: 40px;
-        display: inline-block;
-    }
+.related-list > header > h5
+{
+    margin-right: 40px;
+    display: inline-block;
+}
 
-    .related-list > header > .btn-toolbar
-    {
-        display: inline-block;
-        font-size: 14px;
-    }
+.related-list > header > .btn-toolbar
+{
+    display: inline-block;
+    font-size: 14px;
+}
+/* ------------------------------------------------------------------------ */
+/* Form Style  */
+/* ------------------------------------------------------------------------ */
+
+form .control-group .control-label.required:before {
+    content: "*";
+    color: red;
+    margin-right: 5px;
+    vertical-align: text-top;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+form .control-group .toValidate input.success,
+form .control-group input.labelForName.success,
+form .control-group.success .control-label {
+    border-color: rgb(204, 204, 204);
+    color: rgb(68, 68, 68);
+}
+
+form .control-group.success .toValidate span.help-block,
+form .control-group.error .toValidate span.help-block {
+    color: rgb(136, 136, 136);
+}

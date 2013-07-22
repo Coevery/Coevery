@@ -1,7 +1,8 @@
 ﻿@using Orchard.Utility.Extensions
 @model Coevery.Fields.ViewModels.AddFieldViewModel
-<div ng-init="open()" modal="shouldBeOpen" close="close()" options="opts">
+<div>
     <div class="modal-header">
+        <button type="button" class="close" ng-click="exit()">&#215</button>
         <h3>Add new Field</h3>
     </div>
     <div class="modal-body">
@@ -18,12 +19,12 @@
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.DisplayName)">
                                     @T("Field Label")
                                 </label>
-                                <div class="controls toValidate">
-                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus", ng_model = "fieldLabel" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName",autofocus = "autofocus", ng_model = "fieldLabel" })
                                 </div>
                             </section>
                             <section class="control-group">
-                                <label class="control-label" for="@Html.FieldIdFor(m => m.Name)">
+                                <label class="control-label required" for="@Html.FieldIdFor(m => m.Name)">
                                     @T("Field Name")
                                 </label>
                                 <div class="controls toValidate">
@@ -155,13 +156,11 @@
         $(function () {
             //Validation
 
-            //([A-Za-z][\w,-]){0,128}
-
             $.validator.addMethod("nameisnotid", function (value) {
                 return !(value.toLowerCase() == "id");
             }, "FieldName should not be 'id'");
             $.validator.classRuleSettings.nameisnotid = { nameisnotid: true };
-            
+
             $.validator.addMethod("safename", function (value) {
                 return (/^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value));
             }, "FieldName is not legal!");
@@ -169,7 +168,7 @@
 
             var validator = $("#field-info-form").validate({
                 ignore: "*:not('.toValidate *')",
-                onfocusout: function (element) {
+                onkeyup: function (element) {
                     if (element.type == "text") {
                         this.form();
                     }
@@ -179,6 +178,7 @@
             //Auto get name
             var $name = $("#inputFieldName");
             var $displayName = $(".labelForName");
+
             var jsonUrl = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Fields" } })";
             var version = 0;
 
@@ -210,13 +210,12 @@
                     "json"
                 );
             };
-
-            //pull technical name input from tab order
-            $name.attr("tabindex", -1);
-
+            
             $displayName.keyup(function () {
                 compute();
-                validator.form();
+                setTimeout(function () {
+                    validator.form();
+                }, 100);
             });
         });
     </script>
