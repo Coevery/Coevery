@@ -113,3 +113,29 @@
     border-bottom: 1px solid #ebaf59;
     margin:0px;
 }
+
+/* ------------------------------------------------------------------------ */
+/* Form Style  */
+/* ------------------------------------------------------------------------ */
+
+form .control-group .control-label.required:before {
+    content: "*";
+    color: red;
+    margin-right: 5px;
+    vertical-align: text-top;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+form .control-group .toValidate input.success,
+form .control-group input.labelForName.success,
+form .control-group.success .control-label {
+    border-color: rgb(204, 204, 204);
+    color: rgb(68, 68, 68);
+}
+
+form .control-group.success .toValidate span.help-block,
+form .control-group.error .toValidate span.help-block {
+    color: rgb(136, 136, 136);
+}

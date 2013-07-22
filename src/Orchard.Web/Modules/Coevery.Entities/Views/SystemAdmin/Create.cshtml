@@ -24,12 +24,12 @@
                         <legend>General Information</legend>
                         <section class="control-group">
                             <label class="control-label" for="DisplayName">@T("Display Name")</label>
-                            <div class="controls toValidate">
+                        <div class="controls">
                                 @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus" })
                             </div>
                         </section>
                         <section class="control-group">
-                            <label class="control-label" for="Name">@T("Name")</label>
+                        <label class="control-label required" for="Name">@T("Name")</label>
                             <div class="controls toValidate">
                                 @Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
                                 <span class="help-block">@T("Technical name of the type.")</span>
@@ -59,8 +59,7 @@
 
         var validator = $("#myForm").validate({
             ignore: "*:not('.toValidate *')",
-            onfocusout: function (element) {
-                compute();
+            onkeyup: function (element) {
                 if (element.type == "text") {
                     this.form();
                 }

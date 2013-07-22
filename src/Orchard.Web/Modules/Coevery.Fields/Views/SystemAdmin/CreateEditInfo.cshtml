@@ -19,12 +19,12 @@
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.DisplayName)">
                                     @T("Field Label")
                                 </label>
-                                <div class="controls toValidate">
-                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus", ng_model = "fieldLabel" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName",autofocus = "autofocus", ng_model = "fieldLabel" })
                                 </div>
                             </section>
                             <section class="control-group">
-                                <label class="control-label" for="@Html.FieldIdFor(m => m.Name)">
+                                <label class="control-label required" for="@Html.FieldIdFor(m => m.Name)">
                                     @T("Field Name")
                                 </label>
                                 <div class="controls toValidate">
@@ -168,7 +168,7 @@
 
             var validator = $("#field-info-form").validate({
                 ignore: "*:not('.toValidate *')",
-                onfocusout: function (element) {
+                onkeyup: function (element) {
                     if (element.type == "text") {
                         this.form();
                     }
@@ -178,7 +178,7 @@
             //Auto get name
             var $name = $("#inputFieldName");
             var $displayName = $(".labelForName");
-            $displayName.focus();
+
             var jsonUrl = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Fields" } })";
             var version = 0;
 
@@ -210,7 +210,7 @@
                     "json"
                 );
             };
-
+            
             $displayName.keyup(function () {
                 compute();
                 setTimeout(function () {
