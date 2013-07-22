@@ -111,3 +111,26 @@
     color: inherit;
     font-size: 14px;
 }
+
+/* ------------------------------------------------------------------------ */
+/* Form Style  */
+/* ------------------------------------------------------------------------ */
+
+form .control-group.success .control-label {
+    color: rgb(68, 68, 68);
+}
+
+form .control-group .control-label.required:before {
+    content: "*";
+    color: red;
+    margin-right: 5px;
+    vertical-align: text-top;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+form .control-group .toValidate input.success,
+form .control-group input.labelForName.success {
+    border-color: rgb(204, 204, 204);
+}

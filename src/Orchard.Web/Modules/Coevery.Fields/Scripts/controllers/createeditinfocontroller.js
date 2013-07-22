@@ -20,14 +20,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $(".step3").hide();
-                //Scope method              
-
-                //$scope.$on('toStep1Done', function () {
-
-                //    $scope.$parent.openDialog();
-                //    $(".modal-backdrop").remove();
-                //});
-
+                //Scope method
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
@@ -43,6 +36,7 @@ define(['core/app/detourService'], function (detour) {
                     if (!checkValid($("#field-info-form"))) {
                         return;
                     }
+                    $scope.fieldName = $("#inputFieldName").val();
                     $('.step2').hide();
                     $('.step3').show();
                 };
