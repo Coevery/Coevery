@@ -6,7 +6,7 @@ namespace Coevery.Fields.Fields {
     public class DatetimeField : ContentField {
         public DateTime? Value {
             get { return Storage.Get<DateTime?>(); }
-            set { Storage.Set(value ?? DateTime.Today); }
+            set { Storage.Set(value); }
         }
     }
 }

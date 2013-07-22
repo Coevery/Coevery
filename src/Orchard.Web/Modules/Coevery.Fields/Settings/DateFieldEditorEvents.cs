@@ -24,7 +24,7 @@ namespace Coevery.Fields.Settings {
             var model = new DateFieldSettings();
             if (updateModel.TryUpdateModel(model, "DateFieldSettings", null, null)) {
                 UpdateSettings(model, builder, "DateFieldSettings");
-                builder.WithSetting("DateFieldSettings.DefaultValue", model.DefaultValue.ToShortDateString());
+                builder.WithSetting("DateFieldSettings.DefaultValue", model.DefaultValue.ToString());
             }
 
             yield return DefinitionTemplate(model);
