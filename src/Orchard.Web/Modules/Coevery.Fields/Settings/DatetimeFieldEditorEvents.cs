@@ -24,7 +24,7 @@ namespace Coevery.Fields.Settings {
             var model = new DatetimeFieldSettings();
             if (updateModel.TryUpdateModel(model, "DatetimeFieldSettings", null, null)) {
                 UpdateSettings(model, builder, "DatetimeFieldSettings");
-                builder.WithSetting("DatetimeFieldSettings.DefaultValue", model.DefaultValue.ToString("MM/dd/yyyy hh:mm tt"));
+                builder.WithSetting("DatetimeFieldSettings.DefaultValue", model.DefaultValue.ToString());
             }
 
             yield return DefinitionTemplate(model);

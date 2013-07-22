@@ -48,6 +48,7 @@
                     .end()
                     .toggleClass('toggled');
                 $('#sidebar-toggle').toggleClass('toggled', $('#content').hasClass('sidebar-minimized'));
+                $(window).trigger("resize");
             }
         }
         //]]>

@@ -6,39 +6,42 @@
 </section>
 
 
-<section id="main-content" style="margin-top:47px">
+<section id="main-content" style="margin-top: 47px">
     <header id="page-title" class="clearfix">
         <btn-actions>
-                <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
-        <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
-            </btn-actions>
+            <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
+        </btn-actions>
     </header>
 
     <div class="row-fluid">
         <div class="span12">
             <div class="form-horizontal">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                              new { id = "myForm" })) {
+                                                              new { @class = "form-fontstyle", id = "myForm" })) {
                     @Html.ValidationSummary()
-                    <section class="control-group">
-                        <label class="control-label" for="DisplayName">@T("Display Name")</label>
-                        <div class="controls toValidate">
-                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus" })
-                        </div>
-                    </section>
-                    <section class="control-group">
-                        <label class="control-label" for="Name">@T("Name")</label>
-                        <div class="controls toValidate">
-                            @Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
-                            <span class="help-block">@T("Technical name of the type.")</span>
-                        </div>
-                    </section>
-                    <section class="control-group">
-                        <label class="control-label">Setting</label>
+                    <fieldset>
+                        <legend>General Information</legend>
+                        <section class="control-group">
+                            <label class="control-label" for="DisplayName">@T("Display Name")</label>
                         <div class="controls">
-                            @{Html.RenderTemplates(Model.Templates); }
-                        </div>
-                    </section>
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus" })
+                            </div>
+                        </section>
+                        <section class="control-group">
+                        <label class="control-label required" for="Name">@T("Name")</label>
+                            <div class="controls toValidate">
+                                @Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
+                                <span class="help-block">@T("Technical name of the type.")</span>
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">Setting</label>
+                            <div class="controls">
+                                @{Html.RenderTemplates(Model.Templates); }
+                            </div>
+                        </section>
+                    </fieldset>
                 }
             </div>
         </div>
@@ -56,8 +59,7 @@
 
         var validator = $("#myForm").validate({
             ignore: "*:not('.toValidate *')",
-            onfocusout: function (element) {
-                compute();
+            onkeyup: function (element) {
                 if (element.type == "text") {
                     this.form();
                 }
@@ -75,8 +77,8 @@
             if (!$name.val()) {
                 nameAltered = false;
             } else {
-            nameAltered = true;
-            }      
+                nameAltered = true;
+            }
         });
 
         var compute = function () {
@@ -99,13 +101,11 @@
             );
         };
 
-        //pull technical name input from tab order
-        $name.attr("tabindex", -1);
-
-        $displayName.keyup(function() {
+        $displayName.keyup(function () {
             compute();
-            validator.form();
+            setTimeout(function () {
+                validator.form();
+            }, 100);
         });
-
     });
 </script>

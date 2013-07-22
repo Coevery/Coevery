@@ -2,13 +2,12 @@
 @using Orchard.Utility.Extensions;
 @{
     DateTime? value = (DateTime?)Model.ContentField.Value;
-    
-    if (value.HasValue) {
-        string valueToDisplay = value.Value.ToShortDateString();
-        if(!string.IsNullOrWhiteSpace(valueToDisplay))
-        {
-            string name = Model.ContentField.DisplayName;
-            <p class="text-field">@T(name): @valueToDisplay</p>
-        }
+
+    string valueToDisplay = value.Value.ToString();
+
+    if (!string.IsNullOrWhiteSpace(valueToDisplay))
+    {
+        string name = Model.ContentField.DisplayName;
+    <p class="text-field">@T(name): @valueToDisplay</p>
     }
 }
