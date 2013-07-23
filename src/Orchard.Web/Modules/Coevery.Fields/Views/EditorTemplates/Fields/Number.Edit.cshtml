@@ -3,6 +3,7 @@
 @using Coevery.Fields.Settings;
 @{
     var settings = Model.PartFieldDefinition.Settings.GetModel<NumberFieldSettings>();
+    var decimalplacesclass = settings.DecimalPlaces > 0 ? "decimalplaces" : string.Empty;
 }
 
 <label class="span3 control-label" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
@@ -14,7 +15,8 @@
         @if(settings.Required) {<text> required="required"</text> }
         @if(settings.ReadOnly) {<text> readonly="readonly"</text> }
         @if(settings.Length > 1) {<text> maxlength="@settings.Length.ToString()"</text>} 
-        class="textMedium span12 number"
+        @if(settings.DecimalPlaces>0) {<text> decimalplaces = "@settings.DecimalPlaces" </text>}
+           class="textMedium span12 number @decimalplacesclass"
         />
     @Html.ValidationMessageFor(m => m.Value)
 </div>

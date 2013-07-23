@@ -14,6 +14,6 @@
            value="@Model.Value"
         @if(settings.Required) {<text> required="required"</text> }
         @if(settings.ReadOnly) {<text> readonly="readonly"</text> }
-        class="textMedium span12 phonenumber" />
+           class="textMedium span12 phonenumber" />
     @Html.ValidationMessageFor(m => m.Value)
 </div>
