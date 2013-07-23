@@ -1,82 +1,62 @@
 ﻿@using System.ComponentModel
 @model Coevery.Perspectives.ViewModels.NavigationViewModel
 <section>
-@*    <header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
-        <h1 style="background-image: none;">Navigation Item Detail <span>show navigation item detail information</span></h1>
-    </header>*@
-    <section>
-        <div id="page-actions">
-        <h1 class="pull-left" style="background-image: none;">Navigation Item Detail <span>show navigation item detail information</span></h1>
-        </div>
-    </section>
-    <section id="main-content">
-        @*<div class="row-fluid">
-            <div id="page-toolbar">*@
-        <header id="page-title" class="clearfix">
-            <btn-actions>
-                <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
-                <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
-            </btn-actions>
-            <div class="min-height"></div>
-        </header>
-          @*  </div>
-        </div>*@
-
-        <div class="row-fluid">
-            <div class="span12">
-                <div class="widget">
-                    <div class="widget-content form-container detail-container">
-                        <div class="form-horizontal no-border">
-                            @using (Html.BeginFormAntiForgeryPost(Url.Action("CreateNavigationItem", new { perspectiveId = Model.PrespectiveId, navigationId = Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                                  FormMethod.Post,
-                                                                  new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" })) {
-                                <section class="control-group">
-                                    <label class="control-label">Title</label>
-                                    <div class="controls">
-                                        @Html.TextBoxFor(m => m.Title, new { @readonly = "readonly", @class = "span12" })
-                                    </div>
-                                </section>
-                                <section class="control-group">
-                                    <label class="control-label">Entity</label>
-                                    <div class="controls">
-                                        @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
-                                    </div>
-                                </section>
-                                <section class="control-group">
-                                    <label class="control-label">Color</label>
-                                    <div class="controls">
-                                        <input id="color" type="text" class="minicolors">
-                                    </div>
-                                </section>
-                                <section class="control-group">
-                                    <label class="control-label">Icon</label>
-                                    <div class="controls">
-                                        <input type="file" id="input04" data-provide="fileinput">
-                                    </div>
-                                </section>
-@*
-                <section class="control-group">
-                    <label class="control-label" for="description">
-                        Description
-                    </label>
-                    <div class="controls">
-                        <textarea class="span12" id="description" ng-model="description"></textarea>
-                    </div>
-                </section>*@
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div id="page-actions">
+        <h1 class="pull-left">@T("Navigation Item Detail") <span>show navigation item detail information</span></h1>
+    </div>
 </section>
+
+<section id="main-content" style="margin-top: 47px">
+    <header id="page-title" class="clearfix">
+        <btn-actions>
+            <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
+        </btn-actions>
+    </header>
+
+    <div class="row-fluid">
+        <div class="span12">
+                    <div class="form-horizontal no-border">
+                        @using (Html.BeginFormAntiForgeryPost(Url.Action("CreateNavigationItem", new { perspectiveId = Model.PrespectiveId, navigationId = Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                                                  FormMethod.Post,
+                                                  new { @class = "form-horizontal form-fontstyle", @name = "myForm", @ng_submit = "save()" })) {
+                            <fieldset>
+                        <legend>General Information</legend>
+                            <section class="control-group">
+                                <label class="control-label">Title</label>
+                                <div class="controls">
+                                    @Html.TextBoxFor(m => m.Title, new { @readonly = "readonly", @class = "span12" })
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Entity</label>
+                                <div class="controls">
+                                    @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Color</label>
+                                <div class="controls">
+                                    <input id="color" type="text" class="minicolors">
+                                </div>
+                            </section>
+                            <section class="control-group">
+                                <label class="control-label">Icon</label>
+                                <div class="controls">
+                                    <input type="file" id="input04" data-provide="fileinput">
+                                </div>
+                            </section>
+                                </fieldset>
+                        }
+                    </div>
+        </div>
+    </div>
+</section>
+
 <script>
     $(document).ready(
         function () {
-            //$('.page-actions').affix({ offset: { top: 71 } });
-            $("#main-content").css("margin-top", $("#page-actions").outerHeight(true));
-            $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
+            $('.page-actions').affix({ offset: { top: 71 } });
         }
     );
 </script>
