@@ -5,12 +5,20 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
         'FieldsCtrl',
         ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$dialog', 'entityDataService', 'fieldDataService',
             function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, entityDataService, fieldDataService) {
+                var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
+            '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
+            '<ul class="row-actions pull-right hide">' +
+            '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+            '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+            '</ul>' +
+            '</div>';
 
                 var entityName = $stateParams.Id;
                 var fieldColumnDefs = [
-                    { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-hide="row.getProperty(\'IsSystemField\')" ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
-                    { field: 'DisplayName', displayName: 'Field Label' },
-                    { field: 'Name', displayName: 'Field Name' },
+                    {
+                        field: 'DisplayName', displayName: 'Field Label'
+                    },
+                    { field: 'Name', displayName: 'Field Name', cellTemplate: cellTemplateString },
                     { field: 'Type', displayName: 'Type' },
                     { field: 'FieldType', displayName: 'Field Type' },
                     { field: 'ControlField', displayName: 'Control Field' }
@@ -42,12 +50,12 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 });
 
                 $scope.$on('toStep1', function () {
-                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });                 
+                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
                 });
 
                 $scope.dialog = null;
 
-                $scope.$watch('dialog._open', function(newValue, oldValue) {
+                $scope.$watch('dialog._open', function (newValue, oldValue) {
                     if (newValue == false && oldValue == true &&
                         ($detour.current.name == 'EntityDetail.Fields.Create' ||
                             $detour.current.name == 'EntityDetail.Fields.CreateEditInfo')) {

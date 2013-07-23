@@ -4,7 +4,13 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
       'PerspectiveListCtrl',
       ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'perspectiveDataService',
       function ($rootScope, $scope, logger, $detour, $resource, $stateParams, perspectiveDataService) {
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()"><a href ="#/Perspectives/{{row.entity.Id}}" class="ngCellText">{{row.entity.DisplayName}}</a></div>';
+          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
+          '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
+          '<ul class="row-actions pull-right hide">' +
+          '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+          '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+          '</ul>' +
+          '</div>';
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
           var t = function (str) {
@@ -13,7 +19,6 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           };
           
           var perspectiveColumnDefs = [
-              { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
               { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString }];
 
           $scope.gridOptions = {
