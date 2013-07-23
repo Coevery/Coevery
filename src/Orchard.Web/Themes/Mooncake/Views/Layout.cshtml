@@ -12,22 +12,8 @@
 
     SetMeta("X-UA-Compatible", "IE=edge,chrome=1");
     Style.Include("http://fonts.googleapis.com/css?family=Lobster&subset=latin");
-    WorkContext.Layout.Header.Add(Display.SameCss());
-    WorkContext.Layout.Header.Add(Display.DiffericeCss());
-    
-    Script.Require("require");
-    Script.Require("jQuery");
-    Script.Require("jQueryUI");
-    Script.Require("jQueryMousewheel");
-
-    Script.Include("js/libs/bootstrap.js");
-    Script.Include("js/perfect-scrollbar.js");
-    Script.Include("js/template.js");
-    Script.Include("js/setup.js");
-    Script.Include("js/dropdown.js");
-    Script.Include("js/demo/picklist.js");
-    Script.Require("jQueryValidate");
-
+    WorkContext.Layout.Header.Add(Display.BaseResource());
+    WorkContext.Layout.Header.Add(Display.DifferentResource());
     /* Some useful shortcuts or settings
     ***************************************************************/
 
