@@ -168,7 +168,7 @@
 
             $.validator.addMethod("phonenumber", function (value) {
                 if (value) {
-                    return (/(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/.test(value));
+                    return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));
                 }
                 return true;
             }, "Please enter a valid phone.");
