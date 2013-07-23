@@ -6,14 +6,22 @@
         Default Value
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12", id = "datetimeDefault" })
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 date", id = "datetimeDefault" })
         <script>
             $(document).ready(function () {
                 var defaultDatetime = $("#datetimeDefault");
                 if (defaultDatetime.length != 0) {
                     defaultDatetime.datetimepicker({ ampm: true });
-                    //var nonDisplayed = /\d+( [am|pm])/i;
-                    //defaultDatetime.val(defaultDatetime.val().replace(nonDisplayed, "$1"));
+
+                    var tempDate = new Date(defaultDatetime.val());
+                    var nonDisplayed = /:\d+$/i;
+                    var strFor12H;
+                    if (tempDate.getHours() < 12) {
+                        strFor12H = " pm";
+                    } else {
+                        strFor12H = " am";
+                    }
+                    defaultDatetime.val(defaultDatetime.val().replace(nonDisplayed, strFor12H));
                 }
             });
         </script>

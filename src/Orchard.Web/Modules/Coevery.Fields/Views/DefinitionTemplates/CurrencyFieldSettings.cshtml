@@ -2,28 +2,40 @@
 @using Coevery.Fields.Settings;
 
 <section class="control-group">
-    <label class="control-label" for="currencyLength">
+    <label class="control-label">
         Length
     </label>
     <div class="controls">
-        @Html.TextBoxFor(l => l.Length,new { @class = "span12" ,id = "currencyLength"})
+        @Html.TextBoxFor(l => l.Length,new { @class = "span12 digits" ,id = "currencyLength",name = "currencyLength"})
     </div>
 </section>
 
 <section class="control-group">
-    <label class="control-label" for="currencyDot">
+    <label class="control-label">
         Decimal Places
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DecimalPlaces,new { @class = "span12" ,id = "currencyLength"})
+        @Html.TextBoxFor(d => d.DecimalPlaces,new { @class = "span12 digits" ,id = "currencyLength",name="currencyLength"})
     </div>
 </section>  
 
 <section class="control-group">
-    <label class="control-label" for="currencyDefault">
+    <label class="control-label">
         Default Value
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12" ,id = "currencyDefault"})
+        @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12 number", maxLength=0 ,id = "currencyDefault",name = "currencyDefault"})
     </div>
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        var maxLengthForC = 0;
+        $("#currencyLength").keyup(function () {
+            var value = this.val();
+            if (Math.floor(value) == value && $.isNumeric(value)) {
+                
+            }
+        });
+    });
+</script>

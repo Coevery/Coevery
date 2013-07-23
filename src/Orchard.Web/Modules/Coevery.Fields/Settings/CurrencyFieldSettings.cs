@@ -1,7 +1,7 @@
 ﻿namespace Coevery.Fields.Settings {
     public class CurrencyFieldSettings : FieldSettings {
-        public uint Length { get; set; }
-        public uint DecimalPlaces { get; set; }
+        public int Length { get; set; }
+        public int DecimalPlaces { get; set; }
         public decimal DefaultValue { get; set; }
 
         public CurrencyFieldSettings()

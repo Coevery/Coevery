@@ -52,12 +52,12 @@ define(['core/app/detourService'], function (detour) {
                         data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
                         success: function (result) {
                             logger.success('success');
+                            $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                         },
                         error: function () {
                             logger.error('Failed');
                         }
-                    });
-                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    });                    
                 };
 
                 $scope.$on('$destroy', function () {
