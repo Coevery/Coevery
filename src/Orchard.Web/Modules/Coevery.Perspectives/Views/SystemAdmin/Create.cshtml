@@ -6,7 +6,7 @@
     </div>
 </section>
 
-<section id="main-content" style="margin-top:47px">
+<section id="main-content" style="margin-top: 47px">
     <header id="page-title" class="clearfix">
         <btn-actions>
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
@@ -19,13 +19,16 @@
             <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                               FormMethod.Post,
-                                                              new { @class = "form-horizontal", @name = "myForm" })) {
-                    <section class="control-group">
-                        <label class="control-label">Title</label>
-                        <div class="controls">
-                            @Html.TextBoxFor(m => m.Title, new { @class = "span12" })
-                        </div>
-                    </section>
+                                                              new { @class = "form-horizontal form-fontstyle", @name = "myForm" })) {
+                    <fieldset>
+                        <legend>General Information</legend>
+                        <section class="control-group">
+                            <label class="control-label">Title</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Title, new { @class = "span12" })
+                            </div>
+                        </section>
+                    </fieldset>
                 }
             </div>
         </div>
