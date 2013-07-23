@@ -79,13 +79,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\js\setup.js" />
-    <Content Include="Scripts\js\template.js" />
-    <Content Include="Scripts\uniform\jquery.uniform.js" />
-    <Content Include="Scripts\uniform\jquery.uniform.min.js" />
     <Content Include="Styles\customizer.css" />
     <Content Include="Styles\demo.css" />
     <Content Include="Styles\gallery.css" />
-    <Content Include="Styles\images\twisty_sprite.png" />
+    <Content Include="Styles\images\%402x\layout\content-bg-plain-gt1200.png" />
+    <Content Include="Styles\images\%402x\layout\content-bg-plain.png" />
+    <Content Include="Styles\images\%402x\layout\content-bg.png" />
+    <Content Include="Styles\images\%402x\layout\mail-stripes.png" />
+    <Content Include="Styles\images\content-bg-plain-gt1200.png" />
+    <Content Include="Styles\images\content-bg-plain.png" />
+    <Content Include="Styles\images\content-bg.png" />
+    <Content Include="Styles\images\white_tiles.png" />
     <Content Include="Styles\invoice.css" />
     <Content Include="Styles\invoice.print.css" />
     <Content Include="Styles\layout.css" />
@@ -93,10 +97,6 @@
     <Content Include="Styles\profile.css" />
     <Content Include="Styles\site.css" />
     <Content Include="Styles\statistic.css" />
-    <Content Include="Styles\uniform\css\uniform.default.css" />
-    <Content Include="Styles\uniform\images\bg-input-focus.png" />
-    <Content Include="Styles\uniform\images\bg-input.png" />
-    <Content Include="Styles\uniform\images\sprite.png" />
     <Content Include="Theme.png" />
     <Content Include="Theme.txt" />
     <Content Include="Web.config">
