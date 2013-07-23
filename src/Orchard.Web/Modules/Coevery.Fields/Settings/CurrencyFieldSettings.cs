@@ -8,6 +8,7 @@
         {
             Length = 18;
             DecimalPlaces = 0;
+            
         }
     }
 }

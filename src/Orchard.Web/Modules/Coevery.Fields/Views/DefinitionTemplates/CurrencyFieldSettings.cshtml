@@ -24,18 +24,31 @@
         Default Value
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12 number", maxLength=0 ,id = "currencyDefault",name = "currencyDefault"})
+        @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12 number", maxLength = 18,id = "currencyDefault",name = "currencyDefault"})
     </div>
 </section>
 
 <script type="text/javascript">
     $(function () {
-        var maxLengthForC = 0;
+        var intLen = 0;
+        var decLen = 0;
         $("#currencyLength").keyup(function () {
             var value = this.val();
-            if (Math.floor(value) == value && $.isNumeric(value)) {
-                
+            if ($.isNumeric(value) && Math.floor(value) == value) {
+                intLen = value;
+            } else {
+                intLen = 0;
             }
+            $("#currencyDefault").attr("maxLength", intLen+decLen);
+        });
+        $("#currencyLength").keyup(function () {
+            var value = this.val();
+            if ($.isNumeric(value) && Math.floor(value) == value) {
+                decLen = value;
+            } else {
+                decLen = 0;
+            }
+            $("#currencyDefault").attr("maxLength", intLen + decLen);
         });
     });
 </script>

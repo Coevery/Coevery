@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\js\customizer.js" />
     <Content Include="Scripts\js\demo\alerts.js" />
     <Content Include="Scripts\js\demo\boxes.js" />
@@ -591,6 +592,7 @@
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
     <Content Include="Scripts\uniform\jquery.uniform.js" />
     <Content Include="Scripts\uniform\jquery.uniform.min.js" />
+    <Content Include="Styles\bootstrap-datetimepicker.min.css" />
     <Content Include="Styles\bootstrap\bootstrap-responsive.css" />
     <Content Include="Styles\bootstrap\bootstrap-responsive.min.css" />
     <Content Include="Styles\bootstrap\bootstrap.css" />

@@ -1,26 +1,32 @@
 ﻿@model Coevery.Fields.Settings.DateFieldSettings
 @using Coevery.Fields.Settings;
 
-<section class="control-group">  
+<section class="control-group">
     <label class="control-label">
         Default Value
     </label>
-    <div class="controls">
-        @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12 dateForShort",id="dateDefault",name ="dateDefault"})
-        <script>
-            $(document).ready(function () {
-                $.validator.addMethod("dateForShort", function (value) {
-                    return /\d\d?\/\d\d?\/\d{4}/.test(value);
-                }, "Wrong date format,should be mm/dd/yyyy");
-                $.validator.classRuleSettings.dateForShort = { dateForShort: true };
-
-                var defaultDate = $("#dateDefault");
-                if (defaultDate.length != 0) {
-                    defaultDate.datepicker();
-                    var nonDisplayed = /(\d+) \d+:\d+:\d+/i;
-                    defaultDate.val(defaultDate.val().replace(nonDisplayed, "$1"));
-                }
-            });
-        </script>
+    <div class="controls input-append">
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 dateForShort", id = "dateDefault", name = "dateDefault" })
+        <span class="add-on">
+            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+        </span>
     </div>
+    <script>
+        $(document).ready(function () {
+            $.validator.addMethod("dateForShort", function (value) {
+                return /\d\d?\/\d\d?\/\d{4}/.test(value);
+            }, "Wrong date format,should be mm/dd/yyyy");
+            $.validator.classRuleSettings.dateForShort = { dateForShort: true };
+
+            var defaultDate = $("#dateDefault");
+            if (defaultDate.length != 0) {
+                defaultDate.attr("data-format", "MM/dd/yyyy");
+                defaultDate.parent().datetimepicker({
+                    pickTime: false
+                });
+                var nonDisplayed = /(\d+) \d+:\d+:\d+/i;
+                defaultDate.val(defaultDate.val().replace(nonDisplayed, "$1"));
+            }
+        });
+    </script>
 </section>
