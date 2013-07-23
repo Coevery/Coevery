@@ -43,7 +43,7 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, CurrencyField field, dynamic shapeHelper)
         {
-            // if the content item is new, assign the default value
+             //if the content item is new, assign the default value
             if(!part.HasDraft() && !part.HasPublished()) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<CurrencyFieldSettings>();
                 field.Value = settings.DefaultValue;
@@ -57,7 +57,8 @@ namespace Coevery.Fields.Drivers {
         {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<CurrencyFieldSettings>();
-                if (settings.Required && !field.Value.HasValue) {
+                if (settings.Required && !field.Value.HasValue)
+                {
                     updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
                 }
             }
@@ -76,7 +77,7 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(decimal), T("Value"), T("The decimal value of the field."));
+            context.Member(null, typeof(decimal?), T("Value"), T("The decimal value of the field."));
         }
     }
 }

@@ -182,9 +182,11 @@ namespace Coevery.Core.Controllers
             dynamic model = _contentManager.UpdateEditor(contentItem, this);
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError("CreateError", T("The creation didn't change model state.").ToString());
                 _transactionManager.Cancel();
                 // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-                return View((object)model);
+                //return View((object)model);
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
             conditionallyPublish(contentItem);

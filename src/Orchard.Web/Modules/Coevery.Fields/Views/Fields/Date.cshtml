@@ -2,9 +2,12 @@
 @using Orchard.Utility.Extensions;
 @{
     DateTime? value = (DateTime?)Model.ContentField.Value;
+    string valueToDisplay = null;
 
-    string valueToDisplay = value.Value.ToString();
-
+    if (value.HasValue)
+    {
+        valueToDisplay = value.ToString();
+    }
     if (!string.IsNullOrWhiteSpace(valueToDisplay))
     {
         string name = Model.ContentField.DisplayName;

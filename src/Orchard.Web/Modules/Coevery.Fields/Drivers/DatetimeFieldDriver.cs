@@ -38,6 +38,11 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, DatetimeField field, dynamic shapeHelper) {
+            if (!part.HasDraft() && !part.HasPublished())
+            {
+                var settings = field.PartFieldDefinition.Settings.GetModel<DatetimeFieldSettings>();
+                field.Value = settings.DefaultValue;
+            }
             return ContentShape("Fields_Datetime_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }

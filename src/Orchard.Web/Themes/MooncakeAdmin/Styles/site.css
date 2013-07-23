@@ -10,6 +10,7 @@
     content: "\f03a";
 }
 
+
 .icon-statistics:before {
     content: "\e0a2";
 }
@@ -32,6 +33,11 @@
 
 .icol-form-elements {
     background-position: -48px -240px;
+}
+
+.widget-content .sortable-list > ul > li:before
+{
+    content: none;
 }
 
 #navigation .widget:after,
