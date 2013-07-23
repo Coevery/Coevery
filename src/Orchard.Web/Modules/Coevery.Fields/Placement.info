@@ -11,6 +11,22 @@
   <Place Fields_Select_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Select="Content:after"/>
   
+  <!-- Email -->
+  <Place Fields_Email_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Email="Content:after"/>
+  
+  <!-- Number -->
+  <Place Fields_Number_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Number="Content:after"/>
+  
+  <!-- Phone -->
+  <Place Fields_Phone_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Phone="Content:after"/>
+  
+  <!-- Url -->
+  <Place Fields_Url_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Url="Content:after"/>
+  
   <!-- Numeric -->
   <Place Fields_Numeric_Edit="Content:2.9;Wrapper=Wrapper_Script"/>
   <Place Fields_Numeric="Content:after"/>
