@@ -105,6 +105,10 @@
     <Content Include="Scripts\js\libs\bootstrap.min.js" />
     <Content Include="Scripts\js\libs\excanvas.js" />
     <Content Include="Scripts\js\libs\excanvas.min.js" />
+    <Content Include="Scripts\js\libs\jquery-1.8.3.js" />
+    <Content Include="Scripts\js\libs\jquery-1.8.3.min.js" />
+    <Content Include="Scripts\js\libs\jquery.mousewheel.js" />
+    <Content Include="Scripts\js\libs\jquery.mousewheel.min.js" />
     <Content Include="Scripts\js\libs\jquery.placeholder.js" />
     <Content Include="Scripts\js\libs\jquery.placeholder.min.js" />
     <Content Include="Scripts\js\login.js" />
@@ -1988,6 +1992,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Parts.Common.Owner.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DifferentResource.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\BaseResource.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
