@@ -23,7 +23,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     backdrop: true,
                     backdropFade: true,
                     dialogFade: true,
-                    backdropClick: true,
+                    backdropClick: false,
                     keyboard: true,
                     template: test, // OR: templateUrl: 'path/to/view.html',
                 };

@@ -12,27 +12,10 @@
 
     SetMeta("X-UA-Compatible", "IE=edge,chrome=1");
     Style.Include("http://fonts.googleapis.com/css?family=Lobster&subset=latin");
-    Style.Include("bootstrap/bootstrap.min.css");
-    Style.Include("bootstrap/bootstrap-responsive.min.css");
-    Style.Require("jQueryUI_Orchard");
-    Style.Include("uniform/css/uniform.default.css");
-    Style.Include("perfect-scrollbar.css");
-    Style.Include("fonts/icomoon/style.css");
-    Style.Include("main-style.css");
-
-    Script.Require("require");
-    Script.Require("jQuery");
-    Script.Require("jQueryUI");
-    Script.Require("jQueryMousewheel");
-
-    Script.Include("js/libs/bootstrap.js");
-    Script.Include("js/perfect-scrollbar.js");
-    Script.Include("js/template.js");
-    Script.Include("js/setup.js");
-    Script.Include("js/dropdown.js");
-    Script.Include("js/demo/picklist.js");
-    Script.Require("jQueryValidate");
-
+    WorkContext.Layout.Header.Add(Display.BaseResource());
+    WorkContext.Layout.Header.Add(Display.DifferentResource());
+    Style.Include("bootstrap-datetimepicker.min.css");
+    Script.Include("js/bootstrap-datetimepicker.min.js");
     /* Some useful shortcuts or settings
     ***************************************************************/
 
@@ -40,7 +23,8 @@
 
     /* Layout classification based on filled zones
     ***************************************************************/
-
+   
+    
     //Add classes to the wrapper div to toggle aside widget zones on and off
     var asideClass = CalcuClassify(new[] { "AsideFirst", "AsideSecond" }, "aside-"); // for aside-1, aside-2 or aside-12 if any of the aside zones are filled
     if (HasText(asideClass)) {
@@ -61,7 +45,8 @@
 
     /* Inserting some ad hoc shapes
     ***************************************************************/
-
+    
+   
     WorkContext.Layout.Header.Add(New.Branding(), "5"); // Site name and link to the home page
     WorkContext.Layout.Footer.Add(New.BadgeOfHonor(), "5"); // Powered by Orchard
     WorkContext.Layout.Footer.Add(New.User(), "10"); // Login and dashboard links
