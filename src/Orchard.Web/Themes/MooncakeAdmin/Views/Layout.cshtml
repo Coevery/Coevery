@@ -13,14 +13,6 @@
 
     SetMeta("X-UA-Compatible", "IE=edge,chrome=1");
     Style.Include("http://fonts.googleapis.com/css?family=Lobster&subset=latin");
-    Style.Include("bootstrap/bootstrap.min.css");
-    Style.Include("bootstrap/bootstrap-responsive.min.css");
-    Style.Require("jQueryUI_Orchard");
-    Style.Include("uniform/css/uniform.default.css");
-    Style.Include("fonts/icomoon/style.css");
-    Style.Include("main-style.css");
-    Style.Include("site.css");
-    
     Script.Require("jQuery");
     Script.Require("jQueryValidate");
     Script.Include("jui/timepicker/jquery-ui-timepicker.min.js");
@@ -60,7 +52,8 @@
 
     /* Inserting some ad hoc shapes
     ***************************************************************/
-
+    WorkContext.Layout.Header.Add(Display.DiffericeCss());
+    WorkContext.Layout.Header.Add(Display.SameCss());
     WorkContext.Layout.Header.Add(New.Branding(), "5"); // Site name and link to the home page
     WorkContext.Layout.Footer.Add(New.BadgeOfHonor(), "5"); // Powered by Orchard
     WorkContext.Layout.Footer.Add(New.User(), "10"); // Login and dashboard links

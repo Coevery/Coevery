@@ -14,7 +14,6 @@
  
 /* Core Stylesheets
 ================================================== */
-@import url("layout.css");
 @import url("widget.css");
 @import url("form.css");
 @import url("table.css");

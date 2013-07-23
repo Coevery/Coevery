@@ -591,10 +591,6 @@
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
     <Content Include="Scripts\uniform\jquery.uniform.js" />
     <Content Include="Scripts\uniform\jquery.uniform.min.js" />
-    <Content Include="Styles\bootstrap\bootstrap-responsive.css" />
-    <Content Include="Styles\bootstrap\bootstrap-responsive.min.css" />
-    <Content Include="Styles\bootstrap\bootstrap.css" />
-    <Content Include="Styles\bootstrap\bootstrap.min.css" />
     <Content Include="Styles\button.css" />
     <Content Include="Styles\customizer.css" />
     <Content Include="Styles\demo.css" />
@@ -1968,7 +1964,6 @@
   <ItemGroup>
     <Content Include="Views\BadgeOfHonor.cshtml" />
     <Content Include="Views\Branding.cshtml" />
-    <Content Include="Views\Layout.cshtml" />
     <Content Include="Views\Menu.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -1992,6 +1987,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\MenuItem.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Layout.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DiffericeCss.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
