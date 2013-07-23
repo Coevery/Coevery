@@ -19,6 +19,7 @@
             <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
             <button class="btn btn-small btn-primary" data-ng-click="saveAndBack()">Save & Back</button>
         </btn-actions>
+        <div class="min-height"></div>
     </header>
     <div class="row-fluid">
         <div class="span12">
@@ -31,7 +32,7 @@
                         <section class="control-group">
                             <label class="control-label" for="DisplayName">@T("Field Label")</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus" })
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus"})
                             </div>
                         </section>
                         <section class="control-group">
@@ -117,5 +118,20 @@
 <script>
     $(function () {
         $('.page-actions').affix({ offset: { top: 71 } });
+        $.validator.addMethod("phonenumber", function (value) {
+            if (value) {
+                return (/^(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/.test(value));
+            }
+            return true;
+        }, "Please enter a valid phone.");
+        $.validator.classRuleSettings.phonenumber = { phonenumber: true };
+        $("#field-info-form").validate({
+            ignore: "*:not('.toValidate *')",
+            onkeyup: function (element) {
+                if (element.type == "text") {
+                    this.form();
+                }
+            }
+        });
     });
 </script>

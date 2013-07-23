@@ -1054,7 +1054,7 @@
                 transclude: true,
                 controller: ['$scope', '$element', '$attrs', '$transclude', '$window', function ($scope, $element, $attrs, $transclude, $window) {
                     $scope.BtnActionLeft = function () {
-                        if ($element.hasClass('btn-fixed')) {
+                        if ($element.hasClass('btn-fixed') && $('#page-actions>h1').length > 0) {
                             var left = $('#page-actions>h1').offset().left;
                             var width = $('#page-actions>h1').width();
                             btnLeft = left + width + 20;

@@ -13,23 +13,9 @@
 
     SetMeta("X-UA-Compatible", "IE=edge,chrome=1");
     Style.Include("http://fonts.googleapis.com/css?family=Lobster&subset=latin");
-    Style.Include("bootstrap/bootstrap.min.css");
-    Style.Include("bootstrap/bootstrap-responsive.min.css");
-    Style.Require("jQueryUI_Orchard");
-    Style.Include("uniform/css/uniform.default.css");
-    Style.Include("fonts/icomoon/style.css");
-    Style.Include("main-style.css");
-    Style.Include("site.css");
+    WorkContext.Layout.Header.Add(Display.BaseResource());
+    WorkContext.Layout.Header.Add(Display.DifferentResource());
     Style.Include("bootstrap-datetimepicker.min.css");
-    
-    Script.Require("jQuery");
-    Script.Require("jQueryValidate");
-    Script.Include("js/bootstrap-datetimepicker.min.js");
-    Script.Include("js/libs/bootstrap.min.js");
-    Script.Include("uniform/jquery.uniform.js");
-    Script.Include("js/demo/picklist.js");
-    Script.Include("js/template.js");
-    Script.Include("js/setup.js");
     /* Some useful shortcuts or settings
     ***************************************************************/
 
@@ -61,7 +47,6 @@
 
     /* Inserting some ad hoc shapes
     ***************************************************************/
-
     WorkContext.Layout.Header.Add(New.Branding(), "5"); // Site name and link to the home page
     WorkContext.Layout.Footer.Add(New.BadgeOfHonor(), "5"); // Powered by Orchard
     WorkContext.Layout.Footer.Add(New.User(), "10"); // Login and dashboard links
@@ -82,7 +67,7 @@
                 <div class="brand-wrap pull-left">
                     <div class="brand-img">
                         <a class="brand" href="@Href("~/")" style="font-size: 30px;">
-                            <img src="@Href("~/Themes/MooncakeAdmin/Styles/coevery/images/coevery.png")" alt="" >
+                            <img src="@Href("~/Themes/Mooncake/Styles/coevery/images/coevery.png")" alt="" >
                             Coevery
                         </a>
                     </div>
@@ -113,7 +98,7 @@
                                         <li>
                                             <a href="#">
                                                 <span class="thumbnail">
-                                                    <img src="@Href("~/Themes/MooncakeAdmin/Styles/images/pp.jpg")" alt=""></span>
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt=""></span>
                                                 <span class="details">
                                                     <strong>John Doe</strong> commented on your photo
                                                             <span class="time">13 minutes ago</span>
@@ -123,7 +108,7 @@
                                         <li>
                                             <a href="#">
                                                 <span class="thumbnail">
-                                                    <img src="@Href("~/Themes/MooncakeAdmin/Styles/images/pp.jpg")" alt=""></span>
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt=""></span>
                                                 <span class="details">
                                                     <strong>Jane Roe</strong> commented on your photo
                                                             <span class="time">27 minutes ago</span>
@@ -133,7 +118,7 @@
                                         <li>
                                             <a href="#">
                                                 <span class="thumbnail">
-                                                    <img src="@Href("~/Themes/MooncakeAdmin/Styles/images/pp.jpg")" alt=""></span>
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/pp.jpg")" alt=""></span>
                                                 <span class="details">
                                                     <strong>Billy John</strong> commented on your photo
                                                             <span class="time">43 minutes ago</span>

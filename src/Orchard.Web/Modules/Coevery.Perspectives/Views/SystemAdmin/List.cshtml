@@ -10,6 +10,8 @@
                 <button type="button" class="btn btn-small btn-success" data-ng-click="addPerspective()"><i class="icon-plus"></i>&nbsp;@T("Add")</button>
                 <button type="button" class="btn btn-small " data-ng-click="getAllPerspective()"><i class="icon-refresh"></i>&nbsp;@T("Refresh")</button>
             </btn-actions>
+            <div class="min-height">
+            </div>
         </header>
         <div class="row-fluid">
             <section class="gridStyle" data-ng-grid="gridOptions"></section>
@@ -19,37 +21,6 @@
 <script>
     $(function () {
         $("#main-content").css("margin-top", $("#page-actions").outerHeight(true));
-
-        var tempWidth = $("#main-content").width();
-        var tempWindow = $(window).innerWidth();
-        if (tempWindow > 979) {
-            tempWidth -= 100;
-        } else if (tempWindow > 498) {
-            tempWidth -= 60;
-        }
-        else if (tempWindow > 480) {
-            tempWidth -= 0;
-        }
-        else {
-            tempWidth -= 45;
-        }
-        $("#page-actions").width(tempWidth);
         $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
-        $(window).resize(function () {
-            tempWidth = $("#main-content .ngGrid.gridStyle").width();
-            tempWindow = $(window).innerWidth();
-            if (tempWindow > 979) {
-                tempWidth -= 80;
-            } else if (tempWindow > 498) {
-                tempWidth -= 40;
-            }
-            else if (tempWindow > 480) {
-                tempWidth -= 0;
-            }
-            else {
-                tempWidth -= 30;
-            }
-            $("#page-actions").width(tempWidth);
-        });
     });
 </script>
