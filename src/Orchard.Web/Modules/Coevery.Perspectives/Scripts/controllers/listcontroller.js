@@ -9,7 +9,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           '<li class="icon-edit" ng-click="edit(row.entity.Id)" title="Edit"></li>' +
           '<li class="icon-remove" ng-click="delete(row.entity.Id)" title="Delete"></li>' +
           '</ul>' +
-          '<span class="btn-link" ng-click="edit(row.entity.Id)">{{COL_FIELD}}</span>' +
+          '<span class="btn-link" ng-click="view(row.entity.Id)">{{COL_FIELD}}</span>' +
           '</div>';
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
@@ -48,7 +48,10 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           $scope.edit = function (id) {
               $detour.transitionTo('PerspectiveEdit', { Id: id });
           };
-
+          
+          $scope.view = function (id) {
+              $detour.transitionTo('PerspectiveDetail', { Id: id });
+          };
 
           $scope.getAllPerspective = function () {
               var perspectives = perspectiveDataService.query(function () {
