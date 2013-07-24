@@ -133,10 +133,16 @@
     margin: 0 0 20px;
 }
 
-    .form-fontstyle fieldset legend+.control-group{
-        margin-top: 0;
-    }
+.form-fontstyle fieldset legend+.control-group{
+    margin-top: 0;
+}
 
+.form-fontstyle .row-fluid .widget-content {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    padding: 25px;
+    position: relative;
+}
 
 
 /*--------------------------------------------------------------------------*/
@@ -247,4 +253,48 @@ form .control-group.error span.help-block {
 /*admin icons margin*/
 ul.row-actions li {
     margin-right: 4px;
+}
+
+/*admin list designer detail*/
+
+span.fieldtoadd {
+    line-height: 14px;
+}
+span.fieldtoadd button {
+    line-height: 14px;
+}
+.viewfields-widget {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.form-fontstyle .row-fluid .viewfields-widget {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    padding: 25px;
+    position: relative;
+}
+
+.viewfields-widget #sortable li {
+    background: url("images/cache.gif") no-repeat 5px;  
+    padding-left: 18px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 1px solid #ccc;
+    cursor: move;
+    zoom: 1;
+    margin-top: 5px;
+}
+
+.viewfields-widget #sortable li:before {
+    content: none;
+}
+/* sorted by span*/
+.sortedbyspan {
+    margin: 20px 0;
+}
+
+.sortedbyspan .control-label {
+    text-align: left; 
+    width: 100px;
 }
