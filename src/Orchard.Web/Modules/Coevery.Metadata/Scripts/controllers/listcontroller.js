@@ -12,10 +12,10 @@ function MetadataCtrl($scope, logger, $state, localize, $resource) {
     $scope.gridOptions = {
         data: 'myData',
         //enableCellSelection: true,
-        //enableRowSelection: false,
         //showSelectionCheckbox: true,
         selectedItems: $scope.mySelections,
         multiSelect: false,
+        enableRowSelection: false,
         showColumnMenu: true,
         enableColumnResize: true,
         enableColumnReordering: true,

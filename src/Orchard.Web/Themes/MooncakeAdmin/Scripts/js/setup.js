@@ -64,7 +64,7 @@
 		});
 
 		// Task List Status
-		var toggleTaskListCheckbox = function(cb, checked) { $(cb).closest('li').toggleClass( 'done', checked ); }
+	    var toggleTaskListCheckbox = function(cb, checked) { $(cb).closest('li').toggleClass('done', checked); };
 		$( '.task-list' ).each(function(i, tl) {
 			$( '.checkbox', $(tl) ).each(function() {
 				var cb = $( ':checkbox', $(this) ), 
@@ -77,7 +77,7 @@
 		});
 
 		// Bootstrap Dropdown Workaround for touch devices
-		$(document).on('touchstart.dropdown.data-api', '.dropdown-menu', function (e) { e.stopPropagation() });
+		$(document).on('touchstart.dropdown.data-api', '.dropdown-menu', function (e) { e.stopPropagation(); });
 				
 		// Extend jQuery Validate Defaults.
 		// You mav remove this if you use an another validation library

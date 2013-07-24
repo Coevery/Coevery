@@ -38,7 +38,11 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.gridOptions = {
                     data: 'myData',
-                    columnDefs: fieldColumnDefs
+                    multiSelect: false,
+                    enableRowSelection: false,
+                    showSelectionCheckbox: false,
+                    selectedItems: $scope.selectedItems,
+                    columnDefs: fieldColumnDefs,
                 };
 
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);

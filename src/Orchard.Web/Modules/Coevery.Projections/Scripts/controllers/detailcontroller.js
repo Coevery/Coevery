@@ -12,6 +12,8 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 $scope.gridOptions = {
                     data: 'myData',
                     selectedItems: $scope.mySelections,
+                    multiSelect: false,
+                    enableRowSelection: false,
                     columnDefs: 'fieldCoumns'
                 };
                 
