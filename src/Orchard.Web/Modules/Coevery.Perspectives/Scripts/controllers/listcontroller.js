@@ -23,8 +23,11 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
 
           $scope.gridOptions = {
               data: 'myData',
+              multiSelect: true,
+              enableRowSelection: true,
+              showSelectionCheckbox: true,
               selectedItems: $scope.mySelections,
-              columnDefs: perspectiveColumnDefs
+              columnDefs: perspectiveColumnDefs,
           };
           
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);

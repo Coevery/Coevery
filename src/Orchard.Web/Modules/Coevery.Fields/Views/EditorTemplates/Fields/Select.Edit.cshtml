@@ -3,16 +3,24 @@
 @using Coevery.Fields.Settings;
 @{
     var settings = Model.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+    var required = settings.Required ? "required" : null;
 }
 
-<label class="span3 title" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="span9">
-    <div class="control span12">
-        <select class="span12" id="@Html.FieldIdFor(m => m.Value)" name="@Html.FieldNameFor(m => m.Value)" @if (settings.Required) {<text> required</text> }>
+<label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
+<div class="control controls">
+    @if (settings.DisplayOption == SelectionMode.DropDown)
+    {
+        <select class="span12" id="@Html.FieldIdFor(m => m.Value)" 
+                name="@Html.FieldNameFor(m => m.Value)" 
+
+            @if (settings.Required)
+            {
+                <text> required</text>
+            }>
             <option>Option1</option>
             <option>Option2</option>
             <option>Option3</option>
         </select>
-        @Html.ValidationMessageFor(m => m.Value)
-    </div>
+    }
+    @Html.ValidationMessageFor(m => m.Value)
 </div>

@@ -15,6 +15,7 @@ function PerspectiveListCtrl($rootScope, $scope, logger, $state, localize, $reso
         data: 'myData',
         selectedItems: $scope.mySelections,
         multiSelect: false,
+        enableRowSelection: false,
         showColumnMenu: true,
         enableColumnResize: true,
         enableColumnReordering: true,

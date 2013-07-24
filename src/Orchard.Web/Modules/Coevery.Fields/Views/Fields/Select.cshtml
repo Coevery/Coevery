@@ -1,0 +1,9 @@
+﻿@using Coevery.Fields.Settings;
+@using Orchard.Utility.Extensions;
+@{
+    var value = (int?)Model.ContentField.Value;
+    if (value.HasValue) {
+        string name = Model.ContentField.DisplayName;
+    <p class="text-field">@T(name): @value</p>
+    }
+}
