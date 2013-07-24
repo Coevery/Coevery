@@ -6,9 +6,16 @@ define(['core/app/detourService'], function (detour) {
         ['$rootScope', '$scope', 'logger', '$detour', '$stateParams',
             function ($rootScope, $scope, logger, $detour, $stateParams) {
 
+                var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
+           '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
+           '<ul class="row-actions pull-right hide">' +
+           '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+           '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+           '</ul>' +
+           '</div>';
+
                 var relationshipColumnDefs = [
-                    { field: 'Name', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a>Edit</a>&nbsp;<a>Delete</a></div>' },
-                    { field: 'Name', displayName: 'Relationship Name' },
+                    { field: 'Name', displayName: 'Relationship Name', cellTemplate: cellTemplateString },
                     { field: 'PrimaryEntity', displayName: 'Primary Entity' },
                     { field: 'RelatedEntity', displayName: 'Related Entity' },
                     { field: 'Type', displayName: 'Type' }

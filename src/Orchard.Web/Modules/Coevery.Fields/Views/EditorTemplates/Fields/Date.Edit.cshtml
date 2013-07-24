@@ -22,6 +22,15 @@
     @Html.ValidationMessageFor(m => m.Value)
 </div>
 <script type="text/javascript">
+    function convertShortDate(dateStr) {
+        if (dateStr) {
+            var tempDate = new Date(dateStr);
+            return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear();
+        } else {
+            return "";
+        }
+    }
+
     $(function () {
         $.validator.addMethod("dateForShort", function (value) {
             return /\d\d?\/\d\d?\/\d{4}/.test(value);
@@ -33,8 +42,7 @@
             defaultDate.parent().datetimepicker({
                 pickTime: false
             });
-            var nonDisplayed = /(\d+) \d+:\d+:\d+/i;
-            defaultDate.val(defaultDate.val().replace(nonDisplayed, "$1"));
+            defaultDate.val(convertShortDate(defaultDate.val()));
         }
     });
 </script>

@@ -6,7 +6,7 @@
         Length
     </label>
     <div class="controls">
-        @Html.TextBoxFor(l => l.Length,new { @class = "span12 digits" ,id = "currencyLength",name = "currencyLength"})
+        @Html.TextBoxFor(l => l.Length, new { @class = "span12 digits", id = "currencyLength", name = "currencyLength" })
     </div>
 </section>
 
@@ -15,40 +15,50 @@
         Decimal Places
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DecimalPlaces,new { @class = "span12 digits" ,id = "currencyLength",name="currencyLength"})
+        @Html.TextBoxFor(d => d.DecimalPlaces, new { @class = "span12 digits", id = "decimalPlace", name = "decimalPlace" })
     </div>
-</section>  
+</section>
 
 <section class="control-group">
     <label class="control-label">
         Default Value
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12 number", maxLength = 18,id = "currencyDefault",name = "currencyDefault"})
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12", id = "currencyDefault", name = "currencyDefault" })
     </div>
 </section>
 
 <script type="text/javascript">
     $(function () {
-        var intLen = 0;
-        var decLen = 0;
+        var intLen = $("#currencyLength").val();
+        var decLen = $("#decimalPlace").val();
+        $("#currencyDefault").attr("decimalFormat", [intLen, decLen]);
+        
         $("#currencyLength").keyup(function () {
-            var value = this.val();
-            if ($.isNumeric(value) && Math.floor(value) == value) {
-                intLen = value;
+            var tempValue = $("#currencyLength").val();
+            if ($.isNumeric(tempValue) && Math.floor(tempValue) == tempValue) {
+                intLen = tempValue;
             } else {
                 intLen = 0;
             }
-            $("#currencyDefault").attr("maxLength", intLen+decLen);
+            $("#currencyDefault").attr("decimalFormat", [intLen, decLen]);
         });
-        $("#currencyLength").keyup(function () {
-            var value = this.val();
-            if ($.isNumeric(value) && Math.floor(value) == value) {
-                decLen = value;
+        $("#decimalPlace").keyup(function () {
+            var tempValue = $("#decimalPlace").val();
+            if ($.isNumeric(tempValue) && Math.floor(tempValue) == tempValue) {
+                decLen = tempValue;
             } else {
                 decLen = 0;
             }
-            $("#currencyDefault").attr("maxLength", intLen + decLen);
+            $("#currencyDefault").attr("decimalFormat", [intLen, decLen]);
         });
+
+        $.validator.addMethod("decimalFormat", function (value, element, params) {
+            var paramArray = params.split(',');
+            var tempInt = parseInt(value);
+            return !isNaN(tempInt) && tempInt.toString().length <= paramArray[0] &&
+                RegExp("^(\\d{0," + paramArray[0] + "})(\.\\d{0," + paramArray[1] + "})?$").test(value);
+        }, "Wrong decimal format!");
+        $.validator.classRuleSettings.decimalFormat = { decimalFormat: true };
     });
 </script>

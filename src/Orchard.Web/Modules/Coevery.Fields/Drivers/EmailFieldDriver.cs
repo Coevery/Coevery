@@ -38,6 +38,11 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, EmailField field, dynamic shapeHelper) {
+            if (!part.HasDraft() && !part.HasPublished())
+            {
+                var settings = field.PartFieldDefinition.Settings.GetModel<EmailFieldSettings>();
+                field.Value = settings.DefaultValue;
+            }
             return ContentShape("Fields_Email_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }

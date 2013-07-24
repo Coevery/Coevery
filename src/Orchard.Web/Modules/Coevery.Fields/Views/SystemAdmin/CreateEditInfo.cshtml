@@ -173,7 +173,7 @@
             $.validator.classRuleSettings.phonenumber = { phonenumber: true};
             
             var validator = $("#field-info-form").validate({
-                ignore: "*:not('.toValidate *')",
+                //ignore: "*:not('.toValidate *')",
                 onkeyup: function (element) {
                     if (element.type == "text") {
                         this.form();

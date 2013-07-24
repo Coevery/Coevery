@@ -10,6 +10,7 @@
     content: "\f03a";
 }
 
+
 .icon-statistics:before {
     content: "\e0a2";
 }
@@ -32,6 +33,11 @@
 
 .icol-form-elements {
     background-position: -48px -240px;
+}
+
+.widget-content .sortable-list > ul > li:before
+{
+    content: none;
 }
 
 #navigation .widget:after,
@@ -227,15 +233,14 @@ form .control-group .control-label.required:before {
     line-height: 24px;
 }
 
-form .control-group .toValidate input.success,
-form .control-group input.labelForName.success,
+form .control-group.success input.success,
 form .control-group.success .control-label {
     border-color: rgb(204, 204, 204);
     color: rgb(68, 68, 68);
 }
 
-form .control-group.success .toValidate span.help-block,
-form .control-group.error .toValidate span.help-block {
+form .control-group.success span.help-block,
+form .control-group.error span.help-block {
     color: rgb(136, 136, 136);
 }
 
