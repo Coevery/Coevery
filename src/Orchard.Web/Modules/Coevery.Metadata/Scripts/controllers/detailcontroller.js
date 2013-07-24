@@ -21,6 +21,7 @@
         data: 'myData',
         //selectedItems: $scope.mySelections,
         multiSelect: false,
+        enableRowSelection: false,
         enableColumnReordering: true,
         columnDefs: fieldColumnDefs
     };

@@ -29,6 +29,7 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                     data: 'myData',
                     selectedItems: $scope.mySelections,
                     multiSelect: false,
+                    enableRowSelection: false,
                     enableColumnReordering: true,
                     columnDefs: fieldColumnDefs,
                     pagingOptions: $scope.pagingOptions

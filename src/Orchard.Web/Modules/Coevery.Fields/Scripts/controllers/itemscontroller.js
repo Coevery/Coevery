@@ -22,6 +22,7 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/optio
                 $scope.gridOptions = {
                     data: 'myData',
                     multiSelect: false,
+                    enableRowSelection: false,
                     columnDefs: optionColumnDefs,
                     pagingOptions: $scope.pagingOptions
                 };
