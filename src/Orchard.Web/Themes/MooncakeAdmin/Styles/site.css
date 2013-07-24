@@ -10,6 +10,7 @@
     content: "\f03a";
 }
 
+
 .icon-statistics:before {
     content: "\e0a2";
 }
@@ -32,6 +33,11 @@
 
 .icol-form-elements {
     background-position: -48px -240px;
+}
+
+.widget-content .sortable-list > ul > li:before
+{
+    content: none;
 }
 
 #navigation .widget:after,
@@ -95,9 +101,12 @@
 }
 
 #page-title .btn-toolbar {
-    margin: 17px 0;
+    margin: 15px 0;
 }
 
+#page-title div.min-height {
+    min-height: 56px;
+}
 /*#wrapper .sidebar-minimized #main #page-actions {
     left: 70px;
 }*/
@@ -111,9 +120,95 @@
     color: inherit;
     font-size: 14px;
     border-bottom: 1px solid #ebaf59;
-    margin:0px;
+    margin: 0 0 20px;
 }
 
+    .form-fontstyle fieldset legend+.control-group{
+        margin-top: 0;
+    }
+
+
+
+/*--------------------------------------------------------------------------*/
+/* View Mode*/
+/*--------------------------------------------------------------------------*/
+
+.view-mode header {
+    margin: 0;
+    border-bottom: 1px solid #ebaf59;
+}
+
+    .view-mode header h5 {
+        display: inline-block;
+    }
+
+    .view-mode header .show-button,
+    .view-mode header .hide-button {
+        margin-right: 4px;
+        background-repeat: no-repeat;
+        background-image: url('images/twisty_sprite.png');
+        height: 11px;
+        width: 11px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .view-mode header .show-button {
+        background-position: 0 -11px;
+    }
+
+.view-mode .data-row {
+    padding: 5px 20px;
+}
+
+    .view-mode .data-row + .data-row {
+        border-top: 1px solid #ececec;
+    }
+
+    .view-mode .data-row .control-label {
+        text-align: right;
+        width: 120px;
+        float: left;
+        padding-top: 5px;
+        color: #777;
+    }
+
+    .view-mode .data-row .controls {
+        margin-left: 140px;
+    }
+
+        .view-mode .data-row .controls .control-text {
+            padding-top: 5px;
+            display: block;
+        }
+
+.view-mode form {
+    margin: 0;
+}
+
+    .view-mode form > .data-section {
+        margin-top: 20px;
+    }
+
+        .view-mode form > .data-section:first-child {
+            margin-top: 0;
+        }
+
+/*Related List*/
+.related-list {
+    margin-top: 20px;
+    border-top: 2px solid #41b7d8;
+}
+
+    .related-list > header > h5 {
+        margin-right: 40px;
+        display: inline-block;
+    }
+
+    .related-list > header > .btn-toolbar {
+        display: inline-block;
+        font-size: 14px;
+    }
 /* ------------------------------------------------------------------------ */
 /* Form Style  */
 /* ------------------------------------------------------------------------ */
@@ -128,14 +223,13 @@ form .control-group .control-label.required:before {
     line-height: 24px;
 }
 
-form .control-group .toValidate input.success,
-form .control-group input.labelForName.success,
+form .control-group.success input.success,
 form .control-group.success .control-label {
     border-color: rgb(204, 204, 204);
     color: rgb(68, 68, 68);
 }
 
-form .control-group.success .toValidate span.help-block,
-form .control-group.error .toValidate span.help-block {
+form .control-group.success span.help-block,
+form .control-group.error span.help-block {
     color: rgb(136, 136, 136);
 }

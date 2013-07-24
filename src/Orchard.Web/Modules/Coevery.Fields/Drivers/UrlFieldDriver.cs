@@ -38,6 +38,12 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, UrlField field, dynamic shapeHelper) {
+            //if the content item is new, assign the default value
+            if (!part.HasDraft() && !part.HasPublished())
+            {
+                var settings = field.PartFieldDefinition.Settings.GetModel<UrlFieldSettings>();
+                field.Value = settings.DefaultValue;
+            }
             return ContentShape("Fields_Url_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }

@@ -14,9 +14,6 @@ define(['core/app/detourService'], function (detour) {
               if (!validator.form()) {
                   return false;
               }
-              if (!validator.element("#EntityName")) {
-                  return false;
-              }
               return true;
           };
 

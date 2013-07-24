@@ -50,18 +50,19 @@ define(['core/app/detourService'], function (detour) {
                         url: form.attr('action'),
                         type: form.attr('method'),
                         data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
-                        success: function (result) {
-                            logger.success('success');
+                        success: function (result) {                           
+                            logger.success('success');                           
+                            $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                            $scope.closeDialog();
                         },
                         error: function () {
                             logger.error('Failed');
                         }
-                    });
-                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    });                    
                 };
 
                 $scope.$on('$destroy', function () {
-                    if ($detour.current.name != 'EntityDetail.Fields.Create') {
+                    if ($detour.current.name != 'EntityDetail.Fields.Create' && $scope.$parent.dialog != null) {
                         $scope.closeDialog();
                     }
                 });

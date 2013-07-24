@@ -7,13 +7,41 @@
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls">
-    <input class="span12" type="text" 
-            id="@Html.FieldIdFor(m => m.Value)" 
-            name="@Html.FieldNameFor(m => m.Value)" 
-            value="@Model.Value" 
-            @if (required != null)
-            {<text> required data-msg-required="Please fill this field!"</text> } 
+<div class="control controls input-append">
+    <input class="span12 date" type="text" 
+           id="@Html.FieldIdFor(m => m.Value)" 
+           name="@Html.FieldNameFor(m => m.Value)" 
+           value="@Model.Value" 
+           data-format="MM/dd/yyyy HH:mm PP" 
+        @if (required != null)
+        {<text> required data-msg-required="Please fill this field!"</text> } 
         />
+    <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+    </span>
     @Html.ValidationMessageFor(m => m.Value)
 </div>
+
+<script type="text/javascript">
+    function convertDatetime(dateStr) {
+        if (dateStr) {
+            var tempDate = new Date(dateStr);
+            return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear() + ' ' +
+                tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + tempDate.getHours() < 12 ? " pm" : " am";
+        } else {
+            return "";
+        }
+    }
+
+    $(function () {
+        var defaultDatetime = $("#@Html.FieldIdFor(m => m.Value)");
+        if (defaultDatetime.length != 0) {
+            defaultDatetime.parent().datetimepicker({
+                pick12HourFormat: true,
+                pickSeconds: false,
+            });
+            
+            defaultDatetime.val(convertDatetime(defaultDatetime.val()));
+        }
+    });
+</script>

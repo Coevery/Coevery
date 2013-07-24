@@ -26,7 +26,7 @@ screen < 767px
 ================================================== */
 
 body {
-    background: url(images/layout/bg/white_tiles.png);
+    background: url(images/white_tiles.png);
     color: #444;
     padding: 0;
 }
@@ -459,7 +459,7 @@ body {
 
 #wrapper #content-inner {
     position: relative;
-    background-image: url(images/layout/content-bg-plain.png);
+    background-image: url(images/content-bg-plain.png);
     background-size: 251px 1px;
     background-position: -25px top;
     background-repeat: repeat-y;
@@ -593,7 +593,7 @@ body {
 }
 
 #wrapper #content.sidebar-minimized #content-inner {
-    background-image: url(images/layout/content-bg.png);
+    background-image: url(images/content-bg.png);
     background-size: 70px 1px;
 }
 
@@ -882,7 +882,7 @@ footer {
     bottom: 0;
     left: 0;
     right: 0;
-    background: url(images/layout/bg/white_tiles.png);
+    background: url(images/white_tiles.png);
     min-height: 40px;
     z-index: 700;
     font-size: 11px;
@@ -980,7 +980,7 @@ footer {
         }
 
         #wrapper #content.sidebar-minimized #content-inner {
-            background-image: url(images/layout/content-bg.png);
+            background-image: url(images/content-bg.png);
             background-position: left top;
             background-size: 70px 1px;
         }
@@ -988,7 +988,7 @@ footer {
 
         #wrapper #content-inner {
             border-top: 0;
-            background-image: url(images/layout/content-bg-plain-gt1200.png);
+            background-image: url(images/content-bg-plain-gt1200.png);
             background-position: left top;
             background-size: 286px 1px;
         }
@@ -1061,7 +1061,7 @@ footer {
     }
 
     #wrapper #content #content-inner {
-        background-image: url(images/layout/content-bg.png);
+        background-image: url(images/content-bg.png);
         background-size: 70px 1px;
     }
 

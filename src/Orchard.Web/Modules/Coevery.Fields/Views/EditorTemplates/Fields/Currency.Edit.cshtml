@@ -3,27 +3,31 @@
 @using Coevery.Fields.Settings;
 @{
     var settings = Model.PartFieldDefinition.Settings.GetModel<CurrencyFieldSettings>();
+    var required = settings.Required ? "required" : null;
+    var maxLength = settings.Length + settings.DecimalPlaces + 1;
 }
 
-<label class="span3 title" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="span9">
-    <div class="control span12">
-        <input type="@settings.Type.ToString().ToLower()" 
-            id="@Html.FieldIdFor(m => m.Value)" 
-            name="@Html.FieldNameFor(m => m.Value)"
-            @if(!String.IsNullOrWhiteSpace(settings.Title)) 
-            {
-                <text> title="@settings.Title"</text>
-            } 
-            value="@Model.Value"
-            @if(settings.Required) {<text> required="required"</text> }
-            @if(settings.AutoFocus) {<text> autofocus="autofocus"</text> }
-            @if(settings.AutoComplete) {<text> autocomplete="on"</text> }
-            @if(!string.IsNullOrWhiteSpace(settings.Placeholder)) {<text> placeholder="@settings.Placeholder"</text>}
-            @if(!string.IsNullOrEmpty(settings.Pattern)) {<text> pattern="@settings.Pattern"</text>}
-            @if(!string.IsNullOrEmpty(settings.EditorCssClass)) {<text> class="@settings.EditorCssClass span12"</text>} else {<text> class="textMedium span12"</text>} 
-            @if(settings.Length > 1) {<text> maxlength="@settings.Length.ToString()+@settings.DecimalPlaces.ToString()+1"</text>} 
+<label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
+<div class="control controls">
+    <input class="span12 number" type="text" 
+           id="@Html.FieldIdFor(m => m.Value)" 
+           name="@Html.FieldNameFor(m => m.Value)" 
+           value="@Model.Value"
+           decimalFormat = "@settings.Length,@settings.DecimalPlaces"
+        @if (required != null)
+        {<text> required data-msg-required="Please fill this field!"</text> }
         />
-        @Html.ValidationMessageFor(m => m.Value)
-    </div>
+    @Html.ValidationMessageFor(m => m.Value)
 </div>
+
+<script>
+    $(function() {
+        $.validator.addMethod("decimalFormat", function (value, element, params) {
+            var paramArray = params.split(',');
+            var tempInt = parseInt(value);
+            return !isNaN(tempInt) && tempInt.toString().length <= paramArray[0] &&
+                RegExp("^(\\d{0," + paramArray[0] + "})(\.\\d{0," + paramArray[1] + "})?$").test(value);
+        }, "Wrong decimal format!");
+        $.validator.classRuleSettings.decimalFormat = { decimalFormat: true };
+    });   
+</script>

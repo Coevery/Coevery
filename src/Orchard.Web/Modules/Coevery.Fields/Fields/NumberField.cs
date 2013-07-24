@@ -8,7 +8,7 @@ namespace Coevery.Fields.Fields
     {
         public double? Value
         {
-            get { return Storage.Get<double?>(); }
+            get { return Storage.Get<double?>(Name); }
 
             set { Storage.Set(value ?? 0); }
         }

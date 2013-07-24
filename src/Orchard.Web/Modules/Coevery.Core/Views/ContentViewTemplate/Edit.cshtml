@@ -37,6 +37,22 @@
 
 <script type="text/javascript">
     $(function () {
+        $.validator.addMethod("phonenumber", function (value) {
+            if (value) {
+                return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));
+            }
+            return true;
+        }, "Please enter a valid phone.");
+        $.validator.classRuleSettings.phonenumber = { phonenumber: true };
+        
+        $("form[name=myForm]").validate({
+            //ignore: "*:not('.toValidate *')",
+            onkeyup: function (element) {
+                if (element.type == "text") {
+                    this.form();
+                }
+            }
+        });
         $('.page-actions').affix({ offset: { top: 71 } });
     });
 </script>
