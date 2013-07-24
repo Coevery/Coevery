@@ -48,6 +48,20 @@
         
 
 
+        $.validator.addMethod("decimalplaces", function (value, em) {
+            if (value) {
+                var len = $(em).attr("decimalplaces");
+                var reg = new RegExp("^(-?\\d+)(\\.\\d{1," + len + "})?$");
+                return reg.test(value);
+            }
+            return true;
+        }, $.validator.format("Decimal places exceed {0}."));
+        $.validator.classRuleSettings.decimalplaces = {
+            decimalplaces: function (em) {
+                return $(em).attr("decimalplaces");
+            }
+        };
+
         $("form[name=myForm]").validate({
             ignore: "*:not('.toValidate *')",
             onkeyup: function (element) {

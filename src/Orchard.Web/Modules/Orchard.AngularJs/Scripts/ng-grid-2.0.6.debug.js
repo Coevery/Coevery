@@ -2725,7 +2725,7 @@ var ngStyleProvider = function($scope, grid) {
         return { "width": (grid.rootDim.outerWidth) + "px", "height": grid.config.headerRowHeight + "px" };
     };
     $scope.groupPanelStyle = function () {
-        return { "width": (grid.rootDim.outerWidth*1 + grid.config.rowBorderHeight) + "px", "height": "32px" };
+        return { "width": (grid.rootDim.outerWidth*1 + grid.config.rowBorderHeight) + "px", "height": "31px" };
     };
     $scope.viewportStyle = function() {
         return { "width": grid.rootDim.outerWidth + "px", "height": ($scope.viewportDimHeight()*1 + 1) + "px" };

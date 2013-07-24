@@ -125,7 +125,7 @@
             return true;
         }, "Please enter a valid phone.");
         $.validator.classRuleSettings.phonenumber = { phonenumber: true };
-        
+
         $("#field-info-form").validate({
             ignore: "*:not('.toValidate *')",
             onkeyup: function (element) {
