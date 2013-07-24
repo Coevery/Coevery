@@ -6,10 +6,10 @@
         Default Value
     </label>
     <div class="controls input-append">
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 date", id = "datetimeDefault", name="datetimeDefault" })
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 date", id = "datetimeDefault", name="datetimeDefault" })       
     </div>
     <script>
         function convertDatetime(dateStr) {
@@ -32,6 +32,18 @@
                 });
                 defaultDatetime.val(convertDatetime(defaultDatetime.val()));
             }
+        });
+        
+        $(".add-on").click(function () {
+            setTimeout(function () {
+                $(".bootstrap-datetimepicker-widget").offset(function (index, coords) {
+                    var result = { top: 0, left: 0 };
+                    result.left = coords.left;
+                    result.top = $(".input-append").offset().top -
+                            $(".bootstrap-datetimepicker-widget").outerHeight(true) - 4;
+                    return result;
+                });
+            }, 0);
         });
     </script>
 </section>
