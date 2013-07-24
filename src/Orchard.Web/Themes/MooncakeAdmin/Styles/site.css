@@ -239,7 +239,9 @@ form .control-group .control-label.required:before {
     line-height: 24px;
 }
 
+form .control-group.success,
 form .control-group.success input.success,
+form .control-group.success .input-append span.add-on,
 form .control-group.success .control-label {
     border-color: rgb(204, 204, 204);
     color: rgb(68, 68, 68);
@@ -248,6 +250,10 @@ form .control-group.success .control-label {
 form .control-group.success span.help-block,
 form .control-group.error span.help-block {
     color: rgb(136, 136, 136);
+}
+
+form .control-group .input-append {
+    margin-left: 20px;  
 }
 
 /*admin icons margin*/
