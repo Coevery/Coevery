@@ -6,20 +6,20 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
         ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$dialog', 'entityDataService', 'fieldDataService',
             function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, entityDataService, fieldDataService) {
                 var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-            '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
             '<ul class="row-actions pull-right hide">' +
             '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
-            '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+            '<li class="icon-remove" ng-click="delete(row.entity.Name)" ng-hide="row.entity.IsSystemField"  title="Delete"></li>' +
             '</ul>' +
+            '<span class="btn-link" ng-click="edit(row.entity.Name)">{{COL_FIELD}}</span>' +
             '</div>';
 
                 var entityName = $stateParams.Id;
                 var fieldColumnDefs = [
                     {
-                        field: 'DisplayName', displayName: 'Field Label'
+                        field: 'DisplayName', displayName: 'Field Label', cellTemplate: cellTemplateString
                     },
-                    { field: 'Name', displayName: 'Field Name', cellTemplate: cellTemplateString },
-                    { field: 'Type', displayName: 'Type' },
+                    { field: 'Name', displayName: 'Field Name'},
+                    { field: 'Type', displayName: 'Type'},
                     { field: 'FieldType', displayName: 'Field Type' },
                     { field: 'ControlField', displayName: 'Control Field' }
                 ];
