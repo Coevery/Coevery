@@ -107,6 +107,16 @@
 #page-title div.min-height {
     min-height: 56px;
 }
+
+/*Edit Mode*/
+.edit-mode
+{
+}
+
+.edit-mode legend {
+    border-bottom: 1px solid #ebaf59;
+}
+
 /*#wrapper .sidebar-minimized #main #page-actions {
     left: 70px;
 }*/
@@ -238,4 +248,9 @@ form .control-group.error span.help-block {
 
 form .control-group .input-append {
     margin-left: 20px;  
+}
+
+/*admin icons margin*/
+ul.row-actions li {
+    margin-right: 4px;
 }

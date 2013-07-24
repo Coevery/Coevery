@@ -6,11 +6,11 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
       ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', 'generationService',
       function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService, generationService) {
           var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-              '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
               '<ul class="row-actions pull-right hide">' +
               '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
               '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
               '</ul>' +
+              '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
               '</div>';
           $scope.selectedItems = [];
 
