@@ -23,6 +23,16 @@
 </div>
 
 <script type="text/javascript">
+    function convertDatetime(dateStr) {
+        if (dateStr) {
+            var tempDate = new Date(dateStr);
+            return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear() + ' ' +
+                tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + tempDate.getHours() < 12 ? " pm" : " am";
+        } else {
+            return "";
+        }
+    }
+
     $(function () {
         var defaultDatetime = $("#@Html.FieldIdFor(m => m.Value)");
         if (defaultDatetime.length != 0) {
@@ -30,16 +40,8 @@
                 pick12HourFormat: true,
                 pickSeconds: false,
             });
-
-            var tempDate = new Date(defaultDatetime.val());
-            var nonDisplayed = /:\d+$/i;
-            var strFor12H;
-            if (tempDate.getHours() < 12) {
-                strFor12H = " pm";
-            } else {
-                strFor12H = " am";
-            }
-            defaultDatetime.val(defaultDatetime.val().replace(nonDisplayed, strFor12H));
+            
+            defaultDatetime.val(convertDatetime(defaultDatetime.val()));
         }
     });
 </script>

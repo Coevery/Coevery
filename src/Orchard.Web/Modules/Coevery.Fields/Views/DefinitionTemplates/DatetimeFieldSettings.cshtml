@@ -6,12 +6,22 @@
         Default Value
     </label>
     <div class="controls input-append">
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 date", id = "datetimeDefault", data-format="MM/dd/yyyy HH:mm PP" })
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 date", id = "datetimeDefault", name="datetimeDefault" })
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
     </div>
     <script>
+        function convertDatetime(dateStr) {
+            if (dateStr) {
+                var tempDate = new Date(dateStr);
+                return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear() + ' ' +
+                    tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + tempDate.getHours() < 12 ? " pm" : " am";
+            } else {
+                return "";
+            }
+        }
+
         $(document).ready(function () {
             var defaultDatetime = $("#datetimeDefault");
             if (defaultDatetime.length != 0) {
@@ -20,16 +30,7 @@
                     pick12HourFormat: true,
                     pickSeconds: false,
                 });
-
-                var tempDate = new Date(defaultDatetime.val());
-                var nonDisplayed = /:\d+$/i;
-                var strFor12H;
-                if (tempDate.getHours() < 12) {
-                    strFor12H = " pm";
-                } else {
-                    strFor12H = " am";
-                }
-                defaultDatetime.val(defaultDatetime.val().replace(nonDisplayed, strFor12H));
+                defaultDatetime.val(convertDatetime(defaultDatetime.val()));
             }
         });
     </script>

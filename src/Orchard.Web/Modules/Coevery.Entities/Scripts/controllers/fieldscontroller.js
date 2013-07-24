@@ -43,7 +43,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.$on('toStep1', function () {
                     $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });                 
-                });
+                });   
 
                 $scope.dialog = null;
 

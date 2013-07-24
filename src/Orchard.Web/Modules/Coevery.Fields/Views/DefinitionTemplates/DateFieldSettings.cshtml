@@ -12,10 +12,19 @@
         </span>
     </div>
     <script>
+        function convertShortDate(dateStr) {
+            if (dateStr) {
+                var tempDate = new Date(dateStr);
+                return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear();
+            } else {
+                return "";
+            }
+        }
+
         $(document).ready(function () {
             $.validator.addMethod("dateForShort", function (value) {
-                return /\d\d?\/\d\d?\/\d{4}/.test(value);
-            }, "Wrong date format,should be mm/dd/yyyy");
+                return /\d\d?\/\d\d?\/\d+/.test(value);
+            }, "Wrong date format,should be MM/dd/yyyy");
             $.validator.classRuleSettings.dateForShort = { dateForShort: true };
 
             var defaultDate = $("#dateDefault");
@@ -24,8 +33,7 @@
                 defaultDate.parent().datetimepicker({
                     pickTime: false
                 });
-                var nonDisplayed = /(\d+) \d+:\d+:\d+/i;
-                defaultDate.val(defaultDate.val().replace(nonDisplayed, "$1"));
+                defaultDate.val(convertShortDate(defaultDate.val()));
             }
         });
     </script>

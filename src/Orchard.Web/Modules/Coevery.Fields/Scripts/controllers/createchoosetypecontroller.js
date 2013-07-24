@@ -18,7 +18,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.$on('$destroy', function () {
-                    if ($detour.current.name != 'EntityDetail.Fields.CreateEditInfo') {
+                    if ($detour.current.name != 'EntityDetail.Fields.CreateEditInfo' && $scope.$parent.dialog != null) {
                         $scope.closeDialog();
                     }
                 });
