@@ -9,6 +9,14 @@ define(['core/app/detourService',
           'perspectiveDataService',
           'navigationDataService',
       function ($rootScope, $timeout, $scope, logger, $detour, $stateParams, $resource, perspectiveDataService, navigationDataService) {
+
+          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
+          '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
+          '<ul class="row-actions pull-right hide">' +
+          '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+          '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+          '</ul>' +
+          '</div>';
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
           var perpectiveId = $stateParams.Id;
@@ -34,8 +42,7 @@ define(['core/app/detourService',
           };
           
           var navigationColumnDefs = [
-              { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.getProperty(col.field))">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Remove</a></div>' },
-              { field: 'DisplayName', displayName: t('DisplayName') }];
+              { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString }];
 
           $scope.gridOptions = {
               data: 'myData',
