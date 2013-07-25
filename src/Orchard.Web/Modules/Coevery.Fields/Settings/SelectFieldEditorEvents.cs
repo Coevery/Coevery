@@ -20,6 +20,11 @@ namespace Coevery.Fields.Settings
         private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
         private readonly Localizer _t;
 
+        public SelectFieldListModeEvents()
+        {
+            _t = NullLocalizer.Instance;
+        }
+
         public SelectFieldListModeEvents(
             IRepository<OptionItemRecord> optionItemRepository,
             IRepository<ContentPartDefinitionRecord> partDefinitionRepository)

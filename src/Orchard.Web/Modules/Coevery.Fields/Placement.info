@@ -26,36 +26,36 @@
   <!-- Url -->
   <Place Fields_Url_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Url="Content:after"/>
+
+  <!-- Date -->
+  <Place Fields_Date_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Date="Content:after"/>
   
-  <!-- Numeric -->
+  <!-- Datetime -->
+  <Place Fields_Datetime_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Datetime="Content:after"/>
+  
+  <!-- Currency -->
+  <Place Fields_Currency_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Currency="Content:after"/>
+
+  <!-- Numeric --><!--
   <Place Fields_Numeric_Edit="Content:2.9;Wrapper=Wrapper_Script"/>
   <Place Fields_Numeric="Content:after"/>
 
-  <!-- Link -->
+  --><!-- Link --><!--
   <Place Fields_Link_Edit="Content:2.8;Wrapper=Wrapper_Script"/>
   <Place Fields_Link="Content:after"/>
 
-  <!-- Enumeration -->
+  --><!-- Enumeration --><!--
   <Place Fields_Enumeration_Edit="Content:2.7;Wrapper=Wrapper_Script"/>
-  <Place Fields_Enumeration="Content:after"/>
-
-  <!-- Date -->
-  <Place Fields_Date_Edit="Content:2.5;Wrapper=Wrapper_Script"/>
-  <Place Fields_Date="Content:after"/>
+  <Place Fields_Enumeration="Content:after"/>-->
   
-  <!-- DateTime -->
-  <Place Fields_DateTime_Edit="Content:2.5;Wrapper=Wrapper_Script"/>
-  <Place Fields_DateTime="Content:after"/>
-  
-  <!-- Currency -->
-  <Place Fields_Currency_Edit="Content:2.5;Wrapper=Wrapper_Script"/>
-  <Place Fields_Currency="Content:after"/>
-
-  <!-- MediaPicker -->
+  <!-- MediaPicker --><!--
   <Place Fields_MediaPicker_Edit="Content:2.3;Wrapper=Wrapper_Script"/>
   <Place Fields_MediaPicker="Content:after"/>
 
-  <!-- MediaGallery -->
+  --><!-- MediaGallery --><!--
   <Place Fields_MediaGallery_Edit="Content:2.3;Wrapper=Wrapper_Script"/>
   <Place Fields_MediaGallery="Content:after"/>
 
@@ -69,6 +69,6 @@
   <Match DisplayType="Summary">
     <Place Fields_MediaPicker="-"/>
     <Place Fields_MediaGallery="-"/>
-  </Match>
+  </Match>-->
 
 </Placement>

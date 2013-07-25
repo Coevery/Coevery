@@ -25,7 +25,7 @@
     function convertShortDate(dateStr) {
         if (dateStr) {
             var tempDate = new Date(dateStr);
-            return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear();
+            return (tempDate.getMonth() + 1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
         } else {
             return "";
         }
