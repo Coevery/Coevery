@@ -19,7 +19,7 @@ namespace Coevery.Fields.Drivers
             Services = services;
             T = NullLocalizer.Instance;
             DisplayName = "Select";
-            Description = "Allows users to select value or values from a list you define.";
+            Description = "Allows users to select a value or values from a list you define.";
         }
 
         public Localizer T { get; set; }
@@ -39,7 +39,7 @@ namespace Coevery.Fields.Drivers
             return ContentShape("Fields_Select", GetDifferentiator(field, part), () =>
             {
                 var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
-                return shapeHelper.Fields_Boolean().Settings(settings);
+                return shapeHelper.Fields_Select().Settings(settings);
             });
         }
 

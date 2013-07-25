@@ -15,7 +15,7 @@
         function convertShortDate(dateStr) {
             if (dateStr) {
                 var tempDate = new Date(dateStr);
-                return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear();
+                return (tempDate.getMonth()+1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
             } else {
                 return "";
             }
@@ -33,7 +33,8 @@
                 defaultDate.parent().datetimepicker({
                     pickTime: false
                 });
-                defaultDate.val(convertShortDate(defaultDate.val()));
+                
+                defaultDate.val(convertShortDate(defaultDate.val()));             
             }
 
             $(".add-on").click(function () {

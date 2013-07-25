@@ -15,7 +15,7 @@
         function convertDatetime(dateStr) {
             if (dateStr) {
                 var tempDate = new Date(dateStr);
-                return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear() + ' ' +
+                return (tempDate.getMonth()+1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear() + ' ' +
                     tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + tempDate.getHours() < 12 ? " pm" : " am";
             } else {
                 return "";
