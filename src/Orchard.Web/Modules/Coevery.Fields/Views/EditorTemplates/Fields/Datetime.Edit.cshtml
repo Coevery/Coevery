@@ -7,11 +7,11 @@
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls input-append">
+<div class="control controls input-prepend">
     <span class="add-on">
         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
     </span>
-    <input class="span12 date" type="text" 
+    <input class="date" type="text" 
            id="@Html.FieldIdFor(m => m.Value)" 
            name="@Html.FieldNameFor(m => m.Value)" 
            value="@Model.Value" 

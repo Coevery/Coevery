@@ -5,11 +5,11 @@
     <label class="control-label">
         Default Value
     </label>
-    <div class="controls input-append">
+    <div class="controls input-prepend">
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 dateForShort", id = "dateDefault", name = "dateDefault" })        
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "dateForShort", id = "dateDefault", name = "dateDefault" })        
     </div>
     <script>
         function convertShortDate(dateStr) {
