@@ -325,8 +325,8 @@ fieldset legend + .control-group {
     border: 1px solid #CFCFCF;
     border-bottom: none;
     border-top: 2px solid #a2c852;
-    background-color: #fff;
-    border-bottom-color: #fff;
+    background-color: #fafafa;
+    padding-top: 7px;
 }
 .nav-tabs >li >a{
     background-color: #fafafa;
@@ -356,6 +356,7 @@ fieldset legend + .control-group {
  .nav.nav-tabs > .active > a {
     border-top: 2px solid #a2c852;
     background-color: #fff;
+    padding-top: 8px;
 }
 .nav.nav-tabs + .tab-content {
     border: none;
@@ -369,8 +370,8 @@ ul.nav.nav-tabs {
 }
 .mytabs {
     border-bottom: 1px solid #DDDDDD;
-    margin-bottom: 30px;
-    margin-top: 0;
+    margin-bottom: 8px;
+    margin-top: 20px;
     position: relative;
 }
 
