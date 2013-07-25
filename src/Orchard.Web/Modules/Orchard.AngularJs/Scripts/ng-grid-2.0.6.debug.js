@@ -622,7 +622,7 @@ angular.module('ngGrid.services').factory('$utilityService', ['$parse', function
 
 var ngAggregate = function (aggEntity, rowFactory, rowHeight, groupInitState) {
     this.rowIndex = 0;
-    this.offsetTop = this.rowIndex * rowHeight;
+    this.offsetTop = this.rowIndex * (rowHeight + 1);
     this.entity = aggEntity;
     this.label = aggEntity.gLabel;
     this.field = aggEntity.gField;
@@ -1466,7 +1466,7 @@ var ngGrid = function ($scope, options, sortService, domUtilityService, $filter,
     self.calcMaxCanvasHeight = function() {
         return (self.config.groups.length > 0) ? (self.rowFactory.parsedData.filter(function(e) {
             return !e[NG_HIDDEN];
-        }).length * self.config.rowHeight) : (self.filteredRows.length * self.config.rowHeight);
+        }).length * (self.config.rowHeight + self.config.rowBorderHeight)) : (self.filteredRows.length * (self.config.rowHeight + self.config.rowBorderHeight));
     };
     self.elementDims = {
         scrollW: 0,
@@ -2728,7 +2728,7 @@ var ngStyleProvider = function($scope, grid) {
         return { "width": (grid.rootDim.outerWidth*1 + grid.config.rowBorderHeight) + "px", "height": "31px" };
     };
     $scope.viewportStyle = function() {
-        return { "width": grid.rootDim.outerWidth + "px", "height": ($scope.viewportDimHeight()*1 + 1) + "px" };
+        return { "width": grid.rootDim.outerWidth + "px", "height": $scope.viewportDimHeight() + "px" };
     };
     $scope.footerStyle = function() {
         return { "width": grid.rootDim.outerWidth + "px", "height": $scope.footerRowHeight + "px" };

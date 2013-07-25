@@ -88,6 +88,7 @@
     <Content Include="Styles\images\%402x\layout\content-bg-plain.png" />
     <Content Include="Styles\images\%402x\layout\content-bg.png" />
     <Content Include="Styles\images\%402x\layout\mail-stripes.png" />
+    <Content Include="Styles\images\cache.gif" />
     <Content Include="Styles\images\content-bg-plain-gt1200.png" />
     <Content Include="Styles\images\content-bg-plain.png" />
     <Content Include="Styles\images\content-bg.png" />
