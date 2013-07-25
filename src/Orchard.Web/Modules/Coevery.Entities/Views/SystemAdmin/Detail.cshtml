@@ -1,22 +1,36 @@
 ﻿@model Coevery.Entities.ViewModels.EditTypeViewModel
-<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+@*<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
     <h1 style="background-image: none;">Entity Detail <span>show entity detail information</span></h1>
-</header>
-
-<section id="main-content">
-    <div class="row-fluid">
-        <div id="page-toolbar">
-            <button type="button" class="btn" data-ng-click="exit()">Back</button>
-            <button type="button" class="btn" data-ng-click="edit()">Edit</button>
-            <button type="button" class="btn">Delete</button>
-            <button type="button" class="btn" data-ng-click="listViewDesigner()">List View Designer</button>
-            <button type="button" class="btn" data-ng-click="formDesigner()">Form Designer</button>
-        </div>
+</header>*@
+<section>
+    <div id="page-actions">
+        <h1 class="pull-left">Entity Detail <span>show entity detail information</span></h1>
     </div>
+</section>
+<section id="main-content">
+        <header id="page-title" class="clearfix">
+        <btn-actions>
+            <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-small" data-ng-click="edit()">Edit</button>
+            <button type="button" class="btn btn-small">Delete</button>
+            <button type="button" class="btn btn-small" data-ng-click="listViewDesigner()">List View Designer</button>
+            <button type="button" class="btn btn-small" data-ng-click="formDesigner()">Form Designer</button>
+        </btn-actions>
+        <div class="min-height"></div>
+    </header>
+@*    <div class="row-fluid">
+        <div id="page-toolbar">
+            <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-small" data-ng-click="edit()">Edit</button>
+            <button type="button" class="btn btn-small">Delete</button>
+            <button type="button" class="btn btn-small" data-ng-click="listViewDesigner()">List View Designer</button>
+            <button type="button" class="btn btn-small" data-ng-click="formDesigner()">Form Designer</button>
+        </div>
+    </div>*@
 
     <div class="row-fluid">
         <div class="span12">
-            <div class="widget">
+            @*            <div class="widget">
                 <div class="widget-content table-container">
                     <table class="table table-detail-view">
                         <tbody>
@@ -35,9 +49,26 @@
                         </tbody>
                     </table>
                 </div>
+            </div>*@
+            <div class="row-fluid">
+                <div class=" form-container form-fontstyle">
+                    <div class="form-horizontal no-border">
+                        <fieldset>
+                            <legend>
+                                <h5>General Info</h5>
+                            </legend>
+
+                            <section class="control-group">
+                                <div class="span12">
+                                    <label class="control-label">Name</label>
+                                    <div class="controls">
+                                       <span class="control-text" style="display: block;margin-top: 5px;">@Model.Name</span> 
+                                    </div>
+                                </div>
+                            </section>
+                        </fieldset>
+                        </div></div>
             </div>
-
-
             <div class="widget">
                 <ul class="nav nav-tabs">
                     <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
@@ -56,6 +87,7 @@
 
 <script type="text/javascript">
     $(function () {
-        $('.page-actions').affix({ offset: { top: 71 } });
+        $("#main-content").css("margin-top", $("#page-actions").outerHeight(true));
+        $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
     });
 </script>
