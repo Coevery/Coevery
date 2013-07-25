@@ -14,23 +14,25 @@
 
             this.isString = function (value) { return typeof value === 'string'; };
             this.isObject = function (value) { return value != null && typeof value === 'object'; };
-            this.isArray = function (value) { return toString.apply(value) === '[object Array]'; };
+            this.isArray = function (value) { return jQuery.isArray(value); };
             function isArrayLike(obj) {
                 if (!obj || (typeof obj.length !== 'number')) {
                     return false;
                 }
+                var length = obj.length,
+                        type = jQuery.type(obj);
 
-                // We have on object which has length property. Should we treat it as array?
-                if (typeof obj.hasOwnProperty !== 'function' &&
-                    typeof obj.constructor !== 'function') {
-                    // This is here for IE8: it is a bogus object treat it as array;
-                    return true;
-                } else {
-                    return typeof obj === 'JQLite' ||                      // JQLite
-                           (typeof jQuery !== 'undefined' && typeof obj === 'jQuery') ||          // jQuery
-                           toString.call(obj) !== '[object Object]' ||   // some browser native object
-                           typeof obj.callee === 'function';              // arguments (on IE8 looks like regular obj)
+                if (jQuery.isWindow(obj)) {
+                    return false;
                 }
+
+                if (obj.nodeType === 1 && length) {
+                    return true;
+                }
+
+                return type === "array" || type !== "function" &&
+                    (length === 0 ||
+                    typeof length === "number" && length > 0 && (length - 1) in obj);
             }
             this.isArrayLike = isArrayLike;
 
