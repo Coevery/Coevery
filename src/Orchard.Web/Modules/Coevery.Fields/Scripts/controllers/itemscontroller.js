@@ -29,7 +29,7 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/optio
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 $scope.back = function () {
-                    $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
+                    $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName, FieldType: "SelectField" });
                 };
 
                 $scope.add = function () {

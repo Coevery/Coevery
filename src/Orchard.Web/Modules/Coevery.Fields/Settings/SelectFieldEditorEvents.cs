@@ -78,10 +78,17 @@ namespace Coevery.Fields.Settings
             {
                 var field = _partDefinitionRepository.Table.Single(x => x.Name == typeName)
                     .ContentPartFieldDefinitionRecords.Single(x => x.Name == builder.Name);
-                var labels = model.LabelsStr.Split(new string[] { "\r\n",";" }, StringSplitOptions.RemoveEmptyEntries);
 
-                //Basic Validation, should be replaced later       
-                if (model.SelectCount < 1 || model.ItemCount != labels.Length || model.DisplayLines > model.ItemCount
+                //Basic Validation, should be replaced later
+                if (string.IsNullOrWhiteSpace(model.LabelsStr)) {
+                    updateModel.AddModelError("LabelsStr", _t("The LabelsStr is invalid."));
+                    yield break; 
+                }
+
+                var labels = model.LabelsStr.Split(new string[] { "\r\n", ";" }, StringSplitOptions.RemoveEmptyEntries);
+                model.ItemCount = labels.Length;
+
+                if (model.SelectCount < 1 || model.DisplayLines > model.ItemCount
                     || model.DefaultValue > model.DisplayLines) 
                 {
                     updateModel.AddModelError("Settings", _t("The setting values have conflicts."));

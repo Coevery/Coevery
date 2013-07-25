@@ -2,7 +2,7 @@
 @model Coevery.Fields.ViewModels.EditPartFieldViewModel
 @{
     var fieldSettingsPrefix = Model.FieldDefinition.Name + "Settings.";
-    bool hasItems = Model.FieldDefinition.Name == "SelectField" || Model.FieldDefinition.Name == "MultiSelectField";
+    bool hasItems = Model.FieldDefinition.Name == "SelectField";
     bool isSystemField = bool.Parse(Model.Settings[fieldSettingsPrefix + "IsSystemField"]);
 }
 
@@ -12,7 +12,7 @@
     </div>
 </section>
 
-<section id="main-content" style="margin-top:47px">
+<section id="main-content" style="margin-top: 47px">
     <header id="page-title" class="clearfix">
         <btn-actions>
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
@@ -25,14 +25,15 @@
         <div class="span12">
             <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                              new { @class = "form-horizontal no-border form-fontstyle", @name = "myForm", @ng_submit = "save()", @id = "field-info-form" })) {
+                                              new { @class = "form-horizontal no-border form-fontstyle", @name = "myForm", @ng_submit = "save()", @id = "field-info-form" }))
+                {
                     @Html.ValidationSummary()
                     <fieldset>
                         <legend>General Information</legend>
                         <section class="control-group">
                             <label class="control-label" for="DisplayName">@T("Field Label")</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus"})
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus" })
                             </div>
                         </section>
                         <section class="control-group">
@@ -54,41 +55,49 @@
                             </label>
                             <div class="controls">
                                 <label class="checkbox">
-                                    @if (isSystemField) {
+                                    @if (isSystemField)
+                                    {
                                         @Html.Hidden(fieldSettingsPrefix + "Required", Model.Settings[fieldSettingsPrefix + "Required"]);
                                         @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]), new { disabled = "disabled" });
                                     }
-                                    else {
+                                    else
+                                    {
                                         @Html.CheckBox(fieldSettingsPrefix + "Required", bool.Parse(Model.Settings[fieldSettingsPrefix + "Required"]));
                                     }
                                     @T("Required")
                                 </label>
                                 <label class="checkbox">
-                                    @if (isSystemField) {
+                                    @if (isSystemField)
+                                    {
                                         @Html.Hidden(fieldSettingsPrefix + "ReadOnly", Model.Settings[fieldSettingsPrefix + "ReadOnly"]);
                                         @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]), new { disabled = "disabled" });
                                     }
-                                    else {
+                                    else
+                                    {
                                         @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]));
                                     }
                                     @("Read-Only")
                                 </label>
                                 <label class="checkbox">
-                                    @if (isSystemField) {
+                                    @if (isSystemField)
+                                    {
                                         @Html.Hidden(fieldSettingsPrefix + "AlwaysInLayout", Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]);
                                         @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]), new { disabled = "disabled" });
                                     }
-                                    else {
+                                    else
+                                    {
                                         @Html.CheckBox(fieldSettingsPrefix + "AlwaysInLayout", bool.Parse(Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]));
                                     }
                                     @T("Always In Layout")
                                 </label>
                                 <label class="checkbox">
-                                    @if (isSystemField) {
+                                    @if (isSystemField)
+                                    {
                                         @Html.Hidden(fieldSettingsPrefix + "IsAudit", Model.Settings[fieldSettingsPrefix + "IsAudit"]);
                                         @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]), new { disabled = "disabled" });
                                     }
-                                    else {
+                                    else
+                                    {
                                         @Html.CheckBox(fieldSettingsPrefix + "IsAudit", bool.Parse(Model.Settings[fieldSettingsPrefix + "IsAudit"]));
                                     }
                                     @T("IsAudit")
@@ -106,6 +115,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Field Information</legend>
+                        <div ui-view class="ng-cloak"></div>
                         @{Html.RenderTemplates(Model.Templates);}
                     </fieldset>
                     @Html.Hidden(fieldSettingsPrefix + "IsSystemField", Model.Settings[fieldSettingsPrefix + "IsSystemField"])
@@ -117,7 +127,7 @@
 
 <script>
     $(function () {
-        $('.page-actions').affix({ offset: { top: 71 } }); 
+
         $.validator.addMethod("phonenumber", function (value) {
             if (value) {
                 return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));
@@ -127,7 +137,7 @@
         $.validator.classRuleSettings.phonenumber = { phonenumber: true };
 
         $("#field-info-form").validate({
-            ignore: "*:not('.toValidate *')",
+            //ignore: "*:not('.toValidate *')",
             onkeyup: function (element) {
                 if (element.type == "text") {
                     this.form();

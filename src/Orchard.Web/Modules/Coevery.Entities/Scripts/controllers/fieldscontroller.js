@@ -7,10 +7,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
             function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, entityDataService, fieldDataService) {
                 var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
             '<ul class="row-actions pull-right hide">' +
-            '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+            '<li class="icon-edit" ng-click="edit(row.entity.Name,row.entity.FieldType)" title="Edit"></li>' +
             '<li class="icon-remove" ng-click="delete(row.entity.Name)" ng-hide="row.entity.IsSystemField"  title="Delete"></li>' +
             '</ul>' +
-            '<span class="btn-link" ng-click="edit(row.entity.Name)">{{COL_FIELD}}</span>' +
+            '<span class="btn-link" ng-click="edit(row.entity.Name,row.entity.FieldType)">{{COL_FIELD}}</span>' +
             '</div>';
 
                 var entityName = $stateParams.Id;
@@ -106,8 +106,12 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     });
                 };
 
-                $scope.edit = function (fieldName) {
-                    $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
+                $scope.edit = function (fieldName, fieldType) {
+                    if (fieldType == "Select Field") {
+                        $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: fieldName });
+                    } else {
+                        $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
+                    }             
                 };
                 $scope.gotoDependency = function () {
                     $detour.transitionTo('FieldDependencyList', { EntityName: entityName });

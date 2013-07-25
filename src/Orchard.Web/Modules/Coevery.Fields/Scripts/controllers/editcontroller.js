@@ -2,11 +2,12 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldEditCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams','$http',
-            function ($scope, logger, $detour, $stateParams,$http) {
+        ['$scope', 'logger', '$detour', '$stateParams', '$http',
+            function ($scope, logger, $detour, $stateParams, $http) {
                 var entityName = $stateParams.EntityName;
                 var fieldName = $stateParams.FieldName;
-                
+                var fieldType = $stateParams.FieldType;
+
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
@@ -25,17 +26,13 @@ define(['core/app/detourService'], function (detour) {
                     });
                     return promise;
                 };
-                
+
                 $scope.saveAndBack = function () {
                     var promise = $scope.save();
                     promise.then(function () {
                         $scope.exit();
                     }, function () {
                     });
-                };
-
-                $scope.viewItems = function () {
-                    $detour.transitionTo('FieldItems', { EntityName: entityName, FieldName: fieldName });
                 };
             }]
     ]);
