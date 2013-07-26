@@ -6,6 +6,7 @@
  * Licensed MIT
  */
 (function () {
+    var toString = Object.prototype.toString;
     define('common', [], function () {
         function Common() {
             this.isDefined = function (value) { return typeof value !== 'undefined'; };

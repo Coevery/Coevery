@@ -1,0 +1,139 @@
+﻿<style>
+    .pickList .btn [class^="icon-"] {
+        width: auto;
+    }
+</style>
+
+<section>
+    <div id="page-actions">
+        <h1 class="pull-left">@T("Many to Many Relationship Detail ") <span>show many to many relationship detail information</span></h1>
+    </div>
+</section>
+
+<section id="main-content" style="margin-top: 47px">
+    <header id="page-title" class="clearfix">
+        <btn-actions>
+             <button type="button " class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-primary btn-small">Save</button>
+            </btn-actions>
+    </header>
+    <div class="row-fluid">
+        <form class="form-horizontal no-border form-fontstyle">
+            <fieldset>
+                <legend>General Information</legend>
+                <section class="control-group">
+                    <label class="control-label">
+                        Relationship Name
+                    </label>
+                    <div class="controls">
+                        <input type="text" class="span12" />
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label">
+                        Primary Entity
+                    </label>
+                    <div class="controls">
+                        <select class="span12">
+                            <option>Please select one entity</option>
+                        </select>
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label">
+                        Related Entity
+                    </label>
+                    <div class="controls">
+                        <select class="span12">
+                            <option>Please select one entity</option>
+                        </select>
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label">
+                        Primary Entity List Label
+                    </label>
+                    <div class="controls">
+                        <input type="text" class="span12" />
+                    </div>
+                </section>
+                <section class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="showPrimaryList" />
+                            Show Primary Entity List in the Related Entity's Detail Page
+                        </label>
+                    </div>
+                </section>
+                <section class="control-group" ng-show="showPrimaryList">
+                    <div class="controls">
+                        <select id="picklist-current" name="picklist[]">
+                            <option>Apple</option>
+                            <option selected="selected">Banana</option>
+                            <option selected="selected">Kiwi</option>
+                            <option>Orange</option>
+                            <option>Pear</option>
+                            <option>Grape</option>
+                            <option>Mango</option>
+                            <option>Peach</option>
+                            <option>Dragon Fruit</option>
+                            <option>Durian</option>
+                            <option>Avocado</option>
+                            <option>Cherry</option>
+                        </select>
+                    </div>
+                </section>
+                <section class="control-group">
+                    <label class="control-label">
+                        Related Entity List Label
+                    </label>
+                    <div class="controls">
+                        <input type="text" class="span12" />
+                    </div>
+                </section>
+                <section class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="showRelatedList" />
+                            Show Related Entity List in the Primary Entity's Detail Page
+                        </label>
+                    </div>
+                </section>
+                <section class="control-group" ng-show="showRelatedList">
+                    <div class="controls">
+                        <select id="picklist-other" name="picklist[]">
+                            <option>Apple</option>
+                            <option selected="selected">Banana</option>
+                            <option selected="selected">Kiwi</option>
+                            <option>Orange</option>
+                            <option>Pear</option>
+                            <option>Grape</option>
+                            <option>Mango</option>
+                            <option>Peach</option>
+                            <option>Dragon Fruit</option>
+                            <option>Durian</option>
+                            <option>Avocado</option>
+                            <option>Cherry</option>
+                        </select>
+                    </div>
+                </section>
+            </fieldset>
+        </form>
+    </div>
+</section>
+
+<script>
+    $(document).ready(
+        function () {
+            $('.page-actions').affix({ offset: { top: 71 } });
+            $('#picklist-other,#picklist-current').picklist({
+                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+                addLabel: '<i class="icon-caret-right"></i>',
+                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+                removeLabel: '<i class="icon-caret-left"></i>',
+                sourceListLabel: "Available Fields",
+                targetListLabel: "Selected Fields"
+            });
+        }
+    );
+</script>
