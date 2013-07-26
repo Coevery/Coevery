@@ -80,25 +80,17 @@
   <ItemGroup>
     <Content Include="Scripts\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\js\setup.js" />
-    <Content Include="Styles\bootstrap-datetimepicker.min.css" />
-    <Content Include="Styles\customizer.css" />
-    <Content Include="Styles\demo.css" />
-    <Content Include="Styles\gallery.css" />
     <Content Include="Styles\images\%402x\layout\content-bg-plain-gt1200.png" />
     <Content Include="Styles\images\%402x\layout\content-bg-plain.png" />
     <Content Include="Styles\images\%402x\layout\content-bg.png" />
     <Content Include="Styles\images\%402x\layout\mail-stripes.png" />
+    <Content Include="Styles\images\cache.gif" />
     <Content Include="Styles\images\content-bg-plain-gt1200.png" />
     <Content Include="Styles\images\content-bg-plain.png" />
     <Content Include="Styles\images\content-bg.png" />
     <Content Include="Styles\images\white_tiles.png" />
-    <Content Include="Styles\invoice.css" />
-    <Content Include="Styles\invoice.print.css" />
     <Content Include="Styles\layout.css" />
-    <Content Include="Styles\mail.css" />
-    <Content Include="Styles\profile.css" />
     <Content Include="Styles\site.css" />
-    <Content Include="Styles\statistic.css" />
     <Content Include="Theme.png" />
     <Content Include="Theme.txt" />
     <Content Include="Web.config">

@@ -107,6 +107,16 @@
 #page-title div.min-height {
     min-height: 56px;
 }
+
+/*Edit Mode*/
+.edit-mode
+{
+}
+
+.edit-mode legend {
+    border-bottom: 1px solid #ebaf59;
+}
+
 /*#wrapper .sidebar-minimized #main #page-actions {
     left: 70px;
 }*/
@@ -123,10 +133,16 @@
     margin: 0 0 20px;
 }
 
-    .form-fontstyle fieldset legend+.control-group{
-        margin-top: 0;
-    }
+.form-fontstyle fieldset legend+.control-group{
+    margin-top: 0;
+}
 
+.form-fontstyle .row-fluid .widget-content {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    padding: 25px;
+    position: relative;
+}
 
 
 /*--------------------------------------------------------------------------*/
@@ -223,7 +239,9 @@ form .control-group .control-label.required:before {
     line-height: 24px;
 }
 
+form .control-group.success,
 form .control-group.success input.success,
+form .control-group.success .input-prepend span.add-on,
 form .control-group.success .control-label {
     border-color: rgb(204, 204, 204);
     color: rgb(68, 68, 68);
@@ -232,4 +250,132 @@ form .control-group.success .control-label {
 form .control-group.success span.help-block,
 form .control-group.error span.help-block {
     color: rgb(136, 136, 136);
+}
+
+/*admin icons margin*/
+ul.row-actions li {
+    margin-right: 4px;
+}
+
+/*admin list designer detail*/
+
+span.fieldtoadd {
+    line-height: 14px;
+}
+span.fieldtoadd button {
+    line-height: 14px;
+}
+.viewfields-widget {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.form-fontstyle .row-fluid .viewfields-widget {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    padding: 25px;
+    position: relative;
+}
+
+.viewfields-widget #sortable li {
+    background: url("images/cache.gif") no-repeat 5px;  
+    padding-left: 18px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 1px solid #ccc;
+    cursor: move;
+    zoom: 1;
+    margin-top: 5px;
+}
+
+.viewfields-widget #sortable li:before {
+    content: none;
+}
+/* sorted by span*/
+.sortedbyspan {
+    margin: 20px 0;
+}
+
+.sortedbyspan .control-label {
+    text-align: left; 
+    width: 100px;
+}
+
+/*dialog style*/
+fieldset legend + .control-group {
+    margin-top: 0;
+}
+
+/*widget style*/
+.nav-tabs >li >a {
+    border: 1px solid #CFCFCF;
+    border-bottom: none;
+    border-radius: 0;
+    line-height: 20px;
+    padding: 8px 12px;
+    margin-right: 0px;
+    display: block;
+    color: #555555;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    z-index: 9;
+}
+.nav-tabs >li >a:hover{
+    border: 1px solid #CFCFCF;
+    border-bottom: none;
+    border-top: 2px solid #a2c852;
+    background-color: #fafafa;
+    padding-top: 7px;
+}
+.nav-tabs >li >a{
+    background-color: #fafafa;
+}
+.nav-tabs >li+li >a , 
+.nav-tabs >li+li >a:hover,
+.nav-tabs >li + li.active > a,
+.nav-tabs >li+li >a:focus,
+.nav-tabs >li + li.active > a:hover,
+.nav-tabs >li + li.active > a:focus {
+    border-left: none;
+}
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border: 1px solid #CFCFCF;
+    border-bottom: none;
+    border-image: none;
+    border-bottom-color: #fff;
+    border-top: 2px solid #a2c852;
+    background-color: #fff;
+    color: #555555;
+    cursor: default;
+}
+ .nav.nav-tabs > .active > a {
+    border-top: 2px solid #a2c852;
+    background-color: #fff;
+    padding-top: 8px;
+}
+.nav.nav-tabs + .tab-content {
+    border: none;
+}
+.widget .tab-content {
+    padding: 0;
+}
+ul.nav.nav-tabs {
+    margin-bottom: 0px;
+    border: none;
+}
+.mytabs {
+    border-bottom: 1px solid #DDDDDD;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    position: relative;
+}
+
+/*Date/Time Picker*/
+.control-group .controls.input-prepend {
+    display: block; 
 }

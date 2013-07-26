@@ -16,6 +16,7 @@ function PerspectiveDetailCtrl($rootScope, $scope, logger, $state, localize, $re
         data: 'myData',
         selectedItems: $scope.mySelections,
         multiSelect: false,
+        enableRowSelection: false,
         showColumnMenu: true,
         enableColumnResize: true,
         enableColumnReordering: true,

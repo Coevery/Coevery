@@ -7,8 +7,11 @@
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls input-append">
-    <input class="span12 dateForShort" type="text" 
+<div class="control controls input-prepend">
+    <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+    </span>
+    <input class="dateForShort" type="text" 
            id="@Html.FieldIdFor(m => m.Value)" 
            name="@Html.FieldNameFor(m => m.Value)" 
            value="@Model.Value" 
@@ -16,16 +19,13 @@
         @if (required != null)
         {<text> required data-msg-required="Please fill this field!"</text> } 
         />
-    <span class="add-on">
-        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-    </span>
     @Html.ValidationMessageFor(m => m.Value)
 </div>
 <script type="text/javascript">
     function convertShortDate(dateStr) {
         if (dateStr) {
             var tempDate = new Date(dateStr);
-            return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear();
+            return (tempDate.getMonth() + 1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
         } else {
             return "";
         }

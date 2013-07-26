@@ -12,6 +12,8 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 $scope.gridOptions = {
                     data: 'myData',
                     selectedItems: $scope.mySelections,
+                    multiSelect: false,
+                    enableRowSelection: false,
                     columnDefs: 'fieldCoumns'
                 };
                 
@@ -19,12 +21,23 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
 
                 $scope.preview = function() {
                     $scope.fieldCoumns = [];
+                    $scope.myData = [];
+                    var jasondata = { };
                     for (var i = 0; i < $scope.SelectedColumns.length; i++) {
                         var fieldName = $scope.SelectedColumns[i].FieldName;
                         $scope.fieldCoumns[i] = { field: fieldName, displayName: fieldName };
+                        jasondata[fieldName] = "data_" + fieldName;
                     }
-
-                };
+                    if (i > 0) {
+                    for (var j = 0; j < 5; j++) {
+                        var newjason = { };
+                        for (var filed in jasondata) {
+                            newjason[filed] = jasondata[filed] + "_" + (j + 1);
+                        }
+                        $scope.myData.push(newjason);
+                    }
+                }
+            };
 
                 $scope.save = function() {
                     var pickListValue = '';

@@ -7,12 +7,12 @@ define(['core/app/detourService'], function (detour) {
             function ($rootScope, $scope, logger, $detour, $stateParams) {
 
                 var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-           '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
-           '<ul class="row-actions pull-right hide">' +
-           '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
-           '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
-           '</ul>' +
-           '</div>';
+                    '<ul class="row-actions pull-right hide">' +
+                    '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+                    '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+                    '</ul>' +
+                    '<span class="btn-link" ng-click="edit(row.entity.Name)">{{COL_FIELD}}</span>' +
+                    '</div>';
 
                 var relationshipColumnDefs = [
                     { field: 'Name', displayName: 'Relationship Name', cellTemplate: cellTemplateString },
@@ -20,12 +20,12 @@ define(['core/app/detourService'], function (detour) {
                     { field: 'RelatedEntity', displayName: 'Related Entity' },
                     { field: 'Type', displayName: 'Type' }
                 ];
-                
+
                 $scope.relationshipGridOptions = {
                     data: 'relationships',
                     columnDefs: relationshipColumnDefs
                 };
-                
+
                 angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);
 
                 $scope.relationships = [
@@ -39,6 +39,12 @@ define(['core/app/detourService'], function (detour) {
                 };
                 $scope.editManyToMany = function () {
                     $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id });
+                };
+                $scope.edit = function () {
+
+                };
+                $scope.delete = function () {
+
                 };
             }]
     ]);

@@ -5,17 +5,17 @@
     <label class="control-label">
         Default Value
     </label>
-    <div class="controls input-append">
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 dateForShort", id = "dateDefault", name = "dateDefault" })
+    <div class="controls input-prepend">
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "dateForShort", id = "dateDefault", name = "dateDefault" })        
     </div>
     <script>
         function convertShortDate(dateStr) {
             if (dateStr) {
                 var tempDate = new Date(dateStr);
-                return tempDate.getMonth() + '/' + tempDate.getDay() + '/' + tempDate.getYear();
+                return (tempDate.getMonth()+1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear();
             } else {
                 return "";
             }
@@ -33,8 +33,21 @@
                 defaultDate.parent().datetimepicker({
                     pickTime: false
                 });
-                defaultDate.val(convertShortDate(defaultDate.val()));
+                
+                defaultDate.val(convertShortDate(defaultDate.val()));             
             }
+
+            $(".add-on").click(function () {
+                setTimeout(function () {
+                    $(".bootstrap-datetimepicker-widget").offset(function (index, coords) {
+                        var result = { top: 0, left: 0 };
+                        result.left = coords.left;
+                        result.top = $(".input-append").offset().top - 
+                            $(".bootstrap-datetimepicker-widget").outerHeight(true) - 4;
+                        return result;
+                    });
+                }, 0);
+            });
         });
     </script>
 </section>

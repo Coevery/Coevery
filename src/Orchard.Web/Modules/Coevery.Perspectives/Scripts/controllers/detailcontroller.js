@@ -11,12 +11,12 @@ define(['core/app/detourService',
       function ($rootScope, $timeout, $scope, logger, $detour, $stateParams, $resource, perspectiveDataService, navigationDataService) {
 
           var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-          '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
-          '<ul class="row-actions pull-right hide">' +
-          '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
-          '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
-          '</ul>' +
-          '</div>';
+              '<ul class="row-actions pull-right hide">' +
+              '<li class="icon-edit" ng-click="edit(row.entity.Id)" title="Edit"></li>' +
+              '<li class="icon-remove" ng-click="delete(row.entity.Id)" title="Delete"></li>' +
+              '</ul>' +
+              '<span class="btn-link" ng-click="edit(row.entity.Id)">{{COL_FIELD}}</span>' +
+              '</div>';
           $scope.mySelections = [];
           var moduleName = $stateParams.Module;
           var perpectiveId = $stateParams.Id;
@@ -48,6 +48,7 @@ define(['core/app/detourService',
               data: 'myData',
               selectedItems: $scope.mySelections,
               multiSelect: false,
+              enableRowSelection: false,
               showColumnMenu: true,
               enableColumnResize: true,
               enableColumnReordering: true,

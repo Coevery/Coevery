@@ -9,6 +9,7 @@
         data: 'myData',
         selectedItems: $scope.mySelections,
         multiSelect: false,
+        enableRowSelection: false,
         showColumnMenu: true,
         enableColumnResize: true,
         enableColumnReordering: true,

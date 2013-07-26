@@ -36,8 +36,7 @@
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }*/
 
-#loading
-{
+#loading {
     position: absolute;
     left: 50%;
     top: 0;
@@ -49,14 +48,12 @@
     z-index: 1000;
 }
 
-#wrapper #main
-{
+#wrapper #main {
     padding-bottom: 0;
 }
 
 /*Page Title*/
-#page-title h1
-{
+#page-title h1 {
     float: left;
     font-size: 24px;
     color: #444;
@@ -66,8 +63,7 @@
     text-shadow: -1px -1px #f0f0f0;
 }
 
-    #page-title h1 > span
-    {
+    #page-title h1 > span {
         color: #777;
         font-size: 11px;
         font-weight: normal;
@@ -79,101 +75,89 @@
         text-shadow: none;
     }
 
-#page-title .btn-toolbar
-{
+#page-title .btn-toolbar {
     margin: 15px 0;
 }
 
-#page-title .btn-fixed
-{
+#page-title .btn-fixed {
     position: fixed;
     top: 65px;
     z-index: 999;
 }
 
 /*Edit Mode*/
-.edit-mode
-{
+.edit-mode {
 }
 
     .edit-mode legend {
         border-bottom: 1px solid #ebaf59;
     }
 
-    .edit-mode .data-row
-    {
+    .edit-mode .data-row {
         margin: 10px 0;
         padding: 0 20px;
     }
 
-        .edit-mode .data-row .control-label
-        {
+        .edit-mode .data-row .control-label {
             text-align: right;
             width: 120px;
             float: left;
             padding-top: 5px;
         }
 
-            .edit-mode .data-row .control-label.required:before
-            {
-                content: "*";
-                color: red;
-                margin-right: 5px;
-                vertical-align: text-top;
-                font-weight: bold;
-                font-size: 20px;
-                line-height: 24px;
-            }
+        .edit-mode .data-row .controls.input-append {
+            margin-left: 20px;
+        }
 
-        .edit-mode .data-row .controls
-        {
+        .edit-mode .data-row .control-label.required:before {
+            content: "*";
+            color: red;
+            margin-right: 5px;
+            vertical-align: text-top;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 24px;
+        }
+
+        .edit-mode .data-row .controls {
             margin-left: 140px;
         }
 
-    .edit-mode form
-    {
+    .edit-mode form {
         margin: 0;
     }
 
-        .edit-mode form > .data-section
-        {
+        .edit-mode form > .data-section {
             margin-top: 20px;
         }
 
-            .edit-mode form > .data-section:first-child
-            {
+            .edit-mode form > .data-section:first-child {
                 margin-top: 0;
             }
 
-    .edit-mode .control-group
-    {
+    .edit-mode .control-group {
         margin: 0;
     }
 
-        .edit-mode .control-group.error
-        {
+        .edit-mode .control-group.error {
             color: #b94a48;
         }
 
 /*View Mode*/
-.view-mode
-{
+.view-mode {
 }
 
-    .view-mode header
-    {
+    .view-mode header {
         margin: 0;
         border-bottom: 1px solid #ebaf59;
     }
 
-        .view-mode header h5
-        {
+        .view-mode header h5 {
             display: inline-block;
         }
 
         .view-mode header .show-button,
-        .view-mode header .hide-button
-        {
+        .view-mode header .hide-button {
             margin-right: 4px;
             background-repeat: no-repeat;
             background-image: url('images/twisty_sprite.png');
@@ -183,28 +167,23 @@
             cursor: pointer;
         }
 
-        .view-mode header .show-button
-        {
+        .view-mode header .show-button {
             background-position: 0 -11px;
         }
 
-        .view-mode header .hide-button
-        {
+        .view-mode header .hide-button {
             background-position: 0 0;
         }
 
-    .view-mode .data-row
-    {
+    .view-mode .data-row {
         padding: 5px 20px;
     }
 
-        .view-mode .data-row + .data-row
-        {
+        .view-mode .data-row + .data-row {
             border-top: 1px solid #ececec;
         }
 
-        .view-mode .data-row .control-label
-        {
+        .view-mode .data-row .control-label {
             text-align: right;
             width: 120px;
             float: left;
@@ -212,47 +191,39 @@
             color: #777;
         }
 
-        .view-mode .data-row .controls
-        {
+        .view-mode .data-row .controls {
             margin-left: 140px;
         }
 
-            .view-mode .data-row .controls .control-text
-            {
+            .view-mode .data-row .controls .control-text {
                 padding-top: 5px;
                 display: block;
             }
 
-    .view-mode form
-    {
+    .view-mode form {
         margin: 0;
     }
 
-        .view-mode form > .data-section
-        {
+        .view-mode form > .data-section {
             margin-top: 20px;
         }
 
-            .view-mode form > .data-section:first-child
-            {
+            .view-mode form > .data-section:first-child {
                 margin-top: 0;
             }
 
 /*Related List*/
-.related-list
-{
+.related-list {
     margin-top: 20px;
     border-top: 2px solid #41b7d8;
 }
 
-    .related-list > header > h5
-    {
+    .related-list > header > h5 {
         margin-right: 40px;
         display: inline-block;
     }
 
-    .related-list > header > .btn-toolbar
-    {
+    .related-list > header > .btn-toolbar {
         display: inline-block;
         font-size: 14px;
     }
@@ -260,14 +231,12 @@
 
 
 /*Page Actions*/
-#page-actions h1
-{
+#page-actions h1 {
     font-size: 24px;
     margin: 3px 0;
 }
 
-    #page-actions h1 span
-    {
+    #page-actions h1 span {
         font-size: 11px;
         line-height: 1;
         font-weight: normal;
@@ -275,8 +244,12 @@
         padding-left: 5px;
     }
 
-#page-actions #actions
-{
+#page-actions #actions {
     margin-left: 30px;
     display: none;
+}
+
+/*Date/Time Picker*/
+.control-group .controls.input-prepend {
+    display: block; 
 }

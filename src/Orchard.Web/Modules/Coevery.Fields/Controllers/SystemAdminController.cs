@@ -246,9 +246,9 @@ namespace Coevery.Fields.Controllers {
                         controlFields.Add(field);
                         dependentFields.Add(field);
                         break;
-                    case "MultiSelectField":
-                        dependentFields.Add(field);
-                        break;
+                    //case "MultiSelectField":
+                    //    dependentFields.Add(field);
+                    //    break;
                     case "BooleanField":
                         controlFields.Add(field);
                         break;
@@ -271,9 +271,9 @@ namespace Coevery.Fields.Controllers {
                         controlFields.Add(field);
                         dependentFields.Add(field);
                         break;
-                    case "MultiSelectField":
-                        dependentFields.Add(field);
-                        break;
+                    //case "MultiSelectField":
+                    //    dependentFields.Add(field);
+                    //    break;
                     case "BooleanField":
                         controlFields.Add(field);
                         break;
@@ -295,15 +295,16 @@ namespace Coevery.Fields.Controllers {
         }
 
         private void CheckData(EditPartFieldViewModel serverField) {
-            var settingsStr = serverField.FieldDefinition.Name + "Settings.";
+            var settingsStr = serverField.FieldDefinition.Name + "Settings";
             var clientSettings = new FieldSettings();
-            TryUpdateModel(clientSettings, "BooleanFieldSettings");
+            //TryUpdateModel(clientSettings, "BooleanFieldSettings");
+            TryUpdateModel(clientSettings, settingsStr);
 
             var serverSettings = new FieldSettings {
-                IsSystemField = bool.Parse(serverField.Settings[settingsStr + "IsSystemField"]),
-                Required = bool.Parse(serverField.Settings[settingsStr + "Required"]),
-                ReadOnly = bool.Parse(serverField.Settings[settingsStr + "ReadOnly"]),
-                AlwaysInLayout = bool.Parse(serverField.Settings[settingsStr + "AlwaysInLayout"])
+                IsSystemField = bool.Parse(serverField.Settings[settingsStr + ".IsSystemField"]),
+                Required = bool.Parse(serverField.Settings[settingsStr + ".Required"]),
+                ReadOnly = bool.Parse(serverField.Settings[settingsStr + ".ReadOnly"]),
+                AlwaysInLayout = bool.Parse(serverField.Settings[settingsStr + ".AlwaysInLayout"])
             };
 
             if (clientSettings.IsSystemField != serverSettings.IsSystemField) {
