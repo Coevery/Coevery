@@ -1,0 +1,173 @@
+﻿<style>
+    .pickList .btn [class^="icon-"] {
+        width: auto;
+    }
+</style>
+
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 style="background-image: none;">One to Many Relationship Detail <span>show one to many relationship detail information</span></h1>
+</header>
+
+<section id="main-content">
+    <div class="row-fluid">
+        <div id="page-toolbar">
+            <button type="button" class="btn" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-primary" data-ng-click="save()">Save</button>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="widget">
+            <div class="widget-content form-container">
+                <form class="form-horizontal no-border">
+                    <fieldset>
+                        <legend>Relationship</legend>
+                        <section class="control-group">
+                            <label class="control-label">
+                                Relationship Name
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span12" />
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">
+                                Primary Entity
+                            </label>
+                            <div class="controls">
+                                <select class="span12">
+                                    <option>Please select one entity</option>
+                                </select>
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">
+                                Related Entity
+                            </label>
+                            <div class="controls">
+                                <select class="span12">
+                                    <option>Please select one entity</option>
+                                </select>
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">
+                                What to do if the lookup record is deleted?
+                            </label>
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" ng-model="recordDeleteBehavior" ng-disabled="required" value="1" />
+                                    Clear the value of this field
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" ng-model="recordDeleteBehavior" value="2" />
+                                    Don't allow delete
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" ng-model="recordDeleteBehavior" value="3" />
+                                    Cascading delete
+                                </label>
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">
+                                Related Entity List Label
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span12" />
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-model="showRelatedList" />
+                                    Show Related Entity List in the Primary Entity's Detail Page
+                                </label>
+                            </div>
+                        </section>
+                        <section class="control-group" ng-show="showRelatedList">
+                            <div class="controls">
+                                <select id="picklist-ex" name="picklist[]">
+                                    <option>Apple</option>
+                                    <option selected="selected">Banana</option>
+                                    <option selected="selected">Kiwi</option>
+                                    <option>Orange</option>
+                                    <option>Pear</option>
+                                    <option>Grape</option>
+                                    <option>Mango</option>
+                                    <option>Peach</option>
+                                    <option>Dragon Fruit</option>
+                                    <option>Durian</option>
+                                    <option>Avocado</option>
+                                    <option>Cherry</option>
+                                </select>
+                            </div>
+                        </section>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Lookup Field</legend>
+                        <section class="control-group">
+                            <label class="control-label" for="fieldLabel">
+                                Field Label
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span12" id="fieldLabel" ng-model="fieldLabel">
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label" for="fieldName">
+                                Field Name
+                            </label>
+                            <div class="controls">
+                                <input type="text" class="span12" id="fieldName" ng-model="fieldName">
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">
+                                Options
+                            </label>
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-model="required" />
+                                    Required
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-model="readonly" />
+                                    Read-Only
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" ng-model="alwaysInLayout" />
+                                    Always In Layout
+                                </label>
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label" for="helpText">
+                                Help Text
+                            </label>
+                            <div class="controls">
+                                <textarea class="span12" id="helpText" ng-model="helpText"></textarea>
+                            </div>
+                        </section>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(
+        function () {
+            $('.page-actions').affix({ offset: { top: 71 } });
+            $('#picklist-ex').picklist({
+                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+                addLabel: '<i class="icon-caret-right"></i>',
+                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+                removeLabel: '<i class="icon-caret-left"></i>',
+                sourceListLabel: "Available Fields",
+                targetListLabel: "Selected Fields"
+            });
+        }
+    );
+</script>
