@@ -5,8 +5,6 @@ define(['core/app/detourService'], function (detour) {
         ['$scope', 'logger', '$detour', '$stateParams', '$http',
             function ($scope, logger, $detour, $stateParams, $http) {
                 var entityName = $stateParams.EntityName;
-                var fieldName = $stateParams.FieldName;
-                var fieldType = $stateParams.FieldType;
 
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });

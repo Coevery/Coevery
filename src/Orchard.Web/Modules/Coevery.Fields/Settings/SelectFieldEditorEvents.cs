@@ -20,11 +20,6 @@ namespace Coevery.Fields.Settings
         private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
         private readonly Localizer _t;
 
-        public SelectFieldListModeEvents()
-        {
-            _t = NullLocalizer.Instance;
-        }
-
         public SelectFieldListModeEvents(
             IRepository<OptionItemRecord> optionItemRepository,
             IRepository<ContentPartDefinitionRecord> partDefinitionRepository)
@@ -85,7 +80,7 @@ namespace Coevery.Fields.Settings
                     yield break; 
                 }
 
-                var labels = model.LabelsStr.Split(new string[] { "\r\n", ";" }, StringSplitOptions.RemoveEmptyEntries);
+                var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
                 model.ItemCount = labels.Length;
 
                 if (model.SelectCount < 1 || model.DisplayLines > model.ItemCount
@@ -108,6 +103,12 @@ namespace Coevery.Fields.Settings
                     _optionItemRepository.Create(option);
                 }
                 UpdateSettings(model, builder, "SelectFieldSettings");
+                builder.WithSetting("SelectFieldSettings.ItemCount", model.ItemCount.ToString());
+                builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
+                builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
+                builder.WithSetting("SelectFieldSettings.LabelsStr", model.LabelsStr);
+                builder.WithSetting("SelectFieldSettings.DefaultValue", model.DefaultValue.ToString());
+                builder.WithSetting("SelectFieldSettings.SelectCount", model.SelectCount.ToString());
             }
 
             yield return DefinitionTemplate(model);

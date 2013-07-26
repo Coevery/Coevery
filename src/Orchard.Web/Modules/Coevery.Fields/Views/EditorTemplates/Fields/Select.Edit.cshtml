@@ -1,26 +1,29 @@
 ﻿@model Coevery.Fields.Fields.SelectField
 @using Orchard.Utility.Extensions;
 @using Coevery.Fields.Settings;
+
 @{
     var settings = Model.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+    var multiple = (settings.SelectCount > 1) ? "multiple" : null;
+    var displaySize = (settings.SelectCount > 1) ? settings.DisplayLines : 1;
     var required = settings.Required ? "required" : null;
+    var selectAttributes = new Dictionary<string,string>().Add(multiple,string.Empty);
+    Model.Value = Model.Items.First().Value;
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
 <div class="control controls">
+    
     @if (settings.DisplayOption == SelectionMode.DropDown)
-    {
-        <select class="span12" id="@Html.FieldIdFor(m => m.Value)" 
-                name="@Html.FieldNameFor(m => m.Value)" 
-
-            @if (settings.Required)
-            {
-                <text> required</text>
-            }>
-            <option>Option1</option>
-            <option>Option2</option>
-            <option>Option3</option>
-        </select>
+    {       
+        @Html.DropDownListFor(x => x.Value, Model.Items, new { @class = "span12", @multiple, @required, size = @displaySize })
     }
     @Html.ValidationMessageFor(m => m.Value)
+    <script type="text/javascript">
+        $(function () {
+            $("select").click(function () {
+                //alert("@Model.Value");
+            });
+        });
+    </script>
 </div>
