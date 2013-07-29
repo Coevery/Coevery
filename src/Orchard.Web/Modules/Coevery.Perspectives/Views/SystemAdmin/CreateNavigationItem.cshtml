@@ -48,9 +48,9 @@
                                 <label class="control-label">Icon</label>
                                 <div class="controls">
                                     @*<input type="file" id="input04" data-provide="fileinput">*@
-                                    <i class="@iconClass"></i>
-                                    @Html.HiddenFor(m => m.IconClass)
-                                    <button type="button" class="btn btn-small">Change</button>
+                                    <i id="showIconClass" class="@iconClass"></i>
+                                    @Html.HiddenFor(m=>m.IconClass,new {id="hfIconClass"})
+                                    <button type="button" class="btn btn-small" ng-click="openDialog()">Change</button>
                                 </div>
                             </section>
                                 </fieldset>
@@ -59,7 +59,9 @@
         </div>
     </div>
 </section>
-
+<div  modal="dialogSelectIcons" close="closeDialog()" options="opts" class="ng-cloak" ui-view>
+    @Html.Partial("SelectIconClass")
+</div>
 <script>
     $(document).ready(
         function () {

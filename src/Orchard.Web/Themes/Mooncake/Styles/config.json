@@ -5,6 +5,12 @@
   "hinting": true,
   "glyphs": [
     {
+      "uid": "d7271d490b71df4311e32cdacae8b331",
+      "css": "home",
+      "code": 59418,
+      "src": "fontawesome"
+    },
+    {
       "uid": "6c83092421441296f5c4e8074b0cf32c",
       "css": "flag-empty",
       "code": 59415,
@@ -159,6 +165,12 @@
       "css": "star-empty",
       "code": 59417,
       "src": "entypo"
+    },
+    {
+      "uid": "b387bb08e237859ba573fb32e2117310",
+      "css": "power",
+      "code": 59419,
+      "src": "typicons"
     }
   ]
 }

@@ -49,7 +49,7 @@
                                 @*<input type="file" id="input04" data-provide="fileinput">*@
                                 <i id="showIconClass" class="@iconClass"></i>
                                 @Html.HiddenFor(m=>m.IconClass,new {id="hfIconClass"})
-                                <button type="button" class="btn btn-small">Change</button>
+                                <button type="button" class="btn btn-small" ng-click="openDialog()">Change</button>
                             </div>
                         </section>
                     </fieldset>
@@ -58,14 +58,13 @@
         </div>
     </div>
 </section>
-
+<div  modal="dialogSelectIcons" close="closeDialog()" options="opts" class="ng-cloak" ui-view>
+    @Html.Partial("SelectIconClass")
+</div>
 <script>
     $(document).ready(
         function () {
             $('.page-actions').affix({ offset: { top: 71 } });
-            $("#IconClass").change(function () {
-                $("#showIconClass").attr("class", $(this).val());
-            });
         }
     );
 </script>

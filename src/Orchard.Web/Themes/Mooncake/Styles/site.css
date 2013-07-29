@@ -253,3 +253,19 @@
 .control-group .controls.input-prepend {
     display: block; 
 }
+
+/*Icons*/
+.iconrow {
+    width: 550px;
+}
+
+.iconspan {
+    cursor: pointer;
+}
+.iconspan.selected {
+    background-color: #C9DDE1;
+}
+.iconspan i,
+#showIconClass {
+    font-size: 20px;
+}

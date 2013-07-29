@@ -599,12 +599,19 @@
     <Content Include="Styles\bootstrap\bootstrap.css" />
     <Content Include="Styles\bootstrap\bootstrap.min.css" />
     <Content Include="Styles\button.css" />
+    <Content Include="Styles\css\animation.css" />
+    <Content Include="Styles\css\fontello-codes.css" />
+    <Content Include="Styles\css\fontello-embedded.css" />
+    <Content Include="Styles\css\fontello-ie7-codes.css" />
+    <Content Include="Styles\css\fontello-ie7.css" />
+    <Content Include="Styles\css\fontello.css" />
     <Content Include="Styles\dropdowns.css" />
     <Content Include="Styles\error.css" />
     <Content Include="Styles\error.min.css" />
     <Content Include="Styles\fonts\icomoon\fonts\icomoon.svg" />
     <Content Include="Styles\fonts\icomoon\license.txt" />
     <Content Include="Styles\fonts\icomoon\style.css" />
+    <Content Include="Styles\font\fontello.svg" />
     <Content Include="Styles\form.css" />
     <Content Include="Styles\icons.css" />
     <Content Include="Styles\images\%402x\layout\content-bg-plain-gt1200.png" />
@@ -2000,6 +2007,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\BaseResource.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\font\fontello.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\font\fontello.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\font\fontello.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\config.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

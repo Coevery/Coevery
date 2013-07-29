@@ -31,6 +31,29 @@ define(['core/app/detourService'], function (detour) {
                }, function () {
                });
            };
+
+           $scope.opts = {
+               backdropFade: true,
+               dialogFade: true
+           };
+           
+           $scope.openDialog = function () {
+               $scope.dialogSelectIcons = true;
+           };
+
+           $scope.closeDialog = function () {
+               $scope.dialogSelectIcons = false;
+           };
+
+           $scope.selected = function () {
+               if ($("#icons div.iconspan.selected").length<=0) {
+                   return;
+               }
+               var iconClass = $("#icons div.iconspan.selected i").attr("class");
+               $("#hfIconClass").val(iconClass);
+               $("#showIconClass").attr("class", iconClass);
+               $scope.dialogSelectIcons = false;
+           };
        }]
     ]);
 });
