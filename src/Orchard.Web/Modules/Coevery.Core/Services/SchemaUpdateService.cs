@@ -46,33 +46,64 @@ namespace Coevery.Core.Services
             _schemaBuilder = new SchemaBuilder(_interpreter, "", s => s.Replace(".", "_"));
         }
 
-        public  void CreateTable(string tableName)
-        {
-            //var dataServiceProvider = _dataServiceProviderFactory.CreateProvider(_sessionFactoryHolder.GetSessionFactoryParameters());
-            //var persistenceConfigurer = dataServiceProvider.GetPersistenceConfigurer(true);
-            //var factory = _sessionFactoryHolder.GetSessionFactory();
-            //var connection =
-            //factory.GetCurrentSession().Connection;
-            //var metatTable = factory.GetClassMetadata(string.Format(tableFormat, "Lead"));
-            //var d = Dialect.GetDialect(null);
-            
+        private bool ExistsMetaData(string tableName,string columnName) {
+            var factory = _sessionFactoryHolder.GetSessionFactory();
+            var session = factory.OpenSession();
+            var connection = session.Connection;
+            var dialect = Dialect.GetDialect(_sessionFactoryHolder.GetConfiguration().Properties);
+            var meta = dialect.GetDataBaseSchema((DbConnection)connection);
+            var tables = meta.GetTables(null, null, string.Format(tableFormat, tableName), null);
+            bool result = false;
+            if (tables.Rows.Count > 0)
+            {
+                var tableInfo = meta.GetTableMetadata(tables.Rows[0], true);
+                if (string.IsNullOrEmpty(columnName)) result = true;
+                else {
+                    var columnInfo = tableInfo.GetColumnMetadata(columnName);
+                    result = columnInfo != null;
+                }
+            }
+            session.Disconnect();
+            session.Dispose();
+            return result;
+        }
+
+        public  void CreateTable(string tableName) {
+            bool result = ExistsMetaData(tableName, string.Empty);
+            if (result) return;
             _schemaBuilder.CreateTable(string.Format(tableFormat, tableName), table => table.Column<int>("Id", column => column.PrimaryKey()));
             GenerationDynmicAssembly();
         }
 
         public void DropTable(string tableName) {
+            bool result = ExistsMetaData(tableName, string.Empty);
+            if (!result) return;
             _schemaBuilder.DropTable(string.Format(tableFormat, tableName));
             GenerationDynmicAssembly();
         }
 
         public  void CreateColumn(string tableName, string columnName, string columnType)
         {
+            bool result = ExistsMetaData(tableName, string.Empty);
+            if (!result) {
+
+                _schemaBuilder.CreateTable(string.Format(tableFormat, tableName), 
+                    table => 
+                        table.Column<int>("Id", column => column.PrimaryKey()));
+            }
+            else {
+                result = ExistsMetaData(tableName, columnName);
+            }
+            if (result) return;
             var dbType = SchemaUtils.ToDbType(_dynamicAssemblyBuilder.GetFieldType(columnType));
-            _schemaBuilder.AlterTable(string.Format(tableFormat, tableName), table => table.AddColumn(columnName, dbType));
+            _schemaBuilder.AlterTable(string.Format(tableFormat, tableName), 
+                table => table.AddColumn(columnName, dbType));
             GenerationDynmicAssembly();
         }
 
         public void DropColumn(string tableName, string columnName) {
+            bool result = ExistsMetaData(tableName, columnName);
+            if (!result) return;
             _schemaBuilder.AlterTable(string.Format(tableFormat, tableName), table => table.DropColumn(columnName));
             GenerationDynmicAssembly();
         }
