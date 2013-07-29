@@ -6,7 +6,7 @@
     }
 
     public class SelectFieldSettings : FieldSettings {
-        public static readonly string[] LabelSeperator = new string[] { "\r\n",";" };
+        public static readonly string[] LabelSeperator = new string[] { ";","\r\n" };
         public int DisplayLines { get; set; }
         public SelectionMode DisplayOption { get; set; }
         public int SelectCount { get; set; }

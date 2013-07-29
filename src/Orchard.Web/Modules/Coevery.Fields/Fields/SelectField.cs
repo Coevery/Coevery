@@ -23,7 +23,7 @@ namespace Coevery.Fields.Fields
             {
                 var tempValue = new StringBuilder();
                 foreach (var label in value) {
-                    tempValue.Append(label + ";");
+                    tempValue.Append(label + SelectFieldSettings.LabelSeperator[0]);
                 }
                 Value = tempValue.ToString();
             }

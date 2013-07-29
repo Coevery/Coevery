@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Linq;
 using Coevery.Fields.Records;
 using Orchard.ContentManagement;
@@ -18,6 +19,7 @@ namespace Coevery.Fields.Settings
     {
         private readonly IRepository<OptionItemRecord> _optionItemRepository;
         private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
+        private ContentPartFieldDefinitionRecord _itemField;
         private readonly Localizer _t;
 
         public SelectFieldListModeEvents(
@@ -27,6 +29,7 @@ namespace Coevery.Fields.Settings
             _optionItemRepository = optionItemRepository;
             _partDefinitionRepository = partDefinitionRepository;
             _t = NullLocalizer.Instance;
+            _itemField = null;
         }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition)
@@ -45,10 +48,46 @@ namespace Coevery.Fields.Settings
             {
                 yield break;
             }
+            if (_itemField == null)
+            {
+                updateModel.AddModelError("Field", _t("The select field hasn't been created"));
+                yield break;
+            }
 
             var model = new SelectFieldSettings();
+
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null))
             {
+                var labels = (from i in _optionItemRepository.Table
+                              where i.ContentPartFieldDefinitionRecord == _itemField
+                              select new
+                              {
+                                  Label = i.Value,
+                                  Default = i.IsDefault
+                              }).ToArray();
+                var itemCount = labels.Length;
+
+                if (itemCount < 1 || model.SelectCount < 1 || model.DefaultValue < 0
+                    || model.DefaultValue > itemCount || model.DisplayLines > itemCount || model.SelectCount > itemCount
+                    || (model.DisplayOption == SelectionMode.DropDown && model.DefaultValue > model.DisplayLines)
+                    || (model.DisplayOption == SelectionMode.Checkbox && (model.SelectCount == 1 || model.DisplayLines > 1))
+                    || (model.DisplayOption == SelectionMode.Radiobutton && (model.SelectCount > 1 || model.DisplayLines <= 1)))
+                {
+                    updateModel.AddModelError("Settings", _t("The setting values have conflicts."));
+                    yield break;
+                }
+
+                var labelCache = new StringBuilder();
+                for (int index = 1; index <= itemCount; index++)
+                {
+                    if (labels[index].Default)
+                    {
+                        model.DefaultValue = index;
+                    }
+                    labelCache.Append(labels[index] + SelectFieldSettings.LabelSeperator[0]);
+                }
+                model.LabelsStr = labelCache.ToString();
+
                 UpdateSettings(model, builder, "SelectFieldSettings");
                 builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
                 builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
@@ -70,20 +109,24 @@ namespace Coevery.Fields.Settings
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null))
             {
-                var field = _partDefinitionRepository.Table.Single(x => x.Name == typeName)
+                _itemField = _partDefinitionRepository.Table.Single(x => x.Name == typeName)
                     .ContentPartFieldDefinitionRecords.Single(x => x.Name == builder.Name);
 
                 //Basic Validation, should be replaced later
-                if (string.IsNullOrWhiteSpace(model.LabelsStr)) {
+                if (string.IsNullOrWhiteSpace(model.LabelsStr))
+                {
                     updateModel.AddModelError("LabelsStr", _t("The LabelsStr is invalid."));
-                    yield break; 
+                    yield break;
                 }
 
                 var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
                 var itemCount = labels.Length;
 
-                if (model.SelectCount < 1 || model.DisplayLines > itemCount
-                    || model.DefaultValue > model.DisplayLines) 
+                if (itemCount < 1 || model.SelectCount < 1 || model.DefaultValue < 0
+                    || model.DefaultValue > itemCount || model.DisplayLines > itemCount || model.SelectCount > itemCount
+                    || (model.DisplayOption == SelectionMode.DropDown && model.DefaultValue > model.DisplayLines)
+                    || (model.DisplayOption == SelectionMode.Checkbox && (model.SelectCount == 1 || model.DisplayLines > 1))
+                    || (model.DisplayOption == SelectionMode.Radiobutton && (model.SelectCount > 1 || model.DisplayLines <= 1)))
                 {
                     updateModel.AddModelError("Settings", _t("The setting values have conflicts."));
                     yield break;
@@ -96,7 +139,7 @@ namespace Coevery.Fields.Settings
                     var option = new OptionItemRecord
                     {
                         Value = label,
-                        ContentPartFieldDefinitionRecord = field,
+                        ContentPartFieldDefinitionRecord = _itemField,
                         IsDefault = (idIndex == model.DefaultValue)
                     };
                     _optionItemRepository.Create(option);
