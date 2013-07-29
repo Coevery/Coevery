@@ -10,7 +10,7 @@ define(['core/app/detourService'], function (detour) {
            };
 
            $scope.save = function () {
-               var form = angular.element(myForm);
+               var form = $("form[name=myForm]");
                var promise = $http({
                    url: form.attr('action'),
                    method: "POST",

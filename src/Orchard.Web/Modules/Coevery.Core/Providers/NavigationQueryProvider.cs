@@ -34,6 +34,10 @@ namespace Coevery.Core.Providers
                     string pluralContentTypeName = pluralService.Pluralize(moduleMenuPart.Record.ContentTypeDefinitionRecord.Name);
                     string url = string.Format(urlTemp, pluralContentTypeName);
                     item.Url = url;
+                    if (item.Classes==null) {
+                        item.Classes = new List<string>();
+                    }
+                    item.Classes.Add(moduleMenuPart.IconClass);
                     yield return item;
                 }
                 else
