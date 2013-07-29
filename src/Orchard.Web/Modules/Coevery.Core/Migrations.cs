@@ -45,6 +45,10 @@ namespace Coevery.Core {
                );
             return 3;
         }
-    
+
+        public int UpdateFrom3() {
+            SchemaBuilder.AlterTable("ModuleMenuItemPartRecord", table => table.AddColumn<string>("IconClass"));
+            return 4;
+        }
     }
 }

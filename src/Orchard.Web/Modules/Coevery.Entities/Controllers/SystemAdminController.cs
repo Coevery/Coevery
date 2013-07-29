@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.Entities.ViewModels;
 using Orchard;
@@ -17,12 +18,13 @@ namespace Coevery.Entities.Controllers
     public class SystemAdminController : Controller, IUpdateModel
     {
         private readonly IContentDefinitionService _contentDefinitionService;
-
+        private readonly ISchemaUpdateService _schemaUpdateService;
         public SystemAdminController(IOrchardServices orchardServices, 
-            IContentDefinitionService contentDefinitionService)
+            IContentDefinitionService contentDefinitionService, ISchemaUpdateService schemaUpdateService)
         {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
+            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -100,7 +102,7 @@ namespace Coevery.Entities.Controllers
 
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
-
+            _schemaUpdateService.CreateTable(viewModel.Name.Trim());
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
@@ -151,6 +153,14 @@ namespace Coevery.Entities.Controllers
         }
 
         public ActionResult Relationships() {
+            return View();
+        }
+
+        public ActionResult EditOneToMany(string id) {
+            return View();
+        }
+
+        public ActionResult EditManyToMany(string id) {
             return View();
         }
 

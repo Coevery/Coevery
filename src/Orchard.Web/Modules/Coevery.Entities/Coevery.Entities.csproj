@@ -88,9 +88,6 @@
   <ItemGroup>
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\GenerationController.cs" />
-    <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
-    <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
-    <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
@@ -110,6 +107,8 @@
     <Content Include="Scripts\controllers\editcontroller.js" />
     <Content Include="Scripts\controllers\fieldscontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
+    <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
+    <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\relationshipscontroller.js" />
     <Content Include="Scripts\services\entitydataservice.js" />
     <Content Include="Scripts\services\fielddataservice.js" />
@@ -175,6 +174,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Fields.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\EditOneToMany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\EditManyToMany.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

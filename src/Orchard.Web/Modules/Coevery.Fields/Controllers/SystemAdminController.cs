@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Coevery.Core.Services;
 using Coevery.Entities;
 using Coevery.Fields.Settings;
 using Coevery.Fields.ViewModels;
@@ -23,16 +24,18 @@ namespace Coevery.Fields.Controllers {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
-
+        private readonly ISchemaUpdateService _schemaUpdateService;
         public SystemAdminController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents, 
+            ISchemaUpdateService schemaUpdateService) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -155,7 +158,7 @@ namespace Coevery.Fields.Controllers {
             }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
-
+            _schemaUpdateService.CreateColumn(partViewModel.Name, viewModel.Name, viewModel.FieldTypeName);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
@@ -224,7 +227,7 @@ namespace Coevery.Fields.Controllers {
             _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
 
             _contentDefinitionService.AlterField(id, viewModel, this);
-
+            _schemaUpdateService.CreateColumn(partViewModel.Name, field.Name, field.FieldDefinition.Name);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 

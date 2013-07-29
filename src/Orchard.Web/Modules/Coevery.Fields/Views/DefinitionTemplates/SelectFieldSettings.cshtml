@@ -1,23 +1,26 @@
 ﻿@model Coevery.Fields.Settings.SelectFieldSettings
 @using Coevery.Fields.Settings;
 
-<section class="control-group">
-    <label class="control-label">
-        Item Count
-    </label>
-    <div class="controls">
-        @Html.TextBoxFor(d => d.ItemCount, new { @class = "span12" })
-    </div>
-</section>
-
-<section class="control-group">
-    <label class="control-label">
-        Item Labels
-    </label>
-    <div class="controls">
-        @Html.TextAreaFor(m => m.LabelsStr, new { @class = "span12" })
-    </div>
-</section>
+@if (!Request.Url.ToString().Contains("/Fields/Edit"))
+{
+    <section class="control-group">
+        <label class="control-label">
+            Item Labels
+        </label>
+        <div class="controls">
+            @Html.TextAreaFor(m => m.LabelsStr, new { @class = "span12" })
+        </div>
+    </section>
+    
+    <section class="control-group">
+        <label class="control-label">
+            Default Value
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12" })
+        </div>
+    </section>
+}
 
 <section class="control-group">
     <label class="control-label">
@@ -33,18 +36,14 @@
         Display Option
     </label>
     <div class="controls">
-        <label class="radio">
-            @Html.RadioButtonFor(m => m.DisplayOption, Model.DisplayOption == SelectionMode.DropDown, new { @class="" })
-            @T(SelectionMode.DropDown.ToString())
-        </label>
-        <label class="radio">
-            @Html.RadioButtonFor(m => m.DisplayOption, Model.DisplayOption == SelectionMode.Radiobutton, new { @class="" })
-            @T(SelectionMode.Radiobutton.ToString())
-        </label>
-        <label class="radio">
-            @Html.RadioButtonFor(m => m.DisplayOption, Model.DisplayOption == SelectionMode.Checkbox, new { @class="" })
-            @T(SelectionMode.Checkbox.ToString())
-        </label>
+        @foreach (var displayOpt in Enum.GetValues(typeof(SelectionMode)).Cast<SelectionMode>())
+        {
+            string isChecked = (displayOpt == Model.DisplayOption) ? "checked" : null;
+            <label class="radio">
+                @Html.RadioButtonFor(m => m.DisplayOption, displayOpt, new { @class = "", isChecked })
+                @T(displayOpt.ToString())
+            </label>
+        }
     </div>
 </section>
 
@@ -57,11 +56,9 @@
     </div>
 </section>
 
-<section class="control-group">
-    <label class="control-label">
-        Default Value
-    </label>
-    <div class="controls">
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12" })
-    </div>
-</section>
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>
+

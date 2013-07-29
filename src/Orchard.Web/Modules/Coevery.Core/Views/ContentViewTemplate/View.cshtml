@@ -5,7 +5,6 @@
     <div id="page-actions">
         <h1 class="pull-left">{{moduleName}} <span>view a data</span></h1>
     </div>
-
     <section id="main-content">
         <header id="page-title" class="clearfix">
             <btn-actions>
@@ -16,82 +15,83 @@
 
         <div class="row-fluid">
             <section class="view-mode span12">
-                    <section>
-                        <header>
-                            <span class="show-button"></span>
-                            <h5>General Info</h5>
-                        </header>
-                        <div class="data-row clearfix">
-                            <div class="span6">
-                                <span class="title control-label">Topic</span>
-                                <div class="control controls">
-                                    <span class="control-text">Need a new website</span>
-                                </div>
-                            </div>
-                            <div class="span6">
-                                <span class="title control-label">IsChina</span>
-                                <div class="control controls">
-                                    <label class="checkbox" for="Lead_IsChina_Value">
-                                        <input type="checkbox" id="Lead_IsChina_Value" value="true" name="Lead.IsChina.Value" checked>
-                                    </label>
-                                </div>
+                <section>
+                    <header>
+                        <span class="show-button"></span>
+                        <h5>General Info</h5>
+                    </header>
+                    @Display(Model.Content)
+                    @*<div class="data-row clearfix">
+                        <div class="span6">
+                            <span class="title control-label">Topic</span>
+                            <div class="control controls">
+                                <span class="control-text">Need a new website</span>
                             </div>
                         </div>
-                        <div class="data-row clearfix">
-                            <div class="span6">
-                                <span class="title control-label">FirstName</span>
-                                <div class="control controls">
-                                    <span class="control-text">Will</span>
-                                </div>
-                            </div>
-                            <div class="span6">
-                                <span class="title control-label">LastName</span>
-                                <div class="control controls">
-                                    <label class="checkbox" for="Lead_LastName_Value">
-                                        <input type="checkbox" id="Lead_LastName_Value" value="true" name="Lead.LastName.Value">
-                                    </label>
-                                </div>
+                        <div class="span6">
+                            <span class="title control-label">IsChina</span>
+                            <div class="control controls">
+                                <label class="checkbox" for="Lead_IsChina_Value">
+                                    <input type="checkbox" id="Lead_IsChina_Value" value="true" name="Lead.IsChina.Value" checked>
+                                </label>
                             </div>
                         </div>
-                    </section>
-                    <section>
-                        <header>
-                            <span class="show-button"></span>
-                            <h5>General Info</h5>
-                        </header>
-                        <div class="data-row clearfix">
-                            <div class="span6">
-                                <span class="title control-label">Topic</span>
-                                <div class="control controls">
-                                    <span class="control-text">Need a new website</span>
-                                </div>
-                            </div>
-                            <div class="span6">
-                                <span class="title control-label">IsChina</span>
-                                <div class="control controls">
-                                    <label class="checkbox" for="Lead_IsChina_Value">
-                                        <input type="checkbox" id="Lead_IsChina_Value" value="true" name="Lead.IsChina.Value" checked>
-                                    </label>
-                                </div>
+                    </div>
+                    <div class="data-row clearfix">
+                        <div class="span6">
+                            <span class="title control-label">FirstName</span>
+                            <div class="control controls">
+                                <span class="control-text">Will</span>
                             </div>
                         </div>
-                        <div class="data-row clearfix">
-                            <div class="span6">
-                                <span class="title control-label">FirstName</span>
-                                <div class="control controls">
-                                    <span class="control-text">Will</span>
-                                </div>
-                            </div>
-                            <div class="span6">
-                                <span class="title control-label">LastName</span>
-                                <div class="control controls">
-                                    <label class="checkbox" for="Lead_LastName_Value">
-                                        <input type="checkbox" id="Lead_LastName_Value" value="true" name="Lead.LastName.Value">
-                                    </label>
-                                </div>
+                        <div class="span6">
+                            <span class="title control-label">LastName</span>
+                            <div class="control controls">
+                                <label class="checkbox" for="Lead_LastName_Value">
+                                    <input type="checkbox" id="Lead_LastName_Value" value="true" name="Lead.LastName.Value">
+                                </label>
                             </div>
                         </div>
-                    </section>
+                    </div>*@
+                </section>
+                <section>
+                    <header>
+                        <span class="show-button"></span>
+                        <h5>General Info</h5>
+                    </header>
+                    <div class="data-row clearfix">
+                        <div class="span6">
+                            <span class="title control-label">Topic</span>
+                            <div class="control controls">
+                                <span class="control-text">Need a new website</span>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <span class="title control-label">IsChina</span>
+                            <div class="control controls">
+                                <label class="checkbox" for="Lead_IsChina_Value">
+                                    <input type="checkbox" id="Lead_IsChina_Value" value="true" name="Lead.IsChina.Value" checked>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data-row clearfix">
+                        <div class="span6">
+                            <span class="title control-label">FirstName</span>
+                            <div class="control controls">
+                                <span class="control-text">Will</span>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <span class="title control-label">LastName</span>
+                            <div class="control controls">
+                                <label class="checkbox" for="Lead_LastName_Value">
+                                    <input type="checkbox" id="Lead_LastName_Value" value="true" name="Lead.LastName.Value">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
         </div>
 

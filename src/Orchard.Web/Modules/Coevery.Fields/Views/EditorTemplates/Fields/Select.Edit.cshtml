@@ -1,26 +1,70 @@
 ﻿@model Coevery.Fields.Fields.SelectField
 @using Orchard.Utility.Extensions;
 @using Coevery.Fields.Settings;
+
 @{
     var settings = Model.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
-    var required = settings.Required ? "required" : null;
+    var multiple = (settings.SelectCount > 1) ? "multiple" : null;
+    var required = settings.Required ? "required" : null;  
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
 <div class="control controls">
+
     @if (settings.DisplayOption == SelectionMode.DropDown)
     {
-        <select class="span12" id="@Html.FieldIdFor(m => m.Value)" 
-                name="@Html.FieldNameFor(m => m.Value)" 
+        var displaySize = (settings.SelectCount > 1) ? settings.DisplayLines : 1;
+        var selectAttributes = new Dictionary<string, object>();
 
-            @if (settings.Required)
-            {
-                <text> required</text>
-            }>
-            <option>Option1</option>
-            <option>Option2</option>
-            <option>Option3</option>
-        </select>
+        selectAttributes.Add("class", "span12");
+        if (required != null)
+        {
+            selectAttributes.Add(required, null);
+        }
+        selectAttributes.Add("size", displaySize);
+        if (required != null)
+        {
+            selectAttributes.Add(required, null);
+        }
+
+        if (multiple != null)
+        {
+        @Html.ListBoxFor(m => m.OptionValue, Model.Items, selectAttributes)
+        }
+        else
+        {
+        @Html.DropDownListFor(x => x.Value, Model.Items, selectAttributes)
+        }
+    }
+    else if (settings.DisplayOption == SelectionMode.Radiobutton)
+    {
+        foreach (var item in Model.Items)
+        {
+            var itemId = Model.Name + item.Value;               
+        <label class="radio span12">
+            <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.Value)" value="@item.Value" @if (item.Selected)
+                                                                                                                 { <text> checked </text> }/>
+            @T(item.Text)
+        </label>          
+        }
+    }
+    else if (settings.DisplayOption == SelectionMode.Checkbox)
+    {
+        foreach (var item in Model.Items)
+        {
+            var itemId = Model.Name + item.Value;
+        <label class="checkbox span12" for="@itemId">
+            <input type="checkbox" id="@itemId" name="@Html.FieldNameFor(model => model.Value)" value="@item.Value" @if (item.Selected)
+                                                                                                                    { <text> checked </text> }/>
+            @T(item.Text)
+        </label>          
+        }
     }
     @Html.ValidationMessageFor(m => m.Value)
+
 </div>
+<script type="text/javascript">
+    $(function () {
+
+    });
+</script>

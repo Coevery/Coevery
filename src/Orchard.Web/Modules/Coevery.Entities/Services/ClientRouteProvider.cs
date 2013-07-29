@@ -59,6 +59,22 @@ namespace Coevery.Entities.Services
                        descriptor.Controller = "RelationshipsCtrl";
                        descriptor.Dependencies = new[] {"controllers/relationshipscontroller"};
                    });
+
+            builder.Describe("EditOneToMany")
+                  .Configure(descriptor => {
+                      descriptor.Url = "/Relationships/{EntityName:[0-9a-zA-Z]+}/EditOneToMany";
+                      descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/EditOneToMany/' + params.EntityName; }";
+                      descriptor.Controller = "EditOneToManyCtrl";
+                      descriptor.Dependencies = new string[] { "controllers/onetomanydetailcontroller" };
+                  });
+
+            builder.Describe("EditManyToMany")
+                   .Configure(descriptor => {
+                       descriptor.Url = "/Relationships/{EntityName:[0-9a-zA-Z]+}/EditManyToMany";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/EditManyToMany/' + params.EntityName; }";
+                       descriptor.Controller = "EditManyToManyCtrl";
+                       descriptor.Dependencies = new string[] { "controllers/manytomanydetailcontroller" };
+                   });
         }
     }
 }

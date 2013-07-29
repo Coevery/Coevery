@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
@@ -6,6 +8,9 @@ using Orchard.ContentManagement.Handlers;
 using Coevery.Fields.Fields;
 using Coevery.Fields.Settings;
 using Orchard.Localization;
+using Orchard.Data;
+using Orchard.Core.Settings.Metadata.Records;
+using Coevery.Fields.Records;
 
 namespace Coevery.Fields.Drivers
 {
@@ -13,9 +18,15 @@ namespace Coevery.Fields.Drivers
     {
         public IOrchardServices Services { get; set; }
         private const string TemplateName = "Fields/Select.Edit";
+        private readonly IRepository<OptionItemRecord> _optionItemRepository;
+        private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
 
-        public SelectFieldDriver(IOrchardServices services)
+        public SelectFieldDriver(IOrchardServices services,
+            IRepository<OptionItemRecord> optionItemRepository,
+            IRepository<ContentPartDefinitionRecord> partDefinitionRepository)
         {
+            _optionItemRepository = optionItemRepository;
+            _partDefinitionRepository = partDefinitionRepository;
             Services = services;
             T = NullLocalizer.Instance;
             DisplayName = "Select";
@@ -51,6 +62,24 @@ namespace Coevery.Fields.Drivers
                 var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
                 field.Value = settings.DefaultValue.ToString();
             }
+
+            var fieldDefinitionRecord = (from e in _partDefinitionRepository.Table
+                                         from f in e.ContentPartFieldDefinitionRecords
+                                         where e.Name == part.TypeDefinition.Name && f.Name == field.Name
+                                         select f).First();
+            if (fieldDefinitionRecord == null)
+            {
+                return ContentShape("Fields_Select_Edit", GetDifferentiator(field, part),
+                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
+            }
+            field.Items = (from i in _optionItemRepository.Table
+                                          where i.ContentPartFieldDefinitionRecord == fieldDefinitionRecord
+                                          select new SelectListItem {
+                                              Value = i.Id.ToString(),
+                                              Text = i.Value,
+                                              Selected = i.IsDefault                                            
+                                          }).AsEnumerable();
+
             return ContentShape("Fields_Select_Edit", GetDifferentiator(field, part),
                  () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }

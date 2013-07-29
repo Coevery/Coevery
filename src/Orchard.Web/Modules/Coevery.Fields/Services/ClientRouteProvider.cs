@@ -28,10 +28,11 @@ namespace Coevery.Fields.Services {
                        descriptor.Controller = "FieldEditCtrl";
                        descriptor.Dependencies = new string[] {"controllers/editcontroller"};
                    });
-            builder.Describe("FieldItems")
+            builder.Describe("FieldEdit.Items")
                    .Configure(descriptor => {
-                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Items/{FieldName:[0-9a-zA-Z]+}";
-                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Items/' + params.EntityName; }";
+                       //descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+/Items}";
+                       descriptor.Url = "/Items";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Items/' + params.EntityName+ '?FieldName=' + params.FieldName; }";
                        descriptor.Controller = "ItemsCtrl";
                        descriptor.Dependencies = new string[] {"controllers/itemscontroller"};
                    });

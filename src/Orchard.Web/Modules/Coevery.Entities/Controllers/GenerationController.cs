@@ -2,19 +2,17 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Coevery.Entities.DynamicTypeGeneration;
 using Orchard.Localization;
 
 namespace Coevery.Entities.Controllers
 {
     public class GenerationController : ApiController
     {
-        private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
+        //private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
 
-        public GenerationController(
-            IDynamicAssemblyBuilder dynamicAssemblyBuilder)
+        public GenerationController()
         {
-            _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
+            //_dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             T = NullLocalizer.Instance;
         }
 
@@ -22,18 +20,19 @@ namespace Coevery.Entities.Controllers
 
         public HttpResponseMessage Post([FromBody]string name)
         {
-            try {
-                bool successful = _dynamicAssemblyBuilder.Build();
+            //try {
+            //    bool successful = _dynamicAssemblyBuilder.Build();
 
-                if (successful)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
-            }
-            catch (Exception) {
-                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
-            }
+            //    if (successful)
+            //    {
+            //        return Request.CreateResponse(HttpStatusCode.OK);
+            //    }
+            //    return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+            //}
+            //catch (Exception) {
+            //    return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+            //}
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
     }
 }

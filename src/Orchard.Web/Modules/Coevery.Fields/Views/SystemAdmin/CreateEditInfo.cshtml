@@ -14,8 +14,8 @@
                                                           new { @class = "form-horizontal no-border", @id = "field-info-form", @name = "myForm" }))
                     {
                         <fieldset>
-                            <legend><h5>Information</h5></legend>
-                            <section class="control-group">
+                            <legend>Information</legend>
+                            <section class="control-group data-row">
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.DisplayName)">
                                     @T("Field Label")
                                 </label>
@@ -23,7 +23,7 @@
                                     @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName",autofocus = "autofocus", ng_model = "fieldLabel" })
                                 </div>
                             </section>
-                            <section class="control-group">
+                            <section class="control-group data-row">
                                 <label class="control-label required" for="@Html.FieldIdFor(m => m.Name)">
                                     @T("Field Name")
                                 </label>
@@ -31,7 +31,7 @@
                                     @Html.TextBoxFor(m => m.Name, new { @class = "span12 nameisnotid required safename", id = "inputFieldName", ng_model = "fieldName" })
                                 </div>
                             </section>
-                            <section class="control-group">
+                            <section class="control-group data-row">
                                 <label class="control-label">
                                     @T("Options")
                                 </label>
@@ -54,7 +54,7 @@
                                     </label>
                                 </div>
                             </section>
-                            <section class="control-group">
+                            <section class="control-group data-row">
                                 <label class="control-label" for="@Html.FieldIdFor(m => m.HelpText)">
                                     @T("Help Text")
                                 </label>
@@ -65,7 +65,7 @@
                             @Html.HiddenFor(m => m.FieldTypeName)
                         </fieldset>
                         <fieldset id="fieldPanel">
-                            <legend><h5>Field Information</h5></legend>
+                            <legend>Field Information</legend>
                             @{ Html.RenderTemplates(Model.TypeTemplates); }
                         </fieldset>
                     }
