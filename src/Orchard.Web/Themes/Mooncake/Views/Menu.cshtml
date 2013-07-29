@@ -1,7 +1,18 @@
 ﻿@using System.Web.Routing;
 @using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
-
+@{
+    Func<List<string>, string> convert = delegate(List<string> classList) {
+                                             var classes = "";
+                                             if (classList == null || classList.Count < 1) {
+                                                 return "icon-home";
+                                             }
+                                             foreach (var @class in classList) {
+                                                 classes += " " + @class;
+                                             }
+                                             return classes;
+                                         }; 
+}
 <div id="nav-selector">
     <div class="dropdown">
         @if (Model.Items.Count > 0) {
@@ -39,7 +50,7 @@
 
                         <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
                             <a href="@secondLevelUrl" title="@secondLevelTextHint">
-                                <i class="                        @secondLevelMenuItem.Classes" ></i>
+                                <i class="@convert(secondLevelMenuItem.Classes)" ></i>
                                 <span class="nav-title">@secondLevelMenuItem.Text</span>
                             </a>
                         </li>

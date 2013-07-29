@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
+using Coevery.Core.Models;
 using Orchard;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Navigation.Models;
@@ -31,15 +34,19 @@ namespace Coevery.Core.FrontMenu
 
         private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart)
         {
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            const string urlTemp = "~/Coevery#/{0}";
+            string pluralContentTypeName = pluralService.Pluralize(menuPart.MenuText);
+            string url = string.Format(urlTemp, pluralContentTypeName);
+
             return new MenuItemEntry
             {
+
                 MenuItemId = menuPart.Id,
                 IsMenuItem = menuPart.Is<MenuItemPart>(),
                 Text = menuPart.MenuText,
                 Position = menuPart.MenuPosition,
-                Url = menuPart.Is<MenuItemPart>()
-                              ? menuPart.As<MenuItemPart>().Url
-                              : string.Empty,//_navigationManager.GetUrl(null, Services.ContentManager.GetItemMetadata(menuPart).DisplayRouteValues),
+                Url = url,
                 ContentItem = menuPart.ContentItem,
             };
         }
@@ -55,12 +62,24 @@ namespace Coevery.Core.FrontMenu
                         {
                             int menuIdex = 0;
                             var subMenus = _menuService.GetMenuParts(c.Id).
-                                Select(CreateMenuItemEntries).
-                                OrderBy(menuPartEntry => menuPartEntry.Position, 
+                                OrderBy(menuPartEntry => menuPartEntry.MenuPosition, 
                                 new FlatPositionComparer()).ToList();
-                            foreach (var subMenu in subMenus)
-                            {
-                                menu.Add(T(subMenu.Text), (++menuIdex).ToString(), item => item.Url(subMenu.Url));
+                            foreach (var subMenu in subMenus) {
+
+                                //var moduleMenuItem = c.As<ModuleMenuItemPart>();
+                                //if(moduleMenuItem!=null) {
+                                
+                                //}
+
+                                var menuItemEntity = CreateMenuItemEntries(subMenu);
+                                var moduleMenuItem = subMenu.As<ModuleMenuItemPart>();
+                                if (moduleMenuItem != null) {
+                                    menu.Add(T(menuItemEntity.Text), (++menuIdex).ToString(), item => item.Url(menuItemEntity.Url), new List<string>() { moduleMenuItem.IconClass});
+                                }
+                                else
+                                {
+                                    menu.Add(T(menuItemEntity.Text), (++menuIdex).ToString(), item => item.Url(menuItemEntity.Url));   
+                                }
                             }
                         });
             });
