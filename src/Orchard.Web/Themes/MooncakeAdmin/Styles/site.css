@@ -265,10 +265,6 @@ fieldset legend + .control-group {
     border-left: none;
 }
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
     border: 1px solid #CFCFCF;
     border-bottom: none;
     border-image: none;
@@ -303,4 +299,9 @@ ul.nav.nav-tabs {
 /*Date/Time Picker*/
 .control-group .controls.input-prepend {
     display: block; 
+}
+
+/*Modal/Dialog*/
+.modal.ng-scope {
+    position: absolute;
 }

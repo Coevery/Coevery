@@ -10,6 +10,7 @@ namespace Coevery.Perspectives.ViewModels {
         public int NavigationId { get; set; }
         public string EntityName { get; set; }
         public string Title { get; set; }
+        public string IconClass { get; set; }
         public IList<SelectListItem> Entities { get; set; }
     }
 }

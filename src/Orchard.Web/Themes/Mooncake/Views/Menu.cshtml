@@ -36,9 +36,10 @@
                         string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
 
                         var secondLevelUrl = secondLevelMenuItem.Href;
+
                         <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
                             <a href="@secondLevelUrl" title="@secondLevelTextHint">
-                                <i class="icon-home" ></i>
+                                <i class="                        @secondLevelMenuItem.Classes" ></i>
                                 <span class="nav-title">@secondLevelMenuItem.Text</span>
                             </a>
                         </li>

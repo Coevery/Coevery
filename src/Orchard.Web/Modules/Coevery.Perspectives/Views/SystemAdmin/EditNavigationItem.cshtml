@@ -1,5 +1,8 @@
 ﻿@using System.ComponentModel
 @model Coevery.Perspectives.ViewModels.NavigationViewModel
+@{
+    var iconClass = string.IsNullOrWhiteSpace(Model.IconClass) ? "icon-home" : Model.IconClass;
+}
 <section>
     <div id="page-actions">
         <h1 class="pull-left">@T("Navigation Item Detail") <span>show navigation item detail information</span></h1>
@@ -43,7 +46,10 @@
                         <section class="control-group">
                             <label class="control-label">Icon</label>
                             <div class="controls">
-                                <input type="file" id="input04" data-provide="fileinput">
+                                @*<input type="file" id="input04" data-provide="fileinput">*@
+                                <i class="@iconClass"></i>
+                                @Html.HiddenFor(m=>m.IconClass)
+                                <button type="button" class="btn btn-small">Change</button>
                             </div>
                         </section>
                     </fieldset>
