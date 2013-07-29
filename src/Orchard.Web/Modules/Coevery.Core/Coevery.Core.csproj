@@ -46,10 +46,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\autofac\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="FluentNHibernate, Version=1.3.0.733, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Orchard.Users\bin\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Orchard.Users\bin\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -108,6 +116,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Drivers\DynamicContentsDriver.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
+    <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="FrontMenu\FrontMenuFilter.cs" />
     <Compile Include="FrontMenu\FrontMenu.cs" />
     <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
@@ -131,6 +142,7 @@
     <Compile Include="ClientRoute\IClientRouteProvider.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />
+    <Compile Include="Services\SchemaUpdateService.cs" />
     <Compile Include="Services\ViewPartService.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="DefaultRoute.cs" />
