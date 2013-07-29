@@ -20,11 +20,6 @@ namespace Coevery.Fields.Settings
         private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
         private readonly Localizer _t;
 
-        public SelectFieldListModeEvents()
-        {
-            _t = NullLocalizer.Instance;
-        }
-
         public SelectFieldListModeEvents(
             IRepository<OptionItemRecord> optionItemRepository,
             IRepository<ContentPartDefinitionRecord> partDefinitionRepository)
@@ -78,10 +73,17 @@ namespace Coevery.Fields.Settings
             {
                 var field = _partDefinitionRepository.Table.Single(x => x.Name == typeName)
                     .ContentPartFieldDefinitionRecords.Single(x => x.Name == builder.Name);
-                var labels = model.LabelsStr.Split(new string[] { "\r\n",";" }, StringSplitOptions.RemoveEmptyEntries);
 
-                //Basic Validation, should be replaced later       
-                if (model.SelectCount < 1 || model.ItemCount != labels.Length || model.DisplayLines > model.ItemCount
+                //Basic Validation, should be replaced later
+                if (string.IsNullOrWhiteSpace(model.LabelsStr)) {
+                    updateModel.AddModelError("LabelsStr", _t("The LabelsStr is invalid."));
+                    yield break; 
+                }
+
+                var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
+                model.ItemCount = labels.Length;
+
+                if (model.SelectCount < 1 || model.DisplayLines > model.ItemCount
                     || model.DefaultValue > model.DisplayLines) 
                 {
                     updateModel.AddModelError("Settings", _t("The setting values have conflicts."));
@@ -101,6 +103,12 @@ namespace Coevery.Fields.Settings
                     _optionItemRepository.Create(option);
                 }
                 UpdateSettings(model, builder, "SelectFieldSettings");
+                builder.WithSetting("SelectFieldSettings.ItemCount", model.ItemCount.ToString());
+                builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
+                builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
+                builder.WithSetting("SelectFieldSettings.LabelsStr", model.LabelsStr);
+                builder.WithSetting("SelectFieldSettings.DefaultValue", model.DefaultValue.ToString());
+                builder.WithSetting("SelectFieldSettings.SelectCount", model.SelectCount.ToString());
             }
 
             yield return DefinitionTemplate(model);

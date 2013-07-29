@@ -375,3 +375,8 @@ ul.nav.nav-tabs {
 .control-group .controls.input-prepend {
     display: block; 
 }
+
+/*Modal/Dialog*/
+.modal.ng-scope {
+    position: absolute;
+}

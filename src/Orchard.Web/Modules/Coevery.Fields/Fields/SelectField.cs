@@ -1,11 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Web.Mvc;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.FieldStorage;
+using Coevery.Fields.Settings;
 
-namespace Coevery.Fields.Fields {
-    public class SelectField : ContentField {
 
-        public string Value {
+namespace Coevery.Fields.Fields
+{
+    public class SelectField : ContentField
+    {
+
+        public IEnumerable<SelectListItem> Items { get; set; }
+        public string[] OptionValue
+        {
+            get
+            {
+                return Value.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
+            }
+            set
+            {
+                var tempValue = new StringBuilder();
+                foreach (var label in value) {
+                    tempValue.Append(label + ";");
+                }
+                Value = tempValue.ToString();
+            }
+        }
+        public string Value
+        {
             get { return Storage.Get<string>(Name); }
             set { Storage.Set(value); }
         }

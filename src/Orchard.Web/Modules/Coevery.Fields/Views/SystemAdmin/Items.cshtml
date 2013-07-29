@@ -1,11 +1,7 @@
-﻿<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
-    <h1 id="main-heading" style="background-image: none;">Items <span>field's items.</span></h1>
-</header>
-
+﻿
 <section id="main-content">
     <div class="row-fluid">
         <div id="page-toolbar">
-            <button type="button" class="btn" data-ng-click="back()">Back</button>
             <button class="btn btn-success" data-ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;Add
             </button>
@@ -18,12 +14,13 @@
                 <section class="gridStyle" data-ng-grid="gridOptions"></section>
             </div>
         </div>
-    </div>
+    </div>     
+    
 </section>
 
 <section id="deleteModal" class="modal hide fade" tabindex="-1">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h3>Confirm</h3>
     </div>
     <div class="modal-body">
@@ -65,5 +62,7 @@
 </section>
 
 <script>
-    
+    $(function() {
+
+    });
 </script>

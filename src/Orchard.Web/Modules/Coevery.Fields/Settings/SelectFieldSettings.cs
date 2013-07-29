@@ -6,6 +6,7 @@
     }
 
     public class SelectFieldSettings : FieldSettings {
+        public static readonly string[] LabelSeperator = new string[] { "\r\n",";" };
         public int ItemCount { get; set; }
         public int DisplayLines { get; set; }
         public SelectionMode DisplayOption { get; set; }
@@ -16,9 +17,9 @@
         public int DefaultValue { get; set; }
 
         public SelectFieldSettings() {
-            ItemCount = 0;
-            LabelsStr = null;
-            DisplayOption = SelectionMode.Radiobutton;
+            ItemCount = 4;
+            LabelsStr = "1;2;3;4";
+            DisplayOption = SelectionMode.DropDown;
             DefaultValue = 0;
             SelectCount = 1;
             DisplayLines = 4;

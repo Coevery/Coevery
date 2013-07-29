@@ -23,14 +23,16 @@ namespace Coevery.Fields.Services {
 
             builder.Describe("FieldEdit")
                    .Configure(descriptor => {
-                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+}";
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/{FieldName:[0-9a-zA-Z]+}/Edit";
                        descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Edit/' + params.EntityName + '?FieldName=' + params.FieldName; }";
                        descriptor.Controller = "FieldEditCtrl";
                        descriptor.Dependencies = new string[] {"controllers/editcontroller"};
                    });
-            builder.Describe("FieldItems")
+            builder.Describe("FieldEdit.Items")
                    .Configure(descriptor => {
-                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Items/{FieldName:[0-9a-zA-Z]+}";
+                       //descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+/Items}";
+                       descriptor.Url = "/Items";
+                       //descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Items/' + params.EntityName+ '?FieldName=' + params.FieldName; }";
                        descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Items/' + params.EntityName; }";
                        descriptor.Controller = "ItemsCtrl";
                        descriptor.Dependencies = new string[] {"controllers/itemscontroller"};
