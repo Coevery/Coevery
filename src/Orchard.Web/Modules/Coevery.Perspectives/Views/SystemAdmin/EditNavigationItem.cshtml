@@ -47,8 +47,8 @@
                             <label class="control-label">Icon</label>
                             <div class="controls">
                                 @*<input type="file" id="input04" data-provide="fileinput">*@
-                                <i class="@iconClass"></i>
-                                @Html.HiddenFor(m=>m.IconClass)
+                                <i id="showIconClass" class="@iconClass"></i>
+                                @Html.HiddenFor(m=>m.IconClass,new {id="hfIconClass"})
                                 <button type="button" class="btn btn-small">Change</button>
                             </div>
                         </section>
@@ -63,6 +63,9 @@
     $(document).ready(
         function () {
             $('.page-actions').affix({ offset: { top: 71 } });
+            $("#IconClass").change(function () {
+                $("#showIconClass").attr("class", $(this).val());
+            });
         }
     );
 </script>
