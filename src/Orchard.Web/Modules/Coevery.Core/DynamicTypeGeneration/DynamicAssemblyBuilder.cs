@@ -15,11 +15,12 @@ using Orchard.Environment.Features;
 using Orchard.FileSystems.VirtualPath;
 using Orchard.ContentManagement.Handlers;
 
-namespace Coevery.Entities.DynamicTypeGeneration
+namespace Coevery.Core.DynamicTypeGeneration
 {
     public interface IDynamicAssemblyBuilder : IDependency
     {
         bool Build();
+        Type GetFieldType(string fieldNameType);
     }
 
     public class DynamicAssemblyBuilder : IDynamicAssemblyBuilder

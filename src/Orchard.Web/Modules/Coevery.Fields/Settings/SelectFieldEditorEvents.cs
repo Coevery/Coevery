@@ -50,7 +50,6 @@ namespace Coevery.Fields.Settings
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null))
             {
                 UpdateSettings(model, builder, "SelectFieldSettings");
-                builder.WithSetting("SelectFieldSettings.ItemCount", model.ItemCount.ToString());
                 builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
                 builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
                 builder.WithSetting("SelectFieldSettings.LabelsStr", model.LabelsStr);
@@ -81,9 +80,9 @@ namespace Coevery.Fields.Settings
                 }
 
                 var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
-                model.ItemCount = labels.Length;
+                var itemCount = labels.Length;
 
-                if (model.SelectCount < 1 || model.DisplayLines > model.ItemCount
+                if (model.SelectCount < 1 || model.DisplayLines > itemCount
                     || model.DefaultValue > model.DisplayLines) 
                 {
                     updateModel.AddModelError("Settings", _t("The setting values have conflicts."));
@@ -103,7 +102,6 @@ namespace Coevery.Fields.Settings
                     _optionItemRepository.Create(option);
                 }
                 UpdateSettings(model, builder, "SelectFieldSettings");
-                builder.WithSetting("SelectFieldSettings.ItemCount", model.ItemCount.ToString());
                 builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
                 builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
                 builder.WithSetting("SelectFieldSettings.LabelsStr", model.LabelsStr);

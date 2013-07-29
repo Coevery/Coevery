@@ -111,7 +111,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                         $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: fieldName });
                     } else {
                         $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
-                    }             
+                    }
                 };
                 $scope.gotoDependency = function () {
                     $detour.transitionTo('FieldDependencyList', { EntityName: entityName });

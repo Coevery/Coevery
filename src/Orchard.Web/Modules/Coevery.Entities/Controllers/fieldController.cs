@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.FormDesigner.Services;
 using Orchard.ContentManagement.MetaData;
@@ -12,10 +13,13 @@ namespace Coevery.Entities.Controllers {
     public class FieldController : ApiController {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly ISchemaUpdateService _schemaUpdateService;
         public FieldController(IContentDefinitionService contentDefinitionService,
-            IContentDefinitionManager contentDefinitionManager) {
+            IContentDefinitionManager contentDefinitionManager, 
+            ISchemaUpdateService schemaUpdateService) {
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
+            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -32,6 +36,7 @@ namespace Coevery.Entities.Controllers {
             _contentDefinitionService.RemoveFieldFromPart(name, parentname);
             var layoutManager = new LayoutManager(_contentDefinitionManager);
             layoutManager.DeleteField(parentname, name);
+            _schemaUpdateService.DropColumn(parentname,name);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

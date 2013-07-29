@@ -65,7 +65,7 @@ namespace Coevery.Fields.Drivers
 
             var fieldDefinitionRecord = (from e in _partDefinitionRepository.Table
                                          from f in e.ContentPartFieldDefinitionRecords
-                                         where f.Name == field.Name
+                                         where e.Name == part.TypeDefinition.Name && f.Name == field.Name
                                          select f).First();
             if (fieldDefinitionRecord == null)
             {
