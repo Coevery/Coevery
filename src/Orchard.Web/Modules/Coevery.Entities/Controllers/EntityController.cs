@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
@@ -13,9 +14,11 @@ using Orchard.Utility.Extensions;
 namespace Coevery.Entities.Controllers {
     public class EntityController : ApiController {
         private readonly IContentDefinitionService _contentDefinitionService;
-
-        public EntityController(IContentDefinitionService contentDefinitionService) {
+        private readonly ISchemaUpdateService _schemaUpdateService;
+        public EntityController(IContentDefinitionService contentDefinitionService, 
+            ISchemaUpdateService schemaUpdateService) {
             _contentDefinitionService = contentDefinitionService;
+            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -41,6 +44,19 @@ namespace Coevery.Entities.Controllers {
                         select new { type.DisplayName, type.Name, setting.IsDeployed, Fields = fields };
             var entityType = query.SingleOrDefault();
             return entityType;
+        }
+
+        // DELETE api/Entities/Entity/:entityName
+        public virtual HttpResponseMessage Delete(string name)
+        {
+            var typeViewModel = _contentDefinitionService.GetType(name);
+
+            if (typeViewModel == null)
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+
+            _contentDefinitionService.RemoveType(name, true);
+            _schemaUpdateService.DropTable(name);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

@@ -17,6 +17,7 @@ define(['core/app/detourService',
                             '<ul class="row-actions pull-right hide">' +
                             '<li class="icon-edit" ng-click="edit(row.entity.ContentId)" title="Edit"></li>' +
                             '<li class="icon-remove" ng-click="delete(row.entity.ContentId)" title="Delete"></li>' +
+                            '<li class="icon-tags" ng-click="setDefault(row.entity.ContentId)" title="Set Default"></li>' +
                             '</ul>' +
                             '</div>';
                         var columnDefs = [
