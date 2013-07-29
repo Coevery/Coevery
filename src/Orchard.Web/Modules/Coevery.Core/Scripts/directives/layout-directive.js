@@ -1,12 +1,12 @@
 angular.module('coevery.layout', [])
     .directive('fdSection', function () {
         return {
-            template: '<fieldset fd-section class="data-section"><header><legend><h5>Section Title</h5></legend></header><div ng-transclude></div></fieldset>',
+            template: '<fieldset fd-section class="data-section"><legend>Section Title</legend><div ng-transclude></div></fieldset>',
             replace: true,
             restrict: 'E',
             transclude: true,
             link: function (scope, element, attrs) {
-                var sectionHeader = element.find('header h5');
+                var sectionHeader = element.find('legend');
                 sectionHeader.text(attrs.sectionTitle);
             }
         };

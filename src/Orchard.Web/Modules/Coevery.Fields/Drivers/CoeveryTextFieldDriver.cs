@@ -33,7 +33,7 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Display(ContentPart part, CoeveryTextField field, string displayType, dynamic shapeHelper) {
             return ContentShape("Fields_CoeveryText", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
-                return shapeHelper.Fields_Input().Settings(settings);
+                return shapeHelper.Fields_CoeveryText().Settings(settings);
             });
         }
 

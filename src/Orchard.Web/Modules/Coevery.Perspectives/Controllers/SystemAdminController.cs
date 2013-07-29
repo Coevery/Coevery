@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Coevery.Core.Models;
 using Coevery.Perspectives.Services;
 using Coevery.Perspectives.ViewModels;
 using Orchard;
@@ -13,7 +14,9 @@ using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Controllers;
 using Orchard.Core.Contents.Settings;
 using Orchard.Core.Navigation.Models;
+using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Core.Title.Models;
+using Orchard.Data;
 using Orchard.DisplayManagement;
 using Orchard.Environment.Configuration;
 using Orchard.Localization;
@@ -32,6 +35,7 @@ namespace Coevery.Perspectives.Controllers
     {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IRepository<ContentTypeDefinitionRecord> _contentTypeDefinitionRepository;
         private readonly IPlacementService _placementService;
         private readonly Lazy<IEnumerable<IShellSettingsManagerEventHandler>> _settingsManagerEventHandlers;
         private readonly ShellSettings _settings;
@@ -41,6 +45,7 @@ namespace Coevery.Perspectives.Controllers
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
+            IRepository<ContentTypeDefinitionRecord> contentTypeDefinitionRepository,
             IPlacementService placementService,
             Lazy<IEnumerable<IShellSettingsManagerEventHandler>> settingsManagerEventHandlers,
              IContentManager contentManager,
@@ -51,6 +56,7 @@ namespace Coevery.Perspectives.Controllers
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
+            _contentTypeDefinitionRepository = contentTypeDefinitionRepository;
             _placementService = placementService;
             _settingsManagerEventHandlers = settingsManagerEventHandlers;
             _settings = settings;
@@ -127,7 +133,7 @@ namespace Coevery.Perspectives.Controllers
             var menuId = contentItem.As<MenuPart>().Record.MenuId;
             var perspectiveItem = _contentManager.Get(menuId, VersionOptions.Latest);
             model.Title = perspectiveItem.As<TitlePart>().Title;
-            
+            model.IconClass = contentItem.As<ModuleMenuItemPart>().IconClass;
             model.Entities = metadataTypes.Select(item => new SelectListItem
             {
                 Text = item.Name,
@@ -147,7 +153,9 @@ namespace Coevery.Perspectives.Controllers
 
             var contentItem = _contentManager.Get(navigationId, VersionOptions.DraftRequired);
             contentItem.As<MenuPart>().MenuText = pluralContentTypeName;
-            contentItem.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
+            //contentItem.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
+            contentItem.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
+            contentItem.As<ModuleMenuItemPart>().IconClass = model.IconClass;
             //contentItem.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
             _contentManager.Publish(contentItem);
 
@@ -178,19 +186,21 @@ namespace Coevery.Perspectives.Controllers
             string pluralContentTypeName = pluralService.Pluralize(model.EntityName);
 
             //add
-            var menuPart = Services.ContentManager.New<MenuPart>("MenuItem");
+            var moduleMenuPart = Services.ContentManager.New<MenuPart>("ModuleMenuItem");
 
             // load the menu
             var menu = Services.ContentManager.Get(perspectiveId);
 
-            menuPart.MenuText = pluralContentTypeName;
-            menuPart.MenuPosition = Position.GetNext(_navigationManager.BuildMenu(menu));
-            menuPart.Menu = menu;
-            menuPart.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
+            moduleMenuPart.MenuText = pluralContentTypeName;
+            moduleMenuPart.MenuPosition = Position.GetNext(_navigationManager.BuildMenu(menu));
+            moduleMenuPart.Menu = menu;
+            //menuPart.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
+            moduleMenuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
+            moduleMenuPart.As<ModuleMenuItemPart>().IconClass = model.IconClass;
             //menuPart.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
-            Services.ContentManager.Create(menuPart);
-            if (!menuPart.ContentItem.Has<IPublishingControlAspect>() && !menuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
-                _contentManager.Publish(menuPart.ContentItem);
+            Services.ContentManager.Create(moduleMenuPart);
+            if (!moduleMenuPart.ContentItem.Has<IPublishingControlAspect>() && !moduleMenuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
+                _contentManager.Publish(moduleMenuPart.ContentItem);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

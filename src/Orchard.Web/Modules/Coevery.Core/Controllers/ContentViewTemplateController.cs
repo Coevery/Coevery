@@ -32,10 +32,8 @@ using Orchard.Settings;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 
-namespace Coevery.Core.Controllers
-{
-    public class ContentViewTemplateController : Controller, IUpdateModel
-    {
+namespace Coevery.Core.Controllers {
+    public class ContentViewTemplateController : Controller, IUpdateModel {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
@@ -67,11 +65,9 @@ namespace Coevery.Core.Controllers
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult List(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return  new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        public ActionResult List(string id) {
+            if (string.IsNullOrEmpty(id)) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             string moduleName = id;
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
@@ -82,7 +78,7 @@ namespace Coevery.Core.Controllers
             dynamic viewModel = Services.New.ViewModel();
             viewModel.DisplayName(contentType.DisplayName);
             viewModel.TypeDefinition(contentType);
-           // viewModel.Columns(this.GetViewColumns(viewId));
+            // viewModel.Columns(this.GetViewColumns(viewId));
             viewModel.ModuleName(moduleName);
             viewModel.ViewId(viewId);
             //var model = GetListModel(viewId);
@@ -90,8 +86,7 @@ namespace Coevery.Core.Controllers
             return View(viewModel);
         }
 
-        private IEnumerable<PropertyRecord> GetViewColumns(int viewId)
-        {
+        private IEnumerable<PropertyRecord> GetViewColumns(int viewId) {
             List<PropertyRecord> re = new List<PropertyRecord>();
             if (viewId == -1) return re;
             var projectionItem = _contentManager.Get(viewId, VersionOptions.Latest);
@@ -103,9 +98,8 @@ namespace Coevery.Core.Controllers
             re.AddRange(properties);
             return re;
         }
-        private dynamic GetListModel(int viewId)
-        {
-          
+        private dynamic GetListModel(int viewId) {
+
             if (viewId == -1) return null;
 
             var contentItem = _contentManager.Get(viewId, VersionOptions.Latest);
@@ -114,8 +108,7 @@ namespace Coevery.Core.Controllers
             return model;
         }
 
-        public ActionResult Create(string id, int? containerId)
-        {
+        public ActionResult Create(string id, int? containerId) {
             if (string.IsNullOrEmpty(id))
                 return CreatableTypeList(containerId);
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
@@ -125,11 +118,9 @@ namespace Coevery.Core.Controllers
             if (!Services.Authorizer.Authorize(Permissions.EditContent, contentItem, T("Cannot create content")))
                 return new HttpUnauthorizedResult();
 
-            if (containerId.HasValue && contentItem.Is<ContainablePart>())
-            {
+            if (containerId.HasValue && contentItem.Is<ContainablePart>()) {
                 var common = contentItem.As<CommonPart>();
-                if (common != null)
-                {
+                if (common != null) {
                     common.Container = _contentManager.Get(containerId.Value);
                 }
             }
@@ -145,33 +136,28 @@ namespace Coevery.Core.Controllers
             return View((object)model);
         }
 
-        ActionResult CreatableTypeList(int? containerId)
-        {
+        ActionResult CreatableTypeList(int? containerId) {
             dynamic viewModel = Shape.ViewModel(ContentTypes: GetCreatableTypes(containerId.HasValue), ContainerId: containerId);
 
             // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
             return View("CreatableTypeList", (object)viewModel);
         }
 
-        private IEnumerable<ContentTypeDefinition> GetCreatableTypes(bool andContainable)
-        {
+        private IEnumerable<ContentTypeDefinition> GetCreatableTypes(bool andContainable) {
             return _contentDefinitionManager.ListTypeDefinitions().Where(ctd => ctd.Settings.GetModel<ContentTypeSettings>().Creatable && (!andContainable || ctd.Parts.Any(p => p.PartDefinition.Name == "ContainablePart")));
         }
 
 
         [HttpPost, ActionName("Create")]
         [FormValueRequired("submit.Save")]
-        public ActionResult CreatePOST(string id, string returnUrl)
-        {
-            return CreatePOST(id, returnUrl, contentItem =>
-            {
+        public ActionResult CreatePOST(string id, string returnUrl) {
+            return CreatePOST(id, returnUrl, contentItem => {
                 if (!contentItem.Has<IPublishingControlAspect>() && !contentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
                     _contentManager.Publish(contentItem);
             });
         }
 
-        private ActionResult CreatePOST(string id, string returnUrl, Action<ContentItem> conditionallyPublish)
-        {
+        private ActionResult CreatePOST(string id, string returnUrl, Action<ContentItem> conditionallyPublish) {
             var contentItem = _contentManager.New(id);
 
             if (!Services.Authorizer.Authorize(Permissions.EditContent, contentItem, T("Couldn't create content")))
@@ -180,8 +166,7 @@ namespace Coevery.Core.Controllers
             _contentManager.Create(contentItem, VersionOptions.Draft);
 
             dynamic model = _contentManager.UpdateEditor(contentItem, this);
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 ModelState.AddModelError("CreateError", T("The creation didn't change model state.").ToString());
                 _transactionManager.Cancel();
                 // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
@@ -194,8 +179,7 @@ namespace Coevery.Core.Controllers
             Services.Notifier.Information(string.IsNullOrWhiteSpace(contentItem.TypeDefinition.DisplayName)
                 ? T("Your content has been created.")
                 : T("Your {0} has been created.", contentItem.TypeDefinition.DisplayName));
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
+            if (!string.IsNullOrEmpty(returnUrl)) {
                 return this.RedirectLocal(returnUrl);
             }
 
@@ -204,8 +188,7 @@ namespace Coevery.Core.Controllers
             return RedirectToRoute(adminRouteValues);
         }
 
-        public ActionResult Edit(int id)
-        {
+        public ActionResult Edit(int id) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
 
             if (contentItem == null)
@@ -226,29 +209,30 @@ namespace Coevery.Core.Controllers
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
-        public ActionResult EditPOST(int id, string returnUrl)
-        {
-            return EditPOST(id, returnUrl, contentItem =>
-            {
+        public ActionResult EditPOST(int id, string returnUrl) {
+            return EditPOST(id, returnUrl, contentItem => {
                 if (!contentItem.Has<IPublishingControlAspect>() && !contentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
                     _contentManager.Publish(contentItem);
             });
         }
 
         public ActionResult View(int id) {
-            return View();
+            var contentItem = _contentManager.Get(id, VersionOptions.Latest);
+
+            if (contentItem == null)
+                return HttpNotFound();
+            dynamic model = _contentManager.BuildDisplay(contentItem);
+            return View((object)model);
         }
 
         [HttpPost]
-        public ActionResult Remove(int id, string returnUrl)
-        {
+        public ActionResult Remove(int id, string returnUrl) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
 
             if (!Services.Authorizer.Authorize(Permissions.DeleteContent, contentItem, T("Couldn't remove content")))
                 return new HttpUnauthorizedResult();
 
-            if (contentItem != null)
-            {
+            if (contentItem != null) {
                 _contentManager.Remove(contentItem);
                 Services.Notifier.Information(string.IsNullOrWhiteSpace(contentItem.TypeDefinition.DisplayName)
                     ? T("That content has been removed.")
@@ -258,8 +242,7 @@ namespace Coevery.Core.Controllers
             return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
         }
 
-        private ActionResult EditPOST(int id, string returnUrl, Action<ContentItem> conditionallyPublish)
-        {
+        private ActionResult EditPOST(int id, string returnUrl, Action<ContentItem> conditionallyPublish) {
             var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
 
             if (contentItem == null)
@@ -274,14 +257,12 @@ namespace Coevery.Core.Controllers
                 && Request.IsLocalUrl(returnUrl)
                 // only if the original returnUrl is the content itself
                 && String.Equals(returnUrl, Url.ItemDisplayUrl(contentItem), StringComparison.OrdinalIgnoreCase)
-                )
-            {
+                ) {
                 previousRoute = contentItem.As<IAliasAspect>().Path;
             }
 
             dynamic model = _contentManager.UpdateEditor(contentItem, this);
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
                 // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
                 return View("Edit", (object)model);
@@ -291,8 +272,7 @@ namespace Coevery.Core.Controllers
 
             if (!string.IsNullOrWhiteSpace(returnUrl)
                 && previousRoute != null
-                && !String.Equals(contentItem.As<IAliasAspect>().Path, previousRoute, StringComparison.OrdinalIgnoreCase))
-            {
+                && !String.Equals(contentItem.As<IAliasAspect>().Path, previousRoute, StringComparison.OrdinalIgnoreCase)) {
                 returnUrl = Url.ItemDisplayUrl(contentItem);
             }
 
@@ -300,17 +280,15 @@ namespace Coevery.Core.Controllers
                 ? T("Your content has been saved.")
                 : T("Your {0} has been saved.", contentItem.TypeDefinition.DisplayName));
 
-           // return this.RedirectLocal(returnUrl, () => RedirectToAction("Edit", new RouteValueDictionary { { "Id", contentItem.Id } }));
+            // return this.RedirectLocal(returnUrl, () => RedirectToAction("Edit", new RouteValueDictionary { { "Id", contentItem.Id } }));
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties)
-        {
+        bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return TryUpdateModel(model, prefix, includeProperties, excludeProperties);
         }
 
-        void IUpdateModel.AddModelError(string key, LocalizedString errorMessage)
-        {
+        void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
         }
     }

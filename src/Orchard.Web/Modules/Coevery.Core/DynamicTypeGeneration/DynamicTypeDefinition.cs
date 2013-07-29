@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Coevery.Entities.DynamicTypeGeneration
+namespace Coevery.Core.DynamicTypeGeneration
 {
     public class DynamicTypeDefinition {
         public string Name { get; set; }
