@@ -605,6 +605,7 @@
     <Content Include="Styles\css\fontello-ie7-codes.css" />
     <Content Include="Styles\css\fontello-ie7.css" />
     <Content Include="Styles\css\fontello.css" />
+    <Content Include="Styles\common.css" />
     <Content Include="Styles\dropdowns.css" />
     <Content Include="Styles\error.css" />
     <Content Include="Styles\error.min.css" />

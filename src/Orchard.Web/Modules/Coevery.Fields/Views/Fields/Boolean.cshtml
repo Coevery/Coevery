@@ -4,17 +4,24 @@
     bool? booleanValue = Model.ContentField.Value;
     if (booleanValue.HasValue) {
         valueToDisplay = booleanValue.Value
-            ? T(Model.Settings.OnLabel).ToString() 
-            : T(Model.Settings.OffLabel).ToString();
+            ? T("True").ToString()
+            : T("False").ToString();
     }
     else {
         valueToDisplay = T(Model.Settings.NotSetLabel).ToString();
     }
     if (!string.IsNullOrEmpty(valueToDisplay)) {
-        string name = Model.ContentField.DisplayName;
-    <p class="text-field text-field-@name.HtmlClassify()">
+        string name = Model.ContentField.DisplayName;  
+    @*<p class="text-field text-field-@name.HtmlClassify()">
         <span class="name">@name:</span>
         <span class="value">@valueToDisplay</span>
-    </p>    
+    </p>*@
+          
+    <div class="data-row clearfix">
+        <span class="title control-label">@T(name)</span>
+        <div class="control controls">
+            <span class="control-text">@valueToDisplay</span>
+        </div>
+    </div>
     }
 }
