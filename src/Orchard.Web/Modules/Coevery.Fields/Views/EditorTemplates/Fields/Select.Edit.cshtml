@@ -7,23 +7,39 @@
     var multiple = (settings.SelectCount > 1) ? "multiple" : null;
     var displaySize = (settings.SelectCount > 1) ? settings.DisplayLines : 1;
     var required = settings.Required ? "required" : null;
-    var selectAttributes = new Dictionary<string,string>().Add(multiple,string.Empty);
-    Model.Value = Model.Items.First().Value;
+    
+    var selectAttributes = new Dictionary<string, object>();
+    selectAttributes.Add("class", "span12");
+    if (required != null)
+    {
+        selectAttributes.Add(required, null);
+    } 
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
 <div class="control controls">
     
     @if (settings.DisplayOption == SelectionMode.DropDown)
-    {       
-        @Html.DropDownListFor(x => x.Value, Model.Items, new { @class = "span12", @multiple, @required, size = @displaySize })
+    {
+        selectAttributes.Add("size", displaySize);    
+        if (required != null)
+        {
+            selectAttributes.Add(required, null);
+        }
+
+        if (multiple != null) {
+            @Html.ListBoxFor(m=>m.OptionValue,Model.Items,selectAttributes)
+        }
+        else {
+            @Html.DropDownListFor(x => x.Value, Model.Items, selectAttributes)
+        }       
     }
     @Html.ValidationMessageFor(m => m.Value)
     <script type="text/javascript">
         $(function () {
-            $("select").click(function () {
-                //alert("@Model.Value");
-            });
+            @*$("#@Html.FieldIdFor(m=>m.Value)").click(function () {
+                alert("@Model.Value");
+            });*@
         });
     </script>
 </div>
