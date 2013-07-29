@@ -227,7 +227,7 @@ namespace Coevery.Fields.Controllers {
             _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
 
             _contentDefinitionService.AlterField(id, viewModel, this);
-
+            _schemaUpdateService.CreateColumn(partViewModel.Name, field.Name, field.FieldDefinition.Name);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
