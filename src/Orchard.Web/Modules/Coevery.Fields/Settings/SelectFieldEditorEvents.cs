@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using System.Linq;
 using Coevery.Fields.Records;
 using Orchard.ContentManagement;
@@ -49,11 +50,16 @@ namespace Coevery.Fields.Settings
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null))
             {
+                if (model.SelectCount < 1 || model.DefaultValue < 0
+                    || (model.DisplayOption == SelectionMode.Checkbox && model.SelectCount == 1)
+                    || (model.DisplayOption == SelectionMode.Radiobutton && model.SelectCount > 1 ))
+                {
+                    updateModel.AddModelError("Settings", _t("The setting values have conflicts."));
+                    yield break;
+                }
                 UpdateSettings(model, builder, "SelectFieldSettings");
                 builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
                 builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
-                builder.WithSetting("SelectFieldSettings.LabelsStr", model.LabelsStr);
-                builder.WithSetting("SelectFieldSettings.DefaultValue", model.DefaultValue.ToString());
                 builder.WithSetting("SelectFieldSettings.SelectCount", model.SelectCount.ToString());
             }
 
@@ -74,16 +80,20 @@ namespace Coevery.Fields.Settings
                     .ContentPartFieldDefinitionRecords.Single(x => x.Name == builder.Name);
 
                 //Basic Validation, should be replaced later
-                if (string.IsNullOrWhiteSpace(model.LabelsStr)) {
+                if (string.IsNullOrWhiteSpace(model.LabelsStr))
+                {
                     updateModel.AddModelError("LabelsStr", _t("The LabelsStr is invalid."));
-                    yield break; 
+                    yield break;
                 }
 
                 var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
                 var itemCount = labels.Length;
 
-                if (model.SelectCount < 1 || model.DisplayLines > itemCount
-                    || model.DefaultValue > model.DisplayLines) 
+                if (itemCount < 1 || model.SelectCount < 1 || model.DefaultValue < 0
+                    || model.DefaultValue > itemCount || model.DisplayLines > itemCount || model.SelectCount > itemCount
+                    || (model.DisplayOption == SelectionMode.DropDown && model.DefaultValue > model.DisplayLines)
+                    || (model.DisplayOption == SelectionMode.Checkbox && model.SelectCount == 1)
+                    || (model.DisplayOption == SelectionMode.Radiobutton && model.SelectCount > 1))
                 {
                     updateModel.AddModelError("Settings", _t("The setting values have conflicts."));
                     yield break;

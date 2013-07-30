@@ -231,7 +231,7 @@ namespace Coevery.Fields.Controllers {
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult Items(string id) {
+        public ActionResult Items(string id,string fieldName) {
             return View();
         }
 

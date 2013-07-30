@@ -14,7 +14,6 @@ using Orchard.Data;
 using Orchard.DisplayManagement;
 using Orchard.Forms.Services;
 using Orchard.Localization;
-using System.Linq;
 
 namespace Coevery.Projections.Services
 {
