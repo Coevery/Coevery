@@ -14,32 +14,29 @@
               currentPage: 1
           };
 
-          $scope.setPagingData = function (data, page, pageSize) {
-              var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
-              var maxRow = data.length;
-              var maxPages = Math.ceil(maxRow / $scope.pagingOptions.pageSize);
-
-              $scope.pagingOptions.pageNumber = [];
-              for (var index = 0; index < maxPages; index++) {
-                  $scope.pagingOptions.pageNumber[index] = index + 1;
-              }
-              $scope.myData = pagedData;
-              $scope.pagingOptions.totalServerItems = data.length;
-              if (!$scope.$$phase) {
-                  $scope.$apply();
-              }
-          };
-
           $scope.getPagedDataAsync = function (pageSize, page) {
-              var records = commonDataService.query({ contentType: moduleName }, function () {
-                  $scope.setPagingData(records, page, pageSize);
+              var record = commonDataService.get({ contentType: moduleName, pageSize: pageSize, page: page }, function () {
+                  $scope.myData = record.EntityRecords;
+                  $scope.totalServerItems = record.TotalNumber;
+                  if (!$scope.$$phase) {
+                      $scope.$apply();
+                  }
               }, function () {
                   logger.error("Failed to fetched records for " + moduleName);
               });
           };
 
           $scope.$watch('pagingOptions', function (newVal, oldVal) {
-              if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+              if (newVal !== oldVal) {
+                  if (newVal.pageSize != oldVal.pageSize) {
+                      var maxPage = Math.ceil($scope.totalServerItems / newVal.pageSize);
+                      //var currentPage = Math.ceil(oldVal.pageSize * $scope.pagingOptions.currentPage / newVal.pageSize);
+                      //if (currentPage > maxPage) currentPage = maxPage;
+                      if ($scope.pagingOptions.currentPage > maxPage) {
+                          $scope.pagingOptions.currentPage = maxPage;
+                          return;
+                      }
+                  }
                   $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
               }
           }, true);
