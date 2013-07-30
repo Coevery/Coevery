@@ -63,13 +63,12 @@
         };
 
         $("form[name=myForm]").validate({
-            ignore: "*:not('.toValidate *')",
+            ignore: "*:not('*')",
             onkeyup: function (element) {
                 if (element.type == "text") {
                     this.form();
                 }
             }
         });
-        $('.page-actions').affix({ offset: { top: 71 } });
     });
 </script>

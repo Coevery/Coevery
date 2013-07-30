@@ -8,9 +8,9 @@
           var validator = $("form[name=myForm]").validate();
 
           $scope.save = function () {
-              if (!validator.form()) {
-                  return null;
-              }
+              //if (!validator.form()) {
+              //    return null;
+              //}
 
               var form = $("form[name=myForm]");
               var promise = $http({

@@ -57,11 +57,11 @@ namespace Coevery.Fields.Drivers
         protected override DriverResult Editor(ContentPart part, SelectField field, dynamic shapeHelper)
         {
             //if the content item is new, assign the default value
-            if (!part.HasDraft() && !part.HasPublished())
-            {
-                var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
-                field.Value = settings.DefaultValue.ToString();
-            }
+            //if (!part.HasDraft() && !part.HasPublished())
+            //{
+            //    var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+            //    field.Value = settings.DefaultValue.ToString();
+            //}
 
             var fieldDefinitionRecord = (from e in _partDefinitionRepository.Table
                                          from f in e.ContentPartFieldDefinitionRecords

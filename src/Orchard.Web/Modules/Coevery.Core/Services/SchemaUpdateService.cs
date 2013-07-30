@@ -95,7 +95,12 @@ namespace Coevery.Core.Services
                 result = ExistsMetaData(tableName, columnName);
             }
             if (result) return;
-            var dbType = SchemaUtils.ToDbType(_dynamicAssemblyBuilder.GetFieldType(columnType));
+            var type = _dynamicAssemblyBuilder.GetFieldType(columnType);
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                type = type.GetGenericArguments()[0];
+            }
+            var dbType = SchemaUtils.ToDbType(type);
             _schemaBuilder.AlterTable(string.Format(tableFormat, tableName), 
                 table => table.AddColumn(columnName, dbType));
             GenerationDynmicAssembly();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
@@ -11,6 +12,7 @@ using Orchard.Utility.Extensions;
 namespace Coevery.Fields.Drivers {
     public class PhoneFieldDriver : ContentFieldDriver<PhoneField> {
         public IOrchardServices Services { get; set; }
+        private const string Pattern = @"^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$";
         private const string TemplateName = "Fields/Phone.Edit";
 
         public PhoneFieldDriver(IOrchardServices services) {
@@ -54,6 +56,11 @@ namespace Coevery.Fields.Drivers {
 
                 if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+                }
+                var regex = new Regex(Pattern, RegexOptions.IgnoreCase);
+                if (!regex.IsMatch(field.Value))
+                {
+                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is not valid phone number.", T(field.DisplayName)));
                 }
             }
 

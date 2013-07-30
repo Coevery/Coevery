@@ -38,6 +38,12 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, CoeveryTextField field, dynamic shapeHelper) {
+            if (!part.HasDraft() && !part.HasPublished())
+            {
+                var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
+                field.Value = settings.PlaceHolderText;
+            }
+            
             return ContentShape("Fields_CoeveryText_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }
@@ -46,9 +52,13 @@ namespace Coevery.Fields.Drivers {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
 
-                //if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
-                //    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
-                //}
+                if (settings.Required && string.IsNullOrWhiteSpace(field.Value))
+                {
+                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+                }
+                if (field.Value.Length > settings.MaxLength) {
+                    updater.AddModelError(GetPrefix(field, part), T("The field {0} value exceed max length.", T(field.DisplayName)));
+                }
             }
 
             return Editor(part, field, shapeHelper);

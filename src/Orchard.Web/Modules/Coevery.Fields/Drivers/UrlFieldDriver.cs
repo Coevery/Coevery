@@ -55,6 +55,11 @@ namespace Coevery.Fields.Drivers {
                 if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
+                Uri temp;
+                if (!Uri.TryCreate(field.Value, UriKind.Absolute, out temp))
+                {
+                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is not valid URL.", T(field.DisplayName)));
+                }
             }
 
             return Editor(part, field, shapeHelper);
