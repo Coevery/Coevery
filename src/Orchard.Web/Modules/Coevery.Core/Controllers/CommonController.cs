@@ -51,7 +51,7 @@ namespace Coevery.Core.Controllers
             }
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             id = pluralService.Singularize(id);
-            var part = GetQueryPartRecord(id);
+            var part = GetProjectionPartRecord(id);
             IEnumerable<JObject> entityRecords = new List<JObject>();
             int totalNumber = 0;
             if (part != null) {
@@ -76,7 +76,7 @@ namespace Coevery.Core.Controllers
             } 
         }
 
-        private ProjectionPart GetQueryPartRecord(string entityType)
+        private ProjectionPart GetProjectionPartRecord(string entityType)
         {
             int viewId = _projectionService.GetProjectionId(entityType);
             if (viewId == -1) return null;
