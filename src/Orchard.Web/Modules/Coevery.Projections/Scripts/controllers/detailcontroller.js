@@ -46,7 +46,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         pickListValue += fieldName + '$';
                     }
                     $('#picklist')[0].value = pickListValue;
-                    var form = angular.element(myForm);
+                    var form = $("form[name=myForm]");
                     var promise = $http({
                         url: form.attr('action'),
                         method: "POST",

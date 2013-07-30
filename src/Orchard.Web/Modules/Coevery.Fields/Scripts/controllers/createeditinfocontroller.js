@@ -51,8 +51,9 @@ define(['core/app/detourService'], function (detour) {
                         type: form.attr('method'),
                         data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
                         success: function (result) {                           
-                            logger.success('success');                           
-                            $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                            logger.success('success');
+                            $scope.$parent.getAllField();
+                            $detour.transitionTo('EntityDetail.Fields', { Id: entityName });                          
                             $scope.closeDialog();
                         },
                         error: function () {
