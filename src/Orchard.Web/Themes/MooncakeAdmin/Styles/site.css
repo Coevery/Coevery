@@ -306,11 +306,6 @@ ul.nav.nav-tabs {
     position: absolute;
 }
 
-/*Notifier/Message box*/
-.alert.ui-pnotify-container.ui-pnotify-shadow {
-    margin-bottom: 0;
-}
-
 /*Icons*/
 .iconrow {
     width: 550px;

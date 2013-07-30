@@ -131,3 +131,8 @@
             .edit-mode form > .data-section:first-child {
                 margin-top: 0;
             }
+
+/*Notifier/Message box*/
+.alert.ui-pnotify-container.ui-pnotify-shadow {
+    margin-bottom: 0;
+}
