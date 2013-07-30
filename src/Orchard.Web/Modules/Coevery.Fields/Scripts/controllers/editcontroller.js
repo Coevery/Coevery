@@ -6,11 +6,25 @@ define(['core/app/detourService'], function (detour) {
             function ($scope, logger, $detour, $stateParams, $http) {
                 var entityName = $stateParams.EntityName;
 
+                var checkValid = function (form) {
+                    var validator = form.validate();
+                    if (!validator) {
+                        return false;
+                    }
+                    if (!validator.form()) {
+                        return false;
+                    }
+                    return true;
+                };
+
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
 
                 $scope.save = function () {
+                    if (!checkValid($("#field-info-form"))) {
+                        return null;
+                    }
                     var form = angular.element(myForm);
                     var promise = $http({
                         url: form.attr('action'),

@@ -9,7 +9,7 @@
 
           $scope.save = function () {
               if (!validator.form()) {
-                  return;
+                  return null;
               }
 
               var form = angular.element(myForm);

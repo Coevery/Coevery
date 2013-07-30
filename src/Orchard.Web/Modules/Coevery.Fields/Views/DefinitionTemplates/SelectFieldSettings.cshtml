@@ -8,7 +8,7 @@
             Item Labels
         </label>
         <div class="controls">
-            @Html.TextAreaFor(m => m.LabelsStr, new { @class = "span12" })
+            @Html.TextAreaFor(m => m.LabelsStr, new { @class = "span12 required" })
         </div>
     </section>
     
@@ -17,7 +17,7 @@
             Default Value
         </label>
         <div class="controls">
-            @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12" })
+            @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 digits" })
         </div>
     </section>
 }
@@ -27,7 +27,7 @@
         Select Count
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.SelectCount, new { @class = "span12" })
+        @Html.TextBoxFor(d => d.SelectCount, new { @class = "span12 digits" ,id="selectSelectCount"})
     </div>
 </section>
 
@@ -40,7 +40,7 @@
         {
             string isChecked = (displayOpt == Model.DisplayOption) ? "checked" : null;
             <label class="radio">
-                @Html.RadioButtonFor(m => m.DisplayOption, displayOpt, new { @class = "", isChecked })
+                @Html.RadioButtonFor(m => m.DisplayOption, displayOpt, new { @class = "displayOption", isChecked })
                 @T(displayOpt.ToString())
             </label>
         }
@@ -52,13 +52,31 @@
         Display Lines
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DisplayLines, new { @class = "span12" })
+        @Html.TextBoxFor(d => d.DisplayLines, new { @class = "span12 digits"})
     </div>
 </section>
 
 <script type="text/javascript">
     $(function () {
+        var displayOpt = $("input.displayOption:checked").val();
+        $("#selectSelectCount").attr("selectSetting", displayOpt);
+        $("input.displayOption").click(function() {
+            if ($(this).is(":checked")) {
+                displayOpt = $(this).val();
+                $("#selectSelectCount").attr("selectSetting", displayOpt);
+            }
+        });
 
+        $.validator.addMethod("selectSetting", function (value, element, param) {
+            if ((param == "@T(SelectionMode.Radiobutton.ToString())" && value == 1)
+                || (param == "@T(SelectionMode.Checkbox.ToString())" && value > 1)
+                || (param == "@T(SelectionMode.DropDown.ToString())" && value > 0)) {
+                return true;
+            } else {
+                return false;
+            }           
+        }, "Wrong select setting!");
+        $.validator.classRuleSettings.selectSetting = { selectSetting: true };
     });
 </script>
 

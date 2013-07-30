@@ -13,6 +13,7 @@ namespace Coevery.Fields.Fields
     {
 
         public IEnumerable<SelectListItem> Items { get; set; }
+        public string[] TestStore { get; set; }
         public string[] OptionValue
         {
             get
