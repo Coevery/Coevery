@@ -71,6 +71,7 @@
     <Content Include="Scripts\angular-mobile.min.js" />
     <Content Include="Scripts\angular-ui-router.js" />
     <Content Include="Scripts\angular-ui-router.min.js" />
+    <Content Include="Scripts\angular-underscore.js" />
     <Content Include="Scripts\i18next-1.6.3.js" />
     <Content Include="Scripts\i18next-1.6.3.min.js" />
     <Content Include="Scripts\ng-grid-2.0.6.debug.js" />
@@ -85,6 +86,8 @@
     <Content Include="Scripts\ui-utils-ieshiv.min.js" />
     <Content Include="Scripts\ui-utils.js" />
     <Content Include="Scripts\ui-utils.min.js" />
+    <Content Include="Scripts\underscore-min.js" />
+    <Content Include="Scripts\underscore.js" />
     <Content Include="Styles\images\glyphicons-halflings-white.png" />
     <Content Include="Styles\images\glyphicons-halflings.png" />
     <Content Include="Styles\jquery.pnotify.css" />

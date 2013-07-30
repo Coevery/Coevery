@@ -5,14 +5,14 @@
       function ($timeout, $rootScope, $scope, $q, logger, $state, $http) {
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
-          var validator = $(myForm).validate();
+          var validator = $("form[name=myForm]").validate();
 
           $scope.save = function () {
               if (!validator.form()) {
                   return null;
               }
 
-              var form = angular.element(myForm);
+              var form = $("form[name=myForm]");
               var promise = $http({
                   url: form.attr('action'),
                   method: "POST",

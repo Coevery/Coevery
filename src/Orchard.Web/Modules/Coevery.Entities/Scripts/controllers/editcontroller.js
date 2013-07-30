@@ -21,7 +21,7 @@ define(['core/app/detourService'], function (detour) {
               if (!checkValid($("#myForm"))) {
                   return null;
               }
-              var form = angular.element(myForm);
+              var form = $("#myForm");
               var promise = $http({
                   url: form.attr('action'),
                   method: "POST",

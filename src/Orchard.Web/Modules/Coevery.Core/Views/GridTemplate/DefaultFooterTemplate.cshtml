@@ -1,18 +1,18 @@
 ﻿<div class="dt_footer ngFooterPanel" ng-show="showFooter" ng-style="footerStyle()">
     <div class="row-fluid">
         <div class="span4">
-            <div class="dataTables_info" id="demo-dtable-02_info">{{"Showing $0 to $1 of $2 entries" | format: [pagingOptions.pageSize * (pagingOptions.currentPage-1), 
+            <div class="dataTables_info" id="demo-dtable-02_info">{{"Showing $0 to $1 of $2 entries" | format: [pagingOptions.pageSize * (pagingOptions.currentPage-1)+1, 
                 pagingOptions.pageSize * pagingOptions.currentPage>maxRows()?maxRows():pagingOptions.pageSize * pagingOptions.currentPage, 
                 maxRows() ]  }}</div>
         </div>
         <div class="span8">
             <div class="dataTables_paginate pagination pagination-small">
                 <ul>
-                    <li class="prev" ng-class="{'disabled': cantPageBackward()}"><a href="#">← Previous</a></li>
-                    <li ng-repeat="page in maxPages()" ng-class="{'active': pagingOptions.currentPage == {{page}}}">
-                        <a href="#">{{page}}</a>
+                    <li class="prev" ng-click="pageBackward()" ng-class="{'disabled': cantPageBackward()}"><a href="#">← Previous</a></li>
+                    <li ng-repeat="page in range(pagingOptions.currentPage >= 7 && maxPages() > 9?(maxPages()-pagingOptions.currentPage > 4?pagingOptions.currentPage-5:maxPages()-9):1,pagingOptions.currentPage >= 7?(maxPages()-pagingOptions.currentPage > 4?pagingOptions.currentPage+5:maxPages()+1):(maxPages() < 10?maxPages()+1:11))" ng-class="{'active': pagingOptions.currentPage == {{page}}}">
+                        <a style="cursor: pointer;" ng-click="pagingOptions.currentPage={{page}}">{{page}}</a>
                     </li>
-                    <li class="next" ng-class="{'disabled': cantPageForward()}"><a href="#">Next → </a></li>
+                    <li class="next" ng-click="pageForward()" ng-class="{'disabled': cantPageForward()}"><a href="#">Next → </a></li>
                 </ul>
             </div>
             <div class="dataTables_paginate">

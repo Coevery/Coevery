@@ -35,6 +35,9 @@
             //that it the only reason this is necessary
             $rootScope.$detour = $detour;
             $rootScope.$stateParams = $stateParams;
+            $rootScope.$on('$viewContentLoaded',function() {
+                $(window).scrollTop(0);
+            });
 
             $rootScope.i18nextOptions = {
                 resGetPath: 'i18n/__ns_____lng__.json',

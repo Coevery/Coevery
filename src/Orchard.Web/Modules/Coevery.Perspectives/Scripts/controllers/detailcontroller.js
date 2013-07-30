@@ -26,10 +26,11 @@ define(['core/app/detourService',
           };
 
           $scope.save = function () {
+              var tempForm = $("form[name=myForm]");
               $.ajax({
-                  url: myForm.action,
-                  type: myForm.method,
-                  data: $(myForm).serialize() + '&submit.Save=Save',
+                  url: tempForm.action,
+                  type: tempForm.method,
+                  data: tempForm.serialize() + '&submit.Save=Save',
                   success: function (result) {
                       logger.success("Perspective Saved.");
                   }
