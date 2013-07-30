@@ -5,4 +5,3 @@ Version: 1.2
 OrchardVersion: 1.5
 Description: Metadata modules enables the creation and alteration of entity types not based on code.
 Category: Metadata
-
