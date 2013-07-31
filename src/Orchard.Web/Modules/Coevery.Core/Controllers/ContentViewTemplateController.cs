@@ -265,7 +265,7 @@ namespace Coevery.Core.Controllers {
             if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
                 // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-                return View("Edit", (object)model);
+                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
 
             conditionallyPublish(contentItem);

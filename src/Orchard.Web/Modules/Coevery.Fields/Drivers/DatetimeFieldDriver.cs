@@ -47,15 +47,18 @@ namespace Coevery.Fields.Drivers {
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }
 
-        protected override DriverResult Editor(ContentPart part, DatetimeField field, IUpdateModel updater, dynamic shapeHelper) {
-            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
-                var settings = field.PartFieldDefinition.Settings.GetModel<DatetimeFieldSettings>();
+        protected override DriverResult Editor(ContentPart part, DatetimeField field, IUpdateModel updater, dynamic shapeHelper) {            
 
-                if (settings.Required && !field.Value.HasValue) {
-                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
-                }
+            //This code doesn't seem to do anything now
+            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
+                
             }
 
+            var settings = field.PartFieldDefinition.Settings.GetModel<DatetimeFieldSettings>();
+            if (settings.Required && !field.Value.HasValue)
+            {
+                updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+            }
             return Editor(part, field, shapeHelper);
         }
 

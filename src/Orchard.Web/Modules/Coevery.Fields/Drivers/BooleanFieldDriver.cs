@@ -50,8 +50,10 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, BooleanField field, IUpdateModel updater, dynamic shapeHelper) {
+
+            //This code doesn't seem to do anything now
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
-                var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
+                //var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
             }
 
             return Editor(part, field, shapeHelper);

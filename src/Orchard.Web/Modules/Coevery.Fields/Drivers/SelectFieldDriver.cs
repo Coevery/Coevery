@@ -87,14 +87,13 @@ namespace Coevery.Fields.Drivers
         protected override DriverResult Editor(ContentPart part, SelectField field, IUpdateModel updater, dynamic shapeHelper)
         {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null))
-            {
-                var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
-                if (settings.Required && !string.IsNullOrWhiteSpace(field.Value))
-                {
-                    updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
-                }
+            {                
             }
-
+            var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+            if (settings.Required && !string.IsNullOrWhiteSpace(field.Value))
+            {
+                updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
+            }
             return Editor(part, field, shapeHelper);
         }
 
