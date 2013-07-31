@@ -9,14 +9,14 @@
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "date", id = "datetimeDefault", name="datetimeDefault" })       
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "date", id = "datetimeDefault", name = "datetimeDefault" })
     </div>
     <script>
         function convertDatetime(dateStr) {
             if (dateStr) {
                 var tempDate = new Date(dateStr);
-                return (tempDate.getMonth()+1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear() + ' ' +
-                    tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + tempDate.getHours() < 12 ? " pm" : " am";
+                return (tempDate.getMonth() + 1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear() + ' ' +
+                    tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + ((tempDate.getHours() < 12) ? " AM" : " PM");
             } else {
                 return "";
             }
@@ -32,18 +32,19 @@
                 });
                 defaultDatetime.val(convertDatetime(defaultDatetime.val()));
             }
-        });
-        
-        $(".add-on").click(function () {
-            setTimeout(function () {
-                $(".bootstrap-datetimepicker-widget").offset(function (index, coords) {
-                    var result = { top: 0, left: 0 };
-                    result.left = coords.left;
-                    result.top = $(".input-append").offset().top -
-                            $(".bootstrap-datetimepicker-widget").outerHeight(true) - 4;
-                    return result;
-                });
-            }, 0);
+
+
+            $(".add-on").click(function () {
+                setTimeout(function () {
+                    $(".bootstrap-datetimepicker-widget").offset(function (index, coords) {
+                        var result = { top: 0, left: 0 };
+                        result.left = coords.left;
+                        result.top = $(".input-prepend").offset().top -
+                                $(".bootstrap-datetimepicker-widget").outerHeight(true) - 4;
+                        return result;
+                    });
+                }, 0);
+            });
         });
     </script>
 </section>

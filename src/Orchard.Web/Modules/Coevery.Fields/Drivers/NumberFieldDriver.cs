@@ -55,24 +55,20 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, NumberField field, IUpdateModel updater, dynamic shapeHelper)
         {
-            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {              
-            }
-            var settings = field.PartFieldDefinition.Settings.GetModel<NumberFieldSettings>();
-            if (settings.Required && !field.Value.HasValue)
-            {
-                updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
-            }
-            if (field.Value.HasValue)
-            {
-                var intPart = Math.Floor(field.Value.Value);
-                var decPart = field.Value.Value - intPart;
-                if (intPart.ToString().Length > settings.Length)
-                {
-                    updater.AddModelError(GetPrefix(field, part), T("The integer part of field {0} is overlength.", T(field.DisplayName)));
+            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
+                var settings = field.PartFieldDefinition.Settings.GetModel<NumberFieldSettings>();
+                if (settings.Required && !field.Value.HasValue) {
+                    updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
                 }
-                if (decPart.ToString().Length > settings.DecimalPlaces + 2)
-                {
-                    updater.AddModelError(GetPrefix(field, part), T("The decimal part of field {0} is overlength.", T(field.DisplayName)));
+                if (field.Value.HasValue) {
+                    var intPart = Math.Floor(field.Value.Value);
+                    var decPart = field.Value.Value - intPart;
+                    if (intPart.ToString().Length > settings.Length) {
+                        updater.AddModelError(GetPrefix(field, part), T("The integer part of field {0} is overlength.", T(field.DisplayName)));
+                    }
+                    if (decPart.ToString().Length > settings.DecimalPlaces + 2) {
+                        updater.AddModelError(GetPrefix(field, part), T("The decimal part of field {0} is overlength.", T(field.DisplayName)));
+                    }
                 }
             }
             return Editor(part, field, shapeHelper);

@@ -42,10 +42,12 @@
         {
             var itemId = Model.Name + item.Value;               
         <label class="radio span12" for="@itemId">
-            <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.Value)" value="@item.Value" @if (item.Selected)
-                                                                                                                 { <text> checked </text> }/>
+            <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.Value)" value="@item.Value" 
+                @if (item.Selected) {
+                    <text> checked </text>
+                }/>
             @T(item.Text)
-        </label>          
+        </label>
         }
     }
     else if (settings.DisplayOption == SelectionMode.Checkbox)
@@ -54,7 +56,7 @@
         {
             var itemId = Model.Name + item.Value;
         <label class="checkbox span12" for="@itemId">
-            <input type="checkbox" id="@itemId" name="@Html.FieldNameFor(model => model.TestStore)" value="@item.Value" @if (item.Selected)
+            <input type="checkbox" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" @if (item.Selected)
                                                                                                                     { <text> checked </text> }/>
             @T(item.Text)
         </label>          

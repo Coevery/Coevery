@@ -27,7 +27,7 @@
         if (dateStr) {
             var tempDate = new Date(dateStr);
             return (tempDate.getMonth() + 1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear() + ' ' +
-                tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + tempDate.getHours() < 12 ? " pm" : " am";
+                    tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + ((tempDate.getHours() < 12) ? " AM" : " PM");
         } else {
             return "";
         }

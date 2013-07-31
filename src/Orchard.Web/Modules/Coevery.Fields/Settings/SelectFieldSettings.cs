@@ -16,7 +16,6 @@
         public int DefaultValue { get; set; }
 
         public SelectFieldSettings() {
-            LabelsStr = "1;2;3;4";
             DisplayOption = SelectionMode.DropDown;
             DefaultValue = 0;
             SelectCount = 1;

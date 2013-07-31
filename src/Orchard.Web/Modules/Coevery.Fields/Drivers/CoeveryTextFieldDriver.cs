@@ -37,25 +37,20 @@ namespace Coevery.Fields.Drivers {
             });
         }
 
-        protected override DriverResult Editor(ContentPart part, CoeveryTextField field, dynamic shapeHelper) {     
+        protected override DriverResult Editor(ContentPart part, CoeveryTextField field, dynamic shapeHelper) {
             return ContentShape("Fields_CoeveryText_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }
 
         protected override DriverResult Editor(ContentPart part, CoeveryTextField field, IUpdateModel updater, dynamic shapeHelper) {
-            //This code doesn't seem to do anything now
-            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null))
-            {
-
-            }
-            var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
-            if (settings.Required && string.IsNullOrWhiteSpace(field.Value))
-            {
-                updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
-            }
-            if (field.Value.Length > settings.MaxLength)
-            {
-                updater.AddModelError(GetPrefix(field, part), T("The field {0} value exceed max length.", T(field.DisplayName)));
+            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
+                var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
+                if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
+                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+                }
+                if (field.Value.Length > settings.MaxLength) {
+                    updater.AddModelError(GetPrefix(field, part), T("The field {0} value exceed max length.", T(field.DisplayName)));
+                }
             }
             return Editor(part, field, shapeHelper);
         }

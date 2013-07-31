@@ -27,7 +27,8 @@
         Select Count
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.SelectCount, new { @class = "span12 digits" ,id="selectSelectCount"})
+        <input type="text" name="@Html.FieldNameFor(model=>model.SelectCount)" class="span12 digits" value="@Model.SelectCount"
+               id="selectSelectCount" />
     </div>
 </section>
 
@@ -36,13 +37,17 @@
         Display Option
     </label>
     <div class="controls">
-        @foreach (var displayOpt in Enum.GetValues(typeof(SelectionMode)).Cast<SelectionMode>())
-        {
-            string isChecked = (displayOpt == Model.DisplayOption) ? "checked" : null;
-            <label class="radio">
-                @Html.RadioButtonFor(m => m.DisplayOption, displayOpt, new { @class = "displayOption", isChecked })
-                @T(displayOpt.ToString())
-            </label>
+        @{
+            foreach (var displayOpt in Enum.GetValues(typeof (SelectionMode)).Cast<SelectionMode>()) {
+                <label class="radio" id="display-@displayOpt">
+                    <input type="radio" name="@Html.FieldNameFor(m => m.DisplayOption)" 
+                        value="@displayOpt" class="displayOption"  
+                        @if (displayOpt == Model.DisplayOption) {
+                            <text> checked </text>
+                        } />
+                    @T(displayOpt.ToString())
+                </label>
+            }
         }
     </div>
 </section>
@@ -52,19 +57,36 @@
         Display Lines
     </label>
     <div class="controls">
-        @Html.TextBoxFor(d => d.DisplayLines, new { @class = "span12 digits"})
+        @Html.TextBoxFor(d => d.DisplayLines, new { @class = "span12 digits" })
     </div>
 </section>
 
 <script type="text/javascript">
+    function showAndHideOption(event, checkboxE, radiobuttonE, selCnt, displayOpt) {       
+        if (selCnt.val() == 1) {
+            checkboxE.hide();
+            radiobuttonE.show();        
+        } else if (selCnt.val() > 1) {
+            radiobuttonE.hide();
+            checkboxE.show();
+        }
+    }
+
     $(function () {
+        var checkboxE = $("#display-Checkbox");
+        var radiobuttonE = $("#display-Radiobutton");
+        var selCnt = $("#selectSelectCount");
         var displayOpt = $("input.displayOption:checked").val();
-        $("#selectSelectCount").attr("selectSetting", displayOpt);
+
+        showAndHideOption(null, checkboxE, radiobuttonE, selCnt, displayOpt);
+        selCnt.attr("selectSetting", displayOpt);
+        selCnt.keyup(function(event) {
+            showAndHideOption(event, checkboxE, radiobuttonE, selCnt, displayOpt);
+        });
+
         $("input.displayOption").click(function() {
-            if ($(this).is(":checked")) {
-                displayOpt = $(this).val();
-                $("#selectSelectCount").attr("selectSetting", displayOpt);
-            }
+            displayOpt = $(this).val();
+            selCnt.attr("selectSetting", displayOpt);
         });
 
         $.validator.addMethod("selectSetting", function (value, element, param) {

@@ -13,7 +13,6 @@ namespace Coevery.Fields.Fields
     {
 
         public IEnumerable<SelectListItem> Items { get; set; }
-        public string[] TestStore { get; set; }
         public string[] OptionValue
         {
             get
@@ -32,7 +31,7 @@ namespace Coevery.Fields.Fields
         public string Value
         {
             get { return Storage.Get<string>(Name); }
-            set { Storage.Set(value); }
+            set { Storage.Set(value ?? String.Empty); }
         }
     }
 }

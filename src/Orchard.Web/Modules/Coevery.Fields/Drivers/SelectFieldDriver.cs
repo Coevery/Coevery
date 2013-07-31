@@ -49,11 +49,10 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, SelectField field, dynamic shapeHelper) {
             //if the content item is new, assign the default value
-            //if (!part.HasDraft() && !part.HasPublished())
-            //{
-            //    var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
-            //    field.Value = settings.DefaultValue.ToString();
-            //}
+            if (string.IsNullOrWhiteSpace(field.Value)) {
+                var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+                field.Value = settings.DefaultValue.ToString();
+            }
 
             var fieldDefinitionRecord = (from e in _partDefinitionRepository.Table
                                          from f in e.ContentPartFieldDefinitionRecords
@@ -77,10 +76,10 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, SelectField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
-            }
-            var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
-            if (settings.Required && !string.IsNullOrWhiteSpace(field.Value)) {
-                updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
+                var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+                if (settings.Required && !string.IsNullOrWhiteSpace(field.Value)) {
+                    updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
+                }
             }
             return Editor(part, field, shapeHelper);
         }

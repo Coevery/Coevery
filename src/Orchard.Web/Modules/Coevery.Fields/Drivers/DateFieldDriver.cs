@@ -39,8 +39,7 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, DateField field, dynamic shapeHelper) {
             //if the content item is new, assign the default value
-            if (!field.Value.HasValue)
-            {
+            if (!field.Value.HasValue) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<DateFieldSettings>();
                 field.Value = settings.DefaultValue;
             }
@@ -49,16 +48,11 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, DateField field, IUpdateModel updater, dynamic shapeHelper) {
-
-            //This code doesn't seem to do anything now
-            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null))
-            {
-
-            }
-            var settings = field.PartFieldDefinition.Settings.GetModel<DateFieldSettings>();
-            if (settings.Required && !field.Value.HasValue)
-            {
-                updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
+                var settings = field.PartFieldDefinition.Settings.GetModel<DateFieldSettings>();
+                if (settings.Required && !field.Value.HasValue) {
+                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+                }
             }
             return Editor(part, field, shapeHelper);
         }
