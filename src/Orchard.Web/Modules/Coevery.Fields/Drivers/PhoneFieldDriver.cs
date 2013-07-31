@@ -35,13 +35,13 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Display(ContentPart part, PhoneField field, string displayType, dynamic shapeHelper) {
             return ContentShape("Fields_Phone", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<PhoneFieldSettings>();
-                return shapeHelper.Fields_Input().Settings(settings);
+                return shapeHelper.Fields_Phone().Settings(settings);
             });
         }
 
         protected override DriverResult Editor(ContentPart part, PhoneField field, dynamic shapeHelper) {
             //if the content item is new, assign the default value
-            if (!part.HasDraft() && !part.HasPublished())
+            if (string.IsNullOrWhiteSpace(field.Value))
             {
                 var settings = field.PartFieldDefinition.Settings.GetModel<PhoneFieldSettings>();
                 field.Value = settings.DefaultValue;

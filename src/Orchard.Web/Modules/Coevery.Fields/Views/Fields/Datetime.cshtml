@@ -1,16 +1,18 @@
 ﻿@using Coevery.Fields.Settings;
 @using Orchard.Utility.Extensions;
 @{
-    DateTime? value = (DateTime?)Model.ContentField.Value;
-    string valueToDisplay = null;
+    DateTime? value = Model.ContentField.Value;
 
-    if (value.HasValue)
-    {
-        valueToDisplay = value.ToString();
-    }
-    if (!string.IsNullOrWhiteSpace(valueToDisplay))
-    {
-        string name = Model.ContentField.DisplayName;
-    <p class="text-field">@T(name): @valueToDisplay</p>
+    if (value.HasValue) {
+        var valueToDisplay = value.Value.ToString("MM/dd/yyyy hh:mm tt");
+        if (!string.IsNullOrWhiteSpace(valueToDisplay)) {
+            string name = Model.ContentField.DisplayName;
+            <div class="data-row clearfix">
+                <span class="control-label">@T(name)</span>
+                <div class="controls">
+                    <span class="control-text">@T(valueToDisplay)</span>
+                </div>
+            </div>
+        }
     }
 }

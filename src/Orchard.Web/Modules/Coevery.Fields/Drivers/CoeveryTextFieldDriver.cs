@@ -37,13 +37,7 @@ namespace Coevery.Fields.Drivers {
             });
         }
 
-        protected override DriverResult Editor(ContentPart part, CoeveryTextField field, dynamic shapeHelper) {
-            if (!part.HasDraft() && !part.HasPublished())
-            {
-                var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
-                field.Value = settings.PlaceHolderText;
-            }
-            
+        protected override DriverResult Editor(ContentPart part, CoeveryTextField field, dynamic shapeHelper) {     
             return ContentShape("Fields_CoeveryText_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }

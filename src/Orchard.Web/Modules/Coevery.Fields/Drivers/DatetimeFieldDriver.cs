@@ -33,12 +33,12 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Display(ContentPart part, DatetimeField field, string displayType, dynamic shapeHelper) {
             return ContentShape("Fields_Datetime", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<DatetimeFieldSettings>();
-                return shapeHelper.Fields_Input().Settings(settings);
+                return shapeHelper.Fields_Datetime().Settings(settings);
             });
         }
 
         protected override DriverResult Editor(ContentPart part, DatetimeField field, dynamic shapeHelper) {
-            if (!part.HasDraft() && !part.HasPublished())
+            if (!field.Value.HasValue)
             {
                 var settings = field.PartFieldDefinition.Settings.GetModel<DatetimeFieldSettings>();
                 field.Value = settings.DefaultValue;

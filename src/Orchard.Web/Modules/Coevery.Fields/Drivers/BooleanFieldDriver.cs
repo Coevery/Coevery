@@ -39,23 +39,22 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Editor(ContentPart part, BooleanField field, dynamic shapeHelper) {
             // if the content item is new, assign the default value
 
-            if (!part.HasDraft() && !part.HasPublished())
-            {
+            if (!field.Value.HasValue) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
                 field.Value = settings.DefaultValue;
             }
 
             return ContentShape("Fields_Boolean_Edit", GetDifferentiator(field, part),
-                () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
+                                () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }
 
         protected override DriverResult Editor(ContentPart part, BooleanField field, IUpdateModel updater, dynamic shapeHelper) {
-
             //This code doesn't seem to do anything now
-            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
-                //var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
+            if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) { }
+            var settings = field.PartFieldDefinition.Settings.GetModel<BooleanFieldSettings>();
+            if (settings.Required && !field.Value.HasValue) {
+                updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
             }
-
             return Editor(part, field, shapeHelper);
         }
 
@@ -69,7 +68,7 @@ namespace Coevery.Fields.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context
-                .Member(null, typeof(Boolean), T("Value"), T("The boolean value of the field."));
+                .Member(null, typeof(bool), T("Value"), T("The boolean value of the field."));
         }
     }
 }

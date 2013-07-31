@@ -44,13 +44,13 @@ namespace Coevery.Fields.Drivers
             return ContentShape("Fields_Email", GetDifferentiator(field, part), () =>
             {
                 var settings = field.PartFieldDefinition.Settings.GetModel<EmailFieldSettings>();
-                return shapeHelper.Fields_Input().Settings(settings);
+                return shapeHelper.Fields_Email().Settings(settings);
             });
         }
 
         protected override DriverResult Editor(ContentPart part, EmailField field, dynamic shapeHelper)
         {
-            if (!part.HasDraft() && !part.HasPublished())
+            if (string.IsNullOrWhiteSpace(field.Value))
             {
                 var settings = field.PartFieldDefinition.Settings.GetModel<EmailFieldSettings>();
                 field.Value = settings.DefaultValue;
