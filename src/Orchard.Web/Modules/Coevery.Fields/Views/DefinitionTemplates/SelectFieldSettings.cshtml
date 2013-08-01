@@ -28,7 +28,7 @@
     </label>
     <div class="controls">
         <input type="text" name="@Html.FieldNameFor(model=>model.SelectCount)" class="span12 digits" value="@Model.SelectCount"
-               id="selectSelectCount" />
+               id="select-SelectCount" />
     </div>
 </section>
 
@@ -52,7 +52,7 @@
     </div>
 </section>
 
-<section class="control-group data-row">
+<section class="control-group data-row" id="select-DisplayLines">
     <label class="control-label">
         Display Lines
     </label>
@@ -62,7 +62,7 @@
 </section>
 
 <script type="text/javascript">
-    function showAndHideOption(event, checkboxE, radiobuttonE, selCnt, displayOpt) {       
+    function showAndHideOption(event, checkboxE, radiobuttonE, selCnt) {       
         if (selCnt.val() == 1) {
             checkboxE.hide();
             radiobuttonE.show();        
@@ -75,18 +75,31 @@
     $(function () {
         var checkboxE = $("#display-Checkbox");
         var radiobuttonE = $("#display-Radiobutton");
-        var selCnt = $("#selectSelectCount");
+        var selCnt = $("#select-SelectCount");
+        var disLines = $("#select-DisplayLines");
         var displayOpt = $("input.displayOption:checked").val();
 
-        showAndHideOption(null, checkboxE, radiobuttonE, selCnt, displayOpt);
+        showAndHideOption(null, checkboxE, radiobuttonE, selCnt);
+        if (displayOpt == "@T(SelectionMode.DropDown.ToString())") {
+            disLines.show();
+        } else {
+            disLines.hide();
+        }
         selCnt.attr("selectSetting", displayOpt);
+        
         selCnt.keyup(function(event) {
-            showAndHideOption(event, checkboxE, radiobuttonE, selCnt, displayOpt);
+            showAndHideOption(event, checkboxE, radiobuttonE, selCnt);
+            $("#select-DisplayLines input").val(selCnt.val());
         });
 
         $("input.displayOption").click(function() {
             displayOpt = $(this).val();
             selCnt.attr("selectSetting", displayOpt);
+            if (displayOpt == "@T(SelectionMode.DropDown.ToString())") {
+                disLines.show();
+            } else {
+                disLines.hide();
+            }
         });
 
         $.validator.addMethod("selectSetting", function (value, element, param) {

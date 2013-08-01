@@ -9,7 +9,7 @@
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls">
+<div class="controls">
 
     @if (settings.DisplayOption == SelectionMode.DropDown)
     {
@@ -22,10 +22,6 @@
             selectAttributes.Add(required, null);
         }
         selectAttributes.Add("size", displaySize);
-        if (required != null)
-        {
-            selectAttributes.Add(required, null);
-        }
 
         if (multiple != null)
         {
@@ -41,7 +37,7 @@
         foreach (var item in Model.Items)
         {
             var itemId = Model.Name + item.Value;               
-        <label class="radio span12" for="@itemId">
+        <label class="radio" for="@itemId">
             <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.Value)" value="@item.Value" 
                 @if (item.Selected) {
                     <text> checked </text>
@@ -55,7 +51,7 @@
         foreach (var item in Model.Items)
         {
             var itemId = Model.Name + item.Value;
-        <label class="checkbox span12" for="@itemId">
+        <label class="checkbox" for="@itemId">
             <input type="checkbox" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" @if (item.Selected)
                                                                                                                     { <text> checked </text> }/>
             @T(item.Text)

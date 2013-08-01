@@ -11,13 +11,13 @@ namespace Coevery.Fields.Fields
 {
     public class SelectField : ContentField
     {
-
-        public IEnumerable<SelectListItem> Items { get; set; }
+        public List<SelectListItem> Items { get; set; }
         public string[] OptionValue
         {
             get
             {
-                return Value.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
+                return string.IsNullOrWhiteSpace(Value) ? 
+                    null: Value.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
             }
             set
             {
