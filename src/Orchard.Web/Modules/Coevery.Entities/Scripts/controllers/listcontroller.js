@@ -1,10 +1,10 @@
 ﻿'use strict';
 
-define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/generationservice'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
       'EntityListCtrl',
-      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', 'generationService',
-      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService, generationService) {
+      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', 
+      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService) {
           var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
               '<ul class="row-actions pull-right hide">' +
               '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
@@ -77,16 +77,6 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   logger.error("Failed to fetched Metadata.");
               });
           };
-
-          $scope.generate = function () {
-              generationService.save({ name: '' }, function () {
-                  $scope.getAllMetadata();
-                  logger.success("Generate metadata successful.");
-              }, function () {
-                  logger.error("Failed to Generate the metadata.");
-              });
-          };
-
 
           $scope.getAllMetadata();
       }]
