@@ -21,6 +21,11 @@
         var VisableTo = new BindingList<SelectListItem>();
         VisableTo.Add(new SelectListItem { Selected = Model.VisableTo == "All", Text = "All" });
         VisableTo.Add(new SelectListItem { Selected = Model.VisableTo == "Me", Text = "Me" });
+
+        var PageRowCount = new BindingList<SelectListItem>();
+        PageRowCount.Add(new SelectListItem { Selected = Model.VisableTo == "250", Text = "250" });
+        PageRowCount.Add(new SelectListItem { Selected = Model.VisableTo == "500", Text = "500" });
+        PageRowCount.Add(new SelectListItem { Selected = Model.VisableTo == "1000", Text = "1000" });
     }
     <section id="main-content">
         <header id="page-title" class="clearfix">
@@ -53,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="span6">
-                                    <label class="control-label">DisplayName</label>
+                                    <label class="control-label">Display Name</label>
                                     <div class="controls">
                                         @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" })
                                     </div>
@@ -63,15 +68,15 @@
 
                             <section class="control-group">
                                 <div class="span6">
-                                    <label class="control-label">VisableTo</label>
+                                    <label class="control-label">Visable To</label>
                                     <div class="controls">
                                         @Html.DropDownListFor(m => m.VisableTo, VisableTo, string.Empty, new { @class = "span12", @id = "visableto" })
                                     </div>
                                 </div>
                                 <div class="span6">
-                                    <label class="control-label">PageRowCount</label>
+                                    <label class="control-label">Page Row Count</label>
                                     <div class="controls">
-                                        @Html.TextBoxFor(m => m.PageRowCount, new { @type = "number", @class = "span12" })
+                                        @Html.DropDownListFor(m => m.PageRowCount, PageRowCount, null , new { @class = "span12", @id = "pageRowCount" })
                                     </div>
                                 </div>
                             </section>
