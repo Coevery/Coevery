@@ -24,13 +24,15 @@ namespace Coevery.Fields.Services {
             builder.Describe("FieldEdit")
                    .Configure(descriptor => {
                        descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+}";
-                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Edit/' + params.EntityName + '?FieldName=' + params.FieldName; }";
+                       descriptor.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Fields/Edit/' + $stateParams.EntityName + '?FieldName=' + $stateParams.FieldName;
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]";
                        descriptor.Controller = "FieldEditCtrl";
                        descriptor.Dependencies = new string[] {"controllers/editcontroller"};
                    });
             builder.Describe("FieldEdit.Items")
                    .Configure(descriptor => {
-                       //descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+/Items}";
                        descriptor.Url = "/Items";
                        descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/Items/' + params.EntityName+ '?FieldName=' + params.FieldName; }";
                        descriptor.Controller = "ItemsCtrl";
