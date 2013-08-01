@@ -142,6 +142,7 @@
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />
     <Compile Include="Services\SchemaUpdateService.cs" />
+    <Compile Include="Services\TemplateViewService.cs" />
     <Compile Include="Services\ViewPartService.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="DefaultRoute.cs" />

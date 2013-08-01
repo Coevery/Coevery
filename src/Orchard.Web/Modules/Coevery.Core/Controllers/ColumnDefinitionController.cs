@@ -33,21 +33,19 @@ namespace Coevery.Core.Controllers
     {
         private readonly IContentManager _contentManager;
         private readonly IViewPartService _projectionService;
-        private readonly ILayoutAwareViewEngine _layoutAwareViewEngine;
-        private readonly IWorkContextAccessor _workContextAccessor;
         private readonly IProjectionManager _projectionManager;
+        private readonly ITemplateViewService _templateViewService;
         public ColumnDefinitionController(IContentManager iContentManager,
             IOrchardServices orchardServices,
             IViewPartService projectionService, 
-            ILayoutAwareViewEngine layoutAwareViewEngine, 
-            IWorkContextAccessor workContextAccessor, IProjectionManager projectionManager)
+            IProjectionManager projectionManager, 
+            ITemplateViewService templateViewService)
         {
             _contentManager = iContentManager;
             Services = orchardServices;
             _projectionService = projectionService;
-            _layoutAwareViewEngine = layoutAwareViewEngine;
-            _workContextAccessor = workContextAccessor;
             _projectionManager = projectionManager;
+            _templateViewService = templateViewService;
             T = NullLocalizer.Instance;
         }
         public Localizer T { get; set; }
@@ -65,7 +63,7 @@ namespace Coevery.Core.Controllers
             var properties = GetProperties(projectionId);
 
             var columns = new List<JObject>();
-            string linkCellTemplae = RenderView("GridTemplate", "LinkCellTemplate");
+            string linkCellTemplae = _templateViewService.RenderView("Coevery.Core","GridTemplate", "LinkCellTemplate");
             foreach (var property in properties) {
                 var column = new JObject();
                 var filedName = property.GetFiledName();
@@ -82,29 +80,9 @@ namespace Coevery.Core.Controllers
             return message;
         }
 
-        private string RenderView(string controllerName, string viewName) {
-            HttpContextBase contextBase = new HttpContextWrapper(HttpContext.Current);
+        
 
-            var routeData = new RouteData();
-            routeData.Values.Add("controller", controllerName);
-            routeData.Values.Add("area", "Coevery.Core");
-            routeData.DataTokens.Add("area", "Coevery.Core");
-            routeData.DataTokens.Add("IWorkContextAccessor", _workContextAccessor);
-
-            var controllerContext = new ControllerContext(contextBase, routeData, new EmptyController());
-
-            var razorViewResult = _layoutAwareViewEngine.FindView(controllerContext, viewName, "", false);
-
-            var writer = new StringWriter();
-            var viewContext = new ViewContext(controllerContext, razorViewResult.View, new ViewDataDictionary(), new TempDataDictionary(), writer);
-            razorViewResult.View.Render(viewContext, writer);
-
-            return writer.ToString();
-        }
-
-        private class EmptyController : ControllerBase {
-            protected override void ExecuteCore() { }
-        }
+       
 
         private IEnumerable<PropertyRecord> GetProperties(int projectionId) {
             IList<PropertyRecord> properties = new List<PropertyRecord>();

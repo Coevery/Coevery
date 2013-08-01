@@ -1009,38 +1009,76 @@
                 //restrict: 'E',
                 link: function (scope, element, attrs) {
                     element.click(function () {
-                        var layoutString = '';
+                        //begin
+                        //var layoutString = '';
                         var sections = $('[fd-form]').find('[fd-section]');
+                        var layoutObject = [];
+                        var sectionIndex = 0;
                         sections.each(function () {
                             if ($(this).find('[fd-field]').length) {
+                                
+                                // section begin
                                 var columnCount = $(this).attr('section-columns');
                                 var width = $(this).attr('section-columns-width');
                                 var sectionTitle = $(this).attr('section-title');
-                                layoutString += '<fd-section section-columns="' + columnCount + '" section-columns-width="' + width + '" section-title="' + sectionTitle + '">';
+                                layoutObject.push({});
+                                var selection = layoutObject[sectionIndex];
+                                selection["SectionColumns"] = columnCount;
+                                selection["SectionColumnsWidth"] = width;
+                                selection["SectionTitle"] = sectionTitle;
+                                //layoutString += '<fd-section section-columns="' + columnCount + '" section-columns-width="' + width + '" section-title="' + sectionTitle + '">';
                                 var rows = $(this).find('[fd-row]');
+                                selection["Rows"] = [];
+                                var rowIndex = 0;
                                 rows.each(function () {
-                                    layoutString += '<fd-row>';
+                                    selection.Rows.push({});
+                                    var row = selection.Rows[rowIndex];
+                                    //layoutString += '<fd-row>';
                                     var columns = $(this).find('[fd-column]');
+                                    row["Columns"] = [];
+                                    var columnIndex = 0;
                                     columns.each(function () {
-                                        layoutString += '<fd-column>';
+                                        row.Columns.push({});
+                                        var column = row.Columns[columnIndex];
+                                        column.Field = {};
+                                        //layoutString += '<fd-column>';
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
+                                            
                                             var settings = '';
                                             field.attr('field-required') != null && (settings += ' field-required');
                                             field.attr('field-readonly') != null && (settings += ' field-readonly');
-                                            layoutString += '<fd-field field-name="' + field.attr('field-name') + '"' + settings + '></fd-field>';
+                                            column.Field.FieldName = field.attr('field-name');
+                                            column.Field.Settings = settings;
+                                            //layoutString += '<fd-field field-name="' + field.attr('field-name') + '"' + settings + '></fd-field>';
                                         }
-                                        layoutString += '</fd-column>';
+                                        //layoutString += '</fd-column>';
+                                        columnIndex = columnIndex + 1;
                                     });
-                                    layoutString += '</fd-row>';
+                                    //layoutString += '</fd-row>';
+                                    rowIndex = rowIndex + 1;
                                 });
-                                layoutString += '</fd-section>';
+                                //layoutString += '</fd-section>';
+                                sectionIndex = sectionIndex + 1;
+                                //section end
                             }
                         });
+                        
                         var entityName = $stateParams.EntityName;
-                        $.post('/OrchardLocal/api/formdesigner/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
-                            logger.success('Save success');
+                        $.ajax({
+                            type: 'POST',
+                            contentType: 'application/json',
+                            url: '/OrchardLocal/api/formdesigner/layout/' + entityName,
+                            data: JSON.stringify(layoutObject),
+                            success: function (msg) {
+                                logger.success('Save success');
+                            }
                         });
+                        //$.post('/OrchardLocal/api/formdesigner/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
+                        //    logger.success('Save success');
+                        //});
+                        
+                        //end
                     });
                 }
             };

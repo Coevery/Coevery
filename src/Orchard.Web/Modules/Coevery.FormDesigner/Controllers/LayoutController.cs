@@ -1,15 +1,24 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Text;
 using System.Web.Http;
+using System.Web.Mvc;
+using Coevery.Core.Services;
+using Coevery.FormDesigner.Models;
 using Orchard.ContentManagement.MetaData;
+using System.Linq;
+using Orchard.ContentManagement.MetaData.Models;
 
 namespace Coevery.FormDesigner.Controllers {
     public class LayoutController : ApiController {
         private IContentDefinitionManager _contentDefinitionManager;
-
-        public LayoutController(IContentDefinitionManager contentDefinitionManager) {
+        private readonly ITemplateViewService _templateViewService;
+        public LayoutController(IContentDefinitionManager contentDefinitionManager, 
+            ITemplateViewService templateViewService) {
             _contentDefinitionManager = contentDefinitionManager;
+            _templateViewService = templateViewService;
         }
 
         // GET api/leads/lead/5
@@ -30,23 +39,46 @@ namespace Coevery.FormDesigner.Controllers {
         }
 
         // POST api/metadata/field
-        public virtual HttpResponseMessage Post(string id, FormDataCollection data) {
+        public virtual HttpResponseMessage Post(string id , ICollection<Section> data) {
             var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
+            
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.MethodNotAllowed);
+            }
             if (contentTypeDefinition == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
 
-            var layout = data.Get("layout");
-
-            if (contentTypeDefinition.Settings.ContainsKey("Layout")) {
+            var layout = GetLayout(contentTypeDefinition,data);
+            if (contentTypeDefinition.Settings.ContainsKey("Layout"))
+            {
                 contentTypeDefinition.Settings["Layout"] = layout;
             }
-            else {
+            else
+            {
                 contentTypeDefinition.Settings.Add("Layout", layout);
             }
-
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
-
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private string GetLayout(ContentTypeDefinition contentTypeDefinition, ICollection<Section> data)
+        {
+            //check field valid
+            if(contentTypeDefinition.Parts.Any()) {
+                var part = contentTypeDefinition.Parts.First();
+                var fields = part.PartDefinition.Fields;
+                var columns = data.SelectMany(c => c.Rows).SelectMany(c => c.Columns);
+                var validColumns = columns.Where(c => fields.Select(d=>d.Name).Contains(c.Field.FieldName)).ToList();
+                validColumns.ForEach(c=>c.Field.IsValid = true);
+            }
+            
+
+            ViewDataDictionary viewData = new ViewDataDictionary();
+            viewData.Add("Layout",data);
+            string layout = _templateViewService
+                .RenderView("Coevery.FormDesigner", "FormTemplate", "FormDesignerLayout", viewData);
+            return layout;
         }
     }
 }

@@ -61,6 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\LayoutController.cs" />
+    <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\Field.cs" />
+    <Compile Include="Models\Row.cs" />
+    <Compile Include="Models\Section.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\LayoutManager.cs" />
     <Content Include="Scripts\controllers\formdesignercontroller.js" />
@@ -104,6 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FormTemplate\FormDesignerLayout.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
