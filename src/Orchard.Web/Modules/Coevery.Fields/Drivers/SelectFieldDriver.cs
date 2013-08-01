@@ -9,7 +9,6 @@ using Coevery.Fields.Fields;
 using Coevery.Fields.Settings;
 using Orchard.Localization;
 using Orchard.Data;
-using Orchard.Core.Settings.Metadata.Records;
 using Coevery.Fields.Records;
 
 namespace Coevery.Fields.Drivers {
@@ -17,13 +16,10 @@ namespace Coevery.Fields.Drivers {
         public IOrchardServices Services { get; set; }
         private const string TemplateName = "Fields/Select.Edit";
         private readonly IRepository<OptionItemRecord> _optionItemRepository;
-        private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
 
         public SelectFieldDriver(IOrchardServices services,
-            IRepository<OptionItemRecord> optionItemRepository,
-            IRepository<ContentPartDefinitionRecord> partDefinitionRepository) {
+            IRepository<OptionItemRecord> optionItemRepository) {
             _optionItemRepository = optionItemRepository;
-            _partDefinitionRepository = partDefinitionRepository;
             Services = services;
             T = NullLocalizer.Instance;
             DisplayName = "Select";
@@ -47,33 +43,27 @@ namespace Coevery.Fields.Drivers {
             });
         }
 
+        //Create or edit
         protected override DriverResult Editor(ContentPart part, SelectField field, dynamic shapeHelper) {
             //if the content item is new, assign the default value
-            if (string.IsNullOrWhiteSpace(field.Value)) {
-                var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
-                field.Value = settings.DefaultValue.ToString();
+            var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+            if (string.IsNullOrWhiteSpace(field.Value)) { 
             }
-
-            var fieldDefinitionRecord = (from e in _partDefinitionRepository.Table
-                                         from f in e.ContentPartFieldDefinitionRecords
-                                         where e.Name == part.TypeDefinition.Name && f.Name == field.Name
-                                         select f).First();
-            if (fieldDefinitionRecord == null) {
-                return ContentShape("Fields_Select_Edit", GetDifferentiator(field, part),
-                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
+            if (field.Items == null) {
+                field.Items = (from i in _optionItemRepository.Table
+                               where i.ContentPartFieldDefinitionRecord.Id == settings.FieldSettingId
+                               select new SelectListItem {
+                                   Value = i.Id.ToString(),
+                                   Text = i.Value,
+                                   Selected = i.IsDefault
+                               }).ToList();
             }
-            field.Items = (from i in _optionItemRepository.Table
-                           where i.ContentPartFieldDefinitionRecord == fieldDefinitionRecord
-                           select new SelectListItem {
-                               Value = i.Id.ToString(),
-                               Text = i.Value,
-                               Selected = i.IsDefault
-                           }).AsEnumerable();
 
             return ContentShape("Fields_Select_Edit", GetDifferentiator(field, part),
                  () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }
 
+        //Creat or edit Post
         protected override DriverResult Editor(ContentPart part, SelectField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
