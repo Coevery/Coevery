@@ -1,13 +1,15 @@
-﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (couchPotato) {
+﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice'], function (couchPotato) {
     couchPotato.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', 'commonDataService', 'columnDefinitionService',
-      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, commonDataService, columnDefinitionService) {
+      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService',
+      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, $location,commonDataService, columnDefinitionService, viewDefinitionService) {
           var moduleName = $rootScope.$stateParams.Module;
           var primaryKeyGetter = $parse('ContentId');
-
+          $scope.toolButtonDisplay = false;
+          $scope.currentViewId = 0;
           $scope.moduleName = moduleName;
-
+          $scope.definitionViews = [];
+          $scope.columnDefs = [];
           $scope.pagingOptions = {
               pageSizes: [250, 500, 1000],
               pageSize: 250,
@@ -15,7 +17,7 @@
           };
 
           $scope.getPagedDataAsync = function (pageSize, page) {
-              var record = commonDataService.get({ contentType: moduleName, pageSize: pageSize, page: page }, function () {
+              var record = commonDataService.get({ contentType: moduleName, pageSize: pageSize, page: page, viewId: $scope.currentViewId }, function () {
                   $scope.myData = record.EntityRecords;
                   $scope.totalServerItems = record.TotalNumber;
                   if (!$scope.$$phase) {
@@ -47,10 +49,6 @@
               }
           }, true);
 
-          $scope.columnDefs = [];
-          var gridColumns = columnDefinitionService.query({ contentType: moduleName }, function () {
-              $scope.columnDefs = gridColumns;
-          }, function () { });
 
           $scope.selectedItems = [];
 
@@ -68,18 +66,47 @@
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
-          $scope.toolButtonDisplay = false;
-
-          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+          // fetch view columns
+          $scope.FetchViewColumns = function (viewId) {
+              if (viewId <= 0) return;
+              if (viewId == $scope.currentViewId) return;
+              $scope.currentViewId = viewId;
+              var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function () {
+                  $scope.columnDefs = gridColumns;
+                  $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+              }, function () {
+              });
+              
+          };
+          
           $scope.Refresh = function () {
-
               $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
           };
 
-          //var t = function (str) {
-          //    var result = i18n.t(str);
-          //    return result;
-          //};
+          // init views
+          $scope.FetchDefinitionViews = function() {
+              var views = viewDefinitionService.query({ contentType: moduleName}, function () {
+                  $scope.definitionViews = views;
+                  var defaultViewId = 0;
+                  views.forEach(function(index, value) {
+                      if (value.Default) {
+                          defaultViewId = value.ContentId;
+                      }
+                  });
+                  if (defaultViewId == 0 && views.length > 0)
+                      defaultViewId = views[0].ContentId;
+                  $scope.FetchViewColumns(defaultViewId);
+              }, function () {
+                  logger.error("Failed to fetched views for " + moduleName);
+              });
+          };
+
+          $scope.CreateView = function () {
+              var createViewPath = window.location.origin + '/OrchardLocal/SystemAdmin#/Projections/' + moduleName + '/Create';
+              window.location = createViewPath;
+          };
+          
+          $scope.FetchDefinitionViews();
 
           var idIndex = 1;
           $scope.filters = [{ id: '1' }];

@@ -9,10 +9,11 @@ define(['core/app/couchPotatoService'], function (couchPotato) {
     couchPotato.registerFactory([
         'commonDataService',
         ['$rootScope', '$resource', function ($rootScope, $resource) {
-            return $resource('api/CoeveryCore/Common/:contentType:contentId:PageSize:Page',
+            return $resource('api/CoeveryCore/Common/:contentType:contentId:PageSize:Page:ViewId',
                 { contentType: '@contentType' },
                 { contentId: '@ContentId' },
                 { pageSize: '@PageSize' },
+                { viewId: '@ViewId' },
                 { page: '@Page' },
                 { update: { method: 'PUT' } });
         }]

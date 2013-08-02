@@ -43,22 +43,20 @@ namespace Coevery.Core.Controllers
         public IOrchardServices Services { get; private set; }
 
         // GET api/leads/lead
-        public HttpResponseMessage Get(string id, int pageSize,int page)
+        public HttpResponseMessage Get(string id, int pageSize,int page,int viewId)
         {
             if (string.IsNullOrEmpty(id))
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            id = pluralService.Singularize(id);
-            var part = GetProjectionPartRecord(id);
+            var part = GetProjectionPartRecord(viewId);
             IEnumerable<JObject> entityRecords = new List<JObject>();
             int totalNumber = 0;
             if (part != null) {
                 totalNumber = _projectionManager.GetCount(part.Record.QueryPartRecord.Id);
                 int skipCount = pageSize * (page - 1);
                 int pageCount = totalNumber <= pageSize * page ? totalNumber - pageSize * (page - 1) : pageSize;
-                entityRecords = this.GetLayoutComponents(part, skipCount, pageCount);
+                entityRecords = GetLayoutComponents(part, skipCount, pageCount);
             }
             var returnResult = new { TotalNumber = totalNumber, EntityRecords = entityRecords };
             var json = JsonConvert.SerializeObject(returnResult);
@@ -76,11 +74,9 @@ namespace Coevery.Core.Controllers
             } 
         }
 
-        private ProjectionPart GetProjectionPartRecord(string entityType)
+        private ProjectionPart GetProjectionPartRecord(int viewId)
         {
-            int viewId = _projectionService.GetProjectionId(entityType);
             if (viewId == -1) return null;
-
             var projectionContentItem = _contentManager.Get(viewId, VersionOptions.Latest);
             var part = projectionContentItem.As<ProjectionPart>();
             return part;

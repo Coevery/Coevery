@@ -65,17 +65,13 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" style="">
-                        <li title="" style="cursor: pointer;"><a>创建View</a>
+                        <li title="" ng-click="CreateView()" style="cursor: pointer;"><a>创建View</a>
                         </li>
                         <li title="">
                             <hr style="margin: 0px;" />
                         </li>
-                        <li title="" style="cursor: pointer;">
-                            <a>List View<div style="float: right; text-decoration: underline;">删除</div>
-                            </a>
-                        </li>
-                        <li title="" style="cursor: pointer;">
-                            <a>Chart View<div style="float: right; text-decoration: underline;">删除</div>
+                        <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns({{view.ContentId}})" title="" style="cursor: pointer;">
+                            <a  ng-class="{'viewSelected':currentViewId ==view.ContentId }">{{view.DisplayName}}
                             </a>
                         </li>
                     </ul>

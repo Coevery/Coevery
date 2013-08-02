@@ -108,6 +108,7 @@
     <Compile Include="ClientRoute\ClientRouteTableBuilder.cs" />
     <Compile Include="ClientRoute\DefaultClientRouteTableManager.cs" />
     <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
+    <Compile Include="Controllers\ViewDefinitionController.cs" />
     <Compile Include="Controllers\GridTemplateController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
@@ -170,6 +171,7 @@
     <Content Include="Scripts\directives\layout-directive.js" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />
+    <Content Include="Scripts\services\viewdefinitionservice.js" />
     <Content Include="Scripts\services\loadingservice.js" />
     <Content Include="Styles\module.css" />
     <Content Include="Web.config">
