@@ -166,7 +166,7 @@
         // Page actions scroll
 		$(window).scroll(function () {
 		    var scrollTop = $(window).scrollTop();
-		    scrollTop > 0 ? $('#page-actions').addClass('affix') : $('#page-actions').removeClass('affix');
+		    scrollTop > 0 ? $('#page-title').addClass('affix') : $('#page-title').removeClass('affix');
 		});
 	});
 	

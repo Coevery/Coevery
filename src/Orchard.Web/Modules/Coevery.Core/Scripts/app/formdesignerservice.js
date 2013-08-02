@@ -1054,9 +1054,9 @@
                 transclude: true,
                 controller: ['$scope', '$element', '$attrs', '$transclude', '$window', function ($scope, $element, $attrs, $transclude, $window) {
                     $scope.BtnActionLeft = function () {
-                        if ($element.hasClass('btn-fixed') && $('#page-actions>h1').length > 0) {
-                            var left = $('#page-actions>h1').offset().left;
-                            var width = $('#page-actions>h1').width();
+                        if ($element.hasClass('btn-fixed') && $('#page-title>h1').length > 0) {
+                            var left = $('#page-title>h1').offset().left;
+                            var width = $('#page-title>h1').width();
                             btnLeft = left + width + 20;
                             return { left: btnLeft };
                         } else {
@@ -1071,7 +1071,6 @@
                             $element.removeClass('btn-fixed');
                         }
                         $element.css('left', $scope.BtnActionLeft().left);
-                        
                     });
                 }]
             };
