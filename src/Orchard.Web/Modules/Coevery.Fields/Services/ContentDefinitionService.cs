@@ -20,11 +20,11 @@ namespace Coevery.Fields.Services {
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
 
         public ContentDefinitionService(
-                IOrchardServices services,
-                IContentDefinitionManager contentDefinitionManager,
-                IEnumerable<IContentPartDriver> contentPartDrivers,
-                IEnumerable<IContentFieldDriver> contentFieldDrivers,
-                IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
+            IOrchardServices services,
+            IContentDefinitionManager contentDefinitionManager,
+            IEnumerable<IContentPartDriver> contentPartDrivers,
+            IEnumerable<IContentFieldDriver> contentFieldDrivers,
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             _contentPartDrivers = contentPartDrivers;

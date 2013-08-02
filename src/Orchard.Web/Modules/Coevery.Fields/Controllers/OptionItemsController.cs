@@ -3,20 +3,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Fields.Records;
+using Coevery.Fields.Services;
 using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 using Orchard.Localization;
 
 namespace Coevery.Fields.Controllers {
     public class OptionItemsController : ApiController {
-        private readonly IRepository<OptionItemRecord> _optionItemRepository;
-        private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
+        private readonly IOptionItemService _optionItemService;
 
-        public OptionItemsController(
-            IRepository<OptionItemRecord> optionItemRepository,
-            IRepository<ContentPartDefinitionRecord> partDefinitionRepository) {
-            _optionItemRepository = optionItemRepository;
-            _partDefinitionRepository = partDefinitionRepository;
+        public OptionItemsController(IOptionItemService optionItemService) {
+            _optionItemService = optionItemService;
             T = NullLocalizer.Instance;
         }
 
@@ -24,64 +21,25 @@ namespace Coevery.Fields.Controllers {
 
         // GET api/metadata/OptionItems
         public object Get(string entityName, string fieldName) {
-            var partDefinition = _partDefinitionRepository.Table.SingleOrDefault(x => x.Name == entityName);
-            if (partDefinition == null) {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            var fieldDefinitionRecord = partDefinition.ContentPartFieldDefinitionRecords.SingleOrDefault(x => x.Name == fieldName);
-            if (fieldDefinitionRecord == null) {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            var items = _optionItemRepository.Table.Where(x => x.ContentPartFieldDefinitionRecord == fieldDefinitionRecord).Select(x => new { x.Id, x.IsDefault, x.Value });
-            return items;
+            return _optionItemService.GetItemsForField(entityName, fieldName) ?? Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // PUT api/metadata/OptionItems?Id=1
         public HttpResponseMessage Put(int id, OptionItemRecord optionItem) {
-            var optionItemRecord = _optionItemRepository.Table.SingleOrDefault(x => x.Id == id);
-            if (optionItemRecord == null) {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            ResetDefault(optionItemRecord.ContentPartFieldDefinitionRecord);
-            optionItemRecord.Value = optionItem.Value;
-            optionItemRecord.IsDefault = optionItem.IsDefault;
-            _optionItemRepository.Update(optionItemRecord);
-
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return _optionItemService.EditItem(id, optionItem)?
+                Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // POST api/metadata/OptionItems
         public HttpResponseMessage PostContent(string entityName, string fieldName, OptionItemRecord optionItem) {
-            var partDefinition = _partDefinitionRepository.Table.SingleOrDefault(x => x.Name == entityName);
-            if (partDefinition == null) {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            var fieldDefinitionRecord = partDefinition.ContentPartFieldDefinitionRecords.SingleOrDefault(x => x.Name == fieldName);
-            if (fieldDefinitionRecord == null) {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            ResetDefault(fieldDefinitionRecord);
-            optionItem.ContentPartFieldDefinitionRecord = fieldDefinitionRecord;
-            _optionItemRepository.Create(optionItem);
-            return Request.CreateResponse(HttpStatusCode.Created);
+            return _optionItemService.CreateItem(entityName, fieldName, optionItem) ?
+                Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         // DELETE api/metadata/OptionItems?Id=1
         public HttpResponseMessage Delete(int id) {
-            var optionItem = _optionItemRepository.Table.SingleOrDefault(x => x.Id == id);
-            if (optionItem == null) {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            _optionItemRepository.Delete(optionItem);
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        private void ResetDefault(ContentPartFieldDefinitionRecord fieldDefinitionRecord) {
-            var defaultItem = _optionItemRepository.Table.SingleOrDefault(x => x.ContentPartFieldDefinitionRecord == fieldDefinitionRecord && x.IsDefault);
-            if (defaultItem != null) {
-                defaultItem.IsDefault = false;
-                _optionItemRepository.Update(defaultItem);
-            }
+            return _optionItemService.DeleteItem(id) ?
+                Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }

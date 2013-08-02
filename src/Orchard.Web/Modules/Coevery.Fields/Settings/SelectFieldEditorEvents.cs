@@ -1,31 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using System.Linq;
-using System.Web.Mvc;
-using Coevery.Fields.Records;
+using Coevery.Fields.Services;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
-using Orchard.Core.Settings.Metadata.Records;
-using Orchard.Data;
 using Orchard.Localization;
 
 namespace Coevery.Fields.Settings {
     public class SelectFieldListModeEvents : FieldEditorEvents {
-        private readonly IRepository<OptionItemRecord> _optionItemRepository;
-        private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
-        private readonly Localizer _t;
+        private readonly IOptionItemService _optionItemService;
+        private readonly Localizer _t = NullLocalizer.Instance;
 
-        public SelectFieldListModeEvents(
-            IRepository<OptionItemRecord> optionItemRepository,
-            IRepository<ContentPartDefinitionRecord> partDefinitionRepository) {
-            _optionItemRepository = optionItemRepository;
-            _partDefinitionRepository = partDefinitionRepository;
-            _t = NullLocalizer.Instance;
+        public SelectFieldListModeEvents(IOptionItemService optionItemService) {
+            _optionItemService = optionItemService;
         }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
@@ -43,9 +31,7 @@ namespace Coevery.Fields.Settings {
 
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
-                var itemCount = (from i in _optionItemRepository.Table
-                                 where i.ContentPartFieldDefinitionRecord.Id == model.FieldSettingId
-                                 select i).Count();
+                var itemCount = _optionItemService.GetItemCountForField(model.FieldSettingId);
                 if (!model.CheckValid(updateModel, _t, itemCount, false)) {
                     yield break;
                 }
@@ -65,9 +51,6 @@ namespace Coevery.Fields.Settings {
 
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
-                var field = _partDefinitionRepository.Table.Single(x => x.Name == typeName)
-                    .ContentPartFieldDefinitionRecords.Single(x => x.Name == builder.Name);
-
                 //Basic Validation, should be replaced later
                 if (string.IsNullOrWhiteSpace(model.LabelsStr)) {
                     updateModel.AddModelError("SelectSettings", _t("The LabelsStr is invalid."));
@@ -78,18 +61,12 @@ namespace Coevery.Fields.Settings {
                 if (!model.CheckValid(updateModel, _t, labels.Length, true)) {
                     yield break;
                 }
-
-                int idIndex = 0;
-                model.FieldSettingId = field.Id;
-                foreach (var label in labels) {
-                    idIndex++;
-                    var option = new OptionItemRecord {
-                        Value = label,
-                        ContentPartFieldDefinitionRecord = field,
-                        IsDefault = (idIndex == model.DefaultValue)
-                    };
-                    _optionItemRepository.Create(option);
+                model.FieldSettingId = _optionItemService.InitializeField(typeName,builder.Name,labels,model.DefaultValue);
+                if (model.FieldSettingId < 0) {
+                    updateModel.AddModelError("SelectSettings", _t("Create option items faild."));
+                    yield break;
                 }
+
                 UpdateSettings(model, builder, "SelectFieldSettings");
                 builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
                 builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());

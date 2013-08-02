@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Web.Mvc;
+using Coevery.Fields.Services;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
@@ -15,11 +15,11 @@ namespace Coevery.Fields.Drivers {
     public class SelectFieldDriver : ContentFieldDriver<SelectField> {
         public IOrchardServices Services { get; set; }
         private const string TemplateName = "Fields/Select.Edit";
-        private readonly IRepository<OptionItemRecord> _optionItemRepository;
+        private readonly IOptionItemService _optionItemService;
 
         public SelectFieldDriver(IOrchardServices services,
-            IRepository<OptionItemRecord> optionItemRepository) {
-            _optionItemRepository = optionItemRepository;
+            IOptionItemService optionItemService) {
+            _optionItemService = optionItemService;
             Services = services;
             T = NullLocalizer.Instance;
             DisplayName = "Select";
@@ -50,13 +50,7 @@ namespace Coevery.Fields.Drivers {
             if (string.IsNullOrWhiteSpace(field.Value)) { 
             }
             if (field.Items == null) {
-                field.Items = (from i in _optionItemRepository.Table
-                               where i.ContentPartFieldDefinitionRecord.Id == settings.FieldSettingId
-                               select new SelectListItem {
-                                   Value = i.Id.ToString(),
-                                   Text = i.Value,
-                                   Selected = i.IsDefault
-                               }).ToList();
+                field.Items = _optionItemService.GetItemsForField(settings.FieldSettingId);
             }
 
             return ContentShape("Fields_Select_Edit", GetDifferentiator(field, part),

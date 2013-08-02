@@ -77,7 +77,10 @@
     <Compile Include="Controllers\OptionItemsController.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
+    <Compile Include="Services\FieldDependencyService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
+    <Compile Include="Services\IOptionItemService.cs" />
+    <Compile Include="Services\OptionItemService.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
