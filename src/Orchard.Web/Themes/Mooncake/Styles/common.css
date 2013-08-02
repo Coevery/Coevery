@@ -136,3 +136,7 @@
 .alert.ui-pnotify-container.ui-pnotify-shadow {
     margin-bottom: 0;
 }
+
+#page-actions {
+    min-height: 56px;
+}

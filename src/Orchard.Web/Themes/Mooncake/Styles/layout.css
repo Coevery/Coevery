@@ -828,7 +828,7 @@ body
                 vertical-align: text-top;
             }
 
-    #wrapper #main #page-actions
+    #wrapper #main #page-title
     {
         position: fixed;
         width: 100%;
@@ -841,19 +841,19 @@ body
         z-index: 10;
     }
 
-        #wrapper #main #page-actions .btn
+        #wrapper #main #page-title .btn
         {
             min-width: 70px;
         }
 
-        #wrapper #main #page-actions > .btn,
-        #wrapper #main #page-actions > .btn-group
+        #wrapper #main #page-title > .btn,
+        #wrapper #main #page-title > .btn-group
         {
             margin: 10px 0 10px 10px;
         }
 
-            #wrapper #main #page-actions > .btn:first-child,
-            #wrapper #main #page-actions > .btn-group:first-child
+            #wrapper #main #page-title > .btn:first-child,
+            #wrapper #main #page-title > .btn-group:first-child
             {
                 margin-left: 0;
             }
@@ -1081,7 +1081,7 @@ footer
         display: none;
     }
 
-    #wrapper #main #page-actions,
+    #wrapper #main #page-title,
     #wrapper #main #main-header .breadcrumb,
     #wrapper #main #main-header h1,
     #wrapper #main #main-content
@@ -1204,7 +1204,7 @@ footer
         top: auto;
     }
 
-    #main-content #page-title .btn-fixed
+    #main-content #page-actions .btn-fixed
     {
         position:relative;
         top:auto;
@@ -1466,7 +1466,7 @@ footer
         margin: 0 0 30px 0;
     }
 
-        #wrapper #main #page-actions,
+        #wrapper #main #page-title,
         #wrapper #main #main-header .breadcrumb,
         #wrapper #main #main-header h1,
         #wrapper #main #main-content
@@ -1475,7 +1475,7 @@ footer
             padding-right: 15px;
         }
 
-    #wrapper #main #page-actions
+    #wrapper #main #page-title
     {
         position: static;
         width: auto;

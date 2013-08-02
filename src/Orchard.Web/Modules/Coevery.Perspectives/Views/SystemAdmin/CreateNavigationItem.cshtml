@@ -3,70 +3,59 @@
 @{
     var iconClass = string.IsNullOrWhiteSpace(Model.IconClass) ? "icon-home" : Model.IconClass;
 }
-<section>
-    <div id="page-actions">
-        <h1 class="pull-left">@T("Navigation Item Detail") <span>show navigation item detail information</span></h1>
-    </div>
-</section>
+<header id="page-title">
+    <h1 class="pull-left">@T("Navigation Item Detail") <span>show navigation item detail information</span></h1>
+</header>
 
 <section id="main-content" style="margin-top: 47px">
-    <header id="page-title" class="clearfix">
+    <div id="page-actions" class="clearfix">
         <btn-actions>
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
             <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
         </btn-actions>
-            <div class="min-height"></div>
-    </header>
+    </div>
 
     <div class="row-fluid">
         <div class="span12">
-                    <div class="form-horizontal no-border">
-                        @using (Html.BeginFormAntiForgeryPost(Url.Action("CreateNavigationItem", new { perspectiveId = Model.PrespectiveId, navigationId = Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+            <div class="form-horizontal no-border">
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("CreateNavigationItem", new { perspectiveId = Model.PrespectiveId, navigationId = Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                   FormMethod.Post,
-                                                  new { @class = "form-horizontal form-fontstyle", @name = "myForm", @ng_submit = "save()" }))
-                        {
-                            <fieldset>
+                                                  new { @class = "form-horizontal form-fontstyle", @name = "myForm", @ng_submit = "save()" })) {
+                    <fieldset>
                         <legend>General Information</legend>
-                            <section class="control-group">
-                                <label class="control-label">Title</label>
-                                <div class="controls">
-                                    @Html.TextBoxFor(m => m.Title, new { @readonly = "readonly", @class = "span12" })
-                                </div>
-                            </section>
-                            <section class="control-group">
-                                <label class="control-label">Entity</label>
-                                <div class="controls">
-                                    @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
-                                </div>
-                            </section>
-                            <section class="control-group">
-                                <label class="control-label">Color</label>
-                                <div class="controls">
-                                    <input id="color" type="text" class="minicolors">
-                                </div>
-                            </section>
-                            <section class="control-group">
-                                <label class="control-label">Icon</label>
-                                <div class="controls">
-                                    @*<input type="file" id="input04" data-provide="fileinput">*@
-                                    <i id="showIconClass" class="@iconClass"></i>
-                                    @Html.HiddenFor(m=>m.IconClass,new {id="hfIconClass"})
-                                    <button type="button" class="btn btn-small" ng-click="openDialog()">Change</button>
-                                </div>
-                            </section>
-                                </fieldset>
-                        }
-                    </div>
+                        <section class="control-group">
+                            <label class="control-label">Title</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Title, new { @readonly = "readonly", @class = "span12" })
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">Entity</label>
+                            <div class="controls">
+                                @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">Color</label>
+                            <div class="controls">
+                                <input id="color" type="text" class="minicolors">
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label">Icon</label>
+                            <div class="controls">
+                                @*<input type="file" id="input04" data-provide="fileinput">*@
+                                <i id="showIconClass" class="@iconClass"></i>
+                                @Html.HiddenFor(m => m.IconClass, new { id = "hfIconClass" })
+                                <button type="button" class="btn btn-small" ng-click="openDialog()">Change</button>
+                            </div>
+                        </section>
+                    </fieldset>
+                }
+            </div>
         </div>
     </div>
 </section>
 <div modal="dialogSelectIcons" close="closeDialog()" options="opts" class="ng-cloak">
     @Html.Partial("SelectIconClass")
 </div>
-<script>
-    $(document).ready(
-        function () {
-            $('.page-actions').affix({ offset: { top: 71 } });
-        }
-    );
-</script>

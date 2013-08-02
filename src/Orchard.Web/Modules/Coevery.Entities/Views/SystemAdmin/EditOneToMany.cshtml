@@ -3,19 +3,17 @@
         width: auto;
     }
 </style>
-<section>
-    <div id="page-actions">
-        <h1 class="pull-left">@T("One to Many Relationship Detail ") <span>show one to many relationship detail information</span></h1>
-    </div>
-</section>
+<header id="page-title">
+    <h1 class="pull-left">@T("One to Many Relationship Detail ") <span>show one to many relationship detail information</span></h1>
+</header>
 
 <section id="main-content" style="margin-top: 47px">
-    <header id="page-title" class="clearfix">
+    <div id="page-actions" class="clearfix">
         <btn-actions>
-             <button type="button " class="btn btn-small" data-ng-click="exit()">Back</button>
-            <button type="button" class="btn btn-primary btn-small">Save</button>
-            </btn-actions>
-    </header>
+            <button class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button class="btn btn-primary btn-small">Save</button>
+        </btn-actions>
+    </div>
     <div class="row-fluid">
         <form class="form-horizontal no-border form-fontstyle">
             <fieldset>
@@ -155,7 +153,6 @@
 <script>
     $(document).ready(
         function () {
-            $('.page-actions').affix({ offset: { top: 71 } });
             $('#picklist-ex').picklist({
                 addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
                 addLabel: '<i class="icon-caret-right"></i>',

@@ -53,8 +53,8 @@ angular.module('coevery.layout', [])
             controller: ['$scope', '$element', '$attrs', '$transclude', '$window', function ($scope, $element, $attrs, $transclude, $window) {
                 $scope.BtnActionLeft = function () {
                     if ($element.hasClass('btn-fixed')) {
-                        var left = $('#page-actions>h1').offset().left;
-                        var width = $('#page-actions>h1').width();
+                        var left = $('#page-title>h1').offset().left;
+                        var width = $('#page-title>h1').width();
                         btnLeft = left + width + 20;
                         return { left: btnLeft };
                     } else {

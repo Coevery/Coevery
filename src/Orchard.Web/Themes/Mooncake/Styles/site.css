@@ -53,7 +53,7 @@
 }
 
 /*Page Title*/
-#page-title h1 {
+#page-actions h1 {
     float: left;
     font-size: 24px;
     color: #444;
@@ -63,7 +63,7 @@
     text-shadow: -1px -1px #f0f0f0;
 }
 
-    #page-title h1 > span {
+    #page-actions h1 > span {
         color: #777;
         font-size: 11px;
         font-weight: normal;
@@ -75,11 +75,11 @@
         text-shadow: none;
     }
 
-#page-title .btn-toolbar {
+#page-actions .btn-toolbar {
     margin: 15px 0;
 }
 
-#page-title .btn-fixed {
+#page-actions .btn-fixed {
     position: fixed;
     top: 65px;
     z-index: 999;
@@ -104,12 +104,12 @@
 
 
 /*Page Actions*/
-#page-actions h1 {
+#page-title h1 {
     font-size: 24px;
     margin: 3px 0;
 }
 
-    #page-actions h1 span {
+    #page-title h1 span {
         font-size: 11px;
         line-height: 1;
         font-weight: normal;
@@ -117,7 +117,7 @@
         padding-left: 5px;
     }
 
-#page-actions #actions {
+#page-title #actions {
     margin-left: 30px;
     display: none;
 }

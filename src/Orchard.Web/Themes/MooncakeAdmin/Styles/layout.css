@@ -788,7 +788,7 @@ body {
                 vertical-align: text-top;
             }
 
-    #wrapper #main #page-actions {
+    #wrapper #main #page-title {
         padding: 0px 0px;
         margin: 0 40px;
         position: fixed;
@@ -803,25 +803,25 @@ body {
         background-color: white;
         z-index: 10;
     }
-        #wrapper #main #page-actions.affix {
+        #wrapper #main #page-title.affix {
             -webkit-box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
             box-shadow: 0 8px 6px -6px rgba(0,0,0,0.1);
         }
 
-        #wrapper #main #page-actions .btn {
+        #wrapper #main #page-title .btn {
             min-width: 70px;
         }
 
-        #wrapper #main #page-actions > .btn,
-        #wrapper #main #main-content #page-actions > .btn-group {
+        #wrapper #main #page-title > .btn,
+        #wrapper #main #main-content #page-title > .btn-group {
             margin-left: 5px;
         }
 
-            #wrapper #main #page-actions > .btn:first-child,
-            #wrapper #main #page-actions > .btn-group:first-child {
+            #wrapper #main #page-title > .btn:first-child,
+            #wrapper #main #page-title > .btn-group:first-child {
                 margin-left: 0px;
             }
-            #wrapper #main #page-actions > .btn-group > button:first-child {
+            #wrapper #main #page-title > .btn-group > button:first-child {
                 margin-left: 10px;
             }
 
@@ -931,7 +931,7 @@ footer {
         text-align: right;
     }
      
-#wrapper .sidebar-minimized #main #page-actions {
+#wrapper .sidebar-minimized #main #page-title {
     left: 45px;
 }
 
@@ -948,7 +948,7 @@ footer {
         }
 
          
-#wrapper .sidebar-minimized #main #page-actions {
+#wrapper .sidebar-minimized #main #page-title {
     left: 70px;
 }
     #wrapper {
@@ -1018,7 +1018,7 @@ footer {
             padding: 12px 17px 12px 30px;
         }
 
-        #wrapper #main #page-actions {
+        #wrapper #main #page-title {
             left: 286px;
         }
 }
@@ -1033,7 +1033,7 @@ footer {
         float: right;
         margin-left: 0;
     }
-    #wrapper .sidebar-minimized #main #page-actions {
+    #wrapper .sidebar-minimized #main #page-title {
     left: 25px;
 }
     #header #header-functions {
@@ -1118,7 +1118,7 @@ footer {
         padding-right: 20px;
     }
 
-    #wrapper #main #page-actions {
+    #wrapper #main #page-title {
        
         left: 25px;
         margin: 0 20px 0 40px;
@@ -1466,7 +1466,7 @@ footer {
         margin: 0 0 30px 0;
     }
 
-        #wrapper #main #page-actions,
+        #wrapper #main #page-title,
         #wrapper #main #main-header .breadcrumb,
         #wrapper #main #main-header h1,
         #wrapper #main #main-content {
@@ -1474,7 +1474,7 @@ footer {
             padding-right: 15px;
         }
 
-    #wrapper #main #page-actions {
+    #wrapper #main #page-title {
         position: static;
         width: auto;
         margin: 0 15px;
