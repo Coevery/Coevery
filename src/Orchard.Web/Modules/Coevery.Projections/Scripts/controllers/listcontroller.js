@@ -62,15 +62,15 @@ define(['core/app/detourService',
                         };
 
                         $scope.add = function () {
-                            $detour.transitionTo('ProjectionCreate', { EntityName: $stateParams.EntityName });
+                            $detour.transitionTo('ProjectionCreate', { EntityName: $stateParams.Id });
                         };
 
                         $scope.edit = function (id) {
-                            $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
+                            $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.Id, Id: id });
                         };
 
                         $scope.setDefault = function (id) {
-                            var result = projectionDataService.save({ Id: id, EntityType: $stateParams.EntityName }, function () {
+                            var result = projectionDataService.save({ Id: id, EntityType: $stateParams.Id }, function () {
                                 if ($scope.mySelections.length != 0) {
                                     $scope.mySelections.pop();
                                 }

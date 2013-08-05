@@ -14,9 +14,6 @@ define(['core/app/detourService'], function (detour) {
                     $detour.transitionTo('EntityEdit', { Id: $stateParams.Id });
                 };
 
-                $scope.listViewDesigner = function() {
-                    $detour.transitionTo('ProjectionList', { EntityName: $stateParams.Id });
-                };
                 $scope.formDesigner = function() {
                     $detour.transitionTo('FormDesigner', { EntityName: $stateParams.Id });
                 };

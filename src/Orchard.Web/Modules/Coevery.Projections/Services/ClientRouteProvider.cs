@@ -40,6 +40,15 @@ namespace Coevery.Projections.Services
                        descriptor.Controller = "ProjectionDetailCtrl";
                        descriptor.Dependencies = new[] {"controllers/detailcontroller"};
                    });
+
+            builder.Describe("ProjectionList")
+                   .Configure(descriptor =>
+                   {
+                       descriptor.Url = "/Entities/{EntityName:[0-9a-zA-Z]+}/Views";
+                       descriptor.TemplateUrl = "'SystemAdmin/Projections/List'";
+                       descriptor.Controller = "ProjectionListCtrl";
+                       descriptor.Dependencies = new[] { "controllers/listcontroller" };
+                   });
         }
     }
 }
