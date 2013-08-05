@@ -165,10 +165,16 @@
 .dropdown-menu > li .viewUSelected
 {
     display: inline-block;
-    width: 16px;
+    width: 20px;
     height: 16px;
     line-height: 16px;
     vertical-align: text-top;
+}
+
+#page-actions .btn-group .dropdown-menu>li>a 
+{
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 [class^="coe-icon-"]:before, [class*=" coe-icon-"]:before

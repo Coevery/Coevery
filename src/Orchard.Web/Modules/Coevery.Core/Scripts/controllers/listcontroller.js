@@ -10,13 +10,27 @@
           $scope.moduleName = moduleName;
           $scope.definitionViews = [];
           $scope.columnDefs = [];
+
+          if ($rootScope.Search) {
+              $location.search($rootScope.Search);
+          }
+          
+          //init pagingoption
+          var pageSizes = [250, 500, 1000];
+          var currentPage = parseInt($location.$$search['Page']);
+          if (!currentPage) currentPage = 1;
+          var pageSize = parseInt($location.$$search['PageSize']);
+          if (!pageSize | pageSizes.indexOf(pageSize) < 0) pageSize = 250;
           $scope.pagingOptions = {
-              pageSizes: [250, 500, 1000],
-              pageSize: 250,
-              currentPage: 1
+              pageSizes: pageSizes,
+              pageSize: pageSize,
+              currentPage: currentPage
           };
 
           $scope.getPagedDataAsync = function (pageSize, page) {
+              $location.search("PageSize", pageSize);
+              $location.search("Page", page);
+              $stateParams["PageSize"] = pageSize;
               var record = commonDataService.get({ contentType: moduleName, pageSize: pageSize, page: page, viewId: $scope.currentViewId }, function () {
                   $scope.myData = record.EntityRecords;
                   $scope.totalServerItems = record.TotalNumber;
@@ -71,6 +85,7 @@
               if (viewId <= 0) return;
               if (viewId == $scope.currentViewId) return;
               $scope.currentViewId = viewId;
+              $location.search("ViewId", viewId);
               var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function () {
                   $scope.columnDefs = gridColumns;
                   $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
@@ -87,14 +102,16 @@
           $scope.FetchDefinitionViews = function() {
               var views = viewDefinitionService.query({ contentType: moduleName}, function () {
                   $scope.definitionViews = views;
-                  var defaultViewId = 0;
-                  views.forEach(function(index, value) {
-                      if (value.Default) {
-                          defaultViewId = value.ContentId;
-                      }
-                  });
-                  if (defaultViewId == 0 && views.length > 0)
-                      defaultViewId = views[0].ContentId;
+                  var defaultViewId = $location.$$search['ViewId'];
+                  if (!defaultViewId) {
+                      views.forEach(function (value,index) {
+                          if (value.Default) {
+                              defaultViewId = value.ContentId;
+                          }
+                      });
+                      if (defaultViewId == 0 && views.length > 0)
+                          defaultViewId = views[0].ContentId;
+                  }
                   $scope.FetchViewColumns(defaultViewId);
               }, function () {
                   logger.error("Failed to fetched views for " + moduleName);
@@ -161,19 +178,22 @@
           };
 
           $scope.add = function () {
-              $state.transitionTo('Create', { Module: moduleName });
+              $rootScope.Search = $location.$$search;
+              $state.transitionTo('Create', { Module: moduleName});
           };
 
           $scope.edit = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
+              $rootScope.Search = $location.$$search;
               $state.transitionTo('Detail', { Module: moduleName, Id: id });
           };
           $scope.view = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
+              $rootScope.Search = $location.$$search;
               $state.transitionTo('View', { Module: moduleName, Id: id });
           };
       }]
