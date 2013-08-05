@@ -204,6 +204,7 @@
                 }
 
                 $.post(jsonUrl, {
+                    entityName: "@Request.Url.AbsolutePath.Split('/').Last()",
                     displayName: $displayName.val(),
                     version: ++version,
                     __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()

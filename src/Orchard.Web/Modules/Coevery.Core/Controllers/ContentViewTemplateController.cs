@@ -171,7 +171,11 @@ namespace Coevery.Core.Controllers {
                 _transactionManager.Cancel();
                 // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
                 //return View((object)model);
-                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
             }
 
             conditionallyPublish(contentItem);
@@ -265,7 +269,11 @@ namespace Coevery.Core.Controllers {
             if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
                 // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
             }
 
             conditionallyPublish(contentItem);

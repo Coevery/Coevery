@@ -56,8 +56,8 @@ define(['core/app/detourService'], function (detour) {
                             $detour.transitionTo('EntityDetail.Fields', { Id: entityName });                          
                             $scope.closeDialog();
                         },
-                        error: function () {
-                            logger.error('Failed');
+                        error: function (result) {
+                            logger.error('Failed:\n'+result.responseText);
                         }
                     });                    
                 };

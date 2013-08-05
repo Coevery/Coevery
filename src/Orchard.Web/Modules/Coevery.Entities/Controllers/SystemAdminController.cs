@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
 using Coevery.Core.Services;
 using Coevery.Entities.Services;
@@ -13,15 +15,12 @@ using Orchard.Utility.Extensions;
 using Orchard.UI.Notify;
 using Orchard.Core.Contents.Controllers;
 
-namespace Coevery.Entities.Controllers
-{
-    public class SystemAdminController : Controller, IUpdateModel
-    {
+namespace Coevery.Entities.Controllers {
+    public class SystemAdminController : Controller, IUpdateModel {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
-        public SystemAdminController(IOrchardServices orchardServices, 
-            IContentDefinitionService contentDefinitionService, ISchemaUpdateService schemaUpdateService)
-        {
+        public SystemAdminController(IOrchardServices orchardServices,
+            IContentDefinitionService contentDefinitionService, ISchemaUpdateService schemaUpdateService) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
@@ -32,8 +31,7 @@ namespace Coevery.Entities.Controllers
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult List(string returnUrl)
-        {
+        public ActionResult List(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -47,10 +45,8 @@ namespace Coevery.Entities.Controllers
             return View(typeViewModel);
         }
 
-        public ActionResult EntityName(string displayName, int version)
-        {
-            return Json(new
-            {
+        public ActionResult EntityName(string displayName, int version) {
+            return Json(new {
                 result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
                 version = version
             });
@@ -72,6 +68,10 @@ namespace Coevery.Entities.Controllers
                 ModelState.AddModelError("Name", T("The Content Type Id can't be empty.").ToString());
             }
 
+            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.Name)) {
+                ModelState.AddModelError("Name", T("The name should be singular.").ToString());
+            }
+
             if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
                 ModelState.AddModelError("Name", T("A type with the same Id already exists.").ToString());
             }
@@ -86,7 +86,11 @@ namespace Coevery.Entities.Controllers
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                             select error.ErrorMessage).ToArray();              
+                return Content(string.Concat(temp));
             }
 
             _contentDefinitionService.AlterType(viewModel, this);

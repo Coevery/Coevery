@@ -345,18 +345,18 @@ namespace Coevery.Fields.Services {
 
         private static string VersionName(string name) {
             int version;
-            var nameParts = name.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+            var nameParts = name.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (nameParts.Length > 1 && int.TryParse(nameParts.Last(), out version)) {
                 version = version > 0 ? ++version : 2;
                 //this could unintentionally chomp something that looks like a version
-                name = string.Join("-", nameParts.Take(nameParts.Length - 1));
+                name = string.Join("_", nameParts.Take(nameParts.Length - 1));
             }
             else {
                 version = 2;
             }
 
-            return string.Format("{0}-{1}", name, version);
+            return string.Format("{0}_{1}", name, version);
         }
 
         class Updater : IUpdateModel {

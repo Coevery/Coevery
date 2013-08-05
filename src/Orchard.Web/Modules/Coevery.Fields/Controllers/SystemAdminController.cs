@@ -29,7 +29,7 @@ namespace Coevery.Fields.Controllers {
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents, 
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents,
             ISchemaUpdateService schemaUpdateService) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
@@ -53,11 +53,9 @@ namespace Coevery.Fields.Controllers {
             return View(viewModel);
         }
 
-        public ActionResult FieldName(string displayName, int version)
-        {
-            return Json(new
-            {
-                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+        public ActionResult FieldName(string entityName,string displayName, int version) {
+            return Json(new {
+                result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName,displayName),
                 version = version
             });
         }
@@ -110,8 +108,7 @@ namespace Coevery.Fields.Controllers {
                 ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
             }
 
-            if (viewModel.Name.ToLower() == "id")
-            {
+            if (viewModel.Name.ToLower() == "id") {
                 ModelState.AddModelError("Name", T("The Field Name can't be any case of 'Id'.").ToString());
             }
 
@@ -133,7 +130,11 @@ namespace Coevery.Fields.Controllers {
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
             }
 
             try {
@@ -142,7 +143,11 @@ namespace Coevery.Fields.Controllers {
             catch (Exception ex) {
                 Services.Notifier.Information(T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message));
                 Services.TransactionManager.Cancel();
-                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
             }
 
             var edit = new EditPartFieldViewModel {
@@ -154,7 +159,11 @@ namespace Coevery.Fields.Controllers {
             CheckData(field);
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-                return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
             }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
@@ -217,10 +226,16 @@ namespace Coevery.Fields.Controllers {
             var field = typeViewModel.Fields.FirstOrDefault(f => f.Name == viewModel.Name);
             CheckData(field);
             if (!ModelState.IsValid) {
-                string displayName = viewModel.DisplayName;
-                viewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == viewModel.Name);
-                viewModel.DisplayName = displayName;
-                return View(viewModel);
+                //string displayName = viewModel.DisplayName;
+                //viewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == viewModel.Name);
+                //viewModel.DisplayName = displayName;
+                //return View(viewModel);
+                Services.TransactionManager.Cancel();
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
             }
 
             fieldDefinition.DisplayName = viewModel.DisplayName;
@@ -231,7 +246,7 @@ namespace Coevery.Fields.Controllers {
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult Items(string id,string fieldName) {
+        public ActionResult Items(string id, string fieldName) {
             return View();
         }
 
