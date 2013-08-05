@@ -8,7 +8,6 @@
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
             <button type="button" class="btn btn-small" data-ng-click="edit()">Edit</button>
             <button type="button" class="btn btn-small">Delete</button>
-            <button type="button" class="btn btn-small" data-ng-click="listViewDesigner()">List View Designer</button>
             <button type="button" class="btn btn-small" data-ng-click="formDesigner()">Form Designer</button>
         </btn-actions>
     </div>
@@ -46,6 +45,7 @@
                     <ul class="nav nav-tabs">
                         <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
                         <li data-ng-class="{active: $detour.includes('EntityDetail.Relationships')}"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
+                        <li data-ng-class="{active: $detour.includes('EntityDetail.Views')}"><a href="#/Entities/{{$stateParams.Id}}/Views">Views</a></li>
                     </ul>
                 </div>
                 <div class="tab-content">
