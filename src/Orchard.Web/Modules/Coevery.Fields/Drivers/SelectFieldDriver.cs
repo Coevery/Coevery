@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Coevery.Fields.Services;
+﻿using Coevery.Fields.Services;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
@@ -8,8 +6,6 @@ using Orchard.ContentManagement.Handlers;
 using Coevery.Fields.Fields;
 using Coevery.Fields.Settings;
 using Orchard.Localization;
-using Orchard.Data;
-using Coevery.Fields.Records;
 
 namespace Coevery.Fields.Drivers {
     public class SelectFieldDriver : ContentFieldDriver<SelectField> {

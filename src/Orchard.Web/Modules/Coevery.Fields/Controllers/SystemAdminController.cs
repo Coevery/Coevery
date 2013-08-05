@@ -226,10 +226,6 @@ namespace Coevery.Fields.Controllers {
             var field = typeViewModel.Fields.FirstOrDefault(f => f.Name == viewModel.Name);
             CheckData(field);
             if (!ModelState.IsValid) {
-                //string displayName = viewModel.DisplayName;
-                //viewModel = typeViewModel.Fields.FirstOrDefault(x => x.Name == viewModel.Name);
-                //viewModel.DisplayName = displayName;
-                //return View(viewModel);
                 Services.TransactionManager.Cancel();
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var temp = (from values in ModelState
@@ -242,6 +238,15 @@ namespace Coevery.Fields.Controllers {
             _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
 
             _contentDefinitionService.AlterField(id, viewModel, this);
+            if (!ModelState.IsValid) {
+                Services.TransactionManager.Cancel();
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
+            }
+
             _schemaUpdateService.CreateColumn(partViewModel.Name, field.Name, field.FieldDefinition.Name);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -264,9 +269,6 @@ namespace Coevery.Fields.Controllers {
                         controlFields.Add(field);
                         dependentFields.Add(field);
                         break;
-                    //case "MultiSelectField":
-                    //    dependentFields.Add(field);
-                    //    break;
                     case "BooleanField":
                         controlFields.Add(field);
                         break;
@@ -289,9 +291,6 @@ namespace Coevery.Fields.Controllers {
                         controlFields.Add(field);
                         dependentFields.Add(field);
                         break;
-                    //case "MultiSelectField":
-                    //    dependentFields.Add(field);
-                    //    break;
                     case "BooleanField":
                         controlFields.Add(field);
                         break;
@@ -315,7 +314,6 @@ namespace Coevery.Fields.Controllers {
         private void CheckData(EditPartFieldViewModel serverField) {
             var settingsStr = serverField.FieldDefinition.Name + "Settings";
             var clientSettings = new FieldSettings();
-            //TryUpdateModel(clientSettings, "BooleanFieldSettings");
             TryUpdateModel(clientSettings, settingsStr);
 
             var serverSettings = new FieldSettings {

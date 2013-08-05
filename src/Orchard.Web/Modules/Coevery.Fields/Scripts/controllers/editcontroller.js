@@ -34,7 +34,7 @@ define(['core/app/detourService'], function (detour) {
                     }).then(function () {
                         logger.success('Save succeeded.');
                     }, function (reason) {
-                        logger.error('Save Failed： ' + reason);
+                        logger.error('Save Failed： ' + reason.data);
                     });
                     return promise;
                 };

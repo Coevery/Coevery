@@ -1,5 +1,4 @@
-﻿using System;
-using Orchard.ContentManagement;
+﻿using Orchard.ContentManagement;
 using Orchard.Localization;
 
 namespace Coevery.Fields.Settings {
@@ -7,6 +6,11 @@ namespace Coevery.Fields.Settings {
         Checkbox,
         Radiobutton,
         DropDown
+    }
+    public enum DependentType {
+        None,
+        Control,
+        Dependent
     }
 
     public class SelectFieldSettings : FieldSettings {
@@ -17,13 +21,13 @@ namespace Coevery.Fields.Settings {
         public int SelectCount { get; set; }
 
         //Dependency related
-        public bool HasDependency { get; set; }
-        public int FieldSettingId { get; set; }
+        public DependentType Dependency { get; set; }
+        public int FieldSettingId { get; set; } 
 
         //Only used when creating
         public string LabelsStr { get; set; }
         public int DefaultValue { get; set; }
-        
+
         public SelectFieldSettings() {
             DisplayOption = SelectionMode.DropDown;
             DefaultValue = 0;
@@ -31,14 +35,15 @@ namespace Coevery.Fields.Settings {
             DisplayLines = 1;
         }
 
-        public bool CheckValid(IUpdateModel updateModel, Localizer t, int itemCount, bool isCreating) {            
-            if (itemCount <= 0) {
-                updateModel.AddModelError("SelectSettings", t("No valid label exists."));
-                return false;
-            }
+        public bool CheckValid(IUpdateModel updateModel, Localizer t, int itemCount, bool isCreating) {
             //Only check when creating
             if (isCreating && (DefaultValue > itemCount || DefaultValue < 0)) {
                 updateModel.AddModelError("SelectSettings", t("DefaultValue is out of range."));
+                return false;
+            }
+
+            if (itemCount <= 0) {
+                updateModel.AddModelError("SelectSettings", t("No valid label exists."));
                 return false;
             }
 

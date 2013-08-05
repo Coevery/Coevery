@@ -31,8 +31,9 @@ namespace Coevery.Fields.Settings {
 
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
-                var itemCount = _optionItemService.GetItemCountForField(model.FieldSettingId);
-                if (!model.CheckValid(updateModel, _t, itemCount, false)) {
+                if (!model.CheckValid(updateModel, _t,
+                                     _optionItemService.GetItemCountForField(model.FieldSettingId),
+                                     false)) {
                     yield break;
                 }
                 UpdateSettings(model, builder, "SelectFieldSettings");
@@ -51,19 +52,14 @@ namespace Coevery.Fields.Settings {
 
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
-                //Basic Validation, should be replaced later
-                if (string.IsNullOrWhiteSpace(model.LabelsStr)) {
-                    updateModel.AddModelError("SelectSettings", _t("The LabelsStr is invalid."));
-                    yield break;
-                }
 
                 var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
                 if (!model.CheckValid(updateModel, _t, labels.Length, true)) {
-                    yield break;
+                    yield break; 
                 }
                 model.FieldSettingId = _optionItemService.InitializeField(typeName,builder.Name,labels,model.DefaultValue);
                 if (model.FieldSettingId < 0) {
-                    updateModel.AddModelError("SelectSettings", _t("Create option items faild."));
+                    updateModel.AddModelError("SelectSettings", _t("Create option items failed."));
                     yield break;
                 }
 

@@ -1,25 +1,27 @@
 ﻿@model Coevery.Fields.Settings.SelectFieldSettings
 @using Coevery.Fields.Settings;
 
-@if (!Request.Url.ToString().Contains("/Fields/Edit"))
-{
+@if (!Request.Url.ToString().Contains("/Fields/Edit")) {
     <section class="control-group data-row">
         <label class="control-label">
             Item Labels
         </label>
         <div class="controls">
-            @Html.TextAreaFor(m => m.LabelsStr, new { @class = "span12 required" })
+            @Html.TextAreaFor(m => m.LabelsStr, new {@class = "span12 required"})
         </div>
     </section>
-    
+
     <section class="control-group data-row">
         <label class="control-label">
             Default Value
         </label>
         <div class="controls">
-            @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12 digits" })
+            @Html.TextBoxFor(d => d.DefaultValue, new {@class = "span12 digits"})
         </div>
     </section>
+}
+else {
+    @Html.HiddenFor(model => model.FieldSettingId)
 }
 
 <section class="control-group data-row">
