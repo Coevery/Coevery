@@ -164,19 +164,6 @@ namespace Coevery.Fields.Services {
             });
         }
 
-        public void CreateField(string partName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel) {
-            var updater = new Updater(updateModel);
-            //updater._prefix = secondHalf => secondHalf;
-            _contentDefinitionManager.AlterPartDefinition(partName, partBuilder => {
-                // allow extensions to alter partField configuration
-                if (fieldViewModel != null) {
-                    partBuilder.WithField(fieldViewModel.Name, partFieldBuilder => {
-                        fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorCreate(partFieldBuilder, partName, updater);
-                    });
-                }
-            });
-        }
-
         public void RemoveType(string name, bool deleteContent) {
 
             // first remove all attached parts
@@ -278,11 +265,11 @@ namespace Coevery.Fields.Services {
             return _contentFieldDrivers.SelectMany(d => d.GetFieldInfo());
         }
 
-        public void AddFieldToPart(string fieldName, string fieldTypeName, string partName) {
-            AddFieldToPart(fieldName, fieldName, fieldTypeName, partName);
+        public void AddFieldToPart(string fieldName, string fieldTypeName, string partName, IUpdateModel updateModel) {
+            AddFieldToPart(fieldName, fieldName, fieldTypeName, partName, updateModel);
         }
 
-        public void AddFieldToPart(string fieldName, string displayName, string fieldTypeName, string partName) {
+        public void AddFieldToPart(string fieldName, string displayName, string fieldTypeName, string partName, IUpdateModel updateModel) {
             fieldName = fieldName.ToSafeName();
             if (string.IsNullOrEmpty(fieldName)) {
                 throw new OrchardException(T("Fields must have a name containing no spaces or symbols."));
@@ -290,10 +277,13 @@ namespace Coevery.Fields.Services {
             _contentDefinitionManager
                 .AlterPartDefinition(partName,
                                      partBuilder => partBuilder.WithField(fieldName,
-                                                                          fieldBuilder => fieldBuilder
-                                                                                              .OfType(fieldTypeName)
-                                                                                              .WithDisplayName(displayName)
-                                                                                              .WithSetting("Storage", "Part")));
+                                                                          fieldBuilder => {
+                                                                              fieldBuilder
+                                                                                  .OfType(fieldTypeName)
+                                                                                  .WithDisplayName(displayName)
+                                                                                  .WithSetting("Storage", "Part");
+                                                                              _contentDefinitionEditorEvents.PartFieldEditorCreate(fieldBuilder, partName, new Updater(updateModel));
+                                                                          }));
         }
 
         public void RemoveFieldFromPart(string fieldName, string partName) {

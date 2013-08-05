@@ -128,6 +128,13 @@ namespace Coevery.Fields.Controllers {
                 ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
             }
 
+            var settingsStr = viewModel.FieldTypeName + "Settings";
+            var clientSettings = new FieldSettings();
+            TryUpdateModel(clientSettings, settingsStr);
+            if (clientSettings.IsSystemField) {
+                ModelState.AddModelError("IsSystemField", T("Can't modify the IsSystemField field.").ToString());
+            }
+
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -138,7 +145,7 @@ namespace Coevery.Fields.Controllers {
             }
 
             try {
-                _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name);
+                _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name, this);
             }
             catch (Exception ex) {
                 Services.Notifier.Information(T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message));
@@ -149,14 +156,6 @@ namespace Coevery.Fields.Controllers {
                             select error.ErrorMessage).ToArray();
                 return Content(string.Concat(temp));
             }
-
-            var edit = new EditPartFieldViewModel {
-                Name = viewModel.Name
-            };
-            _contentDefinitionService.CreateField(typeViewModel.Name, edit, this);
-            typeViewModel = _contentDefinitionService.GetType(id);
-            var field = typeViewModel.Fields.First(f => f.Name == viewModel.Name);
-            CheckData(field);
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;

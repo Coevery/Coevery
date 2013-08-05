@@ -13,7 +13,6 @@ namespace Coevery.Fields.Services {
         ContentTypeDefinition AddType(string name, string displayName);
         void AlterType(EditTypeViewModel typeViewModel, IUpdateModel updaterModel);
         void AlterField(string typeName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel);
-        void CreateField(string partName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel); 
         void RemoveType(string name, bool deleteContent);
         void AddPartToType(string partName, string typeName);
         void RemovePartFromType(string partName, string typeName);
@@ -27,8 +26,8 @@ namespace Coevery.Fields.Services {
         void RemovePart(string name);
 
         IEnumerable<ContentFieldInfo> GetFields();
-        void AddFieldToPart(string fieldName, string fieldTypeName, string partName);
-        void AddFieldToPart(string fieldName, string displayName, string fieldTypeName, string partName);
+        void AddFieldToPart(string fieldName, string fieldTypeName, string partName, IUpdateModel updateModel);
+        void AddFieldToPart(string fieldName, string displayName, string fieldTypeName, string partName, IUpdateModel updateModel);
         void RemoveFieldFromPart(string fieldName, string partName);
     }
 }
