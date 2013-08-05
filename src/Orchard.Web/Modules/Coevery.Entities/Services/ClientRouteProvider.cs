@@ -75,15 +75,6 @@ namespace Coevery.Entities.Services
                        descriptor.Controller = "EditManyToManyCtrl";
                        descriptor.Dependencies = new string[] { "controllers/manytomanydetailcontroller" };
                    });
-
-            builder.Describe("EntityDetail.Views")
-                   .Configure(descriptor =>
-                   {
-                       descriptor.Url = "/Views";
-                       descriptor.TemplateUrl = "'SystemAdmin/Entities/Views'";
-                       descriptor.Controller = "ViewsCtrl";
-                       descriptor.Dependencies = new[] { "controllers/viewscontroller" };
-                   });
         }
     }
 }

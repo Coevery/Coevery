@@ -81,7 +81,7 @@ define(['core/app/detourService',
                         };
 
                         $scope.getAll = function () {
-                            var records = projectionDataService.query({ Name: $stateParams.EntityName }, function () {
+                            var records = projectionDataService.query({ Name: $stateParams.Id }, function () {
                                 $scope.myData = records;
                             }, function () {
                                 logger.error("Failed to fetched projections for " + $stateParams.EntityName);

@@ -14,9 +14,9 @@ namespace Coevery.Projections.Services
     public class ClientRouteProvider : IClientRouteProvider {
 
         public void Discover(ClientRouteTableBuilder builder) {
-            builder.Describe("ProjectionList")
+            builder.Describe("EntityDetail.Views")
                    .Configure(descriptor => {
-                       descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}";
+                       descriptor.Url = "/Views";
                        descriptor.TemplateUrl = "'SystemAdmin/Projections/List'";
                        descriptor.Controller = "ProjectionListCtrl";
                        descriptor.Dependencies = new[] {"controllers/listcontroller"};
