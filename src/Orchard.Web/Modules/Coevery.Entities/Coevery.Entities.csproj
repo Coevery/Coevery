@@ -110,7 +110,6 @@
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\relationshipscontroller.js" />
-    <Content Include="Scripts\controllers\viewscontroller.js" />
     <Content Include="Scripts\services\entitydataservice.js" />
     <Content Include="Scripts\services\fielddataservice.js" />
     <Content Include="Web.config" />
@@ -180,9 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\EditManyToMany.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\Views.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

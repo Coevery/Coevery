@@ -175,10 +175,5 @@ namespace Coevery.Entities.Controllers {
         void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
         }
-
-        public ActionResult Views()
-        {
-            return View();
-        }
     }
 }
