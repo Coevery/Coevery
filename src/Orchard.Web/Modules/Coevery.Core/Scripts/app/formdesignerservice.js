@@ -1009,15 +1009,11 @@
                 //restrict: 'E',
                 link: function (scope, element, attrs) {
                     element.click(function () {
-                        //begin
-                        //var layoutString = '';
                         var sections = $('[fd-form]').find('[fd-section]');
                         var layoutObject = [];
                         var sectionIndex = 0;
                         sections.each(function () {
                             if ($(this).find('[fd-field]').length) {
-                                
-                                // section begin
                                 var columnCount = $(this).attr('section-columns');
                                 var width = $(this).attr('section-columns-width');
                                 var sectionTitle = $(this).attr('section-title');
@@ -1026,14 +1022,12 @@
                                 selection["SectionColumns"] = columnCount;
                                 selection["SectionColumnsWidth"] = width;
                                 selection["SectionTitle"] = sectionTitle;
-                                //layoutString += '<fd-section section-columns="' + columnCount + '" section-columns-width="' + width + '" section-title="' + sectionTitle + '">';
                                 var rows = $(this).find('[fd-row]');
                                 selection["Rows"] = [];
                                 var rowIndex = 0;
                                 rows.each(function () {
                                     selection.Rows.push({});
                                     var row = selection.Rows[rowIndex];
-                                    //layoutString += '<fd-row>';
                                     var columns = $(this).find('[fd-column]');
                                     row["Columns"] = [];
                                     var columnIndex = 0;
@@ -1041,26 +1035,19 @@
                                         row.Columns.push({});
                                         var column = row.Columns[columnIndex];
                                         column.Field = {};
-                                        //layoutString += '<fd-column>';
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
-                                            
                                             var settings = '';
                                             field.attr('field-required') != null && (settings += ' field-required');
                                             field.attr('field-readonly') != null && (settings += ' field-readonly');
                                             column.Field.FieldName = field.attr('field-name');
                                             column.Field.Settings = settings;
-                                            //layoutString += '<fd-field field-name="' + field.attr('field-name') + '"' + settings + '></fd-field>';
                                         }
-                                        //layoutString += '</fd-column>';
                                         columnIndex = columnIndex + 1;
                                     });
-                                    //layoutString += '</fd-row>';
                                     rowIndex = rowIndex + 1;
                                 });
-                                //layoutString += '</fd-section>';
                                 sectionIndex = sectionIndex + 1;
-                                //section end
                             }
                         });
                         
@@ -1074,11 +1061,6 @@
                                 logger.success('Save success');
                             }
                         });
-                        //$.post('/OrchardLocal/api/formdesigner/layout/' + entityName, { id: entityName, layout: layoutString }, function () {
-                        //    logger.success('Save success');
-                        //});
-                        
-                        //end
                     });
                 }
             };

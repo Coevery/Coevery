@@ -15,6 +15,7 @@ namespace Coevery.FormDesigner.Controllers {
     public class LayoutController : ApiController {
         private IContentDefinitionManager _contentDefinitionManager;
         private readonly ITemplateViewService _templateViewService;
+        private readonly string _alwaysInLayoutKey = "CoeveryTextFieldSettings.AlwaysInLayout";
         public LayoutController(IContentDefinitionManager contentDefinitionManager, 
             ITemplateViewService templateViewService) {
             _contentDefinitionManager = contentDefinitionManager;
@@ -50,6 +51,7 @@ namespace Coevery.FormDesigner.Controllers {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
 
             var layout = GetLayout(contentTypeDefinition,data);
+            if (string.IsNullOrEmpty(layout)) return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             if (contentTypeDefinition.Settings.ContainsKey("Layout"))
             {
                 contentTypeDefinition.Settings["Layout"] = layout;
@@ -69,6 +71,11 @@ namespace Coevery.FormDesigner.Controllers {
                 var part = contentTypeDefinition.Parts.First();
                 var fields = part.PartDefinition.Fields;
                 var columns = data.SelectMany(c => c.Rows).SelectMany(c => c.Columns);
+                if(fields.Any(f => f.Settings.ContainsKey(_alwaysInLayoutKey) 
+                    && bool.Parse(f.Settings[_alwaysInLayoutKey]) 
+                    && !columns.Select(c => c.Field.FieldName).Contains(f.Name))) {
+                    return string.Empty;
+                }
                 var validColumns = columns.Where(c => fields.Select(d=>d.Name).Contains(c.Field.FieldName)).ToList();
                 validColumns.ForEach(c=>c.Field.IsValid = true);
             }

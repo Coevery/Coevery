@@ -71,7 +71,9 @@
                             <hr style="margin: 0px;" />
                         </li>
                         <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns({{view.ContentId}})" title="" style="cursor: pointer;">
-                            <a  ng-class="{'viewSelected':currentViewId ==view.ContentId }">{{view.DisplayName}}
+                            <a>
+                                <i ng-class="{'icol-accept':currentViewId ==view.ContentId,'viewUSelected': currentViewId !=view.ContentId}"></i>
+                                {{view.DisplayName}}
                             </a>
                         </li>
                     </ul>

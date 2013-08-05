@@ -36,7 +36,8 @@
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }*/
 
-#loading {
+#loading
+{
     position: absolute;
     left: 50%;
     top: 0;
@@ -48,12 +49,14 @@
     z-index: 1000;
 }
 
-#wrapper #main {
+#wrapper #main
+{
     padding-bottom: 0;
 }
 
 /*Page Title*/
-#page-actions h1 {
+#page-actions h1
+{
     float: left;
     font-size: 24px;
     color: #444;
@@ -63,7 +66,8 @@
     text-shadow: -1px -1px #f0f0f0;
 }
 
-    #page-actions h1 > span {
+    #page-actions h1 > span
+    {
         color: #777;
         font-size: 11px;
         font-weight: normal;
@@ -75,28 +79,33 @@
         text-shadow: none;
     }
 
-#page-actions .btn-toolbar {
+#page-actions .btn-toolbar
+{
     margin: 15px 0;
 }
 
-#page-actions .btn-fixed {
+#page-actions .btn-fixed
+{
     position: fixed;
     top: 65px;
     z-index: 999;
 }
 
 /*Related List*/
-.related-list {
+.related-list
+{
     margin-top: 20px;
     border-top: 2px solid #41b7d8;
 }
 
-    .related-list > header > h5 {
+    .related-list > header > h5
+    {
         margin-right: 40px;
         display: inline-block;
     }
 
-    .related-list > header > .btn-toolbar {
+    .related-list > header > .btn-toolbar
+    {
         display: inline-block;
         font-size: 14px;
     }
@@ -104,12 +113,14 @@
 
 
 /*Page Actions*/
-#page-title h1 {
+#page-title h1
+{
     font-size: 24px;
     margin: 3px 0;
 }
 
-    #page-title h1 span {
+    #page-title h1 span
+    {
         font-size: 11px;
         line-height: 1;
         font-weight: normal;
@@ -117,43 +128,52 @@
         padding-left: 5px;
     }
 
-#page-title #actions {
+#page-title #actions
+{
     margin-left: 30px;
     display: none;
 }
 
 /*Date/Time Picker*/
-.control-group .controls.input-prepend {
-    display: block; 
+.control-group .controls.input-prepend
+{
+    display: block;
 }
 
 /*Icons*/
-.iconrow {
+.iconrow
+{
     width: 550px;
 }
 
-.iconspan {
+.iconspan
+{
     cursor: pointer;
 }
-.iconspan.selected {
-    background-color: #C9DDE1;
-}
-.iconspan i,
-#showIconClass {
-    font-size: 20px;
-}
-.dropdown-menu>li .viewSelected {
-    text-decoration: none;
-    color: #ffffff;
-    background-color: #0081c2;
-    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
-    background-repeat: repeat-x;
+
+    .iconspan.selected
+    {
+        background-color: #C9DDE1;
+    }
+
+    .iconspan i,
+    #showIconClass
+    {
+        font-size: 20px;
+    }
+
+.dropdown-menu > li .viewUSelected
+{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: text-top;
 }
 
- [class^="coe-icon-"]:before, [class*=" coe-icon-"]:before {
-
-  width: .9em;
-  margin-right: 0em;
-  margin-left: 0em;
-
+[class^="coe-icon-"]:before, [class*=" coe-icon-"]:before
+{
+    width: .9em;
+    margin-right: 0em;
+    margin-left: 0em;
 }
