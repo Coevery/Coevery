@@ -60,7 +60,7 @@
                                     }
                                     @T("Required")
                                 </label>
-                                <label class="checkbox">
+@*                                <label class="checkbox">
                                     @if (isSystemField) {
                                         @Html.Hidden(fieldSettingsPrefix + "ReadOnly", Model.Settings[fieldSettingsPrefix + "ReadOnly"]);
                                         @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]), new { disabled = "disabled" });
@@ -69,7 +69,7 @@
                                         @Html.CheckBox(fieldSettingsPrefix + "ReadOnly", bool.Parse(Model.Settings[fieldSettingsPrefix + "ReadOnly"]));
                                     }
                                     @("Read-Only")
-                                </label>
+                                </label>*@
                                 <label class="checkbox">
                                     @if (isSystemField) {
                                         @Html.Hidden(fieldSettingsPrefix + "AlwaysInLayout", Model.Settings[fieldSettingsPrefix + "AlwaysInLayout"]);

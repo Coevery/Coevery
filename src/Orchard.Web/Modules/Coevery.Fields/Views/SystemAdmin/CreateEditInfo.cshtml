@@ -40,10 +40,10 @@
                                         @Html.CheckBox(Model.FieldTypeName + "Settings.Required", Model.Required, new { ng_model = "required" })
                                         @T("Required")
                                     </label>
-                                    <label class="checkbox">
+@*                                    <label class="checkbox">
                                         @Html.CheckBox(Model.FieldTypeName + "Settings.ReadOnly", Model.ReadOnly, new { ng_model = "readonly" })
                                         @T("Read-Only")
-                                    </label>
+                                    </label>*@
                                     <label class="checkbox">
                                         @Html.CheckBox(Model.FieldTypeName + "Settings.AlwaysInLayout", Model.AlwaysInLayout, new { ng_model = "alwaysInLayout" })
                                         @T("Always In Layout")
@@ -101,10 +101,10 @@
                                     <input type="checkbox" disabled ng-model="required" />
                                     Required
                                 </label>
-                                <label class="checkbox">
+@*                                <label class="checkbox">
                                     <input type="checkbox" disabled ng-model="readonly" />
                                     Read-Only
-                                </label>
+                                </label>*@
                                 <label class="checkbox">
                                     <input type="checkbox" disabled ng-model="alwaysInLayout" />
                                     Always In Layout

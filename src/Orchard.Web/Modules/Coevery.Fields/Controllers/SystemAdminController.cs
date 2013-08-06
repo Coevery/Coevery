@@ -314,6 +314,7 @@ namespace Coevery.Fields.Controllers {
             var settingsStr = serverField.FieldDefinition.Name + "Settings";
             var clientSettings = new FieldSettings();
             TryUpdateModel(clientSettings, settingsStr);
+            clientSettings.ReadOnly = false;
 
             var serverSettings = new FieldSettings {
                 IsSystemField = bool.Parse(serverField.Settings[settingsStr + ".IsSystemField"]),
@@ -321,6 +322,11 @@ namespace Coevery.Fields.Controllers {
                 ReadOnly = bool.Parse(serverField.Settings[settingsStr + ".ReadOnly"]),
                 AlwaysInLayout = bool.Parse(serverField.Settings[settingsStr + ".AlwaysInLayout"])
             };
+
+            if (clientSettings.ReadOnly)
+            {
+                ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
+            }
 
             if (clientSettings.IsSystemField != serverSettings.IsSystemField) {
                 ModelState.AddModelError("IsSystemField", T("Can't modify the IsSystemField field.").ToString());
@@ -330,7 +336,8 @@ namespace Coevery.Fields.Controllers {
                 if (clientSettings.Required != serverSettings.Required) {
                     ModelState.AddModelError("Required", T("Can't modify the Required field.").ToString());
                 }
-                if (clientSettings.ReadOnly != serverSettings.ReadOnly) {
+                if (clientSettings.ReadOnly != serverSettings.ReadOnly)
+                {
                     ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
                 }
                 if (clientSettings.AlwaysInLayout != serverSettings.AlwaysInLayout) {
