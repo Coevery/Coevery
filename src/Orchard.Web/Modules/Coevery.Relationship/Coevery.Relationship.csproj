@@ -77,6 +77,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ManyToManyRelationshipPart.cs" />
+    <Compile Include="Models\ManyToManyRelationshipRecord.cs" />
+    <Compile Include="Models\OneToManyRelationshipPart.cs" />
+    <Compile Include="Models\OneToManyRelationshipRecord.cs" />
+    <Compile Include="Models\RelationshipColumnPart.cs" />
+    <Compile Include="Models\RelationshipColumnRecord.cs" />
+    <Compile Include="Models\RelationshipPart.cs" />
+    <Compile Include="Models\RelationshipRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
+      <Project>{2D1D92BB-4555-4CBE-8D0E-63563D6CE4C6}</Project>
+      <Name>Orchard.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
