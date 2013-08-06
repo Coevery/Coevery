@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Orchard.ContentManagement;
+using Orchard.Core.Settings.Metadata.Records;
 
 namespace Coevery.Relationship.Models
 {
@@ -20,7 +21,7 @@ namespace Coevery.Relationship.Models
         }
 
         [Required]
-        public virtual int LookupField_Id
+        public virtual ContentTypeDefinitionRecord LookupField_Id
         {
             get { return Record.LookupField_Id; }
             set { Record.LookupField_Id = value; }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Orchard.ContentManagement;
+using Orchard.Core.Settings.Metadata.Records;
 
 namespace Coevery.Relationship.Models
 {
@@ -27,14 +28,14 @@ namespace Coevery.Relationship.Models
         }
 
         [Required]
-        public virtual int PrimaryEntity_Id
+        public virtual ContentTypeDefinitionRecord PrimaryEntity_Id
         {
             get { return Record.PrimaryEntity_Id; }
             set { Record.PrimaryEntity_Id = value; }
         }
 
         [Required]
-        public virtual int RelatedEntity_Id
+        public virtual ContentTypeDefinitionRecord RelatedEntity_Id
         {
             get { return Record.RelatedEntity_Id; }
             set { Record.RelatedEntity_Id = value; }
