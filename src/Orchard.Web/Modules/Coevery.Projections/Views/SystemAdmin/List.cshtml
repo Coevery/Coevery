@@ -1,23 +1,21 @@
 ﻿<div class="btn-toolbar">
-    <div class="btn-group">
-@*        <button class="btn btn-small" data-ng-click="exit()">Back</button>*@
-        <button class="btn btn-small btn-success" data-ng-click="add()">
-            <i class="icon-plus"></i>Add
+    @*<button class="btn btn-small" data-ng-click="exit()">Back</button>*@
+    <button class="btn btn-small btn-success" data-ng-click="add()">
+        <i class="icon-plus"></i>Add
+    </button>
+    <button class="btn btn-small" data-ng-click="getAll()">
+        <i class="icon-refresh"></i>Refresh
+    </button>
+    <div class="btn-group" ng-show="mySelections.length > 0">
+        <button class="btn btn-small" data-ng-click="edit(mySelections[0].ContentId)" ng-disabled="mySelections.length > 1">
+            <i class="icon-edit"></i>Edit
         </button>
-        <button class="btn btn-small" data-ng-click="getAll()">
-            <i class="icon-refresh"></i>Refresh
+        <button class="btn btn-small" data-ng-click="delete(mySelections[0].ContentId)">
+            <i class="icon-remove"></i>Delete
         </button>
-        <div class="btn-group" ng-show="mySelections.length > 0">
-            <button class="btn btn-small" data-ng-click="edit(mySelections[0].ContentId)" ng-disabled="mySelections.length > 1">
-                <i class="icon-edit"></i>Edit
-            </button>
-            <button class="btn btn-small" data-ng-click="delete(mySelections[0].ContentId)">
-                <i class="icon-remove"></i>Delete
-            </button>
-            <button class="btn btn-small" data-ng-click="setDefault(mySelections[0].ContentId)" ng-disabled="mySelections.length > 1">
-                Default
-            </button>
-        </div>
+        <button class="btn btn-small" data-ng-click="setDefault(mySelections[0].ContentId)" ng-disabled="mySelections.length > 1">
+            Default
+        </button>
     </div>
 </div>
 
