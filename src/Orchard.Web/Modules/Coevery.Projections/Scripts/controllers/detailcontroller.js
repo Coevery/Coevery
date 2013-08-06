@@ -73,7 +73,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 };
 
                 $scope.exit = function() {
-                    $detour.transitionTo('ProjectionList', { EntityName: $stateParams.EntityName });
+                    $detour.transitionTo('EntityDetail.Views', { Id: $stateParams.EntityName });
                 };
 
                 $scope.addfield = function(fieldName) {
