@@ -15,7 +15,7 @@ namespace Coevery.Entities.Services
 
         public void GetNavigation(NavigationBuilder builder) {
             builder.AddImageSet("Entities")
-                   .Add(T("Entities"), "3",
+                   .Add(T("Entities"), "2",
                         menu => {
                             int menuIdex = 0;
                             menu.Add(T("All Entities"), (++menuIdex).ToString(), item => item.Url("~/SystemAdmin#/Entities"));
