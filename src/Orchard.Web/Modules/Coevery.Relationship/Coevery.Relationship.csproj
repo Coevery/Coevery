@@ -77,6 +77,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\ManyToManyRelationshipPartHandler.cs" />
+    <Compile Include="Handlers\OneToManyRelationshipPartHandler.cs" />
+    <Compile Include="Handlers\RelationshipColumnPartHandler.cs" />
+    <Compile Include="Handlers\RelationshipPartHandler.cs" />
+    <Compile Include="Migrations.cs" />
     <Compile Include="Models\ManyToManyRelationshipPart.cs" />
     <Compile Include="Models\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Models\OneToManyRelationshipPart.cs" />
