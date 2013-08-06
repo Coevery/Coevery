@@ -100,7 +100,8 @@ namespace Coevery.Core.Services
 
                 _schemaBuilder.CreateTable(string.Format(tableFormat, tableName), 
                     table => 
-                        table.Column<int>("Id", column => column.PrimaryKey()));
+                        table.Column<int>("Id", column => column.PrimaryKey())
+                        .Column<int>("ContentItemRecord_id"));
             }
             else {
                 result = CheckTableColumnExists(tableName, columnName);

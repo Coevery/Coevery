@@ -173,7 +173,7 @@ namespace Coevery.Core.DynamicTypeGeneration
                                                    TypeAttributes.AutoClass |
                                                    TypeAttributes.AnsiClass |
                                                    TypeAttributes.BeforeFieldInit |
-                                                   TypeAttributes.AutoLayout, typeof(ContentPartRecord));
+                                                   TypeAttributes.AutoLayout, typeof(ContentPartVersionRecord));
             return typBuilder;
         }
 
