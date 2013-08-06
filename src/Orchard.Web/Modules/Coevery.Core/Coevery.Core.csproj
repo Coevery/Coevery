@@ -117,6 +117,7 @@
     <Compile Include="Controllers\ColumnDefinitionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="CoreShapes.cs" />
     <Compile Include="Drivers\DynamicContentsDriver.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />

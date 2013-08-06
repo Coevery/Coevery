@@ -1,0 +1,56 @@
+﻿@using System.Web.Routing;
+@using Orchard.Mvc.Html
+@using Orchard.Utility.Extensions;
+
+@{
+    // odd formatting in this file is to cause more attractive results in the output.
+    var items = Enumerable.Cast<dynamic>((System.Collections.IEnumerable)Model);
+}
+@{
+    if (items.Any()) {
+    <ul class="menu">
+        @DisplayChildren(Model)
+        <li id="sidebar-toggle-wrap">
+            <span id="sidebar-toggle" class="toggled" onclick=" ToggleButtonClick() "><span></span></span>
+        </li>
+    </ul>
+    }
+}
+
+@using (Script.Foot()) {
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $(".menu>li:nth-child(2)").addClass("active");
+            $(".menu>li:not(:last):has(ul)").click(function () {
+                var $li = $(this);
+                if ($li.hasClass("active")) {
+                    return;
+                }
+                $(".menu>li.active").removeClass("active");
+                $li.addClass("active");
+            });
+            
+            $(".menu>li:not(:last,:has(ul))").click(function () {
+                var $li = $(this);
+                var $lia = $li.find('a');
+                if ($lia)
+                {
+                    $(location).attr('href', $lia[0].href); 
+                }
+            })
+        });
+
+        function ToggleButtonClick() {
+            if (!!$('#sidebar #navigation .menu >li.active:first .inner-nav').length) {
+                $('#content')
+                    .toggleClass('sidebar-minimized')
+                    .end()
+                    .toggleClass('toggled');
+                $('#sidebar-toggle').toggleClass('toggled', $('#content').hasClass('sidebar-minimized'));
+                $(window).trigger("resize");
+            }
+        }
+        //]]>
+    </script>
+}
