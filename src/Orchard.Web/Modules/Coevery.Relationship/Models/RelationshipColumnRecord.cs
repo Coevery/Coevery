@@ -4,8 +4,9 @@ namespace Coevery.Relationship.Models
 {
     public class RelationshipColumnRecord : ContentPartRecord
     {
-        public virtual int Relationship_Id { get; set; }
+        public virtual int Id { get; set; }
+        public virtual RelationshipRecord Relationship { get; set; }
         public virtual int Column_Id { get; set; }
-        public virtual int IsRelatedList { get; set; }//bit
+        public virtual bool IsRelatedList { get; set; }//bit
     }
 }

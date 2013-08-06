@@ -9,10 +9,10 @@ namespace Coevery.Relationship
             SchemaBuilder.CreateTable("RelationshipRecord", 
                 table=>table
                     .ContentPartRecord()
-                    .Column<string>("Name")
-                    .Column<int>("Type")
-                    .Column<int>("PrimaryEntity_Id")
-                    .Column<int>("RelatedEntity_Id")
+                    .Column<string>("Name",column=>column.NotNull())
+                    .Column<bool>("Type", column => column.NotNull())
+                    .Column<int>("PrimaryEntity_Id", column => column.NotNull())
+                    .Column<int>("RelatedEntity_Id", column => column.NotNull())
                 );
             ContentDefinitionManager.AlterTypeDefinition("Relationship", cfg => cfg
                 .WithPart("RelationshipPart")
@@ -22,9 +22,9 @@ namespace Coevery.Relationship
             SchemaBuilder.CreateTable("RelationshipColumnRecord",
                 table => table
                     .ContentPartRecord()
-                    .Column<int>("Relationship_Id")
-                    .Column<int>("Column_Id")
-                    .Column<int>("IsRelatedList")
+                    .Column<int>("Relationship_Id", column => column.NotNull())
+                    .Column<int>("Column_Id", column => column.NotNull())
+                    .Column<bool>("IsRelatedList", column => column.NotNull())
                 );
             ContentDefinitionManager.AlterTypeDefinition("RelationshipColumn", cfg => cfg
                 .WithPart("RelationshipColumnPart")
@@ -34,11 +34,11 @@ namespace Coevery.Relationship
             SchemaBuilder.CreateTable("OneToManyRelationshipRecord",
                 table => table
                     .ContentPartRecord()
-                    .Column<int>("Relationship_Id")
-                    .Column<int>("LookupField_Id")
-                    .Column<string>("RelatedListLabel")
-                    .Column<int>("ShowRelatedList")
-                    .Column<int>("DeleteOption")
+                    .Column<int>("Relationship_Id", column => column.NotNull())
+                    .Column<int>("LookupField_Id", column => column.NotNull())
+                    .Column<string>("RelatedListLabel", column => column.NotNull())
+                    .Column<bool>("ShowRelatedList", column => column.NotNull())
+                    .Column<int>("DeleteOption", column => column.NotNull())
                 );
             ContentDefinitionManager.AlterTypeDefinition("OneToManyRelationship", cfg => cfg
                 .WithPart("OneToManyRelationshipPart")
@@ -48,11 +48,11 @@ namespace Coevery.Relationship
             SchemaBuilder.CreateTable("ManyToManyRelationshipRecord",
                 table => table
                     .ContentPartRecord()
-                    .Column<int>("Relationship_Id")
-                    .Column<string>("RelatedListLabel")
-                    .Column<int>("ShowRelatedList")
-                    .Column<string>("PrimaryListLabel")
-                    .Column<int>("ShowPrimaryList")
+                    .Column<int>("Relationship_Id", column => column.NotNull())
+                    .Column<string>("RelatedListLabel", column => column.NotNull())
+                    .Column<bool>("ShowRelatedList", column => column.NotNull())
+                    .Column<string>("PrimaryListLabel", column => column.NotNull())
+                    .Column<bool>("ShowPrimaryList", column => column.NotNull())
                 );
             ContentDefinitionManager.AlterTypeDefinition("ManyToManyRelationship", cfg => cfg
                 .WithPart("ManyToManyRelationshipPart")

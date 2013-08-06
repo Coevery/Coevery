@@ -6,10 +6,17 @@ namespace Coevery.Relationship.Models
     public class RelationshipColumnPart : ContentPart<RelationshipColumnRecord>
     {
         [Required]
-        public virtual int Relationship_Id
+        public virtual int Id
         {
-            get { return Record.Relationship_Id; }
-            set { Record.Relationship_Id = value; }
+            get { return Record.Id; }
+            set { Record.Id = value; }
+        }
+
+        [Required]
+        public virtual RelationshipRecord Relationship
+        {
+            get { return Record.Relationship; }
+            set { Record.Relationship = value; }
         }
 
         [Required]
@@ -20,7 +27,7 @@ namespace Coevery.Relationship.Models
         }
 
         [Required]
-        public virtual int IsRelatedList
+        public virtual bool IsRelatedList
         {
             get { return Record.IsRelatedList; }
             set { Record.IsRelatedList = value; }

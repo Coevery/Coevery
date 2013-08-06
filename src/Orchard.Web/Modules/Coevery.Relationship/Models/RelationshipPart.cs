@@ -6,6 +6,13 @@ namespace Coevery.Relationship.Models
     public class RelationshipPart : ContentPart<RelationshipRecord>
     {
         [Required]
+        public virtual int Id
+        {
+            get { return Record.Id; }
+            set { Record.Id = value; }
+        }
+
+        [Required]
         public virtual string Name
         {
             get { return Record.Name; }

@@ -4,10 +4,11 @@ namespace Coevery.Relationship.Models
 {
     public class ManyToManyRelationshipRecord : ContentPartRecord
     {
-        public virtual int Relationship_Id { get; set; }
+        public virtual int Id { get; set; }
+        public virtual RelationshipRecord Relationship { get; set; }
         public virtual string RelatedListLabel { get; set; }
-        public virtual int ShowRelatedList { get; set; }//bit
+        public virtual bool ShowRelatedList { get; set; }//bit
         public virtual string PrimaryListLabel { get; set; }
-        public virtual int ShowPrimaryList { get; set; }//bit
+        public virtual bool ShowPrimaryList { get; set; }//bit
     }
 }
