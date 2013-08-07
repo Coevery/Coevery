@@ -78,7 +78,9 @@
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\FieldDependencyService.cs" />
+    <Compile Include="Services\FieldService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
+    <Compile Include="Services\IFieldService.cs" />
     <Compile Include="Services\IOptionItemService.cs" />
     <Compile Include="Services\OptionItemService.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />

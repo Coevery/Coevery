@@ -25,17 +25,22 @@ namespace Coevery.Fields.Controllers {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly ISchemaUpdateService _schemaUpdateService;
+        private readonly IFieldService _fieldService;
+
+
         public SystemAdminController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents,
-            ISchemaUpdateService schemaUpdateService) {
+            ISchemaUpdateService schemaUpdateService, 
+            IFieldService fieldService) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             _schemaUpdateService = schemaUpdateService;
+            _fieldService = fieldService;
             T = NullLocalizer.Instance;
         }
 
@@ -96,67 +101,9 @@ namespace Coevery.Fields.Controllers {
                 }
             }
 
-            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
-            viewModel.DisplayName = viewModel.DisplayName.Trim();
-            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
+            var result = _fieldService.Create(id, viewModel, this);
 
-            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
-                ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
-            }
-
-            if (String.IsNullOrWhiteSpace(viewModel.Name)) {
-                ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
-            }
-
-            if (viewModel.Name.ToLower() == "id") {
-                ModelState.AddModelError("Name", T("The Field Name can't be any case of 'Id'.").ToString());
-            }
-
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("Name", T("A field with the same name already exists.").ToString());
-            }
-
-            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
-                ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
-            }
-
-            if (!String.Equals(viewModel.Name, viewModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase)) {
-                ModelState.AddModelError("Name", T("The technical name contains invalid characters.").ToString());
-            }
-
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(viewModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
-            }
-
-            var settingsStr = viewModel.FieldTypeName + "Settings";
-            var clientSettings = new FieldSettings();
-            TryUpdateModel(clientSettings, settingsStr);
-            if (clientSettings.IsSystemField) {
-                ModelState.AddModelError("IsSystemField", T("Can't modify the IsSystemField field.").ToString());
-            }
-
-            if (!ModelState.IsValid) {
-                Services.TransactionManager.Cancel();
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                            from error in values.Value.Errors
-                            select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
-            }
-
-            try {
-                _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name, this);
-            }
-            catch (Exception ex) {
-                Services.Notifier.Information(T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message));
-                Services.TransactionManager.Cancel();
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                            from error in values.Value.Errors
-                            select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
-            }
-            if (!ModelState.IsValid) {
+            if (!result) {
                 Services.TransactionManager.Cancel();
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var temp = (from values in ModelState
@@ -166,7 +113,6 @@ namespace Coevery.Fields.Controllers {
             }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
-            _schemaUpdateService.CreateColumn(partViewModel.Name, viewModel.Name, viewModel.FieldTypeName);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
