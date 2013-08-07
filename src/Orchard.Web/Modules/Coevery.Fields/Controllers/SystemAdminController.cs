@@ -33,7 +33,7 @@ namespace Coevery.Fields.Controllers {
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents,
-            ISchemaUpdateService schemaUpdateService, 
+            ISchemaUpdateService schemaUpdateService,
             IFieldService fieldService) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
@@ -58,9 +58,9 @@ namespace Coevery.Fields.Controllers {
             return View(viewModel);
         }
 
-        public ActionResult FieldName(string entityName,string displayName, int version) {
+        public ActionResult FieldName(string entityName, string displayName, int version) {
             return Json(new {
-                result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName,displayName),
+                result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName, displayName),
                 version = version
             });
         }
@@ -101,9 +101,9 @@ namespace Coevery.Fields.Controllers {
                 }
             }
 
-            var result = _fieldService.Create(id, viewModel, this);
+            _fieldService.Create(id, viewModel, this);
 
-            if (!result) {
+            if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var temp = (from values in ModelState
@@ -113,6 +113,7 @@ namespace Coevery.Fields.Controllers {
             }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
+            _schemaUpdateService.CreateColumn(id, viewModel.Name, viewModel.FieldTypeName);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
@@ -269,8 +270,7 @@ namespace Coevery.Fields.Controllers {
                 AlwaysInLayout = bool.Parse(serverField.Settings[settingsStr + ".AlwaysInLayout"])
             };
 
-            if (clientSettings.ReadOnly)
-            {
+            if (clientSettings.ReadOnly) {
                 ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
             }
 
@@ -282,8 +282,7 @@ namespace Coevery.Fields.Controllers {
                 if (clientSettings.Required != serverSettings.Required) {
                     ModelState.AddModelError("Required", T("Can't modify the Required field.").ToString());
                 }
-                if (clientSettings.ReadOnly != serverSettings.ReadOnly)
-                {
+                if (clientSettings.ReadOnly != serverSettings.ReadOnly) {
                     ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
                 }
                 if (clientSettings.AlwaysInLayout != serverSettings.AlwaysInLayout) {

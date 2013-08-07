@@ -19,7 +19,7 @@ namespace Coevery.Fields.Services {
             _schemaUpdateService = schemaUpdateService;
         }
 
-        public bool Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
+        public void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
             viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
@@ -71,13 +71,10 @@ namespace Coevery.Fields.Services {
             if (!hasError) {
                 try {
                     _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, entityName, updateModel);
-                    _schemaUpdateService.CreateColumn(entityName, viewModel.Name, viewModel.FieldTypeName);
                 }
                 catch (Exception ex) {
-                    hasError = true;
                 }
             }
-            return !hasError;
         }
     }
 }
