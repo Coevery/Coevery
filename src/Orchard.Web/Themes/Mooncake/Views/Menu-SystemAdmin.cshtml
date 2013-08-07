@@ -30,15 +30,14 @@
                 $(".menu>li.active").removeClass("active");
                 $li.addClass("active");
             });
-            
-            $(".menu>li:not(:last,:has(ul))").click(function () {
+
+            $(".menu>li:not(:last,:has(ul))").click(function() {
                 var $li = $(this);
                 var $lia = $li.find('a');
-                if ($lia)
-                {
-                    $(location).attr('href', $lia[0].href); 
+                if ($lia) {
+                    $(location).attr('href', $lia[0].href);
                 }
-            })
+            });
         });
 
         function ToggleButtonClick() {

@@ -114,6 +114,7 @@
     <Content Include="Scripts\js\libs\jquery.placeholder.min.js" />
     <Content Include="Scripts\js\login.js" />
     <Content Include="Scripts\js\perfect-scrollbar.js" />
+    <Content Include="Scripts\js\setup-systemadmin.js" />
     <Content Include="Scripts\js\setup.js" />
     <Content Include="Scripts\js\template.js" />
     <Content Include="Scripts\jui\css\images\ui-datepicker-bg.png" />
@@ -1938,7 +1939,9 @@
     <Content Include="Styles\images\preloaders\9.gif" />
     <Content Include="Styles\images\twisty_sprite.png" />
     <Content Include="Styles\images\vlabels.png" />
-    <Content Include="Styles\layout-SystemAdmin.css" />
+    <Content Include="Styles\layout-base.css" />
+    <Content Include="Styles\layout-coevery.css" />
+    <Content Include="Styles\layout-systemadmin.css" />
     <Content Include="Styles\layout.css" />
     <Content Include="Styles\login.css" />
     <Content Include="Styles\login.min.css" />
