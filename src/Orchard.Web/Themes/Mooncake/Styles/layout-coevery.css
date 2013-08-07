@@ -189,7 +189,8 @@ screen < 767px
     /* Navigation
 ================================================== */
 
-    #wrapper #sidebar #navigation {
+#wrapper #sidebar #navigation
+    {
         position: absolute;
         overflow: hidden;
         top: 47px;
@@ -198,12 +199,14 @@ screen < 767px
         left: 0;
     }
 
-        #wrapper #sidebar #navigation ul {
+        #wrapper #sidebar #navigation ul
+        {
             margin: 0;
             position: relative;
         }
 
-            #wrapper #sidebar #navigation ul > li {
+            #wrapper #sidebar #navigation ul > li
+            {
                 list-style: none;
                 margin: 0;
                 cursor: pointer;
@@ -211,7 +214,8 @@ screen < 767px
             }
 
                 #wrapper #sidebar #navigation ul > li > a,
-                #wrapper #sidebar #navigation ul > li > span {
+                #wrapper #sidebar #navigation ul > li > span
+                {
                     margin: 0;
                     line-height: 1;
                     padding: 9px 0;
@@ -221,30 +225,52 @@ screen < 767px
                     font-size: 22px;
                 }
 
-        #wrapper #sidebar #navigation > ul > li .nav-title {
+        #wrapper #sidebar #navigation > ul > li .nav-title
+        {
             font-size: 11px;
             line-height: 1;
         }
 
         #wrapper #sidebar #navigation > ul > li > a,
-        #wrapper #sidebar #navigation > ul > li > span {
+        #wrapper #sidebar #navigation > ul > li > span
+        {
             font-size: 32px;
             padding: 6px 5px 11px 5px;
         }
 
+        #wrapper #sidebar #navigation ul > li.active > a,
+        #wrapper #sidebar #navigation ul > li.active > span
+        {
+            color: #ffffff;
+            border: 1px solid #3f9dce;
+            background: #2ca3de repeat-x left bottom;
+            background-image: -ms-linear-gradient(top, #70ccfa, #2ca3de);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70ccfa), to(#2ca3de));
+            background-image: -webkit-linear-gradient(top, #70ccfa, #2ca3de);
+            background-image: -o-linear-gradient(top, #70ccfa, #2ca3de);
+            background-image: -moz-linear-gradient(top, #70ccfa, #2ca3de);
+            background-image: linear-gradient(top, #70ccfa, #2ca3de);
+            -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
+            -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
+        }
+
         #wrapper #sidebar #navigation ul > li:first-child > a,
-        #wrapper #sidebar #navigation ul > li:first-child > span {
+        #wrapper #sidebar #navigation ul > li:first-child > span
+        {
             border-top: 0;
         }
 
-    #wrapper #sidebar #nav-selector {
+    #wrapper #sidebar #nav-selector
+    {
         padding: 13px 20px;
         border-bottom: 1px solid rgb(200, 200, 200);
         -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
         box-shadow: 0 1px 10px rgba(0,0,0,0.1);
     }
 
-        #wrapper #sidebar #nav-selector > .dropdown > a {
+        #wrapper #sidebar #nav-selector > .dropdown > a
+        {
             display: block;
             font-size: 20px;
             font-weight: 200;
@@ -254,7 +280,8 @@ screen < 767px
             text-decoration: none;
         }
 
-            #wrapper #sidebar #nav-selector > .dropdown > a > span {
+            #wrapper #sidebar #nav-selector > .dropdown > a > span
+            {
                 white-space: nowrap;
                 overflow: hidden;
                 max-width: 100px;
@@ -282,7 +309,7 @@ screen < 767px
         background-color: #f7f7f7;
         -webkit-box-shadow: 0 1px 10px rgba(0,0,0,0.1);
         box-shadow: 0 1px 10px rgba(0,0,0,0.1);
-        border-bottom: 1px solid #d4d4d4;
+        border-bottom: 1px solid #d4d4d4;       
         font-size: 0;
         z-index: 10;
     }
@@ -423,7 +450,6 @@ screen < 767px
     }
 
     #wrapper #main #page-title,
-
     #wrapper #main #main-header .breadcrumb,
     #wrapper #main #main-header h1,
     #wrapper #main #main-content {

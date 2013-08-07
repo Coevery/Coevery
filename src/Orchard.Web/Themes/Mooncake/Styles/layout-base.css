@@ -451,22 +451,6 @@ body {
     text-decoration: none;
 }
 
-#wrapper #sidebar #navigation ul.menu > li.active > a,
-#wrapper #sidebar #navigation ul.menu > li.active > span {
-    color: #ffffff;
-    border: 1px solid #3f9dce;
-    background: #2ca3de repeat-x left bottom;
-    background-image: -ms-linear-gradient(top, #70ccfa, #2ca3de);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70ccfa), to(#2ca3de));
-    background-image: -webkit-linear-gradient(top, #70ccfa, #2ca3de);
-    background-image: -o-linear-gradient(top, #70ccfa, #2ca3de);
-    background-image: -moz-linear-gradient(top, #70ccfa, #2ca3de);
-    background-image: linear-gradient(top, #70ccfa, #2ca3de);
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
-    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
-}
-
 /* Main Header
 ================================================== */
 
@@ -605,43 +589,6 @@ footer {
         margin-top: 10px;
         margin-bottom: 0;
     }
-
-#footer {
-    padding: 15px;
-    color: #444;
-    font-size: 11px;
-    line-height: 2;
-    border-top: 1px solid #ddd;
-    *zoom: 1;
-}
-
-    #footer:after,
-    #footer:before {
-        display: table;
-        content: "";
-        line-height: 0;
-    }
-
-    #footer:after {
-        clear: both;
-    }
-
-    #footer p {
-        margin-bottom: 0;
-    }
-
-    #footer .footer-left {
-        float: left;
-    }
-
-    #footer .footer-right {
-        float: right;
-        text-align: right;
-    }
-
-#wrapper .sidebar-minimized #main #page-title {
-    left: 45px;
-}
 
 /* Media Queries
 ================================================== */

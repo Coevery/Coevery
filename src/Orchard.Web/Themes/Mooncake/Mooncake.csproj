@@ -1942,7 +1942,6 @@
     <Content Include="Styles\layout-base.css" />
     <Content Include="Styles\layout-coevery.css" />
     <Content Include="Styles\layout-systemadmin.css" />
-    <Content Include="Styles\layout.css" />
     <Content Include="Styles\login.css" />
     <Content Include="Styles\login.min.css" />
     <Content Include="Styles\lt-ie9.css" />

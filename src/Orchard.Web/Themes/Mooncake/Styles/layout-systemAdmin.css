@@ -249,17 +249,33 @@ body {
             line-height: 1;
         }
 
-        #wrapper #sidebar #navigation ul.menu > li > .inner-nav {
-            top: 0;
-            right: 0;
-            left: 45px;
-            position: absolute;
-            display: none;
-        }
+#wrapper #sidebar #navigation ul.menu > li.active > a,
+#wrapper #sidebar #navigation ul.menu > li.active > span {
+    color: #ffffff;
+    border: 1px solid #3f9dce;
+    background: #2ca3de repeat-x left bottom;
+    background-image: -ms-linear-gradient(top, #70ccfa, #2ca3de);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70ccfa), to(#2ca3de));
+    background-image: -webkit-linear-gradient(top, #70ccfa, #2ca3de);
+    background-image: -o-linear-gradient(top, #70ccfa, #2ca3de);
+    background-image: -moz-linear-gradient(top, #70ccfa, #2ca3de);
+    background-image: linear-gradient(top, #70ccfa, #2ca3de);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.33);
+}
 
-        #wrapper #sidebar #navigation ul.menu > li.active > .inner-nav {
-            display: block;
-        }
+#wrapper #sidebar #navigation ul.menu > li > .inner-nav {
+    top: 0;
+    right: 0;
+    left: 45px;
+    position: absolute;
+    display: none;
+}
+
+#wrapper #sidebar #navigation ul.menu > li.active > .inner-nav {
+    display: block;
+}
 
 #wrapper #sidebar #navigation .inner-nav,
 #wrapper #sidebar #navigation .inner-nav > li {
@@ -310,6 +326,7 @@ body {
         margin: 0 4px 0 8px;
     }
 
+
 /* Main
 ================================================== */
 
@@ -326,7 +343,6 @@ body {
         margin: 0 40px;
         position: fixed;
         padding-right: 40px;
-        /*width: 100%;*/
         right: 39px;
         left: 327px;
         border-bottom: 1px solid #d4d4d4;
