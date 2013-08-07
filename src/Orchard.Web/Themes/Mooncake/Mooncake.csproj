@@ -1938,6 +1938,7 @@
     <Content Include="Styles\images\preloaders\9.gif" />
     <Content Include="Styles\images\twisty_sprite.png" />
     <Content Include="Styles\images\vlabels.png" />
+    <Content Include="Styles\layout-SystemAdmin.css" />
     <Content Include="Styles\layout.css" />
     <Content Include="Styles\login.css" />
     <Content Include="Styles\login.min.css" />
@@ -1950,6 +1951,7 @@
     <Content Include="Styles\plugins\elfinder.css" />
     <Content Include="Styles\plugins\fullcalendar.css" />
     <Content Include="Styles\plugins\plugins.min.css" />
+    <Content Include="Styles\site-SystemAdmin.css" />
     <Content Include="Styles\site.css" />
     <Content Include="Styles\table.css" />
     <Content Include="Styles\ui.css" />
@@ -2023,6 +2025,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Menu-SystemAdmin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Layout-SystemAdmin.cshtml" />
+    <Content Include="Views\MenuItem.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DifferentResourceSystemAdmin.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
