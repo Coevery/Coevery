@@ -108,9 +108,8 @@ namespace Coevery.Core.Services
             }
             if (result) return;
             var type = _dynamicAssemblyBuilder.GetFieldType(columnType);
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                type = type.GetGenericArguments()[0];
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+                type = Nullable.GetUnderlyingType(type);
             }
             var dbType = SchemaUtils.ToDbType(type);
             _schemaBuilder.AlterTable(string.Format(tableFormat, tableName), 

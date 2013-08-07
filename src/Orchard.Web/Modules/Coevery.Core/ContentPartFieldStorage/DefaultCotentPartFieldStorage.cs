@@ -3,19 +3,24 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Microsoft.CSharp.RuntimeBinder;
+using Orchard.ContentManagement;
+using Orchard.ContentManagement.FieldStorage;
+using Orchard.ContentManagement.MetaData.Models;
 
-namespace Orchard.ContentManagement.FieldStorage.ContentPartFieldStorage {
+namespace Coevery.Core.ContentPartFieldStorage {
     public class DefaultCotentPartFieldStorage : IFieldStorage {
         private readonly ContentPart _contentPart;
+        private readonly ContentPartFieldDefinition _partFieldDefinition;
 
-        public DefaultCotentPartFieldStorage(ContentPart contentPart) {
+        public DefaultCotentPartFieldStorage(ContentPart contentPart, ContentPartFieldDefinition partFieldDefinition) {
             _contentPart = contentPart;
+            _partFieldDefinition = partFieldDefinition;
         }
 
         public T Get<T>(string name) {
             if (string.IsNullOrEmpty(name))
                 return default(T);
-            var getter = _getters.GetOrAdd(name, n =>
+            var getter = _getters.GetOrAdd(_partFieldDefinition.Name, n =>
                                                  CallSite<Func<CallSite, object, dynamic>>.Create(
                                                      Binder.GetMember(CSharpBinderFlags.None, n, null,
                                                                       new[] {CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)})));
@@ -31,8 +36,7 @@ namespace Orchard.ContentManagement.FieldStorage.ContentPartFieldStorage {
         }
 
         public void Set<T>(string name, T value) {
-
-            var setter = _setters.GetOrAdd(name, CompileSetter);
+            var setter = _setters.GetOrAdd(_partFieldDefinition.Name, CompileSetter);
             setter(_contentPart, value);
         }
 

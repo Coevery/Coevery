@@ -108,6 +108,8 @@
     <Compile Include="ClientRoute\ClientRouteTableBuilder.cs" />
     <Compile Include="ClientRoute\DefaultClientRouteTableManager.cs" />
     <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
+    <Compile Include="ContentPartFieldStorage\DefaultContentPartFieldStorageProvider.cs" />
+    <Compile Include="ContentPartFieldStorage\DefaultCotentPartFieldStorage.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\ViewDefinitionController.cs" />
     <Compile Include="Controllers\GridTemplateController.cs" />
