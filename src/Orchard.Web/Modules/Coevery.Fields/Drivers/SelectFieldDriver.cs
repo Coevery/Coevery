@@ -12,10 +12,13 @@ namespace Coevery.Fields.Drivers {
         public IOrchardServices Services { get; set; }
         private const string TemplateName = "Fields/Select.Edit";
         private readonly IOptionItemService _optionItemService;
+        private readonly IFieldDependencyService _fieldDependencyService;
 
         public SelectFieldDriver(IOrchardServices services,
-            IOptionItemService optionItemService) {
+            IOptionItemService optionItemService,
+            IFieldDependencyService fieldDependencyService) {
             _optionItemService = optionItemService;
+            _fieldDependencyService = fieldDependencyService;
             Services = services;
             T = NullLocalizer.Instance;
             DisplayName = "Select";
@@ -47,6 +50,11 @@ namespace Coevery.Fields.Drivers {
             }
             if (field.Items == null) {
                 field.Items = _optionItemService.GetItemsForField(settings.FieldSettingId);
+            }
+
+            if (settings.DependencyMode == DependentType.Dependent && field.DisplayItems == null) {
+                //field.DisplayItems = "{ \"Map\":" +_fieldDependencyService.GetDependencyMap(settings.FieldSettingId) + "}";
+                field.DisplayItems = _fieldDependencyService.GetDependencyMap(settings.FieldSettingId);
             }
 
             return ContentShape("Fields_Select_Edit", GetDifferentiator(field, part),

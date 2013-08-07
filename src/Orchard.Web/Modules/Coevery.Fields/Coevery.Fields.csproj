@@ -77,6 +77,8 @@
     <Compile Include="Controllers\OptionItemsController.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
+    <Compile Include="Services\DependencyExtension.cs" />
+    <Compile Include="Services\IFieldDependencyService.cs" />
     <Compile Include="Services\FieldDependencyService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Services\IOptionItemService.cs" />

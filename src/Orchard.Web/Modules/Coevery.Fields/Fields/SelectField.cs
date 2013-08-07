@@ -12,6 +12,7 @@ namespace Coevery.Fields.Fields
     public class SelectField : ContentField
     {
         public List<SelectListItem> Items { get; set; }
+        public string DisplayItems { get; set; } 
         public string[] OptionValue
         {
             get
