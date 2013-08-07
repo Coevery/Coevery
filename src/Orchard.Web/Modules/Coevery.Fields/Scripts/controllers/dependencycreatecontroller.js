@@ -10,7 +10,7 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                 $scope.next = function () {
                     if ($('option[value=' + $scope.controlField + ']').attr('field_type') == 'BooleanField') {
                         $scope.controlFieldItems = [{ Value: 'True', Id: 'True' }, { Value: 'False', Id: 'False' }];
-                    } else {
+                    } else {                        
                         var controlFieldItems = optionItemsDataService.query({
                             EntityName: entityName,
                             FieldName: $scope.controlField
@@ -40,24 +40,40 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                     $detour.transitionTo('FieldDependencyList', { EntityName: entityName });
                 };
                 $scope.save = function () {
-                    var test = new fieldDependencyDataService();
-                    var value = '';
+                    var value = "[";
+                    var outerIndex = 0;
                     $.each($scope.controlFieldItems, function () {
-                        var dependentFieldValue = '';
+                        if (outerIndex != 0) {
+                            value += ",";
+                        }
+                        outerIndex++;
+                        value += "{ControlFieldValue:'" + this.Id + "',DependentFieldValue:[";
+                        var innerIndex = 0;
                         $.each($('input:checked[name=' + this.Value + ']'), function () {
-                            var prefix = dependentFieldValue ? '&' : '';
-                            dependentFieldValue += prefix + $(this).attr('value');
+                            if (innerIndex != 0) {
+                                value += ",";
+                            }
+                            innerIndex++;
+                            value += "'"+ this.value +"'";
                         });
-                        value += this.Id + '=' + dependentFieldValue + ';';
+                        value += "]}";
                     });
-                    test.Value = value;
-                    test.$save({
-                        EntityName: entityName,
-                        ControlFieldName: $scope.controlField,
-                        DependentFieldName: $scope.dependentField
-                    }, function () {
-                        logger.success('Save success.');
-                    });
+                    value += "]";
+
+                    $.ajax({
+                        type: 'POST',
+                        contentType: 'application/json',
+                        url: 'api/fields/FieldDependency?EntityName=' + entityName + 
+                            '&ControlFieldName=' + $scope.controlField + 
+                            '&DependentFieldName=' + $scope.dependentField,
+                        data: value,
+                        success: function () {
+                            logger.success('Save success');
+                        },
+                        error: function (result) {
+                            logger.error('Save failed:' + result.responseText);
+                        }
+                    });              
                 };
             }]
     ]);

@@ -68,6 +68,7 @@ namespace Coevery.Fields.Settings {
                 builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
                 builder.WithSetting("SelectFieldSettings.FieldSettingId", model.FieldSettingId.ToString());
                 builder.WithSetting("SelectFieldSettings.SelectCount", model.SelectCount.ToString());
+                builder.WithSetting("SelectFieldSettings.DependencyMode", model.DependencyMode.ToString());
             }
 
             yield return DefinitionTemplate(model);

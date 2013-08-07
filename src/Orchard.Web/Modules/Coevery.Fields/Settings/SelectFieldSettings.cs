@@ -10,7 +10,8 @@ namespace Coevery.Fields.Settings {
     public enum DependentType {
         None,
         Control,
-        Dependent
+        Dependent,
+        ControlAndDependent
     }
 
     public class SelectFieldSettings : FieldSettings {
@@ -21,7 +22,7 @@ namespace Coevery.Fields.Settings {
         public int SelectCount { get; set; }
 
         //Dependency related
-        public DependentType Dependency { get; set; }
+        public DependentType DependencyMode { get; set; }
         public int FieldSettingId { get; set; } 
 
         //Only used when creating
@@ -33,6 +34,7 @@ namespace Coevery.Fields.Settings {
             DefaultValue = 0;
             SelectCount = 1;
             DisplayLines = 1;
+            DependencyMode = DependentType.None;
         }
 
         public bool CheckValid(IUpdateModel updateModel, Localizer t, int itemCount, bool isCreating) {
