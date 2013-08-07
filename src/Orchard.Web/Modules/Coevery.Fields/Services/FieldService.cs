@@ -73,6 +73,7 @@ namespace Coevery.Fields.Services {
                     _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, entityName, updateModel);
                 }
                 catch (Exception ex) {
+                    updateModel.AddModelError("ErrorInfo", T("Add field failed."));
                 }
             }
         }
