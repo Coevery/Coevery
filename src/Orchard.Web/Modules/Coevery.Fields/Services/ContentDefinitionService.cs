@@ -61,8 +61,11 @@ namespace Coevery.Fields.Services {
             }
 
             if (viewModel.Fields.Any()) {
-                foreach (var field in viewModel.Fields)
+                foreach (var field in viewModel.Fields) {
+                    field._Definition.FieldDefinition.ContentType = name;
                     field.Templates = _contentDefinitionEditorEvents.PartFieldEditor(field._Definition);
+                }
+                    
             }
 
             return viewModel;

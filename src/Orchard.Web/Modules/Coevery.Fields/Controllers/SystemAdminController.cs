@@ -68,8 +68,9 @@ namespace Coevery.Fields.Controllers {
         public ActionResult CreateEditInfo(string id, string fieldTypeName) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
-
-            var definition = new ContentPartFieldDefinition(new ContentFieldDefinition(fieldTypeName + "Create"), string.Empty, new SettingsDictionary());
+            var ContentFieldDefinition = new ContentFieldDefinition(fieldTypeName + "Create");
+            ContentFieldDefinition.ContentType = id;
+            var definition = new ContentPartFieldDefinition(ContentFieldDefinition, string.Empty, new SettingsDictionary());
             var templates = _contentDefinitionEditorEvents.PartFieldEditor(definition);
 
             var viewModel = new AddFieldViewModel {

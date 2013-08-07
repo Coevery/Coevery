@@ -75,6 +75,10 @@
   <ItemGroup>
     <Compile Include="Controllers\FieldDependencyController.cs" />
     <Compile Include="Controllers\OptionItemsController.cs" />
+    <Compile Include="Drivers\ReferenceFieldDriver.cs" />
+    <Compile Include="Fields\ReferenceField.cs" />
+    <Compile Include="Handlers\ReferenceHandler.cs" />
+    <Compile Include="ViewModels\ReferenceFieldViewModel.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\DependencyExtension.cs" />
@@ -85,6 +89,8 @@
     <Compile Include="Services\IFieldService.cs" />
     <Compile Include="Services\IOptionItemService.cs" />
     <Compile Include="Services\OptionItemService.cs" />
+    <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
+    <Compile Include="Settings\ReferenceFieldSettings.cs" />
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
@@ -148,9 +154,17 @@
       <Project>{BD9AEC06-5C81-4221-A817-408FB0C4B6C0}</Project>
       <Name>Coevery.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
+      <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
+      <Name>Orchard.Forms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Media\Orchard.Media.csproj">
       <Project>{D9A7B330-CD22-4DA1-A95A-8DE1982AD8EB}</Project>
       <Name>Orchard.Media</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
+      <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
+      <Name>Orchard.Projections</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +211,6 @@
     <Compile Include="Tokens\FieldTokens.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Handlers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +314,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fields\Select.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\ReferenceFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Reference.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Reference.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -39,7 +39,12 @@
   <Place Fields_Currency_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Currency="Content:after"/>
 
-  <!-- Numeric --><!--
+  <!--Reference-->
+  <Place Fields_Reference_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Reference="Content:after"/>
+
+  <!-- Numeric -->
+  <!--
   <Place Fields_Numeric_Edit="Content:2.9;Wrapper=Wrapper_Script"/>
   <Place Fields_Numeric="Content:after"/>
 

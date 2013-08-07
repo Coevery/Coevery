@@ -82,6 +82,29 @@ namespace Coevery.Core.Controllers
             return part;
         }
 
+        private string GetReferenceValue(int referenceId)
+        {
+            var fieldContext = new PropertyContext
+            {
+                State = FormParametersHelper.ToDynamic(string.Empty)
+            };
+            var referenceContent = _contentManager.Get(referenceId);
+            string category = referenceContent.ContentType + "ContentFields";
+            var allFielDescriptors = _projectionManager.DescribeProperties().Where(p => p.Category == category).SelectMany(x => x.Descriptors).ToList();
+            string refereceValue = string.Empty;
+            var parts = referenceContent.Parts.Where(d => d.PartDefinition.Name == referenceContent.ContentType);
+            if (parts.Any() && parts.First().Fields.Any())
+            {
+                var valueField = parts.First().Fields.First();
+                var descriptor = allFielDescriptors.FirstOrDefault(d => d.Name.Text == valueField.Name + ":Value");
+                if (descriptor != null) {
+                    var shape = descriptor.Property(fieldContext, referenceContent);
+                    refereceValue = shape == null ? string.Empty : shape.ToString();
+                }
+            }
+            return refereceValue;
+        }
+
         private IEnumerable<JObject> GetLayoutComponents(ProjectionPart part, int skipCount, int pageCount) 
         {
             // query
@@ -111,10 +134,28 @@ namespace Coevery.Core.Controllers
                                 State = d.State,
                                 Tokens = tokens
                             };
+                            
                             var shape = d.Descriptor.Property(fieldContext, contentItem);
                             var text = shape == null ? string.Empty : shape.ToString();
-                            var filedName = d.Property.GetFiledName();
-                            result[filedName] = text;
+                            var contentPart = contentItem.Parts.FirstOrDefault(p => p.PartDefinition.Name == contentItem.ContentType);
+                            var fieldName = d.Property.GetFiledName();
+                            if (contentPart != null && !string.IsNullOrEmpty(text))
+                            {
+                                var field = contentPart.Fields.FirstOrDefault(f => fieldName == f.Name);
+                                if (field != null && field.GetType().Name == "ReferenceField") {
+                                    if (int.Parse(text) > 0) {
+                                        var referenceValue = GetReferenceValue(int.Parse(text));
+                                        if (!string.IsNullOrEmpty(referenceValue)) text = referenceValue;
+                                    }
+                                    else {
+
+                                        text = string.Empty;
+                                    }
+                                    
+                                }
+                            }
+
+                            result[fieldName] = text;
                         });
                     return result;
                 }).ToList();

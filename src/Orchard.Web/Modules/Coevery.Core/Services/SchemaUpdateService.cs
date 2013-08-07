@@ -82,7 +82,9 @@ namespace Coevery.Core.Services
         public  void CreateTable(string tableName) {
             bool result = CheckTableExists(tableName);
             if (result) return;
-            _schemaBuilder.CreateTable(string.Format(tableFormat, tableName), table => table.Column<int>("Id", column => column.PrimaryKey()));
+            _schemaBuilder.CreateTable(string.Format(tableFormat, tableName), 
+                table => table.Column<int>("Id", column => column.PrimaryKey())
+                .Column<int>("ContentItemRecord_id"));
             GenerationDynmicAssembly();
         }
 
