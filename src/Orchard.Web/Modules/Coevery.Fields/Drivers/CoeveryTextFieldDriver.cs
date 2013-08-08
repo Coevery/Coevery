@@ -30,6 +30,14 @@ namespace Coevery.Fields.Drivers {
             return field.Name;
         }
 
+        protected override void GetContentItemMetadata(ContentPart part, CoeveryTextField field, ContentItemMetadata metadata) {
+            var model=field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
+
+            if (model.IsDispalyField) {
+                metadata.DisplayText = field.Value;
+            }
+        }
+
         protected override DriverResult Display(ContentPart part, CoeveryTextField field, string displayType, dynamic shapeHelper) {
             return ContentShape("Fields_CoeveryText", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
