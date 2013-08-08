@@ -5,26 +5,37 @@ using System.Net;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
 using Coevery.Core.Services;
-using Coevery.Entities.Services;
-using Coevery.Entities.ViewModels;
+using Coevery.Fields.Services;
+using Coevery.Fields.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData;
 using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.Utility.Extensions;
 using Orchard.UI.Notify;
 using Orchard.Core.Contents.Controllers;
+using EditTypeViewModel = Coevery.Entities.ViewModels.EditTypeViewModel;
+using IContentDefinitionService = Coevery.Entities.Services.IContentDefinitionService;
 
 namespace Coevery.Entities.Controllers {
     public class SystemAdminController : Controller, IUpdateModel {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
-        public SystemAdminController(IOrchardServices orchardServices,
-            IContentDefinitionService contentDefinitionService, ISchemaUpdateService schemaUpdateService) {
+        private readonly IFieldService _fieldService;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
+        public SystemAdminController(IOrchardServices orchardServices
+            ,IContentDefinitionService contentDefinitionService
+            , ISchemaUpdateService schemaUpdateService
+            ,IFieldService fieldService
+            ,IContentDefinitionManager contentDefinitionManager
+            ) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
+            _fieldService = fieldService;
+            _contentDefinitionManager = contentDefinitionManager;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -139,6 +150,24 @@ namespace Coevery.Entities.Controllers {
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name.Trim());
+
+            AddFieldViewModel addViewModel = new AddFieldViewModel();
+            addViewModel.DisplayName = viewModel.FieldLabel.Trim();
+            addViewModel.Name = viewModel.FieldName.Trim();
+            addViewModel.FieldTypeName = "CoeveryTextField";
+            _fieldService.CreateCheck(viewModel.Name.Trim(), addViewModel, this);
+            var part = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            var field = part.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
+            if (field != null)
+            {
+                field.Settings["CoeveryTextFieldSettings.IsDispalyField"] = "true";
+                field.Settings["CoeveryTextFieldSettings.Required"] = "true";
+                field.Settings["CoeveryTextFieldSettings.ReadOnly"] = "true";
+                field.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = "true";
+                field.Settings["CoeveryTextFieldSettings.IsSystemField"] = "true";
+            }
+            _contentDefinitionManager.StorePartDefinition(part);
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
