@@ -8,6 +8,6 @@ namespace Coevery.Fields.Services {
         bool Delete(int id);
         bool Create(string entityName, string controlFieldName, string dependentFieldName, DependencyValuePair[] mappingValue);
         string GetDependencyMap(int dependentId);
-        public bool Edit(int id, string newDependency);
+        bool Edit(int id, string newDependency);
     }
 }
