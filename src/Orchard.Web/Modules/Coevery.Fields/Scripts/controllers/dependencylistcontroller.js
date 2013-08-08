@@ -42,8 +42,8 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                 $scope.back = function () {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
-                $scope.edit = function() {
-
+                $scope.edit = function (itemId) {
+                    $detour.transitionTo('FieldDependencyEdit', { EntityName: entityName, DependencyID: itemId });
                 };
                 $scope.delete = function (itemId) {
                     fieldDependencyDataService.delete({ Id: itemId }, function () {

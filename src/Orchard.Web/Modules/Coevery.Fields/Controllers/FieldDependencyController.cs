@@ -22,19 +22,12 @@ namespace Coevery.Fields.Controllers {
             return _fieldDependencyService.Get(entityName) ?? Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
-        //// PUT api/metadata/OptionItems?Id=1
-        //public virtual HttpResponseMessage Put(int id, OptionItemRecord optionItem) {
-        //    var optionItemRecord = _optionItemRepository.Table.SingleOrDefault(x => x.Id == id);
-        //    if (optionItemRecord == null) {
-        //        return Request.CreateResponse(HttpStatusCode.NotFound);
-        //    }
-        //    ResetDefault(optionItemRecord.ContentPartFieldDefinitionRecord);
-        //    optionItemRecord.Value = optionItem.Value;
-        //    optionItemRecord.IsDefault = optionItem.IsDefault;
-        //    _optionItemRepository.Update(optionItemRecord);
-
-        //    return Request.CreateResponse(HttpStatusCode.OK);
-        //}
+        // PUT api/fields/FieldDependency?Id=1
+        public virtual HttpResponseMessage Put(int id, string newValue) {
+            return _fieldDependencyService.Edit(id, newValue) ?
+                       Request.CreateResponse(HttpStatusCode.OK) :
+                       Request.CreateResponse(HttpStatusCode.NotFound);
+        }
 
         // POST api/fields/FieldDependency
         public virtual HttpResponseMessage Post(string entityName, string controlFieldName, string dependentFieldName, DependencyValuePair[] value) {
@@ -49,13 +42,5 @@ namespace Coevery.Fields.Controllers {
                        Request.CreateResponse(HttpStatusCode.OK)
                        : Request.CreateResponse(HttpStatusCode.NotFound);
         }
-
-        //private void ResetDefault(ContentPartFieldDefinitionRecord fieldDefinitionRecord) {
-        //    var defaultItem = _optionItemRepository.Table.SingleOrDefault(x => x.ContentPartFieldDefinitionRecord == fieldDefinitionRecord && x.IsDefault);
-        //    if (defaultItem != null) {
-        //        defaultItem.IsDefault = false;
-        //    }
-        //}
-        //        _optionItemRepository.Update(defaultItem);
     }
 }

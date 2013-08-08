@@ -27,7 +27,6 @@ namespace Coevery.Fields.Controllers {
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IFieldService _fieldService;
 
-
         public SystemAdminController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
@@ -228,26 +227,10 @@ namespace Coevery.Fields.Controllers {
             return View(viewModel);
         }
 
-        public ActionResult EditDependency(string id) {
-            var typeViewModel = _contentDefinitionService.GetType(id);
-            var controlFields = new List<EditPartFieldViewModel>();
-            var dependentFields = new List<EditPartFieldViewModel>();
-            foreach (var field in typeViewModel.Fields) {
-                switch (field.FieldDefinition.Name) {
-                    case "SelectField":
-                        controlFields.Add(field);
-                        dependentFields.Add(field);
-                        break;
-                    case "BooleanField":
-                        controlFields.Add(field);
-                        break;
-                }
-            }
-            var viewModel = new FieldDependencyViewModel {
-                ControlFields = controlFields,
-                DependentFields = dependentFields
-            };
-            return View(viewModel);
+        public ActionResult EditDependency(string entityName, int itemId) {
+            var typeViewModel = _contentDefinitionService.GetType(entityName);
+
+            return View();
         }
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {

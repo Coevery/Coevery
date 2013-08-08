@@ -58,7 +58,7 @@ namespace Coevery.Fields.Settings {
                     yield break; 
                 }
                 model.FieldSettingId = _optionItemService.InitializeField(typeName,builder.Name,labels,model.DefaultValue);
-                if (model.FieldSettingId < 0) {
+                if (model.FieldSettingId <= 0) {
                     updateModel.AddModelError("SelectSettings", _t("Create option items failed."));
                     yield break;
                 }

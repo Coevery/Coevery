@@ -58,7 +58,7 @@ namespace Coevery.Fields.Services {
             builder.Describe("FieldDependencyEdit")
                    .Configure(descriptor => {
                        descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/{DependencyID:[0-9]+}";
-                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/CreateDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }";
+                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Fields/EditDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }";
                        descriptor.Controller = "FieldDependencyEditCtrl";
                        descriptor.Dependencies = new string[] {"controllers/dependencyeditcontroller"};
                    });

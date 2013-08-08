@@ -1,18 +1,19 @@
 ﻿@model Coevery.Fields.Fields.SelectField
 @using Orchard.Utility.Extensions;
+@using Coevery.Fields.Services;
 @using Coevery.Fields.Settings;
 
 @{
     var settings = Model.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
     var multiple = (settings.SelectCount > 1) ? "multiple" : null;
     var required = settings.Required ? "required" : null;
-    var isControl = settings.DependencyMode == DependentType.Control ? "controlField" : null;
+    var isControl = settings.DependencyMode == DependentType.Control ? "controls controlField" : "controls";
     var isDependent = settings.DependencyMode == DependentType.Dependent ? "dependentField" : null;
     var classString = isControl + " " + isDependent;
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="controls @classString">
+<div class="@classString">
 
     @if (settings.DisplayOption == SelectionMode.DropDown) {
         var displaySize = (settings.SelectCount > 1) ? settings.DisplayLines : 1;
@@ -60,23 +61,22 @@
 
 </div>
 
-@functions{
-     
-}
-
-@if (isDependent != null) {
-    
-    
+@{
+    if (!Request.Url.PathAndQuery.Contains("SystemAdmin/FormDesigner") && isDependent != null) {      
     <script type="text/javascript">
         $(function () {
             var dependentElements = $(".dependentField input, .dependentField select>option");
             var depMap = JSON.parse("@Model.DisplayItems".replace(/&quot;/g, "\""));
 
             var setDependencyDisplay = function () {
+                var controlKey = typeof $(this).val() === "boolean"
+                    ? $(this).val() + "@DependencyValuePair.BoolSplit" + $(this).parents("div.controlField").attr("data-name")
+                    : $(this).val();
+
                 for (var index = 0; index < depMap.length; index++) {
-                    if (depMap[index]["Key"] == $(this).val()) {
+                    if (depMap[index]["Key"] == controlKey) {
                         dependentElements.each(function () {
-                            if (depMap[index]["Value"].indexOf(parseInt($(this).val())) != -1) {
+                            if (depMap[index]["Value"].indexOf($(this).val()) != -1) {
                                 $(this).prop('disabled', false);
                                 $(this).show();
                             }
@@ -84,7 +84,7 @@
                     }
                 }
             };
-            var dependencyFunc = function() {
+            var dependencyFunc = function () {
                 dependentElements.each(function () {
                     $(this).prop('disabled', true);
                     $(this).hide();
@@ -102,4 +102,5 @@
             });
         });
     </script>
+    }
 }

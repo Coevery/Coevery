@@ -100,6 +100,7 @@
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
     <Compile Include="ViewModels\FieldDependencyViewModel.cs" />
+    <Content Include="Scripts\controllers\dependencyeditcontroller.js" />
     <Content Include="Scripts\controllers\createchoosetypecontroller.js" />
     <Content Include="Scripts\controllers\createeditinfocontroller.js" />
     <Content Include="Scripts\controllers\dependencycreatecontroller.js" />

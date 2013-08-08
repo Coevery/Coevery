@@ -57,6 +57,16 @@ namespace Coevery.Fields.Services {
                 new KeyValuePairConverter());
         } 
 
+        public bool Edit(int id,string newDependency) {
+            var dependencyRecord = _fieldDependencyRepository.Table.SingleOrDefault(x => x.Id == id);
+            if (newDependency == null || dependencyRecord == null) {
+                return false;
+            }
+            dependencyRecord.Value = newDependency;
+            _fieldDependencyRepository.Update(dependencyRecord);
+            return true;
+        }
+
         public bool Create(string entityName, string controlFieldName, string dependentFieldName, DependencyValuePair[] mappingValue) {
             if (mappingValue == null) {
                 return false;
@@ -82,7 +92,7 @@ namespace Coevery.Fields.Services {
                 Entity = partDefinition,
                 ControlField = controlField,
                 DependentField = dependentField,
-                Value = mappingValue.DependencyPairsToString()
+                Value = mappingValue.DependencyPairsToString(controlField.Name)
             };
             _fieldDependencyRepository.Create(dependencyRecord);
             return UpdateDependenySetting(entityName,controlFieldName,dependentFieldName);
@@ -106,7 +116,7 @@ namespace Coevery.Fields.Services {
             if (control == null) {
                 return false;
             }
-            control.Settings["SelectFieldSettings.DependencyMode"] = DependentType.Control.ToString();
+            control.Settings[control.FieldDefinition.Name+"Settings.DependencyMode"] = DependentType.Control.ToString();
             var dependent = part.Fields.FirstOrDefault(x => x.Name == dependentFieldName);
             if (dependent == null) {
                 return false;

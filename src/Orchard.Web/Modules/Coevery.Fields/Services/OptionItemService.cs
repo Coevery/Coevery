@@ -80,6 +80,7 @@ namespace Coevery.Fields.Services {
         }
 
         public List<SelectListItem> GetItemsForField(int fieldId) {
+
             return (from i in _optionItemRepository.Table
                     where i.ContentPartFieldDefinitionRecord.Id == fieldId
                     select new SelectListItem {
@@ -108,9 +109,13 @@ namespace Coevery.Fields.Services {
         }
 
         public int InitializeField(string entityName, string fieldName, string[] labels, int defaultValue) {
-            var field = _partDefinitionRepository.Table.Single(x => x.Name == entityName)
-                    .ContentPartFieldDefinitionRecords.Single(x => x.Name == fieldName);
-            if (field == null) {
+            var entity = _partDefinitionRepository.Table.SingleOrDefault(x => x.Name == entityName);
+            if (entity == null) {
+                return -1;
+            }
+
+            var field = entity.ContentPartFieldDefinitionRecords.SingleOrDefault(x => x.Name == fieldName);
+            if (field == null || field.Id == 0) {
                 return -1;
             }
 

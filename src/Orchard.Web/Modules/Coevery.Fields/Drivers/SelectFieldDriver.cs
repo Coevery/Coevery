@@ -53,7 +53,6 @@ namespace Coevery.Fields.Drivers {
             }
 
             if (settings.DependencyMode == DependentType.Dependent && field.DisplayItems == null) {
-                //field.DisplayItems = "{ \"Map\":" +_fieldDependencyService.GetDependencyMap(settings.FieldSettingId) + "}";
                 field.DisplayItems = _fieldDependencyService.GetDependencyMap(settings.FieldSettingId);
             }
 
