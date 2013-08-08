@@ -17,8 +17,9 @@ namespace Coevery.Fields.Settings {
         IEnumerable<TemplateViewModel> TypePartEditorUpdate(ContentTypePartDefinitionBuilder builder, IUpdateModel updateModel);
         IEnumerable<TemplateViewModel> PartEditorUpdate(ContentPartDefinitionBuilder builder, IUpdateModel updateModel);
         IEnumerable<TemplateViewModel> PartFieldEditorUpdate(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel);
-        
+
         IEnumerable<TemplateViewModel> PartFieldEditorCreate(ContentPartFieldDefinitionBuilder builder, string partName, IUpdateModel updateModel);
+        void PartFieldEditorCreateCheck(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel);
     }
 
     public abstract class ContentDefinitionEditorEventsBase : IContentDefinitionEditorEvents {
@@ -56,6 +57,9 @@ namespace Coevery.Fields.Settings {
 
         public virtual IEnumerable<TemplateViewModel> PartFieldEditorCreate(ContentPartFieldDefinitionBuilder builder, string partName, IUpdateModel updateModel) {
             return Enumerable.Empty<TemplateViewModel>();
+        }
+
+        public virtual void PartFieldEditorCreateCheck(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
         }
 
         protected static TemplateViewModel DefinitionTemplate<TModel>(TModel model) {

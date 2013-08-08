@@ -8,6 +8,7 @@ using Orchard.ContentManagement;
 
 namespace Coevery.Fields.Services {
     public interface IFieldService : IDependency {
+        void CreateCheck(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel);
         void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel);
     }
 }

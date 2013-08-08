@@ -101,7 +101,10 @@ namespace Coevery.Fields.Controllers {
                 }
             }
 
-            _fieldService.Create(id, viewModel, this);
+            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
+            viewModel.DisplayName = viewModel.DisplayName.Trim();
+            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
+            _fieldService.CreateCheck(id, viewModel, this);
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
@@ -111,9 +114,9 @@ namespace Coevery.Fields.Controllers {
                             select error.ErrorMessage).ToArray();
                 return Content(string.Concat(temp));
             }
+            _fieldService.Create(id, viewModel, this);
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
-            _schemaUpdateService.CreateColumn(id, viewModel.Name, viewModel.FieldTypeName);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 

@@ -52,12 +52,8 @@ namespace Coevery.Fields.Settings {
 
             var model = new SelectFieldSettings();
             if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
-
                 var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
-                if (!model.CheckValid(updateModel, _t, labels.Length, true)) {
-                    yield break; 
-                }
-                model.FieldSettingId = _optionItemService.InitializeField(typeName,builder.Name,labels,model.DefaultValue);
+                model.FieldSettingId = _optionItemService.InitializeField(typeName, builder.Name, labels, model.DefaultValue);
                 if (model.FieldSettingId <= 0) {
                     updateModel.AddModelError("SelectSettings", _t("Create option items failed."));
                     yield break;
@@ -72,6 +68,17 @@ namespace Coevery.Fields.Settings {
             }
 
             yield return DefinitionTemplate(model);
+        }
+
+        public override void PartFieldEditorCreateCheck(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
+            if (builder.FieldType != "SelectField") {
+                return;
+            }
+            var model = new SelectFieldSettings();
+            if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
+                var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
+                model.CheckValid(updateModel, _t, labels.Length, true);
+            }
         }
     }
 }
