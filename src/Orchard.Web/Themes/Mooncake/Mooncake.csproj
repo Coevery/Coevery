@@ -114,6 +114,7 @@
     <Content Include="Scripts\js\libs\jquery.placeholder.min.js" />
     <Content Include="Scripts\js\login.js" />
     <Content Include="Scripts\js\perfect-scrollbar.js" />
+    <Content Include="Scripts\js\setup-systemadmin.js" />
     <Content Include="Scripts\js\setup.js" />
     <Content Include="Scripts\js\template.js" />
     <Content Include="Scripts\jui\css\images\ui-datepicker-bg.png" />

@@ -1,7 +1,6 @@
 ﻿@functions {
     // To support the layout classifaction below. Implementing as a razor function because we can, could otherwise be a Func<string[], string, string> in the code block following.
-    string CalcuClassify(string[] zoneNames, string classNamePrefix)
-    {
+    string CalcuClassify(string[] zoneNames, string classNamePrefix) {
         var zoneCounter = 0;
         var zoneNumsFilled = string.Join("", zoneNames.Select(zoneName => { ++zoneCounter; return Model[zoneName] != null ? zoneCounter.ToString() : ""; }).ToArray());
         return HasText(zoneNumsFilled) ? classNamePrefix + zoneNumsFilled : "";
