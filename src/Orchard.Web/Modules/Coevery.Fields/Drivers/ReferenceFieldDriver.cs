@@ -78,6 +78,12 @@ namespace Coevery.Fields.Drivers
             var contentItems = _projectionManager.GetContentItems(settings.QueryId, 0, 0).ToList();
             string category = settings.ContentTypeName + "ContentFields";
             var allFielDescriptors = _projectionManager.DescribeProperties().Where(p => p.Category == category).SelectMany(x => x.Descriptors).ToList();
+            int fieldValue = 0;
+            var value = field.Storage.Get<object>(field.Name);
+            if (value != null) {
+                fieldValue = int.Parse(value.ToString());
+            }
+
             var fieldContext = new PropertyContext
             {
                 State = FormParametersHelper.ToDynamic(string.Empty)
@@ -86,7 +92,7 @@ namespace Coevery.Fields.Drivers
             {
                 var item = new SelectListItem();
                 item.Value  = c.Id.ToString(CultureInfo.InvariantCulture);
-                item.Selected  = field.Value == c.Id;
+                item.Selected = fieldValue == c.Id;
                 var parts = c.Parts.Where(d => d.PartDefinition.Name==c.ContentType);
                 if (parts.Any() && parts.First().Fields.Any()) {
                     var valueField = parts.First().Fields.First();

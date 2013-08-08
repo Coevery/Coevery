@@ -11,9 +11,10 @@
           $scope.definitionViews = [];
           $scope.columnDefs = [];
 
-          if ($rootScope.Search) {
+          if ($rootScope.Search && $rootScope.moduleName == moduleName) {
               $location.search($rootScope.Search);
           }
+          $rootScope.moduleName = moduleName;
           
           //init pagingoption
           var pageSizes = [250, 500, 1000];

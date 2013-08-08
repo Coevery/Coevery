@@ -36,7 +36,7 @@ namespace Coevery.Fields.Settings
             {
                 var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
                 var model = definition.Settings.GetModel<ReferenceFieldSettings>();
-                model.ContentTypeList = metadataTypes.Where(d=>d.Name != definition.FieldDefinition.ContentType).Select(item => new SelectListItem
+                model.ContentTypeList = metadataTypes.Select(item => new SelectListItem
                 {
                     Text = item.Name,
                     Value = item.Name,

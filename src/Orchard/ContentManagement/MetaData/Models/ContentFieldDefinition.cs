@@ -5,7 +5,5 @@
         }
 
         public string Name { get; private set; }
-
-        public string ContentType { get; set; }
     }
 }

@@ -18,8 +18,6 @@ namespace Coevery.Core.ContentPartFieldStorage {
         }
 
         public T Get<T>(string name) {
-            if (string.IsNullOrEmpty(name))
-                return default(T);
             var getter = _getters.GetOrAdd(_partFieldDefinition.Name, n =>
                                                  CallSite<Func<CallSite, object, dynamic>>.Create(
                                                      Binder.GetMember(CSharpBinderFlags.None, n, null,
