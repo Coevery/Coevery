@@ -2,7 +2,7 @@
 
 namespace Coevery.Relationship.Models
 {
-    public class ManyToManyRelationshipRecord : ContentPartRecord
+    public class ManyToManyRelationshipRecord
     {
         public virtual int Id { get; set; }
         public virtual RelationshipRecord Relationship { get; set; }

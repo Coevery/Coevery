@@ -1,10 +1,12 @@
-﻿<style>
+﻿
+<style>
     .pickList .btn [class^="icon-"] {
         width: auto;
     }
 </style>
+
 <header id="page-title">
-    <h1 class="pull-left">@T("One to Many Relationship Detail ") <span>show one to many relationship detail information</span></h1>
+    <h1 class="pull-left"> "Many to Many Relationship Detail " <span>show many to many relationship detail information</span></h1>
 </header>
 
 <section id="main-content" style="margin-top: 47px">
@@ -17,7 +19,7 @@
     <div class="row-fluid">
         <form class="form-horizontal no-border form-fontstyle">
             <fieldset>
-                <legend>Relationship</legend>
+                <legend>General Information</legend>
                 <section class="control-group">
                     <label class="control-label">
                         Relationship Name
@@ -48,21 +50,36 @@
                 </section>
                 <section class="control-group">
                     <label class="control-label">
-                        What to do if the lookup record is deleted?
+                        Primary Entity List Label
                     </label>
                     <div class="controls">
-                        <label class="radio">
-                            <input type="radio" ng-model="recordDeleteBehavior" ng-disabled="required" value="1" />
-                            Clear the value of this field
+                        <input type="text" class="span12" />
+                    </div>
+                </section>
+                <section class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="showPrimaryList" />
+                            Show Primary Entity List in the Related Entity's Detail Page
                         </label>
-                        <label class="radio">
-                            <input type="radio" ng-model="recordDeleteBehavior" value="2" />
-                            Don't allow delete
-                        </label>
-                        <label class="radio">
-                            <input type="radio" ng-model="recordDeleteBehavior" value="3" />
-                            Cascading delete
-                        </label>
+                    </div>
+                </section>
+                <section class="control-group" ng-show="showPrimaryList">
+                    <div class="controls">
+                        <select id="picklist-current" name="picklist[]">
+                            <option>Apple</option>
+                            <option selected="selected">Banana</option>
+                            <option selected="selected">Kiwi</option>
+                            <option>Orange</option>
+                            <option>Pear</option>
+                            <option>Grape</option>
+                            <option>Mango</option>
+                            <option>Peach</option>
+                            <option>Dragon Fruit</option>
+                            <option>Durian</option>
+                            <option>Avocado</option>
+                            <option>Cherry</option>
+                        </select>
                     </div>
                 </section>
                 <section class="control-group">
@@ -83,7 +100,7 @@
                 </section>
                 <section class="control-group" ng-show="showRelatedList">
                     <div class="controls">
-                        <select id="picklist-ex" name="picklist[]">
+                        <select id="picklist-other" name="picklist[]">
                             <option>Apple</option>
                             <option selected="selected">Banana</option>
                             <option selected="selected">Kiwi</option>
@@ -100,52 +117,6 @@
                     </div>
                 </section>
             </fieldset>
-            <fieldset>
-                <legend>Lookup Field</legend>
-                <section class="control-group">
-                    <label class="control-label" for="fieldLabel">
-                        Field Label
-                    </label>
-                    <div class="controls">
-                        <input type="text" class="span12" id="fieldLabel" ng-model="fieldLabel">
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label" for="fieldName">
-                        Field Name
-                    </label>
-                    <div class="controls">
-                        <input type="text" class="span12" id="fieldName" ng-model="fieldName">
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label">
-                        Options
-                    </label>
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="required" />
-                            Required
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="readonly" />
-                            Read-Only
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="alwaysInLayout" />
-                            Always In Layout
-                        </label>
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label" for="helpText">
-                        Help Text
-                    </label>
-                    <div class="controls">
-                        <textarea class="span12" id="helpText" ng-model="helpText"></textarea>
-                    </div>
-                </section>
-            </fieldset>
         </form>
     </div>
 </section>
@@ -153,7 +124,7 @@
 <script>
     $(document).ready(
         function () {
-            $('#picklist-ex').picklist({
+            $('#picklist-other,#picklist-current').picklist({
                 addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
                 addLabel: '<i class="icon-caret-right"></i>',
                 removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',

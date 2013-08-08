@@ -221,14 +221,6 @@ namespace Coevery.Entities.Controllers {
             return View();
         }
 
-        public ActionResult EditOneToMany(string id) {
-            return View();
-        }
-
-        public ActionResult EditManyToMany(string id) {
-            return View();
-        }
-
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);
         }

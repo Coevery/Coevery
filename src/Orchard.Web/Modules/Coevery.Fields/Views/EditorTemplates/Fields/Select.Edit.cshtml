@@ -60,22 +60,22 @@
     @Html.ValidationMessageFor(m => m.Value)
 
 </div>
-
-@{
-    if (!Request.Url.PathAndQuery.Contains("SystemAdmin/FormDesigner") && isDependent != null) {      
-    <script type="text/javascript">
-        $(function () {
+   
+<script type="text/javascript">
+    $(function () {
+        if ( "@isDependent".trim()
+            && "@Request.Url.PathAndQuery.Contains("SystemAdmin/FormDesigner")".toLowerCase == "false") {
             var dependentElements = $(".dependentField input, .dependentField select>option");
             var depMap = JSON.parse("@Model.DisplayItems".replace(/&quot;/g, "\""));
 
-            var setDependencyDisplay = function () {
+            var setDependencyDisplay = function() {
                 var controlKey = typeof $(this).val() === "boolean"
                     ? $(this).val() + "@DependencyValuePair.BoolSplit" + $(this).parents("div.controlField").attr("data-name")
                     : $(this).val();
 
                 for (var index = 0; index < depMap.length; index++) {
                     if (depMap[index]["Key"] == controlKey) {
-                        dependentElements.each(function () {
+                        dependentElements.each(function() {
                             if (depMap[index]["Value"].indexOf($(this).val()) != -1) {
                                 $(this).prop('disabled', false);
                                 $(this).show();
@@ -84,8 +84,8 @@
                     }
                 }
             };
-            var dependencyFunc = function () {
-                dependentElements.each(function () {
+            var dependencyFunc = function() {
+                dependentElements.each(function() {
                     $(this).prop('disabled', true);
                     $(this).hide();
                 });
@@ -93,14 +93,14 @@
                     .each(setDependencyDisplay);
             };
 
-            $(document).one("keyup mousemove", function () {
+            $(document).one("keyup mousemove", function() {
                 dependencyFunc();
 
-                $(".controlField input, .controlField select").change(function () {
+                $(".controlField input, .controlField select").change(function() {
                     dependencyFunc();
                 });
             });
-        });
-    </script>
-    }
-}
+        }
+    });
+</script>
+
