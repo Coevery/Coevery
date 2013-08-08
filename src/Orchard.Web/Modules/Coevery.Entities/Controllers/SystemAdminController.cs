@@ -155,7 +155,7 @@ namespace Coevery.Entities.Controllers {
             addViewModel.DisplayName = viewModel.FieldLabel.Trim();
             addViewModel.Name = viewModel.FieldName.Trim();
             addViewModel.FieldTypeName = "CoeveryTextField";
-            _fieldService.CreateCheck(viewModel.Name.Trim(), addViewModel, this);
+            _fieldService.Create(viewModel.Name.Trim(), addViewModel, this);
             var part = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
             var field = part.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
             if (field != null)
