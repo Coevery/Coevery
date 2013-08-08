@@ -70,8 +70,8 @@ namespace Coevery.Fields.Settings {
             yield return DefinitionTemplate(model);
         }
 
-        public override void PartFieldEditorCreateCheck(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
-            if (builder.FieldType != "SelectField") {
+        public override void PartFieldEditorCreateCheck(string fieldTypeName, IUpdateModel updateModel) {
+            if (fieldTypeName != "SelectField") {
                 return;
             }
             var model = new SelectFieldSettings();

@@ -175,12 +175,8 @@ namespace Coevery.Fields.Services {
                                                                                                partFieldBuilder => _contentDefinitionEditorEvents.PartFieldEditorCreate(partFieldBuilder, partName, updater)));
         }
 
-        public void CreateFieldCheck(string partName, string fieldName, IUpdateModel updateModel) {
-            var updater = new Updater(updateModel);
-            updater._prefix = secondHalf => secondHalf;
-            _contentDefinitionManager.AlterPartDefinition(partName,
-                                                          partBuilder => partBuilder.WithField(fieldName,
-                                                                                               partFieldBuilder => _contentDefinitionEditorEvents.PartFieldEditorCreateCheck(partFieldBuilder, updater)));
+        public void CreateFieldCheck(string partName, string fieldName, string fieldTypeName, IUpdateModel updateModel) {
+            _contentDefinitionEditorEvents.PartFieldEditorCreateCheck(fieldTypeName, updateModel);
         }
 
         public void RemoveType(string name, bool deleteContent) {

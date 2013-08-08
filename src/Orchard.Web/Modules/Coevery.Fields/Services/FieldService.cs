@@ -55,7 +55,7 @@ namespace Coevery.Fields.Services {
                 updateModel.AddModelError("IsSystemField", T("Can't modify the IsSystemField field."));
             }
 
-            _contentDefinitionService.CreateFieldCheck(entityName, viewModel.Name, updateModel);
+            _contentDefinitionService.CreateFieldCheck(entityName, viewModel.Name, viewModel.FieldTypeName, updateModel);
         }
 
         public void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
