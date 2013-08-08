@@ -28,6 +28,8 @@ namespace Coevery.Entities.ViewModels {
         public IEnumerable<EditTypePartViewModel> Parts { get; set; }
         public IEnumerable<TemplateViewModel> Templates { get; set; }
         public ContentTypeDefinition _Definition { get; private set; }
+        public string FieldLabel { get; set; }
+        public string FieldName { get; set; }
 
         private IEnumerable<EditPartFieldViewModel> GetTypeFields(ContentTypeDefinition contentTypeDefinition) {
             var implicitTypePart = contentTypeDefinition.Parts.SingleOrDefault(p => string.Equals(p.PartDefinition.Name, Name, StringComparison.OrdinalIgnoreCase));

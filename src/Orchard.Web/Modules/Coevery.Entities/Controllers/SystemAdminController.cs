@@ -60,12 +60,25 @@ namespace Coevery.Entities.Controllers {
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
 
+            viewModel.FieldLabel = viewModel.FieldLabel ?? String.Empty;
+            viewModel.FieldName = (viewModel.FieldName ?? viewModel.FieldLabel).ToSafeName();
+
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
             }
 
             if (String.IsNullOrWhiteSpace(viewModel.Name)) {
                 ModelState.AddModelError("Name", T("The Content Type Id can't be empty.").ToString());
+            }
+
+            if (String.IsNullOrWhiteSpace(viewModel.FieldLabel))
+            {
+                ModelState.AddModelError("DisplayName", T("The Field Label name can't be empty.").ToString());
+            }
+
+            if (String.IsNullOrWhiteSpace(viewModel.FieldName))
+            {
+                ModelState.AddModelError("Name", T("The Field Name can't be empty.").ToString());
             }
 
             if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.Name)) {
@@ -82,6 +95,16 @@ namespace Coevery.Entities.Controllers {
 
             if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase))) {
                 ModelState.AddModelError("DisplayName", T("A type with the same Display Name already exists.").ToString());
+            }
+
+            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.FieldName))
+            {
+                ModelState.AddModelError("FieldName", T("The field name should be singular.").ToString());
+            }
+
+            if (!String.IsNullOrWhiteSpace(viewModel.FieldName) && !viewModel.FieldName[0].IsLetter())
+            {
+                ModelState.AddModelError("FieldName", T("The technical field name must start with a letter.").ToString());
             }
 
             if (!ModelState.IsValid) {

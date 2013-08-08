@@ -39,6 +39,21 @@
                             </div>
                         </section>
                     </fieldset>
+                    <fieldset>
+                        <legend>Field Name</legend>
+                        <section class="control-group">
+                            <label class="control-label" for="FieldLabel">@T("Field Label")</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.FieldLabel, new { @class = "span12 labelForName", autofocus = "autofocus" })
+                            </div>
+                        </section>
+                        <section class="control-group">
+                            <label class="control-label required" for="FieldName">@T("Field Name")</label>
+                            <div class="controls toValidate">
+                                @Html.TextBoxFor(m => m.FieldName, new { @class = "span12 nameisnotid required safename",@id="FieldName"})
+                            </div>
+                        </section>
+                    </fieldset>
                 }
             </div>
         </div>
