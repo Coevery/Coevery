@@ -37,17 +37,6 @@ namespace Coevery.Core {
                        if (controller == "SystemAdmin")
                            layout.Metadata.Alternates.Add("Menu__" + controller);
                    });
-
-            builder.Describe("ThemeResource")
-                   .OnDisplaying(displaying =>
-                   {
-                       IShape layout = displaying.Shape;
-                       var httpContext = _httpContextAccessor.Current();
-                       var routeValues = httpContext.Request.RequestContext.RouteData.Values;
-                       var controller = (string)routeValues["controller"];
-                       if (controller == "SystemAdmin")
-                           layout.Metadata.Alternates.Add("DifferentResource__" + controller);
-                   });
         }
     }
 }
