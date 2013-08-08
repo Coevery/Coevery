@@ -44,7 +44,7 @@
                         <section class="control-group">
                             <label class="control-label" for="FieldLabel">@T("Field Label")</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.FieldLabel, new { @class = "span12 labelForName", autofocus = "autofocus" })
+                                @Html.TextBoxFor(m => m.FieldLabel, new { @class = "span12 labelForFieldName", autofocus = "autofocus" })
                             </div>
                         </section>
                         <section class="control-group">
@@ -115,6 +115,48 @@
 
         $displayName.keyup(function () {
             compute();
+            setTimeout(function () {
+                validator.form();
+            }, 100);
+        });
+        
+
+        var $fieldName = $("#FieldName");
+        var $displayFieldName = $(".labelForFieldName");
+        var jsonUrlFieldName = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Entities" } })";
+        var versionFieldName = 0;
+
+        var nameAlteredFieldName;
+        $fieldName.keyup(function () {
+            if (!$fieldName.val()) {
+                nameAlteredFieldName = false;
+            } else {
+                nameAlteredFieldName = true;
+            }
+        });
+
+        var computeFieldName = function () {
+            // stop processing automatically if altered by the user
+            if (nameAlteredFieldName) {
+                return;
+            }
+
+            $.post(jsonUrlFieldName, {
+                displayName: $displayFieldName.val(),
+                version: ++versionFieldName,
+                __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+            },
+                function (data) {
+                    if (versionFieldName == data.version) {
+                        $fieldName.val(data.result);
+                    }
+                },
+                "json"
+            );
+        };
+
+        $displayFieldName.keyup(function () {
+            computeFieldName();
             setTimeout(function () {
                 validator.form();
             }, 100);

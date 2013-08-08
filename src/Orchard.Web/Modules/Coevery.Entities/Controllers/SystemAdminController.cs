@@ -52,6 +52,15 @@ namespace Coevery.Entities.Controllers {
             });
         }
 
+        public ActionResult FieldName(string displayName, int version)
+        {
+            return Json(new
+            {
+                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                version = version
+            });
+        }
+
         [HttpPost, ActionName("Create")]
         public ActionResult CreatePOST(EditTypeViewModel viewModel) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
