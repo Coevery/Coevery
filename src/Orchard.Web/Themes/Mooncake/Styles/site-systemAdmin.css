@@ -35,8 +35,7 @@
     background-position: -48px -240px;
 }
 
-.widget-content .sortable-list > ul > li:before
-{
+.widget-content .sortable-list > ul > li:before {
     content: none;
 }
 
@@ -120,9 +119,9 @@
     margin: 0 0 20px;
 }
 
-.form-fontstyle fieldset legend+.control-group{
-    margin-top: 0;
-}
+    .form-fontstyle fieldset legend + .control-group {
+        margin-top: 0;
+    }
 
 .form-fontstyle .row-fluid .widget-content {
     background-color: #FFFFFF;
@@ -168,10 +167,10 @@ form .control-group.success .control-label {
     color: rgb(68, 68, 68);
 }
 
-form .control-group.success span.help-block,
-form .control-group.error span.help-block {
-    color: rgb(136, 136, 136);
-}
+    form .control-group.success span.help-block,
+    form .control-group.error span.help-block {
+        color: rgb(136, 136, 136);
+    }
 
 /*admin icons margin*/
 ul.row-actions li {
@@ -183,9 +182,11 @@ ul.row-actions li {
 span.fieldtoadd {
     line-height: 14px;
 }
-span.fieldtoadd button {
-    line-height: 14px;
-}
+
+    span.fieldtoadd button {
+        line-height: 14px;
+    }
+
 .viewfields-widget {
     max-height: 400px;
     overflow-y: auto;
@@ -199,7 +200,7 @@ span.fieldtoadd button {
 }
 
 .viewfields-widget #sortable li {
-    background: url("images/cache.gif") no-repeat 5px;  
+    background: url("images/cache.gif") no-repeat 5px;
     padding-left: 18px;
     padding-bottom: 5px;
     padding-top: 5px;
@@ -209,18 +210,18 @@ span.fieldtoadd button {
     margin-top: 5px;
 }
 
-.viewfields-widget #sortable li:before {
-    content: none;
-}
+    .viewfields-widget #sortable li:before {
+        content: none;
+    }
 /* sorted by span*/
 .sortedbyspan {
     margin: 20px 0;
 }
 
-.sortedbyspan .control-label {
-    text-align: left; 
-    width: 100px;
-}
+    .sortedbyspan .control-label {
+        text-align: left;
+        width: 100px;
+    }
 
 /*dialog style*/
 fieldset legend + .control-group {
@@ -228,7 +229,7 @@ fieldset legend + .control-group {
 }
 
 /*widget style*/
-.nav-tabs >li >a {
+.nav-tabs > li > a {
     border: 1px solid #CFCFCF;
     border-bottom: none;
     border-radius: 0;
@@ -242,24 +243,28 @@ fieldset legend + .control-group {
     position: relative;
     z-index: 9;
 }
-.nav-tabs >li >a:hover{
-    border: 1px solid #CFCFCF;
-    border-bottom: none;
-    border-top: 2px solid #a2c852;
+
+    .nav-tabs > li > a:hover {
+        border: 1px solid #CFCFCF;
+        border-bottom: none;
+        border-top: 2px solid #a2c852;
+        background-color: #fafafa;
+        padding-top: 7px;
+    }
+
+.nav-tabs > li > a {
     background-color: #fafafa;
-    padding-top: 7px;
 }
-.nav-tabs >li >a{
-    background-color: #fafafa;
-}
-.nav-tabs >li+li >a , 
-.nav-tabs >li+li >a:hover,
-.nav-tabs >li + li.active > a,
-.nav-tabs >li+li >a:focus,
-.nav-tabs >li + li.active > a:hover,
-.nav-tabs >li + li.active > a:focus {
+
+.nav-tabs > li + li > a,
+.nav-tabs > li + li > a:hover,
+.nav-tabs > li + li.active > a,
+.nav-tabs > li + li > a:focus,
+.nav-tabs > li + li.active > a:hover,
+.nav-tabs > li + li.active > a:focus {
     border-left: none;
 }
+
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
     border: 1px solid #CFCFCF;
     border-bottom: none;
@@ -270,21 +275,26 @@ fieldset legend + .control-group {
     color: #555555;
     cursor: default;
 }
- .nav.nav-tabs > .active > a {
+
+.nav.nav-tabs > .active > a {
     border-top: 2px solid #a2c852;
     background-color: #fff;
     padding-top: 8px;
 }
+
 .nav.nav-tabs + .tab-content {
     border: none;
 }
+
 .widget .tab-content {
     padding: 0;
 }
+
 ul.nav.nav-tabs {
     margin-bottom: 0px;
     border: none;
 }
+
 .mytabs {
     border-bottom: 1px solid #DDDDDD;
     margin-bottom: 8px;
@@ -294,7 +304,7 @@ ul.nav.nav-tabs {
 
 /*Date/Time Picker*/
 .control-group .controls.input-prepend {
-    display: block; 
+    display: block;
 }
 
 /*Modal/Dialog*/
@@ -310,18 +320,18 @@ ul.nav.nav-tabs {
 .iconspan {
     cursor: pointer;
 }
-.iconspan.selected {
-    background-color: #C9DDE1;
-}
-.iconspan i,
-#showIconClass {
-    font-size: 20px;
-}
 
- [class^="coe-icon-"]:before, [class*=" coe-icon-"]:before {
+    .iconspan.selected {
+        background-color: #C9DDE1;
+    }
 
-  width: .9em;
-  margin-right: 0em;
-  margin-left: 0em;
+    .iconspan i,
+    #showIconClass {
+        font-size: 20px;
+    }
 
+[class^="coe-icon-"]:before, [class*=" coe-icon-"]:before {
+    width: .9em;
+    margin-right: 0em;
+    margin-left: 0em;
 }

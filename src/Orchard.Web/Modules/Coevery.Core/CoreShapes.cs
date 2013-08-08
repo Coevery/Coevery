@@ -33,7 +33,7 @@ namespace Coevery.Core {
                        var routeValues = httpContext.Request.RequestContext.RouteData.Values;
                        var controller = (string)routeValues["controller"];
                        if (controller == "SystemAdmin")
-                           layout.Metadata.Alternates.Add("Layout__" + controller);
+                           layout.Metadata.Alternates.Add("Menu__" + controller);
                    });
         }
     }
