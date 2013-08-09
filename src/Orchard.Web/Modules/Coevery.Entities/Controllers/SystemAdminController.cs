@@ -160,13 +160,81 @@ namespace Coevery.Entities.Controllers {
             var field = part.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
             if (field != null)
             {
-                field.Settings["CoeveryTextFieldSettings.IsDispalyField"] = "true";
-                field.Settings["CoeveryTextFieldSettings.Required"] = "true";
-                field.Settings["CoeveryTextFieldSettings.ReadOnly"] = "true";
-                field.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = "true";
-                field.Settings["CoeveryTextFieldSettings.IsSystemField"] = "true";
+                field.Settings["CoeveryTextFieldSettings.IsDispalyField"] = bool.TrueString;
+                field.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
+                field.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
+                field.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
+                field.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
             }
             _contentDefinitionManager.StorePartDefinition(part);
+
+            AddFieldViewModel addCreateByViewModel = new AddFieldViewModel();
+            addCreateByViewModel.DisplayName = "Created By";
+            addCreateByViewModel.Name = "CreatedBy";
+            addCreateByViewModel.FieldTypeName = "ReferenceField";
+            _fieldService.Create(viewModel.Name.Trim(), addCreateByViewModel, this);
+            var partCreateBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            var fieldCreateBy = partCreateBy.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
+            if (fieldCreateBy != null)
+            {
+                fieldCreateBy.Settings["CoeveryTextFieldSettings.ContentTypeName"] = "";
+                fieldCreateBy.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
+                fieldCreateBy.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
+                fieldCreateBy.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
+                fieldCreateBy.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
+            }
+            _contentDefinitionManager.StorePartDefinition(partCreateBy);
+
+            AddFieldViewModel addCreateDateViewModel = new AddFieldViewModel();
+            addCreateDateViewModel.DisplayName = "Create Date";
+            addCreateDateViewModel.Name = "CreateDate";
+            addCreateDateViewModel.FieldTypeName = "DatetimeField";
+            _fieldService.Create(viewModel.Name.Trim(), addCreateDateViewModel, this);
+            var partCreateDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            var fieldCreateDate = partCreateDate.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
+            if (fieldCreateDate != null)
+            {
+                fieldCreateDate.Settings["CoeveryTextFieldSettings.DefaultValue"] = DateTime.Now.ToString();
+                fieldCreateDate.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
+                fieldCreateDate.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
+                fieldCreateDate.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
+                fieldCreateDate.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
+            }
+            _contentDefinitionManager.StorePartDefinition(partCreateDate);
+
+            AddFieldViewModel addLastModifiedByViewModel = new AddFieldViewModel();
+            addLastModifiedByViewModel.DisplayName = "Last Modified By";
+            addLastModifiedByViewModel.Name = "LastModifiedBy";
+            addLastModifiedByViewModel.FieldTypeName = "ReferenceField";
+            _fieldService.Create(viewModel.Name.Trim(), addLastModifiedByViewModel, this);
+            var partLastModifiedBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            var fieldLastModifiedBy = partLastModifiedBy.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
+            if (fieldLastModifiedBy != null)
+            {
+                fieldLastModifiedBy.Settings["CoeveryTextFieldSettings.ContentTypeName"] = "";
+                fieldLastModifiedBy.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
+                fieldLastModifiedBy.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
+                fieldLastModifiedBy.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
+                fieldLastModifiedBy.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
+            }
+            _contentDefinitionManager.StorePartDefinition(partLastModifiedBy);
+
+            AddFieldViewModel addLastModifiedDateViewModel = new AddFieldViewModel();
+            addLastModifiedDateViewModel.DisplayName = "Last Modified Date";
+            addLastModifiedDateViewModel.Name = "LastModifiedDate";
+            addLastModifiedDateViewModel.FieldTypeName = "DatetimeField";
+            _fieldService.Create(viewModel.Name.Trim(), addLastModifiedDateViewModel, this);
+            var partLastModifiedDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            var fieldLastModifiedDate = partLastModifiedDate.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
+            if (fieldLastModifiedDate != null)
+            {
+                fieldLastModifiedDate.Settings["CoeveryTextFieldSettings.DefaultValue"] = DateTime.Now.ToString();
+                fieldLastModifiedDate.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
+                fieldLastModifiedDate.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
+                fieldLastModifiedDate.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
+                fieldLastModifiedDate.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
+            }
+            _contentDefinitionManager.StorePartDefinition(partLastModifiedDate);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
