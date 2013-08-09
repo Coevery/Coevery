@@ -1,0 +1,34 @@
+﻿@using Orchard.Utility.Extensions
+@model Coevery.Entities.ViewModels.AddFieldViewModel
+<div class="modal-header">
+    <button type="button" class="close" ng-click="exit()">&#215</button>
+    <h3>Add new Field</h3>
+</div>
+<div class="modal-body">
+    <h5>Step 1. Choose the field type</h5>
+    <div class="row-fluid">
+            <div class="form-container">
+                <form id="field-type-form" class="no-border">
+                    @{
+                        foreach (var field in Model.Fields)
+                        {
+                        <section class="control-group">
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" ng-model="fieldType" value="@field.FieldTypeName">
+                                    @field.DisplayName
+                                    <span class="help-inline">@field.Description</span>
+                                </label>
+                            </div>
+                        </section>
+                        }
+                    }
+                </form>
+            </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn" ng-click="exit()">Back</button>
+    <button class="btn" ng-click="next()">Next</button>
+</div>
+

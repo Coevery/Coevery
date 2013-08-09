@@ -51,6 +51,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Orchard.Projections, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Orchard.Projections\bin\Orchard.Projections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -90,22 +94,48 @@
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Permissions.cs" />
+    <Compile Include="Records\FieldDependencyRecord.cs" />
+    <Compile Include="Records\OptionItemRecord.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
+    <Compile Include="Services\FieldService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
+    <Compile Include="Services\IFieldService.cs" />
+    <Compile Include="Services\IOptionItemService.cs" />
+    <Compile Include="Services\OptionItemService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
-    <Compile Include="Settings\DynamicTypeEditorEvents.cs" />
-    <Compile Include="Settings\DynamicTypeSettings.cs" />
+    <Compile Include="Settings\DynamicTypeEditorEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Settings\DynamicTypeSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Settings\FieldSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Settings\IContentDefinitionEditorEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\AddFieldViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
     <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
+    <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
     <Compile Include="ViewModels\EditFieldViewModel.cs" />
     <Compile Include="ViewModels\EditPartFieldViewModel.cs" />
     <Compile Include="ViewModels\EditPartViewModel.cs" />
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
+    <Compile Include="ViewModels\FieldDependencyViewModel.cs" />
+    <Content Include="Scripts\controllers\createchoosetypecontroller.js" />
+    <Content Include="Scripts\controllers\createeditinfocontroller.js" />
+    <Content Include="Scripts\controllers\dependencycreatecontroller.js" />
+    <Content Include="Scripts\controllers\dependencyeditcontroller.js" />
+    <Content Include="Scripts\controllers\dependencylistcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
+    <Content Include="Scripts\controllers\editfieldscontroller.js" />
     <Content Include="Scripts\controllers\fieldscontroller.js" />
+    <Content Include="Scripts\controllers\itemscontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\controllers\relationshipscontroller.js" />
     <Content Include="Scripts\services\entitydataservice.js" />
@@ -171,6 +201,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Relationships.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\CreateDependency.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\CreateChooseType.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\CreateEditInfo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\DependencyList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\EditDependency.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Items.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\EditFields.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

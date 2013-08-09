@@ -13,6 +13,8 @@ namespace Coevery.Entities.Services {
         ContentTypeDefinition AddType(string name, string displayName);
         void AlterType(EditTypeViewModel typeViewModel, IUpdateModel updaterModel);
         void AlterField(string typeName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel);
+        void CreateField(string partName, string fieldName, IUpdateModel updateModel);
+        void CreateFieldCheck(string partName, string fieldName, string fieldTypeName, IUpdateModel updateModel);
         void RemoveType(string name, bool deleteContent);
         void AddPartToType(string partName, string typeName);
         void RemovePartFromType(string partName, string typeName);

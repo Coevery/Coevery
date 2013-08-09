@@ -78,15 +78,16 @@
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Fields\ReferenceField.cs" />
     <Compile Include="Handlers\ReferenceHandler.cs" />
+    <Compile Include="Settings\FieldSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ViewModels\ReferenceFieldViewModel.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\DependencyExtension.cs" />
     <Compile Include="Services\IFieldDependencyService.cs" />
     <Compile Include="Services\FieldDependencyService.cs" />
-    <Compile Include="Services\FieldService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
-    <Compile Include="Services\IFieldService.cs" />
     <Compile Include="Services\IOptionItemService.cs" />
     <Compile Include="Services\OptionItemService.cs" />
     <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
@@ -116,7 +117,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
-    <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Drivers\DatetimeFieldDriver.cs" />
     <Compile Include="Drivers\DateFieldDriver.cs" />
     <Compile Include="Drivers\EmailFieldDriver.cs" />
@@ -184,7 +184,6 @@
     <Compile Include="Fields\BooleanField.cs" />
     <Compile Include="Fields\CoeveryTextField.cs" />
     <Compile Include="Records\OptionItemRecord.cs" />
-    <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
@@ -206,7 +205,6 @@
     <Compile Include="Settings\IContentDefinitionEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldEditorEvents.cs" />
     <Compile Include="Settings\SelectFieldSettings.cs" />
-    <Compile Include="Settings\FieldSettings.cs" />
     <Compile Include="Settings\CoeveryTextFieldEditorEvents.cs" />
     <Compile Include="Settings\CoeveryTextFieldSettings.cs" />
     <Compile Include="Tokens\FieldTokens.cs" />

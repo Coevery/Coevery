@@ -10,6 +10,7 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Localization;
 using Orchard.Utility.Extensions;
+using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinitionEditorEvents;
 
 namespace Coevery.Entities.Services
 {
@@ -419,6 +420,20 @@ namespace Coevery.Entities.Services
             {
                 _thunk.AddModelError(_prefix(key), errorMessage);
             }
+        }
+
+        public void CreateField(string partName, string fieldName, IUpdateModel updateModel)
+        {
+            var updater = new Updater(updateModel);
+            updater._prefix = secondHalf => secondHalf;
+            _contentDefinitionManager.AlterPartDefinition(partName,
+                                                          partBuilder => partBuilder.WithField(fieldName,
+                                                                                               partFieldBuilder => _contentDefinitionEditorEvents.PartFieldEditorCreate(partFieldBuilder, partName, updater)));
+        }
+
+        public void CreateFieldCheck(string partName, string fieldName, string fieldTypeName, IUpdateModel updateModel)
+        {
+            _contentDefinitionEditorEvents.PartFieldEditorCreateCheck(fieldTypeName, updateModel);
         }
     }
 }
