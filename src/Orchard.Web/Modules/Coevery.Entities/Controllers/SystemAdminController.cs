@@ -5,8 +5,6 @@ using System.Net;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
 using Coevery.Core.Services;
-using Coevery.Fields.Services;
-using Coevery.Fields.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
@@ -22,19 +20,16 @@ namespace Coevery.Entities.Controllers {
     public class SystemAdminController : Controller, IUpdateModel {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
-        private readonly IFieldService _fieldService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         public SystemAdminController(IOrchardServices orchardServices
             ,IContentDefinitionService contentDefinitionService
             , ISchemaUpdateService schemaUpdateService
-            ,IFieldService fieldService
             ,IContentDefinitionManager contentDefinitionManager
             ) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
-            _fieldService = fieldService;
             _contentDefinitionManager = contentDefinitionManager;
         }
 
@@ -151,11 +146,11 @@ namespace Coevery.Entities.Controllers {
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name.Trim());
 
-            AddFieldViewModel addViewModel = new AddFieldViewModel();
-            addViewModel.DisplayName = viewModel.FieldLabel.Trim();
-            addViewModel.Name = viewModel.FieldName.Trim();
-            addViewModel.FieldTypeName = "CoeveryTextField";
-            _fieldService.Create(viewModel.Name.Trim(), addViewModel, this);
+            //AddFieldViewModel addViewModel = new AddFieldViewModel();
+            //addViewModel.DisplayName = viewModel.FieldLabel.Trim();
+            //addViewModel.Name = viewModel.FieldName.Trim();
+            //addViewModel.FieldTypeName = "CoeveryTextField";
+            //_fieldService.Create(viewModel.Name.Trim(), addViewModel, this);
             var part = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
             var field = part.Fields.FirstOrDefault(x => x.Name == viewModel.FieldName);
             if (field != null)
