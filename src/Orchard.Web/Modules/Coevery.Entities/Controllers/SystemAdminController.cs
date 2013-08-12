@@ -5,6 +5,8 @@ using System.Net;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
 using Coevery.Core.Services;
+//using Coevery.Fields.Services;
+//using Coevery.Fields.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
@@ -20,16 +22,19 @@ namespace Coevery.Entities.Controllers {
     public class SystemAdminController : Controller, IUpdateModel {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
+        //private readonly IFieldService _fieldService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         public SystemAdminController(IOrchardServices orchardServices
             ,IContentDefinitionService contentDefinitionService
             , ISchemaUpdateService schemaUpdateService
+            //,IFieldService fieldService
             ,IContentDefinitionManager contentDefinitionManager
             ) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
+            //_fieldService = fieldService;
             _contentDefinitionManager = contentDefinitionManager;
         }
 

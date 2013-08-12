@@ -465,7 +465,8 @@
         destroy: function () {
             var self = this;
 
-            self.pickList.remove();
+            self._pickList.remove();
+            $.removeData(self.element.context, 'pickList');
             self.element.show();
         }
     }
