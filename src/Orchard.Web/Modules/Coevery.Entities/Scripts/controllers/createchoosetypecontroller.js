@@ -6,6 +6,7 @@ define(['core/app/detourService'], function (detour) {
             function ($scope, logger, $stateParams, $detour) {
                 var entityName = $stateParams.Id;
                 $scope.fieldType = $('#field-type-form input[type=radio]:checked').val();
+                $scope.radios = $('#field-type-form input[type=radio]');
 
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
@@ -14,6 +15,8 @@ define(['core/app/detourService'], function (detour) {
                 $scope.next = function () {
                     if ($scope.fieldType) {
                         $scope.$emit('toStep2', $scope.fieldType);
+                    } else {
+                        $("#error-tip").show();
                     }
                 };
 
@@ -24,6 +27,10 @@ define(['core/app/detourService'], function (detour) {
                 });
                 
                 $scope.openDialog();
+
+                $scope.radios.click(function() {
+                    $("#error-tip").hide();
+                });
             }]
     ]);
 });
