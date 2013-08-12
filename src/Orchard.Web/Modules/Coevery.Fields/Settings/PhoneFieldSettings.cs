@@ -1,4 +1,6 @@
-﻿namespace Coevery.Fields.Settings {
+﻿using Coevery.Entities.Settings;
+
+namespace Coevery.Fields.Settings {
     public class PhoneFieldSettings : FieldSettings {
         public string DefaultValue { get; set; }
 

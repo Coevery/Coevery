@@ -1,6 +1,7 @@
-﻿using Orchard.ContentManagement.MetaData.Builders;
+﻿using Coevery.Entities.Settings;
+using Orchard.ContentManagement.MetaData.Builders;
 
-namespace Coevery.Fields.Settings {
+namespace Coevery.Entities.Settings {
     public class FieldEditorEvents : ContentDefinitionEditorEventsBase {
         protected void UpdateSettings(FieldSettings model, ContentPartFieldDefinitionBuilder builder, string prefix) {
             model.HelpText = model.HelpText ?? string.Empty;

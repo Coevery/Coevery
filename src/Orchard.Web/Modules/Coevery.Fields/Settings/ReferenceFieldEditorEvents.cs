@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using Coevery.Entities.Services;
+using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;

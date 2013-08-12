@@ -1,4 +1,6 @@
-﻿namespace Coevery.Fields.Settings {
+﻿using Coevery.Entities.Settings;
+
+namespace Coevery.Fields.Settings {
     public class CurrencyFieldSettings : FieldSettings {
         public int Length { get; set; }
         public int DecimalPlaces { get; set; }

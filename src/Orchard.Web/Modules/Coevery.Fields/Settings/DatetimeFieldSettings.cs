@@ -1,4 +1,5 @@
 ﻿using System;
+using Coevery.Entities.Settings;
 
 namespace Coevery.Fields.Settings {
     public class DatetimeFieldSettings : FieldSettings {

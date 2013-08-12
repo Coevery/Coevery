@@ -1,4 +1,6 @@
-﻿namespace Coevery.Fields.Settings {
+﻿using Coevery.Entities.Settings;
+
+namespace Coevery.Fields.Settings {
     public class BooleanFieldSettings : FieldSettings {
         public BooleanDisplayMode SelectionMode { get; set; }
         public DependentType DependencyMode { get; set; }

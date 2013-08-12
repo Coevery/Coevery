@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Coevery.Entities.Settings;
 using Coevery.Fields.Services;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Builders;

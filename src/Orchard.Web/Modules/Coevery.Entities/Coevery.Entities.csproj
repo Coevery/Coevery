@@ -110,6 +110,7 @@
     <Compile Include="Settings\DynamicTypeSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Settings\FieldEditorEvents.cs" />
     <Compile Include="Settings\FieldSettings.cs">
       <SubType>Code</SubType>
     </Compile>

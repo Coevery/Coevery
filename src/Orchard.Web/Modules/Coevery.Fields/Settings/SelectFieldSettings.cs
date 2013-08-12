@@ -1,4 +1,5 @@
-﻿using Orchard.ContentManagement;
+﻿using Coevery.Entities.Settings;
+using Orchard.ContentManagement;
 using Orchard.Localization;
 
 namespace Coevery.Fields.Settings {
