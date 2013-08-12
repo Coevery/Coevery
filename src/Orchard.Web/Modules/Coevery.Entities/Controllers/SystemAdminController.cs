@@ -372,8 +372,8 @@ namespace Coevery.Entities.Controllers {
             return View(fieldViewModel);
         }
 
-        [HttpPost, ActionName("Edit")]
-        public ActionResult EditPost(EditPartFieldViewModel viewModel, string id)
+        [HttpPost, ActionName("EditFields")]
+        public ActionResult EditFieldsPost(EditPartFieldViewModel viewModel, string id)
         {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type.")))
                 return new HttpUnauthorizedResult();
