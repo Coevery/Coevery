@@ -83,9 +83,9 @@ namespace Coevery.Entities.Services
             builder.Describe("FieldEdit")
                    .Configure(descriptor =>
                    {
-                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/EditFields/{FieldName:[0-9a-zA-Z]+}";
+                       descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+}";
                        descriptor.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Entities/Edit/' + $stateParams.EntityName + '?FieldName=' + $stateParams.FieldName;
+                                                var url = 'SystemAdmin/Entities/EditFields/' + $stateParams.EntityName + '?FieldName=' + $stateParams.FieldName;
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                        descriptor.Controller = "FieldEditCtrl";
