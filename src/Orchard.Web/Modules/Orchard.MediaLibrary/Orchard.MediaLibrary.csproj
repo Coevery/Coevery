@@ -69,8 +69,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\knockout-2.3.0.js" />
+    <Content Include="Scripts\modal-window.js" />
     <Content Include="Scripts\history.js" />
-    <Content Include="Scripts\knockout-2.2.1.js" />
+    <Content Include="Styles\font-awesome\css\font-awesome.css" />
+    <Content Include="Styles\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Styles\font-awesome\font\fontawesome-webfont.svg" />
+    <Content Include="Styles\Images\menu.media.png" />
+    <Content Include="Styles\menu.media-library-admin.css" />
     <Content Include="Styles\menu.oembed-mediaproviders.css" />
     <Content Include="Styles\orchard-oembed-admin.css" />
     <Content Include="Styles\menu.websearch-mediaproviders.css" />
@@ -85,7 +91,9 @@
     <Content Include="Styles\orchard-websearch-admin.css" />
     <Content Include="Styles\orchard-mediaproviders-admin.css" />
     <Content Include="Styles\orchard-medialibrary-admin.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
@@ -101,16 +109,9 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Orchard.MediaProcessing\Orchard.MediaProcessing.csproj">
-      <Project>{08191fcd-7258-4f19-95fb-aec3de77b2eb}</Project>
-      <Name>Orchard.MediaProcessing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Orchard.Taxonomies\Orchard.Taxonomies.csproj">
-      <Project>{E649EA64-D213-461B-87F7-D67035801443}</Project>
-      <Name>Orchard.Taxonomies</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModalAdminFilter.cs" />
     <Compile Include="AdminMenu.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ClientStorageController.cs" />
@@ -130,19 +131,21 @@
     <Compile Include="Factories\IMediaFactory.cs" />
     <Compile Include="Factories\IMediaFactorySelector.cs" />
     <Compile Include="Factories\MediaFactorySelectorResult.cs" />
-    <Compile Include="Fields\MediaLibrayPickerField.cs" />
+    <Compile Include="Fields\MediaLibraryPickerField.cs" />
     <Compile Include="Handlers\MediaLibraryPickerFieldHandler.cs" />
     <Compile Include="Handlers\MediaPartHandler.cs" />
     <Compile Include="Drivers\MediaPartDriver.cs" />
     <Compile Include="Handlers\WebSearchSettingsPartHandler.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\AudioPart.cs" />
+    <Compile Include="Models\FolderHierarchy.cs" />
+    <Compile Include="Models\MediaFile.cs" />
+    <Compile Include="Models\MediaFolder.cs" />
     <Compile Include="Models\WebSearchSettingsPart.cs" />
     <Compile Include="Models\ImagePart.cs" />
     <Compile Include="Models\DocumentPart.cs" />
     <Compile Include="Models\VideoPart.cs" />
     <Compile Include="Models\OEmbedPart.cs" />
-    <Compile Include="Models\MediaFolder.cs" />
     <Compile Include="Models\MediaPart.cs" />
     <Compile Include="Models\MediaPartRecord.cs" />
     <Compile Include="Permissions.cs" />
@@ -308,6 +311,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Media.Raw.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\font-awesome\font\fontawesome-webfont.eot" />
+    <Content Include="Styles\font-awesome\font\fontawesome-webfont.ttf" />
+    <Content Include="Styles\font-awesome\font\fontawesome-webfont.woff" />
+    <Content Include="Styles\font-awesome\font\FontAwesome.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Media.Summary.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

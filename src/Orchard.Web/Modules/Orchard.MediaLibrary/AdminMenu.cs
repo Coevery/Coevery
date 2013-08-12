@@ -12,9 +12,9 @@ namespace Orchard.MediaLibrary {
         public string MenuName { get { return "admin"; } }
 
         public void GetNavigation(NavigationBuilder builder) {
-            builder.AddImageSet("media")
+            builder.AddImageSet("media-library")
                 .Add(T("Media"), "6",
-                    menu => menu.Add(T("Media"), "0", item => item.Action("Index", "Admin", new { area = "Orchard.MediaLibrary", id = (int?)null })
+                    menu => menu.Add(T("Media"), "0", item => item.Action("Index", "Admin", new { area = "Orchard.MediaLibrary" })
                         .Permission(Permissions.ManageMediaContent)));
         }
     }

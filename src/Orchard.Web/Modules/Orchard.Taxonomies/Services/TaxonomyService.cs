@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Orchard.Taxonomies.Fields;
 using Orchard.Taxonomies.Models;
 using Orchard.Autoroute.Models;
 using Orchard.ContentManagement;
@@ -101,14 +102,6 @@ namespace Orchard.Taxonomies.Services {
 
         }
 
-        public void EditTaxonomy(TaxonomyPart taxonomy, string oldName) {        
-            // Rename term definition
-            _contentDefinitionManager.AlterTypeDefinition(taxonomy.TermTypeName, cfg => cfg
-                .WithSetting("Taxonomy", taxonomy.Name)
-                .DisplayedAs(taxonomy.Name + " Term")
-            );
-        }
-
         public void DeleteTaxonomy(TaxonomyPart taxonomy) {
             _contentManager.Remove(taxonomy.ContentItem);
 
@@ -121,7 +114,13 @@ namespace Orchard.Taxonomies.Services {
         }
 
         public string GenerateTermTypeName(string taxonomyName) {
-            return taxonomyName.ToSafeName();
+            var name = taxonomyName.ToSafeName() + "Term";
+            int i = 2;
+            while (_contentDefinitionManager.GetTypeDefinition(name) != null) {
+                name = taxonomyName.ToSafeName() + i++;
+            }
+
+            return name;
         }
 
         public TermPart NewTerm(TaxonomyPart taxonomy) {

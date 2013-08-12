@@ -109,7 +109,7 @@ namespace Orchard.Core.Contents.Controllers {
         }
 
         [HttpPost, ActionName("List")]
-        [FormValueRequired("submit.Filter")]
+        [Mvc.FormValueRequired("submit.Filter")]
         public ActionResult ListFilterPOST(ContentOptions options) {
             var routeValues = ControllerContext.RouteData.Values;
             if (options != null) {
@@ -126,7 +126,7 @@ namespace Orchard.Core.Contents.Controllers {
         }
 
         [HttpPost, ActionName("List")]
-        [FormValueRequired("submit.BulkEdit")]
+        [Mvc.FormValueRequired("submit.BulkEdit")]
         public ActionResult ListPOST(ContentOptions options, IEnumerable<int> itemIds, string returnUrl) {
             if (itemIds != null) {
                 var checkedContentItems = _contentManager.GetMany<ContentItem>(itemIds, VersionOptions.Latest, QueryHints.Empty);
@@ -203,7 +203,7 @@ namespace Orchard.Core.Contents.Controllers {
         }
 
         [HttpPost, ActionName("Create")]
-        [FormValueRequired("submit.Save")]
+        [Mvc.FormValueRequired("submit.Save")]
         public ActionResult CreatePOST(string id, string returnUrl) {
             return CreatePOST(id, returnUrl, contentItem => {
                 if (!contentItem.Has<IPublishingControlAspect>() && !contentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
@@ -212,7 +212,7 @@ namespace Orchard.Core.Contents.Controllers {
         }
 
         [HttpPost, ActionName("Create")]
-        [FormValueRequired("submit.Publish")]
+        [Mvc.FormValueRequired("submit.Publish")]
         public ActionResult CreateAndPublishPOST(string id, string returnUrl) {
 
             // pass a dummy content to the authorization check to check for "own" variations
@@ -266,7 +266,7 @@ namespace Orchard.Core.Contents.Controllers {
         }
 
         [HttpPost, ActionName("Edit")]
-        [FormValueRequired("submit.Save")]
+        [Mvc.FormValueRequired("submit.Save")]
         public ActionResult EditPOST(int id, string returnUrl) {
             return EditPOST(id, returnUrl, contentItem => {
                 if (!contentItem.Has<IPublishingControlAspect>() && !contentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
@@ -275,7 +275,7 @@ namespace Orchard.Core.Contents.Controllers {
         }
 
         [HttpPost, ActionName("Edit")]
-        [FormValueRequired("submit.Publish")]
+        [Mvc.FormValueRequired("submit.Publish")]
         public ActionResult EditAndPublishPOST(int id, string returnUrl) {
             var content = _contentManager.Get(id, VersionOptions.Latest);
 
@@ -331,7 +331,6 @@ namespace Orchard.Core.Contents.Controllers {
 
         [HttpPost]
         public ActionResult Clone(int id, string returnUrl) {
-            // Mostly taken from: http://orchard.codeplex.com/discussions/396664
             var contentItem = _contentManager.GetLatest(id);
 
             if (contentItem == null)
@@ -340,25 +339,13 @@ namespace Orchard.Core.Contents.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.EditContent, contentItem, T("Couldn't clone content")))
                 return new HttpUnauthorizedResult();
 
-            var importContentSession = new ImportContentSession(_contentManager);
-
-            var element = _contentManager.Export(contentItem);
-
-            // if a handler prevents this element from being exported, it can't be cloned
-            if (element == null) {
+            try {
+                Services.ContentManager.Clone(contentItem);
+            }
+            catch (InvalidOperationException) {
                 Services.Notifier.Warning(T("Could not clone the content item."));
                 return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
             }
-
-            var elementId = element.Attribute("Id");
-            var copyId = elementId.Value + "-copy";
-            elementId.SetValue(copyId);
-            var status = element.Attribute("Status");
-            if (status != null) status.SetValue("Draft"); // So the copy is always a draft.
-
-            importContentSession.Set(copyId, element.Name.LocalName);
-
-            _contentManager.Import(element, importContentSession);
 
             Services.Notifier.Information(T("Successfully cloned. The clone was saved as a draft."));
 
@@ -423,6 +410,7 @@ namespace Orchard.Core.Contents.Controllers {
         }
     }
 
+    [Obsolete("Use Orchard.Mvc.FormValueRequiredAttribute instead.")]
     public class FormValueRequiredAttribute : ActionMethodSelectorAttribute {
         private readonly string _submitButtonName;
 

@@ -96,6 +96,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\nhibernate.linq\NHibernate.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate.SqlAzure">
+      <HintPath>..\..\lib\nhibernate.sqlazure\NHibernate.SqlAzure.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -108,7 +111,6 @@
     <Reference Include="System.Net.Http">
       <HintPath>..\..\lib\aspnetwebapi\System.Net.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -177,6 +179,10 @@
     <Compile Include="Data\Bags\SArray.cs" />
     <Compile Include="Data\FetchRequest.cs" />
     <Compile Include="Data\Migration\Interpreters\MySqlCommandInterpreter.cs" />
+    <Compile Include="Data\Providers\MySqlStatementProvider.cs" />
+    <Compile Include="Data\Providers\SqlCeStatementProvider.cs" />
+    <Compile Include="Data\Providers\ISqlStatementProvider.cs" />
+    <Compile Include="Data\Providers\SqlServerStatementProvider.cs" />
     <Compile Include="DisplayManagement\Arguments.cs" />
     <Compile Include="Data\Bags\SConvert.cs" />
     <Compile Include="Data\Bags\Serialization\IBagSerializer.cs" />
@@ -186,7 +192,7 @@
     <Compile Include="Data\Bags\StateValueProvider.cs" />
     <Compile Include="Data\Bags\SValue.cs" />
     <Compile Include="Data\Conventions\AggregateAttribute.cs" />
-    <Compile Include="Data\Conventions\CacheConvention.cs" />
+    <Compile Include="Data\Conventions\CacheConventions.cs" />
     <Compile Include="Data\DefaultDatabaseCacheConfiguration.cs" />
     <Compile Include="Data\IDatabaseCacheConfiguration.cs" />
     <Compile Include="Data\Migration\AutomaticDataMigrations.cs" />
@@ -266,6 +272,7 @@
     <Compile Include="Mvc\DataAnnotations\LocalizedModelValidatorProvider.cs" />
     <Compile Include="Mvc\DataAnnotations\LocalizedRequiredAttribute.cs" />
     <Compile Include="Mvc\Extensions\RouteExtension.cs" />
+    <Compile Include="Mvc\FormValueRequiredAttribute.cs" />
     <Compile Include="Mvc\HttpContextWorkContext.cs" />
     <Compile Include="Mvc\Extensions\ControllerExtensions.cs" />
     <Compile Include="Mvc\IOrchardViewPage.cs" />
@@ -575,8 +582,6 @@
     <Compile Include="Wcf\OrchardServiceHostFactory.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyResolver.cs" />
     <Compile Include="WebApi\AutofacWebApiDependencyScope.cs" />
-    <Compile Include="WebApi\Common\ContentController.cs" />
-    <Compile Include="WebApi\Common\IDto.cs" />
     <Compile Include="WebApi\DefaultOrchardWebApiHttpControllerSelector.cs" />
     <Compile Include="WebApi\DefaultOrchardWebApiHttpHttpControllerActivator.cs" />
     <Compile Include="WebApi\Extensions\RouteExtension.cs" />

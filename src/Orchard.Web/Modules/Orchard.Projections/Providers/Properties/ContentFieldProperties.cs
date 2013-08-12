@@ -82,7 +82,7 @@ namespace Orchard.Projections.Providers.Properties {
                 return String.Empty;
             }
 
-            var value = f.Storage.Get<object>(f.Name);
+            var value = f.Storage.Get<object>(storageName);
 
             if (value == null) {
                 return null;

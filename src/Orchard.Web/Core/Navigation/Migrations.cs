@@ -190,15 +190,5 @@ namespace Orchard.Core.Navigation {
 
             return 5;
         }
-
-        public int UpdateFrom5() {
-
-            ContentDefinitionManager.AlterTypeDefinition("ModuleMenuItem", cfg => cfg
-                .WithPart("MenuPart")
-                .WithPart("IdentityPart")
-                .WithPart("CommonPart")
-                );
-            return 6;
-        }
     }
 }

@@ -12,7 +12,7 @@
         Style.Include("orchard-clientstorage-admin.css");
 
         Script.Require("jQueryFileUpload");
-        Script.Include("knockout-2.2.1.js");
+        Script.Include("knockout-2.3.0.js");
     }
 
     @Display.Metas()
@@ -73,12 +73,21 @@
             var viewModel = new clientStorageViewModel();
             ko.applyBindings(viewModel);
 
+            $('#fileupload').click(function() {
+                console.log('click');
+                $('#fileupload > input').trigger('click');
+            });
+
+            $('#fileupload > input').click(function(event) {
+                event.stopPropagation();
+            });
+            
             // Add drag-n-drop HTML5 support
             $('#fileupload').fileupload({
                 url: '@Url.Action("Upload", "ClientStorage")',
                 autoUpload: true,
                 formData: {
-                    id: @Model,
+                    folderPath: '@HttpUtility.JavaScriptStringEncode(Model)',
                     __RequestVerificationToken: '@Html.AntiForgeryTokenValueOrchard()'
                 },
                 done: function (e, data) {

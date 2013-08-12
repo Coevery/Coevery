@@ -55,7 +55,9 @@
             canvas.height = imeImage.height;
             var context = canvas.getContext('2d');
             context.drawImage(image, 0, 0, imeImage.width, imeImage.height, 0, 0, imeImage.width, imeImage.height);
-            var imageSrc = canvas.toDataURL("image/png");
+
+            var quality = 0.92;
+            var imageSrc = canvas.toDataURL("image/jpeg", quality);
             
             $.post($('#upload-image-url').val(), {
                 content: imageSrc,
@@ -64,10 +66,6 @@
                 __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
             })
             .done(function () {
-                if (parent.$.colorbox) {
-                    parent.$.colorbox.close();
-                };
-
                 window.location = $('#button-cancel').attr('href');
             });
         };
@@ -76,9 +74,6 @@
     });
 
     $('#button-cancel').click(function () {
-        console.log('closing');
-        parent.$.colorbox.close();
-        return false;
     });
     
 });

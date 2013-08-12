@@ -17,6 +17,8 @@ using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
+using Orchard.Data.Providers;
+using Orchard.Environment.Configuration;
 using Orchard.Indexing;
 using Orchard.Logging;
 using Orchard.UI;
@@ -34,6 +36,9 @@ namespace Orchard.ContentManagement {
         private readonly Lazy<ISessionLocator> _sessionLocator; 
         private readonly Lazy<IEnumerable<IContentHandler>> _handlers;
         private readonly Lazy<IEnumerable<IIdentityResolverSelector>> _identityResolverSelectors;
+        private readonly Lazy<IEnumerable<ISqlStatementProvider>> _sqlStatementProviders;
+        private readonly ShellSettings _shellSettings;
+        private readonly ISignals _signals;
 
         private const string Published = "Published";
         private const string Draft = "Draft";
@@ -49,7 +54,10 @@ namespace Orchard.ContentManagement {
             Lazy<IContentDisplay> contentDisplay,
             Lazy<ISessionLocator> sessionLocator,
             Lazy<IEnumerable<IContentHandler>> handlers,
-            Lazy<IEnumerable<IIdentityResolverSelector>> identityResolverSelectors) {
+            Lazy<IEnumerable<IIdentityResolverSelector>> identityResolverSelectors,
+            Lazy<IEnumerable<ISqlStatementProvider>> sqlStatementProviders,
+            ShellSettings shellSettings,
+            ISignals signals) {
             _context = context;
             _contentTypeRepository = contentTypeRepository;
             _contentItemRepository = contentItemRepository;
@@ -58,6 +66,9 @@ namespace Orchard.ContentManagement {
             _cacheManager = cacheManager;
             _contentManagerSession = contentManagerSession;
             _identityResolverSelectors = identityResolverSelectors;
+            _sqlStatementProviders = sqlStatementProviders;
+            _shellSettings = shellSettings;
+            _signals = signals;
             _handlers = handlers;
             _contentDisplay = contentDisplay;
             _sessionLocator = sessionLocator;
@@ -523,6 +534,30 @@ namespace Orchard.ContentManagement {
             }
         }
 
+        public virtual ContentItem Clone(ContentItem contentItem) {
+            // Mostly taken from: http://orchard.codeplex.com/discussions/396664
+            var importContentSession = new ImportContentSession(this);
+
+            var element = Export(contentItem);
+
+            // If a handler prevents this element from being exported, it can't be cloned
+            if (element == null) {
+                throw new InvalidOperationException("The content item couldn't be cloned because a handler prevented it from being exported.");
+            }
+
+            var elementId = element.Attribute("Id");
+            var copyId = elementId.Value + "-copy";
+            elementId.SetValue(copyId);
+            var status = element.Attribute("Status");
+            if (status != null) status.SetValue("Draft"); // So the copy is always a draft.
+
+            importContentSession.Set(copyId, element.Name.LocalName);
+
+            Import(element, importContentSession);
+
+            return importContentSession.Get(copyId, element.Name.LocalName);
+        }
+
         /// <summary>
         /// Lookup for a content item based on a <see cref="ContentIdentity"/>. If multiple 
         /// resolvers can give a result, the one with the highest priority is used. As soon as 
@@ -624,7 +659,7 @@ namespace Orchard.ContentManagement {
         }
 
         public IHqlQuery HqlQuery() {
-            return new DefaultHqlQuery(this, _sessionLocator.Value.For(typeof(ContentItemVersionRecord)));
+            return new DefaultHqlQuery(this, _sessionLocator.Value.For(typeof(ContentItemVersionRecord)), _sqlStatementProviders.Value, _shellSettings);
         }
 
         // Insert or Update imported data into the content manager.
@@ -720,6 +755,8 @@ namespace Orchard.ContentManagement {
 
         private ContentTypeRecord AcquireContentTypeRecord(string contentType) {
             var contentTypeId = _cacheManager.Get(contentType + "_Record", ctx => {
+                ctx.Monitor(_signals.When(contentType + "_Record"));
+
                 var contentTypeRecord = _contentTypeRepository.Get(x => x.Name == contentType);
 
                 if (contentTypeRecord == null) {
@@ -731,7 +768,20 @@ namespace Orchard.ContentManagement {
                 return contentTypeRecord.Id;
             });
 
-            return _contentTypeRepository.Get(contentTypeId);
+            // There is a case when a content type record is created locally but the transaction is actually
+            // cancelled. In this case we are caching an Id which is none existent, or might represent another
+            // content type. Thus we need to ensure that the cache is valid, or invalidate it and retrieve it 
+            // another time.
+            
+            var result = _contentTypeRepository.Get(contentTypeId);
+
+            if (result != null && result.Name.Equals(contentType, StringComparison.OrdinalIgnoreCase) ) {
+                return result;
+            }
+
+            // invalidate the cache entry and load it again
+            _signals.Trigger(contentType + "_Record");
+            return AcquireContentTypeRecord(contentType);
         }
 
         public void Index(ContentItem contentItem, IDocumentIndex documentIndex) {

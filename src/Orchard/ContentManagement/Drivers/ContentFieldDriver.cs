@@ -152,7 +152,7 @@ namespace Orchard.ContentManagement.Drivers {
 
             var shapeType = metadata.Type;
             var fieldName = differentiator ?? String.Empty;
-            string partName = ctx.ContentPart.PartDefinition.Name;
+            var partName = ctx.ContentPart.PartDefinition.Name;
             string contentType = shape.ContentItem.ContentType;
 
             // whether the content type has been created dynamically or not
@@ -183,8 +183,8 @@ namespace Orchard.ContentManagement.Drivers {
             }
 
             // [ShapeType]__[ContentType]__[PartName]__[FieldName] e.g. Fields/Common.Text-Blog-TeaserPart-Teaser
-            if ( !string.IsNullOrEmpty(contentType) && !string.IsNullOrEmpty(partName) && !string.IsNullOrEmpty(fieldName) && !dynamicType ) {
-                metadata.Alternates.Add(EncodeAlternateElement(shapeType + "__" + contentType + "__" + partName));
+            if ( !String.IsNullOrEmpty(contentType) && !String.IsNullOrEmpty(partName) && !String.IsNullOrEmpty(fieldName) && !dynamicType ) {
+                metadata.Alternates.Add(EncodeAlternateElement(shapeType + "__" + contentType + "__" + partName + "__" + fieldName));
             }
             
             return shape;

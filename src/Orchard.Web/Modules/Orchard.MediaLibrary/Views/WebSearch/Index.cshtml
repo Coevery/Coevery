@@ -1,14 +1,13 @@
 ﻿@using System.Text
 @using Orchard.ContentManagement
 @using Orchard.MediaLibrary.Models
-@using Orchard.UI.Notify
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     @{
         Script.Require("jQuery");
-        Script.Include("knockout-2.2.1.js");
+        Script.Include("knockout-2.3.0.js");
         
         Style.Include("orchard-mediaproviders-admin.css");
         Style.Include("orchard-websearch-admin.css");
@@ -84,7 +83,7 @@
 
     @Html.Hidden("antiforgerytoken", Html.AntiForgeryTokenValueOrchard())
     @Html.Hidden("action", Url.Action("ImagePost"))
-    @Html.Hidden("id", (int)Model)
+    @Html.Hidden("folderPath", (string)Model)
 
     @using(Script.Foot()) {
     <script type="text/javascript">
@@ -209,14 +208,14 @@
             
             $("#button-import").on("click", function (e) {
                 var antiForgeryToken = $('[name=antiforgerytoken]').val();
-                var id = $('[name=id]').val();
+                var folderPath = $('[name=folderPath]').val();
                 var action = $('[name=action]').val();
 
                 viewModel.selection().forEach(function (item) {
                     var url = item.data.MediaUrl;
                     item.status('uploading');
                     $.post(action, {
-                        id: id,
+                        folderPath: folderPath,
                         url: url,
                         __RequestVerificationToken: antiForgeryToken,
                     })

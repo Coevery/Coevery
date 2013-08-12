@@ -68,6 +68,16 @@ namespace Orchard.Workflows.Activities {
         }
     }
 
+    public class ContentUpdatedActivity : ContentActivity {
+        public override string Name {
+            get { return "ContentUpdated"; }
+        }
+
+        public override LocalizedString Description {
+            get { return T("Content is updated."); }
+        }
+    }
+
     public class ContentPublishedActivity : ContentActivity {
         public override string Name {
             get { return "ContentPublished"; }
@@ -86,7 +96,7 @@ namespace Orchard.Workflows.Activities {
 
 
         public override LocalizedString Description {
-            get { return T("Content is  versioned."); }
+            get { return T("Content is versioned."); }
         }
     }
 
@@ -96,7 +106,7 @@ namespace Orchard.Workflows.Activities {
         }
 
         public override LocalizedString Description {
-            get { return T("Content is  removed."); }
+            get { return T("Content is removed."); }
         }
     }
 }

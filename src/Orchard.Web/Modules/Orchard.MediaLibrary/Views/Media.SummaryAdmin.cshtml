@@ -2,7 +2,6 @@
 @using Orchard.Utility.Extensions;
 @{
     MediaPart mediaPart = Model.ContentItem.MediaPart;
-    Layout.Title = mediaPart.Title;
     var contentTypeClassName = mediaPart.ContentItem.ContentType.HtmlClassify();
 }
 <article class="media-item media-item-summary-admin @contentTypeClassName">

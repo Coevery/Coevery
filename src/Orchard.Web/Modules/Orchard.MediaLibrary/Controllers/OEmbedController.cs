@@ -6,7 +6,6 @@ using System.Xml.Linq;
 using Orchard.MediaLibrary.Models;
 using Orchard.MediaLibrary.Services;
 using Orchard.MediaLibrary.ViewModels;
-using Orchard.Taxonomies.Services;
 using Orchard.Themes;
 using Orchard.UI.Admin;
 using Orchard.ContentManagement;
@@ -14,30 +13,30 @@ using Orchard.ContentManagement;
 namespace Orchard.MediaLibrary.Controllers {
     [Admin, Themed(false)]
     public class OEmbedController : Controller {
-        private readonly ITaxonomyService _taxonomyService;
         private readonly IMediaLibraryService _mediaLibraryService;
 
         public OEmbedController(
-            ITaxonomyService taxonomyService, 
             IMediaLibraryService mediaManagerService, 
             IOrchardServices services) {
-            _taxonomyService = taxonomyService;
             _mediaLibraryService = mediaManagerService;
             Services = services;
         }
 
         public IOrchardServices Services { get; set; }
 
-        public ActionResult Index(int id) {
-            var viewModel = new OEmbedViewModel();
+        public ActionResult Index(string folderPath) {
+            var viewModel = new OEmbedViewModel {
+                FolderPath = folderPath
+            };
+
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Index(int id, string url) {
+        public ActionResult Index(string folderPath, string url) {
             var viewModel = new OEmbedViewModel {
                 Url = url,
-                Id = id
+                FolderPath = folderPath
             };
 
             try {
@@ -45,8 +44,11 @@ namespace Orchard.MediaLibrary.Controllers {
 
                 var source = new WebClient().DownloadString(url);
 
-                // seek type="text/xml+oembed"
+                // seek type="text/xml+oembed" or application/xml+oembed
                 var oembedSignature = source.IndexOf("type=\"text/xml+oembed\"", StringComparison.OrdinalIgnoreCase);
+                if (oembedSignature == -1) {
+                    oembedSignature = source.IndexOf("type=\"application/xml+oembed\"", StringComparison.OrdinalIgnoreCase);
+                }
                 if (oembedSignature != -1) {
                     var tagStart = source.Substring(0, oembedSignature).LastIndexOf('<');
                     var tagEnd = source.IndexOf('>', oembedSignature);
@@ -54,8 +56,8 @@ namespace Orchard.MediaLibrary.Controllers {
                     var matches = new Regex("href=\"([^\"]+)\"").Matches(tag);
                     if (matches.Count > 0) {
                         var href = matches[0].Groups[1].Value;
-                        try {   
-                            var content = new WebClient().DownloadString(href);
+                        try {
+                            var content = new WebClient().DownloadString(Server.HtmlDecode(href));
                             viewModel.Content = XDocument.Parse(content);
                         }
                         catch {
@@ -72,26 +74,22 @@ namespace Orchard.MediaLibrary.Controllers {
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult MediaPost(int id, string url, string document) {
-            var termPart = _taxonomyService.GetTerm(id);
-
-            if (termPart == null) {
-                return HttpNotFound();
-            }
-
+        public ActionResult MediaPost(string folderPath, string url, string document) {
             var content = XDocument.Parse(document);
             var oembed = content.Root;
 
             var part = Services.ContentManager.New<MediaPart>("OEmbed");
-            part.TermPart = _taxonomyService.GetTerm(id);
 
-            part.Resource = url;
+            
             part.MimeType = "text/html";
+            part.FolderPath = folderPath;
             part.Title = oembed.Element("title").Value;
             if (oembed.Element("description") != null) {
                 part.Caption = oembed.Element("description").Value;
             }
             var oembedPart = part.As<OEmbedPart>();
+
+            oembedPart.Source = url;
 
             foreach (var element in oembed.Elements()) {
                 oembedPart[element.Name.LocalName] = element.Value;
@@ -101,7 +99,7 @@ namespace Orchard.MediaLibrary.Controllers {
             Services.ContentManager.Create(oembedPart);
 
             var viewModel = new OEmbedViewModel {
-                Id = id
+                FolderPath = folderPath
             };
 
             return View("Index", viewModel);

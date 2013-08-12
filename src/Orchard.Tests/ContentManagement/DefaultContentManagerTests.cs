@@ -14,6 +14,7 @@ using Orchard.Data;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.Records;
+using Orchard.Environment.Configuration;
 using Orchard.Environment.Extensions;
 using Orchard.Tests.ContentManagement.Handlers;
 using Orchard.Tests.ContentManagement.Records;
@@ -61,9 +62,11 @@ namespace Orchard.Tests.ContentManagement {
             builder.RegisterType<DefaultContentQuery>().As<IContentQuery>();
             builder.RegisterType<DefaultContentManager>().As<IContentManager>();
             builder.RegisterType<StubCacheManager>().As<ICacheManager>();
+            builder.RegisterType<Signals>().As<ISignals>();
             builder.RegisterType<DefaultContentManagerSession>().As<IContentManagerSession>();
             builder.RegisterInstance(_contentDefinitionManager.Object);
             builder.RegisterInstance(new Mock<IContentDisplay>().Object);
+            builder.RegisterInstance(new ShellSettings {Name = ShellSettings.DefaultName, DataProvider = "SqlCe"});
 
             builder.RegisterType<AlphaPartHandler>().As<IContentHandler>();
             builder.RegisterType<BetaPartHandler>().As<IContentHandler>();

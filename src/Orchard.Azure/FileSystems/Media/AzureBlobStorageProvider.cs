@@ -44,12 +44,12 @@ namespace Orchard.Azure.FileSystems.Media {
         /// </summary>
         /// <param name="url">The public url of the media.</param>
         /// <returns>The local path.</returns>
-        public string GetLocalPath(string url) {
+        public string GetStoragePath(string url) {
             if (url.StartsWith(_absoluteRoot)) {
-                return url.Substring(_absoluteRoot.Length);
+                return url.Substring(Combine(_absoluteRoot, "/").Length);
             }
 
-            return url;
+            return null;
         }
 
         public string GetRelativePath(string path) {

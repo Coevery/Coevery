@@ -42,24 +42,17 @@ namespace Orchard.Taxonomies {
                 .ContentPartRecord()
             );
 
-            SchemaBuilder.CreateTable("TermWidgetPartRecord", table => table
-                .ContentPartRecord()
-                .Column<int>("TaxonomyPartRecord_id")
-                .Column<int>("TermPartRecord_id")
-                .Column<int>("Count")
-                .Column<string>("OrderBy")
-                .Column<string>("FieldName")
-                .Column<string>("ContentType", c => c.Nullable())
-            );
+            ContentDefinitionManager.AlterTypeDefinition("TaxonomyNavigationMenuItem",
+               cfg => cfg
+                   .WithPart("TaxonomyNavigationPart")
+                   .WithPart("MenuPart")
+                   .WithPart("CommonPart")
+                   .DisplayedAs("Taxonomy Link")
+                   .WithSetting("Description", "Injects menu items from a Taxonomy")
+                   .WithSetting("Stereotype", "MenuItem")
+               );
 
-            ContentDefinitionManager.AlterTypeDefinition("TermWidget", cfg => cfg
-                .WithPart("TermWidgetPart")
-                .WithPart("CommonPart")
-                .WithPart("WidgetPart")
-                .WithSetting("Stereotype", "Widget")
-            );
-
-            return 1;
+            return 3;
         }
 
         public int UpdateFrom1() {
@@ -73,7 +66,7 @@ namespace Orchard.Taxonomies {
                    .WithSetting("Stereotype", "MenuItem")
                );
 
-            return 2;
+            return 3;
         }
     }
 }

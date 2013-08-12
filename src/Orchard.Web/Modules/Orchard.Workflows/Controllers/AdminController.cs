@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Newtonsoft.Json.Linq;
 using Orchard.ContentManagement;
-using Orchard.Core.Contents.Controllers;
 using Orchard.Data;
 using Orchard.DisplayManagement;
 using Orchard.Forms.Services;
@@ -85,10 +84,15 @@ namespace Orchard.Workflows.Controllers {
                     break;
             }
 
-            var results = queries
-                .Skip(pager.GetStartIndex())
-                .Take(pager.PageSize)
-                .ToList();
+            if (pager.GetStartIndex() > 0) {
+                queries = queries.Skip(pager.GetStartIndex());
+            }
+
+            if (pager.PageSize > 0) {
+                queries = queries.Take(pager.PageSize);
+            }
+
+            var results = queries.ToList();
 
             var model = new AdminIndexViewModel {
                 WorkflowDefinitions = results.Select(x => new WorkflowDefinitionEntry {
@@ -174,7 +178,7 @@ namespace Orchard.Workflows.Controllers {
 
         [HttpPost]
         public ActionResult Delete(int id) {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage rules")))
+            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage workflows")))
                 return new HttpUnauthorizedResult();
 
             var workflowDefinition = _workflowDefinitionRecords.Get(id);
@@ -189,7 +193,7 @@ namespace Orchard.Workflows.Controllers {
 
         [HttpPost]
         public ActionResult DeleteWorkflow(int id, string returnUrl) {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage rules")))
+            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage workflows")))
                 return new HttpUnauthorizedResult();
 
             var workflow = _workflowRecords.Get(id);

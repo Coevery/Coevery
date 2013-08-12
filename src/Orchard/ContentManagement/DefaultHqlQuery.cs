@@ -7,12 +7,16 @@ using System.Text;
 using NHibernate;
 using NHibernate.Transform;
 using Orchard.ContentManagement.Records;
+using Orchard.Data.Providers;
+using Orchard.Environment.Configuration;
 using Orchard.Utility.Extensions;
 
 namespace Orchard.ContentManagement {
 
     public class DefaultHqlQuery : IHqlQuery {
         private readonly ISession _session;
+        private readonly IEnumerable<ISqlStatementProvider> _sqlStatementProviders;
+        private readonly ShellSettings _shellSettings;
         private VersionOptions _versionOptions;
 
         protected IJoin _from;
@@ -20,10 +24,18 @@ namespace Orchard.ContentManagement {
         protected readonly List<Tuple<IAlias, Action<IHqlExpressionFactory>>> _wheres = new List<Tuple<IAlias, Action<IHqlExpressionFactory>>>();
         protected readonly List<Tuple<IAlias, Action<IHqlSortFactory>>> _sortings = new List<Tuple<IAlias, Action<IHqlSortFactory>>>();
 
+        private bool cacheable;
+
         public IContentManager ContentManager { get; private set; }
 
-        public DefaultHqlQuery(IContentManager contentManager, ISession session) {
+        public DefaultHqlQuery(
+            IContentManager contentManager, 
+            ISession session,
+            IEnumerable<ISqlStatementProvider> sqlStatementProviders,
+            ShellSettings shellSettings) {
             _session = session;
+            _sqlStatementProviders = sqlStatementProviders;
+            _shellSettings = shellSettings;
             ContentManager = contentManager;
         }
 
@@ -158,11 +170,13 @@ namespace Orchard.ContentManagement {
 
         public IEnumerable<ContentItem> Slice(int skip, int count) {
             ApplyHqlVersionOptionsRestrictions(_versionOptions);
-            var hql = ToHql(false);
+            cacheable = true;
             
+            var hql = ToHql(false);
+
             var query = _session
                 .CreateQuery(hql)
-                .SetCacheable(true)
+                .SetCacheable(cacheable)
                 ;
 
             if (skip != 0) {
@@ -210,6 +224,7 @@ namespace Orchard.ContentManagement {
                     }
                     else {
                         // select distinct can't be used with newid()
+                        cacheable = false;
                         sb.Replace("select distinct", "select ");
                     }
                 }
@@ -253,8 +268,20 @@ namespace Orchard.ContentManagement {
                 sort.Item2(sortFactory);
 
                 if (sortFactory.Randomize) {
-                    //sb.Append(" newid()");
-                    sb.Append("newid()");
+
+                    string command = null;
+
+                    foreach (var sqlStatementProvider in _sqlStatementProviders) {
+                        if (!String.Equals(sqlStatementProvider.DataProvider, _shellSettings.DataProvider)) {
+                            continue;
+                        }
+
+                        command = sqlStatementProvider.GetStatement("random") ?? command;
+                    }
+
+                    if (command != null) {
+                        sb.Append(command);    
+                    }
                 }
                 else {
                     sb.Append(sort.Item1.Name).Append(".").Append(sortFactory.PropertyName);
@@ -264,9 +291,10 @@ namespace Orchard.ContentManagement {
                 }
             }
 
-            // no order clause was specified
-            if (firstSort) {
-                //sb.Append("order by Id");
+            // no order clause was specified, use a default sort order, unless it's a count
+            // query hence it doesn't need one
+            if (firstSort && !count) {
+                sb.Append("order by civ.Id");
             }
 
             return sb.ToString();
