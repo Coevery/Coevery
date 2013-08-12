@@ -185,7 +185,7 @@
             var $name = $("#inputFieldName");
             var $displayName = $(".labelForName");
 
-            var jsonUrl = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Fields" } })";
+            var jsonUrl = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Entities" } })";
             var version = 0;
 
             var nameAltered;
@@ -202,9 +202,8 @@
                 if (nameAltered) {
                     return;
                 }
-
+                
                 $.post(jsonUrl, {
-                    entityName: "@Request.Url.AbsolutePath.Split('/').Last()",
                     displayName: $displayName.val(),
                     version: ++version,
                     __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
