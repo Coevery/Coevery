@@ -199,7 +199,6 @@
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Fields.cshtml" />
   </ItemGroup>
-  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\CreateDependency.cshtml" />
   </ItemGroup>
@@ -220,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\EditFields.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
