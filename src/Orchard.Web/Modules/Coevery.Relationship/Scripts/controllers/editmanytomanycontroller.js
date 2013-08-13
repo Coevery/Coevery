@@ -1,15 +1,12 @@
 ﻿'use strict';
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
-        'CreateManyToManyCtrl',
+        'EditManyToManyCtrl',
         ['$scope', 'logger', '$detour', '$stateParams',
             function ($scope, logger, $detour, $stateParams) {
                 
-                $scope.showPrimaryList = true;
-                $scope.showRelatedList = true;
-                
                 $scope.save = function () {
-                    $("input.primary-entity").prop('disabled', false);
+                    ToggleReadonly(false);
                     var form = $('#manytomany-form');
                     $.ajax({
                         url: form.attr('action'),
@@ -17,11 +14,11 @@ define(['core/app/detourService'], function (detour) {
                         data: form.serializeArray(),
                         success: function () {
                             logger.success('success');
-                            $("input.primary-entity").prop('disabled', true);
+                            ToggleReadonly(true);
                         },
                         error: function (result) {
                             logger.error('Failed:\n' + result.responseText);
-                            $("input.primary-entity").prop('disabled', true);
+                            ToggleReadonly(true);
                         }
                     });
                 };
@@ -32,3 +29,7 @@ define(['core/app/detourService'], function (detour) {
             }]
     ]);
 });
+
+function ToggleReadonly(condition) {
+    $("input.primary-entity").prop('disabled', condition);
+}

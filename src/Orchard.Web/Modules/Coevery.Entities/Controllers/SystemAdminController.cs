@@ -17,7 +17,7 @@ using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.Utility.Extensions;
 using Orchard.UI.Notify;
-using Orchard.Core.Contents.Controllers;
+using Orchard.Mvc;
 using EditTypeViewModel = Coevery.Entities.ViewModels.EditTypeViewModel;
 using IContentDefinitionEditorEvents = Orchard.ContentManagement.MetaData.IContentDefinitionEditorEvents;
 using IContentDefinitionService = Coevery.Entities.Services.IContentDefinitionService;

@@ -40,22 +40,29 @@
 
     <div class="row-fluid">
         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post
-                               , new {@class = "form-horizontal no-border form-fontstyle", id="onetomany-form"})) {                     
+                                              , new {@class = "form-horizontal no-border form-fontstyle", id = "onetomany-form"})) {
             @Html.ValidationSummary()
+            @Html.HiddenFor(model => model.IsCreate, new {id = "IsCreate"})
 
             <fieldset>
                 <legend>General Information</legend>
                                        
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new {@class = "span12"}))
+                              , Html.TextBoxFor(model => model.Name, new {@class = "span12", id = "relation-name"}))
                     
                 @DisplayInput("Primary Entity"
-                              , Html.DropDownListFor(model => model.PrimaryEntity, Model.EntityList,
-                              "Please select primary entity",new {@class = "span12 primary-entity"}))
+                              , Html.TextBoxFor(model => model.PrimaryEntity
+                                                , new {@class = "span12 primary-entity"}))
                     
-                @DisplayInput("Related Entity"
-                              , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList, 
-                              "Please select related entity",new {@class = "span12 related-entity"}))
+                @if (Model.IsCreate) {
+                    @DisplayInput("Related Entity"
+                                  , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList,
+                                                         "Please select related entity", new {@class = "span12 related-entity"}))
+                }
+                else {
+                    @DisplayInput("Related Entity"
+                                  , Html.TextBoxFor(model => model.RelatedEntity, new {@class = "span12 related-entity", disabled = "disabled"}))
+                }
 
                 <section class="control-group">
                     <label class="control-label">
@@ -65,19 +72,28 @@
                         <label class="radio">
                             <input type="radio" ng-model="recordDeleteBehavior" 
                                    name="@Html.NameFor(model => model.DeleteOption)"
-                                   ng-disabled="required" value="@OneToManyDeleteOption.NoAction" />
+                                   ng-disabled="required" value="@OneToManyDeleteOption.NoAction" 
+                                @if (Model.IsCreate) {
+                                    <text> disabled="disabled" </text>
+                                }/>
                             Clear the value of this field
                         </label>
                         <label class="radio">
                             <input type="radio" ng-model="recordDeleteBehavior" 
                                    name="@Html.NameFor(model => model.DeleteOption)"
-                                   value="@OneToManyDeleteOption.NotAllowed" />
+                                   value="@OneToManyDeleteOption.NotAllowed"
+                                @if (Model.IsCreate) {
+                                    <text> disabled="disabled" </text>
+                                }/>
                             Don't allow delete
                         </label>
                         <label class="radio">
                             <input type="radio" ng-model="recordDeleteBehavior" 
                                    name="@Html.NameFor(model => model.DeleteOption)"
-                                   value="@OneToManyDeleteOption.CascadingDelete" />
+                                   value="@OneToManyDeleteOption.CascadingDelete" 
+                                @if (Model.IsCreate) {
+                                    <text> disabled="disabled" </text>
+                                }/>
                             Cascading delete
                         </label>
                     </div>
@@ -104,71 +120,74 @@
                 <section class="control-group" ng-show="showRelatedList">
                     <div class="controls">
                         <select id="picklist-ex" multiple="multiple" 
-                            name="@Html.NameFor(model => model.ColumnFieldList)">
+                                name="@Html.NameFor(model => model.ColumnFieldList)">
                             <option value="0"> </option>
                         </select>
                     </div>
                 </section>
 
             </fieldset>
+
+            if (Model.IsCreate) {
+                <fieldset>
+                    <legend>Lookup Field</legend>
+                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new {@class = "span12"}))
+                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldName, new {@class = "span12"}))
+
+                    <section class="control-group">
+                        <label class="control-label">
+                            Options
+                        </label>
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" name="@Html.NameFor(model => model.Required)" ng-model="required" />
+                                Required
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" name="@Html.NameFor(model => model.ReadOnly)" ng-model="readonly" />
+                                Read-Only
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" name="@Html.NameFor(model => model.AlwaysInLayout)" ng-model="alwaysInLayout" />
+                                Always In Layout
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" name="@Html.NameFor(model => model.DisplayAsLink)" />
+                                Display As Link
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" name="@Html.NameFor(model => model.IsSystemField)" />
+                                System Field
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" name="@Html.NameFor(model => model.IsAudit)" />
+                                Is Audit
+                            </label>
+                        </div>
+                    </section>
+
+                    @DisplayInput("Help Text", Html.TextAreaFor(model => model.HelpText, new {@class = "span12"}))
+                </fieldset>
+            }
         }
-        @*    <fieldset>
-                <legend>Lookup Field</legend>
-                <section class="control-group">
-                    <label class="control-label" for="fieldLabel">
-                        Field Label
-                    </label>
-                    <div class="controls">
-                        <input type="text" class="span12" id="fieldLabel" ng-model="fieldLabel">
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label" for="fieldName">
-                        Field Name
-                    </label>
-                    <div class="controls">
-                        <input type="text" class="span12" id="fieldName" ng-model="fieldName">
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label">
-                        Options
-                    </label>
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="required" />
-                            Required
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="readonly" />
-                            Read-Only
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="alwaysInLayout" />
-                            Always In Layout
-                        </label>
-                    </div>
-                </section>
-                <section class="control-group">
-                    <label class="control-label" for="helpText">
-                        Help Text
-                    </label>
-                    <div class="controls">
-                        <textarea class="span12" id="helpText" ng-model="helpText"></textarea>
-                    </div>
-                </section>
-            </fieldset>
-        *@
     </div>
 </section>
 
 <script>
     $(document).ready(
-        function () {           
+        function () {
+            $("#picklist-ex").picklist({
+                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+                addLabel: '<i class="icon-caret-right"></i>',
+                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+                removeLabel: '<i class="icon-caret-left"></i>',
+                sourceListLabel: "Available Fields",
+                targetListLabel: "Selected Fields"
+            });
 
-            var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin",new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
+            var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
             var version = 0;
-            var getFields = function (entityName,isInit,selectElement) {
+            var getFields = function (entityName,selectElement) {
                 if (!entityName) {
                     return;
                 }   
@@ -180,9 +199,7 @@
                 },
                     function (data) {
                         if (version == data.version && data.result) {
-                            if (!isInit) {
-                                selectElement.picklist("destroy");
-                            }
+                            selectElement.picklist("destroy");
 
                             selectElement.html(data.result).picklist({
                                 addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
@@ -197,38 +214,17 @@
                     "json"
                 );
             };
-            var removeDuplicate = function (selectedValue, targetElements) {
-                if (arguments.length != 2 || !selectedValue) {
-                    if (targetElements) {
-                        targetElements.each(function() {
-                            $(this).prop('disabled', false);
-                            $(this).show();
-                        });
-                    }
-                    return;
-                }
-                targetElements.each(function () {
-                    $(this).prop('disabled', false);
-                    $(this).show();
-                    if ($(this).val() == selectedValue) {
-                        $(this).prop('disabled', true);
-                        $(this).prop('selected',false);
-                        $(this).hide();
-                    }
-                });
-            };
 
-            getFields($("select.related-entity option:selected").val(),true,$("#picklist-ex"));
-           
+            $("input.primary-entity").prop('disabled', true);
+            getFields($("select.related-entity option:selected").val(),$("#picklist-ex"));
+
             $("select.related-entity").change(function () {
-                var entityName = $("select.related-entity option:selected").val();
-                removeDuplicate(entityName, $("select.primary-entity>option"));
-                getFields(entityName, false, $("#picklist-ex"));
+                getFields($("select.related-entity option:selected").val(), $("#picklist-ex"));
             });
-
-            $("select.primary-entity").change(function () {
-                removeDuplicate($("select.primary-entity option:selected").val(), $("select.related-entity>option"));
-            });
+            
+            if ("@Model.IsCreate".toLowerCase() == "false") {
+                
+            }
         }
     );
 </script>

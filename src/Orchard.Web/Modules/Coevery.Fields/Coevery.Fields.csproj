@@ -142,7 +142,7 @@
       <Name>Coevery.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coevery.Entities\Coevery.Entities.csproj">
-      <Project>{BD9AEC06-5C81-4221-A817-408FB0C4B6C0}</Project>
+      <Project>{bd9aec06-5c81-4221-a817-408fb0c4b6c0}</Project>
       <Name>Coevery.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">

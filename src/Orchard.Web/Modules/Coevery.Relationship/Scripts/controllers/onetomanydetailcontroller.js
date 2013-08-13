@@ -1,7 +1,7 @@
 ﻿'use strict';
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
-        'EditOneToManyCtrl',
+        'CreateOneToManyCtrl',
         ['$scope', 'logger', '$detour', '$stateParams',
             function ($scope, logger, $detour, $stateParams) {
 
@@ -11,7 +11,8 @@ define(['core/app/detourService'], function (detour) {
                         $scope.recordDeleteBehavior = 2;
                     }
                 });
-                $scope.save = function() {
+                $scope.save = function () {
+                    $("input.primary-entity").prop('disabled', false);
                     var form = $('#onetomany-form');
                     $.ajax({
                         url: form.attr('action'),
@@ -19,9 +20,11 @@ define(['core/app/detourService'], function (detour) {
                         data: form.serializeArray(),
                         success: function () {
                             logger.success('success');
+                            $("input.primary-entity").prop('disabled', true);
                         },
                         error: function (result) {
                             logger.error('Failed:\n' + result.responseText);
+                            $("input.primary-entity").prop('disabled', true);
                         }
                     });
                 };

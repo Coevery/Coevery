@@ -25,7 +25,7 @@ namespace Coevery.Relationship.Controllers
         public object Get(string entityName) {
             var temp = _relationshipService.GetRelationships(entityName);
             if (temp == null) {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The entity doesn't exist!");
             }
             if (temp.Length == 0) {
                 return null;
@@ -40,5 +40,16 @@ namespace Coevery.Relationship.Controllers
                                                    }).ToArray());
         }
 
+        [HttpPost]
+        public HttpResponseMessage Delete(int relationshipId) {
+            if (relationshipId <= 0) {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Id");
+            }
+
+            var errorMessage = _relationshipService.DeleteRelationship(relationshipId);
+            return string.IsNullOrWhiteSpace(errorMessage)
+                ?Request.CreateResponse(HttpStatusCode.OK)
+                :Request.CreateErrorResponse(HttpStatusCode.BadRequest,errorMessage);
+        }
     }
 }

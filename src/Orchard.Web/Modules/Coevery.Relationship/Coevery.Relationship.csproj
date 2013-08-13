@@ -41,6 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\nhibernate\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -61,6 +65,7 @@
     </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\RelationshipController.cs" />
@@ -80,6 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
+    <Content Include="Scripts\controllers\editmanytomanycontroller.js" />
+    <Content Include="Scripts\controllers\editonetomanycontroller.js" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\relationshipscontroller.js" />

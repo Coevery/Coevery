@@ -10,5 +10,6 @@ namespace Coevery.Relationship.Models {
         public string Name { get; set; }
         public string PrimaryEntity { get; set; }
         public string RelatedEntity { get; set; }
+        public bool IsCreate { get; set; }
     }
 }

@@ -64,7 +64,28 @@ namespace Coevery.Relationship.Controllers {
                 return new HttpUnauthorizedResult();
 
             return View(new OneToManyRelationshipModel {
-                EntityList = _relationshipService.GetEntityNames()
+                EntityList = _relationshipService.GetEntityNames(id),
+                PrimaryEntity = id,
+                IsCreate = true
+            });
+        }
+
+        public ActionResult EditOneToMany(string entityName, int id) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content.")))
+                return new HttpUnauthorizedResult();
+            
+            var oneToMany = _relationshipService.GetOneToMany(id);
+            if (oneToMany == null || oneToMany.Id == 0) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Relationship not found");
+            }
+            return View("CreateOneToMany",new OneToManyRelationshipModel {
+                IsCreate = false,
+                Name = oneToMany.Relationship.Name,
+                DeleteOption = (OneToManyDeleteOption)oneToMany.DeleteOption,
+                PrimaryEntity = oneToMany.Relationship.PrimaryEntity.Name,
+                RelatedEntity = oneToMany.Relationship.RelatedEntity.Name,
+                RelatedListLabel = oneToMany.RelatedListLabel,
+                ShowRelatedList = oneToMany.ShowRelatedList,
             });
         }
 
@@ -73,9 +94,12 @@ namespace Coevery.Relationship.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
                 return new HttpUnauthorizedResult();
 
-            if (!_relationshipService.CreateRelationship(oneToMany)) {
-                ModelState.AddModelError("OneToManyRelation",T("Create relationship failed.").ToString());
-                return HttpNotFound();
+            if (oneToMany.IsCreate) {
+                var errorMessage = _relationshipService.CreateRelationship(oneToMany);
+                if (!string.IsNullOrWhiteSpace(errorMessage)) {
+                    ModelState.AddModelError("OneToManyRelation", T(errorMessage).ToString());
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+                }
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -85,7 +109,30 @@ namespace Coevery.Relationship.Controllers {
                 return new HttpUnauthorizedResult();
 
             return View(new ManyToManyRelationshipModel {
-                EntityList = _relationshipService.GetEntityNames()
+                EntityList = _relationshipService.GetEntityNames(id),
+                PrimaryEntity = id,
+                IsCreate = true
+            });
+        }
+
+        public ActionResult EditManyToMany(string entityName, int relationId) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content.")))
+                return new HttpUnauthorizedResult();
+
+            var manyToMany = _relationshipService.GetManyToMany(relationId);
+            if (manyToMany == null || manyToMany.Id == 0) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"Relationship not found");
+            }
+
+            return View("CreateManyToMany",new ManyToManyRelationshipModel {
+                IsCreate = false,
+                Name = manyToMany.Relationship.Name,
+                PrimaryEntity = manyToMany.Relationship.PrimaryEntity.Name,
+                RelatedEntity = manyToMany.Relationship.RelatedEntity.Name,
+                PrimaryListLabel = manyToMany.PrimaryListLabel,
+                RelatedListLabel = manyToMany.RelatedListLabel,
+                ShowPrimaryList = manyToMany.ShowPrimaryList,
+                ShowRelatedList = manyToMany.ShowRelatedList,
             });
         }
 
@@ -94,10 +141,14 @@ namespace Coevery.Relationship.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
                 return new HttpUnauthorizedResult();
 
-            if (!_relationshipService.CreateRelationship(manyToMany)) {
-                ModelState.AddModelError("ManyToManyRelation", T("Create relationship failed.").ToString());
-                return HttpNotFound();
+            if (manyToMany.IsCreate) {
+                var errorMessage = _relationshipService.CreateRelationship(manyToMany);
+                if (!string.IsNullOrWhiteSpace(errorMessage)) {
+                    ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+                }
             }
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 

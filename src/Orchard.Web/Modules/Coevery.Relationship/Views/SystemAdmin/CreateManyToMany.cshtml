@@ -38,18 +38,27 @@
         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post
                                               , new {@class = "form-horizontal no-border form-fontstyle", id = "manytomany-form"})) {
             @Html.ValidationSummary()
+            @Html.HiddenFor(model=>model.IsCreate,new {id="IsCreate"})
+            
             <fieldset>
                 <legend>General Information</legend>
                 @DisplayInput("Relationship Name"
                               , Html.TextBoxFor(model => model.Name, new {@class = "span12"}))
                     
                 @DisplayInput("Primary Entity"
-                              , Html.DropDownListFor(model => model.PrimaryEntity, Model.EntityList,
-                              "Please select primary entity",new {@class = "span12 primary-entity"}))
-                    
-                @DisplayInput("Related Entity"
-                              , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList, 
-                              "Please select related entity",new {@class = "span12 related-entity"}))
+                              , Html.TextBoxFor(model => model.PrimaryEntity
+                              , new {@class = "span12 primary-entity"}))
+                
+                @if (Model.IsCreate) {
+                    @DisplayInput("Related Entity"
+                                  , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList,
+                                                         "Please select related entity", new {@class = "span12 related-entity"}))
+                }
+                else {
+                    @DisplayInput("Related Entity"
+                                  , Html.TextBoxFor(model => model.RelatedEntity, new {@class = "span12 related-entity", disabled="disabled"}))
+                } 
+                
             </fieldset>
             <fieldset>
                 <legend>Primary Entity Display Option</legend>
@@ -108,7 +117,7 @@
 <script>
     $(document).ready(
         function () {
-            $('#picklist-other,#picklist-current').picklist({
+            $("#picklist-other").picklist({
                 addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
                 addLabel: '<i class="icon-caret-right"></i>',
                 removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
@@ -116,16 +125,10 @@
                 sourceListLabel: "Available Fields",
                 targetListLabel: "Selected Fields"
             });
-        }
-    );
-</script>
-<script>
-    $(document).ready(
-        function () {
 
             var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin",new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
             var version = 0;
-            var getFields = function (entityName, isInit, selectElement) {
+            var getFields = function (entityName, selectElement) {
                 if (!entityName) {
                     return;
                 }               
@@ -137,9 +140,7 @@
                 },
                     function (data) {
                         if (version == data.version && data.result) {
-                            if (!isInit) {
-                                selectElement.picklist("destroy");
-                            }
+                            selectElement.picklist("destroy");
 
                             selectElement.html(data.result).picklist({
                                 addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
@@ -153,41 +154,14 @@
                     },
                     "json"
                 );
-            };
-            var removeDuplicate = function (selectedValue, targetElements) {
-                if (arguments.length != 2 || !selectedValue) {
-                    if (targetElements) {
-                        targetElements.each(function () {
-                            $(this).prop('disabled', false);
-                            $(this).show();
-                        });
-                    }
-                    return;
-                }
-                targetElements.each(function () {
-                    $(this).prop('disabled', false);
-                    $(this).show();
-                    if ($(this).val() == selectedValue) {
-                        $(this).prop('disabled', true);
-                        $(this).prop('selected', false);
-                        $(this).hide();
-                    }
-                });
-            };
-
-            getFields($("select.primary-entity option:selected").val(), true, $("#picklist-current"));
-            getFields($("select.related-entity option:selected").val(), true, $("#picklist-other"));           
+            };                     
+            getFields($("input.primary-entity").val(), $("#picklist-current"));
+            getFields($("select.related-entity option:selected").val(), $("#picklist-other"));
+            $("input.primary-entity").prop('disabled', true);
 
             $("select.related-entity").change(function () {
                 var entityName = $("select.related-entity option:selected").val();
-                removeDuplicate(entityName, $("select.primary-entity>option"));
-                getFields(entityName, false, $("#picklist-other"));
-            });
-
-            $("select.primary-entity").change(function () {
-                var entityName = $("select.primary-entity option:selected").val();
-                removeDuplicate(entityName, $("select.related-entity>option"));
-                getFields(entityName, false, $("#picklist-current"));
+                getFields(entityName, $("#picklist-other"));
             });
         }
     );
