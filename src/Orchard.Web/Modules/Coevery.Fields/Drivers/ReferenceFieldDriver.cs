@@ -109,7 +109,7 @@ namespace Coevery.Fields.Drivers
             {
                 ContentId = 0,
                 Field = field,
-                ItemList = new SelectList(selectContentItems, "Value", "Text", field!=null?field.Value:0)
+                ItemList = new SelectList(selectContentItems, "Value", "Text", field != null ? field.Value : Convert.ToInt32(selectContentItems[0].Value))
             };
 
             return ContentShape("Fields_Reference_Edit", GetDifferentiator(field, part),
