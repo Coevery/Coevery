@@ -75,6 +75,7 @@ namespace Coevery.Fields.Drivers
         protected override DriverResult Editor(ContentPart part, ReferenceField field, dynamic shapeHelper)
         {
             var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
+
             var contentItems = _projectionManager.GetContentItems(settings.QueryId, 0, 0).ToList();
             string category = settings.ContentTypeName + "ContentFields";
             var allFielDescriptors = _projectionManager.DescribeProperties().Where(p => p.Category == category).SelectMany(x => x.Descriptors).ToList();
@@ -103,12 +104,14 @@ namespace Coevery.Fields.Drivers
                 }
                 return item;
             }).ToList();
+
             var model = new ReferenceFieldViewModel
             {
                 ContentId = 0,
                 Field = field,
-                ItemList = new SelectList(selectContentItems, "Value", "Text", field.Value)
+                ItemList = new SelectList(selectContentItems, "Value", "Text", field!=null?field.Value:0)
             };
+
             return ContentShape("Fields_Reference_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: model, Prefix: GetPrefix(field, part)));
         }

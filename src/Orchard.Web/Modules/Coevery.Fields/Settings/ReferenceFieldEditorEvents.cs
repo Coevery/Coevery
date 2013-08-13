@@ -54,22 +54,19 @@ namespace Coevery.Fields.Settings
             var model = new ReferenceFieldSettings();
             
             if (updateModel.TryUpdateModel(model, "ReferenceFieldSettings", null, null)) {
-                SettingsDictionary setting = null;
-                var field = builder.GetType().GetField("_settings",BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.ExactBinding);
-                if (field != null)
-                {
-                    setting = (SettingsDictionary)field.GetValue(builder);
-                }
-                int queryId = setting != null && setting.ContainsKey("ReferenceFieldSettings.QueryId")?
-                    int.Parse(setting["ReferenceFieldSettings.QueryId"]) : 0;
+                int queryId = model.QueryId;
                 if (queryId <= 0)
                 {
                     queryId = CreateQuery(model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
+                    UpdateSettings(model, builder, "ReferenceFieldSettings");
+                    builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
+                    builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
+                    builder.WithSetting("ReferenceFieldSettings.QueryId", queryId.ToString());
                 }
-                UpdateSettings(model, builder, "ReferenceFieldSettings");
-                builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.QueryId", queryId.ToString());
-                builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
+                else {
+                    UpdateSettings(model, builder, "ReferenceFieldSettings");
+                    builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
+                }
             }
             yield return DefinitionTemplate(model);
         }

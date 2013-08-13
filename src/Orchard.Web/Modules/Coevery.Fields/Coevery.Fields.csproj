@@ -201,6 +201,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Scripts\controllers\" />
+    <Folder Include="Views\SystemAdmin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fields\CoeveryText.cshtml" />
@@ -279,27 +280,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Fields\Select.Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\CreateChooseType.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\CreateEditInfo.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\Items.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\CreateDependency.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\DependencyList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SystemAdmin\EditDependency.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fields\Select.cshtml" />
