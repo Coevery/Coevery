@@ -1,9 +1,12 @@
 ﻿@using Orchard.ContentManagement
 @using Orchard.Utility.Extensions
 
+@{
+    ContentItem contentItem = Model.ContentItem;
+}
 <section data-ng-controller="GeneralViewCtrl">
     <header id="page-title">
-        <h1 class="pull-left">{{moduleName}} <span>view a data</span></h1>
+        <h1 class="pull-left">@Html.ItemDisplayText(contentItem) <span>view a data</span></h1>
     </header>
     <section id="main-content">
         <div id="page-actions" class="clearfix">
