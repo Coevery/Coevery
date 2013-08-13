@@ -8,10 +8,10 @@ define(['core/app/detourService'], function (detour) {
 
                 var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
                     '<ul class="row-actions pull-right hide">' +
-                    '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
-                    '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+                    '<li class="icon-edit" ng-click="edit(row.entity.ContentId, row.entity.Type)" title="Edit"></li>' +
+                    '<li class="icon-remove" ng-click="delete(row.entity.ContentId)" title="Delete"></li>' +
                     '</ul>' +
-                    '<span class="btn-link" ng-click="edit(row.entity.Name)">{{COL_FIELD}}</span>' +
+                    '<span class="btn-link" ng-click="edit(row.entity.ContentId, row.entity.Type)">{{COL_FIELD}}</span>' +
                     '</div>';
 
                 var relationshipColumnDefs = [
@@ -27,16 +27,13 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);
-
-                $scope.relationships = [];
-
                 $scope.getAllRelationship = function() {
 
                     $.ajax({
                         type: 'Get',
                         url: 'api/relationship/Relationship/Get?EntityName=' + $stateParams.Id,
                         success: function (result) {
-                            alert(result);
+                            $scope.relationships = result;
                         },
                         error: function (result) {
                             logger.error('Get relationships failed:' + result.responseText);
@@ -50,11 +47,20 @@ define(['core/app/detourService'], function (detour) {
                 $scope.createManyToMany = function () {
                     $detour.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
                 };
-                $scope.edit = function () {
-
+                $scope.edit = function (cotentId, type) {
+                    $detour.transitionTo('EditRelationship', { Id: cotentId, Type: type });
                 };
-                $scope.delete = function () {
-
+                $scope.delete = function (contentId) {
+                    $.ajax({
+                        type: 'Get',
+                        url: 'api/relationship/Relationship/Delete?RelationshipId=' + contentId,
+                        success: function () {
+                            logger.success("Delete relationship success!");
+                        },
+                        error: function (result) {
+                            logger.error('Delete relationship failed:' + result.responseText);
+                        }
+                    });
                 };
 
                 $scope.getAllRelationship();

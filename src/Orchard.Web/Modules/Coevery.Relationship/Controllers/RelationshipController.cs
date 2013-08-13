@@ -32,11 +32,13 @@ namespace Coevery.Relationship.Controllers
             }
             return JsonConvert.SerializeObject((from record in temp
                                                    select new {
+                                                       ContentId = record.Id,
                                                        Name = record.Name,
                                                        PrimaryEntity = record.PrimaryEntity.Name,
                                                        RelatedEntity = record.RelatedEntity.Name,
                                                        Type = ((RelationshipType)record.Type).ToString()
                                                    }).ToArray());
         }
+
     }
 }
