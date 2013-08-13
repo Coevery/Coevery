@@ -35,10 +35,10 @@ namespace Coevery.Relationship
                 table => table
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<int>("Relationship_Id", column => column.NotNull())
-                    .Column<int>("LookupField_Id", column => column.NotNull())
-                    .Column<string>("RelatedListLabel", column => column.NotNull())
+                    .Column<int>("LookupField_Id", column => column.Nullable())
+                    .Column<string>("RelatedListLabel", column => column.Nullable())
                     .Column<bool>("ShowRelatedList", column => column.NotNull())
-                    .Column<byte>("DeleteOption", column => column.NotNull())
+                    .Column<byte>("DeleteOption", column => column.Nullable())
                 );
             ContentDefinitionManager.AlterTypeDefinition("OneToManyRelationship", cfg => cfg
                 .WithPart("OneToManyRelationshipPart")
@@ -49,9 +49,9 @@ namespace Coevery.Relationship
                 table => table
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<int>("Relationship_Id", column => column.NotNull())
-                    .Column<string>("RelatedListLabel", column => column.NotNull())
+                    .Column<string>("RelatedListLabel", column => column.Nullable())
                     .Column<bool>("ShowRelatedList", column => column.NotNull())
-                    .Column<string>("PrimaryListLabel", column => column.NotNull())
+                    .Column<string>("PrimaryListLabel", column => column.Nullable())
                     .Column<bool>("ShowPrimaryList", column => column.NotNull())
                 );
             ContentDefinitionManager.AlterTypeDefinition("ManyToManyRelationship", cfg => cfg

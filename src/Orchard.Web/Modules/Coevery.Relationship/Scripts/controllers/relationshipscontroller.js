@@ -28,17 +28,27 @@ define(['core/app/detourService'], function (detour) {
 
                 angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);
 
-                $scope.relationships = [
-                    { Name: 'Leads_Accounts', PrimaryEntity: 'Lead', RelatedEntity: 'Account', Type: 'One to Many' },
-                    { Name: 'Leads_Opportunities', PrimaryEntity: 'Lead', RelatedEntity: 'Opportunity', Type: 'One to Many' },
-                    { Name: 'Leads_Users', PrimaryEntity: 'Lead', RelatedEntity: 'User', Type: 'Many to Many' }
-                ];
+                $scope.relationships = [];
 
-                $scope.editOneToMany = function () {
-                    $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id });
+                $scope.getAllRelationship = function() {
+
+                    $.ajax({
+                        type: 'Get',
+                        url: 'api/relationship/Relationship/Get?EntityName=' + $stateParams.Id,
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error: function (result) {
+                            logger.error('Get relationships failed:' + result.responseText);
+                        }
+                    });
                 };
-                $scope.editManyToMany = function () {
-                    $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id });
+
+                $scope.createOneToMany = function () {
+                    $detour.transitionTo('CreateOneToMany', { EntityName: $stateParams.Id });
+                };
+                $scope.createManyToMany = function () {
+                    $detour.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
                 };
                 $scope.edit = function () {
 
@@ -46,6 +56,8 @@ define(['core/app/detourService'], function (detour) {
                 $scope.delete = function () {
 
                 };
+
+                $scope.getAllRelationship();
             }]
     ]);
 });

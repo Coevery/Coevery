@@ -44,6 +44,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\aspnetwebapi\System.Web.Http.dll</HintPath>
@@ -61,11 +63,12 @@
     <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\RelationshipController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ManyToManyRelationshipModel.cs" />
     <Compile Include="Models\OneToManyRelationshipModel.cs" />
-    <Compile Include="Models\RelationshipViewModel.cs" />
+    <Compile Include="Models\RelationshipModel.cs" />
     <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Records\OneToManyRelationshipRecord.cs" />
     <Compile Include="Records\RelationshipColumnRecord.cs" />
@@ -79,6 +82,7 @@
     <Content Include="Module.txt" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
+    <Content Include="Scripts\controllers\relationshipscontroller.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -104,16 +108,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\EditOneToMany.cshtml" />
+    <Content Include="Views\SystemAdmin\CreateOneToMany.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\EditManyToMany.cshtml" />
+    <Content Include="Views\SystemAdmin\CreateManyToMany.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Relationships.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

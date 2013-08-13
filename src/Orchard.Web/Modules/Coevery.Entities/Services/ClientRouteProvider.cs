@@ -52,14 +52,6 @@ namespace Coevery.Entities.Services
                        descriptor.Dependencies = new[] {"controllers/fieldscontroller"};
                    });
 
-            builder.Describe("EntityDetail.Relationships")
-                   .Configure(descriptor => {
-                       descriptor.Url = "/Relationships";
-                       descriptor.TemplateUrl = "'SystemAdmin/Entities/Relationships'";
-                       descriptor.Controller = "RelationshipsCtrl";
-                       descriptor.Dependencies = new[] { "controllers/relationshipscontroller" };
-                   });
-
             #region -----------operate fields--------------
 
             builder.Describe("EntityDetail.Fields.Create")

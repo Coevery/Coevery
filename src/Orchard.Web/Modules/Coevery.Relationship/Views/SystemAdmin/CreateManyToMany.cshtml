@@ -1,0 +1,194 @@
+﻿@using System.Web.Mvc
+@using System.Web.Routing
+@using Coevery.Relationship.Models
+@using Coevery.Relationship.Records
+@using System.Web.Mvc.Html
+@using Orchard.Mvc.Html
+@model ManyToManyRelationshipModel
+
+<style>
+    .pickList .btn [class^="icon-"] {
+        width: auto;
+    }
+</style>
+
+@helper DisplayInput(string label, HtmlString input) {
+    <section class="control-group">
+        <label class="control-label">
+            @label
+        </label>
+        <div class="controls">
+            @input
+        </div>
+    </section>
+}
+
+<header id="page-title">
+    <h1 class="pull-left">"Many to Many Relationship Detail " <span>show many to many relationship detail information</span></h1>
+</header>
+
+<section id="main-content" style="margin-top: 47px">
+    <div id="page-actions" class="clearfix">
+        <btn-actions>
+            <button class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button class="btn btn-primary btn-small" data-ng-click="save()">Save</button>
+        </btn-actions>
+    </div>
+    <div class="row-fluid">
+        @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post
+                                              , new {@class = "form-horizontal no-border form-fontstyle", id = "manytomany-form"})) {
+            @Html.ValidationSummary()
+            <fieldset>
+                <legend>General Information</legend>
+                @DisplayInput("Relationship Name"
+                              , Html.TextBoxFor(model => model.Name, new {@class = "span12"}))
+                    
+                @DisplayInput("Primary Entity"
+                              , Html.DropDownListFor(model => model.PrimaryEntity, Model.EntityList,
+                              "Please select primary entity",new {@class = "span12 primary-entity"}))
+                    
+                @DisplayInput("Related Entity"
+                              , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList, 
+                              "Please select related entity",new {@class = "span12 related-entity"}))
+            </fieldset>
+            <fieldset>
+                <legend>Primary Entity Display Option</legend>
+
+                @DisplayInput("Primary Entity List Label"
+                              , Html.TextBoxFor(model => model.PrimaryListLabel, new {@class = "span12"}))
+
+                <section class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="showPrimaryList" value="true" 
+                                   name="@Html.NameFor(model => model.ShowPrimaryList)"/>
+                            Show Primary Entity List in the Related Entity's Detail Page
+                        </label>
+                    </div>
+                </section>
+                
+                <section class="control-group" ng-show="showPrimaryList">
+                    <div class="controls">
+                        <select id="picklist-current" multiple="multiple" 
+                                name="@Html.NameFor(model => model.PrimaryColumnList)">
+                            <option value="0"> </option>
+                        </select>
+                    </div>
+                </section>
+            </fieldset>
+            <fieldset>
+                <legend>Related Entity Display Option</legend>
+                @DisplayInput("Related Entity List Label"
+                              , Html.TextBoxFor(model => model.RelatedListLabel, new {@class = "span12"}))
+
+                
+                <section class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="showRelatedList" value="true"
+                                   name="@Html.NameFor(model => model.ShowRelatedList)"/>
+                            Show Related Entity List in the Primary Entity's Detail Page
+                        </label>
+                    </div>
+                </section>              
+
+                <section class="control-group" ng-show="showRelatedList">
+                    <div class="controls">
+                        <select id="picklist-other" multiple="multiple" 
+                            name="@Html.NameFor(model => model.RelatedColumnList)">
+                            <option value="0"> </option>
+                        </select>
+                    </div>
+                </section>
+            </fieldset>
+        }
+    </div>
+</section>
+
+<script>
+    $(document).ready(
+        function () {
+            $('#picklist-other,#picklist-current').picklist({
+                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+                addLabel: '<i class="icon-caret-right"></i>',
+                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+                removeLabel: '<i class="icon-caret-left"></i>',
+                sourceListLabel: "Available Fields",
+                targetListLabel: "Selected Fields"
+            });
+        }
+    );
+</script>
+<script>
+    $(document).ready(
+        function () {
+
+            var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin",new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
+            var version = 0;
+            var getFields = function (entityName, isInit, selectElement) {
+                if (!entityName) {
+                    return;
+                }               
+
+                $.post(jsonUrl, {
+                    entityName: entityName,
+                    version: ++version,
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                },
+                    function (data) {
+                        if (version == data.version && data.result) {
+                            if (!isInit) {
+                                selectElement.picklist("destroy");
+                            }
+
+                            selectElement.html(data.result).picklist({
+                                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+                                addLabel: '<i class="icon-caret-right"></i>',
+                                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+                                removeLabel: '<i class="icon-caret-left"></i>',
+                                sourceListLabel: "Available Fields",
+                                targetListLabel: "Selected Fields"
+                            });
+                        }
+                    },
+                    "json"
+                );
+            };
+            var removeDuplicate = function (selectedValue, targetElements) {
+                if (arguments.length != 2 || !selectedValue) {
+                    if (targetElements) {
+                        targetElements.each(function () {
+                            $(this).prop('disabled', false);
+                            $(this).show();
+                        });
+                    }
+                    return;
+                }
+                targetElements.each(function () {
+                    $(this).prop('disabled', false);
+                    $(this).show();
+                    if ($(this).val() == selectedValue) {
+                        $(this).prop('disabled', true);
+                        $(this).prop('selected', false);
+                        $(this).hide();
+                    }
+                });
+            };
+
+            getFields($("select.primary-entity option:selected").val(), true, $("#picklist-current"));
+            getFields($("select.related-entity option:selected").val(), true, $("#picklist-other"));           
+
+            $("select.related-entity").change(function () {
+                var entityName = $("select.related-entity option:selected").val();
+                removeDuplicate(entityName, $("select.primary-entity>option"));
+                getFields(entityName, false, $("#picklist-other"));
+            });
+
+            $("select.primary-entity").change(function () {
+                var entityName = $("select.primary-entity option:selected").val();
+                removeDuplicate(entityName, $("select.related-entity>option"));
+                getFields(entityName, false, $("#picklist-current"));
+            });
+        }
+    );
+</script>

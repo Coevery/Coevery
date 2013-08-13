@@ -10,8 +10,10 @@ using Orchard;
 
 namespace Coevery.Relationship.Services {
     public interface IRelationshipService : IDependency {
-        SelectListItem[] EntityNames { get; }
-        bool CreateRelationship(OneToManyRelationshipModel oneToMany);
+        SelectListItem[] GetEntityNames();
         SelectListItem[] GetFieldNames(string entityName);
+        RelationshipRecord[] GetRelationships(string entityName);
+        bool CreateRelationship(OneToManyRelationshipModel oneToMany);
+        bool CreateRelationship(ManyToManyRelationshipModel manyToMany);       
     }
 }

@@ -84,7 +84,7 @@ namespace Coevery.Fields.Services {
             
             var dependencyRecord = _fieldDependencyRepository.Table.SingleOrDefault(
                 x => x.Entity == partDefinition && x.ControlField == controlField && x.DependentField == dependentField);
-            if (dependencyRecord != null) {
+            if (dependencyRecord != null && dependencyRecord.Id != 0) {
                 return false;
             }
 

@@ -11,6 +11,7 @@ using Coevery.Relationship.Services;
 using Coevery.Relationship.Models;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Core.Contents;
 using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.UI.Notify;
@@ -33,6 +34,13 @@ namespace Coevery.Relationship.Controllers {
 
         [HttpPost]
         public ActionResult FieldNames(string entityName, int version) {
+            if (string.IsNullOrWhiteSpace(entityName) || entityName == "0") {
+                return Json(new {
+                    result = "<option value=''>  </option>",
+                    version = version
+                });
+            }
+
             var optionsHtml = new StringBuilder();
             foreach (var option in _relationshipService.GetFieldNames(entityName)) {
                 optionsHtml.Append("<option value='"+option.Value);
@@ -47,23 +55,50 @@ namespace Coevery.Relationship.Controllers {
             });
         }
 
-        public ActionResult EditOneToMany(string id) {
-            return View(new RelationshipViewModel<OneToManyRelationshipModel> {
-                EntityList = _relationshipService.EntityNames,
-                RelationshipRecord = new OneToManyRelationshipModel()
+        public ActionResult Relationships() {
+            return View();
+        }
+
+        public ActionResult CreateOneToMany(string id) {
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+                return new HttpUnauthorizedResult();
+
+            return View(new OneToManyRelationshipModel {
+                EntityList = _relationshipService.GetEntityNames()
             });
         }
 
         [HttpPost]
-        public ActionResult EditOneToMany(string entityName, OneToManyRelationshipModel oneToMany) {
+        public ActionResult CreateOneToMany(OneToManyRelationshipModel oneToMany) {
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+                return new HttpUnauthorizedResult();
+
+            if (!_relationshipService.CreateRelationship(oneToMany)) {
+                ModelState.AddModelError("OneToManyRelation",T("Create relationship failed.").ToString());
+                return HttpNotFound();
+            }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult EditManyToMany(string id) {
-            return View(new RelationshipViewModel<ManyToManyRelationshipModel> {
-                EntityList = _relationshipService.EntityNames,
-                RelationshipRecord = new ManyToManyRelationshipModel()
+        public ActionResult CreateManyToMany(string id) {
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+                return new HttpUnauthorizedResult();
+
+            return View(new ManyToManyRelationshipModel {
+                EntityList = _relationshipService.GetEntityNames()
             });
+        }
+
+        [HttpPost]
+        public ActionResult CreateManyToMany(ManyToManyRelationshipModel manyToMany) {
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+                return new HttpUnauthorizedResult();
+
+            if (!_relationshipService.CreateRelationship(manyToMany)) {
+                ModelState.AddModelError("ManyToManyRelation", T("Create relationship failed.").ToString());
+                return HttpNotFound();
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {

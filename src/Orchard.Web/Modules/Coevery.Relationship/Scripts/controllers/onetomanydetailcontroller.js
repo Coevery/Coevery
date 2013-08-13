@@ -4,13 +4,28 @@ define(['core/app/detourService'], function (detour) {
         'EditOneToManyCtrl',
         ['$scope', 'logger', '$detour', '$stateParams',
             function ($scope, logger, $detour, $stateParams) {
-                $scope.recordDeleteBehavior = 1;
+
                 $scope.showRelatedList = true;
                 $scope.$watch('required', function (newValue) {
                     if (newValue && $scope.recordDeleteBehavior == 1) {
                         $scope.recordDeleteBehavior = 2;
                     }
                 });
+                $scope.save = function() {
+                    var form = $('#onetomany-form');
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: form.attr('method'),
+                        data: form.serializeArray(),
+                        success: function () {
+                            logger.success('success');
+                        },
+                        error: function (result) {
+                            logger.error('Failed:\n' + result.responseText);
+                        }
+                    });
+                };
+
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
                 };

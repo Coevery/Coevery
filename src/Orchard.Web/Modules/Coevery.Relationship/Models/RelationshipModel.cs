@@ -5,8 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace Coevery.Relationship.Models {
-    public class RelationshipViewModel<T> {
+    public class RelationshipModel {
         public SelectListItem[] EntityList { get; set; }
-        public T RelationshipRecord { get; set; }
+        public string Name { get; set; }
+        public string PrimaryEntity { get; set; }
+        public string RelatedEntity { get; set; }
     }
 }

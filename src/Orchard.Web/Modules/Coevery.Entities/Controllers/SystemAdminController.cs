@@ -487,10 +487,6 @@ namespace Coevery.Entities.Controllers {
             return View();
         }
 
-        public ActionResult Relationships() {
-            return View();
-        }
-
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);
         }

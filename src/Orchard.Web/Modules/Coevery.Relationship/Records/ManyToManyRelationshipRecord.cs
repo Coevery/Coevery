@@ -1,20 +1,14 @@
-﻿using Orchard.ContentManagement.Records;
+﻿using Orchard.Core.Settings.Metadata.Records;
 
 namespace Coevery.Relationship.Records
 {
     public class ManyToManyRelationshipRecord
     {
-        public int Id { get; set; }
-        public RelationshipRecord Relationship { get; set; }
-        public string RelatedListLabel { get; set; }
-        public bool ShowRelatedList { get; set; }
-        public string PrimaryListLabel { get; set; }
-        public bool ShowPrimaryList { get; set; }
-
-        public ManyToManyRelationshipRecord() {
-            Relationship = new RelationshipRecord() {
-                Type = RelationshipType.ManyToMany
-            };
-        }
+        public virtual int Id { get; set; }
+        public virtual RelationshipRecord Relationship { get; set; }
+        public virtual string RelatedListLabel { get; set; }
+        public virtual bool ShowRelatedList { get; set; }
+        public virtual string PrimaryListLabel { get; set; }
+        public virtual bool ShowPrimaryList { get; set; }
     }
 }
