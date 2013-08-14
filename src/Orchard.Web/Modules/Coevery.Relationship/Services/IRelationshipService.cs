@@ -18,6 +18,8 @@ namespace Coevery.Relationship.Services {
 
         string CreateRelationship(OneToManyRelationshipModel oneToMany);
         string CreateRelationship(ManyToManyRelationshipModel manyToMany);
+        string EditRelationship(int relationshipId, ManyToManyRelationshipModel manyToMany);
+        string EditRelationship(int relationshipId, OneToManyRelationshipModel oneToMany);
         string DeleteRelationship(int relationshipId);
     }
 }

@@ -43,7 +43,7 @@
             <fieldset>
                 <legend>General Information</legend>
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new {@class = "span12"}))
+                              , Html.TextBoxFor(model => model.Name, new {@class = "span12",id = "relation-name"}))
                     
                 @DisplayInput("Primary Entity"
                               , Html.TextBoxFor(model => model.PrimaryEntity
@@ -69,7 +69,7 @@
                 <section class="control-group">
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" ng-model="showPrimaryList" value="true" 
+                            <input type="checkbox" ng-model="showPrimaryList" value="true" id="showPrimaryList"
                                    name="@Html.NameFor(model => model.ShowPrimaryList)"/>
                             Show Primary Entity List in the Related Entity's Detail Page
                         </label>
@@ -94,7 +94,7 @@
                 <section class="control-group">
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" ng-model="showRelatedList" value="true"
+                            <input type="checkbox" ng-model="showRelatedList" value="true" id="showRelatedList"
                                    name="@Html.NameFor(model => model.ShowRelatedList)"/>
                             Show Related Entity List in the Primary Entity's Detail Page
                         </label>
@@ -115,54 +115,69 @@
 </section>
 
 <script>
+    function customPicklist(element) {
+        element.picklist({
+            addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+            addLabel: '<i class="icon-caret-right"></i>',
+            removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+            removeLabel: '<i class="icon-caret-left"></i>',
+            sourceListLabel: "Available Fields",
+            targetListLabel: "Selected Fields"
+        });
+    }
+
     $(document).ready(
         function () {
-            $("#picklist-other").picklist({
-                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
-                addLabel: '<i class="icon-caret-right"></i>',
-                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
-                removeLabel: '<i class="icon-caret-left"></i>',
-                sourceListLabel: "Available Fields",
-                targetListLabel: "Selected Fields"
-            });
+            customPicklist($("#picklist-other"));
 
             var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin",new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
-            var version = 0;
-            var getFields = function (entityName, selectElement) {
+            var versionPri = 0;
+            var versionRel = 0;
+            var getFields = function (entityName, version, selectElement, isRepicklist) {
                 if (!entityName) {
                     return;
-                }               
-
+                }
                 $.post(jsonUrl, {
-                    entityName: entityName,
-                    version: ++version,
-                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
-                },
+                        entityName: entityName,
+                        version: ++version,
+                        __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                    },
                     function (data) {
                         if (version == data.version && data.result) {
-                            selectElement.picklist("destroy");
-
-                            selectElement.html(data.result).picklist({
-                                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
-                                addLabel: '<i class="icon-caret-right"></i>',
-                                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
-                                removeLabel: '<i class="icon-caret-left"></i>',
-                                sourceListLabel: "Available Fields",
-                                targetListLabel: "Selected Fields"
-                            });
+                            if (isRepicklist) {
+                                selectElement.picklist("destroy");
+                            }
+                            customPicklist(selectElement.html(data.result));
                         }
                     },
                     "json"
                 );
-            };                     
-            getFields($("input.primary-entity").val(), $("#picklist-current"));
-            getFields($("select.related-entity option:selected").val(), $("#picklist-other"));
-            $("input.primary-entity").prop('disabled', true);
+            };
+           
+            var relatedEntityEl;
+            if ("@Model.IsCreate" == "False") {
+                relatedEntityEl = $("input.related-entity");
+                $("#relation-name").prop('disabled', true);
+                if ("@Model.ShowPrimaryList" == "True") {
+                    setTimeout(function() {
+                        $("#showPrimaryList").click();
+                    },100);                  
+                }
+                if ("@Model.ShowRelatedList" == "True") {
+                    setTimeout(function() {
+                        $("#showRelatedList").click();
+                    }, 100);
+                }
+            } else {                
+                relatedEntityEl = $("select.related-entity option:selected");
+                $("select.related-entity").change(function () {
+                    getFields($("select.related-entity option:selected").val(),versionRel, $("#picklist-other"),true);
+                });
+            }
 
-            $("select.related-entity").change(function () {
-                var entityName = $("select.related-entity option:selected").val();
-                getFields(entityName, $("#picklist-other"));
-            });
+            getFields($("input.primary-entity").val(), versionPri ,$("#picklist-current"), false);
+            getFields(relatedEntityEl.val(), versionRel,$("#picklist-other"), true);
+            $("input.primary-entity").prop('disabled', true);       
         }
     );
 </script>

@@ -5,10 +5,6 @@
 @using System.Web.Mvc.Html
 @using Orchard.Mvc.Html
 @model OneToManyRelationshipModel
-
-@{
-    var isCreate = true;
-}
     
 @helper DisplayInput(string label, HtmlString input) {
     <section class="control-group">
@@ -110,7 +106,7 @@
                 <section class="control-group">
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" ng-model="showRelatedList" value="true"
+                            <input type="checkbox" ng-model="showRelatedList" value="true" id="showRelatedList"
                                    name="@Html.NameFor(model => model.ShowRelatedList)"/>
                             Show Related Entity List in the Primary Entity's Detail Page
                         </label>
@@ -140,27 +136,27 @@
                         </label>
                         <div class="controls">
                             <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.Required)" ng-model="required" />
+                                <input type="checkbox" name="@Html.NameFor(model => model.Required)" ng-model="required" value="true"/>
                                 Required
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.ReadOnly)" ng-model="readonly" />
+                                <input type="checkbox" name="@Html.NameFor(model => model.ReadOnly)" ng-model="readonly" value="true"/>
                                 Read-Only
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.AlwaysInLayout)" ng-model="alwaysInLayout" />
+                                <input type="checkbox" name="@Html.NameFor(model => model.AlwaysInLayout)" ng-model="alwaysInLayout" value="true"/>
                                 Always In Layout
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.DisplayAsLink)" />
+                                <input type="checkbox" name="@Html.NameFor(model => model.DisplayAsLink)" value="true"/>
                                 Display As Link
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.IsSystemField)" />
+                                <input type="checkbox" name="@Html.NameFor(model => model.IsSystemField)" value="true"/>
                                 System Field
                             </label>
                             <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.IsAudit)" />
+                                <input type="checkbox" name="@Html.NameFor(model => model.IsAudit)" value="true"/>
                                 Is Audit
                             </label>
                         </div>
@@ -174,16 +170,20 @@
 </section>
 
 <script>
+    function customPicklist(element) {
+        element.picklist({
+            addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
+            addLabel: '<i class="icon-caret-right"></i>',
+            removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
+            removeLabel: '<i class="icon-caret-left"></i>',
+            sourceListLabel: "Available Fields",
+            targetListLabel: "Selected Fields"
+        });
+    }
+
     $(document).ready(
         function () {
-            $("#picklist-ex").picklist({
-                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
-                addLabel: '<i class="icon-caret-right"></i>',
-                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
-                removeLabel: '<i class="icon-caret-left"></i>',
-                sourceListLabel: "Available Fields",
-                targetListLabel: "Selected Fields"
-            });
+            customPicklist($("#picklist-ex"));
 
             var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
             var version = 0;
@@ -193,38 +193,38 @@
                 }   
 
                 $.post(jsonUrl, {
-                    entityName: entityName,
-                    version: ++version,
-                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
-                },
+                        entityName: entityName,
+                        version: ++version,
+                        __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                    },
                     function (data) {
                         if (version == data.version && data.result) {
                             selectElement.picklist("destroy");
-
-                            selectElement.html(data.result).picklist({
-                                addAllLabel: '<i class="icon-caret-right"></i><i class="icon-caret-right"></i>',
-                                addLabel: '<i class="icon-caret-right"></i>',
-                                removeAllLabel: '<i class="icon-caret-left"></i><i class="icon-caret-left"></i>',
-                                removeLabel: '<i class="icon-caret-left"></i>',
-                                sourceListLabel: "Available Fields",
-                                targetListLabel: "Selected Fields"
-                            });
+                            customPicklist(selectElement.html(data.result));
                         }
                     },
                     "json"
                 );
             };
 
-            $("input.primary-entity").prop('disabled', true);
-            getFields($("select.related-entity option:selected").val(),$("#picklist-ex"));
-
-            $("select.related-entity").change(function () {
-                getFields($("select.related-entity option:selected").val(), $("#picklist-ex"));
-            });
-            
-            if ("@Model.IsCreate".toLowerCase() == "false") {
-                
+            var relatedEntityEl;
+            if ("@Model.IsCreate" == "False") {
+                relatedEntityEl = $("input.related-entity");
+                $("#relation-name").prop('disabled', true);
+                if ("@Model.ShowRelatedList" == "True") {
+                    setTimeout(function() {
+                        $("#showRelatedList").click();
+                    }, 100);
+                }
+            } else {
+                relatedEntityEl = $("select.related-entity option:selected");
+                $("select.related-entity").change(function () {
+                    getFields($("select.related-entity option:selected").val(), $("#picklist-other"));
+                });
             }
+
+            $("input.primary-entity").prop('disabled', true);
+            getFields(relatedEntityEl.val(), $("#picklist-ex"));
         }
     );
 </script>

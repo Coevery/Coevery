@@ -59,6 +59,7 @@ namespace Coevery.Relationship.Controllers {
             return View();
         }
 
+        #region OneToMany
         public ActionResult CreateOneToMany(string id) {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
                 return new HttpUnauthorizedResult();
@@ -104,6 +105,21 @@ namespace Coevery.Relationship.Controllers {
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
+        [HttpPost]
+        public ActionResult EditOneToMany(int relationId, OneToManyRelationshipModel oneToMany) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content."))) {
+                return new HttpUnauthorizedResult();
+            }
+            var errorMessage = _relationshipService.EditRelationship(relationId, oneToMany);
+            if (!string.IsNullOrWhiteSpace(errorMessage)) {
+                ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        #endregion
+
+        #region ManyToMany
         public ActionResult CreateManyToMany(string id) {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
                 return new HttpUnauthorizedResult();
@@ -151,6 +167,20 @@ namespace Coevery.Relationship.Controllers {
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
+        [HttpPost]
+        public ActionResult EditManyToMany(int relationId, ManyToManyRelationshipModel manyToMany) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content."))) {
+                return new HttpUnauthorizedResult();
+            }
+            var errorMessage = _relationshipService.EditRelationship(relationId,manyToMany);
+            if (!string.IsNullOrWhiteSpace(errorMessage)) {
+                ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        #endregion
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);

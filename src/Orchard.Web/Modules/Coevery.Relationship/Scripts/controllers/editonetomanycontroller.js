@@ -13,14 +13,13 @@ define(['core/app/detourService'], function (detour) {
                         type: form.attr('method'),
                         data: form.serializeArray(),
                         success: function () {
-                            logger.success('success');
-                            ToggleReadonly(true);
+                            logger.success('success');                           
                         },
                         error: function (result) {
                             logger.error('Failed:\n' + result.responseText);
-                            ToggleReadonly(true);
                         }
                     });
+                    ToggleReadonly(true);
                 };
 
                 $scope.exit = function () {
@@ -32,4 +31,6 @@ define(['core/app/detourService'], function (detour) {
 
 function ToggleReadonly(condition) {
     $("input.primary-entity").prop('disabled', condition);
+    $("#relation-name").prop('disabled', condition);
+    $("input.related-entity").prop('disabled', condition);
 }

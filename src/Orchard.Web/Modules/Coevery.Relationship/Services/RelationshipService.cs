@@ -39,6 +39,7 @@ namespace Coevery.Relationship.Services {
             _sessionLocator = sessionLocator;
         }
 
+        #region GetMethods 
         public SelectListItem[] GetFieldNames(string entityName) {
             var entity = _contentDefinitionManager.GetPartDefinition(entityName);
             return entity == null ? null
@@ -79,7 +80,9 @@ namespace Coevery.Relationship.Services {
                     where record.PrimaryEntity.Id == entity.Id || record.RelatedEntity.Id == entity.Id
                     select record).ToArray();
         }
+        #endregion
 
+        #region CreateMethods
         ///<summary> 
         /// Lookup field not implemented
         ///</summary>
@@ -104,10 +107,6 @@ namespace Coevery.Relationship.Services {
                 RelatedEntity = relatedEntity,
                 Type = (byte) RelationshipType.OneToMany
             });
-
-            var fieldStore = _sessionLocator.For(typeof (ContentPartFieldDefinitionRecord));
-            var fieldTypeStore = _sessionLocator.For(typeof (ContentFieldDefinitionRecord));
-            fieldStore.Save(new {});
 
             _oneToManyRepository.Create(new OneToManyRelationshipRecord {
                 DeleteOption = (byte)oneToMany.DeleteOption,
@@ -177,6 +176,7 @@ namespace Coevery.Relationship.Services {
 
             return null;
         }
+        #endregion
 
         /// <summary>
         /// Lookup field delete not completed
@@ -229,6 +229,66 @@ namespace Coevery.Relationship.Services {
             return null;
         }
 
+        /// <summary>
+        /// Column alter method is not the best.
+        /// </summary>
+        /// <param name="relationshipId"></param>
+        /// <param name="manyToMany"></param>
+        /// <returns>Error message string or null for correctly edited</returns>
+        public string EditRelationship(int relationshipId, ManyToManyRelationshipModel manyToMany) {
+            var manyToManyRecord = _manyToManyRepository.Get(record => record.Relationship.Id == relationshipId);
+            if (manyToManyRecord == null || manyToManyRecord.Id == 0) {
+                return "Invalid relashionship ID.";
+            }
+            manyToManyRecord.ShowPrimaryList = manyToMany.ShowPrimaryList;
+            manyToManyRecord.PrimaryListLabel = manyToMany.PrimaryListLabel;
+            manyToManyRecord.ShowRelatedList = manyToMany.ShowRelatedList;
+            manyToManyRecord.RelatedListLabel = manyToMany.RelatedListLabel;
+
+            DeleteColumns(relationshipId);
+            _manyToManyRepository.Update(manyToManyRecord);
+
+            if (manyToMany.PrimaryColumnList != null) {
+                foreach (var colummn in manyToMany.PrimaryColumnList) {
+                    if (!CreateColumn(colummn, manyToManyRecord.Relationship.PrimaryEntity, manyToManyRecord.Relationship, false)) {
+                        return "Invalid field";
+                    }
+                }
+            }
+
+            if (manyToMany.RelatedColumnList != null) {
+                foreach (var colummn in manyToMany.RelatedColumnList) {
+                    if (!CreateColumn(colummn, manyToManyRecord.Relationship.RelatedEntity, manyToManyRecord.Relationship, true)) {
+                        return "Invalid field";
+                    }
+                }
+            }
+            return null;
+        }
+
+        public string EditRelationship(int relationshipId, OneToManyRelationshipModel oneToMany) {
+            var oneToManyRecord = _oneToManyRepository.Get(record => record.Relationship.Id == relationshipId);
+            if (oneToManyRecord == null || oneToManyRecord.Id == 0) {
+                return "Invalid relashionship ID.";
+            }
+
+            oneToManyRecord.ShowRelatedList = oneToMany.ShowRelatedList;
+            oneToManyRecord.RelatedListLabel = oneToMany.RelatedListLabel;
+
+            DeleteColumns(relationshipId);
+            _oneToManyRepository.Update(oneToManyRecord);
+
+            if (oneToMany.ColumnFieldList != null) {
+                foreach (var colummn in oneToMany.ColumnFieldList) {
+                    if (!CreateColumn(colummn, oneToManyRecord.Relationship.RelatedEntity, oneToManyRecord.Relationship, true)) {
+                        return "Invalid field";
+                    }
+                }
+            }
+            return null;
+        }
+
+        #region PrivateMethods
         private RelationshipRecord CreateRelation(RelationshipRecord relationship) {
             _relationshipRepository.Create(relationship);
             return relationship;
@@ -254,12 +314,22 @@ namespace Coevery.Relationship.Services {
             return relation != null && relation.Id != 0 ? relation.Id : -1;
         }
 
+        //private bool AlterColumns(int relationshipId, string[] primaryList, string[] relatedList) {
+        //    var columnStore = _sessionLocator.For(typeof(RelationshipColumnRecord));
+        //    var fieldStore = _sessionLocator.For(typeof(ContentPartFieldDefinitionRecord));
+
+        //    var 
+        //    return true;
+        //}
+
         private void DeleteColumns(int relationshipId) {
             var columnStore = _sessionLocator.For(typeof (RelationshipColumnRecord));
             var deleteCommand = "DELETE FROM dbo.Coevery_Relationship_RelationshipColumnRecord " +
                                    "WHERE Relationship_Id=" + relationshipId;
             var query = columnStore.CreateSQLQuery(deleteCommand);
             query.ExecuteUpdate();
+            columnStore.Transaction.Commit();
         }
+        #endregion
     }
 }
