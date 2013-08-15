@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Coevery.Relationship.Models;
 using Coevery.Relationship.Records;
 using Orchard;
+using Orchard.ContentManagement;
 
 
 namespace Coevery.Relationship.Services {
@@ -16,6 +17,7 @@ namespace Coevery.Relationship.Services {
         OneToManyRelationshipRecord GetOneToMany(int id);
         ManyToManyRelationshipRecord GetManyToMany(int id);
 
+        int CreateOneToManyRelationship(string fieldName, string relationName, string primaryEntityName, string relatedEntityName);
         string CreateRelationship(OneToManyRelationshipModel oneToMany);
         string CreateRelationship(ManyToManyRelationshipModel manyToMany);
         string EditRelationship(int relationshipId, ManyToManyRelationshipModel manyToMany);

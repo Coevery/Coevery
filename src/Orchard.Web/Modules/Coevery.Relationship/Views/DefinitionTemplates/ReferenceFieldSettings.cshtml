@@ -1,0 +1,45 @@
+﻿
+@using System.Web.Mvc.Html
+@using Orchard.Mvc.Html
+@using Coevery.Relationship.Settings
+@model ReferenceFieldSettings
+
+@{
+    string disabled = string.Empty;
+    if (Model.QueryId > 0) {
+        disabled = "disabled='disabled'";
+    }
+}
+<section class="control-group data-row">
+    <label class="control-label" for="@Html.FieldIdFor(m => m.ContentTypeName)"> Selectable content </label>
+    <div class="controls">
+        <select id="@Html.FieldIdFor(m => m.ContentTypeName)" @disabled name="@Html.FieldNameFor(m => m.ContentTypeName)">
+            @foreach (var item in Model.ContentTypeList) {
+                @Html.SelectOption(item.Value, item.Selected, item.Text)
+            }
+        </select>
+    </div>
+</section>
+<section class="control-group data-row">
+    <label class="control-label">
+        Relationship Name
+    </label>
+    <div class="controls">
+        <input type="text" name="@Html.NameFor(m=>m.RelationshipName)" value="@Model.RelationshipName" @disabled />
+    </div>
+</section>
+<section class="control-group data-row">
+    <label class="control-label">
+    </label>
+    <div class="controls">
+        <label class="checkbox">
+            @Html.CheckBoxFor(m => m.DisplayAsLink)
+            Display as link
+        </label>
+    </div>
+</section>
+@Html.HiddenFor(model => model.RelationshipId);
+@Html.HiddenFor(m=>m.QueryId)
+
+
+

@@ -1,7 +1,7 @@
-﻿@using System.Web.Mvc
+﻿
+@using System.Web.Mvc
 @using System.Web.Routing
 @using Coevery.Relationship.Models
-@using Coevery.Relationship.Records
 @using System.Web.Mvc.Html
 @using Orchard.Mvc.Html
 @model ManyToManyRelationshipModel
@@ -161,12 +161,12 @@
                 if ("@Model.ShowPrimaryList" == "True") {
                     setTimeout(function() {
                         $("#showPrimaryList").click();
-                    },100);                  
+                    },500);                  
                 }
                 if ("@Model.ShowRelatedList" == "True") {
                     setTimeout(function() {
                         $("#showRelatedList").click();
-                    }, 100);
+                    }, 500);
                 }
             } else {                
                 relatedEntityEl = $("select.related-entity option:selected");

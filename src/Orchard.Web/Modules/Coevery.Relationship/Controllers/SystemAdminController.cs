@@ -71,13 +71,13 @@ namespace Coevery.Relationship.Controllers {
             });
         }
 
-        public ActionResult EditOneToMany(string entityName, int id) {
+        public ActionResult EditOneToMany(string entityName, int relationId) {
             if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content.")))
                 return new HttpUnauthorizedResult();
             
-            var oneToMany = _relationshipService.GetOneToMany(id);
+            var oneToMany = _relationshipService.GetOneToMany(relationId);
             if (oneToMany == null || oneToMany.Id == 0) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Relationship not found");
+                return ResponseError("Relationship not found");
             }
             return View("CreateOneToMany",new OneToManyRelationshipModel {
                 IsCreate = false,
@@ -96,10 +96,11 @@ namespace Coevery.Relationship.Controllers {
                 return new HttpUnauthorizedResult();
 
             if (oneToMany.IsCreate) {
+                
                 var errorMessage = _relationshipService.CreateRelationship(oneToMany);
                 if (!string.IsNullOrWhiteSpace(errorMessage)) {
                     ModelState.AddModelError("OneToManyRelation", T(errorMessage).ToString());
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+                    return ResponseError("");
                 }
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -113,7 +114,7 @@ namespace Coevery.Relationship.Controllers {
             var errorMessage = _relationshipService.EditRelationship(relationId, oneToMany);
             if (!string.IsNullOrWhiteSpace(errorMessage)) {
                 ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+                return ResponseError("");
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -137,7 +138,7 @@ namespace Coevery.Relationship.Controllers {
 
             var manyToMany = _relationshipService.GetManyToMany(relationId);
             if (manyToMany == null || manyToMany.Id == 0) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"Relationship not found");
+                return ResponseError("Relationship not found");
             }
 
             return View("CreateManyToMany",new ManyToManyRelationshipModel {
@@ -161,7 +162,7 @@ namespace Coevery.Relationship.Controllers {
                 var errorMessage = _relationshipService.CreateRelationship(manyToMany);
                 if (!string.IsNullOrWhiteSpace(errorMessage)) {
                     ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+                    return ResponseError("");
                 }
             }
 
@@ -176,7 +177,7 @@ namespace Coevery.Relationship.Controllers {
             var errorMessage = _relationshipService.EditRelationship(relationId,manyToMany);
             if (!string.IsNullOrWhiteSpace(errorMessage)) {
                 ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, errorMessage);
+                return ResponseError("");
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -188,6 +189,15 @@ namespace Coevery.Relationship.Controllers {
 
         void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
+        }
+
+        private ActionResult ResponseError(string errorMessage) {
+            Services.TransactionManager.Cancel();
+            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            var temp = (from values in ModelState
+                        from error in values.Value.Errors
+                        select error.ErrorMessage).ToArray();
+            return Content(string.Join("\n",temp)+";\n"+errorMessage);
         }
     }
 }

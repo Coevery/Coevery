@@ -66,13 +66,18 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\RelationshipController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
+    <Compile Include="Drivers\ReferenceFieldDriver.cs" />
+    <Compile Include="Fields\ReferenceField.cs" />
+    <Compile Include="Handlers\ReferenceHandler.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ManyToManyRelationshipModel.cs" />
     <Compile Include="Models\OneToManyRelationshipModel.cs" />
+    <Compile Include="Models\ReferenceFieldViewModel.cs" />
     <Compile Include="Models\RelationshipModel.cs" />
     <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Records\OneToManyRelationshipRecord.cs" />
@@ -82,6 +87,9 @@
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\IRelationshipService.cs" />
     <Compile Include="Services\RelationshipService.cs" />
+    <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
+    <Compile Include="Settings\ReferenceFieldSettings.cs" />
+    <Compile Include="Models\ReferenceUpdateModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
@@ -93,7 +101,6 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Handlers\" />
     <Folder Include="Scripts\services\" />
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +116,17 @@
       <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
       <Name>Coevery.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Coevery.Entities\Coevery.Entities.csproj">
+      <Project>{bd9aec06-5c81-4221-a817-408fb0c4b6c0}</Project>
+      <Name>Coevery.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
       <Name>Orchard.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
+      <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
+      <Name>Orchard.Projections</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +143,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Relationships.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Reference.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Reference.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\ReferenceFieldSettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

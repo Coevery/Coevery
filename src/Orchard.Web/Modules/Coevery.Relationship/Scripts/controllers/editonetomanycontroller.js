@@ -33,4 +33,5 @@ function ToggleReadonly(condition) {
     $("input.primary-entity").prop('disabled', condition);
     $("#relation-name").prop('disabled', condition);
     $("input.related-entity").prop('disabled', condition);
+    //$("#relation-deleteOption").prop('disabled', condition);
 }

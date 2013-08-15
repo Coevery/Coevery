@@ -12,14 +12,13 @@ using Orchard.Utility.Extensions;
 namespace Coevery.Entities.Controllers {
     public class FieldController : ApiController {
         private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly ISchemaUpdateService _schemaUpdateService;
+        private readonly IFieldService _fieldService;
         public FieldController(IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager, 
-            ISchemaUpdateService schemaUpdateService) {
+            ISchemaUpdateService schemaUpdateService,
+            IFieldService fieldService) {
             _contentDefinitionService = contentDefinitionService;
-            _contentDefinitionManager = contentDefinitionManager;
-            _schemaUpdateService = schemaUpdateService;
+            _fieldService = fieldService;
             T = NullLocalizer.Instance;
         }
 
@@ -33,10 +32,7 @@ namespace Coevery.Entities.Controllers {
 
         // DELETE api/metadata/field/name
         public virtual HttpResponseMessage Delete(string name, string parentname) {
-            _contentDefinitionService.RemoveFieldFromPart(name, parentname);
-            var layoutManager = new LayoutManager(_contentDefinitionManager);
-            layoutManager.DeleteField(parentname, name);
-            _schemaUpdateService.DropColumn(parentname,name);
+            _fieldService.Delete(name,parentname);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

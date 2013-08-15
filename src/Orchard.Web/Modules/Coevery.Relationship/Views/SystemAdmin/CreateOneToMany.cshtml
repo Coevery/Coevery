@@ -1,4 +1,5 @@
-﻿@using System.Web.Mvc
+﻿
+@using System.Web.Mvc
 @using System.Web.Routing
 @using Coevery.Relationship.Models
 @using Coevery.Relationship.Records
@@ -15,6 +16,23 @@
             @input
         </div>
     </section>
+}
+
+@helper DisplayDeleteOption(OneToManyDeleteOption value,HtmlString attribute){
+    <input type="radio" ng-model="recordDeleteBehavior" 
+           name="@Html.NameFor(model => model.DeleteOption)"
+           value="@value" 
+        @if (!Model.IsCreate) {          
+            if (Model.DeleteOption == value) {
+                <text> id="relation-deleteOption" </text>
+            }
+            else {
+                <text> disabled="disabled" </text>
+            }
+        }
+        else {
+            <text> @attribute </text>
+        }/>
 }
 
 <style>
@@ -36,28 +54,28 @@
 
     <div class="row-fluid">
         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post
-                                              , new {@class = "form-horizontal no-border form-fontstyle", id = "onetomany-form"})) {
+                                              , new { @class = "form-horizontal no-border form-fontstyle", id = "onetomany-form" })) {
             @Html.ValidationSummary()
-            @Html.HiddenFor(model => model.IsCreate, new {id = "IsCreate"})
+            @Html.HiddenFor(model => model.IsCreate, new { id = "IsCreate" })
 
             <fieldset>
                 <legend>General Information</legend>
                                        
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new {@class = "span12", id = "relation-name"}))
+                              , Html.TextBoxFor(model => model.Name, new { @class = "span12", id = "relation-name" }))
                     
                 @DisplayInput("Primary Entity"
                               , Html.TextBoxFor(model => model.PrimaryEntity
-                                                , new {@class = "span12 primary-entity"}))
+                                                , new { @class = "span12 primary-entity" }))
                     
                 @if (Model.IsCreate) {
                     @DisplayInput("Related Entity"
                                   , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList,
-                                                         "Please select related entity", new {@class = "span12 related-entity"}))
+                                                         "Please select related entity", new { @class = "span12 related-entity" }))
                 }
                 else {
                     @DisplayInput("Related Entity"
-                                  , Html.TextBoxFor(model => model.RelatedEntity, new {@class = "span12 related-entity", disabled = "disabled"}))
+                                  , Html.TextBoxFor(model => model.RelatedEntity, new { @class = "span12 related-entity", disabled = "disabled" }))
                 }
 
                 <section class="control-group">
@@ -66,30 +84,15 @@
                     </label>
                     <div class="controls">
                         <label class="radio">
-                            <input type="radio" ng-model="recordDeleteBehavior" 
-                                   name="@Html.NameFor(model => model.DeleteOption)"
-                                   ng-disabled="required" value="@OneToManyDeleteOption.NoAction" 
-                                @if (Model.IsCreate) {
-                                    <text> disabled="disabled" </text>
-                                }/>
+                            @DisplayDeleteOption(OneToManyDeleteOption.NoAction,new HtmlString("ng-disabled='required'"))
                             Clear the value of this field
                         </label>
                         <label class="radio">
-                            <input type="radio" ng-model="recordDeleteBehavior" 
-                                   name="@Html.NameFor(model => model.DeleteOption)"
-                                   value="@OneToManyDeleteOption.NotAllowed"
-                                @if (Model.IsCreate) {
-                                    <text> disabled="disabled" </text>
-                                }/>
+                            @DisplayDeleteOption(OneToManyDeleteOption.NotAllowed,null)
                             Don't allow delete
                         </label>
                         <label class="radio">
-                            <input type="radio" ng-model="recordDeleteBehavior" 
-                                   name="@Html.NameFor(model => model.DeleteOption)"
-                                   value="@OneToManyDeleteOption.CascadingDelete" 
-                                @if (Model.IsCreate) {
-                                    <text> disabled="disabled" </text>
-                                }/>
+                            @DisplayDeleteOption(OneToManyDeleteOption.CascadingDelete,null)
                             Cascading delete
                         </label>
                     </div>
@@ -100,7 +103,7 @@
                 <legend>Related Entity Display Option</legend>
                 
                 @DisplayInput("Related Entity List Label"
-                              , Html.TextBoxFor(model => model.RelatedListLabel, new {@class = "span12"}))
+                              , Html.TextBoxFor(model => model.RelatedListLabel, new { @class = "span12" }))
 
                 
                 <section class="control-group">
@@ -124,11 +127,11 @@
 
             </fieldset>
 
-            if (Model.IsCreate) {
+                if (Model.IsCreate) {
                 <fieldset>
                     <legend>Lookup Field</legend>
-                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new {@class = "span12"}))
-                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldName, new {@class = "span12"}))
+                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new { @class = "span12" }))
+                    @DisplayInput("Field Name", Html.TextBoxFor(model => model.FieldName, new { @class = "span12" }))
 
                     <section class="control-group">
                         <label class="control-label">
@@ -162,9 +165,9 @@
                         </div>
                     </section>
 
-                    @DisplayInput("Help Text", Html.TextAreaFor(model => model.HelpText, new {@class = "span12"}))
+                    @DisplayInput("Help Text", Html.TextAreaFor(model => model.HelpText, new { @class = "span12" }))
                 </fieldset>
-            }
+                }
         }
     </div>
 </section>
@@ -210,11 +213,14 @@
             var relatedEntityEl;
             if ("@Model.IsCreate" == "False") {
                 relatedEntityEl = $("input.related-entity");
+                setTimeout(function () {
+                    $("#relation-deleteOption").click();
+                }, 100);             
                 $("#relation-name").prop('disabled', true);
                 if ("@Model.ShowRelatedList" == "True") {
                     setTimeout(function() {
                         $("#showRelatedList").click();
-                    }, 100);
+                    }, 500);
                 }
             } else {
                 relatedEntityEl = $("select.related-entity option:selected");

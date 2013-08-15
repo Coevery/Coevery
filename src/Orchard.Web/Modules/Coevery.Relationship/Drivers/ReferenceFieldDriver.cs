@@ -4,9 +4,9 @@ using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using Coevery.Fields.Fields;
-using Coevery.Fields.Settings;
-using Coevery.Fields.ViewModels;
+using Coevery.Relationship.Fields;
+using Coevery.Relationship.Settings;
+using Coevery.Relationship.Models;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
@@ -17,7 +17,7 @@ using Orchard.Localization;
 using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Services;
 
-namespace Coevery.Fields.Drivers
+namespace Coevery.Relationship.Drivers
 {
     public class StateObject : DynamicObject
     {

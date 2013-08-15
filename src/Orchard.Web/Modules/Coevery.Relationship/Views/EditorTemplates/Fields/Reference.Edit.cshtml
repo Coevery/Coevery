@@ -1,5 +1,7 @@
-﻿@model Coevery.Fields.ViewModels.ReferenceFieldViewModel
-@using Coevery.Fields.Settings
+﻿@model Coevery.Relationship.Models.ReferenceFieldViewModel
+@using System.Web.Mvc.Html
+@using Coevery.Relationship.Settings
+@using Orchard.Mvc.Html
 @{
     var settings = Model.Field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
 }
