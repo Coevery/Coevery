@@ -19,7 +19,7 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Common.Models;
 using Orchard.Core.Containers.Models;
 using Orchard.Core.Contents;
-using Orchard.Core.Contents.Controllers;
+using Orchard.Mvc;
 using Orchard.Core.Contents.Settings;
 using Orchard.Data;
 using Orchard.DisplayManagement;
@@ -146,7 +146,6 @@ namespace Coevery.Core.Controllers {
         private IEnumerable<ContentTypeDefinition> GetCreatableTypes(bool andContainable) {
             return _contentDefinitionManager.ListTypeDefinitions().Where(ctd => ctd.Settings.GetModel<ContentTypeSettings>().Creatable && (!andContainable || ctd.Parts.Any(p => p.PartDefinition.Name == "ContainablePart")));
         }
-
 
         [HttpPost, ActionName("Create")]
         [FormValueRequired("submit.Save")]

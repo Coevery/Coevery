@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using Coevery.Projections.Services;
 using Coevery.Projections.ViewModels;
 using Orchard;
-using Orchard.Core.Contents.Controllers;
+using Orchard.Mvc;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Logging;

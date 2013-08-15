@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Coevery.Core.Controllers;
 using Coevery.Core.Models;
+using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.Entities.ViewModels;
 using Coevery.Relationship.Controllers;
@@ -21,6 +22,9 @@ using Orchard.Data;
 
 namespace Coevery.Relationship.Services {
     public class RelationshipService : IRelationshipService {
+        #region Class definition
+        private readonly string _tableFormat = "Coevery_Dynamic_ManyToManyRelationship_{0}Record";
+
         private readonly IRepository<RelationshipRecord> _relationshipRepository;
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRepository;
@@ -29,6 +33,7 @@ namespace Coevery.Relationship.Services {
         private readonly IRepository<ContentPartDefinitionRecord> _contentPartRepository;
         private readonly ISessionLocator _sessionLocator;
         private readonly IFieldService _fieldService;
+        private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
         public RelationshipService(
@@ -39,6 +44,7 @@ namespace Coevery.Relationship.Services {
             IRepository<ContentPartDefinitionRecord> contentPartRepository,
             ISessionLocator sessionLocator,
             IFieldService fieldService,
+            ISchemaUpdateService schemaUpdateService,
             IContentDefinitionManager contentDefinitionManager) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
@@ -47,10 +53,13 @@ namespace Coevery.Relationship.Services {
             _contentPartRepository = contentPartRepository;
             _contentDefinitionManager = contentDefinitionManager;
             _fieldService = fieldService;
+            _schemaUpdateService = schemaUpdateService;
             _sessionLocator = sessionLocator;
         }
 
-        #region GetMethods 
+        #endregion
+
+        #region GetMethods
         public SelectListItem[] GetFieldNames(string entityName) {
             var entity = _contentDefinitionManager.GetPartDefinition(entityName);
             return entity == null ? null
@@ -214,6 +223,8 @@ namespace Coevery.Relationship.Services {
                 ShowRelatedList = manyToMany.ShowRelatedList
             });
 
+            _schemaUpdateService.CreateTable(_tableFormat, relationship.Name);
+
             if (manyToMany.PrimaryColumnList != null) {
                 foreach (var colummn in manyToMany.PrimaryColumnList) {
                     if (!CreateColumn(colummn, primaryEntity, relationship, false)) {
@@ -234,8 +245,9 @@ namespace Coevery.Relationship.Services {
         }
         #endregion
 
+        #region Delete And Edit
         /// <summary>
-        /// Lookup field delete not completed
+        /// Delete OneToMany and ManyToMany Relationship
         /// </summary>
         /// <param name="relationshipId"></param>
         /// <returns>Error message string or null for correctly deleted</returns>
@@ -254,6 +266,7 @@ namespace Coevery.Relationship.Services {
                 }
 
                 _manyToManyRepository.Delete(manyToMany);
+                _schemaUpdateService.DropTable(_tableFormat, relationship.Name);
             }
             else if (relationship.Type == (byte) RelationshipType.OneToMany) {
                 var oneToMany = _oneToManyRepository.Get(record => record.Relationship.Id == relationshipId);
@@ -342,6 +355,7 @@ namespace Coevery.Relationship.Services {
             }
             return null;
         }
+        #endregion
 
         #region PrivateMethods
         private RelationshipRecord CreateRelation(RelationshipRecord relationship) {

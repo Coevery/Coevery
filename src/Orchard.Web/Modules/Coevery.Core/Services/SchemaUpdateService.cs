@@ -21,9 +21,11 @@ namespace Coevery.Core.Services
 {
     public interface ISchemaUpdateService:IDependency {
         void CreateTable(string tableName);
+        void CreateTable(string formatString, string tableName);
         void CreateColumn(string tableName, string columnName, string columnType);
         void DropColumn(string tableName, string columnName);
         void DropTable(string tableName);
+        void DropTable(string formatString, string tableName);
     }
 
     public class SchemaUpdateService : ISchemaUpdateService
@@ -32,7 +34,7 @@ namespace Coevery.Core.Services
         private readonly SchemaBuilder _schemaBuilder;
         private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
         private readonly ISessionFactoryHolder _sessionFactoryHolder;
-        private string tableFormat = "Coevery_DynamicTypes_{0}PartRecord";
+        private readonly string _tableFormat = "Coevery_DynamicTypes_{0}PartRecord";
         public SchemaUpdateService(IDataMigrationInterpreter interpreter, 
             IDynamicAssemblyBuilder dynamicAssemblyBuilder, 
             ISessionFactoryHolder sessionFactoryHolder)
@@ -45,14 +47,17 @@ namespace Coevery.Core.Services
 
         private bool CheckTableExists(string tableName)
         {
+            return CheckTableExists(_tableFormat,tableName);
+        }
+
+        private bool CheckTableExists(string formatString,string tableName) {
             var factory = _sessionFactoryHolder.GetSessionFactory();
-            bool result = false;
-            using (var session = factory.OpenSession())
-            {
+            var result = false;
+            using (var session = factory.OpenSession()) {
                 var connection = session.Connection;
                 var dialect = Dialect.GetDialect(_sessionFactoryHolder.GetConfiguration().Properties);
                 var meta = dialect.GetDataBaseSchema((DbConnection)connection);
-                var tables = meta.GetTables(null, null, string.Format(tableFormat, tableName), null);
+                var tables = meta.GetTables(null, null, string.Format(formatString, tableName), null);
                 result = tables.Rows.Count > 0;
             }
             return result;
@@ -67,7 +72,7 @@ namespace Coevery.Core.Services
                 var connection = session.Connection;
                 var dialect = Dialect.GetDialect(_sessionFactoryHolder.GetConfiguration().Properties);
                 var meta = dialect.GetDataBaseSchema((DbConnection)connection);
-                var tables = meta.GetTables(null, null, string.Format(tableFormat, tableName), null);
+                var tables = meta.GetTables(null, null, string.Format(_tableFormat, tableName), null);
                 if (tables.Rows.Count > 0)
                 {
                     var tableInfo = meta.GetTableMetadata(tables.Rows[0], true);
@@ -77,22 +82,36 @@ namespace Coevery.Core.Services
             }
             return result;
         }
-        
 
         public  void CreateTable(string tableName) {
             bool result = CheckTableExists(tableName);
             if (result) return;
-            _schemaBuilder.CreateTable(string.Format(tableFormat, tableName), 
+            _schemaBuilder.CreateTable(string.Format(_tableFormat, tableName), 
                 table => table.Column<int>("Id", column => column.PrimaryKey())
                 .Column<int>("ContentItemRecord_id"));
             GenerationDynmicAssembly();
         }
 
+        public void CreateTable(string formatString, string tableName) {
+            bool result = CheckTableExists(formatString,tableName);
+            if (result) return;
+            _schemaBuilder.CreateTable(string.Format(formatString, tableName),
+                table => table.Column<int>("Id", column => column.PrimaryKey())
+                .Column<int>("PrimaryEntry_Id", column => column.NotNull())
+                .Column<int>("RelatedEntry_Id", column => column.NotNull()));
+        }
+
         public void DropTable(string tableName) {
             bool result = CheckTableExists(tableName);
             if (!result) return;
-            _schemaBuilder.DropTable(string.Format(tableFormat, tableName));
+            _schemaBuilder.DropTable(string.Format(_tableFormat, tableName));
             GenerationDynmicAssembly();
+        }
+
+        public void DropTable(string formatString, string tableName) {
+            var result = CheckTableExists(formatString, tableName);
+            if (!result) return;
+            _schemaBuilder.DropTable(string.Format(formatString, tableName));
         }
 
         public  void CreateColumn(string tableName, string columnName, string columnType)
@@ -100,7 +119,7 @@ namespace Coevery.Core.Services
             bool result = CheckTableExists(tableName);
             if (!result) {
 
-                _schemaBuilder.CreateTable(string.Format(tableFormat, tableName), 
+                _schemaBuilder.CreateTable(string.Format(_tableFormat, tableName), 
                     table => 
                         table.Column<int>("Id", column => column.PrimaryKey())
                         .Column<int>("ContentItemRecord_id"));
@@ -114,7 +133,7 @@ namespace Coevery.Core.Services
                 type = Nullable.GetUnderlyingType(type);
             }
             var dbType = SchemaUtils.ToDbType(type);
-            _schemaBuilder.AlterTable(string.Format(tableFormat, tableName), 
+            _schemaBuilder.AlterTable(string.Format(_tableFormat, tableName), 
                 table => table.AddColumn(columnName, dbType));
             GenerationDynmicAssembly();
         }
@@ -122,7 +141,7 @@ namespace Coevery.Core.Services
         public void DropColumn(string tableName, string columnName) {
             bool result = CheckTableColumnExists(tableName, columnName);
             if (!result) return;
-            _schemaBuilder.AlterTable(string.Format(tableFormat, tableName), table => table.DropColumn(columnName));
+            _schemaBuilder.AlterTable(string.Format(_tableFormat, tableName), table => table.DropColumn(columnName));
             GenerationDynmicAssembly();
         }
 
