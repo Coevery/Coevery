@@ -105,7 +105,6 @@ namespace Orchard.Data {
             var sessionFactory = _sessionFactoryHolder.GetSessionFactory();
             Logger.Information("Opening database session");
             _session = sessionFactory.OpenSession(new OrchardSessionInterceptor(_interceptors.ToArray(), Logger));
-            _session.FlushMode = FlushMode.Commit;
         }
 
         class OrchardSessionInterceptor : IInterceptor {
