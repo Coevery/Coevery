@@ -37,36 +37,5 @@ namespace Coevery.Fields.Settings {
             DisplayLines = 1;
             DependencyMode = DependentType.None;
         }
-
-        public bool CheckValid(IUpdateModel updateModel, Localizer t, int itemCount, bool isCreating) {
-            //Only check when creating
-            if (isCreating && (DefaultValue > itemCount || DefaultValue < 0)) {
-                updateModel.AddModelError("OptionSetSettings", t("DefaultValue is out of range."));
-                return false;
-            }
-
-            if (itemCount <= 0) {
-                updateModel.AddModelError("OptionSetSettings", t("No valid label exists."));
-                return false;
-            }
-
-            //Setting value range
-            if (SelectCount < 1 || SelectCount > itemCount) {
-                updateModel.AddModelError("OptionSetSettings", t("SelectCount is out of range."));
-                return false;
-            }
-            if (DisplayLines < 1 || DisplayLines > itemCount) {
-                updateModel.AddModelError("OptionSetSettings", t("DisplayLines is out of range."));
-                return false;
-            }
-
-            //Display option and select count match
-            if ((DisplayOption == SelectionMode.Checkbox && SelectCount == 1)
-                || (DisplayOption == SelectionMode.Radiobutton && SelectCount > 1)) {
-                    updateModel.AddModelError("OptionSetSettings", t("The display option and select count don't match."));
-                return false;
-            }
-            return true;
-        }
     }
 }

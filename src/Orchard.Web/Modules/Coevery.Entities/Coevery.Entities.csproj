@@ -104,6 +104,7 @@
     <Compile Include="Services\IOptionItemService.cs" />
     <Compile Include="Services\OptionItemService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
+    <Compile Include="Services\UpdateModelWithInitializer.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs">
       <SubType>Code</SubType>
     </Compile>

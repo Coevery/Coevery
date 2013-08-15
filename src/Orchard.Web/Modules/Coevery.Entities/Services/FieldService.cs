@@ -59,26 +59,23 @@ namespace Coevery.Entities.Services {
             if (clientSettings.IsSystemField) {
                 updateModel.AddModelError("IsSystemField", T("Can't modify the IsSystemField field."));
             }
-
-            _contentDefinitionService.CreateFieldCheck(entityName, viewModel.Name, viewModel.FieldTypeName, updateModel);
         }
 
-        public void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
-            try {
-                _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, entityName);
-                _contentDefinitionService.CreateField(entityName, viewModel.Name, updateModel);
-                _schemaUpdateService.CreateColumn(entityName, viewModel.Name, viewModel.FieldTypeName);
-            }
-            catch (Exception ex) {
-                updateModel.AddModelError("ErrorInfo", T("Add field failed."+ex.Message));
-            }
-        }
+        //public void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
+        //    try {
+        //        _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, entityName);
+        //        _contentDefinitionService.CreateField(entityName, viewModel.Name, updateModel);
+        //        _schemaUpdateService.CreateColumn(entityName, viewModel.Name, viewModel.FieldTypeName);
+        //    }
+        //    catch (Exception ex) {
+        //        updateModel.AddModelError("ErrorInfo", T("Add field failed."));
+        //    }
+        //}
 
         public void Delete(string name, string parentname) {
             _contentDefinitionService.RemoveFieldFromPart(name, parentname);
             var layoutManager = new LayoutManager(_contentDefinitionManager);
             layoutManager.DeleteField(parentname, name);
             _schemaUpdateService.DropColumn(parentname, name);
-        }
     }
 }

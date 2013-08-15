@@ -31,9 +31,5 @@ namespace Coevery.Fields.Settings {
 
             yield return DefinitionTemplate(model);
         }
-
-        public override IEnumerable<TemplateViewModel> PartFieldEditorCreate(ContentPartFieldDefinitionBuilder builder, string partName, IUpdateModel updateModel) {
-            return PartFieldEditorUpdate(builder, updateModel);
-        }
     }
 }

@@ -26,7 +26,6 @@ namespace Coevery.Entities.Controllers {
     public class SystemAdminController : Controller, IUpdateModel {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
-        //private readonly IFieldService _fieldService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IFieldService _fieldService;
@@ -34,7 +33,6 @@ namespace Coevery.Entities.Controllers {
         public SystemAdminController(IOrchardServices orchardServices
             ,IContentDefinitionService contentDefinitionService
             , ISchemaUpdateService schemaUpdateService
-            //,IFieldService fieldService
             ,IContentDefinitionManager contentDefinitionManager
             ,IContentDefinitionEditorEvents contentDefinitionEditorEvents, 
             IFieldService fieldService) {
@@ -42,7 +40,6 @@ namespace Coevery.Entities.Controllers {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
-            //_fieldService = fieldService;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             _fieldService = fieldService;

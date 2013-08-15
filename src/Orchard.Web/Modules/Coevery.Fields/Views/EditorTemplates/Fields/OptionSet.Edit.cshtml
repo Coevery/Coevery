@@ -27,7 +27,7 @@
         selectAttributes.Add("size", displaySize);
 
         if (multiple != null) {
-        @Html.ListBoxFor(m => m.OptionValue, Model.Items, selectAttributes)
+            @Html.ListBoxFor(m => m.OptionValue, Model.Items, selectAttributes)
         }
         else {
         @Html.DropDownListFor(x => x.OptionValue, Model.Items, selectAttributes)
@@ -36,25 +36,25 @@
     else if (settings.DisplayOption == SelectionMode.Radiobutton) {
         foreach (var item in Model.Items) {
             var itemId = Model.Name + item.Value;
-        <label class="radio" for="@itemId">
+            <label class="radio" for="@itemId">
             <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" 
                     @if (item.Selected) {
                         <text> checked </text>
                     }/>
-            @T(item.Text)
-        </label>
+                @T(item.Text)
+            </label>
         }
     }
     else if (settings.DisplayOption == SelectionMode.Checkbox) {
         foreach (var item in Model.Items) {
             var itemId = Model.Name + item.Value;
-        <label class="checkbox" for="@itemId">
-            <input type="checkbox" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" 
+            <label class="checkbox" for="@itemId">
+                <input type="checkbox" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" 
                     @if (item.Selected) {
                         <text> checked </text>
                     } />
-            @T(item.Text)
-        </label>
+                @T(item.Text)
+            </label>
         }
     }
     @Html.ValidationMessageFor(m => m.OptionValue)
