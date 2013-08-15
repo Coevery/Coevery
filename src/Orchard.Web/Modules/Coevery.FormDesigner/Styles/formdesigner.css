@@ -1,4 +1,10 @@
-﻿[fd-field].selected {
+﻿/*New*/
+[fd-row] {
+    position: relative;
+}
+
+/*Old*/
+[fd-field].selected {
     background-color: #c7e7af;
 }
 
