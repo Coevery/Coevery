@@ -94,16 +94,12 @@
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Permissions.cs" />
-    <Compile Include="Records\FieldDependencyRecord.cs" />
-    <Compile Include="Records\OptionItemRecord.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\CustomFieldAttribute.cs" />
     <Compile Include="Services\FieldService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Services\IFieldService.cs" />
-    <Compile Include="Services\IOptionItemService.cs" />
-    <Compile Include="Services\OptionItemService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs">
@@ -142,6 +138,8 @@
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\services\entitydataservice.js" />
     <Content Include="Scripts\services\fielddataservice.js" />
+    <Content Include="Scripts\services\fielddependencydataservice.js" />
+    <Content Include="Scripts\services\optionitemsdataservice.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
@@ -182,6 +180,7 @@
     <Folder Include="Drivers\" />
     <Folder Include="Handlers\" />
     <Folder Include="Models\" />
+    <Folder Include="Records\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />

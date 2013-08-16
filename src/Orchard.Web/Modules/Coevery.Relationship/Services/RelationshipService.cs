@@ -371,7 +371,7 @@ namespace Coevery.Relationship.Services {
             _relationshipColumnRepository.Create(new RelationshipColumnRecord {
                 Column = field,
                 IsRelatedList = isRelated,
-                Relationship = relationship
+                RelationshipRecord = relationship
             });
             return true;
         }

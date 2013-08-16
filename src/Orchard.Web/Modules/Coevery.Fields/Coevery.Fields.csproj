@@ -84,8 +84,6 @@
     <Compile Include="Services\FieldDependencyService.cs" />
     <Compile Include="Services\IOptionItemService.cs" />
     <Compile Include="Services\OptionItemService.cs" />
-    <Content Include="Scripts\services\optionitemsdataservice.js" />
-    <Content Include="Scripts\services\fielddependencydataservice.js" />
     <Content Include="Styles\media-gallery-admin.css" />
     <Content Include="Styles\datetime.css" />
     <Content Include="Styles\Images\move.gif" />
@@ -187,6 +185,7 @@
     <Folder Include="Handlers\" />
     <Folder Include="Models\" />
     <Folder Include="Scripts\controllers\" />
+    <Folder Include="Scripts\services\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Views\SystemAdmin\" />
   </ItemGroup>

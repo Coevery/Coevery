@@ -19,6 +19,7 @@ namespace Coevery.Relationship {
                     .Column<int>("Relationship_Id", column => column.NotNull())
                     .Column<int>("Column_Id", column => column.NotNull())
                     .Column<bool>("IsRelatedList", column => column.NotNull())
+                    .Column<int>("RelationshipRecord_Id")
                 );
 
             SchemaBuilder.CreateTable("OneToManyRelationshipRecord",
