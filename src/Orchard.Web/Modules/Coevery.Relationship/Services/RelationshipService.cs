@@ -47,7 +47,8 @@ namespace Coevery.Relationship.Services {
             ISessionLocator sessionLocator,
             IFieldService fieldService,
             IContentDefinitionManager contentDefinitionManager, 
-            IContentDefinitionService contentDefinitionService) {
+            IContentDefinitionService contentDefinitionService, 
+            ISchemaUpdateService schemaUpdateService) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
             _manyToManyRepository = manyToManyRepository;

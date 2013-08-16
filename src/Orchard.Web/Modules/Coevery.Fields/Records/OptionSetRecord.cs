@@ -8,7 +8,7 @@ using Orchard.Data.Conventions;
 namespace Coevery.Fields.Records {
     public class OptionSetRecord {
         public virtual int Id { get; set; }
-        public string FieldName { get; set; }
+        public virtual string FieldName { get; set; }
 
         [CascadeAllDeleteOrphan]
         public virtual IList<OptionItemRecord> OptionItemRecords { get; set; }
