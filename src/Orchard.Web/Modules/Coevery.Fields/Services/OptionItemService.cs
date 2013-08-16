@@ -3,86 +3,111 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Coevery.Fields.Records;
+using Coevery.Fields.Settings;
 using Orchard;
+using Orchard.Logging;
+using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 
 namespace Coevery.Fields.Services {
     public class OptionItemService : IOptionItemService {
-        private readonly IRepository<OptionItemRecord> _optionItemRepository;
-        private readonly IRepository<ContentPartDefinitionRecord> _partDefinitionRepository;
+        private readonly IRepository<OptionSetRecord> _optionSetRepository;
+        private readonly IRepository<OptionItemRecord> _optionItemRepository; 
+        private readonly IRepository<SelectedOptionSetRecord> _selectedOptionSetRepository;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
 
-        public OptionItemService(IRepository<OptionItemRecord> optionItemRepository,
-            IRepository<ContentPartDefinitionRecord> partDefinitionRepository) {
+        public OptionItemService(IRepository<OptionSetRecord> optionSetRepository,
+            IRepository<SelectedOptionSetRecord> selectedOptionSetRepository,
+            IRepository<OptionItemRecord> optionItemRepository,
+            IContentDefinitionManager contentDefinitionManager) {
+            _optionSetRepository = optionSetRepository;
+            _selectedOptionSetRepository = selectedOptionSetRepository;
+            _contentDefinitionManager = contentDefinitionManager;
             _optionItemRepository = optionItemRepository;
-            _partDefinitionRepository = partDefinitionRepository;
+            Logger = NullLogger.Instance;
         }
 
-        private void ResetDefault(ContentPartFieldDefinitionRecord fieldDefinitionRecord) {
-            var defaultItem = _optionItemRepository.Table.SingleOrDefault(x => x.ContentPartFieldDefinitionRecord == fieldDefinitionRecord && x.IsDefault);
-            if (defaultItem != null) {
-                defaultItem.IsDefault = false;
-                _optionItemRepository.Update(defaultItem);
+        public ILogger Logger { get; set; }
+
+        private int GetOptionSetId(string entityName, string fieldName) {
+            var field = _contentDefinitionManager.GetPartDefinition(entityName).Fields.SingleOrDefault(f => f.Name == fieldName);
+
+            if (field != null && (field.FieldDefinition.Name == "OptionSetField")) {
+                return field.Settings.GetModel<OptionSetFieldSettings>().OptionSetId;
             }
+            return -1;
         }
 
+        private void ResetDefault(OptionSetRecord setRecord) {
+            var defaultItem = setRecord.OptionItemRecords.Where(x=> x.IsDefault);
+            if (!defaultItem.Any()) {
+                return;
+            }
+            foreach (var item in defaultItem) {
+                item.IsDefault = false;
+            }
+            _optionSetRepository.Update(setRecord);
+        }
+
+        #region OptionItem&OptionSet Methods
         public bool EditItem(int id, OptionItemRecord optionItem) {
-            var optionItemRecord = _optionItemRepository.Table.SingleOrDefault(x => x.Id == id);
-            if (optionItemRecord == null) {
+            var optionSet = (from set in _optionSetRepository.Table
+                             from item in set.OptionItemRecords
+                             where item.Id == id
+                             select set).SingleOrDefault();
+            if (optionSet == null || optionSet.Id == 0) {
                 return false;
             }
+            var optionItemRecord = optionSet.OptionItemRecords.SingleOrDefault(x => x.Id == id);
             if (optionItem.IsDefault) {
-                ResetDefault(optionItemRecord.ContentPartFieldDefinitionRecord);
+                ResetDefault(optionSet);
             }           
             optionItemRecord.Value = optionItem.Value;
             optionItemRecord.IsDefault = optionItem.IsDefault;
-            _optionItemRepository.Update(optionItemRecord);
+            _optionSetRepository.Update(optionSet);
             return true;
         }
 
         public bool CreateItem(string entityName, string fieldName, OptionItemRecord optionItem) {
-            var partDefinition = _partDefinitionRepository.Table.SingleOrDefault(x => x.Name == entityName);
-            if (partDefinition == null) {
+            var setId = GetOptionSetId(entityName, fieldName);
+            if (setId <= 0) {
                 return false;
             }
-            var fieldDefinitionRecord = partDefinition.ContentPartFieldDefinitionRecords.SingleOrDefault(x => x.Name == fieldName);
-            if (fieldDefinitionRecord == null) {
-                return false;
-            }
-            optionItem.ContentPartFieldDefinitionRecord = fieldDefinitionRecord;
+            var optionSet = _optionSetRepository.Get(setId);
             if (optionItem.IsDefault) {
-                ResetDefault(fieldDefinitionRecord);
+                ResetDefault(optionSet);
             } 
-            _optionItemRepository.Create(optionItem);
+            optionSet.OptionItemRecords.Add(optionItem);
+            _optionSetRepository.Update(optionSet);
             return true;
         }
 
         public bool DeleteItem(int id) {
-            var optionItem = _optionItemRepository.Table.SingleOrDefault(x => x.Id == id);
-            if (optionItem == null) {
+            var optionSet = (from set in _optionSetRepository.Table
+                             from item in set.OptionItemRecords
+                             where item.Id == id
+                             select set).SingleOrDefault();
+            if (optionSet == null || optionSet.Id == 0) {
                 return false;
             }
-            _optionItemRepository.Delete(optionItem);
+            optionSet.OptionItemRecords.Remove(optionSet.OptionItemRecords.Single(item => item.Id == id));
+            _optionSetRepository.Update(optionSet);
             return true;
         }
 
         public object GetItemsForField(string entityName, string fieldName) {
-            var partDefinition = _partDefinitionRepository.Table.SingleOrDefault(x => x.Name == entityName);
-            if (partDefinition == null) {
+            var setId = GetOptionSetId(entityName, fieldName);
+            if(setId <=0) {
                 return null;
             }
-            var fieldDefinitionRecord = partDefinition.ContentPartFieldDefinitionRecords.SingleOrDefault(x => x.Name == fieldName);
-            if (fieldDefinitionRecord == null) {
-                return null;
-            }
-            var items = _optionItemRepository.Table.Where(x => x.ContentPartFieldDefinitionRecord == fieldDefinitionRecord).Select(x => new { x.Id, x.IsDefault, x.Value });
-            return items;
+            return setId <= 0 ? null
+                :_optionSetRepository.Get(setId).OptionItemRecords.Select(x => new { x.Id, x.IsDefault, x.Value });
         }
 
-        public List<SelectListItem> GetItemsForField(int fieldId) {
+        public List<SelectListItem> GetItemsForField(int setId) {
 
-            return (from i in _optionItemRepository.Table
-                    where i.ContentPartFieldDefinitionRecord.Id == fieldId
+            return (from i in _optionSetRepository.Get(setId).OptionItemRecords
                     select new SelectListItem {
                         Value = i.Id.ToString(),
                         Text = i.Value,
@@ -90,46 +115,90 @@ namespace Coevery.Fields.Services {
                     }).ToList();
         }
 
-        public void DeleteItemsForField(string fieldName, string entityName) {
-            var field = _partDefinitionRepository.Table.Single(x => x.Name == entityName)
-                                                 .ContentPartFieldDefinitionRecords.Single(f => f.Name == fieldName);
-            if (field != null && field.ContentFieldDefinitionRecord.Name == "SelectField") {
-                foreach (var item in (from option in _optionItemRepository.Table
-                                      where option.ContentPartFieldDefinitionRecord == field
-                                      select option)) {
-                    _optionItemRepository.Delete(item);
-                }
-            }          
+        public void DeleteOptionSetForField(string fieldName, string entityName) {
+            var setId = GetOptionSetId(entityName, fieldName);
+            if (setId <= 0) {
+                return;
+            }
+            _optionSetRepository.Delete(_optionSetRepository.Get(setId));        
         }
 
-        public int GetItemCountForField(int fieldId) {
-            return (from i in _optionItemRepository.Table
-                    where i.ContentPartFieldDefinitionRecord.Id == fieldId
-                    select i).Count();
+        public int GetItemCountForField(int setId) {
+            return _optionSetRepository.Get(setId).OptionItemRecords.Count;
         }
 
-        public int InitializeField(string entityName, string fieldName, string[] labels, int defaultValue) {
-            var entity = _partDefinitionRepository.Table.SingleOrDefault(x => x.Name == entityName);
-            if (entity == null) {
-                return -1;
-            }
-
-            var field = entity.ContentPartFieldDefinitionRecords.SingleOrDefault(x => x.Name == fieldName);
-            if (field == null || field.Id == 0) {
-                return -1;
-            }
-
+        public int InitializeField(string fieldName, string[] labels, int defaultValue) {
+            var optionSet = new OptionSetRecord {
+                FieldName = fieldName,
+                OptionItemRecords = new List<OptionItemRecord>()
+            };
             var idIndex = 0;
             foreach (var label in labels) {
                 idIndex++;
-                var option = new OptionItemRecord {
+                optionSet.OptionItemRecords.Add(new OptionItemRecord {
                     Value = label,
-                    ContentPartFieldDefinitionRecord = field,
                     IsDefault = (idIndex == defaultValue)
-                };
-                _optionItemRepository.Create(option);
+                });
             }
-            return field.Id;
+            _optionSetRepository.Create(optionSet);
+            return optionSet.Id;
         }
+
+        #endregion
+
+        #region SelectedOption & SelectedOptionSet Methods
+        public int CreateSelectedSet(string[] optionIds) {
+            int[] selectedValues;
+            try {
+                selectedValues = Array.ConvertAll(optionIds, int.Parse);
+            }
+            catch (Exception ex) {
+                Logger.Log(LogLevel.Error, ex , null);
+                return -1;
+            }
+            var selectedSet = new SelectedOptionSetRecord {
+                SelectedOptionRecords = new List<SelectedOptionRecord>()
+            };
+            try {
+                foreach (var value in selectedValues) {
+                    selectedSet.SelectedOptionRecords.Add(new SelectedOptionRecord {
+                        OptionItem = _optionItemRepository.Get(value)
+                    });
+                }
+            }
+            catch (Exception ex) {
+                Logger.Log(LogLevel.Error, ex, null);
+                return -1;
+            }
+            _selectedOptionSetRepository.Create(selectedSet);
+            return selectedSet.Id;
+        }
+
+        public void DeleteSet(int setId) {
+            if (setId == 0) {
+                return;
+            }
+
+            var setRecord = _selectedOptionSetRepository.Get(setId);
+            if (setRecord == null || setRecord.Id == 0) {
+                return;
+            }
+            _selectedOptionSetRepository.Delete(setRecord);
+        }
+
+        public int AlterSet(int setId, string[] optionIds) {
+            DeleteSet(setId);
+            return CreateSelectedSet(optionIds);
+        }
+
+        public string[] GetSelectedSet(int setId) {
+            var setRecord = _selectedOptionSetRepository.Get(setId);
+            if (setRecord == null || setRecord.Id == 0) {
+                return null;
+            }
+            return (from option in setRecord.SelectedOptionRecords
+                    select option.OptionItem.Id.ToString("D")).ToArray();
+        }
+        #endregion
     }
 }

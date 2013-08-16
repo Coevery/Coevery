@@ -383,18 +383,18 @@ namespace Coevery.Relationship.Services {
             return relation != null && relation.Id != 0 ? relation.Id : -1;
         }
 
-        private bool AlterColumns(int relationshipId, string[] primaryList, string[] relatedList) {
-            var columnStore = _sessionLocator.For(typeof(RelationshipColumnRecord));
-            var fieldStore = _sessionLocator.For(typeof(ContentPartFieldDefinitionRecord));
-            return true;
-        }
+        //private bool AlterColumns(int relationshipId, string[] primaryList, string[] relatedList) {
+        //    var columnStore = _sessionLocator.For(typeof(RelationshipColumnRecord));
+        //    var fieldStore = _sessionLocator.For(typeof(ContentPartFieldDefinitionRecord));
+        //    return true;
+        //}
 
-        private bool AlterColumns(int relationshipId, string[] columnList, bool isRelated) {
-            var columnStore = _sessionLocator.For(typeof (RelationshipColumnRecord));
-            var fieldStore = _sessionLocator.For(typeof (ContentPartFieldDefinitionRecord));
-            var createStringArray = "CREATE TYPE string_list AS TABLE (name nvarchar(40) PRIMARY KEY) "; 
-            return true;
-        }
+        //private bool AlterColumns(int relationshipId, string[] columnList, bool isRelated) {
+        //    var columnStore = _sessionLocator.For(typeof (RelationshipColumnRecord));
+        //    var fieldStore = _sessionLocator.For(typeof (ContentPartFieldDefinitionRecord));
+        //    var createStringArray = "CREATE TYPE string_list AS TABLE (name nvarchar(40) PRIMARY KEY) "; 
+        //    return true;
+        //}
 
         private void DeleteColumns(int relationshipId) {
             var columnStore = _sessionLocator.For(typeof (RelationshipColumnRecord));

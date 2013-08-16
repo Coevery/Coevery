@@ -13,8 +13,13 @@ namespace Coevery.Fields.Services {
         bool DeleteItem(int id);
         object GetItemsForField(string entityName, string fieldName);
         List<SelectListItem> GetItemsForField(int fieldId);
-        void DeleteItemsForField(string fieldName, string entityName);
+        void DeleteOptionSetForField(string fieldName, string entityName);
         int GetItemCountForField(int fieldId);
-        int InitializeField(string entityName, string fieldName, string[] labels, int defaultValue);
+        int InitializeField(string fieldName, string[] labels, int defaultValue);
+
+        int CreateSelectedSet(string[] optionIds);
+        int AlterSet(int setId, string[] optionIds);
+        void DeleteSet(int setId);
+        string[] GetSelectedSet(int setId);
     }
 }

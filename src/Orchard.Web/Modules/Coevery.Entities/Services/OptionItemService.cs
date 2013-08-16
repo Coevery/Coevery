@@ -93,7 +93,7 @@ namespace Coevery.Entities.Services {
         public void DeleteItemsForField(string fieldName, string entityName) {
             var field = _partDefinitionRepository.Table.Single(x => x.Name == entityName)
                                                  .ContentPartFieldDefinitionRecords.Single(f => f.Name == fieldName);
-            if (field != null && field.ContentFieldDefinitionRecord.Name == "SelectField") {
+            if (field != null && field.ContentFieldDefinitionRecord.Name == "OptionSetField") {
                 foreach (var item in (from option in _optionItemRepository.Table
                                       where option.ContentPartFieldDefinitionRecord == field
                                       select option)) {

@@ -121,7 +121,7 @@ namespace Coevery.Fields.Services {
             if (dependent == null) {
                 return false;
             }
-            dependent.Settings["SelectFieldSettings.DependencyMode"] = DependentType.Dependent.ToString();
+            dependent.Settings["OptionSetFieldSettings.DependencyMode"] = DependentType.Dependent.ToString();
             _contentDefinitionManager.StorePartDefinition(part);
             return true;
         }

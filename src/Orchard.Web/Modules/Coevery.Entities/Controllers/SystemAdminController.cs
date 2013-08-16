@@ -514,7 +514,7 @@ namespace Coevery.Entities.Controllers {
             {
                 switch (field.FieldDefinition.Name)
                 {
-                    case "SelectField":
+                    case "OptionSetField":
                         controlFields.Add(field);
                         dependentFields.Add(field);
                         break;

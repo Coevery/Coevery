@@ -2,7 +2,7 @@
 @model Coevery.Entities.ViewModels.EditPartFieldViewModel
 @{
     var fieldSettingsPrefix = Model.FieldDefinition.Name + "Settings.";
-    bool hasItems = Model.FieldDefinition.Name == "SelectField";
+    bool hasItems = Model.FieldDefinition.Name == "OptionSetField";
     bool isSystemField = bool.Parse(Model.Settings[fieldSettingsPrefix + "IsSystemField"]);
 }
 

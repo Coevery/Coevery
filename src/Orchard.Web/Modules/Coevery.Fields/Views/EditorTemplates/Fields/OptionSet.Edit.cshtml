@@ -1,10 +1,10 @@
-﻿@model Coevery.Fields.Fields.SelectField
+﻿@model Coevery.Fields.Fields.OptionSetField
 @using Orchard.Utility.Extensions;
 @using Coevery.Fields.Services;
 @using Coevery.Fields.Settings;
 
 @{
-    var settings = Model.PartFieldDefinition.Settings.GetModel<SelectFieldSettings>();
+    var settings = Model.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
     var multiple = (settings.SelectCount > 1) ? "multiple" : null;
     var required = settings.Required ? "required" : null;
     var isControl = settings.DependencyMode == DependentType.Control ? "controls controlField" : "controls";
@@ -30,14 +30,14 @@
         @Html.ListBoxFor(m => m.OptionValue, Model.Items, selectAttributes)
         }
         else {
-        @Html.DropDownListFor(x => x.Value, Model.Items, selectAttributes)
+        @Html.DropDownListFor(x => x.OptionValue, Model.Items, selectAttributes)
         }
     }
     else if (settings.DisplayOption == SelectionMode.Radiobutton) {
         foreach (var item in Model.Items) {
             var itemId = Model.Name + item.Value;
         <label class="radio" for="@itemId">
-            <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.Value)" value="@item.Value" 
+            <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" 
                     @if (item.Selected) {
                         <text> checked </text>
                     }/>
@@ -57,7 +57,7 @@
         </label>
         }
     }
-    @Html.ValidationMessageFor(m => m.Value)
+    @Html.ValidationMessageFor(m => m.OptionValue)
 
 </div>
    

@@ -1,4 +1,4 @@
-﻿@model Coevery.Fields.Settings.SelectFieldSettings
+﻿@model OptionSetFieldSettings
 @using Coevery.Fields.Settings;
 
 @if (!Request.Url.ToString().Contains("/Fields/Edit")) {
@@ -21,7 +21,7 @@
     </section>
 }
 else {
-    @Html.HiddenFor(model => model.FieldSettingId)
+    @Html.HiddenFor(model => model.OptionSetId)
 }
 
 <section class="control-group data-row">

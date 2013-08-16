@@ -15,7 +15,7 @@ namespace Coevery.Fields.Settings {
         ControlAndDependent
     }
 
-    public class SelectFieldSettings : FieldSettings {
+    public class OptionSetFieldSettings : FieldSettings {
         public static readonly string[] LabelSeperator = new string[] { ";", "\r\n" };
 
         public int DisplayLines { get; set; }
@@ -24,13 +24,13 @@ namespace Coevery.Fields.Settings {
 
         //Dependency related
         public DependentType DependencyMode { get; set; }
-        public int FieldSettingId { get; set; } 
+        public int OptionSetId { get; set; } 
 
         //Only used when creating
         public string LabelsStr { get; set; }
         public int DefaultValue { get; set; }
 
-        public SelectFieldSettings() {
+        public OptionSetFieldSettings() {
             DisplayOption = SelectionMode.DropDown;
             DefaultValue = 0;
             SelectCount = 1;
@@ -41,29 +41,29 @@ namespace Coevery.Fields.Settings {
         public bool CheckValid(IUpdateModel updateModel, Localizer t, int itemCount, bool isCreating) {
             //Only check when creating
             if (isCreating && (DefaultValue > itemCount || DefaultValue < 0)) {
-                updateModel.AddModelError("SelectSettings", t("DefaultValue is out of range."));
+                updateModel.AddModelError("OptionSetSettings", t("DefaultValue is out of range."));
                 return false;
             }
 
             if (itemCount <= 0) {
-                updateModel.AddModelError("SelectSettings", t("No valid label exists."));
+                updateModel.AddModelError("OptionSetSettings", t("No valid label exists."));
                 return false;
             }
 
             //Setting value range
             if (SelectCount < 1 || SelectCount > itemCount) {
-                updateModel.AddModelError("SelectSettings", t("SelectCount is out of range."));
+                updateModel.AddModelError("OptionSetSettings", t("SelectCount is out of range."));
                 return false;
             }
             if (DisplayLines < 1 || DisplayLines > itemCount) {
-                updateModel.AddModelError("SelectSettings", t("DisplayLines is out of range."));
+                updateModel.AddModelError("OptionSetSettings", t("DisplayLines is out of range."));
                 return false;
             }
 
             //Display option and select count match
             if ((DisplayOption == SelectionMode.Checkbox && SelectCount == 1)
                 || (DisplayOption == SelectionMode.Radiobutton && SelectCount > 1)) {
-                updateModel.AddModelError("SelectSettings", t("The display option and select count don't match."));
+                    updateModel.AddModelError("OptionSetSettings", t("The display option and select count don't match."));
                 return false;
             }
             return true;

@@ -70,7 +70,7 @@ namespace Coevery.Entities.Services {
                 _schemaUpdateService.CreateColumn(entityName, viewModel.Name, viewModel.FieldTypeName);
             }
             catch (Exception ex) {
-                updateModel.AddModelError("ErrorInfo", T("Add field failed."));
+                updateModel.AddModelError("ErrorInfo", T("Add field failed."+ex.Message));
             }
         }
 
