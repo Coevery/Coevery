@@ -26,8 +26,17 @@ angular.module('coevery.layout', [])
             restrict: 'E',
             transclude: true,
             link: function (scope, element, attrs) {
-                var columnCount = parseInt(element.parents('[fd-section]:first').attr('section-columns'));
-                var width = 12 / columnCount;
+                var row = element.parent(),
+                    width;
+                if (row.hasClass('merged-row')) {
+                    width = 12;
+                } else {
+                    var widths = $.map(row.parents('[fd-section]:first').attr('section-columns-width').split(':'), function (n) {
+                        return parseInt(n);
+                    });
+
+                    width = widths[row.children('[fd-column]').index(element)];
+                }
                 element.addClass('span' + width);
             }
         };
@@ -43,7 +52,7 @@ angular.module('coevery.layout', [])
             }
         };
     })
-    .directive('btnActions',function() {
+    .directive('btnActions', function () {
         return {
             template: '<div btn-actions ng-transclude ng-style="BtnActionLeft()" class="btn-toolbar pull-left"></div>',
             replace: true,

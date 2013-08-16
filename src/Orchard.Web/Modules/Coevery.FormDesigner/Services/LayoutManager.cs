@@ -5,7 +5,7 @@ using System.Web;
 using Orchard.ContentManagement.MetaData;
 
 namespace Coevery.FormDesigner.Services {
-    public class LayoutManager {
+    public class LayoutManager : ILayoutManager {
         private IContentDefinitionManager _contentDefinitionManager;
 
         public LayoutManager(IContentDefinitionManager contentDefinitionManager) {

@@ -66,6 +66,7 @@
     <Compile Include="Models\Row.cs" />
     <Compile Include="Models\Section.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
+    <Compile Include="Services\ILayoutManager.cs" />
     <Compile Include="Services\LayoutManager.cs" />
     <Content Include="Scripts\controllers\formdesignercontroller.js" />
     <Content Include="Styles\formdesigner.css" />

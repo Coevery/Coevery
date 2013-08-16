@@ -85,10 +85,7 @@
                 lastRow.remove();
             }
         }
-        //adjustRowsHeight(rows);
     }
-
-    //Old
 
     function newGuid() {
         var guid = "";
@@ -101,69 +98,6 @@
         return guid;
     }
 
-    String.prototype.format = function () {
-        var args = arguments;
-        return this.replace(/\{(\d+)\}/g,
-            function (match, paren) {
-                return args[paren];
-            });
-    };
-
-    if (typeof (Array.prototype.indexOf) != "function") {
-        Array.prototype.indexOf = function (item, startIndex) {
-            var index = startIndex == undefined ? 0 : startIndex;
-            if (window.isNaN(index)) {
-                throw "the startIndex is not a number";
-            }
-
-            var arrLength = this.length;
-            if (index < 0) {
-                index += arrLength;
-            }
-            if (index < 0) {
-                index = 0;
-            }
-
-            for (var i = index; i < this.length; i++) {
-                if (this[i] === item) {
-                    return i;
-                }
-            }
-            return -1;
-        };
-    }
-
-    if (typeof (Array.prototype.lastIndexOf) != "function") {
-        Array.prototype.lastIndexOf = function (item, startIndex) {
-            var index = parseInt(startIndex);
-            if (window.isNaN(index)) {
-                throw "the startIndex is not a number";
-            }
-
-            var arrLength = this.length;
-            if (index < 0) {
-                index += arrLength;
-            }
-            if (index >= this.length) {
-                index = this.length - 1;
-            }
-
-            for (var i = index; i >= 0; i--) {
-                if (this[i] === item) {
-                    return i;
-                }
-            }
-            return -1;
-        };
-    }
-
-    function LayoutContext($resource) {
-        return $resource(
-            '/OrchardLocal/api/metadata/layout/:id',
-            { id: '@id' },
-            { update: { method: 'PUT' } });
-    }
-
     function removeSpanClass(item) {
         var itemElem = $(item);
         var classStr = itemElem.attr('class');
@@ -171,49 +105,22 @@
     }
 
     function getHelper() {
-        //var helper = $('<p class="alert alert-error"></p>');
-        //var text = $(this).find('.title:first').text();
-        //helper.text(text);
-        //helper.height(18);
-        //helper.width(150);
+        var helper = $('<div class="" style="border:1px solid #ccc;"></div>'),
+            item = $(this),
+            padding = item.is('[fd-field]') ? '10px' : '0 10px 20px 10px';
 
-        var helper = $('<div class="" style="border:1px solid #ccc;"></div>');
-        helper.height($(this).height());
-        helper.width($(this).width());
-        helper.append($(this).html());
+        helper.height(item.height());
+        helper.width(item.width());
+        helper.append(item.html());
         helper.css('background-color', 'white');
         helper.find('.tools').remove();
-        helper.css('padding', '0 10px');
-
-        //var helper = $(this).clone();
-        //helper.height($(this).height());
-        //helper.width($(this).width());
-        //helper.css('border', '1px solid #ccc');
-        //helper.find('.tools').remove();
-        //helper.css('padding', '0 10px');
-
-        //if ($(this).is('fieldset')) {
-        //    helper.css('background-color', 'white');
-        //}
-
+        helper.css('padding', padding);
         return helper;
-    }
-
-    function setDragEffect(item, valid) {
-        var itemElem = $(item);
-        if (valid) {
-            itemElem.removeClass('alert-error');
-            itemElem.addClass('alert-info');
-        } else {
-            itemElem.removeClass('alert-info');
-            itemElem.addClass('alert-error');
-        }
     }
 
     function clearMark(item) {
         var itemElem = $(item);
-        itemElem.removeClass('markedAbove');
-        itemElem.removeClass('marked');
+        itemElem.removeClass('markedAbove marked');
     }
 
     function setMark(item, above) {
@@ -225,35 +132,6 @@
             itemElem.removeClass('markedAbove');
             itemElem.addClass('marked');
         }
-    }
-
-    function adjustRowsHeight(rows) {
-        for (var i = 0; i < rows.length; i++) {
-            //adjustRowHeight(rows[i]);
-        }
-    }
-
-    function adjustRowHeight(row) {
-        //var columns = $(row).children('[fd-column]');
-        //var maxColumnHeight = 0;
-        //var maxFieldHeight = 0;
-        //for (var i = 0; i < columns.length; i++) {
-        //    columns[i].style.removeProperty('height');
-        //    var column = $(columns[i]);
-        //    if (column.children('[fd-field]').length) {
-        //        column.children('[fd-field]')[0].style.removeProperty('height');
-        //        var columnHeight = column.height();
-        //        maxColumnHeight = Math.max(maxColumnHeight, columnHeight);
-        //        maxFieldHeight = Math.max(maxFieldHeight, column.children('[fd-field]').height());
-        //    }
-        //}
-        //if (maxColumnHeight) {
-        //    columns.each(function () {
-        //        var borderHeight = $(this).is('.marked, .markedAbove') ? 3 : 0;
-        //        $(this).height(maxColumnHeight - borderHeight);
-        //        $(this).children('[fd-field]').height(maxFieldHeight);
-        //    });
-        //}
     }
 
     function createNewRow(columnCount) {
@@ -281,13 +159,14 @@
                 //return scope.inLayoutFields.join(',');
                 return inLayoutFields.join(',');
             }, function (newValue, oldValue) {
-                var currentFields = newValue ? newValue.split(',') : [];
-                var oldFields = oldValue ? oldValue.split(',') : [];
-                if (newValue.length == oldValue.length) {
+                var currentFields = newValue ? newValue.split(',') : [],
+                    oldFields = oldValue ? oldValue.split(',') : [],
+                    differentFields;
+
+                if (newValue == oldValue) {
                     setFieldsUsed(currentFields);
                     return;
                 }
-                var differentFields;
                 if (currentFields.length > oldFields.length) {
                     differentFields = getDifferentItems(currentFields, oldFields);
                     setFieldsUsed(differentFields);
@@ -297,29 +176,23 @@
                 }
 
                 function setFieldsUsed(fields) {
-                    for (var j = 0; j < fields.length; j++) {
-                        var fieldItem = $('[fd-tools-field][field-name=' + fields[j] + ']');
-                        //fieldItem.css('opacity', '0.3');
-                        //fieldItem[0].disableDraggable();
-
+                    for (var i = 0; i < fields.length; i++) {
+                        var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
                         fieldItem.hide();
                     }
                 }
 
                 function setFieldsUnused(fields) {
-                    for (var j = 0; j < fields.length; j++) {
-                        var fieldItem = $('[fd-tools-field][field-name=' + fields[j] + ']');
-                        //fieldItem.css('opacity', '1');
-                        //fieldItem[0].enableDraggable();
-
+                    for (var i = 0; i < fields.length; i++) {
+                        var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
                         fieldItem.show();
                     }
                 }
 
                 function getDifferentItems(items, source) {
                     var differentItems = [];
-                    for (var j = 0; j < items.length; j++) {
-                        $.inArray(items[j], source) == -1 && differentItems.push(items[j]);
+                    for (var i = 0; i < items.length; i++) {
+                        $.inArray(items[i], source) == -1 && differentItems.push(items[i]);
                     }
                     return differentItems;
                 }
@@ -329,6 +202,9 @@
                 template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
                 replace: true,
                 restrict: 'E',
+                controller: function () {
+                    console.log('controller!!');
+                },
                 link: function (scope, element, attrs) {
                     var titleElem = element.children();
                     titleElem.text(attrs.fieldDisplayName);
@@ -341,24 +217,26 @@
                 replace: true,
                 restrict: 'E',
                 transclude: true,
+                controller: function() {
+                    inLayoutFields = [];
+                    //scope.$on('$viewContentLoaded', function () {
+                    //    console.log('loaded');
+                    //    inLayoutFields = [];
+                    //});
+                },
                 link: function (scope, element, attrs) {
-                    //var id = newGuid();
-                    //attrs.$set('id', id);
-
                     var lastMarked = null;
                     element.find('form:first').droppable({
                         accept: '[fd-section], [fd-tools-section]',
                         tolerance: "pointer",
                         drop: function (event, ui) {
                             $rootScope.dragHandler = null;
+                            var markedSection = $(this).find('.marked, .markedAbove').filter('[fd-section]'),
+                                dragItem;
 
-                            var markedSection = $(this).find('.marked, .markedAbove').closest('[fd-section]');
-                            var dragItem;
                             if (ui.draggable.is('[fd-tools-section]')) {
                                 dragItem = $('<fd-section></fd-section>');
-                                dragItem.attr('section-columns', ui.draggable.attr('section-columns'));
-                                dragItem.attr('section-columns-width', ui.draggable.attr('section-columns-width'));
-                                dragItem.attr('section-title', 'Sample Title');
+                                copySectionProperties(ui.draggable, dragItem);
                                 $compile(dragItem)(scope);
                             } else {
                                 dragItem = ui.draggable;
@@ -366,27 +244,20 @@
 
                             if (markedSection.attr('id') == dragItem.attr('id')) {
                                 clearMark(lastMarked);
-                                lastMarked = null;
                                 return;
                             }
-
                             if (!markedSection.length) {
                                 $(this).append(dragItem);
                                 clearMark(lastMarked);
-                                lastMarked = null;
                                 return;
                             }
+                            markedSection.is('.marked')
+                                ? markedSection.after(dragItem)
+                                : markedSection.before(dragItem);
 
-                            if (markedSection.is('.marked')) {
-                                markedSection.after(dragItem);
-                            } else {
-                                markedSection.before(dragItem);
-                            }
                             clearMark(lastMarked);
-                            lastMarked = null;
                         },
                         over: function (event, ui) {
-                            //setDragEffect(ui.helper, true);
                             $rootScope.dragHandler = function (dragEvent, dragUi) {
                                 markSection({
                                     x: dragEvent.pageX,
@@ -397,15 +268,18 @@
                         },
                         out: function (event, ui) {
                             $rootScope.dragHandler = null;
-                            //setDragEffect(ui.helper, false);
                             clearMark(lastMarked);
-                            lastMarked = null;
                         }
                     });
 
+                    function copySectionProperties(from, to) {
+                        to.attr('section-columns', from.attr('section-columns'));
+                        to.attr('section-columns-width', from.attr('section-columns-width'));
+                        to.attr('section-title', 'Sample Title');
+                    }
+
                     function markSection(position) {
                         var sections = element.find('[fd-section]');
-
                         if (!sections.length) {
                             lastMarked = element;
                             setMark(lastMarked, true);
@@ -413,17 +287,18 @@
                         }
 
                         for (var i = 0; i < sections.length; i++) {
-                            var section = $(sections[i]);
-                            var sectionOffsetY = section.offset().top;
-                            var sectionHeight = section.height();
-                            var result = position.y >= sectionOffsetY && position.y < sectionOffsetY + sectionHeight ?
-                                (position.y < sectionOffsetY + sectionHeight / 2 ? true : false) :
-                                null;
+                            var section = $(sections[i]),
+                                sectionOffsetY = section.offset().top,
+                                sectionHeight = section.height(),
+                                result = position.y >= sectionOffsetY && position.y < sectionOffsetY + sectionHeight
+                                    ? (position.y < sectionOffsetY + sectionHeight / 2 ? true : false)
+                                    : null;
+
                             if (result != null) {
                                 clearMark(lastMarked);
                                 var above = result && i == 0;
                                 var index = result ? i - 1 : i;
-                                lastMarked = above ? $(sections[0]).find('legend:first') : sections[index];
+                                lastMarked = above ? sections[0] : sections[index];
                                 setMark(lastMarked, above);
                                 break;
                             }
@@ -434,22 +309,22 @@
         })
         .directive('fdSection', function ($compile, $rootScope) {
             return {
-                template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend fd-hoverable class="clearfix"><div class="span9 title"></div><div class="span3 tools"><fd-tool-property></fd-tool-property><fd-tool-remove></fd-tool-remove></div></legend><div fd-field-container ng-transclude></div></fieldset>',
+                template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend fd-hoverable class="clearfix"><div class="span12 title"></div><div class="tools"><fd-tool-property></fd-tool-property><fd-tool-remove></fd-tool-remove></div></legend><div fd-field-container ng-transclude></div></fieldset>',
                 replace: true,
                 restrict: 'E',
                 transclude: true,
                 link: function (scope, element, attrs) {
-                    var id = newGuid();
-                    attrs.$set('id', id);
+                    var id = newGuid(),
+                        sectionHeader = element.find('legend:first'),
+                        watchList = [],
+                        watch;
 
-                    var sectionHeader = element.find('legend:first');
+                    attrs.$set('id', id);
                     sectionHeader.find('.tools:first').hide();
                     sectionHeader.find('.title:first').text(attrs.sectionTitle);
-
                     sectionHeader.dblclick(openPropertyDialog);
 
-                    var watchList = [];
-                    var watch = $rootScope.$watch(function () {
+                    watch = $rootScope.$watch(function () {
                         return element.attr('section-title');
                     }, function (newValue) {
                         sectionHeader.find('.title:first').text(newValue);
@@ -457,71 +332,27 @@
                     watchList.push(watch);
                     watch = $rootScope.$watch(function () {
                         return element.attr('section-columns');
-                    }, function (newValue, oldValue) {
-                        if (newValue == oldValue) {
-                            return;
-                        }
-                        var section = element;
-                        var rows = section.find('[fd-row]');
-                        var columnCount = parseInt(newValue);
-
-                        if (columnCount == 1) {
-                            var rightColumns = rows.children('[fd-column]:nth-child(2)');
-                            var rightFields = rightColumns.find('[fd-field]');
-                            var leftColumns = rows.children('[fd-column]:nth-child(1)');
-                            var leftEmptyColumns = leftColumns.filter(':not(:has([fd-field]))');
-                            rightFields.each(function (i) {
-                                if (i < leftEmptyColumns.length) {
-                                    $(leftEmptyColumns[i]).append(this);
-                                } else {
-                                    var newRow = createNewRow(1);
-                                    section.find('[fd-field-container]').append(newRow);
-                                    $compile(newRow)(scope);
-                                    newRow.children('[fd-column]').append(this);
-                                }
-                            });
-                            leftColumns.each(function () {
-                                removeSpanClass(this);
-                                $(this).addClass('span12');
-                            });
-                            rightColumns.remove();
-                        } else {
-                            var leftWidth = parseInt(section.attr('section-columns-width'));
-                            var columns = rows.children('[fd-column]');
-                            columns.each(function () {
-                                removeSpanClass(this);
-                                $(this).addClass('span' + leftWidth);
-                            });
-                            rows.each(function () {
-                                var row = $(this);
-                                var newColumn = $('<fd-column></fd-column>');
-                                row.append(newColumn);
-                                $compile(newColumn)(scope);
-                            });
-                        }
-
-                        adjustRowsHeight(section.find('[fd-row]'));
-                    });
+                    }, changeColumnCountHandler);
                     watchList.push(watch);
                     watch = $rootScope.$watch(function () {
                         return element.attr('section-columns-width');
                     }, function (newValue) {
-                        if (element.attr('section-columns') != '2') {
+                        var columnsCount = parseInt(element.attr('section-columns'));
+                        if (columnsCount < 2) {
                             return;
                         }
-                        var width = parseInt(newValue);
-                        var rows = element.find('[fd-row]');
-                        var leftColumns = rows.children('[fd-column]:nth-child(1)');
-                        var rightColumns = rows.children('[fd-column]:nth-child(2)');
+                        var widths = getColumnWidths(newValue),
+                            rows = element.find('[fd-row]:not(.merged-row)'),
+                            columns, width;
 
-                        leftColumns.each(function () {
-                            removeSpanClass(this);
-                            $(this).addClass('span' + width);
-                        });
-                        rightColumns.each(function () {
-                            removeSpanClass(this);
-                            $(this).addClass('span' + (12 - width));
-                        });
+                        for (var i = 0; i < columnsCount; i++) {
+                            columns = rows.children('[fd-column]:nth-child(' + (i + 1) + ')');
+                            width = widths[i];
+                            columns.each(function () {
+                                removeSpanClass(this);
+                                $(this).addClass('span' + width);
+                            });
+                        }
                     });
                     watchList.push(watch);
 
@@ -541,6 +372,75 @@
                         $compile(emptyRow)(scope);
                     }
 
+                    function changeColumnCountHandler(newValue, oldValue) {
+                        if (newValue == oldValue) {
+                            return;
+                        }
+                        var section = element,
+                            newColumnCount = parseInt(newValue),
+                            oldColumnCount = parseInt(oldValue),
+                            rows = section.find('[fd-row]'),
+                            widths = getColumnWidths(section.attr('section-columns-width')),
+                            columns, width;
+
+                        if (newColumnCount > oldColumnCount) {
+                            var addCount = newColumnCount - oldColumnCount;
+                            rows = rows.filter(':not(.merged-row)');
+                            for (var i = 0; i < oldColumnCount; i++) {
+                                columns = rows.children('[fd-column]:nth-child(' + (i + 1) + ')');
+                                width = widths[i];
+                                columns.each(function () {
+                                    removeSpanClass(this);
+                                    $(this).addClass('span' + width);
+                                });
+                            }
+                            rows.each(function () {
+                                for (var j = 0; j < addCount; j++) {
+                                    var newColumn = ($('<fd-column></fd-column>'));
+                                    $(this).append(newColumn);
+                                    $compile(newColumn)(scope);
+                                }
+                            });
+                        } else {
+                            var mergedRows = rows.filter('.merged-row');
+                            rows = rows.filter(':not(.merged-row)');
+                            var leftColumns = rows.children('[fd-column]:nth-child(1)'),
+                                leftEmptyColumns = leftColumns.filter(':not(:has([fd-field]))'),
+                                fields = $(),
+                                removeColumns = $();
+
+                            for (var l = newColumnCount; l < oldColumnCount; l++) {
+                                columns = rows.children('[fd-column]:nth-child(' + (l + 1) + ')');
+                                fields = $.merge(fields, columns.find('[fd-field]'));
+                                removeColumns = $.merge(removeColumns, columns);
+                            }
+                            fields.each(function (i) {
+                                if (i < leftEmptyColumns.length) {
+                                    $(leftEmptyColumns[i]).append(this);
+                                } else {
+                                    var newRow = createNewRow(newColumnCount);
+                                    section.find('[fd-field-container]').append(newRow);
+                                    $compile(newRow)(scope);
+                                    newRow.children('[fd-column]:nth-child(1)').append(this);
+                                }
+                            });
+                            for (var k = 0; k < newColumnCount; k++) {
+                                columns = rows.children('[fd-column]:nth-child(' + (k + 1) + ')');
+                                width = widths[k];
+                                columns.each(function () {
+                                    removeSpanClass(this);
+                                    $(this).addClass('span' + width);
+                                });
+                            }
+                            removeColumns.remove();
+                            if (newColumnCount == 1) {
+                                mergedRows.each(function () {
+                                    $(this).removeClass('merged-row');
+                                });
+                            }
+                        }
+                    }
+
                     function removeSection() {
                         $.each(watchList, function () {
                             this();
@@ -549,7 +449,6 @@
                         fields.each(function () {
                             this.removeField(true);
                         });
-
                         element.remove();
                     }
 
@@ -569,15 +468,11 @@
         })
         .directive('fdRow', function ($compile) {
             return {
-                //template: '<div fd-row class="control-group" ng-transclude></div>',
                 template: '<div fd-row class="data-row clearfix" ng-transclude></div>',
                 replace: true,
                 restrict: 'E',
                 transclude: true,
                 link: function (scope, element, attrs) {
-                    var id = newGuid();
-                    attrs.$set('id', id);
-                    adjustRowHeight(element);
                 }
             };
         })
@@ -588,18 +483,15 @@
                 restrict: 'E',
                 transclude: true,
                 link: function (scope, element, attrs) {
-                    var id = newGuid();
-                    attrs.$set('id', id);
-
-                    var columnCount = parseInt(element.parents('[fd-section]:first').attr('section-columns'));
-                    var width;
-                    if (columnCount == 2) {
-                        var leftWidth = parseInt(element.parents('[fd-section]:first').attr('section-columns-width'));
-                        var prev = element.prev();
-                        width = leftWidth;
-                        prev.length && (width = 12 - leftWidth);
-                    } else {
+                    var row = element.parent(),
+                        width;
+                    if (row.hasClass('merged-row')) {
                         width = 12;
+                    } else {
+                        var section = row.parents('[fd-section]:first'),
+                            widths = getColumnWidths(section.attr('section-columns-width'));
+
+                        width = widths[row.children('[fd-column]').index(element)];
                     }
                     element.addClass('span' + width);
                 }
@@ -607,7 +499,6 @@
         })
         .directive('fdField', function ($compile, $rootScope) {
             return {
-                //template: '<div fd-field fd-hoverable fd-draggable class="clearfix"></div>',
                 template: '<div fd-field fd-hoverable fd-draggable></div>',
                 replace: true,
                 restrict: 'E',
@@ -620,8 +511,8 @@
                         }
                     });
                     if (attrs.fieldEmpty != null) {
-                        element.append('<div class="span9">Blank Space</div>');
-                        element.append('<div class="span3 tools"></div>');
+                        element.append('<div class="span12">Blank Space</div>');
+                        element.append('<div class="tools"></div>');
                         var removeItem = $('<fd-tool-remove></fd-tool-remove>');
                         element.find('.tools').append(removeItem);
                         $compile(removeItem)(scope);
@@ -642,8 +533,8 @@
                         return;
                     }
                     if (attrs.fieldText != null) {
-                        element.append('<div class="span9 text-content">Sample Text</div>');
-                        element.append('<div class="span3 tools"></div>');
+                        element.append('<div class="span12 text-content">Sample Text</div>');
+                        element.append('<div class="tools"></div>');
                         var propertyItem = $('<fd-tool-property></fd-tool-property>');
                         element.find('.tools').append(propertyItem);
                         $compile(propertyItem)(scope);
@@ -690,28 +581,7 @@
                     changeToRequired(attrs.fieldRequired != null);
 
                     var columnTool = $('<div fd-tool-column></div>');
-                    columnTool.click(function () {
-                        var row = element.parents('[fd-row]:first');
-                        var column = element.parent();
-                        if (row.hasClass('merged-row')) {
-                            $(this).removeClass('split');
-                            $(this).addClass('merge');
-                            removeSpanClass(column);
-                            var leftWidth = parseInt(element.parents('[fd-section]:first').attr('section-columns-width'));
-                            column.addClass('span' + leftWidth);
-                            row.removeClass('merged-row');
-                            var newColumn = $('<fd-column></fd-column>');
-                            row.append(newColumn);
-                            $compile(newColumn)(scope);
-                        } else {
-                            $(this).removeClass('merge');
-                            $(this).addClass('split');
-                            removeSpanClass(column);
-                            column.addClass('span12');
-                            column.siblings().remove();
-                            row.addClass('merged-row');
-                        }
-                    });
+                    columnTool.click(columnToolHandler);
                     element.find('.tools').append(columnTool);
 
                     var watchList = [];
@@ -726,10 +596,9 @@
                         $(this).addClass('highlight');
 
                         var columnCount = parseInt($(this).parents('[fd-section]:first').attr('section-columns'));
-                        $(this).find('[fd-tool-column]').removeClass('merge');
-                        $(this).find('[fd-tool-column]').removeClass('split');
+                        $(this).find('[fd-tool-column]').removeClass('merge split');
                         $(this).find('[fd-tool-column]').hide();
-                        if (columnCount == 2) {
+                        if (columnCount > 1) {
                             var row = $(this).parents('[fd-row]');
                             var fieldCount = row.find('[fd-field]').length;
                             if (fieldCount == 1) {
@@ -738,7 +607,6 @@
                                 $(this).find('[fd-tool-column]').show();
                             }
                         }
-
                         $(this).find('.tools').show();
                     };
                     element[0].hoverOutHandler = function () {
@@ -748,9 +616,36 @@
                     element.find('.tools')[0].toolProperty = openPropertyDialog;
                     element.find('.tools')[0].toolRemove = removeField;
                     element[0].removeField = removeField;
-                    //element[0].removeWatchListeners = removeWatchListeners;
 
                     element.dblclick(openPropertyDialog);
+
+                    function columnToolHandler() {
+                        var row = element.parents('[fd-row]:first'),
+                            section = row.parents('[fd-section]:first'),
+                            columnsCount = parseInt(section.attr('section-columns')),
+                            column = element.parent();
+
+                        if (row.hasClass('merged-row')) {
+                            $(this).removeClass('split');
+                            $(this).addClass('merge');
+                            removeSpanClass(column);
+                            var firstWidth = parseInt(section.attr('section-columns-width'));
+                            column.addClass('span' + firstWidth);
+                            row.removeClass('merged-row');
+                            for (var i = 1; i < columnsCount; i++) {
+                                var newColumn = $('<fd-column></fd-column>');
+                                row.append(newColumn);
+                                $compile(newColumn)(scope);
+                            }
+                        } else {
+                            $(this).removeClass('merge');
+                            $(this).addClass('split');
+                            removeSpanClass(column);
+                            column.addClass('span12');
+                            column.siblings().remove();
+                            row.addClass('merged-row');
+                        }
+                    }
 
                     function openPropertyDialog() {
                         var field = element;
@@ -820,8 +715,6 @@
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
-                    //element.tooltip();
-
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
                     };
@@ -841,8 +734,6 @@
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
-                    //element.tooltip();
-
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
                     };
@@ -886,7 +777,10 @@
                     element.find('.btn-primary').click(function () {
                         $rootScope.currentSection.section.attr('section-columns', $rootScope.currentSection.columns);
                         $rootScope.currentSection.section.attr('section-title', $rootScope.currentSection.title);
-                        $rootScope.currentSection.section.attr('section-columns-width', $rootScope.currentSection.columnsWidth);
+                        var width = $rootScope.currentSection.columns == 1
+                            ? 12
+                            : $rootScope.currentSection.columnsWidth;
+                        $rootScope.currentSection.section.attr('section-columns-width', width);
                         $rootScope.$apply();
                         $('#sectionPropertiesDialog').modal('hide');
                     });
@@ -966,14 +860,11 @@
                                 if (dragColumn.length && columns.index(dragColumn) == -1) {
                                     adjustColumnsPosition(dragColumn);
                                 }
-
-                                adjustRowsHeight($(this).children('[fd-row]'));
                             }
 
                             placeIndicator.hide();
                         },
                         over: function (event, ui) {
-                            //setDragEffect(ui.helper, true);
                             $rootScope.dragHandler = function (dragEvent, dragUi) {
                                 markColumn({
                                     x: dragEvent.pageX,
@@ -984,7 +875,6 @@
                         },
                         out: function (event, ui) {
                             $rootScope.dragHandler = null;
-                            //setDragEffect(ui.helper, false);
                             placeIndicator.hide();
                         }
                     });
@@ -1100,50 +990,41 @@
         })
         .directive('fdSaveLayoutButton', function ($resource, logger, $stateParams) {
             return {
-                //template: '<button class="btn">Save</button>',
-                //replace: true,
-                //restrict: 'E',
                 link: function (scope, element, attrs) {
                     element.click(function () {
                         var sections = $('[fd-form]').find('[fd-section]');
                         var layoutObject = [];
-                        var sectionIndex = 0;
                         sections.each(function () {
                             if ($(this).find('[fd-field]').length) {
-                                var columnCount = $(this).attr('section-columns');
-                                var width = $(this).attr('section-columns-width');
-                                var sectionTitle = $(this).attr('section-title');
-                                layoutObject.push({});
-                                var selection = layoutObject[sectionIndex];
-                                selection["SectionColumns"] = columnCount;
-                                selection["SectionColumnsWidth"] = width;
-                                selection["SectionTitle"] = sectionTitle;
+                                var columnCount = $(this).attr('section-columns'),
+                                    width = $(this).attr('section-columns-width'),
+                                    sectionTitle = $(this).attr('section-title');
+                                var section = {
+                                    SectionColumns: columnCount,
+                                    SectionColumnsWidth: width,
+                                    SectionTitle: sectionTitle,
+                                    Rows: []
+                                };
+                                layoutObject.push(section);
                                 var rows = $(this).find('[fd-row]');
-                                selection["Rows"] = [];
-                                var rowIndex = 0;
                                 rows.each(function () {
-                                    selection.Rows.push({});
-                                    var row = selection.Rows[rowIndex];
+                                    var row = {
+                                        Columns: [],
+                                        IsMerged: $(this).hasClass('merged-row')
+                                    };
+                                    section.Rows.push(row);
                                     var columns = $(this).find('[fd-column]');
-                                    row["Columns"] = [];
-                                    var columnIndex = 0;
                                     columns.each(function () {
-                                        row.Columns.push({});
-                                        var column = row.Columns[columnIndex];
-                                        column.Field = {};
+                                        var column = {};
+                                        row.Columns.push(column);
                                         var field = $(this).find('[fd-field]');
                                         if (field.length) {
-                                            var settings = '';
-                                            field.attr('field-required') != null && (settings += ' field-required');
-                                            field.attr('field-readonly') != null && (settings += ' field-readonly');
-                                            column.Field.FieldName = field.attr('field-name');
-                                            column.Field.Settings = settings;
+                                            column.Field = {
+                                                FieldName: field.attr('field-name'),
+                                            };
                                         }
-                                        columnIndex = columnIndex + 1;
                                     });
-                                    rowIndex = rowIndex + 1;
                                 });
-                                sectionIndex = sectionIndex + 1;
                             }
                         });
 

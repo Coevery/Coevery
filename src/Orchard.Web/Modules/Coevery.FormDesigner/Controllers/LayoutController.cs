@@ -16,7 +16,8 @@ namespace Coevery.FormDesigner.Controllers {
         private IContentDefinitionManager _contentDefinitionManager;
         private readonly ITemplateViewService _templateViewService;
         private readonly string _alwaysInLayoutKey = "CoeveryTextFieldSettings.AlwaysInLayout";
-        public LayoutController(IContentDefinitionManager contentDefinitionManager, 
+
+        public LayoutController(IContentDefinitionManager contentDefinitionManager,
             ITemplateViewService templateViewService) {
             _contentDefinitionManager = contentDefinitionManager;
             _templateViewService = templateViewService;
@@ -40,49 +41,47 @@ namespace Coevery.FormDesigner.Controllers {
         }
 
         // POST api/metadata/field
-        public virtual HttpResponseMessage Post(string id , ICollection<Section> data) {
-            var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
-            
-            if (!ModelState.IsValid)
-            {
+        public virtual HttpResponseMessage Post(string id, ICollection<Section> data) {
+            if (!ModelState.IsValid) {
                 return Request.CreateResponse(HttpStatusCode.MethodNotAllowed);
             }
+
+            var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
             if (contentTypeDefinition == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
 
-            var layout = GetLayout(contentTypeDefinition,data);
+            var layout = GetLayout(contentTypeDefinition, data);
             if (string.IsNullOrEmpty(layout)) return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
-            if (contentTypeDefinition.Settings.ContainsKey("Layout"))
-            {
+            if (contentTypeDefinition.Settings.ContainsKey("Layout")) {
                 contentTypeDefinition.Settings["Layout"] = layout;
             }
-            else
-            {
+            else {
                 contentTypeDefinition.Settings.Add("Layout", layout);
             }
             _contentDefinitionManager.StoreTypeDefinition(contentTypeDefinition);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        private string GetLayout(ContentTypeDefinition contentTypeDefinition, ICollection<Section> data)
-        {
+        private string GetLayout(ContentTypeDefinition contentTypeDefinition, ICollection<Section> data) {
             //check field valid
-            if(contentTypeDefinition.Parts.Any()) {
+            if (contentTypeDefinition.Parts.Any()) {
                 var part = contentTypeDefinition.Parts.First();
-                var fields = part.PartDefinition.Fields;
-                var columns = data.SelectMany(c => c.Rows).SelectMany(c => c.Columns);
-                if(fields.Any(f => f.Settings.ContainsKey(_alwaysInLayoutKey) 
-                    && bool.Parse(f.Settings[_alwaysInLayoutKey]) 
-                    && !columns.Select(c => c.Field.FieldName).Contains(f.Name))) {
+                var partFields = part.PartDefinition.Fields.ToList();
+                var fields = data.SelectMany(x => x.Rows)
+                    .SelectMany(x => x.Columns)
+                    .Where(x => x.Field != null)
+                    .Select(x => x.Field).ToList();
+                if (partFields.Any(f => f.Settings.ContainsKey(_alwaysInLayoutKey)
+                    && bool.Parse(f.Settings[_alwaysInLayoutKey])
+                    && !fields.Select(x => x.FieldName).Contains(f.Name))) {
                     return string.Empty;
                 }
-                var validColumns = columns.Where(c => fields.Select(d=>d.Name).Contains(c.Field.FieldName)).ToList();
-                validColumns.ForEach(c=>c.Field.IsValid = true);
+                var validFields = fields.Where(x => partFields.Select(d => d.Name).Contains(x.FieldName)).ToList();
+                validFields.ForEach(c => c.IsValid = true);
             }
-            
 
             ViewDataDictionary viewData = new ViewDataDictionary();
-            viewData.Add("Layout",data);
+            viewData.Add("Layout", data);
             string layout = _templateViewService
                 .RenderView("Coevery.FormDesigner", "FormTemplate", "FormDesignerLayout", viewData);
             return layout;

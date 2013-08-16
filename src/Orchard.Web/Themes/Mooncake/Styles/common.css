@@ -110,10 +110,10 @@
             content: "*";
             color: red;
             margin-right: 5px;
-            vertical-align: text-top;
+            vertical-align: top;
             font-weight: bold;
             font-size: 20px;
-            line-height: 24px;
+            line-height: 20px;
         }
 
         .edit-mode .data-row .controls {
@@ -139,4 +139,10 @@
 
 #page-actions {
     min-height: 56px;
+}
+
+@media (max-width: 767px) {
+    [fd-column] + [fd-column] {
+        margin-top: 16px;
+    }
 }

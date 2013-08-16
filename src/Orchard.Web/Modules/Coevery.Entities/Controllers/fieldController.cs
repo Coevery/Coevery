@@ -13,12 +13,15 @@ namespace Coevery.Entities.Controllers {
     public class FieldController : ApiController {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IFieldService _fieldService;
-        public FieldController(IContentDefinitionService contentDefinitionService,
-            IContentDefinitionManager contentDefinitionManager, 
-            ISchemaUpdateService schemaUpdateService,
-            IFieldService fieldService) {
+        private readonly ILayoutManager _layoutManager;
+
+        public FieldController(
+            IContentDefinitionService contentDefinitionService,
+            IFieldService fieldService,
+            ILayoutManager layoutManager) {
             _contentDefinitionService = contentDefinitionService;
             _fieldService = fieldService;
+            _layoutManager = layoutManager;
             T = NullLocalizer.Instance;
         }
 
@@ -33,6 +36,7 @@ namespace Coevery.Entities.Controllers {
         // DELETE api/metadata/field/name
         public virtual HttpResponseMessage Delete(string name, string parentname) {
             _fieldService.Delete(name,parentname);
+            _layoutManager.DeleteField(parentname, name);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
