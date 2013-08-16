@@ -107,7 +107,6 @@ namespace Orchard.ContentTypes.Controllers {
 
             var typeViewModel = new EditTypeViewModel(contentTypeDefinition);
 
-
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", typeViewModel.DisplayName));
 
             return RedirectToAction("AddPartsTo", new { id = typeViewModel.Name });

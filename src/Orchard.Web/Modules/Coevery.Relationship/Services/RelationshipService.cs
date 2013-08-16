@@ -14,6 +14,7 @@ using Coevery.Relationship.Models;
 using Coevery.Relationship.Settings;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
+using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Contents.Controllers;
 using Orchard.Core.Settings.Controllers;
 using Orchard.Core.Settings.Metadata.Records;
@@ -35,6 +36,7 @@ namespace Coevery.Relationship.Services {
         private readonly IFieldService _fieldService;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentDefinitionService _contentDefinitionService;
 
         public RelationshipService(
             IRepository<RelationshipRecord> relationshipRepository,
@@ -44,14 +46,15 @@ namespace Coevery.Relationship.Services {
             IRepository<ContentPartDefinitionRecord> contentPartRepository,
             ISessionLocator sessionLocator,
             IFieldService fieldService,
-            ISchemaUpdateService schemaUpdateService,
-            IContentDefinitionManager contentDefinitionManager) {
+            IContentDefinitionManager contentDefinitionManager, 
+            IContentDefinitionService contentDefinitionService) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
             _manyToManyRepository = manyToManyRepository;
             _relationshipColumnRepository = relationshipColumn;
             _contentPartRepository = contentPartRepository;
             _contentDefinitionManager = contentDefinitionManager;
+            _contentDefinitionService = contentDefinitionService;
             _fieldService = fieldService;
             _schemaUpdateService = schemaUpdateService;
             _sessionLocator = sessionLocator;
@@ -155,11 +158,6 @@ namespace Coevery.Relationship.Services {
                 Type = (byte) RelationshipType.OneToMany
             });
 
-            var viewModel = new AddFieldViewModel {
-                Name = oneToMany.FieldName,
-                FieldTypeName = "ReferenceField",
-                DisplayName = oneToMany.FieldLabel,              
-            };
             var updateModel = new ReferenceUpdateModel(new ReferenceFieldSettings {
                 AlwaysInLayout = oneToMany.AlwaysInLayout,
                 ContentTypeName = oneToMany.PrimaryEntity,
@@ -172,11 +170,12 @@ namespace Coevery.Relationship.Services {
                 RelationshipId = relationship.Id,
                 RelationshipName = relationship.Name
             });
-            _fieldService.Create(relatedEntity.Name, viewModel, updateModel);
+            _contentDefinitionService.AddFieldToPart(oneToMany.FieldName,oneToMany.FieldLabel, "ReferenceField", relatedEntity.Name);
+            _contentDefinitionService.AlterField(relatedEntity.Name, new EditPartFieldViewModel {Name = oneToMany.FieldName}, updateModel);
             var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.SingleOrDefault(field => field.Name == oneToMany.FieldName);
 
             _oneToManyRepository.Create(new OneToManyRelationshipRecord {
-                DeleteOption = (byte)oneToMany.DeleteOption,
+                DeleteOption = (byte) oneToMany.DeleteOption,
                 LookupField = fieldRecord,
                 RelatedListLabel = oneToMany.RelatedListLabel,
                 Relationship = relationship,

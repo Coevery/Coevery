@@ -98,6 +98,7 @@
     <Compile Include="Records\OptionItemRecord.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
+    <Compile Include="Services\CustomFieldAttribute.cs" />
     <Compile Include="Services\FieldService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Services\IFieldService.cs" />

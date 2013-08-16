@@ -55,8 +55,8 @@ namespace Coevery.Entities.Controllers {
         }
 
         public ActionResult Create() {
-            //if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
-            //    return new HttpUnauthorizedResult();
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
+                return new HttpUnauthorizedResult();
 
             var typeViewModel = _contentDefinitionService.GetType(string.Empty);
 
@@ -128,7 +128,41 @@ namespace Coevery.Entities.Controllers {
             viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
             viewModel.DisplayName = viewModel.DisplayName.Trim();
             viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
-            _fieldService.CreateCheck(id, viewModel, this);
+
+            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
+                ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
+            }
+
+            if (String.IsNullOrWhiteSpace(viewModel.Name)) {
+                ModelState.AddModelError("Name", T("The Technical Name can't be empty.").ToString());
+            }
+
+            if (viewModel.Name.ToLower() == "id") {
+                ModelState.AddModelError("Name", T("The Field Name can't be any case of 'Id'.").ToString());
+            }
+
+            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
+                ModelState.AddModelError("Name", T("A field with the same name already exists.").ToString());
+            }
+
+            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
+                ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
+            }
+
+            if (!String.Equals(viewModel.Name, viewModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase)) {
+                ModelState.AddModelError("Name", T("The technical name contains invalid characters.").ToString());
+            }
+
+            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(viewModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase))) {
+                ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
+            }
+
+            //var prefix = viewModel.FieldTypeName + "Settings";
+            //var clientSettings = new FieldSettings();
+            //updateModel.TryUpdateModel(clientSettings, prefix, null, null);
+            //if (clientSettings.IsSystemField) {
+            //    updateModel.AddModelError("IsSystemField", T("Can't modify the IsSystemField field."));
+            //}
 
             if (!ModelState.IsValid)
             {
@@ -139,9 +173,19 @@ namespace Coevery.Entities.Controllers {
                             select error.ErrorMessage).ToArray();
                 return Content(string.Concat(temp));
             }
-            _fieldService.Create(id, viewModel, this);
+
+            try {
+                _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name);
+            }
+            catch (Exception ex) {
+                var message = T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message);
+                Services.Notifier.Information(message);
+                Services.TransactionManager.Cancel();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message.ToString());
+            }
 
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
+
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
@@ -222,128 +266,124 @@ namespace Coevery.Entities.Controllers {
 
             _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
 
-            var contentTypeDefinition = _contentDefinitionService.AddType(viewModel.DisplayName,viewModel.Name);
-
             // adds CommonPart by default
             _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
-
-            var typeViewModel = new EditTypeViewModel(contentTypeDefinition);
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name.Trim());
 
-            #region -----------add default Coevery Text Field--------------
-            var addViewModel = new AddFieldViewModel
-            {
-                DisplayName = viewModel.FieldLabel.Trim(),
-                Name = viewModel.FieldName.Trim().ToSafeName(),
-                FieldTypeName = "CoeveryTextField"
-            };
-            _fieldService.Create(viewModel.Name.Trim(), addViewModel, this);
-            var part = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            var field = part.Fields.FirstOrDefault(x => x.Name == addViewModel.Name);
-            if (field != null)
-            {
-                field.Settings["CoeveryTextFieldSettings.IsDispalyField"] = bool.TrueString;
-                field.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
-                field.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
-                field.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
-                field.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
-                field.Settings["CoeveryTextFieldSettings.IsAudit"] = bool.FalseString;
-                field.Settings["CoeveryTextFieldSettings.HelpText"] = "";
-            }
-            _contentDefinitionManager.StorePartDefinition(part); 
-            #endregion
+            //#region -----------add default Coevery Text Field--------------
+            //var addViewModel = new AddFieldViewModel
+            //{
+            //    DisplayName = viewModel.FieldLabel.Trim(),
+            //    Name = viewModel.FieldName.Trim().ToSafeName(),
+            //    FieldTypeName = "CoeveryTextField"
+            //};
+            ////_fieldService.Create(viewModel.Name.Trim(), addViewModel, this);
+            //var part = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            //var field = part.Fields.FirstOrDefault(x => x.Name == addViewModel.Name);
+            //if (field != null)
+            //{
+            //    field.Settings["CoeveryTextFieldSettings.IsDispalyField"] = bool.TrueString;
+            //    field.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
+            //    field.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
+            //    field.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
+            //    field.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
+            //    field.Settings["CoeveryTextFieldSettings.IsAudit"] = bool.FalseString;
+            //    field.Settings["CoeveryTextFieldSettings.HelpText"] = "";
+            //}
+            //_contentDefinitionManager.StorePartDefinition(part); 
+            //#endregion
 
-            #region -----------add Created By Field--------------
-            var addCreateByViewModel = new AddFieldViewModel
-            {
-                DisplayName = "Created By",
-                Name = "CreatedBy",
-                FieldTypeName = "ReferenceField"
-            };
-            _fieldService.Create(viewModel.Name.Trim(), addCreateByViewModel, this);
-            var partCreateBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            var fieldCreateBy = partCreateBy.Fields.FirstOrDefault(x => x.Name == "CreatedBy");
-            if (fieldCreateBy != null)
-            {
-                fieldCreateBy.Settings["ReferenceFieldSettings.ContentTypeName"] = viewModel.Name.Trim();
-                fieldCreateBy.Settings["ReferenceFieldSettings.Required"] = bool.TrueString;
-                fieldCreateBy.Settings["ReferenceFieldSettings.ReadOnly"] = bool.TrueString;
-                fieldCreateBy.Settings["ReferenceFieldSettings.AlwaysInLayout"] = bool.TrueString;
-                fieldCreateBy.Settings["ReferenceFieldSettings.IsSystemField"] = bool.TrueString;
-                fieldCreateBy.Settings["ReferenceFieldSettings.IsAudit"] = bool.FalseString;
-                fieldCreateBy.Settings["ReferenceFieldSettings.HelpText"] = "";
-            }
-            _contentDefinitionManager.StorePartDefinition(partCreateBy);
-            #endregion
+            //#region -----------add Created By Field--------------
+            //var addCreateByViewModel = new AddFieldViewModel
+            //{
+            //    DisplayName = "Created By",
+            //    Name = "CreatedBy",
+            //    FieldTypeName = "ReferenceField"
+            //};
+            ////_fieldService.Create(viewModel.Name.Trim(), addCreateByViewModel, this);
+            //var partCreateBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            //var fieldCreateBy = partCreateBy.Fields.FirstOrDefault(x => x.Name == "CreatedBy");
+            //if (fieldCreateBy != null)
+            //{
+            //    fieldCreateBy.Settings["ReferenceFieldSettings.ContentTypeName"] = viewModel.Name.Trim();
+            //    fieldCreateBy.Settings["ReferenceFieldSettings.Required"] = bool.TrueString;
+            //    fieldCreateBy.Settings["ReferenceFieldSettings.ReadOnly"] = bool.TrueString;
+            //    fieldCreateBy.Settings["ReferenceFieldSettings.AlwaysInLayout"] = bool.TrueString;
+            //    fieldCreateBy.Settings["ReferenceFieldSettings.IsSystemField"] = bool.TrueString;
+            //    fieldCreateBy.Settings["ReferenceFieldSettings.IsAudit"] = bool.FalseString;
+            //    fieldCreateBy.Settings["ReferenceFieldSettings.HelpText"] = "";
+            //}
+            //_contentDefinitionManager.StorePartDefinition(partCreateBy);
+            //#endregion
 
-            #region -----------add Created Date Field--------------
-            var addCreateDateViewModel = new AddFieldViewModel
-            {
-                DisplayName = "Create Date",
-                Name = "CreateDate",
-                FieldTypeName = "DatetimeField"
-            };
-            _fieldService.Create(viewModel.Name.Trim(), addCreateDateViewModel, this);
-            var partCreateDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            var fieldCreateDate = partCreateDate.Fields.FirstOrDefault(x => x.Name == "CreateDate");
-            if (fieldCreateDate != null)
-            {
-                fieldCreateDate.Settings["DatetimeFieldSettings.Required"] = bool.TrueString;
-                fieldCreateDate.Settings["DatetimeFieldSettings.ReadOnly"] = bool.TrueString;
-                fieldCreateDate.Settings["DatetimeFieldSettings.AlwaysInLayout"] = bool.TrueString;
-                fieldCreateDate.Settings["DatetimeFieldSettings.IsSystemField"] = bool.TrueString;
-                fieldCreateDate.Settings["DatetimeFieldSettings.IsAudit"] = bool.FalseString;
-                fieldCreateDate.Settings["DatetimeFieldSettings.HelpText"] = "";
-            }
-            _contentDefinitionManager.StorePartDefinition(partCreateDate);
-            #endregion
+            //#region -----------add Created Date Field--------------
+            //var addCreateDateViewModel = new AddFieldViewModel
+            //{
+            //    DisplayName = "Create Date",
+            //    Name = "CreateDate",
+            //    FieldTypeName = "DatetimeField"
+            //};
+            ////_fieldService.Create(viewModel.Name.Trim(), addCreateDateViewModel, this);
+            //var partCreateDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            //var fieldCreateDate = partCreateDate.Fields.FirstOrDefault(x => x.Name == "CreateDate");
+            //if (fieldCreateDate != null)
+            //{
+            //    fieldCreateDate.Settings["DatetimeFieldSettings.Required"] = bool.TrueString;
+            //    fieldCreateDate.Settings["DatetimeFieldSettings.ReadOnly"] = bool.TrueString;
+            //    fieldCreateDate.Settings["DatetimeFieldSettings.AlwaysInLayout"] = bool.TrueString;
+            //    fieldCreateDate.Settings["DatetimeFieldSettings.IsSystemField"] = bool.TrueString;
+            //    fieldCreateDate.Settings["DatetimeFieldSettings.IsAudit"] = bool.FalseString;
+            //    fieldCreateDate.Settings["DatetimeFieldSettings.HelpText"] = "";
+            //}
+            //_contentDefinitionManager.StorePartDefinition(partCreateDate);
+            //#endregion
 
-            #region -----------add Last Modified By Field--------------
-            var addLastModifiedByViewModel = new AddFieldViewModel
-            {
-                DisplayName = "Last Modified By",
-                Name = "LastModifiedBy",
-                FieldTypeName = "ReferenceField"
-            };
-            _fieldService.Create(viewModel.Name.Trim(), addLastModifiedByViewModel, this);
-            var partLastModifiedBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            var fieldLastModifiedBy = partLastModifiedBy.Fields.FirstOrDefault(x => x.Name == "LastModifiedBy");
-            if (fieldLastModifiedBy != null)
-            {
-                fieldLastModifiedBy.Settings["ReferenceFieldSettings.ContentTypeName"] = viewModel.Name.Trim();
-                fieldLastModifiedBy.Settings["ReferenceFieldSettings.Required"] = bool.TrueString;
-                fieldLastModifiedBy.Settings["ReferenceFieldSettings.ReadOnly"] = bool.TrueString;
-                fieldLastModifiedBy.Settings["ReferenceFieldSettings.AlwaysInLayout"] = bool.TrueString;
-                fieldLastModifiedBy.Settings["ReferenceFieldSettings.IsSystemField"] = bool.TrueString;
-                fieldLastModifiedBy.Settings["ReferenceFieldSettings.IsAudit"] = bool.FalseString;
-                fieldLastModifiedBy.Settings["ReferenceFieldSettings.HelpText"] = "";
-            }
-            _contentDefinitionManager.StorePartDefinition(partLastModifiedBy);
-            #endregion
+            //#region -----------add Last Modified By Field--------------
+            //var addLastModifiedByViewModel = new AddFieldViewModel
+            //{
+            //    DisplayName = "Last Modified By",
+            //    Name = "LastModifiedBy",
+            //    FieldTypeName = "ReferenceField"
+            //};
+            ////_fieldService.Create(viewModel.Name.Trim(), addLastModifiedByViewModel, this);
+            //var partLastModifiedBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            //var fieldLastModifiedBy = partLastModifiedBy.Fields.FirstOrDefault(x => x.Name == "LastModifiedBy");
+            //if (fieldLastModifiedBy != null)
+            //{
+            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.ContentTypeName"] = viewModel.Name.Trim();
+            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.Required"] = bool.TrueString;
+            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.ReadOnly"] = bool.TrueString;
+            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.AlwaysInLayout"] = bool.TrueString;
+            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.IsSystemField"] = bool.TrueString;
+            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.IsAudit"] = bool.FalseString;
+            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.HelpText"] = "";
+            //}
+            //_contentDefinitionManager.StorePartDefinition(partLastModifiedBy);
+            //#endregion
 
-            #region -----------add Last Modified Date Field--------------
-            var addLastModifiedDateViewModel = new AddFieldViewModel
-            {
-                DisplayName = "Last Modified Date",
-                Name = "LastModifiedDate",
-                FieldTypeName = "DatetimeField"
-            };
-            _fieldService.Create(viewModel.Name.Trim(), addLastModifiedDateViewModel, this);
-            var partLastModifiedDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            var fieldLastModifiedDate = partLastModifiedDate.Fields.FirstOrDefault(x => x.Name == "LastModifiedDate");
-            if (fieldLastModifiedDate != null)
-            {
-                fieldLastModifiedDate.Settings["DatetimeFieldSettings.Required"] = bool.TrueString;
-                fieldLastModifiedDate.Settings["DatetimeFieldSettings.ReadOnly"] = bool.TrueString;
-                fieldLastModifiedDate.Settings["DatetimeFieldSettings.AlwaysInLayout"] = bool.TrueString;
-                fieldLastModifiedDate.Settings["DatetimeFieldSettings.IsSystemField"] = bool.TrueString;
-                fieldLastModifiedDate.Settings["DatetimeFieldSettings.IsAudit"] = bool.FalseString;
-                fieldLastModifiedDate.Settings["DatetimeFieldSettings.HelpText"] = "";
-            }
-            _contentDefinitionManager.StorePartDefinition(partLastModifiedDate);
-            #endregion
+            //#region -----------add Last Modified Date Field--------------
+            //var addLastModifiedDateViewModel = new AddFieldViewModel
+            //{
+            //    DisplayName = "Last Modified Date",
+            //    Name = "LastModifiedDate",
+            //    FieldTypeName = "DatetimeField"
+            //};
+            ////_fieldService.Create(viewModel.Name.Trim(), addLastModifiedDateViewModel, this);
+            //var partLastModifiedDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
+            //var fieldLastModifiedDate = partLastModifiedDate.Fields.FirstOrDefault(x => x.Name == "LastModifiedDate");
+            //if (fieldLastModifiedDate != null)
+            //{
+            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.Required"] = bool.TrueString;
+            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.ReadOnly"] = bool.TrueString;
+            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.AlwaysInLayout"] = bool.TrueString;
+            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.IsSystemField"] = bool.TrueString;
+            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.IsAudit"] = bool.FalseString;
+            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.HelpText"] = "";
+            //}
+            //_contentDefinitionManager.StorePartDefinition(partLastModifiedDate);
+            //#endregion
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

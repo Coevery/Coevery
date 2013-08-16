@@ -25,40 +25,7 @@ namespace Coevery.Entities.Services {
         }
 
         public void CreateCheck(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
-            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
-                updateModel.AddModelError("DisplayName", T("The Display Name name can't be empty."));
-            }
-
-            if (String.IsNullOrWhiteSpace(viewModel.Name)) {
-                updateModel.AddModelError("Name", T("The Technical Name can't be empty."));
-            }
-
-            if (viewModel.Name.ToLower() == "id") {
-                updateModel.AddModelError("Name", T("The Field Name can't be any case of 'Id'."));
-            }
-
-            if (_contentDefinitionService.GetPart(entityName).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                updateModel.AddModelError("Name", T("A field with the same name already exists."));
-            }
-
-            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
-                updateModel.AddModelError("Name", T("The technical name must start with a letter."));
-            }
-
-            if (!String.Equals(viewModel.Name, viewModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase)) {
-                updateModel.AddModelError("Name", T("The technical name contains invalid characters."));
-            }
-
-            if (_contentDefinitionService.GetPart(entityName).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(viewModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase))) {
-                updateModel.AddModelError("DisplayName", T("A field with the same Display Name already exists."));
-            }
-
-            var prefix = viewModel.FieldTypeName + "Settings";
-            var clientSettings = new FieldSettings();
-            updateModel.TryUpdateModel(clientSettings, prefix, null, null);
-            if (clientSettings.IsSystemField) {
-                updateModel.AddModelError("IsSystemField", T("Can't modify the IsSystemField field."));
-            }
+            
         }
 
         //public void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
@@ -77,5 +44,6 @@ namespace Coevery.Entities.Services {
             var layoutManager = new LayoutManager(_contentDefinitionManager);
             layoutManager.DeleteField(parentname, name);
             _schemaUpdateService.DropColumn(parentname, name);
+        }
     }
 }

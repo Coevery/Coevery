@@ -266,7 +266,18 @@ namespace Coevery.Entities.Services {
         }
 
         private bool IsCustomFieldDriver(Type driverType) {
-            return driverType.Namespace == "Coevery.Fields.Drivers";
+            var filedType = GetDriverUnderlyingType(driverType.BaseType);
+            var isCustomField = filedType != null && filedType.GetCustomAttributes(typeof (CustomFieldAttribute), false).Any();
+            return driverType.Namespace == "Coevery.Fields.Drivers" || isCustomField;
+        }
+
+        private Type GetDriverUnderlyingType(Type driverType) {
+            if (driverType == null)
+                throw new ArgumentNullException("driverType");
+            Type type = null;
+            if (driverType.IsGenericType && !driverType.IsGenericTypeDefinition && ReferenceEquals(driverType.GetGenericTypeDefinition(), typeof(ContentFieldDriver<>)))
+                type = driverType.GetGenericArguments()[0];
+            return type;
         }
 
         public void AddFieldToPart(string fieldName, string fieldTypeName, string partName) {
