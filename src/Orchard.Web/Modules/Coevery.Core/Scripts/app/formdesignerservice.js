@@ -1,11 +1,13 @@
 ﻿define([], function () {
     //Place Indicator Helper
+
     function PlaceIndicator() {
         this.columnIndex = null;
         this.isAbove = null;
         this.markedRow = null;
         this.indicator = $('<div style="position:absolute;border-top:3px solid red;"></div>');
     }
+
     PlaceIndicator.prototype.hide = function () {
         this.indicator.hide();
     };
@@ -34,8 +36,9 @@
         this.markedRow = $row;
     };
 
-    var placeIndicator = new PlaceIndicator();
-    var inLayoutFields = [];
+    var placeIndicator = new PlaceIndicator(),
+        inLayoutFields = [],
+        dragHandler, enableHover;
 
     function getColumnWidths(widthStr) {
         return $.map(widthStr.split(':'), function (n) {
@@ -153,58 +156,11 @@
                 }
             };
         })
-        .directive('fdToolsField', function ($rootScope) {
-            //$rootScope.inLayoutFields || ($rootScope.inLayoutFields = []);
-            $rootScope.$watch(function (scope) {
-                //return scope.inLayoutFields.join(',');
-                return inLayoutFields.join(',');
-            }, function (newValue, oldValue) {
-                var currentFields = newValue ? newValue.split(',') : [],
-                    oldFields = oldValue ? oldValue.split(',') : [],
-                    differentFields;
-
-                if (newValue == oldValue) {
-                    setFieldsUsed(currentFields);
-                    return;
-                }
-                if (currentFields.length > oldFields.length) {
-                    differentFields = getDifferentItems(currentFields, oldFields);
-                    setFieldsUsed(differentFields);
-                } else {
-                    differentFields = getDifferentItems(oldFields, currentFields);
-                    setFieldsUnused(differentFields);
-                }
-
-                function setFieldsUsed(fields) {
-                    for (var i = 0; i < fields.length; i++) {
-                        var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
-                        fieldItem.hide();
-                    }
-                }
-
-                function setFieldsUnused(fields) {
-                    for (var i = 0; i < fields.length; i++) {
-                        var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
-                        fieldItem.show();
-                    }
-                }
-
-                function getDifferentItems(items, source) {
-                    var differentItems = [];
-                    for (var i = 0; i < items.length; i++) {
-                        $.inArray(items[i], source) == -1 && differentItems.push(items[i]);
-                    }
-                    return differentItems;
-                }
-            });
-
+        .directive('fdToolsField', function () {
             return {
                 template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
                 replace: true,
                 restrict: 'E',
-                controller: function () {
-                    console.log('controller!!');
-                },
                 link: function (scope, element, attrs) {
                     var titleElem = element.children();
                     titleElem.text(attrs.fieldDisplayName);
@@ -217,12 +173,49 @@
                 replace: true,
                 restrict: 'E',
                 transclude: true,
-                controller: function() {
+                controller: function ($scope) {
                     inLayoutFields = [];
-                    //scope.$on('$viewContentLoaded', function () {
-                    //    console.log('loaded');
-                    //    inLayoutFields = [];
-                    //});
+                    $scope.$watch(function () {
+                        return inLayoutFields.join(',');
+                    }, function (newValue, oldValue) {
+                        var currentFields = newValue ? newValue.split(',') : [],
+                            oldFields = oldValue ? oldValue.split(',') : [],
+                            differentFields;
+
+                        if (newValue == oldValue) {
+                            setFieldsUsed(currentFields);
+                            return;
+                        }
+                        if (currentFields.length > oldFields.length) {
+                            differentFields = getDifferentItems(currentFields, oldFields);
+                            setFieldsUsed(differentFields);
+                        } else {
+                            differentFields = getDifferentItems(oldFields, currentFields);
+                            setFieldsUnused(differentFields);
+                        }
+
+                        function setFieldsUsed(fields) {
+                            for (var i = 0; i < fields.length; i++) {
+                                var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
+                                fieldItem.hide();
+                            }
+                        }
+
+                        function setFieldsUnused(fields) {
+                            for (var i = 0; i < fields.length; i++) {
+                                var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
+                                fieldItem.show();
+                            }
+                        }
+
+                        function getDifferentItems(items, source) {
+                            var differentItems = [];
+                            for (var i = 0; i < items.length; i++) {
+                                $.inArray(items[i], source) == -1 && differentItems.push(items[i]);
+                            }
+                            return differentItems;
+                        }
+                    });
                 },
                 link: function (scope, element, attrs) {
                     var lastMarked = null;
@@ -230,7 +223,7 @@
                         accept: '[fd-section], [fd-tools-section]',
                         tolerance: "pointer",
                         drop: function (event, ui) {
-                            $rootScope.dragHandler = null;
+                            dragHandler = null;
                             var markedSection = $(this).find('.marked, .markedAbove').filter('[fd-section]'),
                                 dragItem;
 
@@ -258,16 +251,16 @@
                             clearMark(lastMarked);
                         },
                         over: function (event, ui) {
-                            $rootScope.dragHandler = function (dragEvent, dragUi) {
+                            dragHandler = function (dragEvent, dragUi) {
                                 markSection({
                                     x: dragEvent.pageX,
                                     y: dragEvent.pageY
                                 });
                             };
-                            $rootScope.dragHandler(event, ui);
+                            dragHandler(event, ui);
                         },
                         out: function (event, ui) {
-                            $rootScope.dragHandler = null;
+                            dragHandler = null;
                             clearMark(lastMarked);
                         }
                     });
@@ -296,8 +289,8 @@
 
                             if (result != null) {
                                 clearMark(lastMarked);
-                                var above = result && i == 0;
-                                var index = result ? i - 1 : i;
+                                var above = result && i == 0,
+                                    index = result ? i - 1 : i;
                                 lastMarked = above ? sections[0] : sections[index];
                                 setMark(lastMarked, above);
                                 break;
@@ -324,17 +317,17 @@
                     sectionHeader.find('.title:first').text(attrs.sectionTitle);
                     sectionHeader.dblclick(openPropertyDialog);
 
-                    watch = $rootScope.$watch(function () {
+                    watch = scope.$watch(function () {
                         return element.attr('section-title');
                     }, function (newValue) {
                         sectionHeader.find('.title:first').text(newValue);
                     });
                     watchList.push(watch);
-                    watch = $rootScope.$watch(function () {
+                    watch = scope.$watch(function () {
                         return element.attr('section-columns');
                     }, changeColumnCountHandler);
                     watchList.push(watch);
-                    watch = $rootScope.$watch(function () {
+                    watch = scope.$watch(function () {
                         return element.attr('section-columns-width');
                     }, function (newValue) {
                         var columnsCount = parseInt(element.attr('section-columns'));
@@ -453,14 +446,13 @@
                     }
 
                     function openPropertyDialog() {
-                        var section = element;
-                        $rootScope.currentSection = {
-                            section: section,
-                            columns: section.attr('section-columns'),
-                            title: section.attr('section-title'),
-                            columnsWidth: section.attr('section-columns-width')
+                        var currentSection = {
+                            section: element,
+                            columns: element.attr('section-columns'),
+                            title: element.attr('section-title'),
+                            columnsWidth: element.attr('section-columns-width')
                         };
-                        $rootScope.$apply();
+                        $rootScope.$broadcast('openSectionPropertiesDialog', currentSection);
                         $('#sectionPropertiesDialog').modal({ backdrop: 'static' });
                     }
                 }
@@ -511,59 +503,13 @@
                         }
                     });
                     if (attrs.fieldEmpty != null) {
-                        element.append('<div class="span12">Blank Space</div>');
-                        element.append('<div class="tools"></div>');
-                        var removeItem = $('<fd-tool-remove></fd-tool-remove>');
-                        element.find('.tools').append(removeItem);
-                        $compile(removeItem)(scope);
-                        element.find('.tools')[0].toolRemove = function (removeAll) {
-                            var column = element.parents('[fd-column]:first');
-                            element.remove();
-                            removeAll || adjustColumnsPosition(column, $compile, scope);
-                        };
-
-                        element[0].hoverOverHandler = function () {
-                            $(this).addClass('highlight');
-                            $(this).find('.tools').show();
-                        };
-                        element[0].hoverOutHandler = function () {
-                            $(this).removeClass('highlight');
-                            $(this).find('.tools').hide();
-                        };
+                        createBlankSpace();
                         return;
                     }
                     if (attrs.fieldText != null) {
-                        element.append('<div class="span12 text-content">Sample Text</div>');
-                        element.append('<div class="tools"></div>');
-                        var propertyItem = $('<fd-tool-property></fd-tool-property>');
-                        element.find('.tools').append(propertyItem);
-                        $compile(propertyItem)(scope);
-                        var removeItem = $('<fd-tool-remove></fd-tool-remove>');
-                        element.find('.tools').append(removeItem);
-                        $compile(removeItem)(scope);
-                        element.find('.tools')[0].toolRemove = function (removeAll) {
-                            var column = element.parents('[fd-column]:first');
-                            element.remove();
-                            removeAll || adjustColumnsPosition(column, $compile, scope);
-                        };
-
-                        element[0].hoverOverHandler = function () {
-                            $(this).addClass('highlight');
-                            $(this).find('.tools').show();
-                        };
-                        element[0].hoverOutHandler = function () {
-                            $(this).removeClass('highlight');
-                            $(this).find('.tools').hide();
-                        };
-                        var openTextDialog = function () {
-                            $('#textPropertiesDialog').modal({ backdrop: 'static' });
-                        };
-                        element.find('.tools')[0].toolProperty = openTextDialog;
-                        element.dblclick(openTextDialog);
+                        createTextField();
                         return;
                     }
-
-                    //$rootScope.inLayoutFields.push(attrs.fieldName);
                     inLayoutFields.push(attrs.fieldName);
 
                     var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]').text();
@@ -584,13 +530,11 @@
                     columnTool.click(columnToolHandler);
                     element.find('.tools').append(columnTool);
 
-                    var watchList = [];
-                    var watch = $rootScope.$watch(function () {
+                    scope.$watch(function () {
                         return element.attr('field-required');
                     }, function (newValue) {
                         changeToRequired(newValue != null);
                     });
-                    watchList.push(watch);
 
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
@@ -618,6 +562,56 @@
                     element[0].removeField = removeField;
 
                     element.dblclick(openPropertyDialog);
+
+                    function createBlankSpace() {
+                        element.append('<div class="span12">Blank Space</div><div class="tools"></div>');
+                        var removeItem = $('<fd-tool-remove></fd-tool-remove>');
+                        element.find('.tools').append(removeItem);
+                        $compile(removeItem)(scope);
+                        element.find('.tools')[0].toolRemove = function (removeAll) {
+                            var column = element.parents('[fd-column]:first');
+                            element.remove();
+                            removeAll || adjustColumnsPosition(column, $compile, scope);
+                        };
+
+                        element[0].hoverOverHandler = function () {
+                            $(this).addClass('highlight');
+                            $(this).find('.tools').show();
+                        };
+                        element[0].hoverOutHandler = function () {
+                            $(this).removeClass('highlight');
+                            $(this).find('.tools').hide();
+                        };
+                    }
+
+                    function createTextField() {
+                        element.append('<div class="span12 text-content">Sample Text</div><div class="tools"></div>');
+                        var propertyItem = $('<fd-tool-property></fd-tool-property>');
+                        element.find('.tools').append(propertyItem);
+                        $compile(propertyItem)(scope);
+                        var removeItem = $('<fd-tool-remove></fd-tool-remove>');
+                        element.find('.tools').append(removeItem);
+                        $compile(removeItem)(scope);
+                        element.find('.tools')[0].toolRemove = function (removeAll) {
+                            var column = element.parents('[fd-column]:first');
+                            element.remove();
+                            removeAll || adjustColumnsPosition(column, $compile, scope);
+                        };
+
+                        element[0].hoverOverHandler = function () {
+                            $(this).addClass('highlight');
+                            $(this).find('.tools').show();
+                        };
+                        element[0].hoverOutHandler = function () {
+                            $(this).removeClass('highlight');
+                            $(this).find('.tools').hide();
+                        };
+                        var openTextDialog = function () {
+                            $('#textPropertiesDialog').modal({ backdrop: 'static' });
+                        };
+                        element.find('.tools')[0].toolProperty = openTextDialog;
+                        element.dblclick(openTextDialog);
+                    }
 
                     function columnToolHandler() {
                         var row = element.parents('[fd-row]:first'),
@@ -648,32 +642,21 @@
                     }
 
                     function openPropertyDialog() {
-                        var field = element;
-                        $rootScope.currentField = {
-                            field: field,
-                            readonly: field.attr('field-readonly') != null,
-                            required: field.attr('field-required') != null
+                        var currentField = {
+                            field: element,
+                            readonly: element.attr('field-readonly') != null,
+                            required: element.attr('field-required') != null
                         };
-                        $rootScope.$apply();
-                        var dialogTemplate = $('script[type="text/ng-template"][id="' + field.attr('field-name') + '.setting"]').text();
+                        $rootScope.$broadcast('openFieldPropertiesDialog', currentField);
+                        var dialogTemplate = $('script[type="text/ng-template"][id="' + element.attr('field-name') + '.setting"]').text();
                         $('#fieldPropertiesDialog .modal-body').html(dialogTemplate);
                         $('#fieldPropertiesDialog').modal({ backdrop: 'static' });
                     }
 
-                    function removeWatchListeners() {
-                        $.each(watchList, function () {
-                            this();
-                        });
-                    }
-
                     function removeField(removeAll) {
-                        removeWatchListeners();
-
-                        var column = element.parents('[fd-column]:first');
-                        var field = element;
-                        //var fieldIndex = $.inArray(field.attr('field-name'), $rootScope.inLayoutFields);
-                        var fieldIndex = $.inArray(field.attr('field-name'), inLayoutFields);
-                        //$rootScope.inLayoutFields.splice(fieldIndex, 1);
+                        var column = element.parents('[fd-column]:first'),
+                            field = element,
+                            fieldIndex = $.inArray(field.attr('field-name'), inLayoutFields);
                         inLayoutFields.splice(fieldIndex, 1);
                         $rootScope.$apply();
                         field.remove();
@@ -754,13 +737,17 @@
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
+                    scope.$on('openFieldPropertiesDialog', function (event, currentField) {
+                        scope.currentField = currentField;
+                        scope.$apply();
+                    });
                     element.find('.btn-primary').click(function (parameters) {
-                        $rootScope.currentField.readonly
-                            ? $rootScope.currentField.field.attr('field-readonly', '')
-                            : $rootScope.currentField.field.removeAttr('field-readonly');
-                        $rootScope.currentField.required
-                            ? $rootScope.currentField.field.attr('field-required', '')
-                            : $rootScope.currentField.field.removeAttr('field-required');
+                        scope.currentField.readonly
+                            ? scope.currentField.field.attr('field-readonly', '')
+                            : scope.currentField.field.removeAttr('field-readonly');
+                        scope.currentField.required
+                            ? scope.currentField.field.attr('field-required', '')
+                            : scope.currentField.field.removeAttr('field-required');
 
                         $rootScope.$apply();
                         $('#fieldPropertiesDialog').modal('hide');
@@ -774,13 +761,17 @@
                 replace: true,
                 restrict: 'E',
                 link: function (scope, element, attrs) {
+                    scope.$on('openSectionPropertiesDialog', function (event, currentSection) {
+                        scope.currentSection = currentSection;
+                        scope.$apply();
+                    });
                     element.find('.btn-primary').click(function () {
-                        $rootScope.currentSection.section.attr('section-columns', $rootScope.currentSection.columns);
-                        $rootScope.currentSection.section.attr('section-title', $rootScope.currentSection.title);
-                        var width = $rootScope.currentSection.columns == 1
+                        scope.currentSection.section.attr('section-columns', scope.currentSection.columns);
+                        scope.currentSection.section.attr('section-title', scope.currentSection.title);
+                        var width = scope.currentSection.columns == 1
                             ? 12
-                            : $rootScope.currentSection.columnsWidth;
-                        $rootScope.currentSection.section.attr('section-columns-width', width);
+                            : scope.currentSection.columnsWidth;
+                        scope.currentSection.section.attr('section-columns-width', width);
                         $rootScope.$apply();
                         $('#sectionPropertiesDialog').modal('hide');
                     });
@@ -796,8 +787,7 @@
                         tolerance: "pointer",
                         hoverClass: 'drop-hover',
                         drop: function (event, ui) {
-                            $rootScope.dragHandler = null;
-
+                            dragHandler = null;
                             var dragItem;
                             if (ui.draggable.is('[fd-tools-field]')) {
                                 dragItem = $('<fd-field></fd-field>');
@@ -865,16 +855,16 @@
                             placeIndicator.hide();
                         },
                         over: function (event, ui) {
-                            $rootScope.dragHandler = function (dragEvent, dragUi) {
+                            dragHandler = function (dragEvent, dragUi) {
                                 markColumn({
                                     x: dragEvent.pageX,
                                     y: dragEvent.pageY
                                 });
                             };
-                            $rootScope.dragHandler(event, ui);
+                            dragHandler(event, ui);
                         },
                         out: function (event, ui) {
-                            $rootScope.dragHandler = null;
+                            dragHandler = null;
                             placeIndicator.hide();
                         }
                     });
@@ -946,17 +936,17 @@
                         distance: 10,
                         //scroll: false,
                         start: function (event, ui) {
-                            $rootScope.enableHover = false;
+                            enableHover = false;
                             setZIndex(ui.helper);
                             $(event.target).addClass('dragging');
                         },
                         stop: function (event, ui) {
-                            $rootScope.enableHover = true;
+                            enableHover = true;
                             $(event.target).removeClass('dragging');
                         },
                         drag: function (event, ui) {
-                            if ($rootScope.dragHandler) {
-                                $rootScope.dragHandler(event, ui);
+                            if (dragHandler) {
+                                dragHandler(event, ui);
                             }
                         }
                     });
@@ -976,10 +966,10 @@
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-                    $rootScope.enableHover = true;
+                    enableHover = true;
                     element.hover(
                         function () {
-                            $rootScope.enableHover && this.hoverOverHandler && this.hoverOverHandler();
+                            enableHover && this.hoverOverHandler && this.hoverOverHandler();
                         },
                         function () {
                             this.hoverOutHandler && this.hoverOutHandler();
@@ -998,15 +988,16 @@
                             if ($(this).find('[fd-field]').length) {
                                 var columnCount = $(this).attr('section-columns'),
                                     width = $(this).attr('section-columns-width'),
-                                    sectionTitle = $(this).attr('section-title');
-                                var section = {
-                                    SectionColumns: columnCount,
-                                    SectionColumnsWidth: width,
-                                    SectionTitle: sectionTitle,
-                                    Rows: []
-                                };
+                                    sectionTitle = $(this).attr('section-title'),
+                                    section = {
+                                        SectionColumns: columnCount,
+                                        SectionColumnsWidth: width,
+                                        SectionTitle: sectionTitle,
+                                        Rows: []
+                                    },
+                                    rows = $(this).find('[fd-row]');
+
                                 layoutObject.push(section);
-                                var rows = $(this).find('[fd-row]');
                                 rows.each(function () {
                                     var row = {
                                         Columns: [],
@@ -1028,11 +1019,10 @@
                             }
                         });
 
-                        var entityName = $stateParams.EntityName;
                         $.ajax({
                             type: 'POST',
                             contentType: 'application/json',
-                            url: '/OrchardLocal/api/formdesigner/layout/' + entityName,
+                            url: '/OrchardLocal/api/formdesigner/layout/' + $stateParams.EntityName,
                             data: JSON.stringify(layoutObject),
                             success: function (msg) {
                                 logger.success('Save success');
