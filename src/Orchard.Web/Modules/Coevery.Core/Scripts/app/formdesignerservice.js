@@ -872,13 +872,13 @@
                     function markColumn(position) {
                         var rows = element.children('[fd-row]'),
                             widths = getColumnWidths(element.parents('[fd-section]:first').attr('section-columns-width')),
-                            currentPosition = (position.x - rows.offset().left) / (rows.width() / 12),
+                            currentPosition = (position.x - rows.offset().left) / (rows.outerWidth() / 12),
                             columnIndex;
 
                         $.each(widths, function (i, n) {
                             currentPosition -= n;
+                            columnIndex = i;
                             if (currentPosition <= 0) {
-                                columnIndex = i;
                                 return false;
                             }
                         });
@@ -893,17 +893,17 @@
 
                             if (result != null) {
                                 var column = row.find('[fd-column]:nth-child(' + (columnIndex + 1) + ')'),
-                                    above, markedRow;
+                                    above, markedRow, index, prevRow;
 
                                 if (column.children('[fd-field]').length) {
                                     above = result && j == 0;
-                                    var index = result && j ? j - 1 : j;
+                                    index = result && j ? j - 1 : j;
                                     markedRow = $(rows[index]);
                                 } else if (!result && row.hasClass('merged-row')) {
                                     above = false;
                                     markedRow = row;
                                 } else {
-                                    var prevRow = row.prevAll('.merged-row,:has([fd-column]:nth-child(' + (columnIndex + 1) + '):has([fd-field]))').first();
+                                    prevRow = row.prevAll('.merged-row,:has([fd-column]:nth-child(' + (columnIndex + 1) + '):has([fd-field]))').first();
                                     above = !prevRow.length;
                                     markedRow = prevRow.length ? prevRow : rows.first();
                                 }
