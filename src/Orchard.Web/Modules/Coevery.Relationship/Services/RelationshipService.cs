@@ -172,7 +172,7 @@ namespace Coevery.Relationship.Services {
                 RelationshipName = relationship.Name
             });
             _contentDefinitionService.AddFieldToPart(oneToMany.FieldName,oneToMany.FieldLabel, "ReferenceField", relatedEntity.Name);
-            _contentDefinitionService.AlterField(relatedEntity.Name, new EditPartFieldViewModel {Name = oneToMany.FieldName}, updateModel);
+            _contentDefinitionService.AlterField(relatedEntity.Name, oneToMany.FieldName, updateModel);
             var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.SingleOrDefault(field => field.Name == oneToMany.FieldName);
 
             _oneToManyRepository.Create(new OneToManyRelationshipRecord {

@@ -150,18 +150,13 @@ namespace Coevery.Entities.Services {
             });
         }
 
-        public void AlterField(string typeName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel) {
+        public void AlterField(string name, string fieldName, IUpdateModel updateModel) {
             var updater = new Updater(updateModel);
             updater._prefix = secondHalf => secondHalf;
-            _contentDefinitionManager.AlterPartDefinition(typeName, partBuilder => {
-
-                // allow extensions to alter partField configuration
-                if (fieldViewModel != null) {
-                    partBuilder.WithField(fieldViewModel.Name, partFieldBuilder => {
-                        fieldViewModel.Templates = _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater);
-                    });
-                }
-            });
+            _contentDefinitionManager
+                .AlterPartDefinition(name,
+                                     partBuilder => partBuilder.WithField(fieldName,
+                                                                          partFieldBuilder => _contentDefinitionEditorEvents.PartFieldEditorUpdate(partFieldBuilder, updater)));
         }
 
         public void RemoveType(string name, bool deleteContent) {
@@ -378,13 +373,5 @@ namespace Coevery.Entities.Services {
                 _thunk.AddModelError(_prefix(key), errorMessage);
             }
         }
-
-        //public void CreateField(string partName, string fieldName, IUpdateModel updateModel) {
-        //    var updater = new Updater(updateModel);
-        //    updater._prefix = secondHalf => secondHalf;
-        //    _contentDefinitionManager.AlterPartDefinition(partName,
-        //                                                  partBuilder => partBuilder.WithField(fieldName,
-        //                                                                                       partFieldBuilder => _contentDefinitionEditorEvents.PartFieldEditorCreate(partFieldBuilder, partName, updater)));
-        //}
     }
 }

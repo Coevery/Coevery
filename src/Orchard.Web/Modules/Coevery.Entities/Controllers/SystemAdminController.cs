@@ -156,8 +156,7 @@ namespace Coevery.Entities.Controllers {
 
             try {
                 _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name);
-                typeViewModel = _contentDefinitionService.GetType(id);
-                _contentDefinitionService.AlterType(typeViewModel, this);
+                _contentDefinitionService.AlterField(partViewModel.Name, viewModel.Name, this);
 
                 if (!ModelState.IsValid) {
                     Services.TransactionManager.Cancel();
@@ -455,7 +454,7 @@ namespace Coevery.Entities.Controllers {
             fieldDefinition.DisplayName = viewModel.DisplayName;
             _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
 
-            _contentDefinitionService.AlterField(id, viewModel, this);
+            _contentDefinitionService.AlterField(id, viewModel.Name, this);
             if (!ModelState.IsValid)
             {
                 Services.TransactionManager.Cancel();
