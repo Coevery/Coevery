@@ -40,8 +40,13 @@ namespace Coevery.Entities.Controllers {
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                        let fields = type.Fields.Select(f => new { f.Name, f.DisplayName, FieldType = f.FieldDefinition.Name.CamelFriendly(), IsSystemField = bool.Parse(f.Settings[f.FieldDefinition.Name + "Settings.IsSystemField"]) })
-                        select new { type.DisplayName, type.Name, setting.IsDeployed, Fields = fields };
+                        let fields = type.Fields.Select(f => new {
+                            f.Name,
+                            f.DisplayName,
+                            FieldType = f.FieldDefinition.Name.CamelFriendly(),
+                            IsSystemField = f.Settings.GetModel<FieldSettings>().IsSystemField
+                        })
+                        select new {type.DisplayName, type.Name, setting.IsDeployed, Fields = fields};
             var entityType = query.SingleOrDefault();
             return entityType;
         }

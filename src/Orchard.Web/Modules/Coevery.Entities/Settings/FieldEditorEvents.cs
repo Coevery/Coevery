@@ -11,6 +11,12 @@ namespace Coevery.Entities.Settings {
             builder.WithSetting(prefix + ".AlwaysInLayout", model.AlwaysInLayout.ToString());
             builder.WithSetting(prefix + ".IsSystemField", model.IsSystemField.ToString());
             builder.WithSetting(prefix + ".IsAudit", model.IsAudit.ToString());
+            //var prefix = viewModel.FieldTypeName + "Settings";
+            //var clientSettings = new FieldSettings();
+            //updateModel.TryUpdateModel(clientSettings, prefix, null, null);
+            //if (clientSettings.IsSystemField) {
+            //    updateModel.AddModelError("IsSystemField", T("Can't modify the IsSystemField field."));
+            //}
         }
     }
 }
