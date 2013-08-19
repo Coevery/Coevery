@@ -257,6 +257,7 @@ namespace Coevery.Entities.Controllers {
             // adds CommonPart by default
             _contentDefinitionManager.AlterTypeDefinition(viewModel.Name, cfg => cfg
                 .WithPart("CoeveryCommonPart"));
+            _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
 
             _contentDefinitionService.AlterType(viewModel, this);
 

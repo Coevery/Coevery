@@ -49,31 +49,6 @@ namespace Coevery.Fields.Settings {
 
         private void ValidateSettings(IUpdateModel updateModel, OptionSetFieldSettings model, int itemCount) {
             if (model.OptionSetId <= 0) {
-        //public override IEnumerable<TemplateViewModel> PartFieldEditorCreate(ContentPartFieldDefinitionBuilder builder, string typeName, IUpdateModel updateModel) {
-        //    if (builder.FieldType != "SelectField") {
-        //        yield break;
-        //    }
-
-        //    var model = new SelectFieldSettings();
-        //    if (updateModel.TryUpdateModel(model, "SelectFieldSettings", null, null)) {
-        //        var labels = model.LabelsStr.Split(SelectFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
-        //        model.FieldSettingId = _optionItemService.InitializeField(typeName, builder.Name, labels, model.DefaultValue);
-        //        var itemCount = labels.Length;
-        //        ValidateSettings(updateModel, model, itemCount);
-
-        //        UpdateSettings(model, builder, "SelectFieldSettings");
-        //        builder.WithSetting("SelectFieldSettings.DisplayLines", model.DisplayLines.ToString());
-        //        builder.WithSetting("SelectFieldSettings.DisplayOption", model.DisplayOption.ToString());
-        //        builder.WithSetting("SelectFieldSettings.FieldSettingId", model.FieldSettingId.ToString());
-        //        builder.WithSetting("SelectFieldSettings.SelectCount", model.SelectCount.ToString());
-        //        builder.WithSetting("SelectFieldSettings.DependencyMode", model.DependencyMode.ToString());
-        //    }
-
-        //    yield return DefinitionTemplate(model);
-        //}
-
-        private void ValidateSettings(IUpdateModel updateModel, OptionSetFieldSettings model, int itemCount) {
-            if (model.OptionSetId <= 0) {
                 updateModel.AddModelError("OptionSetSettings", T("Create option items failed."));
             }
 
