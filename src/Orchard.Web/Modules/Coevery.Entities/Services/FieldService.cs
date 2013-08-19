@@ -14,18 +14,21 @@ namespace Coevery.Entities.Services {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly ILayoutManager _layoutManager;
 
         public FieldService(
             IContentDefinitionService contentDefinitionService,
             ISchemaUpdateService schemaUpdateService,
-            IContentDefinitionManager contentDefinitionManager) {
+            IContentDefinitionManager contentDefinitionManager,
+            ILayoutManager layoutManager) {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             _contentDefinitionManager = contentDefinitionManager;
+            _layoutManager = layoutManager;
         }
 
         public void CreateCheck(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
-            
+
         }
 
         //public void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
@@ -41,8 +44,7 @@ namespace Coevery.Entities.Services {
 
         public void Delete(string name, string parentname) {
             _contentDefinitionService.RemoveFieldFromPart(name, parentname);
-            var layoutManager = new LayoutManager(_contentDefinitionManager);
-            layoutManager.DeleteField(parentname, name);
+            _layoutManager.DeleteField(parentname, name);
             _schemaUpdateService.DropColumn(parentname, name);
         }
     }
