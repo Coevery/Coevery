@@ -302,11 +302,6 @@ ul.nav.nav-tabs {
     position: relative;
 }
 
-/*Date/Time Picker*/
-.control-group .controls.input-prepend {
-    display: block;
-}
-
 /*Modal/Dialog*/
 .modal.ng-scope {
     position: absolute;

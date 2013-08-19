@@ -141,6 +141,11 @@
     min-height: 56px;
 }
 
+/*Date/Time Picker*/
+.edit-mode .controls.input-prepend {
+    display: block;
+}
+
 @media (max-width: 767px) {
     [fd-column] + [fd-column] {
         margin-top: 16px;
