@@ -28,21 +28,18 @@ namespace Coevery.Entities.Controllers {
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
-        private readonly IFieldService _fieldService;
 
         public SystemAdminController(IOrchardServices orchardServices
             ,IContentDefinitionService contentDefinitionService
             , ISchemaUpdateService schemaUpdateService
             ,IContentDefinitionManager contentDefinitionManager
-            ,IContentDefinitionEditorEvents contentDefinitionEditorEvents, 
-            IFieldService fieldService) {
+            ,IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
-            _fieldService = fieldService;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -161,6 +158,7 @@ namespace Coevery.Entities.Controllers {
                 _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name);
                 typeViewModel = _contentDefinitionService.GetType(id);
                 _contentDefinitionService.AlterType(typeViewModel, this);
+
                 if (!ModelState.IsValid) {
                     Services.TransactionManager.Cancel();
                     Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -168,6 +166,8 @@ namespace Coevery.Entities.Controllers {
                                            .Select(m => m.ErrorMessage).ToArray();
                     return Content(string.Concat(errors));
                 }
+
+                _schemaUpdateService.CreateColumn(typeViewModel.Name, viewModel.Name, viewModel.FieldTypeName);
             }
             catch (Exception ex) {
                 var message = T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message);
