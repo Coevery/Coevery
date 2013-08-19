@@ -1,4 +1,5 @@
-﻿using Orchard.ContentManagement.MetaData;
+﻿using System;
+using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Data.Migration;
 
@@ -11,6 +12,23 @@ namespace Coevery.Core {
                     .Column<int>("ContentTypeDefinitionRecord_id")
                 );
 
+            SchemaBuilder.CreateTable("CoeveryCommonPartRecord",
+                table => table
+                    .ContentPartRecord()
+                    .Column<int>("OwnerId")
+                    .Column<int>("ModifierId")
+                    .Column<DateTime>("CreatedUtc")
+                    .Column<DateTime>("ModifiedUtc")
+                    .Column<int>("Container_id")
+                );
+
+            SchemaBuilder.CreateTable("CoeveryCommonPartVersionRecord",
+                table => table
+                    .ContentPartVersionRecord()
+                    .Column<DateTime>("CreatedUtc")
+                    .Column<DateTime>("ModifiedUtc")
+                );
+
             ContentDefinitionManager.AlterTypeDefinition("ModuleMenuItem", cfg => cfg
                 .WithPart("MenuPart")
                 .WithPart("CommonPart")
@@ -21,7 +39,11 @@ namespace Coevery.Core {
                 .WithSetting("Stereotype", "MenuItem")
                 );
 
-            return 1;
+            ContentDefinitionManager.AlterPartDefinition("CoeveryCommonPart", builder => builder
+                .Attachable()
+                .WithDescription("Provides common information about a content item, such as Owner, Date Created, Modifier and Date Modified."));
+
+            return 2;
         }
 
         public int UpdateFrom1()

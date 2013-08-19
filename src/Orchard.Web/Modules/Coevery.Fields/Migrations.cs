@@ -34,7 +34,12 @@ namespace Coevery.Fields {
                     .Column<int>("OptionItem_Id",column=>column.NotNull())
                     .Column<int>("SelectedOptionSetRecord_Id")
                 );
-            return 1;
+
+            SchemaBuilder.CreateTable("SelectedOptionSetRecord",
+                table => table
+                    .Column<int>("Id", column => column.PrimaryKey())
+                );
+            return 5;
         }
     }
 }

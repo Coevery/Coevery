@@ -1,6 +1,6 @@
 ﻿<Placement>
   <!-- Text -->
-  <Place Fields_CoeveryText_Edit="Content:2.4;Wrapper=Wrapper_Script"/>
+  <Place Fields_CoeveryText_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_CoeveryText="Content:after;Wrapper=Wrapper_Script"/>
 
   <!-- Boolean -->
@@ -43,4 +43,8 @@
   <Place Fields_Reference_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Reference="Content:after;Wrapper=Wrapper_Script"/>
 
+  <!--Taxonomy-->
+  <Place Fields_TaxonomyField_Edit="Content:2.6;Wrapper=Wrapper_Script;"/>
+  <Place Fields_TaxonomyField="Content:after"/>
+  
 </Placement>

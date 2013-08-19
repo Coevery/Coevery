@@ -43,6 +43,7 @@ namespace Coevery.Relationship.Services {
             IRepository<OneToManyRelationshipRecord> oneToManyRepository,
             IRepository<ManyToManyRelationshipRecord> manyToManyRepository,
             IRepository<RelationshipColumnRecord> relationshipColumn,
+            ISchemaUpdateService schemaUpdateService,
             IRepository<ContentPartDefinitionRecord> contentPartRepository,
             ISessionLocator sessionLocator,
             IFieldService fieldService,

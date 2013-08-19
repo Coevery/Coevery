@@ -85,6 +85,7 @@ namespace Coevery.Entities.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
             var contentFieldDefinition = new ContentFieldDefinition(fieldTypeName + "Create");
+
             var definition = new ContentPartFieldDefinition(contentFieldDefinition, string.Empty, new SettingsDictionary());
             var templates = _contentDefinitionEditorEvents.PartFieldEditor(definition);
 
@@ -253,6 +254,10 @@ namespace Coevery.Entities.Controllers {
                 return Content(string.Concat(temp));
             }
 
+            // adds CommonPart by default
+            _contentDefinitionManager.AlterTypeDefinition(viewModel.Name, cfg => cfg
+                .WithPart("CoeveryCommonPart"));
+
             _contentDefinitionService.AlterType(viewModel, this);
 
             _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
@@ -271,9 +276,6 @@ namespace Coevery.Entities.Controllers {
                                                                                       .WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString)
                                                                                       .WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty)
                                                                                       .WithSetting("Storage", "Part")));
-
-            // adds CommonPart by default
-            _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name,
