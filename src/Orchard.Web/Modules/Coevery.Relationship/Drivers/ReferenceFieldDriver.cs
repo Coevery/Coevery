@@ -75,8 +75,10 @@ namespace Coevery.Relationship.Drivers {
                     Selected = field.Value == c.Id
                 }).ToList();
 
+            contentItems.Insert(0, new SelectListItem { Text = "None", Value = "" });
+
             var model = new ReferenceFieldViewModel {
-                ContentId = 0,
+                ContentId = field.Value,
                 Field = field,
                 ItemList = new SelectList(contentItems, "Value", "Text", field.Value)
             };

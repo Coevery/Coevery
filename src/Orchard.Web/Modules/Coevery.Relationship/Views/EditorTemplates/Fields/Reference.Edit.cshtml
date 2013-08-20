@@ -8,13 +8,5 @@
 <label class="span3 control-label" for="@Html.FieldIdFor(m => m.ContentId)">@Model.Field.DisplayName</label>
 <div class="control controls toValidate">
     @Html.DropDownListFor(m => m.ContentId, Model.ItemList, new { @class = "textMedium span12"})
-   @* <input type="text" 
-           id="@Html.FieldIdFor(m => m.Value)" 
-           name="@Html.FieldNameFor(m => m.Value)"
-           value="@Model.Value"
-        @if(settings.Required) {<text> required="required"</text> }
-        @if(settings.ReadOnly) {<text> readonly="readonly"</text> }
-           class="textMedium span12 phonenumber" />*@
-    @*@Html.ValidationMessageFor(m => m.ContentId)*@
 </div>
 

@@ -6,16 +6,16 @@
     var decimalplacesclass = settings.DecimalPlaces > 0 ? "decimalplaces" : string.Empty;
 }
 
-<label class="span3 control-label" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
+<label class="control-label" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
 <div class="control controls toValidate">
     <input type="text" 
            id="@Html.FieldIdFor(m => m.Value)" 
            name="@Html.FieldNameFor(m => m.Value)"
            value="@Model.Value"
-        @if(settings.Required) {<text> required="required"</text> }
-        @if(settings.ReadOnly) {<text> readonly="readonly"</text> }
-        @if(settings.Length > 1) {<text> maxlength="@settings.Length.ToString()"</text>} 
-        @if(settings.DecimalPlaces>0) {<text> decimalplaces = "@settings.DecimalPlaces" </text>}
+        @if (settings.Required) {<text> required="required"</text> }
+        @if (settings.ReadOnly) {<text> readonly="readonly"</text> }
+        @if (settings.Length > 1) {<text> maxlength="@settings.Length.ToString()"</text>} 
+        @if (settings.DecimalPlaces > 0) {<text> decimalplaces = "@settings.DecimalPlaces" </text>}
            class="textMedium span12 number @decimalplacesclass"
         />
     @Html.ValidationMessageFor(m => m.Value)
