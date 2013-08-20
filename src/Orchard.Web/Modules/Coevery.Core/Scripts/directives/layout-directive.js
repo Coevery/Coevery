@@ -1,12 +1,16 @@
 angular.module('coevery.layout', [])
     .directive('fdSection', function () {
         return {
-            template: '<fieldset fd-section class="data-section"><legend>Section Title</legend><div ng-transclude></div></fieldset>',
+            template: function (element) {
+                return element.parents('.edit-mode:first').length
+                    ? '<fieldset fd-section class="data-section"><legend class="title">Section Title</legend><div ng-transclude></div></fieldset>'
+                    : '<section fd-section><header><span class="show-button"></span><h5 class="title">General Info</h5></header><div ng-transclude></div></section>';
+            },
             replace: true,
             restrict: 'E',
             transclude: true,
             link: function (scope, element, attrs) {
-                var sectionHeader = element.find('legend');
+                var sectionHeader = element.find('.title:first');
                 sectionHeader.text(attrs.sectionTitle);
             }
         };
@@ -43,7 +47,11 @@ angular.module('coevery.layout', [])
     })
     .directive('fdField', function () {
         return {
-            template: '<div fd-field class="control-group"></div>',
+            template: function (element) {
+                return element.parents('.edit-mode:first').length
+                    ? '<div fd-field class="control-group"></div>'
+                    : '<div fd-field></div>';
+            },
             replace: true,
             restrict: 'E',
             link: function (scope, element, attrs) {

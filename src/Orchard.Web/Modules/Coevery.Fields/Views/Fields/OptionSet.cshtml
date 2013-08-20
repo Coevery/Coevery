@@ -4,11 +4,9 @@
     string value = Model.ContentField.Value;
     if (!string.IsNullOrWhiteSpace(value)) {
         string name = Model.ContentField.DisplayName;
-        <div class="data-row clearfix">
-            <span class="control-label">@T(name)</span>
-            <div class="controls">
-                <span class="control-text">@T(value)</span>
-            </div>
+        <span class="control-label">@T(name)</span>
+        <div class="controls">
+            <span class="control-text">@T(value)</span>
         </div>
     }
 }

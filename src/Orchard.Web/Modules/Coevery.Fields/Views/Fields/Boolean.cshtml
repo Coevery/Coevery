@@ -11,13 +11,10 @@
         valueToDisplay = T(Model.Settings.NotSetLabel).ToString();
     }
     if (!string.IsNullOrEmpty(valueToDisplay)) {
-        string name = Model.ContentField.DisplayName;  
-          
-    <div class="data-row clearfix">
+        string name = Model.ContentField.DisplayName;
         <span class="control-label">@T(name)</span>
         <div class="controls">
             <span class="control-text">@valueToDisplay</span>
         </div>
-    </div>
     }
 }

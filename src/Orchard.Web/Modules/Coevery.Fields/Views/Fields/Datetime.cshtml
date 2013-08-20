@@ -7,11 +7,9 @@
         var valueToDisplay = value.Value.ToString("MM/dd/yyyy hh:mm tt");
         if (!string.IsNullOrWhiteSpace(valueToDisplay)) {
             string name = Model.ContentField.DisplayName;
-            <div class="data-row clearfix">
-                <span class="control-label">@T(name)</span>
-                <div class="controls">
-                    <span class="control-text">@T(valueToDisplay)</span>
-                </div>
+            <span class="control-label">@T(name)</span>
+            <div class="controls">
+                <span class="control-text">@T(valueToDisplay)</span>
             </div>
         }
     }
