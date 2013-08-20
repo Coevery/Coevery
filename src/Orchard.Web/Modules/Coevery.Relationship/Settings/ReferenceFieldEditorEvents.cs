@@ -19,16 +19,16 @@ using Orchard.Projections.Models;
 using Orchard.Localization;
 using Orchard.Projections.Services;
 
-namespace Coevery.Relationship.Settings
-{
-    public class ReferenceFieldEditorEvents : FieldEditorEvents
-    {
+namespace Coevery.Relationship.Settings {
+    public class ReferenceFieldEditorEvents : FieldEditorEvents {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentManager _contentManager;
         private readonly IRelationshipService _relationshipService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public Localizer T { get; set; }
-        public ReferenceFieldEditorEvents(IContentDefinitionService contentDefinitionService, 
+
+        public ReferenceFieldEditorEvents(
+            IContentDefinitionService contentDefinitionService,
             IContentManager contentManager,
             IRelationshipService relationshipService, IHttpContextAccessor httpContextAccessor) {
             _contentDefinitionService = contentDefinitionService;
@@ -40,12 +40,10 @@ namespace Coevery.Relationship.Settings
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "ReferenceField" ||
-                definition.FieldDefinition.Name == "ReferenceFieldCreate")
-            {
+                definition.FieldDefinition.Name == "ReferenceFieldCreate") {
                 var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
                 var model = definition.Settings.GetModel<ReferenceFieldSettings>();
-                model.ContentTypeList = metadataTypes.Select(item => new SelectListItem
-                {
+                model.ContentTypeList = metadataTypes.Select(item => new SelectListItem {
                     Text = item.Name,
                     Value = item.Name,
                     Selected = item.Name == model.ContentTypeName
@@ -88,8 +86,7 @@ namespace Coevery.Relationship.Settings
             yield return DefinitionTemplate(model);
         }
 
-        private string GetContentTypeFilterState(string entityType)
-        {
+        private string GetContentTypeFilterState(string entityType) {
             string format = @"<Form>
                   <Description></Description>
                   <ContentTypes>{0}</ContentTypes>
@@ -98,16 +95,14 @@ namespace Coevery.Relationship.Settings
             return string.Format(format, entityType);
         }
 
-        private int CreateQuery(string entityType) 
-        {
+        private int CreateQuery(string entityType) {
             var queryItem = _contentManager.New("Query");
             var queryPart = queryItem.As<QueryPart>();
             _contentManager.Create(queryItem, VersionOptions.Draft);
             var filterGroup = new FilterGroupRecord();
             queryPart.Record.FilterGroups.Clear();
             queryPart.Record.FilterGroups.Add(filterGroup);
-            var filterRecord = new FilterRecord
-            {
+            var filterRecord = new FilterRecord {
                 Category = "Content",
                 Type = "ContentTypes",
                 Position = filterGroup.Filters.Count,

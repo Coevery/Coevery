@@ -18,21 +18,17 @@ using Orchard.Localization;
 using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Services;
 
-namespace Coevery.Relationship.Drivers
-{
-    public class StateObject : DynamicObject
-    {
+namespace Coevery.Relationship.Drivers {
+    public class StateObject : DynamicObject {
         public override bool TryGetMember(
-            GetMemberBinder binder, out object result)
-        {
+            GetMemberBinder binder, out object result) {
             result = binder.Name;
             return true;
         }
     }
 
-    public class ReferenceFieldDriver : ContentFieldDriver<ReferenceField>
-    {
-        private IContentManager _contentManager;
+    public class ReferenceFieldDriver : ContentFieldDriver<ReferenceField> {
+        private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         public IOrchardServices Services { get; set; }
         private const string TemplateName = "Fields/Reference.Edit";
@@ -40,8 +36,7 @@ namespace Coevery.Relationship.Drivers
         public ReferenceFieldDriver(
             IOrchardServices services,
             IContentManager contentManager,
-            IProjectionManager projectionManager)
-        {
+            IProjectionManager projectionManager) {
             Services = services;
             _contentManager = contentManager;
             _projectionManager = projectionManager;
@@ -52,18 +47,15 @@ namespace Coevery.Relationship.Drivers
 
         public Localizer T { get; set; }
 
-        private static string GetPrefix(ContentField field, ContentPart part)
-        {
+        private static string GetPrefix(ContentField field, ContentPart part) {
             return part.PartDefinition.Name + "." + field.Name;
         }
 
-        private static string GetDifferentiator(ReferenceField field, ContentPart part)
-        {
+        private static string GetDifferentiator(ReferenceField field, ContentPart part) {
             return field.Name;
         }
 
-        protected override DriverResult Display(ContentPart part, ReferenceField field, string displayType, dynamic shapeHelper)
-        {
+        protected override DriverResult Display(ContentPart part, ReferenceField field, string displayType, dynamic shapeHelper) {
             var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
             string title = field.Value.HasValue ?
                 _contentManager.GetItemMetadata(field.ContentItem).DisplayText :
@@ -73,59 +65,32 @@ namespace Coevery.Relationship.Drivers
                 () => shapeHelper.Fields_Reference(DisplayAsLink: settings.DisplayAsLink, ContentField: field, Title: title));
         }
 
-        protected override DriverResult Editor(ContentPart part, ReferenceField field, dynamic shapeHelper)
-        {
+        protected override DriverResult Editor(ContentPart part, ReferenceField field, dynamic shapeHelper) {
             var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
 
-            var contentItems = _projectionManager.GetContentItems(settings.QueryId, 0, 0).ToList();
-            string category = settings.ContentTypeName + "ContentFields";
-            var allFielDescriptors = _projectionManager.DescribeProperties().Where(p => p.Category == category).SelectMany(x => x.Descriptors).ToList();
-            int fieldValue = 0;
-            var value = field.Storage.Get<object>(field.Name);
-            if (value != null) {
-                fieldValue = int.Parse(value.ToString());
-            }
+            var contentItems = _projectionManager.GetContentItems(settings.QueryId)
+                .Select(c => new SelectListItem {
+                    Text = Services.ContentManager.GetItemMetadata(c).DisplayText,
+                    Value = c.Id.ToString(CultureInfo.InvariantCulture),
+                    Selected = field.Value == c.Id
+                }).ToList();
 
-            var fieldContext = new PropertyContext
-            {
-                State = FormParametersHelper.ToDynamic(string.Empty)
-            };
-            var selectContentItems = contentItems.Select(c =>
-            {
-                var item = new SelectListItem();
-                item.Value  = c.Id.ToString(CultureInfo.InvariantCulture);
-                item.Selected = fieldValue == c.Id;
-                var parts = c.Parts.Where(d => d.PartDefinition.Name==c.ContentType);
-                if (parts.Any() && parts.First().Fields.Any()) {
-                    var valueField = parts.First().Fields.First();
-                    var descriptor = allFielDescriptors.FirstOrDefault(d => d.Name.Text == valueField.Name + ":Value");
-                    var shape = descriptor.Property(fieldContext, c);
-                    var text = shape == null ? string.Empty : shape.ToString();
-                    item.Text = text;
-                }
-                return item;
-            }).ToList();
-
-            var model = new ReferenceFieldViewModel
-            {
+            var model = new ReferenceFieldViewModel {
                 ContentId = 0,
                 Field = field,
-                ItemList = new SelectList(selectContentItems, "Value", "Text", field != null ? field.Value : Convert.ToInt32(selectContentItems[0].Value))
+                ItemList = new SelectList(contentItems, "Value", "Text", field.Value)
             };
 
             return ContentShape("Fields_Reference_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: model, Prefix: GetPrefix(field, part)));
         }
 
-        protected override DriverResult Editor(ContentPart part, ReferenceField field, IUpdateModel updater, dynamic shapeHelper)
-        {
+        protected override DriverResult Editor(ContentPart part, ReferenceField field, IUpdateModel updater, dynamic shapeHelper) {
             var viewModel = new ReferenceFieldViewModel();
-            if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null))
-            {
+            if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
 
-                if (settings.Required && viewModel.ContentId <= 0)
-                {
+                if (settings.Required && viewModel.ContentId <= 0) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
                 field.Value = viewModel.ContentId;
@@ -133,18 +98,15 @@ namespace Coevery.Relationship.Drivers
             return Editor(part, field, shapeHelper);
         }
 
-        protected override void Importing(ContentPart part, ReferenceField field, ImportContentContext context)
-        {
+        protected override void Importing(ContentPart part, ReferenceField field, ImportContentContext context) {
             context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v), () => field.Value = (int?)null);
         }
 
-        protected override void Exporting(ContentPart part, ReferenceField field, ExportContentContext context)
-        {
+        protected override void Exporting(ContentPart part, ReferenceField field, ExportContentContext context) {
             context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value.HasValue ? field.Value.Value.ToString(CultureInfo.InvariantCulture) : String.Empty);
         }
 
-        protected override void Describe(DescribeMembersContext context)
-        {
+        protected override void Describe(DescribeMembersContext context) {
             context.Member(null, typeof(int), T("Value"), T("The content item id referenced by this field."));
         }
     }
