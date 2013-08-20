@@ -1,5 +1,4 @@
-﻿
-@using Orchard.ContentManagement
+﻿@using Orchard.ContentManagement
 @using Orchard.Mvc.Html
 @using Orchard.Utility.Extensions;
 @using System.Linq;
@@ -9,14 +8,15 @@
         bool isLink = Model.DisplayAsLink;
         string name = Model.ContentField.DisplayName;
         ContentItem item = Model.ContentField.ContentItem;
-        
-        <p class="enumeration-field enumeration-field-@name.HtmlClassify()">
-            <span class="name">@name:</span>
+
+        <span class="control-label">@name</span>
+        <div class="controls">
             @if (isLink) {
-                <span class="value">@Html.ItemDisplayLink(Html.Raw(title).ToString(), item)</span>
-            } else {
-                <span class="value">@Html.Raw(title)</span>
+                <span class="control-text">@Html.ItemDisplayLink(Html.Raw(title).ToString(), item)</span>
             }
-        </p>
+            else {
+                <span class="control-text">@Html.Raw(title)</span>
+            }
+        </div>
     }
 }
