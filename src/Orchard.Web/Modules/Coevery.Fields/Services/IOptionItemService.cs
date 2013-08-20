@@ -14,7 +14,7 @@ namespace Coevery.Fields.Services {
         object GetItemsForField(string entityName, string fieldName);
         List<SelectListItem> GetItemsForField(int fieldId);
         void DeleteOptionSetForField(string fieldName, string entityName);
-        int GetItemCountForField(int fieldId);
+        int GetItemCountForField(int setId);
         int InitializeField(string fieldName, string[] labels, int defaultValue);
 
         int CreateSelectedSet(string[] optionIds);

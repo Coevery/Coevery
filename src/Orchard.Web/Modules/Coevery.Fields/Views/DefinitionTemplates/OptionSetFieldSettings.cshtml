@@ -21,8 +21,11 @@
     </section>
 }
 else {
-    @Html.HiddenFor(model => model.OptionSetId)
+    @Html.HiddenFor(model => model.LabelsStr)
+    @Html.HiddenFor(model => model.DefaultValue)
 }
+@Html.HiddenFor(model => model.DependencyMode)
+@Html.HiddenFor(model => model.OptionSetId)
 
 <section class="control-group data-row">
     <label class="control-label">

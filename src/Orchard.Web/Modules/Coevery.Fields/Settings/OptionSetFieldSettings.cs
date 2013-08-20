@@ -15,9 +15,11 @@ namespace Coevery.Fields.Settings {
         ControlAndDependent
     }
 
-    public class OptionSetFieldSettings : FieldSettings {
+    public static class OptionSetConfig {
         public static readonly string[] LabelSeperator = new string[] { ";", "\r\n" };
+    }
 
+    public class OptionSetFieldSettings : FieldSettings {
         public int DisplayLines { get; set; }
         public SelectionMode DisplayOption { get; set; }
         public int SelectCount { get; set; }

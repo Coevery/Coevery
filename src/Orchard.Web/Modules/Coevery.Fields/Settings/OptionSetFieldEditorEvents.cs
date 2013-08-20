@@ -34,11 +34,21 @@ namespace Coevery.Fields.Settings {
 
             var model = new OptionSetFieldSettings();
             if (updateModel.TryUpdateModel(model, "OptionSetFieldSettings", null, null)) {
-                var labels = model.LabelsStr.Split(OptionSetFieldSettings.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
-                //model.FieldSettingId = _optionItemService.InitializeField(typeName, builder.Name, labels, model.DefaultValue);
-                var itemCount = labels.Length;
-                ValidateSettings(updateModel, model, itemCount);
-                UpdateSettings(model, builder, "OptionSetFieldSettings");
+                if (model.OptionSetId <= 0 && !string.IsNullOrWhiteSpace(model.LabelsStr)) {
+                    var labels = model.LabelsStr.Split(OptionSetConfig.LabelSeperator, StringSplitOptions.RemoveEmptyEntries);
+                    model.OptionSetId = _optionItemService.InitializeField(builder.Name, labels, model.DefaultValue);
+                    var itemCount = labels.Length;
+
+                    ValidateSettings(updateModel, model, itemCount);
+                    UpdateSettings(model, builder, "OptionSetFieldSettings");
+                    builder.WithSetting("OptionSetFieldSettings.OptionSetId", model.OptionSetId.ToString("D"));
+                    builder.WithSetting("OptionSetFieldSettings.DependencyMode", model.DependencyMode.ToString());
+                }
+                else {
+                    ValidateSettings(updateModel, model, _optionItemService.GetItemCountForField(model.OptionSetId));
+                    UpdateSettings(model, builder, "OptionSetFieldSettings");
+                }
+                builder.WithSetting("OptionSetFieldSettings.DefaultValue", model.DefaultValue.ToString());
                 builder.WithSetting("OptionSetFieldSettings.DisplayLines", model.DisplayLines.ToString());
                 builder.WithSetting("OptionSetFieldSettings.DisplayOption", model.DisplayOption.ToString());
                 builder.WithSetting("OptionSetFieldSettings.SelectCount", model.SelectCount.ToString());

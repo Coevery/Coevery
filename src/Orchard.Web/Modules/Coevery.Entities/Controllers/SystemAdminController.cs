@@ -36,8 +36,9 @@ namespace Coevery.Entities.Controllers {
             ,IContentDefinitionService contentDefinitionService
             , ISchemaUpdateService schemaUpdateService
             ,IContentDefinitionManager contentDefinitionManager
-            ,IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
-            ICoeveryCommonService coeveryCommonService,
+            ,IContentDefinitionEditorEvents contentDefinitionEditorEvents,
+            ICoeveryCommonService coeveryCommonService) {
+            
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
