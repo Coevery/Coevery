@@ -46,16 +46,16 @@
         });
     }
 
-    function adjustColumnsPosition(movedColumn, $compile, $scope) {
+    function adjustColumnsPosition(movedColumn, $compile, $scope, containAbove) {
         var movedRow = movedColumn.parent(),
             columnIndex, rows, columns, lastRow,
             columnsCount, fields, row;
 
-        if (movedRow.hasClass('merged-row')) {
+        if (movedRow.hasClass('merged-row') || containAbove) {
             rows = $($.merge($.makeArray(movedRow.prevUntil('.merged-row')).reverse(), movedRow.nextUntil('.merged-row')));
             columnsCount = parseInt(movedRow.parents('[fd-section]').attr('section-columns'));
-            for (var j = 1; j <= columnsCount; j++) {
-                columns = rows.children('[fd-column]:nth-child(' + j + ')');
+            for (var j = 0; j < columnsCount; j++) {
+                columns = rows.find('[fd-column]:eq(' + j + ')');
                 fields = columns.children('[fd-field]');
                 for (var k = 0; k < fields.length; k++) {
                     $(columns[k]).append(fields[k]);
@@ -78,8 +78,8 @@
             movedRow.remove();
         } else {
             rows = movedRow.nextUntil('.merged-row').andSelf();
-            columnIndex = movedRow.children().index(movedColumn);
-            columns = rows.find('[fd-column]:nth-child(' + (columnIndex + 1) + ')');
+            columnIndex = movedRow.children('[fd-column]').index(movedColumn);
+            columns = rows.find('[fd-column]:eq(' + columnIndex + ')');
             for (var i = 0; i < columns.length - 1; i++) {
                 $(columns[i]).append($(columns[i + 1]).children());
             }
@@ -339,7 +339,7 @@
                             columns, width;
 
                         for (var i = 0; i < columnsCount; i++) {
-                            columns = rows.children('[fd-column]:nth-child(' + (i + 1) + ')');
+                            columns = rows.find('[fd-column]:eq(' + i + ')');
                             width = widths[i];
                             columns.each(function () {
                                 removeSpanClass(this);
@@ -380,7 +380,7 @@
                             var addCount = newColumnCount - oldColumnCount;
                             rows = rows.filter(':not(.merged-row)');
                             for (var i = 0; i < oldColumnCount; i++) {
-                                columns = rows.children('[fd-column]:nth-child(' + (i + 1) + ')');
+                                columns = rows.find('[fd-column]:eq(' + i + ')');
                                 width = widths[i];
                                 columns.each(function () {
                                     removeSpanClass(this);
@@ -397,13 +397,13 @@
                         } else {
                             var mergedRows = rows.filter('.merged-row');
                             rows = rows.filter(':not(.merged-row)');
-                            var leftColumns = rows.children('[fd-column]:nth-child(1)'),
+                            var leftColumns = rows.find('[fd-column]:eq(0)'),
                                 leftEmptyColumns = leftColumns.filter(':not(:has([fd-field]))'),
                                 fields = $(),
                                 removeColumns = $();
 
                             for (var l = newColumnCount; l < oldColumnCount; l++) {
-                                columns = rows.children('[fd-column]:nth-child(' + (l + 1) + ')');
+                                columns = rows.find('[fd-column]:eq(' + l + ')');
                                 fields = $.merge(fields, columns.find('[fd-field]'));
                                 removeColumns = $.merge(removeColumns, columns);
                             }
@@ -414,11 +414,11 @@
                                     var newRow = createNewRow(newColumnCount);
                                     section.find('[fd-field-container]').append(newRow);
                                     $compile(newRow)(scope);
-                                    newRow.children('[fd-column]:nth-child(1)').append(this);
+                                    newRow.find('[fd-column]:eq(0)').append(this);
                                 }
                             });
                             for (var k = 0; k < newColumnCount; k++) {
-                                columns = rows.children('[fd-column]:nth-child(' + (k + 1) + ')');
+                                columns = rows.find('[fd-column]:eq(' + k + ')');
                                 width = widths[k];
                                 columns.each(function () {
                                     removeSpanClass(this);
@@ -631,6 +631,7 @@
                                 row.append(newColumn);
                                 $compile(newColumn)(scope);
                             }
+                            adjustColumnsPosition(column, $compile, scope, true);
                         } else {
                             $(this).removeClass('merge');
                             $(this).addClass('split');
@@ -824,7 +825,7 @@
                                         ? $()
                                         : markedRow.nextUntil('.merged-row').andSelf()
                                     : markedRow.nextUntil('.merged-row'),
-                                    columns = rows.find('[fd-column]:nth-child(' + (columnIndex + 1) + ')'),
+                                    columns = rows.find('[fd-column]:eq(' + columnIndex + ')'),
                                     filledColumns = columns.has('[fd-field]:not(.dragging)'),
                                     dragColumn = dragItem.parents('[fd-column]:first');
 
@@ -892,7 +893,7 @@
                                     : null;
 
                             if (result != null) {
-                                var column = row.find('[fd-column]:nth-child(' + (columnIndex + 1) + ')'),
+                                var column = row.find('[fd-column]:eq(' + columnIndex + ')'),
                                     above, markedRow, index, prevRow;
 
                                 if (column.children('[fd-field]').length) {
@@ -903,7 +904,7 @@
                                     above = false;
                                     markedRow = row;
                                 } else {
-                                    prevRow = row.prevAll('.merged-row,:has([fd-column]:nth-child(' + (columnIndex + 1) + '):has([fd-field]))').first();
+                                    prevRow = row.prevAll('.merged-row,:has([fd-column]:eq(' + columnIndex + '):has([fd-field]))').first();
                                     above = !prevRow.length;
                                     markedRow = prevRow.length ? prevRow : rows.first();
                                 }
