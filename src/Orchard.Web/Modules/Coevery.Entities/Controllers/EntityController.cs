@@ -44,7 +44,7 @@ namespace Coevery.Entities.Controllers {
                             f.Name,
                             f.DisplayName,
                             FieldType = f.FieldDefinition.Name.CamelFriendly(),
-                            IsSystemField = f.Settings.GetModel<FieldSettings>().IsSystemField
+                            IsSystemField = Convert.ToBoolean(f.Settings[f.FieldDefinition.Name + "Settings.IsSystemField"])
                         })
                         select new {type.DisplayName, type.Name, setting.IsDeployed, Fields = fields};
             var entityType = query.SingleOrDefault();

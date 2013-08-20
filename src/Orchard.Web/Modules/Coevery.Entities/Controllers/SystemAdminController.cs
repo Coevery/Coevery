@@ -257,35 +257,25 @@ namespace Coevery.Entities.Controllers {
 
             _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
 
+            _contentDefinitionManager.AlterPartDefinition(viewModel.Name, builder => builder.WithField(viewModel.FieldName, fieldBuilder => {
+                fieldBuilder.OfType("CoeveryTextField");
+                fieldBuilder.WithDisplayName(viewModel.FieldLabel);
+                fieldBuilder.WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString);
+                fieldBuilder.WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString);
+                fieldBuilder.WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString);
+                fieldBuilder.WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString);
+                fieldBuilder.WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString);
+                fieldBuilder.WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString);
+                fieldBuilder.WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty);
+            }));
+
             // adds CommonPart by default
             _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name.Trim());
 
-            //#region -----------add default Coevery Text Field--------------
-            //var addViewModel = new AddFieldViewModel
-            //{
-            //    DisplayName = viewModel.FieldLabel.Trim(),
-            //    Name = viewModel.FieldName.Trim().ToSafeName(),
-            //    FieldTypeName = "CoeveryTextField"
-            //};
-            ////_fieldService.Create(viewModel.Name.Trim(), addViewModel, this);
-            //var part = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            //var field = part.Fields.FirstOrDefault(x => x.Name == addViewModel.Name);
-            //if (field != null)
-            //{
-            //    field.Settings["CoeveryTextFieldSettings.IsDispalyField"] = bool.TrueString;
-            //    field.Settings["CoeveryTextFieldSettings.Required"] = bool.TrueString;
-            //    field.Settings["CoeveryTextFieldSettings.ReadOnly"] = bool.TrueString;
-            //    field.Settings["CoeveryTextFieldSettings.AlwaysInLayout"] = bool.TrueString;
-            //    field.Settings["CoeveryTextFieldSettings.IsSystemField"] = bool.TrueString;
-            //    field.Settings["CoeveryTextFieldSettings.IsAudit"] = bool.FalseString;
-            //    field.Settings["CoeveryTextFieldSettings.HelpText"] = "";
-            //}
-            //_contentDefinitionManager.StorePartDefinition(part); 
-            //#endregion
-
+ 
             //#region -----------add Created By Field--------------
             //var addCreateByViewModel = new AddFieldViewModel
             //{

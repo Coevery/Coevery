@@ -27,21 +27,6 @@ namespace Coevery.Entities.Services {
             _layoutManager = layoutManager;
         }
 
-        public void CreateCheck(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
-
-        }
-
-        //public void Create(string entityName, AddFieldViewModel viewModel, IUpdateModel updateModel) {
-        //    try {
-        //        _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, entityName);
-        //        _contentDefinitionService.CreateField(entityName, viewModel.Name, updateModel);
-        //        _schemaUpdateService.CreateColumn(entityName, viewModel.Name, viewModel.FieldTypeName);
-        //    }
-        //    catch (Exception ex) {
-        //        updateModel.AddModelError("ErrorInfo", T("Add field failed."));
-        //    }
-        //}
-
         public void Delete(string name, string parentname) {
             _contentDefinitionService.RemoveFieldFromPart(name, parentname);
             _layoutManager.DeleteField(parentname, name);
