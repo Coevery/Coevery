@@ -257,17 +257,20 @@ namespace Coevery.Entities.Controllers {
 
             _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
 
-            _contentDefinitionManager.AlterPartDefinition(viewModel.Name, builder => builder.WithField(viewModel.FieldName, fieldBuilder => {
-                fieldBuilder.OfType("CoeveryTextField");
-                fieldBuilder.WithDisplayName(viewModel.FieldLabel);
-                fieldBuilder.WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString);
-                fieldBuilder.WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString);
-                fieldBuilder.WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString);
-                fieldBuilder.WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString);
-                fieldBuilder.WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString);
-                fieldBuilder.WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString);
-                fieldBuilder.WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty);
-            }));
+            _contentDefinitionManager
+                .AlterPartDefinition(viewModel.Name,
+                                     builder => builder.WithField(viewModel.FieldName,
+                                                                  fieldBuilder => fieldBuilder
+                                                                                      .OfType("CoeveryTextField")
+                                                                                      .WithDisplayName(viewModel.FieldLabel)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty)
+                                                                                      .WithSetting("Storage", "Part")));
 
             // adds CommonPart by default
             _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
