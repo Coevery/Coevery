@@ -129,7 +129,7 @@ namespace Coevery.Core.Services
             GenerationDynmicAssembly();
         }
 
-        public void CreateTable(string formatString, string tableName) {
+        public void CreateTable(string tableName, string formatString) {
             string formatedTableName = string.Format(formatString, tableName);
             bool result = CheckTableExists(formatedTableName);
             if (result) return;
@@ -155,10 +155,11 @@ namespace Coevery.Core.Services
 
         public  void CreateColumn(string tableName, string columnName, string columnType)
         {
-            bool result = CheckTableExists(tableName);
+            string formatedTableName = string.Format(_tableFormat, tableName);
+            bool result = CheckTableExists(formatedTableName);
             if (!result) {
 
-                _schemaBuilder.CreateTable(string.Format(_tableFormat, tableName), 
+                _schemaBuilder.CreateTable(formatedTableName, 
                     table => 
                         table.Column<int>("Id", column => column.PrimaryKey())
                         .Column<int>("ContentItemRecord_id"));
