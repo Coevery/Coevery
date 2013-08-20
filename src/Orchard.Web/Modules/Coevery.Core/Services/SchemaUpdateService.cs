@@ -12,6 +12,7 @@ using NHibernate.Dialect.Schema;
 using Orchard;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
+using Orchard.ContentManagement.Records;
 using Orchard.Data;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
@@ -19,8 +20,38 @@ using Orchard.Data.Providers;
 
 namespace Coevery.Core.Services
 {
-    public interface ISchemaUpdateService:IDependency {
-        void CreateTable(string tableName);
+    public class CreateTableContext {
+        private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
+        private readonly CreateTableCommand _tableCommand;
+
+        public CreateTableContext(IDynamicAssemblyBuilder dynamicAssemblyBuilder, 
+            CreateTableCommand tableCommand) {
+            _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
+            _tableCommand = tableCommand;
+        }
+
+        public void FieldColumn(string fieldName, string fieldTypeName, Action<CreateColumnCommand> column = null) {
+            var type = _dynamicAssemblyBuilder.GetFieldType(fieldTypeName);
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+                type = Nullable.GetUnderlyingType(type);
+            }
+            var dbType = SchemaUtils.ToDbType(type);
+            var command = new CreateColumnCommand(_tableCommand.Name, fieldName);
+            command.WithType(dbType);
+
+            if (column != null) {
+                column(command);
+            }
+            _tableCommand.TableCommands.Add(command);
+        }
+    }
+
+    public static class CreateTableCommandExteisons {
+        
+    }
+
+    public interface ISchemaUpdateService : IDependency {
+        void CreateTable(string tableName, Action<CreateTableContext> action = null);
         void CreateTable(string formatString, string tableName);
         void CreateColumn(string tableName, string columnName, string columnType);
         void DropColumn(string tableName, string columnName);
@@ -35,32 +66,29 @@ namespace Coevery.Core.Services
         private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
         private readonly ISessionFactoryHolder _sessionFactoryHolder;
         private readonly string _tableFormat = "Coevery_DynamicTypes_{0}PartRecord";
+        private readonly ISessionLocator _sessionLocator;
+
         public SchemaUpdateService(IDataMigrationInterpreter interpreter, 
             IDynamicAssemblyBuilder dynamicAssemblyBuilder, 
-            ISessionFactoryHolder sessionFactoryHolder)
+            ISessionFactoryHolder sessionFactoryHolder, 
+            ISessionLocator sessionLocator)
         {
             _interpreter = interpreter;
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             _sessionFactoryHolder = sessionFactoryHolder;
+            _sessionLocator = sessionLocator;
             _schemaBuilder = new SchemaBuilder(_interpreter, "", s => s.Replace(".", "_"));
         }
 
-        private bool CheckTableExists(string tableName)
-        {
-            return CheckTableExists(_tableFormat,tableName);
-        }
-
-        private bool CheckTableExists(string formatString,string tableName) {
+        private bool CheckTableExists(string tableName) {
             var factory = _sessionFactoryHolder.GetSessionFactory();
-            var result = false;
             using (var session = factory.OpenSession()) {
                 var connection = session.Connection;
                 var dialect = Dialect.GetDialect(_sessionFactoryHolder.GetConfiguration().Properties);
-                var meta = dialect.GetDataBaseSchema((DbConnection)connection);
-                var tables = meta.GetTables(null, null, string.Format(formatString, tableName), null);
-                result = tables.Rows.Count > 0;
+                var meta = dialect.GetDataBaseSchema((DbConnection) connection);
+                var tables = meta.GetTables(null, null, tableName, null);
+                return tables.Rows.Count > 0;
             }
-            return result;
         }
 
         private bool CheckTableColumnExists(string tableName, string columnName)
@@ -83,19 +111,29 @@ namespace Coevery.Core.Services
             return result;
         }
 
-        public  void CreateTable(string tableName) {
-            bool result = CheckTableExists(tableName);
+        public void CreateTable(string tableName, Action<CreateTableContext> action = null) {
+            Func<string, string> format = x => string.Format(_tableFormat, x);
+            string formatedTableName = format(tableName);
+            bool result = CheckTableExists(formatedTableName);
             if (result) return;
-            _schemaBuilder.CreateTable(string.Format(_tableFormat, tableName), 
-                table => table.Column<int>("Id", column => column.PrimaryKey())
-                .Column<int>("ContentItemRecord_id"));
+            _schemaBuilder.CreateTable(formatedTableName,
+                                       table => {
+                                           table.Column<int>("Id", column => column.PrimaryKey())
+                                                .Column<int>("ContentItemRecord_id");
+                                           if (action != null) {
+                                               var context = new CreateTableContext(_dynamicAssemblyBuilder, table);
+                                               action(context);
+                                           }
+
+                                       });
             GenerationDynmicAssembly();
         }
 
         public void CreateTable(string formatString, string tableName) {
-            bool result = CheckTableExists(formatString,tableName);
+            string formatedTableName = string.Format(formatString, tableName);
+            bool result = CheckTableExists(formatedTableName);
             if (result) return;
-            _schemaBuilder.CreateTable(string.Format(formatString, tableName),
+            _schemaBuilder.CreateTable(formatedTableName,
                 table => table.Column<int>("Id", column => column.PrimaryKey())
                 .Column<int>("PrimaryEntry_Id", column => column.NotNull())
                 .Column<int>("RelatedEntry_Id", column => column.NotNull()));
@@ -109,9 +147,10 @@ namespace Coevery.Core.Services
         }
 
         public void DropTable(string formatString, string tableName) {
-            var result = CheckTableExists(formatString, tableName);
+            string formatedTableName = string.Format(formatString, tableName);
+            var result = CheckTableExists(formatedTableName);
             if (!result) return;
-            _schemaBuilder.DropTable(string.Format(formatString, tableName));
+            _schemaBuilder.DropTable(formatedTableName);
         }
 
         public  void CreateColumn(string tableName, string columnName, string columnType)

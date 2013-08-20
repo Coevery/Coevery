@@ -276,8 +276,8 @@ namespace Coevery.Entities.Controllers {
             _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
-            _schemaUpdateService.CreateTable(viewModel.Name.Trim());
-
+            _schemaUpdateService.CreateTable(viewModel.Name,
+                                             context => context.FieldColumn(viewModel.FieldName, "CoeveryTextField"));
  
             //#region -----------add Created By Field--------------
             //var addCreateByViewModel = new AddFieldViewModel

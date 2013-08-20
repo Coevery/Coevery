@@ -223,7 +223,7 @@ namespace Coevery.Relationship.Services {
                 ShowRelatedList = manyToMany.ShowRelatedList
             });
 
-            _schemaUpdateService.CreateTable(_tableFormat, relationship.Name);
+            _schemaUpdateService.CreateTable(relationship.Name, _tableFormat);
 
             if (manyToMany.PrimaryColumnList != null) {
                 foreach (var colummn in manyToMany.PrimaryColumnList) {
