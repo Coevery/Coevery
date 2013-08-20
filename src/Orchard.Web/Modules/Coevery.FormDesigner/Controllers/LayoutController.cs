@@ -65,7 +65,7 @@ namespace Coevery.FormDesigner.Controllers {
         private string GetLayout(ContentTypeDefinition contentTypeDefinition, ICollection<Section> data) {
             //check field valid
             if (contentTypeDefinition.Parts.Any()) {
-                var part = contentTypeDefinition.Parts.First();
+                var part = contentTypeDefinition.Parts.First(x => x.PartDefinition.Name == contentTypeDefinition.Name);
                 var partFields = part.PartDefinition.Fields.ToList();
                 var fields = data.SelectMany(x => x.Rows)
                     .SelectMany(x => x.Columns)
