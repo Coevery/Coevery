@@ -2,7 +2,7 @@ angular.module('coevery.layout', [])
     .directive('fdSection', function () {
         return {
             template: function (element) {
-                return element.parents('.edit-mode:first').length
+                return $('.edit-mode:first').length
                     ? '<fieldset fd-section class="data-section"><legend class="title">Section Title</legend><div ng-transclude></div></fieldset>'
                     : '<section fd-section><header><span class="show-button"></span><h5 class="title">General Info</h5></header><div ng-transclude></div></section>';
             },
@@ -48,7 +48,7 @@ angular.module('coevery.layout', [])
     .directive('fdField', function () {
         return {
             template: function (element) {
-                return element.parents('.edit-mode:first').length
+                return $('.edit-mode:first').length
                     ? '<div fd-field class="control-group"></div>'
                     : '<div fd-field></div>';
             },
