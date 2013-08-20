@@ -148,7 +148,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="ClientRoute\IClientRouteProvider.cs" />
+    <Compile Include="Services\CoeveryCommonService.cs" />
     <Compile Include="Services\CompareContentService.cs" />
+    <Compile Include="Services\ICoeveryCommonService.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />
     <Compile Include="Services\SchemaUpdateService.cs" />

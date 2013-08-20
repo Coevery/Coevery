@@ -5,12 +5,14 @@ using System.Linq;
 using System.Net;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
+using Coevery.Core.Models.Common;
 using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.Entities.Settings;
 using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Localization;
@@ -28,18 +30,21 @@ namespace Coevery.Entities.Controllers {
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+        private readonly ICoeveryCommonService _coeveryCommonService;
 
         public SystemAdminController(IOrchardServices orchardServices
             ,IContentDefinitionService contentDefinitionService
             , ISchemaUpdateService schemaUpdateService
             ,IContentDefinitionManager contentDefinitionManager
             ,IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
+            ICoeveryCommonService coeveryCommonService,
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _coeveryCommonService = coeveryCommonService;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -255,12 +260,9 @@ namespace Coevery.Entities.Controllers {
             }
 
             // adds CommonPart by default
-            _contentDefinitionManager.AlterTypeDefinition(viewModel.Name, cfg => cfg
-                .WithPart("CoeveryCommonPart"));
-            _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
+            _contentDefinitionService.AlterType(viewModel, this);  
 
-            _contentDefinitionService.AlterType(viewModel, this);
-
+            _coeveryCommonService.WeldCommonPart(viewModel.Name);
             _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
 
             _contentDefinitionManager
