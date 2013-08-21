@@ -140,9 +140,10 @@ namespace Coevery.Core.Services
         }
 
         public void DropTable(string tableName) {
-            bool result = CheckTableExists(tableName);
+            string formatedTableName = string.Format(_tableFormat, tableName);
+            bool result = CheckTableExists(formatedTableName);
             if (!result) return;
-            _schemaBuilder.DropTable(string.Format(_tableFormat, tableName));
+            _schemaBuilder.DropTable(formatedTableName);
             GenerationDynmicAssembly();
         }
 

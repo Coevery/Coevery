@@ -12,6 +12,7 @@ using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
+using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Localization;
 using Orchard.Logging;
@@ -469,43 +470,26 @@ namespace Coevery.Entities.Controllers {
             return View();
         }
 
-        private void CheckData(EditPartFieldViewModel serverField)
-        {
-            var settingsStr = serverField.FieldDefinition.Name + "Settings";
-            var clientSettings = new FieldSettings();
-            TryUpdateModel(clientSettings, settingsStr);
-            clientSettings.ReadOnly = false;
+        private void CheckData(EditPartFieldViewModel serverField) {
+            var prefix = serverField.FieldDefinition.Name + "Settings";
+            var buildingSettings = new FieldSettings();
+            TryUpdateModel(buildingSettings, prefix);
 
-            var serverSettings = new FieldSettings
-            {
-                IsSystemField = bool.Parse(serverField.Settings[settingsStr + ".IsSystemField"]),
-                Required = bool.Parse(serverField.Settings[settingsStr + ".Required"]),
-                ReadOnly = bool.Parse(serverField.Settings[settingsStr + ".ReadOnly"]),
-                AlwaysInLayout = bool.Parse(serverField.Settings[settingsStr + ".AlwaysInLayout"])
-            };
+            var existingSetting = serverField.Settings.TryGetModel<FieldSettings>(prefix);
 
-            if (clientSettings.ReadOnly)
-            {
+            if (buildingSettings.ReadOnly) {
                 ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
             }
 
-            if (clientSettings.IsSystemField != serverSettings.IsSystemField)
-            {
+            if (buildingSettings.IsSystemField != existingSetting.IsSystemField) {
                 ModelState.AddModelError("IsSystemField", T("Can't modify the IsSystemField field.").ToString());
             }
 
-            if (serverSettings.IsSystemField)
-            {
-                if (clientSettings.Required != serverSettings.Required)
-                {
+            if (buildingSettings.IsSystemField) {
+                if (buildingSettings.Required != existingSetting.Required) {
                     ModelState.AddModelError("Required", T("Can't modify the Required field.").ToString());
                 }
-                if (clientSettings.ReadOnly != serverSettings.ReadOnly)
-                {
-                    ModelState.AddModelError("ReadOnly", T("Can't modify the ReadOnly field.").ToString());
-                }
-                if (clientSettings.AlwaysInLayout != serverSettings.AlwaysInLayout)
-                {
+                if (buildingSettings.AlwaysInLayout != existingSetting.AlwaysInLayout) {
                     ModelState.AddModelError("AlwaysInLayout", T("Can't modify the AlwaysInLayout field.").ToString());
                 }
             }
