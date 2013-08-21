@@ -36,7 +36,6 @@ namespace Coevery.Core.Handlers {
             Filters.Add(StorageFilter.For(commonVersionRepository));
 
             OnActivated<CoeveryCommonPart>(PropertySetHandlers);
-            OnCreating<CoeveryCommonPart>(PropertySetHandlers);
             OnInitializing<CoeveryCommonPart>(AssignCreatingOwner);
             OnInitializing<CoeveryCommonPart>(AssignCreatingDates);
 
@@ -69,12 +68,6 @@ namespace Coevery.Core.Handlers {
         protected override void Activating(ActivatingContentContext context) {
             if (ContentTypeWithACommonPart(context.ContentType))
                 context.Builder.Weld<ContentPart<CoeveryCommonPartVersionRecord>>();
-        }
-        protected override void Creating(CreateContentContext context) {
-            if (ContentTypeWithACommonPart(context.ContentType)) {
-                var builder = new ContentItemBuilder(_contentDefinitionManager.GetTypeDefinition(context.ContentType));
-                builder.Weld<ContentPart<CoeveryCommonPartVersionRecord>>();
-            }
         }
 
         protected bool ContentTypeWithACommonPart(string typeName) {
@@ -142,11 +135,6 @@ namespace Coevery.Core.Handlers {
             // add handlers that will load content for id's just-in-time
             part.OwnerField.Loader(() => _contentManager.Get<IUser>(part.Record.OwnerId));
             part.ContainerField.Loader(() => part.Record.Container == null ? null : _contentManager.Get(part.Record.Container.Id));            
-        }
-
-        protected static void PropertySetHandlers(CreateContentContext context, CoeveryCommonPart part) {
-            if (part.OwnerField.Value != null)
-                part.OwnerField.Value = part.OwnerField.Value;
         }
 
         protected static void PropertySetHandlers(ActivatedContentContext context, CoeveryCommonPart part) {

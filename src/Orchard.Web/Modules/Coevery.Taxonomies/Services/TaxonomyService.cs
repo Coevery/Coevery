@@ -205,7 +205,7 @@ namespace Coevery.Taxonomies.Services {
                     }
 
                     ProcessPath(term);
-                    _services.ContentManager.Create(term, VersionOptions.Published);
+                    _contentManager.Create(term, VersionOptions.Published);
 
                     previousLevel = level;
                 }

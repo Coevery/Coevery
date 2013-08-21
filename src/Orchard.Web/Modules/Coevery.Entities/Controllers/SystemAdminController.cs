@@ -261,16 +261,15 @@ namespace Coevery.Entities.Controllers {
             }
 
             // adds CommonPart by default
-            _contentDefinitionService.AlterType(viewModel, this);  
+            _contentDefinitionService.AlterType(viewModel, this);
+
+            _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
+            _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
+            _contentDefinitionManager
+
+                                     builder => builder.WithField(viewModel.FieldName,
 
             _coeveryCommonService.WeldCommonPart(viewModel.Name);
-            _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
-
-            _contentDefinitionManager
-                .AlterPartDefinition(viewModel.Name,
-                                     builder => builder.WithField(viewModel.FieldName,
-                                                                  fieldBuilder => fieldBuilder
-                                                                                      .OfType("CoeveryTextField")
                                                                                       .WithDisplayName(viewModel.FieldLabel)
                                                                                       .WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString)
                                                                                       .WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString)
