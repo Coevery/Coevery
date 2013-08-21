@@ -1,4 +1,5 @@
-﻿using Coevery.Fields.Services;
+﻿using System;
+using Coevery.Fields.Services;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
@@ -55,9 +56,7 @@ namespace Coevery.Fields.Drivers {
                 field.DisplayItems = _fieldDependencyService.GetDependencyMap(settings.OptionSetId);
             }
 
-            if (field.Value != 0) {
-                field.OptionValue = _optionItemService.GetSelectedSet(field.Value);
-            }
+            //field.OptionValue = _optionItemService.GetSelectedSet(field.Value);
 
             return ContentShape("Fields_OptionSet_Edit", GetDifferentiator(field, part),
                  () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
@@ -70,21 +69,27 @@ namespace Coevery.Fields.Drivers {
                 if (settings.Required && field.OptionValue == null) {
                     updater.AddModelError(field.Name, T("The field {0} is required.", T(field.DisplayName)));
                 }
-                field.Value = _optionItemService.AlterSet(field.Value, field.OptionValue);
+                if (field.OptionValue == null) {
+                    return Editor(part, field, shapeHelper);
+                }
+                //field.Value = _optionItemService.AlterSet(field.Value ?? 0, field.OptionValue);
+                if (field.Value == null) {
+                    updater.AddModelError(field.Name, T("Option set creation failed."));
+                }
             }
             return Editor(part, field, shapeHelper);
         }
 
         protected override void Importing(ContentPart part, OptionSetField field, ImportContentContext context) {
-            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v));
+            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = v);
         }
 
         protected override void Exporting(ContentPart part, OptionSetField field, ExportContentContext context) {
-            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value.ToString());
+            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value);
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(int), T("Value"), T("The integer value of the field."));
+            context.Member(null, typeof(string), T("Value"), T("The string value of the field."));
         }
     }
 }

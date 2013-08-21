@@ -274,7 +274,7 @@ namespace Coevery.Entities.Controllers {
                                                                                       .WithSetting("Storage", "Part")));
 
             //adds CommonPart by default
-            _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
+            //_contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name,

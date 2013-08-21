@@ -15,16 +15,19 @@ namespace Coevery.Fields.Services {
         private readonly IRepository<OptionSetRecord> _optionSetRepository;
         private readonly IRepository<OptionItemRecord> _optionItemRepository; 
         private readonly IRepository<SelectedOptionSetRecord> _selectedOptionSetRepository;
+        private readonly IRepository<SelectedOptionRecord> _selectedOptionRepository;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
         public OptionItemService(IRepository<OptionSetRecord> optionSetRepository,
             IRepository<SelectedOptionSetRecord> selectedOptionSetRepository,
+            IRepository<SelectedOptionRecord> selectedOptionRepository,
             IRepository<OptionItemRecord> optionItemRepository,
             IContentDefinitionManager contentDefinitionManager) {
             _optionSetRepository = optionSetRepository;
             _selectedOptionSetRepository = selectedOptionSetRepository;
             _contentDefinitionManager = contentDefinitionManager;
             _optionItemRepository = optionItemRepository;
+            _selectedOptionRepository = selectedOptionRepository;
             Logger = NullLogger.Instance;
         }
 
@@ -152,6 +155,10 @@ namespace Coevery.Fields.Services {
         #endregion
 
         #region SelectedOption & SelectedOptionSet Methods
+        private SelectedOptionRecord[] GetOptionFromSet(int setId) {
+            return _selectedOptionRepository.Table.Where(record => record.SelectedOptionSetRecord.Id == setId).ToArray();
+        }
+
         public int CreateSelectedSet(string[] optionIds) {
             int[] selectedValues;
             try {
@@ -161,13 +168,13 @@ namespace Coevery.Fields.Services {
                 Logger.Log(LogLevel.Error, ex , null);
                 return -1;
             }
-            var selectedSet = new SelectedOptionSetRecord {
-                SelectedOptionRecords = new List<SelectedOptionRecord>()
-            };
+            var selectedSet = new SelectedOptionSetRecord { Id=0 };         
             try {
+                _selectedOptionSetRepository.Create(selectedSet);
                 foreach (var value in selectedValues) {
-                    selectedSet.SelectedOptionRecords.Add(new SelectedOptionRecord {
-                        OptionItem = _optionItemRepository.Get(value)
+                    _selectedOptionRepository.Create(new SelectedOptionRecord {
+                        OptionItem = _optionItemRepository.Get(value),
+                        SelectedOptionSetRecord = selectedSet
                     });
                 }
             }
@@ -175,7 +182,6 @@ namespace Coevery.Fields.Services {
                 Logger.Log(LogLevel.Error, ex, null);
                 return -1;
             }
-            _selectedOptionSetRepository.Create(selectedSet);
             return selectedSet.Id;
         }
 
@@ -188,7 +194,10 @@ namespace Coevery.Fields.Services {
             if (setRecord == null || setRecord.Id == 0) {
                 return;
             }
-            _selectedOptionSetRepository.Delete(setRecord);
+            foreach (var option in GetOptionFromSet(setId)) {
+                _selectedOptionRepository.Delete(option);
+            }
+            _selectedOptionSetRepository.Delete(setRecord);   
         }
 
         public int AlterSet(int setId, string[] optionIds) {
@@ -201,7 +210,7 @@ namespace Coevery.Fields.Services {
             if (setRecord == null || setRecord.Id == 0) {
                 return null;
             }
-            return (from option in setRecord.SelectedOptionRecords
+            return (from option in GetOptionFromSet(setId)
                     select option.OptionItem.Id.ToString("D")).ToArray();
         }
         #endregion

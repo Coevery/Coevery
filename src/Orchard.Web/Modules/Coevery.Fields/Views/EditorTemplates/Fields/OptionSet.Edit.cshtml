@@ -7,100 +7,107 @@
     var settings = Model.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
     var multiple = (settings.SelectCount > 1) ? "multiple" : null;
     var required = settings.Required ? "required" : null;
-    var isControl = settings.DependencyMode == DependentType.Control ? "controls controlField" : "controls";
+    var isControl = settings.DependencyMode == DependentType.Control ? "controls control controlField" : "control controls";
     var isDependent = settings.DependencyMode == DependentType.Dependent ? "dependentField" : null;
     var classString = isControl + " " + isDependent;
+}
+
+@helper DisplayOptionItem(string type, string id, SelectListItem item) {
+    <label class="@type" for="@id">
+        <input type="@type" id="@id" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" 
+            @if (item.Selected) {
+                <text> checked="checked" </text>
+            }/>
+        @T(item.Text)
+    </label>
+}
+
+@helper UseScript(string inputString, string split){
+<script type="text/javascript">
+    $(function () {
+        alert("SFSF");
+        var dependentElements = $(".dependentField input, .dependentField select>option");
+        var depMap = JSON.parse("@inputString".replace(/&quot;/g, "\""));
+
+        var setDependencyDisplay = function() {
+            var controlKey = typeof $(this).val() === "boolean"
+                ? $(this).val() + "@split" + $(this).parents("div.controlField").attr("data-name")
+                : $(this).val();
+
+            for (var index = 0; index < depMap.length; index++) {
+                if (depMap[index]["Key"] == controlKey) {
+                    dependentElements.each(function() {
+                        if (depMap[index]["Value"].indexOf($(this).val()) != -1) {
+                            $(this).prop('disabled', false);
+                            $(this).show();
+                        }
+                    });
+                }
+            }
+        };
+        var dependencyFunc = function() {
+            dependentElements.each(function() {
+                $(this).prop('disabled', true);
+                $(this).hide();
+            });
+            $(".controlField input:checked, .controlField select>option:selected")
+                .each(setDependencyDisplay);
+        };
+
+        $(document).one("keyup mousemove", function() {
+            dependencyFunc();
+
+            $(".controlField input, .controlField select").change(function() {
+                dependencyFunc();
+            });
+        });
+    });
+</script>
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
 <div class="@classString">
 
-    @if (settings.DisplayOption == SelectionMode.DropDown) {
-        var displaySize = (settings.SelectCount > 1) ? settings.DisplayLines : 1;
-        var selectAttributes = new Dictionary<string, object>();
+    @switch (settings.DisplayOption) {
+        case SelectionMode.DropDown:
+            var displaySize = (settings.SelectCount > 1) ? settings.DisplayLines : 1;
+            var selectAttributes = new Dictionary<string, object>();
 
-        selectAttributes.Add("class", "span12");
+            selectAttributes.Add("class", "span12");
 
-        if (required != null) {
-            selectAttributes.Add(required, null);
-        }
-        selectAttributes.Add("size", displaySize);
+            if (required != null) {
+                selectAttributes.Add(required, null);
+            }
+            selectAttributes.Add("size", displaySize);
 
-        if (multiple != null) {
-            @Html.ListBoxFor(m => m.OptionValue, Model.Items, selectAttributes)
-        }
-        else {
-        @Html.DropDownListFor(x => x.OptionValue, Model.Items, selectAttributes)
-        }
-    }
-    else if (settings.DisplayOption == SelectionMode.Radiobutton) {
-        foreach (var item in Model.Items) {
-            var itemId = Model.Name + item.Value;
-            <label class="radio" for="@itemId">
-            <input type="radio" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" 
-                    @if (item.Selected) {
-                        <text> checked </text>
-                    }/>
-                @T(item.Text)
-            </label>
-        }
-    }
-    else if (settings.DisplayOption == SelectionMode.Checkbox) {
-        foreach (var item in Model.Items) {
-            var itemId = Model.Name + item.Value;
-            <label class="checkbox" for="@itemId">
-                <input type="checkbox" id="@itemId" name="@Html.FieldNameFor(model => model.OptionValue)" value="@item.Value" 
-                    @if (item.Selected) {
-                        <text> checked </text>
-                    } />
-                @T(item.Text)
-            </label>
-        }
+            if (multiple != null) {
+                @Html.ListBoxFor(m => m.OptionValue, Model.Items, selectAttributes)
+            }
+            else {
+                @Html.DropDownListFor(x => x.OptionValue, Model.Items, selectAttributes)
+            }
+            break;
+            
+        case SelectionMode.Radiobutton:
+            foreach (var item in Model.Items) {
+                var itemId = Model.Name + item.Value;
+                @DisplayOptionItem("radio", itemId, item)
+            }
+            break;
+            
+        case SelectionMode.Checkbox:
+            foreach (var item in Model.Items) {
+                var itemId = Model.Name + item.Value;
+                @DisplayOptionItem("checkbox", itemId, item)
+            }
+            break;
     }
     @Html.ValidationMessageFor(m => m.OptionValue)
-
+    
+    @if(!string.IsNullOrWhiteSpace(isDependent)&&!Request.Url.LocalPath.Contains("/SystemAdmin/FormDesigner/Index"))
+    {
+        @UseScript(Model.DisplayItems,DependencyValuePair.BoolSplit)
+    }
 </div>
-   
-<script type="text/javascript">
-    $(function () {
-        if ( "@isDependent".trim()
-            && "@Request.Url.PathAndQuery.Contains("SystemAdmin/FormDesigner")".toLowerCase == "false") {
-            var dependentElements = $(".dependentField input, .dependentField select>option");
-            var depMap = JSON.parse("@Model.DisplayItems".replace(/&quot;/g, "\""));
 
-            var setDependencyDisplay = function() {
-                var controlKey = typeof $(this).val() === "boolean"
-                    ? $(this).val() + "@DependencyValuePair.BoolSplit" + $(this).parents("div.controlField").attr("data-name")
-                    : $(this).val();
-
-                for (var index = 0; index < depMap.length; index++) {
-                    if (depMap[index]["Key"] == controlKey) {
-                        dependentElements.each(function() {
-                            if (depMap[index]["Value"].indexOf($(this).val()) != -1) {
-                                $(this).prop('disabled', false);
-                                $(this).show();
-                            }
-                        });
-                    }
-                }
-            };
-            var dependencyFunc = function() {
-                dependentElements.each(function() {
-                    $(this).prop('disabled', true);
-                    $(this).hide();
-                });
-                $(".controlField input:checked, .controlField select>option:selected")
-                    .each(setDependencyDisplay);
-            };
-
-            $(document).one("keyup mousemove", function() {
-                dependencyFunc();
-
-                $(".controlField input, .controlField select").change(function() {
-                    dependencyFunc();
-                });
-            });
-        }
-    });
-</script>
 
