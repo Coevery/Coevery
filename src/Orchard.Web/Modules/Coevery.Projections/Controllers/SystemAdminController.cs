@@ -61,15 +61,13 @@ namespace Coevery.Projections.Controllers
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
-        public ActionResult EditPOST(int id, string entityName, ProjectionEditViewModel viewModel, string picklist, string returnUrl)
-        {
-            if (id == 0)
-            {
-                var model = _projectionService.CreateTempProjection(entityName);
+        public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
+            if (id == 0) {
+                var model = _projectionService.CreateTempProjection(viewModel.Name);
                 id = model.Id;
             }
-            var pickArray = picklist.Split(new char[] { '$' }).Where(c => !string.IsNullOrEmpty(c)).ToList();
-            bool suc = _projectionService.EditPost(id,entityName, viewModel, pickArray);
+            var pickArray = picklist.Split(new char[] {'$'}).Where(c => !string.IsNullOrEmpty(c)).ToList();
+            bool suc = _projectionService.EditPost(id, viewModel, pickArray);
             return new EmptyResult();
         }
     }

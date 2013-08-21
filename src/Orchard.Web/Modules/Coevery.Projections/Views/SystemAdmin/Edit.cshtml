@@ -31,7 +31,7 @@
             <button class="btn btn-primary btn-small" data-ng-click="saveAndBack()">Save & Back</button>
         </btn-actions>
     </div>
-    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { Id = Model.Id, EntityName = Model.Name, ReturnUrl = Request.QueryString["ReturnUrl"] }),
+    @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { Id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                   FormMethod.Post,
                                                   new { @class = "form-horizontal", @name = "myForm", @ng_submit = "save()" })) {
                 
@@ -48,6 +48,7 @@
                                 <label class="control-label">Name</label>
                                 <div class="controls">
                                     @Html.TextBoxFor(m => m.Name, new { @class = "span12", @disabled = "disabled" })
+                                    @Html.HiddenFor(m => m.Name)
                                 </div>
                             </div>
                             <div class="span6">

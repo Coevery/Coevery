@@ -10,12 +10,11 @@ using Orchard.Projections.ViewModels;
 
 namespace Coevery.Projections.Services
 {
-    public interface IProjectionService : IDependency
-    {
+    public interface IProjectionService : IDependency {
         ProjectionEditViewModel CreateTempProjection(string entityType);
         ProjectionEditViewModel GetTempProjection(string entityType);
         AdminEditViewModel GetQueryViewModel(QueryPart query);
         ProjectionEditViewModel GetProjectionViewModel(int id);
-        bool EditPost(int id,string entityName, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
+        bool EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
     }
 }

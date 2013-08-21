@@ -74,11 +74,8 @@ namespace Coevery.Projections.Services
         public IOrchardServices Services { get; set; }
         public Localizer T { get; set; }
 
-        public ProjectionEditViewModel GetTempProjection(string entityType)
-        {
-            ProjectionEditViewModel viewModel = new ProjectionEditViewModel();
-            viewModel.Name = entityType;
-            viewModel.DisplayName = string.Empty;
+        public ProjectionEditViewModel GetTempProjection(string entityType) {
+            var viewModel = new ProjectionEditViewModel {Name = entityType, DisplayName = string.Empty};
 
             //Get all field
             var contentPart = _contentDefinitionManager.GetPartDefinition(entityType);
@@ -88,9 +85,7 @@ namespace Coevery.Projections.Services
 
         public ProjectionEditViewModel CreateTempProjection(string entityType)
         {
-            ProjectionEditViewModel viewModel = new ProjectionEditViewModel();
-            viewModel.Name = string.Empty;
-            viewModel.DisplayName = string.Empty;
+            var viewModel = new ProjectionEditViewModel {Name = string.Empty, DisplayName = string.Empty};
 
             //Create Projection&Query
             var projectionItem = _contentManager.New("ProjectionPage");
@@ -138,7 +133,7 @@ namespace Coevery.Projections.Services
 
         public ProjectionEditViewModel GetProjectionViewModel(int id)
         {
-            ProjectionEditViewModel viewModel = new ProjectionEditViewModel();
+            var viewModel = new ProjectionEditViewModel();
             //Get Projection&QueryPart
             var projectionItem = _contentManager.Get(id, VersionOptions.Latest);
             var projectionPart = projectionItem.As<ProjectionPart>();
@@ -177,7 +172,7 @@ namespace Coevery.Projections.Services
             return viewModel;
         }
 
-        public bool EditPost(int id, string entityName, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds)
+        public bool EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds)
         {
             if (pickedFileds == null) pickedFileds = new List<string>();
             var projectionItem = _contentManager.Get(id, VersionOptions.Latest);
@@ -194,21 +189,17 @@ namespace Coevery.Projections.Services
             LayoutRecord layoutRecord = projectionPart.Record.LayoutRecord;
             layoutRecord.Properties.Clear();
 
-
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
-            string category = projectionItem.As<TitlePart>().Title + "ContentFields";
-            foreach (var property in pickedFileds)
-            {
-                var field = allFields.FirstOrDefault(c =>c.Category==category && c.Type.StartsWith(projectionItem.As<TitlePart>().Title + "." + property));
-                if (field == null)
-                {
+            string category = viewModel.Name + "ContentFields";
+            foreach (var property in pickedFileds) {
+                var field = allFields.FirstOrDefault(c => c.Category == category && c.Type.StartsWith(viewModel.Name + "." + property));
+                if (field == null) {
                     throw new Exception("selected field not found:" + property);
                 }
-                var propertyRecord = new PropertyRecord
-                {
+                var propertyRecord = new PropertyRecord {
                     Category = category,
                     Type = field.Type,
-                    Description = field.Name.Text.Split(':').Length > 0?field.Name.Text.Split(':')[0]:string.Empty,
+                    Description = field.Name.Text.Split(':').Length > 0 ? field.Name.Text.Split(':')[0] : string.Empty,
                     Position = layoutRecord.Properties.Count,
                     State = GetPropertyState(property),
                     LinkToContent = layoutRecord.Properties.Count == 0

@@ -5,14 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
-using Coevery.Core.Models.Common;
 using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.Entities.Settings;
 using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Localization;
@@ -30,22 +28,18 @@ namespace Coevery.Entities.Controllers {
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
-        private readonly ICoeveryCommonService _coeveryCommonService;
 
         public SystemAdminController(IOrchardServices orchardServices
             ,IContentDefinitionService contentDefinitionService
             , ISchemaUpdateService schemaUpdateService
             ,IContentDefinitionManager contentDefinitionManager
-            ,IContentDefinitionEditorEvents contentDefinitionEditorEvents,
-            ICoeveryCommonService coeveryCommonService) {
-            
+            ,IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
-            _coeveryCommonService = coeveryCommonService;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -91,7 +85,6 @@ namespace Coevery.Entities.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
             var contentFieldDefinition = new ContentFieldDefinition(fieldTypeName + "Create");
-
             var definition = new ContentPartFieldDefinition(contentFieldDefinition, string.Empty, new SettingsDictionary());
             var templates = _contentDefinitionEditorEvents.PartFieldEditor(definition);
 
@@ -260,108 +253,31 @@ namespace Coevery.Entities.Controllers {
                 return Content(string.Concat(temp));
             }
 
-            // adds CommonPart by default
             _contentDefinitionService.AlterType(viewModel, this);
 
             _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
-            _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
 
-            _coeveryCommonService.WeldCommonPart(viewModel.Name);
-                                                                             
+            _contentDefinitionManager
+                .AlterPartDefinition(viewModel.Name,
+                                     builder => builder.WithField(viewModel.FieldName,
+                                                                  fieldBuilder => fieldBuilder
+                                                                                      .OfType("CoeveryTextField")
+                                                                                      .WithDisplayName(viewModel.FieldLabel)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString)
+                                                                                      .WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty)
+                                                                                      .WithSetting("Storage", "Part")));
+
+            //adds CommonPart by default
+            _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name,
                                              context => context.FieldColumn(viewModel.FieldName, "CoeveryTextField"));
- 
-            //#region -----------add Created By Field--------------
-            //var addCreateByViewModel = new AddFieldViewModel
-            //{
-            //    DisplayName = "Created By",
-            //    Name = "CreatedBy",
-            //    FieldTypeName = "ReferenceField"
-            //};
-            ////_fieldService.Create(viewModel.Name.Trim(), addCreateByViewModel, this);
-            //var partCreateBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            //var fieldCreateBy = partCreateBy.Fields.FirstOrDefault(x => x.Name == "CreatedBy");
-            //if (fieldCreateBy != null)
-            //{
-            //    fieldCreateBy.Settings["ReferenceFieldSettings.ContentTypeName"] = viewModel.Name.Trim();
-            //    fieldCreateBy.Settings["ReferenceFieldSettings.Required"] = bool.TrueString;
-            //    fieldCreateBy.Settings["ReferenceFieldSettings.ReadOnly"] = bool.TrueString;
-            //    fieldCreateBy.Settings["ReferenceFieldSettings.AlwaysInLayout"] = bool.TrueString;
-            //    fieldCreateBy.Settings["ReferenceFieldSettings.IsSystemField"] = bool.TrueString;
-            //    fieldCreateBy.Settings["ReferenceFieldSettings.IsAudit"] = bool.FalseString;
-            //    fieldCreateBy.Settings["ReferenceFieldSettings.HelpText"] = "";
-            //}
-            //_contentDefinitionManager.StorePartDefinition(partCreateBy);
-            //#endregion
-
-            //#region -----------add Created Date Field--------------
-            //var addCreateDateViewModel = new AddFieldViewModel
-            //{
-            //    DisplayName = "Create Date",
-            //    Name = "CreateDate",
-            //    FieldTypeName = "DatetimeField"
-            //};
-            ////_fieldService.Create(viewModel.Name.Trim(), addCreateDateViewModel, this);
-            //var partCreateDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            //var fieldCreateDate = partCreateDate.Fields.FirstOrDefault(x => x.Name == "CreateDate");
-            //if (fieldCreateDate != null)
-            //{
-            //    fieldCreateDate.Settings["DatetimeFieldSettings.Required"] = bool.TrueString;
-            //    fieldCreateDate.Settings["DatetimeFieldSettings.ReadOnly"] = bool.TrueString;
-            //    fieldCreateDate.Settings["DatetimeFieldSettings.AlwaysInLayout"] = bool.TrueString;
-            //    fieldCreateDate.Settings["DatetimeFieldSettings.IsSystemField"] = bool.TrueString;
-            //    fieldCreateDate.Settings["DatetimeFieldSettings.IsAudit"] = bool.FalseString;
-            //    fieldCreateDate.Settings["DatetimeFieldSettings.HelpText"] = "";
-            //}
-            //_contentDefinitionManager.StorePartDefinition(partCreateDate);
-            //#endregion
-
-            //#region -----------add Last Modified By Field--------------
-            //var addLastModifiedByViewModel = new AddFieldViewModel
-            //{
-            //    DisplayName = "Last Modified By",
-            //    Name = "LastModifiedBy",
-            //    FieldTypeName = "ReferenceField"
-            //};
-            ////_fieldService.Create(viewModel.Name.Trim(), addLastModifiedByViewModel, this);
-            //var partLastModifiedBy = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            //var fieldLastModifiedBy = partLastModifiedBy.Fields.FirstOrDefault(x => x.Name == "LastModifiedBy");
-            //if (fieldLastModifiedBy != null)
-            //{
-            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.ContentTypeName"] = viewModel.Name.Trim();
-            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.Required"] = bool.TrueString;
-            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.ReadOnly"] = bool.TrueString;
-            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.AlwaysInLayout"] = bool.TrueString;
-            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.IsSystemField"] = bool.TrueString;
-            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.IsAudit"] = bool.FalseString;
-            //    fieldLastModifiedBy.Settings["ReferenceFieldSettings.HelpText"] = "";
-            //}
-            //_contentDefinitionManager.StorePartDefinition(partLastModifiedBy);
-            //#endregion
-
-            //#region -----------add Last Modified Date Field--------------
-            //var addLastModifiedDateViewModel = new AddFieldViewModel
-            //{
-            //    DisplayName = "Last Modified Date",
-            //    Name = "LastModifiedDate",
-            //    FieldTypeName = "DatetimeField"
-            //};
-            ////_fieldService.Create(viewModel.Name.Trim(), addLastModifiedDateViewModel, this);
-            //var partLastModifiedDate = _contentDefinitionManager.GetPartDefinition(viewModel.Name.Trim());
-            //var fieldLastModifiedDate = partLastModifiedDate.Fields.FirstOrDefault(x => x.Name == "LastModifiedDate");
-            //if (fieldLastModifiedDate != null)
-            //{
-            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.Required"] = bool.TrueString;
-            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.ReadOnly"] = bool.TrueString;
-            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.AlwaysInLayout"] = bool.TrueString;
-            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.IsSystemField"] = bool.TrueString;
-            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.IsAudit"] = bool.FalseString;
-            //    fieldLastModifiedDate.Settings["DatetimeFieldSettings.HelpText"] = "";
-            //}
-            //_contentDefinitionManager.StorePartDefinition(partLastModifiedDate);
-            //#endregion
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
