@@ -2,11 +2,9 @@
 @using Orchard.Utility.Extensions;
 @{
     string value = Model.ContentField.Value;
-    if (!string.IsNullOrWhiteSpace(value)) {
-        string name = Model.ContentField.DisplayName;
-        <span class="control-label">@T(name)</span>
-        <div class="controls">
-            <span class="control-text">@T(value)</span>
-        </div>
-    }
+    string name = Model.ContentField.DisplayName;
+    <span class="control-label">@T(name)</span>
+    <div class="controls">
+        <span class="control-text">@T(value)</span>
+    </div>
 }

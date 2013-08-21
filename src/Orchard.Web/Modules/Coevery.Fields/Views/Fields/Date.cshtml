@@ -2,14 +2,12 @@
 @using Orchard.Utility.Extensions;
 @{
     DateTime? value = Model.ContentField.Value;
-    if (value.HasValue) {
-        var valueToDisplay = value.Value.ToString("MM/dd/yyyy");
-        if (!string.IsNullOrWhiteSpace(valueToDisplay)) {
-            string name = Model.ContentField.DisplayName;
-            <span class="control-label">@T(name)</span>
-            <div class="controls">
-                <span class="control-text">@T(valueToDisplay)</span>
-            </div>
-        }
-    }  
+    string valueToDisplay = value.HasValue
+        ? value.Value.ToString("MM/dd/yyyy")
+        : string.Empty;
+    string name = Model.ContentField.DisplayName;
+    <span class="control-label">@T(name)</span>
+    <div class="controls">
+        <span class="control-text">@T(valueToDisplay)</span>
+    </div>
 }

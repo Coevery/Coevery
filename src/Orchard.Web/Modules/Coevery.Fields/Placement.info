@@ -39,10 +39,6 @@
   <Place Fields_Currency_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Currency="Content:after;Wrapper=Wrapper_Script"/>
 
-  <!--Reference-->
-  <Place Fields_Reference_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
-  <Place Fields_Reference="Content:after;Wrapper=Wrapper_Script"/>
-
   <!--Taxonomy-->
   <Place Fields_TaxonomyField_Edit="Content:2.6;Wrapper=Wrapper_Script;"/>
   <Place Fields_TaxonomyField="Content:after"/>

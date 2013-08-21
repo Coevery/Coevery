@@ -4,19 +4,17 @@
 @using System.Linq;
 @{
     string title = Model.Title;
-    if (!String.IsNullOrEmpty(title)) {
-        bool isLink = Model.DisplayAsLink;
-        string name = Model.ContentField.DisplayName;
-        ContentItem item = Model.ContentField.ContentItem;
+    bool isLink = Model.DisplayAsLink;
+    string name = Model.ContentField.DisplayName;
+    ContentItem item = Model.ContentField.ContentItem;
 
-        <span class="control-label">@name</span>
-        <div class="controls">
-            @if (isLink) {
-                <span class="control-text">@Html.ItemDisplayLink(Html.Raw(title).ToString(), item)</span>
-            }
-            else {
-                <span class="control-text">@Html.Raw(title)</span>
-            }
-        </div>
-    }
+    <span class="control-label">@name</span>
+    <div class="controls">
+        @if (isLink) {
+            <span class="control-text">@Html.ItemDisplayLink(Html.Raw(title).ToString(), item)</span>
+        }
+        else {
+            <span class="control-text">@Html.Raw(title)</span>
+        }
+    </div>
 }

@@ -57,9 +57,10 @@ namespace Coevery.Relationship.Drivers {
 
         protected override DriverResult Display(ContentPart part, ReferenceField field, string displayType, dynamic shapeHelper) {
             var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
-            string title = field.Value.HasValue ?
-                _contentManager.GetItemMetadata(field.ContentItem).DisplayText :
-                string.Empty;
+            int? value = field.Value;
+            string title = value.HasValue
+                ? _contentManager.GetItemMetadata(field.ContentItem).DisplayText
+                : string.Empty;
 
             return ContentShape("Fields_Reference", GetDifferentiator(field, part),
                 () => shapeHelper.Fields_Reference(DisplayAsLink: settings.DisplayAsLink, ContentField: field, Title: title));

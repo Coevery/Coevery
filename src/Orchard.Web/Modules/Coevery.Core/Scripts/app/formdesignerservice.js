@@ -14,7 +14,7 @@
     PlaceIndicator.prototype.show = function (row, columnIndex, isAbove) {
         var direction = isAbove ? 'top' : 'bottom',
             $row = $(row),
-            widths = getColumnWidths($row.parents('[fd-section]:first').attr('section-columns-width')),
+            widths = getColumnWidths($row.parents('[fd-section]:first')),
             left = 0, leftPosition, width;
 
         for (var i = 0; i < columnIndex; i++) {
@@ -40,7 +40,11 @@
         inLayoutFields = [],
         dragHandler, enableHover;
 
-    function getColumnWidths(widthStr) {
+    function getColumnWidths(section) {
+        var $section = $(section),
+            widthStr = $section.attr('section-columns') == 1
+                ? '12'
+                : $section.attr('section-columns-width');
         return $.map(widthStr.split(':'), function (n) {
             return parseInt(n);
         });
@@ -334,7 +338,7 @@
                         if (columnsCount < 2) {
                             return;
                         }
-                        var widths = getColumnWidths(newValue),
+                        var widths = getColumnWidths(element),
                             rows = element.find('[fd-row]:not(.merged-row)'),
                             columns, width;
 
@@ -373,7 +377,7 @@
                             newColumnCount = parseInt(newValue),
                             oldColumnCount = parseInt(oldValue),
                             rows = section.find('[fd-row]'),
-                            widths = getColumnWidths(section.attr('section-columns-width')),
+                            widths = getColumnWidths(section),
                             columns, width;
 
                         if (newColumnCount > oldColumnCount) {
@@ -481,7 +485,7 @@
                         width = 12;
                     } else {
                         var section = row.parents('[fd-section]:first'),
-                            widths = getColumnWidths(section.attr('section-columns-width'));
+                            widths = getColumnWidths(section);
 
                         width = widths[row.children('[fd-column]').index(element)];
                     }
@@ -623,7 +627,7 @@
                             $(this).removeClass('split');
                             $(this).addClass('merge');
                             removeSpanClass(column);
-                            var firstWidth = parseInt(section.attr('section-columns-width'));
+                            var firstWidth = parseInt(section);
                             column.addClass('span' + firstWidth);
                             row.removeClass('merged-row');
                             for (var i = 1; i < columnsCount; i++) {
@@ -769,10 +773,7 @@
                     element.find('.btn-primary').click(function () {
                         scope.currentSection.section.attr('section-columns', scope.currentSection.columns);
                         scope.currentSection.section.attr('section-title', scope.currentSection.title);
-                        var width = scope.currentSection.columns == 1
-                            ? 12
-                            : scope.currentSection.columnsWidth;
-                        scope.currentSection.section.attr('section-columns-width', width);
+                        scope.currentSection.section.attr('section-columns-width', scope.currentSection.columnsWidth);
                         $rootScope.$apply();
                         $('#sectionPropertiesDialog').modal('hide');
                     });
@@ -872,7 +873,7 @@
 
                     function markColumn(position) {
                         var rows = element.children('[fd-row]'),
-                            widths = getColumnWidths(element.parents('[fd-section]:first').attr('section-columns-width')),
+                            widths = getColumnWidths(element.parents('[fd-section]:first')),
                             currentPosition = (position.x - rows.offset().left) / (rows.outerWidth() / 12),
                             columnIndex;
 
