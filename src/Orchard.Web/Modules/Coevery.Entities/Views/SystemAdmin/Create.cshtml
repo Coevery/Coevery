@@ -28,7 +28,7 @@
                         </section>
                         <section class="control-group">
                             <label class="control-label required" for="Name">@T("Name")</label>
-                            <div class="controls toValidate">
+                            <div class="controls">
                                 @Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
                                 <span class="help-block">@T("Technical name of the type.")</span>
                             </div>
@@ -57,7 +57,7 @@
                         </section>
                         <section class="control-group">
                             <label class="control-label required" for="FieldName">@T("Record Name")</label>
-                            <div class="controls toValidate">
+                            <div class="controls">
                                 @Html.TextBoxFor(m => m.FieldName, new { @class = "span12 nameisnotid required safename", @id = "FieldName" })
                             </div>
                         </section>

@@ -27,7 +27,7 @@
                                 <label class="control-label required" for="@Html.FieldIdFor(m => m.Name)">
                                     @T("Field Name")
                                 </label>
-                                <div class="controls toValidate">
+                                <div class="controls">
                                     @Html.TextBoxFor(m => m.Name, new { @class = "span12 nameisnotid required safename", id = "inputFieldName", ng_model = "fieldName" })
                                 </div>
                             </section>
