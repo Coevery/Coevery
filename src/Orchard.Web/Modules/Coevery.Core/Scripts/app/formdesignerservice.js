@@ -627,7 +627,7 @@
                             $(this).removeClass('split');
                             $(this).addClass('merge');
                             removeSpanClass(column);
-                            var firstWidth = parseInt(section);
+                            var firstWidth = getColumnWidths(section)[0];
                             column.addClass('span' + firstWidth);
                             row.removeClass('merged-row');
                             for (var i = 1; i < columnsCount; i++) {
@@ -635,7 +635,7 @@
                                 row.append(newColumn);
                                 $compile(newColumn)(scope);
                             }
-                            adjustColumnsPosition(column, $compile, scope, true);
+                            //adjustColumnsPosition(column, $compile, scope, true);
                         } else {
                             $(this).removeClass('merge');
                             $(this).addClass('split');
