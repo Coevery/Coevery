@@ -79,7 +79,7 @@
                 movedRow.after(row);
                 $compile(row)($scope);
             }
-            movedRow.remove();
+            containAbove || movedRow.remove();
         } else {
             rows = movedRow.nextUntil('.merged-row').andSelf();
             columnIndex = movedRow.children('[fd-column]').index(movedColumn);
@@ -635,7 +635,7 @@
                                 row.append(newColumn);
                                 $compile(newColumn)(scope);
                             }
-                            //adjustColumnsPosition(column, $compile, scope, true);
+                            adjustColumnsPosition(column, $compile, scope, true);
                         } else {
                             $(this).removeClass('merge');
                             $(this).addClass('split');
