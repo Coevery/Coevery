@@ -39,8 +39,7 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, UrlField field, dynamic shapeHelper) {
             //if the content item is new, assign the default value
-            if (string.IsNullOrWhiteSpace(field.Value))
-            {
+            if (string.IsNullOrWhiteSpace(field.Value)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<UrlFieldSettings>();
                 field.Value = settings.DefaultValue;
             }
@@ -51,11 +50,12 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Editor(ContentPart part, UrlField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<UrlFieldSettings>();
-                if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
+                var hasValue = !string.IsNullOrWhiteSpace(field.Value);
+                if (settings.Required && !hasValue) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
                 Uri temp;
-                if (!Uri.TryCreate(field.Value, UriKind.Absolute, out temp)) {
+                if (hasValue && !Uri.TryCreate(field.Value, UriKind.Absolute, out temp)) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is not valid URL.", T(field.DisplayName)));
                 }
             }

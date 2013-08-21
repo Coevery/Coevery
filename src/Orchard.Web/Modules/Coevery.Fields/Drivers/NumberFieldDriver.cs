@@ -8,13 +8,11 @@ using Coevery.Fields.Settings;
 using Orchard.Localization;
 
 namespace Coevery.Fields.Drivers {
-    public class NumberFieldDriver : ContentFieldDriver<NumberField>
-    {
+    public class NumberFieldDriver : ContentFieldDriver<NumberField> {
         public IOrchardServices Services { get; set; }
         private const string TemplateName = "Fields/Number.Edit";
 
-        public NumberFieldDriver(IOrchardServices services)
-        {
+        public NumberFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
             DisplayName = "Number";
@@ -27,22 +25,18 @@ namespace Coevery.Fields.Drivers {
             return part.PartDefinition.Name + "." + field.Name;
         }
 
-        private static string GetDifferentiator(NumberField field, ContentPart part)
-        {
+        private static string GetDifferentiator(NumberField field, ContentPart part) {
             return field.Name;
         }
 
-        protected override DriverResult Display(ContentPart part, NumberField field, string displayType, dynamic shapeHelper)
-        {
-            return ContentShape("Fields_Number", GetDifferentiator(field, part), () =>
-            {
+        protected override DriverResult Display(ContentPart part, NumberField field, string displayType, dynamic shapeHelper) {
+            return ContentShape("Fields_Number", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<NumberFieldSettings>();
                 return shapeHelper.Fields_Number().Settings(settings);
             });
         }
 
-        protected override DriverResult Editor(ContentPart part, NumberField field, dynamic shapeHelper)
-        {
+        protected override DriverResult Editor(ContentPart part, NumberField field, dynamic shapeHelper) {
             // if the content item is new, assign the default value
             if (!field.Value.HasValue) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<NumberFieldSettings>();
@@ -53,8 +47,7 @@ namespace Coevery.Fields.Drivers {
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }
 
-        protected override DriverResult Editor(ContentPart part, NumberField field, IUpdateModel updater, dynamic shapeHelper)
-        {
+        protected override DriverResult Editor(ContentPart part, NumberField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<NumberFieldSettings>();
                 if (settings.Required && !field.Value.HasValue) {
@@ -74,13 +67,11 @@ namespace Coevery.Fields.Drivers {
             return Editor(part, field, shapeHelper);
         }
 
-        protected override void Importing(ContentPart part, NumberField field, ImportContentContext context)
-        {
+        protected override void Importing(ContentPart part, NumberField field, ImportContentContext context) {
             context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = double.Parse(v));
         }
 
-        protected override void Exporting(ContentPart part, NumberField field, ExportContentContext context)
-        {
+        protected override void Exporting(ContentPart part, NumberField field, ExportContentContext context) {
             context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value);
         }
 

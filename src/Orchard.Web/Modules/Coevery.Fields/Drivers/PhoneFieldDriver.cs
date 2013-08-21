@@ -41,8 +41,7 @@ namespace Coevery.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, PhoneField field, dynamic shapeHelper) {
             //if the content item is new, assign the default value
-            if (string.IsNullOrWhiteSpace(field.Value))
-            {
+            if (string.IsNullOrWhiteSpace(field.Value)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<PhoneFieldSettings>();
                 field.Value = settings.DefaultValue;
             }
@@ -53,14 +52,15 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Editor(ContentPart part, PhoneField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<PhoneFieldSettings>();
-                if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
+                var hasValue = !string.IsNullOrWhiteSpace(field.Value);
+                if (settings.Required && !hasValue) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
                 var regex = new Regex(Pattern, RegexOptions.IgnoreCase);
-                if (!regex.IsMatch(field.Value)) {
+                if (hasValue && !regex.IsMatch(field.Value)) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is not valid phone number.", T(field.DisplayName)));
                 }
-            }          
+            }
             return Editor(part, field, shapeHelper);
         }
 

@@ -24,7 +24,7 @@
         $.validator.addMethod("decimalFormat", function (value, element, params) {
             var paramArray = params.split(',');
             var tempInt = parseInt(value);
-            return !isNaN(tempInt) && tempInt.toString().length <= paramArray[0] &&
+            return !value || !isNaN(tempInt) && tempInt.toString().length <= paramArray[0] &&
                 RegExp("^(\\d{0," + paramArray[0] + "})(\.\\d{0," + paramArray[1] + "})?$").test(value);
         }, "Wrong decimal format!");
         $.validator.classRuleSettings.decimalFormat = { decimalFormat: true };
