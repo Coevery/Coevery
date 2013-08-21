@@ -16,9 +16,15 @@
                    Coevery.Fields,
                    Coevery.Projections,
                    Coevery.DynamicTypes,
-                   Orchard.Alias,Orchard.Autoroute,Orchard.ContentPicker, 
-                   Orchard.Media,Orchard.MediaPicker,Orchard.jQuery,Orchard.AngularJS,
-                   Orchard.Widgets,Orchard.Scripting,Orchard.Scripting.Lightweight" />
+                   Coevery.Relationship,
+                   Orchard.Alias,
+                   Orchard.Autoroute,
+                   Orchard.ContentPicker, 
+                   Orchard.jQuery,
+                   Orchard.AngularJS,
+                   Orchard.Widgets,
+                   Orchard.Scripting,
+                   Orchard.Scripting.Lightweight" />
 
   <Metadata>
     <Types>
