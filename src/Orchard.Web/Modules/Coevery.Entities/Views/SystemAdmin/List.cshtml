@@ -6,17 +6,17 @@
     <div id="page-actions" class="clearfix">
         <btn-actions>
             <button class="btn btn-small btn-success" data-ng-click="add()">
-                <i class="icon-plus"></i>Add
+                <i class="icon-plus"></i>&nbsp;Add
             </button>
             <button class="btn btn-small" data-ng-click="getAllMetadata()">
-                <i class="icon-refresh"></i>Refresh
+                <i class="icon-refresh"></i>&nbsp;Refresh
             </button>
             <div class="btn-group" ng-show="selectedItems.length > 0">
                 <button class="btn btn-small" data-ng-click="edit(selectedItems[0].Name)" ng-disabled="selectedItems.length > 1">
-                    <i class="icon-edit"></i>Edit
+                    <i class="icon-edit"></i>&nbsp;Edit
                 </button>
                 <button class="btn btn-small" data-ng-click="delete(selectedItems[0].Name)">
-                    <i class="icon-remove"></i>Delete
+                    <i class="icon-remove"></i>&nbsp;Delete
                 </button>
             </div>
         </btn-actions>

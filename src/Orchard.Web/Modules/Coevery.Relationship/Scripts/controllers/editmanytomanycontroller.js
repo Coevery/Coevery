@@ -2,28 +2,35 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'EditManyToManyCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams',
-            function ($scope, logger, $detour, $stateParams) {
+        ['$scope', 'logger', '$detour', '$stateParams', '$http',
+            function ($scope, logger, $detour, $stateParams, $http) {
                 
                 $scope.save = function () {
                     ToggleReadonly(false);
                     var form = $('#manytomany-form');
-                    $.ajax({
+                    var promise = $http({
                         url: form.attr('action'),
-                        type: form.attr('method'),
-                        data: form.serializeArray(),
-                        success: function () {
-                            logger.success('success');
-                        },
-                        error: function (result) {
-                            logger.error('Failed:\n' + result.responseText);
-                        }
+                        method: form.attr('method'),
+                        data: form.serialize(),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function () {
+                        logger.success('success');
+                    }, function (result) {
+                        logger.error('Failed:\n' + result.responseText);
                     });
                     ToggleReadonly(true);
+                    return promise;
                 };
 
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
+                };
+                
+                $scope.saveAndBack = function () {
+                    var promise = $scope.save();
+                    promise && promise.then(function () {
+                        $scope.exit();
+                    });
                 };
             }]
     ]);

@@ -37,12 +37,8 @@ define(['core/app/detourService'], function (detour) {
 
           $scope.saveAndBack = function () {
               var promise = $scope.save();
-              if (!promise) {
-                  return;
-              }
-              promise.then(function () {
+              promise && promise.then(function () {
                   $scope.exit();
-              }, function () {
               });
           };
           

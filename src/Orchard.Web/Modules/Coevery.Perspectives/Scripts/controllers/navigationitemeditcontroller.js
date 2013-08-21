@@ -28,7 +28,6 @@ define(['core/app/detourService'], function (detour) {
                var promise = $scope.save();
                promise.then(function () {
                    $scope.exit();
-               }, function () {
                });
            };
 
