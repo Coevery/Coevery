@@ -11,9 +11,9 @@
     }
 }
 <section class="control-group data-row">
-    <label class="control-label" for="@Html.FieldIdFor(m => m.ContentTypeName)"> Selectable content </label>
+    <label class="control-label" for="@Html.FieldIdFor(m => m.ContentTypeName)"> Selectable Entity </label>
     <div class="controls">
-        <select id="@Html.FieldIdFor(m => m.ContentTypeName)" @disabled name="@Html.FieldNameFor(m => m.ContentTypeName)">
+        <select id="@Html.FieldIdFor(m => m.ContentTypeName)" @disabled name="@Html.FieldNameFor(m => m.ContentTypeName)" class="span12">
             @foreach (var item in Model.ContentTypeList) {
                 @Html.SelectOption(item.Value, item.Selected, item.Text)
             }
@@ -25,7 +25,7 @@
         Relationship Name
     </label>
     <div class="controls">
-        <input type="text" name="@Html.NameFor(m=>m.RelationshipName)" value="@Model.RelationshipName" @disabled />
+        <input type="text" class="span12" name="@Html.NameFor(m=>m.RelationshipName)" value="@Model.RelationshipName" @disabled />
     </div>
 </section>
 <section class="control-group data-row">

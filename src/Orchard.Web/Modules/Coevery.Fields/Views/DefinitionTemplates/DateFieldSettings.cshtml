@@ -23,7 +23,7 @@
 
         $(document).ready(function () {
             $.validator.addMethod("dateForShort", function (value) {
-                return /\d\d?\/\d\d?\/\d+/.test(value);
+                return /^\d\d?\/\d\d?\/\d+$/.test(value) || !value;
             }, "Wrong date format,should be MM/dd/yyyy");
             $.validator.classRuleSettings.dateForShort = { dateForShort: true };
 

@@ -41,15 +41,22 @@
                         </section>
                     </fieldset>
                     <fieldset>
-                        <legend>Field Name</legend>
-                        <section class="control-group">
-                            <label class="control-label" for="FieldLabel">@T("Field Label")</label>
+                        <legend>Enter Record Name and Label</legend>
+                        <section class="control-group">   
+                            <p class="help-block">
+                                The Record Name appears in page layouts, key lists, related lists, lookups, and search results.
+                                For example, the Record Name for Account is "Account Name" and for case it is "Case Number".
+                                Note that the Record Name field is always called "Name" when referenced via the API.
+                            </p>
+                        </section>
+                        <section class="control-group">                          
+                            <label class="control-label" for="FieldLabel">@T("Record Name Label")</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.FieldLabel, new { @class = "span12 labelForFieldName", autofocus = "autofocus" })
                             </div>
                         </section>
                         <section class="control-group">
-                            <label class="control-label required" for="FieldName">@T("Field Name")</label>
+                            <label class="control-label required" for="FieldName">@T("Record Name")</label>
                             <div class="controls toValidate">
                                 @Html.TextBoxFor(m => m.FieldName, new { @class = "span12 nameisnotid required safename", @id = "FieldName" })
                             </div>
