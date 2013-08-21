@@ -1028,6 +1028,9 @@
                             data: JSON.stringify(layoutObject),
                             success: function (msg) {
                                 logger.success('Save success');
+                            },
+                            error: function(msg) {
+                                logger.error('Save Failed');
                             }
                         });
                     });

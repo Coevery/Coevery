@@ -36,19 +36,6 @@
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }*/
 
-#loading
-{
-    position: absolute;
-    left: 50%;
-    top: 0;
-    margin-left: -35px;
-    display: none;
-    background: gold;
-    padding: 0.3em;
-    font-weight: bold;
-    z-index: 1000;
-}
-
 #wrapper #main
 {
     padding-bottom: 0;
