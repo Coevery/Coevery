@@ -265,20 +265,9 @@ namespace Coevery.Entities.Controllers {
 
             _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
             _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
-            _contentDefinitionManager
-
-                                     builder => builder.WithField(viewModel.FieldName,
 
             _coeveryCommonService.WeldCommonPart(viewModel.Name);
-                                                                                      .WithDisplayName(viewModel.FieldLabel)
-                                                                                      .WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString)
-                                                                                      .WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString)
-                                                                                      .WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString)
-                                                                                      .WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString)
-                                                                                      .WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString)
-                                                                                      .WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString)
-                                                                                      .WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty)
-                                                                                      .WithSetting("Storage", "Part")));
+                                                                             
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
             _schemaUpdateService.CreateTable(viewModel.Name,

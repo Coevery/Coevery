@@ -10,7 +10,7 @@ namespace Coevery.Fields.Records {
         public virtual int Id { get; set; }
         public virtual string FieldName { get; set; }
 
-        [CascadeAllDeleteOrphan]
-        public virtual IList<OptionItemRecord> OptionItemRecords { get; set; }
+        //[CascadeAllDeleteOrphan]
+        //public virtual IList<OptionItemRecord> OptionItemRecords { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿'use strict';
-define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/optionitemsdataservice'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/optionitemsdataservice'], function (detour) {
     detour.registerController([
         'ItemsCtrl',
         ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$resource', 'optionItemsDataService',

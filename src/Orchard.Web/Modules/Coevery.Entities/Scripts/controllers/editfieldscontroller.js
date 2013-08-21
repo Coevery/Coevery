@@ -40,6 +40,10 @@ define(['core/app/detourService'], function (detour) {
                     return promise;
                 };
 
+                $scope.showItems = function() {
+                    $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: $stateParams.FieldName });
+                };
+
                 $scope.saveAndBack = function () {
                     var promise = $scope.save();
                     promise.then(function () {

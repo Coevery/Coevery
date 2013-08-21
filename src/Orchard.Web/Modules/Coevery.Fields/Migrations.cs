@@ -7,7 +7,7 @@ namespace Coevery.Fields {
             //OptionItemRecord is used for the multi-item selection table
             SchemaBuilder.CreateTable("OptionItemRecord",
                 table => table
-                    .Column<int>("Id", column => column.PrimaryKey())
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<string>("Value")
                     .Column<bool>("IsDefault")
                     .Column<int>("OptionSetRecord_Id")
@@ -15,13 +15,13 @@ namespace Coevery.Fields {
 
             SchemaBuilder.CreateTable("OptionSetRecord",
                 table => table
-                    .Column<int>("Id", column => column.PrimaryKey())
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<string>("FieldName")
                 );
 
             SchemaBuilder.CreateTable("FieldDependencyRecord",
                 table => table
-                    .Column<int>("Id", column => column.PrimaryKey())
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<int>("Entity_Id")
                     .Column<int>("ControlField_Id")
                     .Column<int>("DependentField_Id")
@@ -30,14 +30,14 @@ namespace Coevery.Fields {
 
             SchemaBuilder.CreateTable("SelectedOptionRecord",
                 table => table
-                    .Column<int>("Id", column => column.PrimaryKey())
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<int>("OptionItem_Id",column=>column.NotNull())
                     .Column<int>("SelectedOptionSetRecord_Id")
                 );
 
             SchemaBuilder.CreateTable("SelectedOptionSetRecord",
                 table => table
-                    .Column<int>("Id", column => column.PrimaryKey())
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                 );
             return 5;
         }

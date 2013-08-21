@@ -5,5 +5,6 @@ namespace Coevery.Fields.Records {
         public virtual int Id { get; set; }
         public virtual string Value { get; set; }
         public virtual bool IsDefault { get; set; }
+        public virtual OptionSetRecord OptionSetRecord { get; set; }
     }
 }

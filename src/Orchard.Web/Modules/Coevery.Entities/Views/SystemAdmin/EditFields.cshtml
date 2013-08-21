@@ -103,7 +103,9 @@
                     </fieldset>
                     <fieldset>
                         <legend>Field Information</legend>
-                        <div ui-view class="ng-cloak"></div>
+                        @if (Model.FieldDefinition.Name == "OptionSetField") {
+                            <div ng-init="showItems()" ui-view class="ng-cloak"></div>
+                        }
                         @{Html.RenderTemplates(Model.Templates);}
                     </fieldset>
                     @Html.Hidden(fieldSettingsPrefix + "IsSystemField", Model.Settings[fieldSettingsPrefix + "IsSystemField"])
@@ -115,7 +117,6 @@
 
 <script>
     $(function () {
-
         $.validator.addMethod("phonenumber", function (value) {
             if (value) {
                 return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));

@@ -1,7 +1,7 @@
 ﻿@model OptionSetFieldSettings
 @using Coevery.Fields.Settings;
 
-@if (!Request.Url.ToString().Contains("/Fields/Edit")) {
+@if (!Request.Url.LocalPath.Contains("/Entities/EditFields/")) {
     <section class="control-group data-row">
         <label class="control-label">
             Item Labels
@@ -23,6 +23,12 @@
 else {
     @Html.HiddenFor(model => model.LabelsStr)
     @Html.HiddenFor(model => model.DefaultValue)
+    //Html.RenderAction("Items", "SystemAdmin", 
+    //    new RouteValueDictionary {
+    //        { "Area", "Coevery.Entities" }, 
+    //        { "id", Request.Params["id"] }, 
+    //        { "fieldName", Request.Params["fieldName"] }
+    //    });
 }
 @Html.HiddenFor(model => model.DependencyMode)
 @Html.HiddenFor(model => model.OptionSetId)
