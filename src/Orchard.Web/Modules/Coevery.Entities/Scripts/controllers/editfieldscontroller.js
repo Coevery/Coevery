@@ -40,14 +40,6 @@ define(['core/app/detourService'], function (detour) {
                     return promise;
                 };
 
-                $scope.showItems = function (fieldType) {
-                    if (fieldType == "OptionSetField") {
-                        setTimeout(function() {
-                            $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: $stateParams.FieldName });
-                        }, 100);
-                    } 
-                };
-
                 $scope.saveAndBack = function () {
                     var promise = $scope.save();
                     promise.then(function () {
