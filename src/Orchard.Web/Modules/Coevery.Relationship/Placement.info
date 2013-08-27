@@ -2,4 +2,7 @@
   <!--Reference-->
   <Place Fields_Reference_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Reference="Content:after;Wrapper=Wrapper_Script"/>
+
+  <Place Parts_Primary_Edit="Content:11"/>
+  <Place Parts_Primary="Content:11"/>
 </Placement>

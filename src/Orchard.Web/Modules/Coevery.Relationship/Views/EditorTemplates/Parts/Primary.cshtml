@@ -1,0 +1,22 @@
+﻿@using Orchard.Mvc.Html
+@model Coevery.Relationship.ViewModels.EditRelationshipViewModel
+<fieldset>
+    <legend>@T("Rewards")</legend>
+    <ul>
+        @{
+            var rewardIndex = 0;
+        }
+        @foreach (var reward in Model.Links) {
+            <li>
+                <input type="hidden" value="@reward.Id" name="@Html.FieldNameFor(m => m.Links[rewardIndex].Id)"/>
+                <label for="@Html.FieldNameFor(m => m.Links[rewardIndex].IsChecked)">
+                    <input type="checkbox" value="true"
+                name="@Html.FieldNameFor(m => m.Links[rewardIndex].IsChecked)"
+                id="@Html.FieldNameFor(m => m.Links[rewardIndex].IsChecked)"@if (reward.IsChecked) {<text>checked="checked"</text>}/>
+                    @string.Format("{0}", reward.Title)
+                </label>
+                @{rewardIndex++;}
+            </li>
+        }
+    </ul>
+</fieldset>
