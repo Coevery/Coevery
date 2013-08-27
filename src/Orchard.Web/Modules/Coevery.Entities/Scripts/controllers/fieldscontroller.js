@@ -6,13 +6,14 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
         ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$dialog', 'entityDataService', 'fieldDataService',
             function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, entityDataService, fieldDataService) {
                 var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-            '<ul class="row-actions pull-right hide">' +
-            '<li class="icon-edit" ng-click="edit(row.entity.Name,row.entity.FieldType)" title="Edit"></li>' +
-            '<li class="icon-remove" ng-click="delete(row.entity.Name)" ng-hide="row.entity.IsSystemField"  title="Delete"></li>' +
-            '</ul>' +
-            '<span class="btn-link" ng-click="edit(row.entity.Name,row.entity.FieldType)">{{COL_FIELD}}</span>' +
-            '</div>';
+                    '<ul class="row-actions pull-right hide">' +
+                    '<li class="icon-edit" ng-click="edit(row.entity.Name,row.entity.FieldType)" title="Edit"></li>' +
+                    '<li class="icon-remove" ng-click="delete(row.entity.Name)" ng-hide="row.entity.IsSystemField"  title="Delete"></li>' +
+                    '</ul>' +
+                    '<span class="btn-link" ng-click="edit(row.entity.Name,row.entity.FieldType)">{{COL_FIELD}}</span>' +
+                    '</div>';
 
+                $scope.mySelections = [];
                 var entityName = $stateParams.Id;
                 var fieldColumnDefs = [
                     {
@@ -38,10 +39,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.gridOptions = {
                     data: 'myData',
-                    multiSelect: false,
-                    enableRowSelection: false,
-                    showSelectionCheckbox: false,
-                    selectedItems: $scope.selectedItems,
+                    multiSelect: true,
+                    enableRowSelection: true,
+                    showSelectionCheckbox: true,
+                    selectedItems: $scope.mySelections,//selectedItems,
                     columnDefs: fieldColumnDefs,
                 };
 

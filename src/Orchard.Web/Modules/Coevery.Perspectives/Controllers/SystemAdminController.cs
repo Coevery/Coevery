@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Coevery.Core;
 using Coevery.Core.Models;
 using Coevery.Perspectives.Services;
 using Coevery.Perspectives.ViewModels;
@@ -21,6 +22,7 @@ using Orchard.DisplayManagement;
 using Orchard.Environment.Configuration;
 using Orchard.Localization;
 using Orchard.Logging;
+using Orchard.Mvc.Extensions;
 using Orchard.Security;
 using Orchard.Themes;
 using Orchard.UI.Navigation;
@@ -82,13 +84,17 @@ namespace Coevery.Perspectives.Controllers
         }
 
         [HttpPost, ActionName("Create")]
-        public ActionResult CreatePOST(PerspectiveViewModel model)
-        {
-            var contentItem = _contentManager.New("Menu");
-            contentItem.As<TitlePart>().Title = model.Title;
-            _contentManager.Create(contentItem, VersionOptions.Draft);
-            _contentManager.Publish(contentItem);
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        public CustomJsonResult CreatePOST(PerspectiveViewModel model) {
+            var result = new CustomJsonResult();
+            result.Try(() => {
+                           var contentItem = _contentManager.New("Menu");
+                           contentItem.As<TitlePart>().Title = model.Title;
+                           _contentManager.Create(contentItem, VersionOptions.Draft);
+                           _contentManager.Publish(contentItem);
+                           result.Value = contentItem.Id;
+                       });
+
+            return result;
         }
 
 
@@ -102,14 +108,18 @@ namespace Coevery.Perspectives.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
-        public ActionResult EditPOST(int id, PerspectiveViewModel model)
+        public CustomJsonResult EditPOST(int id, PerspectiveViewModel model)
         {
-            var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
-            contentItem.As<TitlePart>().Title = model.Title;
-            _contentManager.Publish(contentItem);
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
-        }
+            var result = new CustomJsonResult();
+            result.Try(() => {
+                           var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
+                           contentItem.As<TitlePart>().Title = model.Title;
+                           _contentManager.Publish(contentItem);
+                           result.Value = contentItem.Id;
+                       });
 
+            return result;
+        }
 
         public ActionResult Detail(int id)
         {

@@ -28,7 +28,16 @@ screen < 767px
 body {
     background: url(images/white_tiles.png);
 }
-
+html,
+body,
+#wrapper,
+#content-wrap,
+#content,
+#content-outer,
+#content-inner,
+aside {
+    height: 100%;
+}
 /* Header
 ================================================== */
 
@@ -423,6 +432,7 @@ body {
 
         #wrapper #sidebar {
             width: 285px;
+            /*min-height: 500px;*/
             padding-right: 1px;
         }
 

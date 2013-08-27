@@ -24,8 +24,8 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               { field: 'IsDeployed', displayName: t('IsDeployed') }];
 
           $scope.pagingOptions = {
-              pageSizes: [250, 500, 1000],
-              pageSize: 250,
+              pageSizes: [50, 100, 200],
+              pageSize: 50,
               currentPage: 1
           };
 

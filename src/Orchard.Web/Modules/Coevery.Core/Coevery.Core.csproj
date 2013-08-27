@@ -74,6 +74,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\aspnetwebapi\System.Web.Http.dll</HintPath>
@@ -124,6 +125,9 @@
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
+    <Compile Include="Extensions\CustomJsonResult.cs" />
+    <Compile Include="Extensions\CustomResult.cs" />
+    <Compile Include="Extensions\ICustomResult.cs" />
     <Compile Include="FrontMenu\FrontMenuFilter.cs" />
     <Compile Include="FrontMenu\FrontMenu.cs" />
     <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
@@ -148,6 +152,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="ClientRoute\IClientRouteProvider.cs" />
+    <Compile Include="Serializer.cs" />
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />

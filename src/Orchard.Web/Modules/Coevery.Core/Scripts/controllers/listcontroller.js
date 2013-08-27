@@ -17,11 +17,11 @@
           $rootScope.moduleName = moduleName;
           
           //init pagingoption
-          var pageSizes = [250, 500, 1000];
+          var pageSizes = [50, 100, 200];//[250, 500, 1000];
           var currentPage = parseInt($location.$$search['Page']);
           if (!currentPage) currentPage = 1;
           var pageSize = parseInt($location.$$search['PageSize']);
-          if (!pageSize | pageSizes.indexOf(pageSize) < 0) pageSize = 250;
+          if (!pageSize | pageSizes.indexOf(pageSize) < 0) pageSize = 50;//250
           $scope.pagingOptions = {
               pageSizes: pageSizes,
               pageSize: pageSize,

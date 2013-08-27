@@ -164,13 +164,14 @@
             }, "FieldName is not legal!");
             $.validator.classRuleSettings.safename = { safename: true };
 
-            $.validator.addMethod("phonenumber", function (value) {
-                if (value) {
-                    return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));
-                }
-                return true;
-            }, "Please enter a valid phone.");
-            $.validator.classRuleSettings.phonenumber = { phonenumber: true};
+            //moved to setup-systemadmin.js
+            //$.validator.addMethod("phonenumber", function (value) {
+            //    if (value) {
+            //        return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));
+            //    }
+            //    return true;
+            //}, "Please enter a valid phone.");
+            //$.validator.classRuleSettings.phonenumber = { phonenumber: true};
             
             var validator = $("#field-info-form").validate({
                 //ignore: "*:not('.toValidate *')",

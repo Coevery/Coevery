@@ -12,8 +12,9 @@
         <div id="page-actions" class="clearfix">
             <btn-actions>
                 <button type="button" class="btn btn-small" ng-click="exit()">Back</button>
-                <button fd-save-layout-button class="btn btn-primary btn-small">Save Layout</button>
-                <button class="btn btn-small">Reset Layout</button>
+                <button class="btn btn-primary btn-small" ng-click="save()">Save</button>
+                <button class="btn btn-primary btn-small" data-ng-click="saveAndBack()">Save & Back</button>
+                <button class="btn btn-small">Reset</button>
             </btn-actions>
         </div>
     </div>

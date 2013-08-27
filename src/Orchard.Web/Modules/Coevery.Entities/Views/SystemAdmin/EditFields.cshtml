@@ -113,25 +113,3 @@
         </div>
     </div>
 </section>
-
-<script>
-    $(function () {
-
-        $.validator.addMethod("phonenumber", function (value) {
-            if (value) {
-                return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));
-            }
-            return true;
-        }, "Please enter a valid phone.");
-        $.validator.classRuleSettings.phonenumber = { phonenumber: true };
-
-        $("#field-info-form").validate({
-            //ignore: "*:not('.toValidate *')",
-            onkeyup: function (element) {
-                if (element.type == "text") {
-                    this.form();
-                }
-            }
-        });
-    });
-</script>

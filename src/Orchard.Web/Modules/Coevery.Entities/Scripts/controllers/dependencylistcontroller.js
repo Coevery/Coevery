@@ -20,8 +20,8 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                 ];
 
                 $scope.pagingOptions = {
-                    pageSizes: [250, 500, 1000],
-                    pageSize: 250,
+                    pageSizes: [50, 100, 200],
+                    pageSize: 50,
                     currentPage: 1
                 };
 

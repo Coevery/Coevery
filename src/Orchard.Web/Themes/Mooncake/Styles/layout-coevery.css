@@ -229,13 +229,14 @@ screen < 767px
         {
             font-size: 11px;
             line-height: 1;
+            vertical-align: middle;
         }
 
         #wrapper #sidebar #navigation > ul > li > a,
         #wrapper #sidebar #navigation > ul > li > span
         {
             font-size: 32px;
-            padding: 6px 5px 11px 5px;
+            padding: 12px 17px 12px 30px;
         }
 
         #wrapper #sidebar #navigation ul > li.active > a,
