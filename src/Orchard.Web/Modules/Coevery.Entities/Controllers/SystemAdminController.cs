@@ -85,7 +85,7 @@ namespace Coevery.Entities.Controllers {
         {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part.")))
                 return new HttpUnauthorizedResult();
-            var contentFieldDefinition = new ContentFieldDefinition(fieldTypeName + "Create");
+            var contentFieldDefinition = new ContentFieldDefinition(fieldTypeName);
             var definition = new ContentPartFieldDefinition(contentFieldDefinition, string.Empty, new SettingsDictionary());
             var templates = _contentDefinitionEditorEvents.PartFieldEditor(definition);
 

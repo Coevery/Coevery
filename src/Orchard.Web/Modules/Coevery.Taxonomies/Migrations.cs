@@ -31,11 +31,6 @@ namespace Coevery.Taxonomies {
                 .WithPart("TaxonomyPart")
                 .WithPart("TitlePart")
                 .WithPart("CommonPart")
-                .WithPart("AutoroutePart", builder => builder
-                .WithSetting("AutorouteSettings.AllowCustomPattern", "true")
-                .WithSetting("AutorouteSettings.AutomaticAdjustmentOnEdit", "false")
-                .WithSetting("AutorouteSettings.PatternDefinitions", "[{Name:'Title', Pattern: '{Content.Slug}', Description: 'my-taxonomy'}]")
-                .WithSetting("AutorouteSettings.DefaultPatternIndex", "0"))
             );
 
             SchemaBuilder.CreateTable("TermsPartRecord", table => table

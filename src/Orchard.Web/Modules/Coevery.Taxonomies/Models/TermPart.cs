@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Orchard.Autoroute.Models;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
 using Orchard.Core.Title.Models;
@@ -11,11 +10,6 @@ namespace Coevery.Taxonomies.Models {
         public string Name {
             get { return this.As<TitlePart>().Title; }
             set { this.As<TitlePart>().Title = value; }
-        }
-
-        public string Slug {
-            get { return this.As<AutoroutePart>().DisplayAlias; }
-            set { this.As<AutoroutePart>().DisplayAlias = value; }
         }
 
         public IContent Container {

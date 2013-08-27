@@ -9,23 +9,17 @@ namespace Coevery.Taxonomies.Services {
         IEnumerable<TaxonomyPart> GetTaxonomies();
         TaxonomyPart GetTaxonomy(int id);
         TaxonomyPart GetTaxonomyByName(string name);
-        TaxonomyPart GetTaxonomyBySlug(string slug);
         void CreateTermContentType(TaxonomyPart taxonomy);
         void DeleteTaxonomy(TaxonomyPart taxonomy);
 
         IEnumerable<TermPart> GetAllTerms();
         IEnumerable<TermPart> GetTerms(int taxonomyId);
-        IEnumerable<string> GetSlugs();
         TermPart GetTerm(int id);
-        TermPart GetTermByPath(string path);
         TermPart GetTermByName(int taxonomyId, string name);
         void DeleteTerm(TermPart termPart);
         void MoveTerm(TaxonomyPart taxonomy, TermPart term, TermPart parentTerm);
-        void ProcessPath(TermPart term);
-        IEnumerable<string> GetTermPaths();
 
         string GenerateTermTypeName(string taxonomyName);
-        bool GenerateTermsFromImport(int taxonomyId, string terms);
         TermPart NewTerm(TaxonomyPart taxonomy);
         IEnumerable<TermPart> GetTermsForContentItem(int contentItemId, string field = null);
         void UpdateTerms(ContentItem contentItem, IEnumerable<TermPart> terms, string field);
@@ -35,11 +29,5 @@ namespace Coevery.Taxonomies.Services {
         long GetContentItemsCount(TermPart term, string fieldName = null);
         IContentQuery<TermsPart, TermsPartRecord> GetContentItemsQuery(TermPart term, string fieldName = null);
 
-        /// <summary>
-        /// Organizes a list of <see cref="TermPart"/> objects into a hierarchy.
-        /// </summary>
-        /// <param name="terms">The <see cref="TermPart"/> objects to orgnanize in a hierarchy. The objects need to be sorted.</param>
-        /// <param name="append">The action to perform when a node is added as a child, or <c>null</c> if nothing needs to be done.</param>
-        void CreateHierarchy(IEnumerable<TermPart> terms, Action<TermPartNode, TermPartNode> append);
     }
 }

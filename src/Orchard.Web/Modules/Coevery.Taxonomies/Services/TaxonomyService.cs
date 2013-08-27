@@ -5,7 +5,6 @@ using System.Linq;
 using Coevery.Taxonomies.Fields;
 using Coevery.Taxonomies.Models;
 using Orchard;
-using Orchard.Autoroute.Models;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
 using Orchard.ContentManagement.MetaData;
@@ -49,11 +48,11 @@ namespace Coevery.Taxonomies.Services {
         public Localizer T { get; set; }
 
         public IEnumerable<TaxonomyPart> GetTaxonomies() {
-            return _contentManager.Query<TaxonomyPart, TaxonomyPartRecord>().WithQueryHints(new QueryHints().ExpandParts<AutoroutePart, TitlePart>()).List();
+            return _contentManager.Query<TaxonomyPart, TaxonomyPartRecord>().WithQueryHints(new QueryHints().ExpandParts<TitlePart>()).List();
         }
 
         public TaxonomyPart GetTaxonomy(int id) {
-            return _contentManager.Get(id, VersionOptions.Published, new QueryHints().ExpandParts<TaxonomyPart, AutoroutePart, TitlePart>()).As<TaxonomyPart>();
+            return _contentManager.Get(id, VersionOptions.Published, new QueryHints().ExpandParts<TaxonomyPart, TitlePart>()).As<TaxonomyPart>();
         }
 
         public TaxonomyPart GetTaxonomyByName(string name) {
@@ -65,21 +64,7 @@ namespace Coevery.Taxonomies.Services {
                 .Query<TaxonomyPart>()
                 .Join<TitlePartRecord>()
                 .Where(r => r.Title == name)
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, CommonPartRecord>())
-                .List()
-                .FirstOrDefault();
-        }
-
-        public TaxonomyPart GetTaxonomyBySlug(string slug) {
-            if (String.IsNullOrWhiteSpace(slug)) {
-                throw new ArgumentNullException("slug");
-            }
-
-            return _contentManager
-                .Query<TaxonomyPart, TaxonomyPartRecord>()
-                .Join<TitlePartRecord>()
-                .Join<AutoroutePartRecord>()
-                .Where(r => r.DisplayAlias == slug)
+                .WithQueryHints(new QueryHints().ExpandRecords<CommonPartRecord>())
                 .List()
                 .FirstOrDefault();
         }
@@ -125,94 +110,6 @@ namespace Coevery.Taxonomies.Services {
             return name;
         }
 
-        public bool GenerateTermsFromImport(int taxonomyId, string terms) {
-            var taxonomy = GetTaxonomy(taxonomyId);
-
-            if (taxonomy == null) {
-                return false;
-            }
-
-            var topTerm = new TermPosition();
-
-            using (var reader = new StringReader(terms)) {
-                string line;
-                var previousLevel = 0;
-                var parents = new Stack<TermPosition>();
-                TermPosition parentTerm = null;
-                while (null != (line = reader.ReadLine())) {
-
-                    // ignore empty lines
-                    if (String.IsNullOrWhiteSpace(line)) {
-                        continue;
-                    }
-
-                    // compute level from tabs
-                    var level = 0;
-                    while (line[level] == '\t') level++; // number of tabs to know the level
-
-                    // create a new term content item
-                    var term = NewTerm(taxonomy);
-
-                    // detect parent term
-                    if (level == previousLevel + 1) {
-                        parentTerm = parents.Peek();
-                        parents.Push(new TermPosition { Term = term });
-                    }
-                    else if (level == previousLevel) {
-                        // same parent term
-                        if (parents.Any())
-                            parents.Pop();
-
-                        parents.Push(new TermPosition { Term = term });
-                    }
-                    else if (level < previousLevel) {
-                        for (var i = previousLevel; i >= level; i--)
-                            parents.Pop();
-
-                        parentTerm = parents.Any() ? parents.Peek() : null;
-                        parents.Push(new TermPosition { Term = term });
-                    }
-
-                    // increment number of children
-                    if (parentTerm == null) {
-                        parentTerm = topTerm;
-                    }
-
-                    parentTerm.Position++;
-                    term.Weight = 10 - parentTerm.Position;
-
-                    term.Container = parentTerm.Term == null ? taxonomy.ContentItem : parentTerm.Term.ContentItem;
-
-                    line = line.Trim();
-                    var scIndex = line.IndexOf(';'); // seek first semi-colon to extract term and slug
-
-                    // is there a semi-colon
-                    if (scIndex != -1) {
-                        term.Name = line.Substring(0, scIndex);
-                        term.Slug = line.Substring(scIndex + 1);
-                    }
-                    else {
-                        term.Name = line;
-                    }
-
-                    var existing = GetTermByName(taxonomyId, term.Name);
-
-                    // a different term exist under the same parent term ?
-                    if (existing != null && existing.Container.ContentItem.Record == term.Container.ContentItem.Record) {
-                        _services.Notifier.Error(T("The term {0} already exists at this level", term.Name));
-                        _services.TransactionManager.Cancel();
-                        return false;
-                    }
-
-                    ProcessPath(term);
-                    _contentManager.Create(term, VersionOptions.Published);
-
-                    previousLevel = level;
-                }
-            }
-            return true;
-        }
-
         public TermPart NewTerm(TaxonomyPart taxonomy) {
             var term = _contentManager.New<TermPart>(taxonomy.TermTypeName);
             term.TaxonomyId = taxonomy.Id;
@@ -223,25 +120,16 @@ namespace Coevery.Taxonomies.Services {
         public IEnumerable<TermPart> GetTerms(int taxonomyId) {
             var result = _contentManager.Query<TermPart, TermPartRecord>()
                 .Where(x => x.TaxonomyId == taxonomyId)
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>())
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
                 .List();
 
             return TermPart.Sort(result);
         }
 
-        public TermPart GetTermByPath(string path) {
-            return _contentManager.Query<TermPart, TermPartRecord>()
-                .Join<AutoroutePartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
-                .Where(rr => rr.DisplayAlias == path)
-                .List()
-                .FirstOrDefault();
-        }
-
         public IEnumerable<TermPart> GetAllTerms() {
             var result = _contentManager
                 .Query<TermPart, TermPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>())
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
                 .List();
             return TermPart.Sort(result);
         }
@@ -249,7 +137,7 @@ namespace Coevery.Taxonomies.Services {
         public TermPart GetTerm(int id) {
             return _contentManager
                 .Query<TermPart, TermPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>())
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
                 .Where(x => x.Id == id).List().FirstOrDefault();
         }
 
@@ -262,7 +150,7 @@ namespace Coevery.Taxonomies.Services {
         public TermPart GetTermByName(int taxonomyId, string name) {
             return _contentManager
                 .Query<TermPart, TermPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>())
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
                 .Where(t => t.TaxonomyId == taxonomyId)
                 .Join<TitlePartRecord>()
                 .Where(r => r.Title == name)
@@ -328,7 +216,7 @@ namespace Coevery.Taxonomies.Services {
 
             var query = _contentManager
                 .Query<TermsPart, TermsPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>());
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>());
 
             if (String.IsNullOrWhiteSpace(fieldName)) {
                 query = query.Where(
@@ -360,7 +248,7 @@ namespace Coevery.Taxonomies.Services {
             var rootPath = term.FullPath + "/";
 
             var result = _contentManager.Query<TermPart, TermPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>())
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
                 .List()
                 .Where(x => x.Path.StartsWith(rootPath));
 
@@ -371,41 +259,18 @@ namespace Coevery.Taxonomies.Services {
             return term.Path.Split(new [] {'/'}, StringSplitOptions.RemoveEmptyEntries).Select(id => GetTerm(int.Parse(id)));
         }
 
-        public IEnumerable<string> GetSlugs() {
-            return _contentManager
-                .Query<TaxonomyPart, TaxonomyPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>())
-                .List()
-                .Select(t => t.Slug);
-        }
-
-        public IEnumerable<string> GetTermPaths() {
-            return _contentManager
-                .Query<TermPart, TermPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<AutoroutePartRecord, TitlePartRecord, CommonPartRecord>())
-                .List()
-                .Select(t => t.Slug);
-        }
-
         public void MoveTerm(TaxonomyPart taxonomy, TermPart term, TermPart parentTerm) {
             var children = GetChildren(term);
             term.Container = parentTerm == null ? taxonomy.ContentItem : parentTerm.ContentItem;
-            ProcessPath(term);
 
             var contentItem = _contentManager.Get(term.ContentItem.Id, VersionOptions.DraftRequired);
             _contentManager.Publish(contentItem);
 
             foreach (var childTerm in children) {
-                ProcessPath(childTerm);
 
                 contentItem = _contentManager.Get(childTerm.ContentItem.Id, VersionOptions.DraftRequired);
                 _contentManager.Publish(contentItem);
             }
-        }
-
-        public void ProcessPath(TermPart term) {
-            var parentTerm = term.Container.As<TermPart>();
-            term.Path = parentTerm != null ? parentTerm.FullPath + "/": "/";
         }
 
         public void CreateHierarchy(IEnumerable<TermPart> terms, Action<TermPartNode, TermPartNode> append) {

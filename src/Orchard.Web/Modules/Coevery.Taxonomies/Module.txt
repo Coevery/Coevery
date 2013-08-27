@@ -10,4 +10,4 @@ Features:
         Name: Taxonomies
         Description: Categorize a content item.
         Category: Coevery
-        Dependencies: Orchard.Autoroute, Title, Contents, Orchard.Tokens
+        Dependencies: Title, Contents

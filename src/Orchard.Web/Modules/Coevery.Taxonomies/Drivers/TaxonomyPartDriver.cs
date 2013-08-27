@@ -20,27 +20,7 @@ namespace Coevery.Taxonomies.Drivers {
             return ContentShape("Parts_TaxonomyPart", () => {
                 var taxonomyShape = shapeHelper.Taxonomy(ContentPart: part, ContentItem: part.ContentItem);
                 var terms = _taxonomyService.GetTerms(part.ContentItem.Id);
-                _taxonomyService.CreateHierarchy(terms, (parent, child) => {
-
-                    if (child.Shape == null) {
-                        child.Shape = shapeHelper.TaxonomyItem(Taxonomy: part.ContentItem, ContentPart: child.TermPart, ContentItem: child.TermPart.ContentItem);
-                    }
-
-                    // adding to root
-                    if (parent.TermPart == null) {
-                        taxonomyShape.Items.Add(child.Shape);
-                    }
-                    else {
-                                
-                        if (parent.Shape == null) {
-                            parent.Shape = shapeHelper.TaxonomyItem(Taxonomy: part.ContentItem, ContentPart: parent.TermPart, ContentItem: parent.TermPart.ContentItem);
-                        }
-
-                        parent.Shape.Items.Add(child.Shape);
-                    }
-
-                });
-
+                
                 return shapeHelper.Parts_TaxonomyPart(Taxonomy: taxonomyShape);
             });
         }

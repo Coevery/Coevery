@@ -175,7 +175,6 @@ namespace Coevery.Taxonomies.Controllers {
                 return View((object)model);
             }
 
-            _taxonomyService.ProcessPath(term);
             Services.ContentManager.Create(term, VersionOptions.Published);
             Services.Notifier.Information(T("The {0} term has been created.", term.Name));
 
@@ -214,7 +213,6 @@ namespace Coevery.Taxonomies.Controllers {
             }
 
             Services.ContentManager.Publish(contentItem);
-            _taxonomyService.ProcessPath(term);
             Services.Notifier.Information(T("Term information updated"));
 
             return RedirectToAction("Index", "TermAdmin", new { taxonomyId = term.TaxonomyId });

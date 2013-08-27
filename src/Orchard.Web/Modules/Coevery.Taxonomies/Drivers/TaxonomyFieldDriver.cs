@@ -144,7 +144,6 @@ namespace Coevery.Taxonomies.Drivers {
                 term.Name = entry.Name.Trim();
                 term.Selectable = true;
 
-                _taxonomyService.ProcessPath(term);
                 Services.ContentManager.Create(term, VersionOptions.Published);
                 Services.Notifier.Information(T("The {0} term has been created.", term.Name));
             }
