@@ -48,7 +48,7 @@ namespace Coevery.Taxonomies.Drivers {
                 () => {
                     var settings = field.PartFieldDefinition.Settings.GetModel<TaxonomyFieldSettings>();
                     var terms = _taxonomyService.GetTermsForContentItem(part.ContentItem.Id, field.Name).ToList();
-                    var taxonomy = _taxonomyService.GetTaxonomyByName(settings.Taxonomy);
+                    var taxonomy = _taxonomyService.GetTaxonomy(settings.TaxonomyId);
 
                     return shapeHelper.Fields_TaxonomyField(
                         ContentField: field,
@@ -62,7 +62,7 @@ namespace Coevery.Taxonomies.Drivers {
             return ContentShape("Fields_TaxonomyField_Edit", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<TaxonomyFieldSettings>();
                 var appliedTerms = _taxonomyService.GetTermsForContentItem(part.ContentItem.Id, field.Name).Distinct(new TermPartComparer()).ToDictionary(t => t.Id, t => t);
-                var taxonomy = _taxonomyService.GetTaxonomyByName(settings.Taxonomy);
+                var taxonomy = _taxonomyService.GetTaxonomy(settings.TaxonomyId);
                 var terms = taxonomy != null
                     ? _taxonomyService.GetTerms(taxonomy.Id).Where(t => !string.IsNullOrWhiteSpace(t.Name)).Select(t => t.CreateTermEntry()).ToList()
                     : new List<TermEntry>(0);
@@ -72,6 +72,7 @@ namespace Coevery.Taxonomies.Drivers {
                 var viewModel = new TaxonomyFieldViewModel
                 {
                     Name = field.Name,
+                    DisplayName =  field.DisplayName,
                     Terms = terms,
                     Settings = settings,
                     SingleTermId = terms.Where(t => t.IsChecked).Select(t => t.Id).FirstOrDefault(),
@@ -133,7 +134,7 @@ namespace Coevery.Taxonomies.Drivers {
             if (term == null) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<TaxonomyFieldSettings>();
 
-                if (!settings.AllowCustomTerms || !Services.Authorizer.Authorize(Permissions.CreateTerm)) {
+                if (!Services.Authorizer.Authorize(Permissions.CreateTerm)) {
                     Services.Notifier.Error(T("You're not allowed to create new terms for this taxonomy"));
                     return null;
                 }

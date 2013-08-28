@@ -56,7 +56,7 @@ namespace Coevery.Taxonomies.Drivers {
                     
                     var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
                     var taxonomy = _taxonomyService.GetTaxonomy(part.TaxonomyId);
-                    var totalItemCount = _taxonomyService.GetContentItemsCount(part);
+                    var totalItemCount = 100;
 
                     // asign Taxonomy and Term to the content item shape (Content) in order to provide 
                     // alternates when those content items are displayed when they are listed on a term
@@ -93,29 +93,15 @@ namespace Coevery.Taxonomies.Drivers {
         }
 
         protected override void Exporting(TermPart part, ExportContentContext context) {
-            context.Element(part.PartDefinition.Name).SetAttributeValue("Count", part.Record.Count);
             context.Element(part.PartDefinition.Name).SetAttributeValue("Selectable", part.Record.Selectable);
             context.Element(part.PartDefinition.Name).SetAttributeValue("Weight", part.Record.Weight);
 
             var taxonomy = _contentManager.Get(part.Record.TaxonomyId);
             var identity = _contentManager.GetItemMetadata(taxonomy).Identity.ToString();
             context.Element(part.PartDefinition.Name).SetAttributeValue("TaxonomyId", identity);
-
-            var identityPaths = new List<string>();
-            foreach(var pathPart in part.Record.Path.Split('/')) {
-                if(String.IsNullOrEmpty(pathPart)) {
-                    continue;
-                }
-
-                var parent = _contentManager.Get(Int32.Parse(pathPart));
-                identityPaths.Add(_contentManager.GetItemMetadata(parent).Identity.ToString());
-            }
-
-            context.Element(part.PartDefinition.Name).SetAttributeValue("Path", String.Join(",", identityPaths.ToArray()));
         }
 
         protected override void Importing(TermPart part, ImportContentContext context) {
-            part.Record.Count = Int32.Parse(context.Attribute(part.PartDefinition.Name, "Count"));
             part.Record.Selectable = Boolean.Parse(context.Attribute(part.PartDefinition.Name, "Selectable"));
             part.Record.Weight = Int32.Parse(context.Attribute(part.PartDefinition.Name, "Weight"));
 
@@ -127,12 +113,6 @@ namespace Coevery.Taxonomies.Drivers {
             } 
             
             part.Record.TaxonomyId = contentItem.Id;
-            part.Record.Path = "/";
-
-            foreach(var identityPath in context.Attribute(part.PartDefinition.Name, "Path").Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries)) {
-                var pathContentItem = context.GetItemFromSession(identityPath);
-                part.Record.Path += pathContentItem.Id + "/";
-            }
         }
     }
 }

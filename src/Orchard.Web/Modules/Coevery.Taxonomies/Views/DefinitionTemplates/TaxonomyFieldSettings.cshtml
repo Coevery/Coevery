@@ -1,98 +1,79 @@
-﻿@model Coevery.Taxonomies.Settings.TaxonomyFieldSettings
-@{
-    Script.Include("admin-taxonomy-field-settings.js").AtFoot();
-}
+﻿@using Coevery.Taxonomies.Settings
+@model TaxonomyFieldSettings
 <section class="control-group data-row">
-    @if (Model.Taxonomies != null) {
-        <label class="control-label">@T("Select or create a taxonomy")</label>
-        <div class="controls">
-        
-            <select id="@Html.FieldIdFor(m => m.Taxonomy)" name="@Html.FieldNameFor(m => m.Taxonomy)" class="span12">
-                @Html.SelectOption(-1, false, T("Choose a taxonomy ...").ToString())
-                @foreach (var taxonomy in Model.Taxonomies.OrderBy(t => t.Name)) {
-                    @Html.SelectOption(taxonomy.Name, Model.Taxonomy == taxonomy.Name, taxonomy.Name)
-                }
-            </select>
-        </div>
-    }
-    <label class="control-label">@T("Taxonomy name")</label>
+    <label class="control-label">@T("Options")</label>
     <div class="controls">
-        @Html.TextBoxFor(model=>model.Taxonomy,new { @class="span12" })
+        @{
+            var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(new {@class = "span12", rows = "25", cols = "80"});
+            if (Model.TaxonomyId > 0) { htmlAttributes["disabled"] = "disabled"; }
+        }
+        @Html.TextAreaFor(m => m.Options, htmlAttributes)
+        <p class="help-block">@T("Enter an option per line.")</p>
     </div>
 </section>
-@if (string.IsNullOrWhiteSpace(Model.Taxonomy)) {
-    <section class="control-group data-row">
-        <label class="control-label">@T("Options")</label>
-        <div class="controls">
-            <textarea rows="25" cols="80" onkeydown=" return interceptTabs(event, this); "  class="span12"
-                      name="@Html.NameFor(model => model.Terms)">@Model.Terms</textarea>
-            <span class="help-inline">@T("One term per line, followed by a semi-colon and the slug")</span>
-            <span class="help-inline">@T("Hierarchies are defined using tabs (handled in this editor zone)")</span>
-            <span class="help-inline">@T("e.g,")</span>
-            <span class="help-inline">&nbsp;&nbsp;@T("Red; red")</span>
-            <span class="help-inline">&nbsp;&nbsp;@T("Blue; blue")</span>
-            <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;@T("Light Blue; light-blue")</span>
-        </div>
-    </section>
-}
-else {
-    Html.RenderAction("Index", "TermAdmin", new RouteValueDictionary { { "Area", "Coevery.Taxonomies" }, { "taxonomyId",Model.TaxonomyId } });
-}
 <section class="control-group data-row">
-    <label class="control-label">@T("Restrictions")</label>  
-    <div class="controls">       
-        <label class="checkbox" for="@Html.FieldIdFor(m => m.LeavesOnly)" title='@T("A leaf is the last descendant in a parent/child hierarchy")'>
-            @Html.CheckBoxFor(m => m.LeavesOnly)
-            @T("Restrict selectable elements to leaves (parent / child terms) only")
-        </label>       
+    <label class="control-label">@T("List mode")</label>
+    <div class="controls">
+        <select id="@Html.FieldIdFor(m => m.ListMode)" name="@Html.FieldNameFor(m => m.ListMode)">
+            @Html.SelectOption(ListMode.Dropdown, Model.ListMode == ListMode.Dropdown, T("Dropdown list").ToString())
+            @Html.SelectOption(ListMode.Radiobutton, Model.ListMode == ListMode.Radiobutton, T("Radio button list").ToString())
+            @Html.SelectOption(ListMode.Listbox, Model.ListMode == ListMode.Listbox, T("Listbox").ToString())
+            @Html.SelectOption(ListMode.Checkbox, Model.ListMode == ListMode.Checkbox, T("Checkbox").ToString())
+        </select>
+    </div>
+</section>
+<section class="control-group data-row">
+    <label class="control-label">@T("Restrictions")</label>
+    <div class="controls">
         <label class="checkbox" for="@Html.FieldIdFor(m => m.SingleChoice)">
-            @Html.CheckBoxFor(m => m.SingleChoice) 
+            @Html.CheckBoxFor(m => m.SingleChoice)
             @T("Allow only one term to be selected")
         </label>
     </div>
 </section>
+@Html.HiddenFor(model => model.TaxonomyId)
 
-@using(Script.Foot()){
-<script type="text/javascript">
-    //<![CDATA[
-    function insertAtCursor(myField, myValue) {
-        //IE support
-        if (document.selection) {
-            myField.focus();
-            sel = document.selection.createRange();
-            sel.text = myValue;
-        }
+@using (Script.Foot()) {
+    <script type="text/javascript">
+        //<![CDATA[
+        function insertAtCursor(myField, myValue) {
+            //IE support
+            if (document.selection) {
+                myField.focus();
+                sel = document.selection.createRange();
+                sel.text = myValue;
+            }
 
-            //MOZILLA/NETSCAPE support
-        else if (myField.selectionStart || myField.selectionStart == '0') {
-            var startPos = myField.selectionStart;
-            var endPos = myField.selectionEnd;
-            var restoreTop = myField.scrollTop;
+                //MOZILLA/NETSCAPE support
+            else if (myField.selectionStart || myField.selectionStart == '0') {
+                var startPos = myField.selectionStart;
+                var endPos = myField.selectionEnd;
+                var restoreTop = myField.scrollTop;
 
-            myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+                myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
 
-            myField.selectionStart = startPos + myValue.length;
-            myField.selectionEnd = startPos + myValue.length;
+                myField.selectionStart = startPos + myValue.length;
+                myField.selectionEnd = startPos + myValue.length;
 
-            if (restoreTop > 0) {
-                myField.scrollTop = restoreTop;
+                if (restoreTop > 0) {
+                    myField.scrollTop = restoreTop;
+                }
+            }
+            else {
+                myField.value += myValue;
             }
         }
-        else {
-            myField.value += myValue;
-        }
-    }
 
-    function interceptTabs(evt, control) {
-        var key = evt.keyCode ? evt.keyCode : evt.which ? evt.which : evt.charCode;
-        if (key == 9) {
-            insertAtCursor(control, '\t');
-            return false;
+        function interceptTabs(evt, control) {
+            var key = evt.keyCode ? evt.keyCode : evt.which ? evt.which : evt.charCode;
+            if (key == 9) {
+                insertAtCursor(control, '\t');
+                return false;
+            }
+            else {
+                return key;
+            }
         }
-        else {
-            return key;
-        }
-    }
-    //]]>
-</script>
+        //]]>
+    </script>
 }

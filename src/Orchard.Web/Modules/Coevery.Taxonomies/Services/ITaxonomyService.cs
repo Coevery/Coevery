@@ -23,10 +23,7 @@ namespace Coevery.Taxonomies.Services {
         TermPart NewTerm(TaxonomyPart taxonomy);
         IEnumerable<TermPart> GetTermsForContentItem(int contentItemId, string field = null);
         void UpdateTerms(ContentItem contentItem, IEnumerable<TermPart> terms, string field);
-        IEnumerable<TermPart> GetParents(TermPart term);
-        IEnumerable<TermPart> GetChildren(TermPart term);
         IEnumerable<IContent> GetContentItems(TermPart term, int skip = 0, int count = 0, string fieldName = null);
-        long GetContentItemsCount(TermPart term, string fieldName = null);
         IContentQuery<TermsPart, TermsPartRecord> GetContentItemsQuery(TermPart term, string fieldName = null);
 
     }

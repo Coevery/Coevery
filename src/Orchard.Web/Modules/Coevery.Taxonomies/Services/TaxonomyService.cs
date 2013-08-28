@@ -173,10 +173,6 @@ namespace Coevery.Taxonomies.Services {
         public void DeleteTerm(TermPart termPart) {
             _contentManager.Remove(termPart.ContentItem);
 
-            foreach(var childTerm in GetChildren(termPart)) {
-                _contentManager.Remove(childTerm.ContentItem);
-            }
-
             // delete termContentItems
             var termContentItems = _termContentItemRepository
                 .Fetch(t => t.TermRecord == termPart.Record)
@@ -212,7 +208,6 @@ namespace Coevery.Taxonomies.Services {
         }
 
         public IContentQuery<TermsPart, TermsPartRecord> GetContentItemsQuery(TermPart term, string fieldName = null) {
-            var rootPath = term.FullPath + "/";
 
             var query = _contentManager
                 .Query<TermsPart, TermsPartRecord>()
@@ -221,22 +216,18 @@ namespace Coevery.Taxonomies.Services {
             if (String.IsNullOrWhiteSpace(fieldName)) {
                 query = query.Where(
                     tpr => tpr.Terms.Any(tr =>
-                        tr.TermRecord.Id == term.Id
-                        || tr.TermRecord.Path.StartsWith(rootPath)));
-            } else {
+                        tr.TermRecord.Id == term.Id));
+            }
+            else {
                 query = query.Where(
                     tpr => tpr.Terms.Any(tr =>
                         tr.Field == fieldName
-                         && (tr.TermRecord.Id == term.Id || tr.TermRecord.Path.StartsWith(rootPath))));
+                         && (tr.TermRecord.Id == term.Id)));
             }
 
             return query;
         }
         
-        public long GetContentItemsCount(TermPart term, string fieldName = null) {
-            return GetContentItemsQuery(term, fieldName).Count();
-        }
-
         public IEnumerable<IContent> GetContentItems(TermPart term, int skip = 0, int count = 0, string fieldName = null) {
             return GetContentItemsQuery(term, fieldName)
                 .Join<CommonPartRecord>()
@@ -244,69 +235,8 @@ namespace Coevery.Taxonomies.Services {
                 .Slice(skip, count);
         }
 
-        public IEnumerable<TermPart> GetChildren(TermPart term) {
-            var rootPath = term.FullPath + "/";
-
-            var result = _contentManager.Query<TermPart, TermPartRecord>()
-                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
-                .List()
-                .Where(x => x.Path.StartsWith(rootPath));
-
-            return TermPart.Sort(result);
-        }
-
-        public IEnumerable<TermPart> GetParents(TermPart term) {
-            return term.Path.Split(new [] {'/'}, StringSplitOptions.RemoveEmptyEntries).Select(id => GetTerm(int.Parse(id)));
-        }
-
         public void MoveTerm(TaxonomyPart taxonomy, TermPart term, TermPart parentTerm) {
-            var children = GetChildren(term);
-            term.Container = parentTerm == null ? taxonomy.ContentItem : parentTerm.ContentItem;
-
-            var contentItem = _contentManager.Get(term.ContentItem.Id, VersionOptions.DraftRequired);
-            _contentManager.Publish(contentItem);
-
-            foreach (var childTerm in children) {
-
-                contentItem = _contentManager.Get(childTerm.ContentItem.Id, VersionOptions.DraftRequired);
-                _contentManager.Publish(contentItem);
-            }
-        }
-
-        public void CreateHierarchy(IEnumerable<TermPart> terms, Action<TermPartNode, TermPartNode> append) {
-            var root = new TermPartNode();
-            var stack = new Stack<TermPartNode>(new [] { root } );
-
-            foreach (var term in terms) {
-                var current = CreateNode(term);
-                var previous = stack.Pop();
-
-                while (previous.Level + 1 != current.Level) {
-                    previous = stack.Pop();
-                }
-
-                if (append != null) {
-                    append(previous, current);
-                }
-
-                previous.Items.Add(current);
-                current.Parent = previous;
-
-                stack.Push(previous);
-                stack.Push(current);
-            }
-        }
-
-        private static TermPartNode CreateNode(TermPart part) {
-            return new TermPartNode {
-                TermPart = part,
-                Level = part.Path.Count(x => x == '/')
-            };
-        }
-
-        private class TermPosition {
-            public TermPart Term { get; set; }
-            public int Position { get; set; }
+            
         }
     }
 }

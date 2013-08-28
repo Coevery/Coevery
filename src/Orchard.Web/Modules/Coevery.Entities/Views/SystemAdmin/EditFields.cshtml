@@ -97,7 +97,7 @@
                         
                         @{Html.RenderTemplates(Model.Templates);}
                     </fieldset>
-                    @Html.Hidden(fieldSettingsPrefix + "IsSystemField", Model.Settings[fieldSettingsPrefix + "IsSystemField"])
+                    @Html.Hidden(fieldSettingsPrefix + ".IsSystemField", Model.Settings[fieldSettingsPrefix + ".IsSystemField"])
                 }
             </div>
         </div>

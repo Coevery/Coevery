@@ -54,13 +54,8 @@ namespace Coevery.Taxonomies.Projections {
                     foreach (var taxonomy in _taxonomyService.GetTaxonomies()) {
                         f._Terms.Add(new SelectListItem { Value = String.Empty, Text = taxonomy.Name });
                         foreach (var term in _taxonomyService.GetTerms(taxonomy.Id)) {
-                            var gap = new string('-', term.GetLevels());
-                            
-                            if(gap.Length > 0) {
-                                gap += " ";
-                            }
 
-                            f._Terms.Add(new SelectListItem { Value = term.Id.ToString(), Text = gap + term.Name });
+                            f._Terms.Add(new SelectListItem { Value = term.Id.ToString(), Text = term.Name });
                         }
                     }
 

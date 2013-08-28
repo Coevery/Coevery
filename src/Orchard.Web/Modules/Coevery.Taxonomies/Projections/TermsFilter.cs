@@ -46,7 +46,6 @@ namespace Coevery.Taxonomies.Projections {
                 var terms = ids.Select(_taxonomyService.GetTerm).ToList();
                 var allChildren = new List<TermPart>();
                 foreach(var term in terms) {
-                    allChildren.AddRange(_taxonomyService.GetChildren(term));
                     allChildren.Add(term);
                 }
 

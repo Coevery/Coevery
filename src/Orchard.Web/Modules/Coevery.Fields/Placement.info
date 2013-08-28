@@ -7,10 +7,6 @@
   <Place Fields_Boolean_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Boolean="Content:after;Wrapper=Wrapper_Script"/>
   
-  <!-- OptionSet -->
-  <Place Fields_OptionSet_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
-  <Place Fields_OptionSet="Content:after;Wrapper=Wrapper_Script"/>
-  
   <!-- Email -->
   <Place Fields_Email_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Email="Content:after;Wrapper=Wrapper_Script"/>

@@ -3,17 +3,19 @@ using Coevery.Taxonomies.Models;
 using Coevery.Entities.Settings;
 
 namespace Coevery.Taxonomies.Settings {
+
+    public enum ListMode {
+        Dropdown,
+        Radiobutton,
+        Listbox,
+        Checkbox
+    }
+
     public class TaxonomyFieldSettings: FieldSettings {
-        /// <summary>
-        /// Wether the field allows the user to add new Terms to the taxonomy (similar to tags)
-        /// </summary>
-        public bool AllowCustomTerms { get; set; }
 
         /// <summary>
-        /// The Taxonomy to which this field is related to
+        /// The Taxonomy'Id to which this field is related to
         /// </summary>
-        public string Taxonomy { get; set; }
-        public string Terms { get; set; }
         public int TaxonomyId { get; set; }
 
         /// <summary>
@@ -27,8 +29,14 @@ namespace Coevery.Taxonomies.Settings {
         public bool SingleChoice { get; set; }
 
         /// <summary>
-        /// All existing taxonomies
+        /// Option Items
         /// </summary>
-        public IEnumerable<TaxonomyPart> Taxonomies { get; set; }
+        public string Options { get; set; }
+
+        public ListMode ListMode { get; set; }
+
+        public TaxonomyFieldSettings() {
+            ListMode = ListMode.Dropdown;
+        }
     }
 }

@@ -16,15 +16,15 @@ namespace Coevery.Taxonomies.Handlers {
             IRepository<TaxonomyPartRecord> repository, 
             ITaxonomyService taxonomyService,
             IContentDefinitionManager contentDefinitionManager) {
-            
-            string previousName = null;
+
+            int? previousId = null;
 
             Filters.Add(StorageFilter.For(repository));
             OnPublished<TaxonomyPart>((context, part) => {
                 var previousTermTypeName = part.TermTypeName;
                 taxonomyService.CreateTermContentType(part);
 
-                if (previousName != null && part.Name != previousName) {
+                if (previousId != null && part.Id != previousId) {
 
                     // remove previous term type
                     contentDefinitionManager.DeleteTypeDefinition(previousTermTypeName);
@@ -34,10 +34,10 @@ namespace Coevery.Taxonomies.Handlers {
                         foreach (var field in partDefinition.Fields) {
                             if (field.FieldDefinition.Name == typeof (TaxonomyField).Name) {
 
-                                if (field.Settings.GetModel<TaxonomyFieldSettings>().Taxonomy == previousName) {
+                                if (field.Settings.GetModel<TaxonomyFieldSettings>().TaxonomyId == previousId) {
                                     contentDefinitionManager.AlterPartDefinition(partDefinition.Name, 
-                                        cfg => cfg.WithField(field.Name, 
-                                            builder => builder.WithSetting("TaxonomyFieldSettings.Taxonomy", part.Name)));
+                                        cfg => cfg.WithField(field.Name,
+                                            builder => builder.WithSetting("TaxonomyFieldSettings.TaxonomyId", part.Id.ToString())));
                                 }
                             }
                         }
@@ -50,7 +50,7 @@ namespace Coevery.Taxonomies.Handlers {
             OnUpdating<TitlePart>((context, part) => {
                 // if altering the title of a taxonomy, save the name
                 if (part.As<TaxonomyPart>() != null) {
-                    previousName = part.Title;
+                    previousId = part.Id;
                 }
             });
         }

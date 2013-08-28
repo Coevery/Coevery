@@ -81,7 +81,6 @@
     <Compile Include="Models\TermContentItemPart.cs" />
     <Compile Include="Models\TaxonomyPartRecord.cs" />
     <Compile Include="Models\TermPart.cs" />
-    <Compile Include="Models\TermPartNode.cs" />
     <Compile Include="Models\TermPartRecord.cs" />
     <Compile Include="Models\TaxonomyPart.cs" />
     <Compile Include="Models\TermContentItem.cs" />

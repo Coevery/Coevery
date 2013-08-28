@@ -23,9 +23,6 @@ namespace Coevery.Taxonomies.Handlers {
             _contentManager = contentManager;
 
             Filters.Add(StorageFilter.For(repository));
-            OnPublished<TermsPart>((context, part) => RecalculateCount(taxonomyService, part));
-            OnUnpublished<TermsPart>((context, part) => RecalculateCount(taxonomyService, part));
-            OnRemoved<TermsPart>((context, part) => RecalculateCount(taxonomyService, part));
 
             // Tells how to load the field terms on demand, when a content item it loaded or when it has been created
             OnLoaded<TermsPart>((context, part) => InitializerTermsLoader(part));
@@ -38,10 +35,6 @@ namespace Coevery.Taxonomies.Handlers {
                         var termContentItem = context.ContentManager.Get(term.TermRecord.Id);
                         context.DocumentIndex.Add(term.Field, termContentItem.As<TitlePart>().Title).Analyze();
                         context.DocumentIndex.Add(term.Field + "-id", termContentItem.Id).Store();
-                        // tag the current content item with all parent terms
-                        foreach (var parent in taxonomyService.GetParents(termContentItem.As<TermPart>())) {
-                            context.DocumentIndex.Add(term.Field + "-id", parent.Id).Store();
-                        }
                     }
                 });
         }
@@ -57,13 +50,6 @@ namespace Coevery.Taxonomies.Handlers {
                     part.Terms.Select(
                         x => new TermContentItemPart { Field = x.Field, TermPart = _contentManager.Get<TermPart>(x.TermRecord.Id) }
                         ));
-        }
-
-        private static void RecalculateCount(ITaxonomyService taxonomyService, TermsPart part) {
-            foreach (var term in part.Terms) {
-                var termPart = taxonomyService.GetTerm(term.TermRecord.Id);
-                term.TermRecord.Count = (int)taxonomyService.GetContentItemsCount(termPart);
-            }
         }
 
         protected override void Activating(ActivatingContentContext context) {

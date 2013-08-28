@@ -118,7 +118,6 @@ namespace Coevery.Taxonomies.Controllers {
             var model = new MoveTermViewModel {
                 Terms = (from t in _taxonomyService.GetTerms(taxonomyId)
                         from st in terms
-                        where !(t.FullPath + "/").StartsWith(st.FullPath + "/")
                         select t).Distinct().ToList(),
                 TermIds = terms.Select(x => x.Id),
                 SelectedTermId = -1

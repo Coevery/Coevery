@@ -74,16 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldDependencyController.cs" />
-    <Compile Include="Controllers\OptionItemsController.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
-    <Compile Include="Records\OptionSetRecord.cs" />
-    <Compile Include="Records\SelectedOptionRecord.cs" />
-    <Compile Include="Records\SelectedOptionSetRecord.cs" />
     <Compile Include="Services\DependencyExtension.cs" />
     <Compile Include="Services\IFieldDependencyService.cs" />
     <Compile Include="Services\FieldDependencyService.cs" />
-    <Compile Include="Services\IOptionItemService.cs" />
-    <Compile Include="Services\OptionItemService.cs" />
     <Content Include="Styles\media-gallery-admin.css" />
     <Content Include="Styles\datetime.css" />
     <Content Include="Styles\Images\move.gif" />
@@ -98,7 +92,6 @@
     <Compile Include="Drivers\PhoneFieldDriver.cs" />
     <Compile Include="Drivers\NumberFieldDriver.cs" />
     <Compile Include="Drivers\CurrencyFieldDriver.cs" />
-    <Compile Include="Drivers\OptionSetFieldDriver.cs" />
     <Compile Include="FieldEditWrapper.cs" />
     <Compile Include="Fields\DatetimeField.cs" />
     <Compile Include="Fields\DateField.cs" />
@@ -107,7 +100,6 @@
     <Compile Include="Fields\PhoneField.cs" />
     <Compile Include="Fields\NumberField.cs" />
     <Compile Include="Fields\CurrencyField.cs" />
-    <Compile Include="Fields\OptionSetField.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
@@ -157,7 +149,6 @@
     <Compile Include="Drivers\CoeveryTextFieldDriver.cs" />
     <Compile Include="Fields\BooleanField.cs" />
     <Compile Include="Fields\CoeveryTextField.cs" />
-    <Compile Include="Records\OptionItemRecord.cs" />
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
@@ -165,6 +156,7 @@
     <Compile Include="Settings\DatetimeFieldSettings.cs" />
     <Compile Include="Settings\DateFieldEditorEvents.cs" />
     <Compile Include="Settings\DateFieldSettings.cs" />
+    <Compile Include="Settings\DependentType.cs" />
     <Compile Include="Settings\EmailFieldEditorEvents.cs" />
     <Compile Include="Settings\EmailFieldSettings.cs" />
     <Compile Include="Settings\UrlFieldEditorEvents.cs" />
@@ -175,8 +167,6 @@
     <Compile Include="Settings\NumberFieldSettings.cs" />
     <Compile Include="Settings\CurrencyFieldEditorEvents.cs" />
     <Compile Include="Settings\CurrencyFieldSettings.cs" />
-    <Compile Include="Settings\OptionSetFieldEditorEvents.cs" />
-    <Compile Include="Settings\OptionSetFieldSettings.cs" />
     <Compile Include="Settings\CoeveryTextFieldEditorEvents.cs" />
     <Compile Include="Settings\CoeveryTextFieldSettings.cs" />
     <Compile Include="Tokens\FieldTokens.cs" />
@@ -197,9 +187,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\BooleanFieldDisplaySettings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\DefinitionTemplates\OptionSetFieldSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Fields\Currency.Edit.cshtml" />
@@ -263,12 +250,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\DatetimeFieldSettings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\EditorTemplates\Fields\OptionSet.Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Fields\OptionSet.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
