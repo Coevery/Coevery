@@ -85,6 +85,7 @@
     <Compile Include="Models\OptionItemsPart.cs" />
     <Compile Include="Models\OptionItemContainerPartRecord.cs" />
     <Compile Include="Permissions.cs" />
+    <Compile Include="Projections\OptionSetFieldProperty.cs" />
     <Compile Include="Projections\TermsFilter.cs" />
     <Compile Include="Projections\TermsFilterForms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +141,10 @@
     <ProjectReference Include="..\Orchard.Alias\Orchard.Alias.csproj">
       <Project>{475b6c45-b27c-438b-8966-908b9d6d1077}</Project>
       <Name>Orchard.Alias</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
+      <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
+      <Name>Orchard.Projections</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
