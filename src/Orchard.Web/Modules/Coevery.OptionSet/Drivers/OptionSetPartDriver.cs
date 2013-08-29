@@ -19,14 +19,14 @@ namespace Coevery.OptionSet.Drivers {
         protected override DriverResult Display(OptionSetPart part, string displayType, dynamic shapeHelper) {
             return ContentShape("Parts_OptionSetPart", () => {
                 var taxonomyShape = shapeHelper.Taxonomy(ContentPart: part, ContentItem: part.ContentItem);
-                var terms = _optionSetService.GetTerms(part.ContentItem.Id);
+                var terms = _optionSetService.GetOptionItems(part.ContentItem.Id);
 
                 return shapeHelper.Parts_OptionSetPart(Taxonomy: taxonomyShape);
             });
         }
 
         protected override DriverResult Editor(OptionSetPart part, IUpdateModel updater, dynamic shapeHelper) {
-            var existing = _optionSetService.GetTaxonomyByName(part.Name);
+            var existing = _optionSetService.GetOptionSetByName(part.Name);
 
             if (existing != null && existing.Record != part.Record) {
                 updater.AddModelError("Title", T("A taxonomy with the same name already exists"));

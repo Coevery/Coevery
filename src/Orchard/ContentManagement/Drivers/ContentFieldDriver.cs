@@ -83,6 +83,10 @@ namespace Orchard.ContentManagement.Drivers {
         }
 
         DriverResult Process(ContentItem item, Func<ContentPart, TField, DriverResult> effort, ILogger logger) {
+
+            var list = item.Parts
+    .SelectMany(part => part.Fields.OfType<TField>().Select(field => new { part, field })).ToList();
+
             var results = item.Parts
                 .SelectMany(part => part.Fields.OfType<TField>().Select(field => new { part, field }))
                 .Invoke(pf => effort(pf.part, pf.field), logger);

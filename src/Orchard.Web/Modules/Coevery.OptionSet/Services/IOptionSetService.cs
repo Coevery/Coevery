@@ -5,15 +5,15 @@ using Orchard.ContentManagement;
 
 namespace Coevery.OptionSet.Services {
     public interface IOptionSetService : IDependency {
-        IEnumerable<OptionSetPart> GetTaxonomies();
-        OptionSetPart GetTaxonomy(int id);
-        OptionSetPart GetTaxonomyByName(string name);
+        IEnumerable<OptionSetPart> GetOptionSets();
+        OptionSetPart GetOptionSet(int id);
+        OptionSetPart GetOptionSetByName(string name);
         void DeleteTaxonomy(OptionSetPart taxonomy);
 
-        IEnumerable<OptionItemPart> GetTerms(int optionSetId);
+        IEnumerable<OptionItemPart> GetOptionItems(int optionSetId);
         OptionItemPart GetOptionItem(int id);
         OptionItemPart GetTermByName(int taxonomyId, string name);
-        void DeleteTerm(OptionItemPart termPart);
+        void DeleteOptionItem(OptionItemPart optionItemPart);
 
         string GenerateTermTypeName(string taxonomyName);
         OptionItemPart NewTerm(OptionSetPart taxonomy);

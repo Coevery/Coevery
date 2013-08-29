@@ -17,7 +17,7 @@ using Orchard.Utility.Extensions;
 
 namespace Coevery.OptionSet.Services {
     public class OptionSetService : IOptionSetService {
-        private readonly IRepository<OptionItemContentItem> _termContentItemRepository;
+        private readonly IRepository<OptionItemContentItem> _optionItemContentItemRepository;
         private readonly IContentManager _contentManager;
         private readonly INotifier _notifier;
         private readonly IAuthorizationService _authorizationService;
@@ -25,13 +25,13 @@ namespace Coevery.OptionSet.Services {
         private readonly IOrchardServices _services;
 
         public OptionSetService(
-            IRepository<OptionItemContentItem> termContentItemRepository,
+            IRepository<OptionItemContentItem> optionItemContentItemRepository,
             IContentManager contentManager,
             INotifier notifier,
             IContentDefinitionManager contentDefinitionManager,
             IAuthorizationService authorizationService,
             IOrchardServices services) {
-            _termContentItemRepository = termContentItemRepository;
+            _optionItemContentItemRepository = optionItemContentItemRepository;
             _contentManager = contentManager;
             _notifier = notifier;
             _authorizationService = authorizationService;
@@ -45,15 +45,15 @@ namespace Coevery.OptionSet.Services {
         public ILogger Logger { get; set; }
         public Localizer T { get; set; }
 
-        public IEnumerable<OptionSetPart> GetTaxonomies() {
+        public IEnumerable<OptionSetPart> GetOptionSets() {
             return _contentManager.Query<OptionSetPart, OptionSetPartRecord>().WithQueryHints(new QueryHints().ExpandParts<TitlePart>()).List();
         }
 
-        public OptionSetPart GetTaxonomy(int id) {
+        public OptionSetPart GetOptionSet(int id) {
             return _contentManager.Get(id, VersionOptions.Published, new QueryHints().ExpandParts<OptionSetPart, TitlePart>()).As<OptionSetPart>();
         }
 
-        public OptionSetPart GetTaxonomyByName(string name) {
+        public OptionSetPart GetOptionSetByName(string name) {
             if (String.IsNullOrWhiteSpace(name)) {
                 throw new ArgumentNullException("name");
             }
@@ -72,8 +72,8 @@ namespace Coevery.OptionSet.Services {
             _contentManager.Remove(taxonomy.ContentItem);
 
             // Removing terms
-            foreach (var term in GetTerms(taxonomy.Id)) {
-                DeleteTerm(term);
+            foreach (var term in GetOptionItems(taxonomy.Id)) {
+                DeleteOptionItem(term);
             }
 
             _contentDefinitionManager.DeleteTypeDefinition(taxonomy.TermTypeName);
@@ -96,7 +96,7 @@ namespace Coevery.OptionSet.Services {
             return optionItem;
         }
 
-        public IEnumerable<OptionItemPart> GetTerms(int optionSetId) {
+        public IEnumerable<OptionItemPart> GetOptionItems(int optionSetId) {
             var result = _contentManager.Query<OptionItemPart, OptionItemPartRecord>()
                 .Where(x => x.OptionSetId == optionSetId)
                 .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
@@ -114,8 +114,8 @@ namespace Coevery.OptionSet.Services {
 
         public IEnumerable<OptionItemPart> GetOptionItemsForContentItem(int contentItemId, string field = null) {
             return String.IsNullOrEmpty(field)
-                ? _termContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.ContentItemRecord.Id == contentItemId).Select(t => GetOptionItem(t.OptionItemRecord.Id))
-                : _termContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.Id == contentItemId && x.Field == field).Select(t => GetOptionItem(t.OptionItemRecord.Id));
+                ? _optionItemContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.ContentItemRecord.Id == contentItemId).Select(t => GetOptionItem(t.OptionItemRecord.Id))
+                : _optionItemContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.Id == contentItemId && x.Field == field).Select(t => GetOptionItem(t.OptionItemRecord.Id));
         }
 
         public OptionItemPart GetTermByName(int optionSetId, string name) {
@@ -133,7 +133,7 @@ namespace Coevery.OptionSet.Services {
             if (GetTermByName(termPart.OptionSetId, termPart.Name) == null) {
                 _authorizationService.CheckAccess(Permissions.CreateTerm, _services.WorkContext.CurrentUser, null);
 
-                termPart.As<ICommonPart>().Container = GetTaxonomy(termPart.OptionSetId).ContentItem;
+                termPart.As<ICommonPart>().Container = GetOptionSet(termPart.OptionSetId).ContentItem;
                 _contentManager.Create(termPart);
             }
             else {
@@ -141,16 +141,16 @@ namespace Coevery.OptionSet.Services {
             }
         }
 
-        public void DeleteTerm(OptionItemPart termPart) {
-            _contentManager.Remove(termPart.ContentItem);
+        public void DeleteOptionItem(OptionItemPart optionItemPart) {
+            _contentManager.Remove(optionItemPart.ContentItem);
 
             // delete termContentItems
-            var termContentItems = _termContentItemRepository
-                .Fetch(t => t.OptionItemRecord == termPart.Record)
+            var optionItemContentItems = _optionItemContentItemRepository
+                .Fetch(t => t.OptionItemRecord == optionItemPart.Record)
                 .ToList();
 
-            foreach (var termContentItem in termContentItems) {
-                _termContentItemRepository.Delete(termContentItem);
+            foreach (var item in optionItemContentItems) {
+                _optionItemContentItemRepository.Delete(item);
             }
         }
 

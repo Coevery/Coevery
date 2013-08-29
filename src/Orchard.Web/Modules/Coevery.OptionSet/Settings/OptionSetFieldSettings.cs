@@ -22,11 +22,6 @@ namespace Coevery.OptionSet.Settings {
         public bool LeavesOnly { get; set; }
 
         /// <summary>
-        /// Wether the user can select only one term or not
-        /// </summary>
-        public bool SingleChoice { get; set; }
-
-        /// <summary>
         /// Option Items
         /// </summary>
         public string Options { get; set; }

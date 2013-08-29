@@ -29,8 +29,8 @@ namespace Coevery.OptionSet.Drivers {
             _optionSetService = optionSetService;
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Taxonomy";
-            Description = "Allows users to select any kind of content.";
+            DisplayName = "Option Set";
+            Description = "Allows users to select a value from a list you define.";
         }
 
         public Localizer T { get; set; }
@@ -48,7 +48,7 @@ namespace Coevery.OptionSet.Drivers {
                 () => {
                     var settings = field.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
                     var optionItems = _optionSetService.GetOptionItemsForContentItem(part.ContentItem.Id, field.Name).ToList();
-                    var optionSet = _optionSetService.GetTaxonomy(settings.OptionSetId);
+                    var optionSet = _optionSetService.GetOptionSet(settings.OptionSetId);
 
                     return shapeHelper.Fields_OptionSetField(
                         ContentField: field,
@@ -62,9 +62,9 @@ namespace Coevery.OptionSet.Drivers {
             return ContentShape("Fields_OptionSetField_Edit", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
                 var appliedTerms = _optionSetService.GetOptionItemsForContentItem(part.ContentItem.Id, field.Name).Distinct(new TermPartComparer()).ToDictionary(t => t.Id, t => t);
-                var optionSet = _optionSetService.GetTaxonomy(settings.OptionSetId);
+                var optionSet = _optionSetService.GetOptionSet(settings.OptionSetId);
                 var optionItems = optionSet != null
-                    ? _optionSetService.GetTerms(optionSet.Id).Where(t => !string.IsNullOrWhiteSpace(t.Name)).Select(t => t.CreateTermEntry()).ToList()
+                    ? _optionSetService.GetOptionItems(optionSet.Id).Where(t => !string.IsNullOrWhiteSpace(t.Name)).Select(t => t.CreateTermEntry()).ToList()
                     : new List<OptionItemEntry>(0);
 
                 optionItems.ForEach(t => t.IsChecked = appliedTerms.ContainsKey(t.Id));
@@ -139,7 +139,7 @@ namespace Coevery.OptionSet.Drivers {
                     return null;
                 }
 
-                var taxonomy = _optionSetService.GetTaxonomy(taxonomyId);
+                var taxonomy = _optionSetService.GetOptionSet(taxonomyId);
                 term = _optionSetService.NewTerm(taxonomy);
                 term.Container = taxonomy.ContentItem;
                 term.Name = entry.Name.Trim();

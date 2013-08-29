@@ -25,14 +25,20 @@ namespace Coevery.OptionSet.Settings {
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "OptionSetField") {
                 var model = definition.Settings.GetModel<OptionSetFieldSettings>();
-                var optionItems = _contentManager.Query<OptionItemPart, OptionItemPartRecord>()
-                    .Where(x => x.OptionSetId == model.OptionSetId)
-                    .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
-                    .List();
-                var options = optionItems.Aggregate(string.Empty, (current, next) =>
-                    string.IsNullOrEmpty(current) ? next.Name : current + Environment.NewLine + next.Name);
-                model.Options = options;
-                yield return DefinitionTemplate(model);
+                if (model.OptionSetId == 0) {
+                    yield return DefinitionTemplate(model);
+                }
+                else {
+                    var optionItems = _contentManager.Query<OptionItemPart, OptionItemPartRecord>()
+                        .Where(x => x.OptionSetId == model.OptionSetId)
+                        .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
+                        .List();
+                    var options = optionItems.Aggregate(string.Empty, (current, next) =>
+                        string.IsNullOrEmpty(current) ? next.Name : current + Environment.NewLine + next.Name);
+                    model.Options = options;
+                    var templateName = model.GetType().Name + ".Edit";
+                    yield return DefinitionTemplate(model, templateName, model.GetType().Name);
+                }
             }
         }
 
@@ -64,9 +70,6 @@ namespace Coevery.OptionSet.Settings {
 
                 builder
                     .WithSetting("OptionSetFieldSettings.OptionSetId", model.OptionSetId.ToString())
-                    .WithSetting("OptionSetFieldSettings.LeavesOnly", model.LeavesOnly.ToString())
-                    .WithSetting("OptionSetFieldSettings.Required", model.Required.ToString())
-                    .WithSetting("OptionSetFieldSettings.SingleChoice", model.SingleChoice.ToString())
                     .WithSetting("OptionSetFieldSettings.ListMode", model.ListMode.ToString());
             }
 

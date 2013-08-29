@@ -50,11 +50,11 @@ namespace Coevery.OptionSet.Projections {
                             )
                         );
 
-                    foreach (var taxonomy in _optionSetService.GetTaxonomies()) {
-                        f._Terms.Add(new SelectListItem { Value = String.Empty, Text = taxonomy.Name });
-                        foreach (var term in _optionSetService.GetTerms(taxonomy.Id)) {
+                    foreach (var optionSet in _optionSetService.GetOptionSets()) {
+                        f._Terms.Add(new SelectListItem { Value = String.Empty, Text = optionSet.Name });
+                        foreach (var optionItem in _optionSetService.GetOptionItems(optionSet.Id)) {
 
-                            f._Terms.Add(new SelectListItem { Value = term.Id.ToString(), Text = term.Name });
+                            f._Terms.Add(new SelectListItem { Value = optionItem.Id.ToString(), Text = optionItem.Name });
                         }
                     }
 

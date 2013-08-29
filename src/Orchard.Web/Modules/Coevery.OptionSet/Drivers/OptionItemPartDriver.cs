@@ -54,7 +54,7 @@ namespace Coevery.OptionSet.Drivers {
                     }
                     
                     var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
-                    var optionSet = _optionSetService.GetTaxonomy(part.OptionSetId);
+                    var optionSet = _optionSetService.GetOptionSet(part.OptionSetId);
                     var totalItemCount = 100;
 
                     // asign Taxonomy and Term to the content item shape (Content) in order to provide 

@@ -44,7 +44,7 @@ namespace Coevery.OptionSet.Handlers {
                 }
             });
 
-            OnLoading<OptionSetPart>((context, part) => part.OptionItemsField.Loader(x => optionSetService.GetTerms(part.Id)));
+            OnLoading<OptionSetPart>((context, part) => part.OptionItemsField.Loader(x => optionSetService.GetOptionItems(part.Id)));
 
             OnUpdating<TitlePart>((context, part) => {
                 // if altering the title of a taxonomy, save the name

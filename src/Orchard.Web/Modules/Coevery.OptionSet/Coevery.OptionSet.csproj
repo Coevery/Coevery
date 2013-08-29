@@ -98,12 +98,6 @@
     <Compile Include="ViewModels\OptionSetFieldViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\admin-taxonomy-expando.js" />
-    <Content Include="Scripts\admin-taxonomy-field-settings.js" />
-    <Content Include="Scripts\admin-taxonomy-tags.js" />
-    <Content Include="Scripts\tagit.js" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Module.txt" />
     <Content Include="Views\DefinitionTemplates\OptionSetFieldSettings.cshtml" />
     <Content Include="Views\Fields\OptionSetField.cshtml" />
@@ -162,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\OptionSetFieldSettings.Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

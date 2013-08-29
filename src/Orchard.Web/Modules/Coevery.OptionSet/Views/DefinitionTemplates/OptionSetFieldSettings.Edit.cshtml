@@ -3,7 +3,7 @@
 <section class="control-group data-row">
     <label class="control-label">@T("Options")</label>
     <div class="controls">
-        @Html.TextAreaFor(m => m.Options, new {@class = "span12", rows = "25", cols = "80"})
+        @Html.TextAreaFor(m => m.Options, new {@class = "span12", rows = "25", cols = "80", disabled="disabled"})
         <p class="help-block">@T("Enter an option per line.")</p>
     </div>
 </section>
