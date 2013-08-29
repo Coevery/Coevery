@@ -45,7 +45,6 @@ namespace Coevery.Relationship.Services {
         private readonly IRepository<ContentPartDefinitionRecord> _contentPartRepository;
         private readonly ISessionLocator _sessionLocator;
         private readonly IFieldService _fieldService;
-        private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IVirtualPathProvider _virtualPathProvider;
@@ -63,7 +62,6 @@ namespace Coevery.Relationship.Services {
             IFieldService fieldService,
             IContentDefinitionManager contentDefinitionManager,
             IContentDefinitionService contentDefinitionService,
-            ISchemaUpdateService schemaUpdateService,
             IVirtualPathProvider virtualPathProvider,
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
             IDataMigrationInterpreter interpreter) {
@@ -75,7 +73,6 @@ namespace Coevery.Relationship.Services {
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionService = contentDefinitionService;
             _fieldService = fieldService;
-            _schemaUpdateService = schemaUpdateService;
             _virtualPathProvider = virtualPathProvider;
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             _interpreter = interpreter;
@@ -174,7 +171,7 @@ namespace Coevery.Relationship.Services {
                 || primaryEntity.Id == relatedEntity.Id) {
                 return "Invalid entity";
             }
-            if (GetExistedRelationId(oneToMany.Name) != -1) {
+            if (RelationshipExists(oneToMany.Name)) {
                 return "Name already exist.";
             }
 
@@ -223,14 +220,12 @@ namespace Coevery.Relationship.Services {
             if (manyToMany == null) {
                 return "Invalid model.";
             }
-            var primaryEntity = _contentPartRepository.Table.SingleOrDefault(entity => entity.Name == manyToMany.PrimaryEntity);
-            var relatedEntity = _contentPartRepository.Table.SingleOrDefault(entity => entity.Name == manyToMany.RelatedEntity);
-            if (primaryEntity == null || relatedEntity == null
-                || primaryEntity.Id == 0 || relatedEntity.Id == 0
-                || primaryEntity.Id == relatedEntity.Id) {
+            var primaryEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == manyToMany.PrimaryEntity);
+            var relatedEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == manyToMany.RelatedEntity);
+            if (primaryEntity == null || relatedEntity == null || primaryEntity.Id == relatedEntity.Id) {
                 return "Invalid entity";
             }
-            if (GetExistedRelationId(manyToMany.Name) != -1) {
+            if (RelationshipExists(manyToMany.Name)) {
                 return "Name already exist.";
             }
 
@@ -265,38 +260,7 @@ namespace Coevery.Relationship.Services {
                 }
             }
 
-            var primaryName = manyToMany.Name + manyToMany.PrimaryEntity;
-            var relatedName = manyToMany.Name + manyToMany.RelatedEntity;
-            _schemaBuilder.CreateTable(
-                "Coevery_DynamicTypes_" + primaryName + "PartRecord",
-                table => table.ContentPartRecord()
-                );
-            _schemaBuilder.CreateTable(
-                "Coevery_DynamicTypes_" + relatedName + "PartRecord",
-                table => table.ContentPartRecord()
-                );
-            _schemaBuilder.CreateTable(
-                "Coevery_DynamicTypes_" + manyToMany.Name + "ContentLinkRecord",
-                table => table
-                    .Column<int>("Id", column => column.PrimaryKey().Identity())
-                    .Column<int>("PrimaryPartRecord_Id")
-                    .Column<int>("RelatedPartRecord_Id")
-                );
-
-            _contentDefinitionManager.AlterPartDefinition(
-                primaryName + "Part",
-                builder => builder
-                    .Attachable()
-                    .WithSetting("DisplayName", manyToMany.RelatedListLabel));
-            _contentDefinitionManager.AlterPartDefinition(
-                relatedName + "Part",
-                builder => builder
-                    .Attachable()
-                    .WithSetting("DisplayName", manyToMany.PrimaryListLabel));
-
-            _contentDefinitionManager.AlterTypeDefinition(manyToMany.PrimaryEntity, typeBuilder => typeBuilder.WithPart(primaryName + "Part"));
-            _contentDefinitionManager.AlterTypeDefinition(manyToMany.RelatedEntity, typeBuilder => typeBuilder.WithPart(relatedName + "Part"));
-            _dynamicAssemblyBuilder.Build();
+            GenerateManyToManyParts(manyToMany);
             return null;
         }
 
@@ -436,6 +400,43 @@ namespace Coevery.Relationship.Services {
 
         #region PrivateMethods
 
+        private void GenerateManyToManyParts(ManyToManyRelationshipModel manyToMany) {
+            var primaryName = manyToMany.Name + manyToMany.PrimaryEntity;
+            var relatedName = manyToMany.Name + manyToMany.RelatedEntity;
+
+            _schemaBuilder.CreateTable(
+                "Coevery_DynamicTypes_" + primaryName + "PartRecord",
+                table => table.ContentPartRecord()
+                );
+            _schemaBuilder.CreateTable(
+                "Coevery_DynamicTypes_" + relatedName + "PartRecord",
+                table => table.ContentPartRecord()
+                );
+            _schemaBuilder.CreateTable(
+                "Coevery_DynamicTypes_" + manyToMany.Name + "ContentLinkRecord",
+                table => table
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
+                    .Column<int>("PrimaryPartRecord_Id")
+                    .Column<int>("RelatedPartRecord_Id")
+                );
+
+            _contentDefinitionManager.AlterPartDefinition(
+                primaryName + "Part",
+                builder => builder
+                    .Attachable()
+                    .WithSetting("DisplayName", manyToMany.RelatedListLabel));
+
+            _contentDefinitionManager.AlterPartDefinition(
+                relatedName + "Part",
+                builder => builder
+                    .Attachable()
+                    .WithSetting("DisplayName", manyToMany.PrimaryListLabel));
+
+            _contentDefinitionManager.AlterTypeDefinition(manyToMany.PrimaryEntity, typeBuilder => typeBuilder.WithPart(primaryName + "Part"));
+            _contentDefinitionManager.AlterTypeDefinition(manyToMany.RelatedEntity, typeBuilder => typeBuilder.WithPart(relatedName + "Part"));
+            _dynamicAssemblyBuilder.Build();
+        }
+
         private RelationshipRecord CreateRelation(RelationshipRecord relationship) {
             _relationshipRepository.Create(relationship);
             return relationship;
@@ -454,11 +455,9 @@ namespace Coevery.Relationship.Services {
             return true;
         }
 
-        private int GetExistedRelationId(string name) {
-            var relation = _relationshipRepository.Table.SingleOrDefault(
-                record => record.Name == name);
-
-            return relation != null && relation.Id != 0 ? relation.Id : -1;
+        private bool RelationshipExists(string name) {
+            var relation = _relationshipRepository.Table.FirstOrDefault(record => record.Name == name);
+            return relation != null;
         }
 
         //private bool AlterColumns(int relationshipId, string[] primaryList, string[] relatedList) {
