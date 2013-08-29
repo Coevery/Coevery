@@ -153,30 +153,6 @@
 			});
 		}
 	
-		$.validator.addMethod("phonenumber", function (value) {
-		    if (value) {
-		        return (/^\d{8,12}|(((\(\d{3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7})$/.test(value));
-		    }
-		    return true;
-		}, "Please enter a valid phone.");
-		$.validator.classRuleSettings.phonenumber = { phonenumber: true };
-
-
-
-		$.validator.addMethod("decimalplaces", function (value, em) {
-		    if (value) {
-		        var len = $(em).attr("decimalplaces");
-		        var reg = new RegExp("^(-?\\d+)(\\.\\d{1," + len + "})?$");
-		        return reg.test(value);
-		    }
-		    return true;
-		}, $.validator.format("Decimal places exceed {0}."));
-		$.validator.classRuleSettings.decimalplaces = {
-		    decimalplaces: function (em) {
-		        return $(em).attr("decimalplaces");
-		    }
-		};
-
 	    // Gridview row menu
 		$(document)
             .on('mouseover.ngRow', '.ngGrid .ngRow', function (e) {

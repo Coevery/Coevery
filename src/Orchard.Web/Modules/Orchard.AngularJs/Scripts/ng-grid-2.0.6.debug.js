@@ -1321,9 +1321,9 @@ var ngGrid = function ($scope, options, sortService, domUtilityService, $filter,
         // pagingOptions -
         pagingOptions: {
             // pageSizes: list of available page sizes.
-            pageSizes: [50, 100, 200], //[250, 500, 1000],
+            pageSizes: [250, 500, 1000], 
             //pageSize: currently selected page size. 
-            pageSize: 50,//250
+            pageSize: 250,
             //currentPage: the uhm... current page.
             currentPage: 1
         },
