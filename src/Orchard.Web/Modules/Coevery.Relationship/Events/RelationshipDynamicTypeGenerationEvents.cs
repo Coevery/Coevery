@@ -67,7 +67,7 @@ namespace Coevery.Relationship.Events {
                     string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", primaryName),
                     moduleBuilder,
                     typeof(DynamicPrimaryPartDriver<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType));
-                BuildDriverCtor(primaryDriverType, primarySeriviceType, contentLinkRecordType);
+                BuildDriverCtor(primaryDriverType, primarySeriviceType, contentLinkRecordType, manyToManyRelationshipRecord.Relationship.RelatedEntity.Name);
                 primaryDriverType.CreateType();
 
                 var relatedSeriviceType = typeof(IDynamicRelatedService<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType);
@@ -75,7 +75,7 @@ namespace Coevery.Relationship.Events {
                     string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", relatedName),
                     moduleBuilder,
                     typeof(DynamicRelatedPartDriver<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType));
-                BuildDriverCtor(relatedDriverType, relatedSeriviceType, contentLinkRecordType);
+                BuildDriverCtor(relatedDriverType, relatedSeriviceType, contentLinkRecordType, manyToManyRelationshipRecord.Relationship.PrimaryEntity.Name);
                 relatedDriverType.CreateType();
             }
         }
@@ -111,7 +111,7 @@ namespace Coevery.Relationship.Events {
             generator.Emit(OpCodes.Ret);
         }
 
-        private static void BuildDriverCtor(TypeBuilder typeBuilder, Type seriviceType, Type contentLinkRecordType) {
+        private static void BuildDriverCtor(TypeBuilder typeBuilder, Type seriviceType, Type contentLinkRecordType, string name) {
             var repositoryType = typeof(IRepository<>).MakeGenericType(contentLinkRecordType);
             var ctorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public |
@@ -130,6 +130,9 @@ namespace Coevery.Relationship.Events {
                 new Type[] { seriviceType, typeof(IContentManager), repositoryType },
                 null);
             generator.Emit(OpCodes.Call, baseCtorInfo);
+            generator.Emit(OpCodes.Ldarg_0);
+            generator.Emit(OpCodes.Ldstr, name);
+            generator.Emit(OpCodes.Stfld, typeBuilder.BaseType.GetField("_entityName", BindingFlags.Instance | BindingFlags.NonPublic));
             generator.Emit(OpCodes.Ret);
         }
     }

@@ -10,7 +10,7 @@ using Orchard.Data;
 namespace Coevery.Relationship.Services {
     public interface IDynamicRelatedService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> {
         void UpdateForContentItem(ContentItem item, string[] links);
-        IEnumerable<ContentPartRecord> GetLinks();
+        IEnumerable<ContentPartRecord> GetLinks(string entityName);
     }
 
     public class DynamicRelatedService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord>
@@ -58,8 +58,9 @@ namespace Coevery.Relationship.Services {
             }
         }
 
-        public IEnumerable<ContentPartRecord> GetLinks() {
-            return _primaryRepository.Table.ToList();
+        public IEnumerable<ContentPartRecord> GetLinks(string entityName) {
+            return _contentManager.Query(VersionOptions.Published, new[] { entityName })
+                .List().AsPart<TPrimaryPart>().Select(x => x.Record);
         }
     }
 }

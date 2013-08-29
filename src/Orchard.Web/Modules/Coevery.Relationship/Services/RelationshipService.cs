@@ -37,8 +37,6 @@ namespace Coevery.Relationship.Services {
     public class RelationshipService : IRelationshipService {
         #region Class definition
 
-        private readonly string _tableFormat = "Coevery_Dynamic_ManyToManyRelationship_{0}Record";
-
         private readonly IRepository<RelationshipRecord> _relationshipRepository;
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRepository;
@@ -240,7 +238,7 @@ namespace Coevery.Relationship.Services {
                 Name = manyToMany.Name,
                 PrimaryEntity = primaryEntity,
                 RelatedEntity = relatedEntity,
-                Type = (byte)RelationshipType.ManyToMany
+                Type = (byte) RelationshipType.ManyToMany
             });
 
             _manyToManyRepository.Create(new ManyToManyRelationshipRecord {
@@ -320,7 +318,12 @@ namespace Coevery.Relationship.Services {
                 }
 
                 _manyToManyRepository.Delete(manyToMany);
-                _schemaUpdateService.DropTable(_tableFormat, relationship.Name);
+                _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}ContentLinkRecord", relationship.Name));
+                _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", relationship.Name, relationship.PrimaryEntity.Name));
+                _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", relationship.Name, relationship.RelatedEntity.Name));
+                _contentDefinitionManager.DeletePartDefinition(relationship.Name + relationship.PrimaryEntity + "Part");
+                _contentDefinitionManager.DeletePartDefinition(relationship.Name + relationship.RelatedEntity + "Part");
+                _dynamicAssemblyBuilder.Build();
             }
             else if (relationship.Type == (byte) RelationshipType.OneToMany) {
                 var oneToMany = _oneToManyRepository.Get(record => record.Relationship.Id == relationshipId);

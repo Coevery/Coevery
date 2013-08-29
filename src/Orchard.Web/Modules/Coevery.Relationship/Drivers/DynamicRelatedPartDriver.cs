@@ -23,6 +23,8 @@ namespace Coevery.Relationship.Drivers {
         private readonly IContentManager _contentManager;
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
 
+        protected string _entityName;
+
         private const string TemplateName = "Parts/Relationship.Edit";
 
         protected DynamicRelatedPartDriver(
@@ -39,6 +41,7 @@ namespace Coevery.Relationship.Drivers {
         }
 
         protected override DriverResult Display(TRelatedPart part, string displayType, dynamic shapeHelper) {
+            part.Record = part.Record;
             return ContentShape("Parts_Relationship",
                 () => shapeHelper.Parts_Relationship(
                     TemplateName: TemplateName,
@@ -47,6 +50,7 @@ namespace Coevery.Relationship.Drivers {
         }
 
         protected override DriverResult Editor(TRelatedPart part, dynamic shapeHelper) {
+            part.Record = part.Record;
             return ContentShape("Parts_Relationship_Edit",
                 () => shapeHelper.EditorTemplate(
                     TemplateName: TemplateName,
@@ -73,7 +77,7 @@ namespace Coevery.Relationship.Drivers {
 
         private EditRelationshipViewModel BuildEditorViewModel(TRelatedPart part) {
             return new EditRelationshipViewModel {
-                Links = _relatedService.GetLinks().Select(r => new SelectListItem() {
+                Links = _relatedService.GetLinks(_entityName).Select(r => new SelectListItem() {
                     Value = r.Id.ToString(),
                     Text = _contentManager.GetItemMetadata(_contentManager.Get(r.Id)).DisplayText,
                 }).ToList(),
