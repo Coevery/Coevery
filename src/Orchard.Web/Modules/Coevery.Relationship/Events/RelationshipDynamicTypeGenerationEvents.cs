@@ -8,6 +8,7 @@ using Coevery.Relationship.Models;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
 
@@ -118,16 +119,17 @@ namespace Coevery.Relationship.Events {
                 MethodAttributes.SpecialName |
                 MethodAttributes.RTSpecialName,
                 CallingConventions.Standard,
-                new Type[] { seriviceType, typeof(IContentManager), repositoryType });
+                new Type[] { seriviceType, typeof(IContentManager), repositoryType, typeof(IContentDefinitionManager) });
 
             var generator = ctorBuilder.GetILGenerator();
             generator.Emit(OpCodes.Ldarg_0);
             generator.Emit(OpCodes.Ldarg_1);
             generator.Emit(OpCodes.Ldarg_2);
             generator.Emit(OpCodes.Ldarg_3);
+            generator.Emit(OpCodes.Ldarg_S, (byte) 4);
             var baseCtorInfo = typeBuilder.BaseType.GetConstructor(
                 BindingFlags.NonPublic | BindingFlags.Instance, null,
-                new Type[] { seriviceType, typeof(IContentManager), repositoryType },
+                new Type[] { seriviceType, typeof(IContentManager), repositoryType, typeof(IContentDefinitionManager) },
                 null);
             generator.Emit(OpCodes.Call, baseCtorInfo);
             generator.Emit(OpCodes.Ldarg_0);

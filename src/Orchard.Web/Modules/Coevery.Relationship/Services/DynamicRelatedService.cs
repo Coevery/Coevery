@@ -20,15 +20,12 @@ namespace Coevery.Relationship.Services {
         where TPrimaryPartRecord : ContentPartRecord
         where TRelatedPartRecord : ContentPartRecord
         where TContentLinkRecord : ContentLinkRecord<TPrimaryPartRecord, TRelatedPartRecord>, new() {
-        private readonly IRepository<TPrimaryPartRecord> _primaryRepository;
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
         private readonly IContentManager _contentManager;
 
         public DynamicRelatedService(
-            IRepository<TPrimaryPartRecord> primaryRepository,
             IRepository<TContentLinkRecord> contentLinkRepository,
             IContentManager contentManager) {
-            _primaryRepository = primaryRepository;
             _contentLinkRepository = contentLinkRepository;
             _contentManager = contentManager;
         }

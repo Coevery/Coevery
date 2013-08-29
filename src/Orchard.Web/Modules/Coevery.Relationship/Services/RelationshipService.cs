@@ -271,12 +271,10 @@ namespace Coevery.Relationship.Services {
                 "Coevery_DynamicTypes_" + primaryName + "PartRecord",
                 table => table.ContentPartRecord()
                 );
-
             _schemaBuilder.CreateTable(
                 "Coevery_DynamicTypes_" + relatedName + "PartRecord",
                 table => table.ContentPartRecord()
                 );
-
             _schemaBuilder.CreateTable(
                 "Coevery_DynamicTypes_" + manyToMany.Name + "ContentLinkRecord",
                 table => table
@@ -285,8 +283,16 @@ namespace Coevery.Relationship.Services {
                     .Column<int>("RelatedPartRecord_Id")
                 );
 
-            _contentDefinitionManager.AlterPartDefinition(primaryName + "Part", builder => builder.Attachable());
-            _contentDefinitionManager.AlterPartDefinition(relatedName + "Part", builder => builder.Attachable());
+            _contentDefinitionManager.AlterPartDefinition(
+                primaryName + "Part",
+                builder => builder
+                    .Attachable()
+                    .WithSetting("DisplayName", manyToMany.RelatedListLabel));
+            _contentDefinitionManager.AlterPartDefinition(
+                relatedName + "Part",
+                builder => builder
+                    .Attachable()
+                    .WithSetting("DisplayName", manyToMany.PrimaryListLabel));
 
             _contentDefinitionManager.AlterTypeDefinition(manyToMany.PrimaryEntity, typeBuilder => typeBuilder.WithPart(primaryName + "Part"));
             _contentDefinitionManager.AlterTypeDefinition(manyToMany.RelatedEntity, typeBuilder => typeBuilder.WithPart(relatedName + "Part"));
@@ -318,11 +324,13 @@ namespace Coevery.Relationship.Services {
                 }
 
                 _manyToManyRepository.Delete(manyToMany);
+                string primaryName = relationship.PrimaryEntity.Name;
+                string relatedName = relationship.RelatedEntity.Name;
                 _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}ContentLinkRecord", relationship.Name));
-                _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", relationship.Name, relationship.PrimaryEntity.Name));
-                _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", relationship.Name, relationship.RelatedEntity.Name));
-                _contentDefinitionManager.DeletePartDefinition(relationship.Name + relationship.PrimaryEntity + "Part");
-                _contentDefinitionManager.DeletePartDefinition(relationship.Name + relationship.RelatedEntity + "Part");
+                _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", relationship.Name, primaryName));
+                _schemaBuilder.DropTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", relationship.Name, relatedName));
+                _contentDefinitionManager.DeletePartDefinition(relationship.Name + primaryName + "Part");
+                _contentDefinitionManager.DeletePartDefinition(relationship.Name + relatedName + "Part");
                 _dynamicAssemblyBuilder.Build();
             }
             else if (relationship.Type == (byte) RelationshipType.OneToMany) {
@@ -369,6 +377,17 @@ namespace Coevery.Relationship.Services {
             manyToManyRecord.PrimaryListLabel = manyToMany.PrimaryListLabel;
             manyToManyRecord.ShowRelatedList = manyToMany.ShowRelatedList;
             manyToManyRecord.RelatedListLabel = manyToMany.RelatedListLabel;
+
+            _contentDefinitionManager.AlterPartDefinition(
+                manyToManyRecord.Relationship.Name + manyToManyRecord.Relationship.PrimaryEntity.Name + "Part",
+                builder => builder
+                    .Attachable()
+                    .WithSetting("DisplayName", manyToMany.RelatedListLabel));
+            _contentDefinitionManager.AlterPartDefinition(
+                manyToManyRecord.Relationship.Name + manyToManyRecord.Relationship.RelatedEntity.Name + "Part",
+                builder => builder
+                    .Attachable()
+                    .WithSetting("DisplayName", manyToMany.PrimaryListLabel));
 
             DeleteColumns(relationshipId);
             _manyToManyRepository.Update(manyToManyRecord);

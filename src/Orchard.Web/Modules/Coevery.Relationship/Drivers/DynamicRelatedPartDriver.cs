@@ -7,6 +7,7 @@ using Coevery.Relationship.ViewModels;
 using JetBrains.Annotations;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
+using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
 
@@ -22,6 +23,7 @@ namespace Coevery.Relationship.Drivers {
         private readonly IDynamicRelatedService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> _relatedService;
         private readonly IContentManager _contentManager;
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
 
         protected string _entityName;
 
@@ -30,10 +32,12 @@ namespace Coevery.Relationship.Drivers {
         protected DynamicRelatedPartDriver(
             IDynamicRelatedService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> relatedService,
             IContentManager contentManager,
-            IRepository<TContentLinkRecord> contentLinkRepository) {
+            IRepository<TContentLinkRecord> contentLinkRepository,
+            IContentDefinitionManager contentDefinitionManager) {
             _relatedService = relatedService;
             _contentManager = contentManager;
             _contentLinkRepository = contentLinkRepository;
+            _contentDefinitionManager = contentDefinitionManager;
         }
 
         private static string GetPrefix(ContentPart part) {
@@ -72,7 +76,8 @@ namespace Coevery.Relationship.Drivers {
                     Value = r.Id.ToString(),
                     Text = _contentManager.GetItemMetadata(_contentManager.Get(r.Id)).DisplayText,
                 }).ToList(),
-                SelectedIds = GetLinks(part).Select(x => x.Id.ToString()).ToArray()
+                SelectedIds = GetLinks(part).Select(x => x.Id.ToString()).ToArray(),
+                DisplayName = _contentDefinitionManager.GetPartDefinition(typeof (TRelatedPart).Name).Settings["DisplayName"]
             };
         }
     }
