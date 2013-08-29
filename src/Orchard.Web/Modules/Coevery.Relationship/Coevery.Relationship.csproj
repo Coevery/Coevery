@@ -172,9 +172,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\Relationship.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts\Relationship.Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>

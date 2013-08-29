@@ -20,7 +20,10 @@ angular.module('coevery.layout', [])
             template: '<div fd-row class="data-row clearfix" ng-transclude></div>',
             replace: true,
             restrict: 'E',
-            transclude: true
+            transclude: true,
+            link: function (scope, element, attrs) {
+                element.find('[fd-field]:not(:empty)').length || element.remove();
+            }
         };
     })
     .directive('fdColumn', function () {

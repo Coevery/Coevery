@@ -40,15 +40,6 @@ namespace Coevery.Relationship.Drivers {
             return part.PartDefinition.Name;
         }
 
-        protected override DriverResult Display(TPrimaryPart part, string displayType, dynamic shapeHelper) {
-            part.Record = part.Record;
-            return ContentShape("Parts_Relationship",
-                () => shapeHelper.Parts_Relationship(
-                    TemplateName: TemplateName,
-                    ContentPart: part,
-                    Titles: GetLinks(part).Select(x => _contentManager.GetItemMetadata(_contentManager.Get(x.Id)).DisplayText)));
-        }
-
         protected override DriverResult Editor(TPrimaryPart part, dynamic shapeHelper) {
             part.Record = part.Record;
             return ContentShape("Parts_Relationship_Edit",

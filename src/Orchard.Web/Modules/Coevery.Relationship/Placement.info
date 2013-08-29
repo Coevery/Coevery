@@ -4,5 +4,4 @@
   <Place Fields_Reference="Content:after;Wrapper=Wrapper_Script"/>
 
   <Place Parts_Relationship_Edit="Content:11;Wrapper=Wrapper_Script"/>
-  <Place Parts_Relationship="Content:after;Wrapper=Wrapper_Script"/>
 </Placement>

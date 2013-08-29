@@ -37,7 +37,9 @@ namespace Coevery.Relationship.Services {
             var record = item.As<TPrimaryPart>().Record;
             var oldLinks = _contentLinkRepository.Fetch(
                 r => r.PrimaryPartRecord == record);
-            var lookupNew = links.ToDictionary(r => r, r => false);
+            var lookupNew = links != null
+                ? links.ToDictionary(r => r, r => false)
+                : new Dictionary<string, bool>();
             // Delete the rewards that are no longer there and mark the ones that should stay
             foreach (var contentRewardProgramsRecord in oldLinks) {
                 var newReward = lookupNew.FirstOrDefault(x => x.Key == contentRewardProgramsRecord.RelatedPartRecord.Id.ToString());
@@ -58,8 +60,8 @@ namespace Coevery.Relationship.Services {
         }
 
         public IEnumerable<ContentPartRecord> GetLinks(string entityName) {
-            return _contentManager.Query(VersionOptions.Published, new[] { entityName })
-               .List().AsPart<TRelatedPart>().Select(x => x.Record);
+            return _contentManager.Query(VersionOptions.Published, new[] {entityName})
+                .List().AsPart<TRelatedPart>().Select(x => x.Record);
         }
     }
 }
