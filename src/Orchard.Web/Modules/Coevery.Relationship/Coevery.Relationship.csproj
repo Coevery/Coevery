@@ -40,6 +40,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\autofac\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,16 +75,15 @@
   <ItemGroup>
     <Compile Include="Controllers\RelationshipController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
+    <Compile Include="Data\RelationshipModule.cs" />
     <Compile Include="Drivers\DynamicPrimaryPartDriver.cs" />
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\DynamicRelatedPartDriver.cs" />
+    <Compile Include="Events\RelationshipDynamicTypeGenerationEvents.cs" />
     <Compile Include="Fields\ReferenceField.cs" />
     <Compile Include="Handlers\ReferenceHandler.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ContentLinkRecord.cs" />
-    <Compile Include="Models\DynamicRelatedPart.cs" />
-    <Compile Include="Models\DynamicPrimaryPart.cs" />
-    <Compile Include="Models\DynamicPartRecord.cs" />
     <Compile Include="Models\ManyToManyRelationshipModel.cs" />
     <Compile Include="Models\OneToManyRelationshipModel.cs" />
     <Compile Include="Models\ReferenceFieldViewModel.cs" />
@@ -169,10 +172,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts\Primary.cshtml" />
+    <Content Include="Views\Parts\Relationship.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\Primary.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Relationship.Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -201,6 +204,9 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Orchard.Web\Modules\Coevery.DynamicTypes\bin\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,14 +1,11 @@
 ﻿using Orchard.ContentManagement.Records;
 
 namespace Coevery.Relationship.Models {
-    public interface IContentLinkRecord {
-        int Id { get; set; }
-        ContentPartRecord PrimaryPartRecord { get; set; }
-        ContentPartRecord RelatedPartRecord { get; set; }
+    public abstract class ContentLinkRecord<TPrimaryPartRecord, TRelatedPartRecord>
+        where TPrimaryPartRecord : ContentPartRecord
+        where TRelatedPartRecord : ContentPartRecord {
+        public virtual int Id { get; set; }
+        public virtual TPrimaryPartRecord PrimaryPartRecord { get; set; }
+        public virtual TRelatedPartRecord RelatedPartRecord { get; set; }
     }
-    //public class ContentLinkRecord {
-    //    public virtual int Id { get; set; }
-    //    public virtual ContentPartRecord PrimaryPartRecord { get; set; }
-    //    public virtual ContentPartRecord RelatedPartRecord { get; set; }
-    //}
 }

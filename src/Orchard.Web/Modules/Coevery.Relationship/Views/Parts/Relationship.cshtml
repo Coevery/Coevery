@@ -1,4 +1,4 @@
-﻿<h4>@T("Relationship"):</h4>
+﻿<h4>@Model.ContentPart.GetType().Name</h4>
 <ul>
     @foreach (var title in Model.Titles) {
         <li>@string.Format("{0}", title)</li>

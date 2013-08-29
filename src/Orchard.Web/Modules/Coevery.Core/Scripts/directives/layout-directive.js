@@ -32,7 +32,8 @@ angular.module('coevery.layout', [])
             link: function (scope, element, attrs) {
                 var row = element.parent(),
                     width;
-                if (row.hasClass('merged-row')) {
+                if (row.hasClass('merged-row')
+                    || row.parents('[fd-section]').attr('section-columns') == 1) {
                     width = 12;
                 } else {
                     var widths = $.map(row.parents('[fd-section]:first').attr('section-columns-width').split(':'), function (n) {

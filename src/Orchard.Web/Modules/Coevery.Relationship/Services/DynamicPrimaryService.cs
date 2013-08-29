@@ -8,23 +8,23 @@ using Orchard.ContentManagement.Records;
 using Orchard.Data;
 
 namespace Coevery.Relationship.Services {
-    public interface IDynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> : IDependency {
-        void UpdateForContentItem(ContentItem item, IEnumerable<RelationshipEntry> links);
+    public interface IDynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> {
+        void UpdateForContentItem(ContentItem item, string[] links);
         IEnumerable<ContentPartRecord> GetLinks();
     }
 
-    public abstract class DynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord>
+    public class DynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord>
         : IDynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord>
         where TPrimaryPart : ContentPart<TPrimaryPartRecord>
         where TRelatedPart : ContentPart<TRelatedPartRecord>
         where TPrimaryPartRecord : ContentPartRecord
         where TRelatedPartRecord : ContentPartRecord
-        where TContentLinkRecord : IContentLinkRecord, new() {
+        where TContentLinkRecord : ContentLinkRecord<TPrimaryPartRecord, TRelatedPartRecord>, new() {
         private readonly IRepository<TRelatedPartRecord> _relatedRepository;
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
         private readonly IContentManager _contentManager;
 
-        protected DynamicPrimaryService(
+        public DynamicPrimaryService(
             IRepository<TRelatedPartRecord> relatedRepository,
             IRepository<TContentLinkRecord> contentLinkRepository,
             IContentManager contentManager) {
@@ -33,18 +33,15 @@ namespace Coevery.Relationship.Services {
             _contentManager = contentManager;
         }
 
-        public void UpdateForContentItem(ContentItem item, IEnumerable<RelationshipEntry> links) {
+        public void UpdateForContentItem(ContentItem item, string[] links) {
             var record = item.As<TPrimaryPart>().Record;
             var oldLinks = _contentLinkRepository.Fetch(
                 r => r.PrimaryPartRecord == record);
-            var lookupNew = links
-                .Where(e => e.IsChecked)
-                .Select(e => e.Id)
-                .ToDictionary(r => r, r => false);
+            var lookupNew = links.ToDictionary(r => r, r => false);
             // Delete the rewards that are no longer there and mark the ones that should stay
             foreach (var contentRewardProgramsRecord in oldLinks) {
-                var newReward = lookupNew.FirstOrDefault(x => x.Key == contentRewardProgramsRecord.RelatedPartRecord.Id);
-                if (newReward.Key != 0) {
+                var newReward = lookupNew.FirstOrDefault(x => x.Key == contentRewardProgramsRecord.RelatedPartRecord.Id.ToString());
+                if (newReward.Key != null) {
                     lookupNew[newReward.Key] = true;
                 }
                 else {
@@ -55,7 +52,7 @@ namespace Coevery.Relationship.Services {
             foreach (var reward in lookupNew.Where(kvp => !kvp.Value).Select(kvp => kvp.Key)) {
                 _contentLinkRepository.Create(new TContentLinkRecord {
                     PrimaryPartRecord = record,
-                    RelatedPartRecord = _contentManager.Get(reward).As<TRelatedPart>().Record
+                    RelatedPartRecord = _contentManager.Get(int.Parse(reward)).As<TRelatedPart>().Record
                 });
             }
         }

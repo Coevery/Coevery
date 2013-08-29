@@ -1,12 +1,19 @@
 ﻿@{
-    string templateName = @Model.ContentField.Name + ".html";
-    string settingName = @Model.ContentField.Name + ".setting"; 
+    string templateName;
+    if (Model.TemplateName == "Parts/Relationship.Edit") {
+        templateName = Model.ContentPart.GetType().Name + ".html";
+    }
+    else {
+        templateName = Model.ContentField.Name + ".html";
+    }
+
+    //string settingName = Model.ContentField.Name + ".setting"; 
 }
 <script type="text/ng-template" id="@templateName">
     @Model.Metadata.ChildContent
 </script>
 
-<script type="text/ng-template" id="@settingName">
+@*<script type="text/ng-template" id="@settingName">
     <form class="form-horizontal">
         <div class="control-group">
             <label class="control-label">@Model.ContentField.DisplayName</label>
@@ -20,4 +27,4 @@
                     </div>
                 </div>
             </form>
-</script>
+</script>*@

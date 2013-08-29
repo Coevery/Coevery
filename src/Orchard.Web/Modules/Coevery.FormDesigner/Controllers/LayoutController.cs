@@ -76,8 +76,14 @@ namespace Coevery.FormDesigner.Controllers {
                     && !fields.Select(x => x.FieldName).Contains(f.Name))) {
                     return string.Empty;
                 }
-                var validFields = fields.Where(x => partFields.Select(d => d.Name).Contains(x.FieldName)).ToList();
-                validFields.ForEach(c => c.IsValid = true);
+                foreach (var field in fields) {
+                    if (partFields.Any(x => x.Name == field.FieldName)) {
+                        field.IsValid = true;
+                    }
+                    else if (contentTypeDefinition.Parts.Any(x => x.PartDefinition.Name == field.FieldName)) {
+                        field.IsValid = true;
+                    }
+                }
             }
 
             ViewDataDictionary viewData = new ViewDataDictionary();

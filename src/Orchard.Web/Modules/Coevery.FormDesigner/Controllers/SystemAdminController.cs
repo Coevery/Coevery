@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Web.Http;
 using System.Web.Mvc;
 using Coevery.Core.Admin;
@@ -41,10 +42,23 @@ namespace Coevery.FormDesigner.Controllers {
             layout = string.IsNullOrEmpty(layout)
                          ? "<fd-section section-columns=\"1\" section-columns-width=\"12\" section-title=\"Sample Title\"><fd-row><fd-column></fd-column></fd-row></fd-section>"
                          : layout;
-            var viewModel = Services.New.ViewModel().Content(model);
+            var viewModel = Services.New.ViewModel();
             viewModel.Layout = layout;
             viewModel.Fields = _contentDefinitionManager.GetPartDefinition(id).Fields;
             viewModel.DisplayName = contentItem.TypeDefinition.DisplayName;
+            var templates = new List<dynamic>();
+            var parts = new List<string>();
+            foreach (var item in model.Content.Items) {
+                if (item.TemplateName != null && item.TemplateName.StartsWith("Fields/")) {
+                    templates.Add(item);
+                }
+                else if (item.TemplateName == "Parts/Relationship.Edit") {
+                    templates.Add(item);
+                    parts.Add(item.ContentPart.GetType().Name);
+                }
+            }
+            viewModel.Templates = templates;
+            viewModel.Parts = parts;
 
             return View((object)viewModel);
         }

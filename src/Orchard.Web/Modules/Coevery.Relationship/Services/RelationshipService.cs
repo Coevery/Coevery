@@ -36,11 +36,8 @@ using Orchard.FileSystems.VirtualPath;
 namespace Coevery.Relationship.Services {
     public class RelationshipService : IRelationshipService {
         #region Class definition
+
         private readonly string _tableFormat = "Coevery_Dynamic_ManyToManyRelationship_{0}Record";
-        private string _primaryName;
-        private string _relatedName;
-        private string _relationshipName;
-        private const string AssemblyName = "Coevery.DynamicTypes";
 
         private readonly IRepository<RelationshipRecord> _relationshipRepository;
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
@@ -86,33 +83,35 @@ namespace Coevery.Relationship.Services {
             _interpreter = interpreter;
             _sessionLocator = sessionLocator;
             _schemaBuilder = new SchemaBuilder(_interpreter, "", s => s.Replace(".", "_"));
-            _dynamicAssemblyBuilder.OnBuilded += _dynamicAssemblyBuilder_OnBuilded;
         }
 
         #endregion
 
         #region GetMethods
+
         public SelectListItem[] GetFieldNames(string entityName) {
             var entity = _contentDefinitionManager.GetPartDefinition(entityName);
-            return entity == null ? null
-                       : (from field in entity.Fields
-                          select new SelectListItem {
-                              Value = field.Name,
-                              Text = field.DisplayName,
-                              Selected = false
-                          }).ToArray();
+            return entity == null
+                ? null
+                : (from field in entity.Fields
+                    select new SelectListItem {
+                        Value = field.Name,
+                        Text = field.DisplayName,
+                        Selected = false
+                    }).ToArray();
         }
 
         public SelectListItem[] GetEntityNames(string excludeEntity) {
             var entities = _contentDefinitionManager.ListUserDefinedTypeDefinitions();
-            return entities == null ? null :
-                       (from entity in entities
-                        where entity.Name != excludeEntity
-                        select new SelectListItem {
-                            Value = entity.Name,
-                            Text = entity.DisplayName,
-                            Selected = false
-                        }).ToArray();
+            return entities == null
+                ? null
+                : (from entity in entities
+                    where entity.Name != excludeEntity
+                    select new SelectListItem {
+                        Value = entity.Name,
+                        Text = entity.DisplayName,
+                        Selected = false
+                    }).ToArray();
         }
 
         public OneToManyRelationshipRecord GetOneToMany(int id) {
@@ -129,9 +128,10 @@ namespace Coevery.Relationship.Services {
                 return null;
             }
             return (from record in _relationshipRepository.Table
-                    where record.PrimaryEntity.Id == entity.Id || record.RelatedEntity.Id == entity.Id
-                    select record).ToArray();
+                where record.PrimaryEntity.Id == entity.Id || record.RelatedEntity.Id == entity.Id
+                select record).ToArray();
         }
+
         #endregion
 
         #region CreateMethods
@@ -148,11 +148,11 @@ namespace Coevery.Relationship.Services {
                 Name = relationName,
                 PrimaryEntity = primaryEntity,
                 RelatedEntity = relatedEntity,
-                Type = (byte)RelationshipType.OneToMany
+                Type = (byte) RelationshipType.OneToMany
             });
 
             var oneToMany = new OneToManyRelationshipRecord {
-                DeleteOption = (byte)OneToManyDeleteOption.CascadingDelete,
+                DeleteOption = (byte) OneToManyDeleteOption.CascadingDelete,
                 LookupField = fieldRecord,
                 RelatedListLabel = relatedEntityName,
                 Relationship = relationship,
@@ -184,7 +184,7 @@ namespace Coevery.Relationship.Services {
                 Name = oneToMany.Name,
                 PrimaryEntity = primaryEntity,
                 RelatedEntity = relatedEntity,
-                Type = (byte)RelationshipType.OneToMany
+                Type = (byte) RelationshipType.OneToMany
             });
 
             var updateModel = new ReferenceUpdateModel(new ReferenceFieldSettings {
@@ -204,7 +204,7 @@ namespace Coevery.Relationship.Services {
             var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.SingleOrDefault(field => field.Name == oneToMany.FieldName);
 
             _oneToManyRepository.Create(new OneToManyRelationshipRecord {
-                DeleteOption = (byte)oneToMany.DeleteOption,
+                DeleteOption = (byte) oneToMany.DeleteOption,
                 LookupField = fieldRecord,
                 RelatedListLabel = oneToMany.RelatedListLabel,
                 Relationship = relationship,
@@ -251,8 +251,6 @@ namespace Coevery.Relationship.Services {
                 ShowRelatedList = manyToMany.ShowRelatedList
             });
 
-            _schemaUpdateService.CreateTable(relationship.Name, _tableFormat);
-
             if (manyToMany.PrimaryColumnList != null) {
                 foreach (var colummn in manyToMany.PrimaryColumnList) {
                     if (!CreateColumn(colummn, primaryEntity, relationship, false)) {
@@ -269,128 +267,39 @@ namespace Coevery.Relationship.Services {
                 }
             }
 
-            //_primaryName = manyToMany.Name + manyToMany.PrimaryEntity;
-            //_relatedName = manyToMany.Name + manyToMany.RelatedEntity;
-            //_relationshipName = manyToMany.Name;
-            //_schemaBuilder.CreateTable(_primaryName + "PartRecord",
-            //    table => table
-            //        .ContentPartRecord()
-            //    );
+            var primaryName = manyToMany.Name + manyToMany.PrimaryEntity;
+            var relatedName = manyToMany.Name + manyToMany.RelatedEntity;
+            _schemaBuilder.CreateTable(
+                "Coevery_DynamicTypes_" + primaryName + "PartRecord",
+                table => table.ContentPartRecord()
+                );
 
-            //_schemaBuilder.CreateTable(_relatedName + "PartRecord",
-            //    table => table
-            //        .ContentPartRecord()
-            //    );
+            _schemaBuilder.CreateTable(
+                "Coevery_DynamicTypes_" + relatedName + "PartRecord",
+                table => table.ContentPartRecord()
+                );
 
-            //_schemaBuilder.CreateTable(manyToMany.Name + "ContentLinkRecord",
-            //    table => table
-            //        .Column<int>("Id", column => column.PrimaryKey().Identity())
-            //        .Column<int>("PrimaryPartRecord_Id")
-            //        .Column<int>("RelatedPartRecord_Id")
-            //    );
+            _schemaBuilder.CreateTable(
+                "Coevery_DynamicTypes_" + manyToMany.Name + "ContentLinkRecord",
+                table => table
+                    .Column<int>("Id", column => column.PrimaryKey().Identity())
+                    .Column<int>("PrimaryPartRecord_Id")
+                    .Column<int>("RelatedPartRecord_Id")
+                );
 
-            //_contentDefinitionManager.AlterPartDefinition(_primaryName + "Part", builder => builder.Attachable());
-            //_contentDefinitionManager.AlterPartDefinition(_relatedName + "Part", builder => builder.Attachable());
+            _contentDefinitionManager.AlterPartDefinition(primaryName + "Part", builder => builder.Attachable());
+            _contentDefinitionManager.AlterPartDefinition(relatedName + "Part", builder => builder.Attachable());
 
-            //_contentDefinitionManager.AlterTypeDefinition(manyToMany.PrimaryEntity, typeBuilder => typeBuilder.WithPart(_primaryName + "Part"));
-            //_contentDefinitionManager.AlterTypeDefinition(manyToMany.RelatedEntity, typeBuilder => typeBuilder.WithPart(_relatedName + "Part"));
-            //_dynamicAssemblyBuilder.Build();
+            _contentDefinitionManager.AlterTypeDefinition(manyToMany.PrimaryEntity, typeBuilder => typeBuilder.WithPart(primaryName + "Part"));
+            _contentDefinitionManager.AlterTypeDefinition(manyToMany.RelatedEntity, typeBuilder => typeBuilder.WithPart(relatedName + "Part"));
+            _dynamicAssemblyBuilder.Build();
             return null;
         }
 
-        void _dynamicAssemblyBuilder_OnBuilded(ModuleBuilder moduleBuilder) {
-            var contentLinkRecordType = moduleBuilder.DefineType(string.Format("{0}.{1}.{2}ContentLinkRecord", AssemblyName, "Models", _relationshipName),
-                                                                 TypeAttributes.Public |
-                                                                 TypeAttributes.Class |
-                                                                 TypeAttributes.AutoClass |
-                                                                 TypeAttributes.AnsiClass |
-                                                                 TypeAttributes.BeforeFieldInit |
-                                                                 TypeAttributes.AutoLayout);
-            contentLinkRecordType.AddInterfaceImplementation(typeof(IContentLinkRecord));
-
-            var primaryPartRecordType = BuildType(
-                string.Format("{0}.{1}.{2}PartRecord", AssemblyName, "Models", _primaryName),
-                moduleBuilder, typeof(DynamicPartRecord<>).MakeGenericType(contentLinkRecordType));
-            var relatedPartRecordType = BuildType(
-                string.Format("{0}.{1}.{2}PartRecord", AssemblyName, "Models", _relatedName),
-                moduleBuilder, typeof(DynamicPartRecord<>).MakeGenericType(contentLinkRecordType));
-
-            BuildProperty(contentLinkRecordType, primaryPartRecordType, "PrimaryPartRecord");
-            BuildProperty(contentLinkRecordType, relatedPartRecordType, "RelatedPartRecord");
-            BuildProperty(contentLinkRecordType, typeof(int), "Id");
-            contentLinkRecordType.CreateType();
-            primaryPartRecordType.CreateType();
-            relatedPartRecordType.CreateType();
-
-            var primaryPartType = BuildType(
-                string.Format("{0}.{1}.{2}Part", AssemblyName, "Models", _primaryName),
-                moduleBuilder, typeof(DynamicPrimaryPart<,>).MakeGenericType(primaryPartRecordType, contentLinkRecordType));
-            var relatedPartType = BuildType(
-                string.Format("{0}.{1}.{2}Part", AssemblyName, "Models", _relatedName),
-                moduleBuilder, typeof(DynamicRelatedPart<,>).MakeGenericType(relatedPartRecordType, contentLinkRecordType));
-            var primaryHandlerType = BuildType(
-                string.Format("{0}.{1}.{2}PartHandler", AssemblyName, "Handlers", _primaryName),
-                moduleBuilder, typeof(DynamicContentsHandler<>).MakeGenericType(primaryPartRecordType));
-            var relatedHandlerType = BuildType(
-                string.Format("{0}.{1}.{2}PartHandler", AssemblyName, "Handlers", _relatedName),
-                moduleBuilder, typeof(DynamicContentsHandler<>).MakeGenericType(relatedPartRecordType));
-            var primaryDriverType = BuildType(
-                string.Format("{0}.{1}.{2}PartDriver", AssemblyName, "Drivers", _primaryName),
-                moduleBuilder,
-                typeof(DynamicPrimaryPartDriver<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType));
-            var relatedDriverType = BuildType(
-                string.Format("{0}.{1}.{2}PartDriver", AssemblyName, "Drivers", _relatedName),
-                moduleBuilder,
-                typeof(DynamicRelatedPartDriver<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType));
-        }
-
-        private TypeBuilder BuildType(string name, ModuleBuilder moduleBuilder, Type parentType) {
-            var typBuilder = moduleBuilder.DefineType(name,
-                                                  TypeAttributes.Public |
-                                                  TypeAttributes.Class |
-                                                  TypeAttributes.AutoClass |
-                                                  TypeAttributes.AnsiClass |
-                                                  TypeAttributes.BeforeFieldInit |
-                                                  TypeAttributes.AutoLayout, parentType);
-            return typBuilder;
-        }
-
-        private void BuildProperty(TypeBuilder typeBuilder, Type fieldType, string fieldName) {
-            var fieldBuilder = typeBuilder.DefineField("_" + fieldName, fieldType,
-                                                       FieldAttributes.Private);
-            var propBuilder = typeBuilder.DefineProperty(fieldName, PropertyAttributes.HasDefault, fieldType, null);
-
-            // Build Get prop
-            var getMethBuilder = typeBuilder.DefineMethod("get_" + fieldName,
-                                                          MethodAttributes.Public |
-                                                          MethodAttributes.Virtual |
-                                                          MethodAttributes.SpecialName |
-                                                          MethodAttributes.HideBySig,
-                                                          fieldType, Type.EmptyTypes);
-            var generator = getMethBuilder.GetILGenerator();
-            generator.Emit(OpCodes.Ldarg_0); // load 'this'
-            generator.Emit(OpCodes.Ldfld, fieldBuilder); // load the field
-            generator.Emit(OpCodes.Ret);
-            propBuilder.SetGetMethod(getMethBuilder);
-
-            // Build Set prop
-            var setMethBuilder = typeBuilder.DefineMethod("set_" + fieldName,
-                                                          MethodAttributes.Public |
-                                                          MethodAttributes.Virtual |
-                                                          MethodAttributes.SpecialName |
-                                                          MethodAttributes.HideBySig,
-                                                          null, new[] { fieldType });
-            generator = setMethBuilder.GetILGenerator();
-            generator.Emit(OpCodes.Ldarg_0); // load 'this'
-            generator.Emit(OpCodes.Ldarg_1); // load value
-            generator.Emit(OpCodes.Stfld, fieldBuilder);
-            generator.Emit(OpCodes.Ret);
-
-            propBuilder.SetSetMethod(setMethBuilder);
-        }
         #endregion
 
         #region Delete And Edit
+
         /// <summary>
         /// Delete OneToMany and ManyToMany Relationship
         /// </summary>
@@ -404,7 +313,7 @@ namespace Coevery.Relationship.Services {
 
             DeleteColumns(relationshipId);
 
-            if (relationship.Type == (byte)RelationshipType.ManyToMany) {
+            if (relationship.Type == (byte) RelationshipType.ManyToMany) {
                 var manyToMany = _manyToManyRepository.Get(record => record.Relationship.Id == relationshipId);
                 if (manyToMany == null || manyToMany.Id == 0) {
                     return "Corresponding ManyToMany record not found.";
@@ -413,25 +322,25 @@ namespace Coevery.Relationship.Services {
                 _manyToManyRepository.Delete(manyToMany);
                 _schemaUpdateService.DropTable(_tableFormat, relationship.Name);
             }
-            else if (relationship.Type == (byte)RelationshipType.OneToMany) {
+            else if (relationship.Type == (byte) RelationshipType.OneToMany) {
                 var oneToMany = _oneToManyRepository.Get(record => record.Relationship.Id == relationshipId);
                 if (oneToMany == null || oneToMany.Id == 0) {
                     return "Corresponding OneToMany record not found.";
                 }
 
                 var lookupFieldSet = (from entity in _contentPartRepository.Table
-                                      from field in entity.ContentPartFieldDefinitionRecords
-                                      where field.Id == oneToMany.LookupField.Id
-                                      //&& field.ContentFieldDefinitionRecord.Name == "ReferenceField"
-                                      select field);
+                    from field in entity.ContentPartFieldDefinitionRecords
+                    where field.Id == oneToMany.LookupField.Id
+                    //&& field.ContentFieldDefinitionRecord.Name == "ReferenceField"
+                    select field);
                 var lookupField = lookupFieldSet.Any() ? lookupFieldSet.First() : null;
 
-                if (oneToMany.DeleteOption == (byte)OneToManyDeleteOption.NotAllowed) {
+                if (oneToMany.DeleteOption == (byte) OneToManyDeleteOption.NotAllowed) {
                     if (lookupField != null && lookupField.Id != 0) {
                         return "Delete lookup field first.";
                     }
                 }
-                else if (oneToMany.DeleteOption == (byte)OneToManyDeleteOption.CascadingDelete) {
+                else if (oneToMany.DeleteOption == (byte) OneToManyDeleteOption.CascadingDelete) {
                     if (lookupField != null && lookupField.Id != 0) {
                         _fieldService.Delete(oneToMany.LookupField.Name, relationship.RelatedEntity.Name);
                     }
@@ -500,9 +409,11 @@ namespace Coevery.Relationship.Services {
             }
             return null;
         }
+
         #endregion
 
         #region PrivateMethods
+
         private RelationshipRecord CreateRelation(RelationshipRecord relationship) {
             _relationshipRepository.Create(relationship);
             return relationship;
@@ -542,14 +453,15 @@ namespace Coevery.Relationship.Services {
         //}
 
         private void DeleteColumns(int relationshipId) {
-            var columnStore = _sessionLocator.For(typeof(RelationshipColumnRecord));
+            var columnStore = _sessionLocator.For(typeof (RelationshipColumnRecord));
             var deleteCommand = "DELETE FROM dbo.Coevery_Relationship_RelationshipColumnRecord " +
-                                   "WHERE Relationship_Id=" + relationshipId;
+                                "WHERE Relationship_Id=" + relationshipId;
             //var transaction = columnStore.BeginTransaction();
             var query = columnStore.CreateSQLQuery(deleteCommand);
             query.ExecuteUpdate();
             //transaction.Commit();
         }
+
         #endregion
     }
 }

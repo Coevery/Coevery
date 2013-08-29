@@ -1,4 +1,5 @@
 ﻿using Coevery.Core.Drivers;
+using Coevery.Core.Events;
 using Coevery.Core.Handlers;
 using Orchard;
 using System;
@@ -19,7 +20,6 @@ namespace Coevery.Core.DynamicTypeGeneration {
     public interface IDynamicAssemblyBuilder : IDependency {
         bool Build();
         Type GetFieldType(string fieldNameType);
-        event Action<ModuleBuilder> OnBuilded;
     }
 
     public class DynamicAssemblyBuilder : IDynamicAssemblyBuilder {
@@ -27,16 +27,17 @@ namespace Coevery.Core.DynamicTypeGeneration {
         private readonly IVirtualPathProvider _virtualPathProvider;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
-
-        public event Action<ModuleBuilder> OnBuilded;
+        private readonly IDynamicTypeGenerationEvents _dynamicTypeGenerationEvents;
 
         public DynamicAssemblyBuilder(
             IVirtualPathProvider virtualPathProvider,
             IContentDefinitionManager contentDefinitionManager,
-            IEnumerable<IContentFieldDriver> contentFieldDrivers) {
+            IEnumerable<IContentFieldDriver> contentFieldDrivers,
+            IDynamicTypeGenerationEvents dynamicTypeGenerationEvents) {
             _virtualPathProvider = virtualPathProvider;
             _contentDefinitionManager = contentDefinitionManager;
             _contentFieldDrivers = contentFieldDrivers;
+            _dynamicTypeGenerationEvents = dynamicTypeGenerationEvents;
         }
 
         public Type GetFieldType(string fieldNameType) {
@@ -98,9 +99,7 @@ namespace Coevery.Core.DynamicTypeGeneration {
                 BuildHandlerCtor(handlerTypeBuidler, type);
                 handlerTypeBuidler.CreateType();
             }
-            if (OnBuilded != null) {
-                OnBuilded(moduleBuidler);
-            }
+            _dynamicTypeGenerationEvents.OnBuilded(moduleBuidler);
             assemblyBuidler.Save(AssemblyName + ".dll");
         }
 
