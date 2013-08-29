@@ -172,19 +172,15 @@ namespace Coevery.Projections.Services
             return viewModel;
         }
 
-        public bool EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds)
-        {
+        public bool EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds) {
             if (pickedFileds == null) pickedFileds = new List<string>();
-            var projectionItem = _contentManager.Get(id, VersionOptions.Latest);
-            var projectionPart = projectionItem.As<ProjectionPart>();
+            var projectionPart = _contentManager.Get<ProjectionPart>(id, VersionOptions.Latest);
             var queryId = projectionPart.Record.QueryPartRecord.Id;
-            var queryItem = _contentManager.Get(queryId, VersionOptions.Latest);
-            var queryPart = queryItem.As<QueryPart>();
+            var queryPart = _contentManager.Get<QueryPart>(queryId, VersionOptions.Latest);
 
             //Post DisplayName
             queryPart.As<TitlePart>().Title = viewModel.DisplayName;
-
-
+            
             //Post Selected Fields
             LayoutRecord layoutRecord = projectionPart.Record.LayoutRecord;
             layoutRecord.Properties.Clear();
@@ -209,13 +205,10 @@ namespace Coevery.Projections.Services
             }
             layoutRecord.State = GetLayoutState(queryPart.Id, layoutRecord.Properties.Count, layoutRecord.Description);
 
-
             // sort
             queryPart.SortCriteria.Clear();
-            if (!string.IsNullOrEmpty(viewModel.SortedBy))
-            {
-                var sortCriterionRecord = new SortCriterionRecord
-                {
+            if (!string.IsNullOrEmpty(viewModel.SortedBy)) {
+                var sortCriterionRecord = new SortCriterionRecord {
                     Category = category,
                     Type = viewModel.SortedBy,
                     Position = queryPart.SortCriteria.Count,
@@ -226,11 +219,12 @@ namespace Coevery.Projections.Services
             }
 
             // VisableTo and pageRowCount
-            LayoutPropertyRecord lpRecord = new LayoutPropertyRecord();
-            lpRecord.VisableTo = viewModel.VisableTo;
-            lpRecord.PageRowCount = viewModel.PageRowCount;
-            lpRecord.QueryPartRecord_id = queryPart.Id;
-            _layoutPropertyService.CreateLayoutProperty(lpRecord);
+            var layoutPropertyRecord = new LayoutPropertyRecord {
+                VisableTo = viewModel.VisableTo,
+                PageRowCount = viewModel.PageRowCount,
+                QueryPartRecord_id = queryPart.Id
+            };
+            _layoutPropertyService.CreateLayoutProperty(layoutPropertyRecord);
             return true;
         }
 
@@ -287,23 +281,20 @@ namespace Coevery.Projections.Services
             return string.Format(format, filedName);
         }
 
-        private string GetLayoutState(int queryId, int columnCount, string desc)
-        {
-            Dictionary<string, string> datas = new Dictionary<string, string>();
-            datas.Add("QueryId", queryId.ToString());
-            datas.Add("Category", "Html");
-            datas.Add("Type", "ngGrid");
-
-            datas.Add("Description", desc);
-            datas.Add("Display", "1");
-            datas.Add("DisplayType", "Summary");
-
-            datas.Add("Alignment", "horizontal");
-            datas.Add("Columns", columnCount.ToString());
-            datas.Add("GridId", string.Empty);
-
-            datas.Add("GridClass", string.Empty);
-            datas.Add("RowClass", string.Empty);
+        private string GetLayoutState(int queryId, int columnCount, string desc) {
+            var datas = new Dictionary<string, string> {
+                {"QueryId", queryId.ToString()},
+                {"Category", "Html"},
+                {"Type", "ngGrid"},
+                {"Description", desc},
+                {"Display", "1"},
+                {"DisplayType", "Summary"},
+                {"Alignment", "horizontal"},
+                {"Columns", columnCount.ToString()},
+                {"GridId", string.Empty},
+                {"GridClass", string.Empty},
+                {"RowClass", string.Empty}
+            };
 
             var re = FormParametersHelper.ToString(datas);
             return re;

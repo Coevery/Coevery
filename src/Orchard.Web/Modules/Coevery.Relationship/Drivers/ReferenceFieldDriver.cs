@@ -108,9 +108,5 @@ namespace Coevery.Relationship.Drivers {
         protected override void Exporting(ContentPart part, ReferenceField field, ExportContentContext context) {
             context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value.HasValue ? field.Value.Value.ToString(CultureInfo.InvariantCulture) : String.Empty);
         }
-
-        protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(int), T("Value"), T("The content item id referenced by this field."));
-        }
     }
 }

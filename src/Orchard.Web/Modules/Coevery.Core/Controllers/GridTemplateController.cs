@@ -7,9 +7,5 @@ namespace Coevery.Core.Controllers {
         public ActionResult DefaultFooterTemplate() {
             return View();
         }
-
-        public ActionResult PrimaryCellTemplate() {
-            return View();
-        }
     }
 }

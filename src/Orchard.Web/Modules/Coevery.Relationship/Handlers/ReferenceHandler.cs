@@ -49,10 +49,7 @@ namespace Coevery.Relationship.Handlers {
             foreach (ReferenceField field in part.Fields.Where(f => f.FieldDefinition.Name.Equals("ReferenceField"))) {
                 var field1 = field;
                 field1.ContentItemField.Setter(contentItem => {
-                    field1.Value = 
-                        contentItem == null
-                            ? new int?()
-                            : contentItem.Id;
+                    field1.Value = contentItem == null ? new int?() : contentItem.Id;
                     return contentItem;
                 });
 
