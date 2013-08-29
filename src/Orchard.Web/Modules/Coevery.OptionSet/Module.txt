@@ -1,0 +1,13 @@
+﻿Name: OptionSet
+AntiForgery: enabled
+Author: 
+Website: http://orchardproject.net
+Version: 1.7
+OrchardVersion: 1.7
+Description: The OptionSet module is providing option set field for arbitrary content types. 
+Features:
+    Coevery.OptionSet:
+        Name: OptionSet
+        Description: Categorize a content item.
+        Category: Coevery
+        Dependencies: Title, Contents

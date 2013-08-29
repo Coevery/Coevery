@@ -3,7 +3,7 @@ using Orchard.DisplayManagement;
 using Orchard.Forms.Services;
 using Orchard.Localization;
 
-namespace Orchard.Projections.Providers.Layouts {
+namespace Coevery.Core.Providers.Layouts {
 
     public class ngGridLayoutForms : IFormProvider {
         protected dynamic Shape { get; set; }

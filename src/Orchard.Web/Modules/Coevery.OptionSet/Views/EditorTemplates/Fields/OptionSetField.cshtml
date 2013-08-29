@@ -1,0 +1,62 @@
+﻿@using Coevery.OptionSet.Settings
+@model OptionSetFieldViewModel
+@{
+    int termIndex = 0;
+    var settings = Model.Settings;
+    var required = settings.Required ? "required" : null;
+}
+
+<label class="control-label title @required" >@Model.DisplayName</label>
+<div class="control controls">
+    @switch (settings.ListMode) {
+        case ListMode.Dropdown:
+            var options = Model.OptionItems.Select(t => new SelectListItem { Text = t.Name, Value = t.Id.ToString(), Selected = t.Id == Model.SingleTermId });
+            @Html.DropDownListFor(m => m.SingleTermId, options, new{ @class="span12"})
+            for (int i = 0; i < Model.OptionItems.Count; i++) {
+                @Html.HiddenFor(m => m.OptionItems[i].Id)
+            }
+            break;
+
+        case ListMode.Radiobutton:
+        case ListMode.Checkbox:
+            foreach (var entry in Model.OptionItems) {
+                var ti = termIndex;
+                <label class="checkbox">
+                    @{
+                        var disabled = !entry.Selectable;
+                        if (settings.ListMode == ListMode.Radiobutton) {
+                            <input @if (disabled) {
+                                       <text>disabled="disabled"</text>
+                                   } 
+                                type="radio" 
+                                value="@Model.OptionItems[ti].Id" 
+                                @if (entry.Id == Model.SingleTermId) {
+                                    <text>checked="checked"</text>
+                                } 
+                                name="@Html.FieldNameFor(m => m.SingleTermId)" 
+                                id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()"/>
+                        }
+                        else {
+                            <input @if (disabled) {
+                                       <text>disabled="disabled"</text>
+                                   } type="checkbox" value="true" 
+                                @if (entry.IsChecked) {
+                                    <text>checked="checked"</text>
+                                } 
+                                     name="@Html.FieldNameFor(m => m.OptionItems[ti].IsChecked)" 
+                                     id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()"/>
+                        }
+                    }
+                    @Html.HiddenFor(m => m.OptionItems[ti].Id)
+                    <label class="forcheckbox" for="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)">@entry.Name</label>
+                </label>
+                termIndex++;
+            }
+            break;
+
+        case ListMode.Listbox:
+            break;
+    }
+    
+    @Html.HiddenFor(m=>m.OptionSetId)
+</div>

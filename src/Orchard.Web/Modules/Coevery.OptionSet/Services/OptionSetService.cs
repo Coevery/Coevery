@@ -1,0 +1,209 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Coevery.OptionSet.Models;
+using Orchard;
+using Orchard.ContentManagement;
+using Orchard.ContentManagement.Aspects;
+using Orchard.ContentManagement.MetaData;
+using Orchard.Core.Common.Models;
+using Orchard.Core.Title.Models;
+using Orchard.Data;
+using Orchard.Localization;
+using Orchard.Logging;
+using Orchard.Security;
+using Orchard.UI.Notify;
+using Orchard.Utility.Extensions;
+
+namespace Coevery.OptionSet.Services {
+    public class OptionSetService : IOptionSetService {
+        private readonly IRepository<OptionItemContentItem> _termContentItemRepository;
+        private readonly IContentManager _contentManager;
+        private readonly INotifier _notifier;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IOrchardServices _services;
+
+        public OptionSetService(
+            IRepository<OptionItemContentItem> termContentItemRepository,
+            IContentManager contentManager,
+            INotifier notifier,
+            IContentDefinitionManager contentDefinitionManager,
+            IAuthorizationService authorizationService,
+            IOrchardServices services) {
+            _termContentItemRepository = termContentItemRepository;
+            _contentManager = contentManager;
+            _notifier = notifier;
+            _authorizationService = authorizationService;
+            _contentDefinitionManager = contentDefinitionManager;
+            _services = services;
+
+            Logger = NullLogger.Instance;
+            T = NullLocalizer.Instance;
+        }
+
+        public ILogger Logger { get; set; }
+        public Localizer T { get; set; }
+
+        public IEnumerable<OptionSetPart> GetTaxonomies() {
+            return _contentManager.Query<OptionSetPart, OptionSetPartRecord>().WithQueryHints(new QueryHints().ExpandParts<TitlePart>()).List();
+        }
+
+        public OptionSetPart GetTaxonomy(int id) {
+            return _contentManager.Get(id, VersionOptions.Published, new QueryHints().ExpandParts<OptionSetPart, TitlePart>()).As<OptionSetPart>();
+        }
+
+        public OptionSetPart GetTaxonomyByName(string name) {
+            if (String.IsNullOrWhiteSpace(name)) {
+                throw new ArgumentNullException("name");
+            }
+
+            return _contentManager
+                .Query<OptionSetPart>()
+                .Join<TitlePartRecord>()
+                .Where(r => r.Title == name)
+                .WithQueryHints(new QueryHints().ExpandRecords<CommonPartRecord>())
+                .List()
+                .FirstOrDefault();
+        }
+
+        
+        public void DeleteTaxonomy(OptionSetPart taxonomy) {
+            _contentManager.Remove(taxonomy.ContentItem);
+
+            // Removing terms
+            foreach (var term in GetTerms(taxonomy.Id)) {
+                DeleteTerm(term);
+            }
+
+            _contentDefinitionManager.DeleteTypeDefinition(taxonomy.TermTypeName);
+        }
+
+        public string GenerateTermTypeName(string taxonomyName) {
+            var name = taxonomyName.ToSafeName() + "Term";
+            int i = 2;
+            while (_contentDefinitionManager.GetTypeDefinition(name) != null) {
+                name = taxonomyName.ToSafeName() + i++;
+            }
+
+            return name;
+        }
+
+        public OptionItemPart NewTerm(OptionSetPart optionSet) {
+            var optionItem = _contentManager.New<OptionItemPart>(optionSet.TermTypeName);
+            optionItem.OptionSetId = optionSet.Id;
+
+            return optionItem;
+        }
+
+        public IEnumerable<OptionItemPart> GetTerms(int optionSetId) {
+            var result = _contentManager.Query<OptionItemPart, OptionItemPartRecord>()
+                .Where(x => x.OptionSetId == optionSetId)
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
+                .List();
+
+            return OptionItemPart.Sort(result);
+        }
+
+        public OptionItemPart GetOptionItem(int id) {
+            return _contentManager
+                .Query<OptionItemPart, OptionItemPartRecord>()
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
+                .Where(x => x.Id == id).List().FirstOrDefault();
+        }
+
+        public IEnumerable<OptionItemPart> GetOptionItemsForContentItem(int contentItemId, string field = null) {
+            return String.IsNullOrEmpty(field)
+                ? _termContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.ContentItemRecord.Id == contentItemId).Select(t => GetOptionItem(t.OptionItemRecord.Id))
+                : _termContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.Id == contentItemId && x.Field == field).Select(t => GetOptionItem(t.OptionItemRecord.Id));
+        }
+
+        public OptionItemPart GetTermByName(int optionSetId, string name) {
+            return _contentManager
+                .Query<OptionItemPart, OptionItemPartRecord>()
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>())
+                .Where(t => t.OptionSetId == optionSetId)
+                .Join<TitlePartRecord>()
+                .Where(r => r.Title == name)
+                .List()
+                .FirstOrDefault();
+        }
+
+        public void CreateTerm(OptionItemPart termPart) {
+            if (GetTermByName(termPart.OptionSetId, termPart.Name) == null) {
+                _authorizationService.CheckAccess(Permissions.CreateTerm, _services.WorkContext.CurrentUser, null);
+
+                termPart.As<ICommonPart>().Container = GetTaxonomy(termPart.OptionSetId).ContentItem;
+                _contentManager.Create(termPart);
+            }
+            else {
+                _notifier.Warning(T("The term {0} already exists in this taxonomy", termPart.Name));
+            }
+        }
+
+        public void DeleteTerm(OptionItemPart termPart) {
+            _contentManager.Remove(termPart.ContentItem);
+
+            // delete termContentItems
+            var termContentItems = _termContentItemRepository
+                .Fetch(t => t.OptionItemRecord == termPart.Record)
+                .ToList();
+
+            foreach (var termContentItem in termContentItems) {
+                _termContentItemRepository.Delete(termContentItem);
+            }
+        }
+
+        public void UpdateTerms(ContentItem contentItem, IEnumerable<OptionItemPart> terms, string field) {
+            var termsPart = contentItem.As<OptionItemContainerPart>();
+
+            // removing current terms for specific field
+            var fieldIndexes = termsPart.OptionItems
+                .Where(t => t.Field == field)
+                .Select((t, i) => i)
+                .OrderByDescending(i => i)
+                .ToList();
+            
+            foreach(var x in fieldIndexes) {
+                termsPart.OptionItems.RemoveAt(x);
+            }
+            
+            // adding new terms list
+            foreach(var term in terms) {
+                termsPart.OptionItems.Add( 
+                    new OptionItemContentItem {
+                        OptionItemContainerPartRecord = termsPart.Record, 
+                        OptionItemRecord = term.Record, Field = field
+                    });
+            }
+        }
+
+        public IContentQuery<OptionItemContainerPart, OptionItemContainerPartRecord> GetContentItemsQuery(OptionItemPart term, string fieldName = null) {
+
+            var query = _contentManager
+                .Query<OptionItemContainerPart, OptionItemContainerPartRecord>()
+                .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>());
+
+            if (String.IsNullOrWhiteSpace(fieldName)) {
+                query = query.Where(
+                    tpr => tpr.OptionItems.Any(tr =>
+                        tr.OptionItemRecord.Id == term.Id));
+            }
+            else {
+                query = query.Where(
+                    tpr => tpr.OptionItems.Any(tr =>
+                        tr.Field == fieldName
+                         && (tr.OptionItemRecord.Id == term.Id)));
+            }
+
+            return query;
+        }
+        
+        public IEnumerable<IContent> GetContentItems(OptionItemPart term, int skip = 0, int count = 0, string fieldName = null) {
+            return GetContentItemsQuery(term, fieldName)
+                .Join<CommonPartRecord>()
+                .OrderByDescending(x => x.CreatedUtc)
+                .Slice(skip, count);
+        }
+    }
+}

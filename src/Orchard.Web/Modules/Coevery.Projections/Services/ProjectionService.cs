@@ -191,6 +191,7 @@ namespace Coevery.Projections.Services
 
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
             string category = viewModel.Name + "ContentFields";
+            var fields = allFields.Where(c => c.Category == category).ToList();
             foreach (var property in pickedFileds) {
                 var field = allFields.FirstOrDefault(c => c.Category == category && c.Type.StartsWith(viewModel.Name + "." + property));
                 if (field == null) {

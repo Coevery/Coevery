@@ -192,7 +192,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.AzureBlobStorage", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orchard.Deprecated", "Orchard.Deprecated", "{21C3A662-DB9C-4799-AADC-FB22FFF3C137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coevery.Taxonomies", "Orchard.Web\Modules\Coevery.Taxonomies\Coevery.Taxonomies.csproj", "{816560FF-2267-4CA1-8E24-635431F8D8C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coevery.OptionSet", "Orchard.Web\Modules\Coevery.OptionSet\Coevery.OptionSet.csproj", "{816560FF-2267-4CA1-8E24-635431F8D8C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
