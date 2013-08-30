@@ -1,23 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using Coevery.Entities.Services;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Relationship.Services;
 using Coevery.Relationship.Records;
+using Orchard.Data;
 using Orchard.Localization;
 
-namespace Coevery.Relationship.Controllers
-{
-    public class RelationshipController : ApiController
-    {
+namespace Coevery.Relationship.Controllers {
+    public class RelationshipController : ApiController {
         private readonly IRelationshipService _relationshipService;
+        private readonly IRepository<RelationshipRecord> _relationshipRepository;
+        private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRelationshipRepository;
+        private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRelationshipRepository;
+        private readonly IContentDefinitionService _contentDefinitionService;
+
         public Localizer T { get; set; }
 
         public RelationshipController(
-            IRelationshipService relationshipService) {
+            IRelationshipService relationshipService,
+            IRepository<RelationshipRecord> relationshipRepository,
+            IRepository<OneToManyRelationshipRecord> oneToManyRelationshipRepository,
+            IRepository<ManyToManyRelationshipRecord> manyToManyRelationshipRepository,
+            IContentDefinitionService contentDefinitionService) {
             _relationshipService = relationshipService;
+            _relationshipRepository = relationshipRepository;
+            _oneToManyRelationshipRepository = oneToManyRelationshipRepository;
+            _manyToManyRelationshipRepository = manyToManyRelationshipRepository;
+            _contentDefinitionService = contentDefinitionService;
             T = NullLocalizer.Instance;
         }
 
@@ -40,14 +51,20 @@ namespace Coevery.Relationship.Controllers
         }
 
         public HttpResponseMessage Delete(int relationshipId) {
-            if (relationshipId <= 0) {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Id");
+            var relationship = _relationshipRepository.Get(relationshipId);
+            if (relationship == null) {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid relationship.");
             }
-
-            var errorMessage = _relationshipService.DeleteRelationship(relationshipId);
-            return string.IsNullOrWhiteSpace(errorMessage)
-                ?Request.CreateResponse(HttpStatusCode.OK)
-                :Request.CreateErrorResponse(HttpStatusCode.BadRequest,errorMessage);
+            if (relationship.Type == (byte) RelationshipType.OneToMany) {
+                var record = _oneToManyRelationshipRepository.Get(x => x.Relationship == relationship);
+                _relationshipService.DeleteOneToManyRelationship(record);
+                _contentDefinitionService.RemoveFieldFromPart(record.LookupField.Name, relationship.RelatedEntity.Name);
+            }
+            else if (relationship.Type == (byte) RelationshipType.ManyToMany) {
+                var record = _manyToManyRelationshipRepository.Get(x => x.Relationship == relationship);
+                _relationshipService.DeleteManyToManyRelationship(record);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

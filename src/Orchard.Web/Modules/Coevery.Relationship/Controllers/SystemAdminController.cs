@@ -43,7 +43,7 @@ namespace Coevery.Relationship.Controllers {
 
             var optionsHtml = new StringBuilder();
             foreach (var option in _relationshipService.GetFieldNames(entityName)) {
-                optionsHtml.Append("<option value='"+option.Value);
+                optionsHtml.Append("<option value='" + option.Value);
                 if (option.Selected) {
                     optionsHtml.Append("' selected = 'selected");
                 }
@@ -60,9 +60,11 @@ namespace Coevery.Relationship.Controllers {
         }
 
         #region OneToMany
+
         public ActionResult CreateOneToMany(string id) {
-            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
+            }
 
             return View(new OneToManyRelationshipModel {
                 EntityList = _relationshipService.GetEntityNames(id),
@@ -72,17 +74,18 @@ namespace Coevery.Relationship.Controllers {
         }
 
         public ActionResult EditOneToMany(string entityName, int relationId) {
-            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content.")))
+            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
-            
+            }
+
             var oneToMany = _relationshipService.GetOneToMany(relationId);
             if (oneToMany == null || oneToMany.Id == 0) {
                 return ResponseError("Relationship not found");
             }
-            return View("CreateOneToMany",new OneToManyRelationshipModel {
+            return View("CreateOneToMany", new OneToManyRelationshipModel {
                 IsCreate = false,
                 Name = oneToMany.Relationship.Name,
-                DeleteOption = (OneToManyDeleteOption)oneToMany.DeleteOption,
+                DeleteOption = (OneToManyDeleteOption) oneToMany.DeleteOption,
                 PrimaryEntity = oneToMany.Relationship.PrimaryEntity.Name,
                 RelatedEntity = oneToMany.Relationship.RelatedEntity.Name,
                 RelatedListLabel = oneToMany.RelatedListLabel,
@@ -92,11 +95,11 @@ namespace Coevery.Relationship.Controllers {
 
         [HttpPost]
         public ActionResult CreateOneToMany(OneToManyRelationshipModel oneToMany) {
-            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
+            }
 
             if (oneToMany.IsCreate) {
-                
                 var errorMessage = _relationshipService.CreateRelationship(oneToMany);
                 if (!string.IsNullOrWhiteSpace(errorMessage)) {
                     ModelState.AddModelError("OneToManyRelation", T(errorMessage).ToString());
@@ -118,12 +121,15 @@ namespace Coevery.Relationship.Controllers {
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
         #endregion
 
         #region ManyToMany
+
         public ActionResult CreateManyToMany(string id) {
-            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
+            }
 
             return View(new ManyToManyRelationshipModel {
                 EntityList = _relationshipService.GetEntityNames(id),
@@ -133,15 +139,16 @@ namespace Coevery.Relationship.Controllers {
         }
 
         public ActionResult EditManyToMany(string entityName, int relationId) {
-            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content.")))
+            if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
+            }
 
             var manyToMany = _relationshipService.GetManyToMany(relationId);
             if (manyToMany == null || manyToMany.Id == 0) {
                 return ResponseError("Relationship not found");
             }
 
-            return View("CreateManyToMany",new ManyToManyRelationshipModel {
+            return View("CreateManyToMany", new ManyToManyRelationshipModel {
                 IsCreate = false,
                 Name = manyToMany.Relationship.Name,
                 PrimaryEntity = manyToMany.Relationship.PrimaryEntity.Name,
@@ -155,8 +162,9 @@ namespace Coevery.Relationship.Controllers {
 
         [HttpPost]
         public ActionResult CreateManyToMany(ManyToManyRelationshipModel manyToMany) {
-            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content.")))
+            if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
+            }
 
             if (manyToMany.IsCreate) {
                 var errorMessage = _relationshipService.CreateRelationship(manyToMany);
@@ -174,13 +182,14 @@ namespace Coevery.Relationship.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.EditContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
             }
-            var errorMessage = _relationshipService.EditRelationship(relationId,manyToMany);
+            var errorMessage = _relationshipService.EditRelationship(relationId, manyToMany);
             if (!string.IsNullOrWhiteSpace(errorMessage)) {
                 ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
                 return ResponseError("");
             }
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
         #endregion
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
@@ -193,11 +202,11 @@ namespace Coevery.Relationship.Controllers {
 
         private ActionResult ResponseError(string errorMessage) {
             Services.TransactionManager.Cancel();
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            Response.StatusCode = (int) HttpStatusCode.BadRequest;
             var temp = (from values in ModelState
-                        from error in values.Value.Errors
-                        select error.ErrorMessage).ToArray();
-            return Content(string.Join("\n",temp)+";\n"+errorMessage);
+                from error in values.Value.Errors
+                select error.ErrorMessage).ToArray();
+            return Content(string.Join("\n", temp) + ";\n" + errorMessage);
         }
     }
 }

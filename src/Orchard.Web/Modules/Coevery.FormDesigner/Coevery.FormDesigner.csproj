@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\LayoutController.cs" />
+    <Compile Include="Handlers\FormDesignerFieldEventsHandler.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Row.cs" />
@@ -93,6 +94,10 @@
       <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
       <Name>Coevery.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Coevery.Entities\Coevery.Entities.csproj">
+      <Project>{BD9AEC06-5C81-4221-A817-408FB0C4B6C0}</Project>
+      <Name>Coevery.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Placement.info">
@@ -102,7 +107,6 @@
   <ItemGroup>
     <Folder Include="Drivers\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Index.cshtml" />

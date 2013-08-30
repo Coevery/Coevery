@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Coevery.Relationship.Models;
 using Coevery.Relationship.Records;
 using Orchard;
-using Orchard.ContentManagement;
-
 
 namespace Coevery.Relationship.Services {
     public interface IRelationshipService : IDependency {
@@ -22,6 +16,7 @@ namespace Coevery.Relationship.Services {
         string CreateRelationship(ManyToManyRelationshipModel manyToMany);
         string EditRelationship(int relationshipId, ManyToManyRelationshipModel manyToMany);
         string EditRelationship(int relationshipId, OneToManyRelationshipModel oneToMany);
-        string DeleteRelationship(int relationshipId);
+        void DeleteOneToManyRelationship(OneToManyRelationshipRecord record);
+        void DeleteManyToManyRelationship(ManyToManyRelationshipRecord record);
     }
 }

@@ -92,14 +92,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Events\IFieldEvents.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\CustomFieldAttribute.cs" />
-    <Compile Include="Services\FieldService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
-    <Compile Include="Services\IFieldService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs">
@@ -160,10 +159,6 @@
     <ProjectReference Include="..\Coevery.Core\Coevery.Core.csproj">
       <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
       <Name>Coevery.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coevery.FormDesigner\Coevery.FormDesigner.csproj">
-      <Project>{1579E706-CD05-4339-A19C-6778E586EC03}</Project>
-      <Name>Coevery.FormDesigner</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Media\Orchard.Media.csproj">
       <Project>{D9A7B330-CD22-4DA1-A95A-8DE1982AD8EB}</Project>

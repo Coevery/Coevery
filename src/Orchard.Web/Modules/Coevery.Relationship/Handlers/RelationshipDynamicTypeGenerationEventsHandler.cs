@@ -12,12 +12,11 @@ using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
 
-namespace Coevery.Relationship.Events {
-    public class RelationshipDynamicTypeGenerationEvents : IDynamicTypeGenerationEvents {
+namespace Coevery.Relationship.Handlers {
+    public class RelationshipDynamicTypeGenerationEventsHandler : IDynamicTypeGenerationEvents {
         private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRepository;
 
-
-        public RelationshipDynamicTypeGenerationEvents(
+        public RelationshipDynamicTypeGenerationEventsHandler(
             IRepository<ManyToManyRelationshipRecord> manyToManyRepository) {
             _manyToManyRepository = manyToManyRepository;
         }
