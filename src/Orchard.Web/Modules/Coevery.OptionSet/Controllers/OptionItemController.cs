@@ -7,6 +7,7 @@ using System.Web.Http;
 using Coevery.OptionSet.Models;
 using Coevery.OptionSet.Services;
 using Coevery.OptionSet.ViewModels;
+using Coevery.OptionSet.Helpers;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
@@ -30,12 +31,13 @@ namespace Coevery.OptionSet.Controllers {
             if (!result.Any()) {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            return result.Select(part=>new { Id = part.Id , Name = part.Name, Selectable = part.Selectable, Weight = part.Weight });
+            return result.Select(part=>part.CreateTermEntry());
         }
 
         // POST api/<controller>
         public void Post(OptionItemEntry optionItem) {
-            var itemPart = _optionSetService.NewTerm(_optionSetService.GetOptionSet(optionItem.OptionSetId));
+            var itemPart = Services.ContentManager.New<OptionItemPart>("OptionItem");
+            itemPart.OptionSetId = optionItem.OptionSetId;
             itemPart.Name = optionItem.Name;
             itemPart.Selectable = optionItem.Selectable;
             itemPart.Weight = optionItem.Weight;

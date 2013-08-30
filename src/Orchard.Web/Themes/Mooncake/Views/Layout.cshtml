@@ -148,12 +148,18 @@
                                     <li><a href="#"><i class="icol-user"></i>&nbsp;My Profile</a></li>
                                     <li><a href="@Href("~/SystemAdmin#/Entities")"><i class="icol-application-key"></i>&nbsp;Admin</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#"><i class="icol-key"></i>&nbsp;Logout</a></li>
+                                    <li>
+                                        <a href="@Url.Action( "LogOff", new {Controller = "Account", Area = "Orchard.Users", ReturnUrl = Context.Request.RawUrl})" rel="nofollow">
+                                            <i class="icol-key"> </i>
+                                            @T("Logout")
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <div id="logout-ribbon">
-                            <a href="#"><i class="icon-off"></i></a>
+                            <a href="@Url.Action( "LogOff", new {Controller = "Account", Area = "Orchard.Users", ReturnUrl = Context.Request.RawUrl})" rel="nofollow">
+                                <i class="icon-off"></i></a>
                         </div>
                     </div>
                 </div>
