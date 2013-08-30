@@ -1,13 +1,14 @@
 ﻿@{
     // odd formatting in this file is to cause more attractive results in the output.
     var items = Enumerable.Cast<dynamic>((System.Collections.IEnumerable)Model);
+    var classes = (IEnumerable<string>) Model.Classes ?? Enumerable.Empty<string>();
 }
 @{
 
     <li data-ng-class="{active: $uiRoute}" data-ui-route="@Model.Href">
         @if (items.Any()) {
             <span title="@Model.Text">
-                <i class="icon-home"></i>
+                <i class="@string.Join(" ", classes.ToArray())"></i>
                 <span class="nav-title">@Model.Text</span>
             </span>
             <ul class="inner-nav">
@@ -17,7 +18,7 @@
         else{
             if (Model.Parent.Parent == null) {
                 <span title="@Model.Text">
-                    <i class="icon-home"></i>
+                    <i class="@string.Join(" ", classes.ToArray())"></i>
                     <a href="@Model.Href"  class="nav-title"> @Model.Text</a>
                 </span>
             }

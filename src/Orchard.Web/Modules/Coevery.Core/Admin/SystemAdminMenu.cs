@@ -7,7 +7,7 @@ namespace Coevery.Core.Admin {
         public string MenuName { get { return "SystemAdmin"; } }
 
         public void GetNavigation(NavigationBuilder builder) {
-            builder.Add(T("Home"), "1", menu => menu.Url("~/Coevery"));
+            builder.Add(T("Home"), "1", menu => menu.Url("~/Coevery"),new []{"icon-home"});
         }
     }
 }

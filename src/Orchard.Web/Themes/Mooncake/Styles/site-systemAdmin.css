@@ -324,9 +324,3 @@ ul.nav.nav-tabs {
     #showIconClass {
         font-size: 20px;
     }
-
-[class^="coe-icon-"]:before, [class*=" coe-icon-"]:before {
-    width: .9em;
-    margin-right: 0em;
-    margin-left: 0em;
-}

@@ -1,18 +1,5 @@
-﻿@using System.Web.Routing;
-@using Orchard.Mvc.Html
-@using Orchard.Utility.Extensions;
-@{
-    Func<List<string>, string> convert = delegate(List<string> classList) {
-                                             var classes = "";
-                                             if (classList == null || classList.Count < 1) {
-                                                 return "icon-home";
-                                             }
-                                             foreach (var @class in classList) {
-                                                 classes += " " + @class;
-                                             }
-                                             return classes;
-                                         }; 
-}
+﻿@using Orchard.Utility.Extensions;
+
 <div id="nav-selector">
     <div class="dropdown">
         @if (Model.Items.Count > 0) {
@@ -47,10 +34,12 @@
                         string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
 
                         var secondLevelUrl = secondLevelMenuItem.Href;
+                        var classes =(IList<string>)secondLevelMenuItem.Classes;
+                        if (!classes.Any()) {classes.Add("icon-home");}
 
                         <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
                             <a href="@secondLevelUrl" title="@secondLevelTextHint">
-                                <i class="@convert(secondLevelMenuItem.Classes)" ></i>
+                                <i class="@string.Join(" ", classes.ToArray())" ></i>
                                 <span class="nav-title">@secondLevelMenuItem.Text</span>
                             </a>
                         </li>

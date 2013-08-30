@@ -1,0 +1,80 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('fonts/fontello.eot?76783430');
+  src: url('fonts/fontello.eot?76783430#iefix') format('embedded-opentype'),
+       url('fonts/fontello.woff?76783430') format('woff'),
+       url('fonts/fontello.ttf?76783430') format('truetype'),
+       url('fonts/fontello.svg?76783430#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?76783430#fontello') format('svg');
+  }
+}
+*/
+ 
+ [class^="coe-icon-"]:before, [class*=" coe-icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.coe-icon-home:before { content: '\e81a'; } /* '' */
+.coe-icon-cloud:before { content: '\e80d'; } /* '' */
+.coe-icon-star:before { content: '\e818'; } /* '' */
+.coe-icon-star-empty:before { content: '\e819'; } /* '' */
+.coe-icon-power:before { content: '\e81b'; } /* '' */
+.coe-icon-qrcode:before { content: '\e80c'; } /* '' */
+.coe-icon-twitter:before { content: '\e80f'; } /* '' */
+.coe-icon-facebook:before { content: '\e80b'; } /* '' */
+.coe-icon-pinterest-circled:before { content: '\e803'; } /* '' */
+.coe-icon-pinterest-squared:before { content: '\e813'; } /* '' */
+.coe-icon-gplus-squared:before { content: '\e805'; } /* '' */
+.coe-icon-gplus:before { content: '\e804'; } /* '' */
+.coe-icon-flag-empty:before { content: '\e817'; } /* '' */
+.coe-icon-flag-checkered:before { content: '\e80e'; } /* '' */
+.coe-icon-maxcdn:before { content: '\e809'; } /* '' */
+.coe-icon-html5:before { content: '\e816'; } /* '' */
+.coe-icon-youtube-squared:before { content: '\e808'; } /* '' */
+.coe-icon-youtube:before { content: '\e807'; } /* '' */
+.coe-icon-xing-squared:before { content: '\e815'; } /* '' */
+.coe-icon-tumblr:before { content: '\e812'; } /* '' */
+.coe-icon-tumblr-squared:before { content: '\e811'; } /* '' */
+.coe-icon-windows:before { content: '\e806'; } /* '' */
+.coe-icon-linux:before { content: '\e801'; } /* '' */
+.coe-icon-dribbble:before { content: '\e800'; } /* '' */
+.coe-icon-skype:before { content: '\e814'; } /* '' */
+.coe-icon-renren:before { content: '\e802'; } /* '' */
+.coe-icon-twitter-squared:before { content: '\e810'; } /* '' */
+.coe-icon-facebook-squared:before { content: '\e80a'; } /* '' */
