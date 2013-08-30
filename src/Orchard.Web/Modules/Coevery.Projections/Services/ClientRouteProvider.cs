@@ -11,35 +11,41 @@ using Orchard.Environment.Extensions.Models;
 
 namespace Coevery.Projections.Services
 {
-    public class ClientRouteProvider : IClientRouteProvider {
+    public class ClientRouteProvider : ClientRouteProviderBase {
 
-        public void Discover(ClientRouteTableBuilder builder) {
+        public override void Discover(ClientRouteTableBuilder builder) {
             builder.Describe("EntityDetail.Views")
-                   .Configure(descriptor => {
-                       descriptor.Url = "/Views";
-                       descriptor.TemplateUrl = "'SystemAdmin/Projections/List'";
-                       descriptor.Controller = "ProjectionListCtrl";
-                       descriptor.Dependencies = new[] {"controllers/listcontroller"};
-                   });
+                .Configure(descriptor => {
+                    descriptor.Url = "/Views";
+                })
+                .View(view => {
+                    view.TemplateUrl = "'SystemAdmin/Projections/List'";
+                    view.Controller = "ProjectionListCtrl";
+                    view.Dependencies = ToClientUrl(new[] {"controllers/listcontroller"});
+                });
 
             builder.Describe("ProjectionCreate")
-                   .Configure(descriptor => {
-                       descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/Create";
-                       descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/Projections/Create/' + params.EntityName;}";
-                       descriptor.Controller = "ProjectionDetailCtrl";
-                       descriptor.Dependencies = new[] {"controllers/detailcontroller"};
-                   });
+                .Configure(descriptor => {
+                    descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/Create";
+                })
+                .View(view => {
+                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Projections/Create/' + params.EntityName;}";
+                    view.Controller = "ProjectionDetailCtrl";
+                    view.Dependencies = ToClientUrl(new[] {"controllers/detailcontroller"});
+                });
 
             builder.Describe("ProjectionEdit")
-                   .Configure(descriptor => {
-                       descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/{Id:[0-9a-zA-Z]+}";
-                       descriptor.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
+                .Configure(descriptor => {
+                    descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/{Id:[0-9a-zA-Z]+}";
+                })
+                .View(view => {
+                    view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                                                 var url = 'SystemAdmin/Projections/Edit/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
-                       descriptor.Controller = "ProjectionDetailCtrl";
-                       descriptor.Dependencies = new[] {"controllers/detailcontroller"};
-                   });
+                    view.Controller = "ProjectionDetailCtrl";
+                    view.Dependencies = ToClientUrl(new[] {"controllers/detailcontroller"});
+                });
         }
     }
 }

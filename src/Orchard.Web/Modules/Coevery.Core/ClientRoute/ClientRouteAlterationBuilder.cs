@@ -19,6 +19,15 @@ namespace Coevery.Core.ClientRoute {
             return this;
         }
 
+        public ClientRouteAlterationBuilder View(Action<ClientViewDescriptor> action) {
+            Configure(descriptor => {
+                var viewDescriptor = new ClientViewDescriptor();
+                action(viewDescriptor);
+                descriptor.Views.Add(viewDescriptor);
+            });
+            return this;
+        }
+
         public ClientRouteAlteration Build() {
             return new ClientRouteAlteration(_routeName, _feature, _configurations.ToArray());
         }

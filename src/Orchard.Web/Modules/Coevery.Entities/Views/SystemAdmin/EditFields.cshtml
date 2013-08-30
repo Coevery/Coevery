@@ -6,10 +6,6 @@
     var settings = Model.Settings.GetModel<FieldSettings>(fieldSettingsPrefix);
 }
 
-@*if (Model.FieldDefinition.Name == "OptionSetField") {
-    Script.Require("OptionItem");
-}*@
-
 <header id="page-title">
     <h1 class="pull-left">@T("Field Detail") <span>Edit field information</span></h1>
 </header>
@@ -96,9 +92,7 @@
                         </section>
                     </fieldset>
                     <fieldset>
-                        <legend>Field Information</legend>
-                        <div ui-view></div>
-                        
+                        <legend>Field Information</legend>                      
                         @{Html.RenderTemplates(Model.Templates);}
                     </fieldset>
                     @Html.Hidden(fieldSettingsPrefix + ".IsSystemField", Model.Settings[fieldSettingsPrefix + ".IsSystemField"])

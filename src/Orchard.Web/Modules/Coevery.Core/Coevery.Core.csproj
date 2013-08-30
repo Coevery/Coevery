@@ -107,6 +107,7 @@
     <Compile Include="ClientRoute\ClientRouteDescriptor.cs" />
     <Compile Include="ClientRoute\ClientRouteDefinitionBuilder.cs" />
     <Compile Include="ClientRoute\ClientRouteTableBuilder.cs" />
+    <Compile Include="ClientRoute\ClientViewDescriptor.cs" />
     <Compile Include="ClientRoute\DefaultClientRouteTableManager.cs" />
     <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
     <Compile Include="ContentPartFieldStorage\DefaultContentPartFieldStorageProvider.cs" />

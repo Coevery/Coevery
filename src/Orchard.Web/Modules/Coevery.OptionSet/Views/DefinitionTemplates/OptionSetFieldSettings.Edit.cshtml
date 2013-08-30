@@ -1,82 +1,22 @@
 ﻿@using Coevery.OptionSet.Settings
 @model OptionSetFieldSettings        
-
-<section data-ng-controller="OptionItemsCtrl" data-ng-init="optionSetId='@Model.OptionSetId';getOptionItems()">
-    <section class="control-group data-row">
-        <div class="clearfix">
-            <btn-actions>
-                <button class="btn btn-success" data-ng-click="add()">
-                    <i class="icon-plus"></i>&nbsp;Add
-                </button>
-            </btn-actions>
-        </div>
-        <div class="row-fluid">
-            <section class="gridStyle" data-ng-grid="gridOptions"></section>
-        </div>
-    </section>
-
+<section>
     <section class="control-group data-row">
         <label class="control-label">@T("List mode")</label>
         <div class="controls">
             <select id="@Html.FieldIdFor(m => m.ListMode)" name="@Html.FieldNameFor(m => m.ListMode)">
                 @Html.SelectOption(ListMode.Dropdown, Model.ListMode == ListMode.Dropdown, T("Dropdown list").ToString())
                 @Html.SelectOption(ListMode.Radiobutton, Model.ListMode == ListMode.Radiobutton, T("Radio button list").ToString())
-                @Html.SelectOption(ListMode.Listbox, Model.ListMode == ListMode.Listbox, T("Listbox").ToString())
+                @*@Html.SelectOption(ListMode.Listbox, Model.ListMode == ListMode.Listbox, T("Listbox").ToString())*@
                 @Html.SelectOption(ListMode.Checkbox, Model.ListMode == ListMode.Checkbox, T("Checkbox").ToString())
             </select>
         </div>
     </section>
 
-    <section id="deleteModal" class="modal hide fade" tabindex="-1">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h3>Confirm</h3>
-        </div>
-        <div class="modal-body">
-            <p>You really want to delete this item?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">No</button>
-            <button class="btn btn-primary" data-ng-click="deleteItem()">Yes</button>
-        </div>
-    </section>
-
-    <section id="editModal" class="modal hide fade" tabindex="-1">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <h3>Item</h3>
-        </div>
-        <div class="modal-body">
-            <div class="form-horizontal">
-                <div class="control-group">
-                    <label class="control-label" for="inputValue">Title Name</label>
-                    <div class="controls">
-                        <input type="hidden" data-ng-model="itemId"/>
-                        <input id="inputValue" type="text" data-ng-model="itemValue" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputIsSelectable">Is Selectable</label>
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input id="inputIsSelectable" type="checkbox" data-ng-model="itemSelectable" />
-                        </label>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputWeight">Weight</label>
-                    <div class="controls">
-                        <input id="inputWeight" type="text" data-ng-model="itemWeight" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">No</button>
-            <button class="btn btn-primary" data-ng-click="editFunc()">Yes</button>
-        </div>
-    </section>
-
     @Html.HiddenFor(model => model.OptionSetId)
 </section>
+<div ui-view data-ng-init="optionSetId=@Model.OptionSetId">
+</div>
+
+
 

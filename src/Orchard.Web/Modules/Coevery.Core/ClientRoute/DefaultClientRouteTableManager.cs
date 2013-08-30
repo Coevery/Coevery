@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using Autofac.Features.Metadata;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Orchard.Caching;
 using Orchard.Environment.Extensions.Models;
@@ -12,15 +13,15 @@ using Orchard.Utility.Extensions;
 
 namespace Coevery.Core.ClientRoute {
     public class DefaultClientRouteTableManager : IClientRouteTableManager {
-        private readonly IEnumerable<Meta<IClientRouteProvider>> _bindingStrategies;
+        private readonly IEnumerable<Meta<IClientRouteProvider>> _clientRouteProviders;
         private readonly ICacheManager _cacheManager;
         private readonly IParallelCacheContext _parallelCacheContext;
 
         public DefaultClientRouteTableManager(
-            IEnumerable<Meta<IClientRouteProvider>> bindingStrategies,
+            IEnumerable<Meta<IClientRouteProvider>> clientRouteProviders,
             ICacheManager cacheManager,
             IParallelCacheContext parallelCacheContext) {
-            _bindingStrategies = bindingStrategies;
+            _clientRouteProviders = clientRouteProviders;
             _cacheManager = cacheManager;
             _parallelCacheContext = parallelCacheContext;
             Logger = NullLogger.Instance;
@@ -33,13 +34,13 @@ namespace Coevery.Core.ClientRoute {
             //return _cacheManager.Get<string, object>("ClientRouteTable", x => {
                 Logger.Information("Start building shape table");
 
-                var alterationSets = _parallelCacheContext.RunInParallel(_bindingStrategies, bindingStrategy => {
-                    Feature strategyDefaultFeature = bindingStrategy.Metadata.ContainsKey("Feature") ?
-                                                         (Feature) bindingStrategy.Metadata["Feature"] :
+                var alterationSets = _parallelCacheContext.RunInParallel(_clientRouteProviders, provider => {
+                    Feature feature = provider.Metadata.ContainsKey("Feature") ?
+                                                         (Feature) provider.Metadata["Feature"] :
                                                          null;
 
-                    var builder = new ClientRouteTableBuilder(strategyDefaultFeature);
-                    bindingStrategy.Value.Discover(builder);
+                    var builder = new ClientRouteTableBuilder(feature);
+                    provider.Value.Discover(builder);
                     return builder.BuildAlterations().ToReadOnlyCollection();
                 });
 
@@ -67,8 +68,6 @@ namespace Coevery.Core.ClientRoute {
                 var descriptor = new ClientRouteDescriptor {RouteName = node.Name};
                 foreach (var alteration in alterations.Where(a => a.RouteName == node.FullName).ToList()) {
                     var feature = alteration.Feature;
-                    var basePath = VirtualPathUtility.AppendTrailingSlash(feature.Descriptor.Extension.Location + "/" + feature.Descriptor.Extension.Id);
-                    descriptor.BaseUrl = basePath;
                     alteration.Alter(descriptor);
                 }
 
@@ -87,19 +86,35 @@ namespace Coevery.Core.ClientRoute {
             if (descriptor.Abstract != null) {
                 definition.@abstract = descriptor.Abstract;
             }
-            if (descriptor.TemplateUrl != null) {
-                definition.templateUrl = new JRaw(descriptor.TemplateUrl);
+
+            IDictionary<string, object> views = new ExpandoObject();
+            foreach (var viewDescriptor in descriptor.Views) {
+                dynamic view = new ExpandoObject();
+                if (viewDescriptor.TemplateUrl != null) {
+                    view.templateUrl = new JRaw(viewDescriptor.TemplateUrl);
+                }
+                if (viewDescriptor.TemplateProvider != null) {
+                    view.templateProvider = new JRaw(viewDescriptor.TemplateProvider);
+                }
+                if (viewDescriptor.Controller != null) {
+                    view.controller = viewDescriptor.Controller;
+                }
+                views[viewDescriptor.Name ?? string.Empty] = view;
             }
-            if (descriptor.TemplateProvider != null) {
-                definition.templateProvider = new JRaw(descriptor.TemplateProvider);
-            }
-            if (descriptor.Controller != null) {
-                definition.controller = descriptor.Controller;
-            }
+            definition.views = views;
+
+
             if (descriptor.Dependencies != null) {
                 definition.dependencies = descriptor.Dependencies;
             }
             return definition;
+        }
+
+        private string[] ToClientUrl(string baseUrl, IEnumerable<string> scripts) {
+            if (scripts == null) return null;
+            var results = scripts.Select(scriptPath => VirtualPathUtility.Combine(VirtualPathUtility.Combine(baseUrl, "Scripts/"), scriptPath + ".js"))
+                .Select(VirtualPathUtility.ToAbsolute).ToArray();
+            return results;
         }
 
         private static void PopulateChildren(List<ClientRouteNode> routeNodes) {

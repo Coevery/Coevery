@@ -9,44 +9,23 @@ using Orchard.Environment.Extensions.Models;
 
 namespace Coevery.Core.ClientRoute {
     public interface IClientRouteProvider : IDependency {
+        Feature Feature { get; }
         void Discover(ClientRouteTableBuilder builder);
     }
 
-    //public abstract class ClientRouteProviderBase : IClientRouteProvider {
+    public abstract class ClientRouteProviderBase : IClientRouteProvider {
 
-    //    private readonly string _prefix;
+        public Feature Feature { get; set; }
 
-    //    protected ClientRouteProviderBase(string prefix) {
-    //        _prefix = prefix;
-    //    }
+        public abstract void Discover(ClientRouteTableBuilder builder);
 
-    //    public void Discover(ClientRouteTableBuilder builder) {
-    //        builder.Describe(_prefix + "List")
-    //               .Configure(descriptor => {
-    //                   descriptor.UseDefaultUrl = true;
-    //                   descriptor.TemplateUrl = "'SystemAdmin/{0}/List'";
-    //                   descriptor.Controller = _prefix + "ListCtrl";
-    //                   descriptor.Dependencies = new[] {"controllers/listcontroller"};
-    //               });
-
-    //        builder.Describe(_prefix + "Create")
-    //               .Configure(descriptor => {
-    //                   descriptor.UseDefaultUrl = true;
-    //                   descriptor.Url = "/Create";
-    //                   descriptor.TemplateUrl = "'SystemAdmin/{0}/Create'";
-    //                   descriptor.Controller = _prefix + "EditCtrl";
-    //                   descriptor.Dependencies = new[] {"controllers/editcontroller"};
-    //               });
-    //        builder.Describe(_prefix + "Detail")
-    //               .Configure(descriptor => {
-    //                   descriptor.UseDefaultUrl = true;
-    //                   descriptor.Url = "/{Id:[0-9a-zA-Z]+}";
-    //                   descriptor.TemplateUrl = "function(params) { return 'SystemAdmin/{0}/Detail/' + params.Id;}";
-    //                   descriptor.Controller = _prefix + "DetailCtrl";
-    //                   descriptor.Dependencies = new[] {"controllers/detailcontroller"};
-    //               });
-
-    //    }
-
-    //}
+        protected string[] ToClientUrl(IEnumerable<string> scripts) {
+            var basePath = VirtualPathUtility.AppendTrailingSlash(Feature.Descriptor.Extension.Location + "/" + Feature.Descriptor.Extension.Id);
+            if (scripts == null) return null;
+            var results = scripts.Select(scriptPath =>
+                VirtualPathUtility.Combine(VirtualPathUtility.Combine(basePath, "Scripts/"), scriptPath + ".js"))
+                .Select(VirtualPathUtility.ToAbsolute).ToArray();
+            return results;
+        }
+    }
 }

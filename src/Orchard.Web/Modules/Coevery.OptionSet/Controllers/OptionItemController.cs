@@ -26,8 +26,8 @@ namespace Coevery.OptionSet.Controllers {
         public IOrchardServices Services { get; set; }
 
         // GET api/<controller>
-        public object Get(int setId) {
-            var result = _optionSetService.GetOptionItems(setId);
+        public object Get(int optionSetId) {
+            var result = _optionSetService.GetOptionItems(optionSetId);
             if (!result.Any()) {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }

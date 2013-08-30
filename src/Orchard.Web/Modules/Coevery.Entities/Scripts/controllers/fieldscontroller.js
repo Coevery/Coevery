@@ -108,11 +108,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.edit = function (fieldName, fieldType) {
-                    if (fieldType == "OptionSet Field") {
-                        $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: fieldName });
-                    } else {
-                        $detour.transitionTo('FieldEdit', { EntityName: entityName, FieldName: fieldName });
-                    }
+                    $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: fieldName });
                 };
                 $scope.gotoDependency = function () {
                     $detour.transitionTo('FieldDependencyList', { EntityName: entityName });

@@ -210,9 +210,6 @@
     <Content Include="Views\SystemAdmin\EditDependency.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\Items.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\SystemAdmin\EditFields.cshtml" />
   </ItemGroup>
   <PropertyGroup>

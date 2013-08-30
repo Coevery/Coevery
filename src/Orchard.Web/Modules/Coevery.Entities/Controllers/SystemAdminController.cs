@@ -427,11 +427,6 @@ namespace Coevery.Entities.Controllers {
             ModelState.AddModelError(key, errorMessage.ToString());
         }
 
-        public ActionResult Items(string id, string fieldName)
-        {
-            return View();
-        }
-
         public ActionResult DependencyList(string id)
         {
             return View();

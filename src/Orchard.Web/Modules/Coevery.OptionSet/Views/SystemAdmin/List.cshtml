@@ -1,21 +1,13 @@
-﻿
-<section id="main-content">
-    <div class="row-fluid">
-        <div id="page-toolbar">
+﻿<section class="row-fluid related-list">
+    <header>
+        <h5>Option Items</h5>
+        <div class="btn-toolbar">
             <button class="btn btn-success" data-ng-click="add()">
                 <i class="icon-plus"></i>&nbsp;Add
             </button>
         </div>
-    </div>
-
-    <div class="row-fluid">
-        <div class="widget">
-            <div class="widget-content">
-                <section class="gridStyle" data-ng-grid="gridOptions"></section>
-            </div>
-        </div>
-    </div>     
-    
+    </header>
+    <section class="gridStyle" data-ng-grid="gridOptions"></section>
 </section>
 
 <section id="deleteModal" class="modal hide fade" tabindex="-1">
@@ -28,7 +20,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal">No</button>
-        <button class="btn btn-primary" ng-click="deleteItem()">Yes</button>
+        <button class="btn btn-primary" data-ng-click="deleteItem()">Yes</button>
     </div>
 </section>
 
@@ -40,29 +32,30 @@
     <div class="modal-body">
         <div class="form-horizontal">
             <div class="control-group">
-                <label class="control-label" for="inputValue">Value</label>
+                <label class="control-label" for="inputValue">Title Name</label>
                 <div class="controls">
-                    <input id="inputValue" type="text" ng-model="itemValue" />
+                    <input type="hidden" data-ng-model="itemId" />
+                    <input id="inputValue" type="text" data-ng-model="itemValue" />
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputIsDefault">Is Default</label>
+                <label class="control-label" for="inputIsSelectable">Is Selectable</label>
                 <div class="controls">
                     <label class="checkbox">
-                        <input id="inputIsDefault" type="checkbox" ng-model="itemIsDefault" />
+                        <input id="inputIsSelectable" type="checkbox" data-ng-model="itemSelectable" />
                     </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputWeight">Weight</label>
+                <div class="controls">
+                    <input id="inputWeight" type="text" data-ng-model="itemWeight" />
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal">No</button>
-        <button class="btn btn-primary" ng-click="editFunc()">Yes</button>
+        <button class="btn btn-primary" data-ng-click="editFunc()">Yes</button>
     </div>
 </section>
-
-<script>
-    $(function() {
-
-    });
-</script>
