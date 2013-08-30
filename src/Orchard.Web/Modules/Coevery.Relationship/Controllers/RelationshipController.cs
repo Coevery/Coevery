@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -28,19 +27,18 @@ namespace Coevery.Relationship.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The entity doesn't exist!");
             }
             if (temp.Length == 0) {
-                return null;
+                return Request.CreateResponse(HttpStatusCode.NoContent);
             }
-            return JsonConvert.SerializeObject((from record in temp
-                                                   select new {
-                                                       ContentId = record.Id,
-                                                       Name = record.Name,
-                                                       PrimaryEntity = record.PrimaryEntity.Name,
-                                                       RelatedEntity = record.RelatedEntity.Name,
-                                                       Type = ((RelationshipType)record.Type).ToString()
-                                                   }).ToArray());
+            return (from record in temp
+                    select new {
+                        ContentId = record.Id,
+                        Name = record.Name,
+                        PrimaryEntity = record.PrimaryEntity.Name,
+                        RelatedEntity = record.RelatedEntity.Name,
+                        Type = ((RelationshipType) record.Type).ToString()
+                    }).ToArray();
         }
 
-        [HttpPost]
         public HttpResponseMessage Delete(int relationshipId) {
             if (relationshipId <= 0) {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Id");

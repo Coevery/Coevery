@@ -118,7 +118,7 @@ namespace Coevery.Relationship.Services {
         }
 
         public RelationshipRecord[] GetRelationships(string entityName) {
-            var entity = _contentPartRepository.Table.SingleOrDefault(part => part.Name == entityName);
+            var entity = _contentPartRepository.Table.FirstOrDefault(part => part.Name == entityName);
             if (entity == null || entity.Id == 0) {
                 return null;
             }
@@ -132,10 +132,10 @@ namespace Coevery.Relationship.Services {
         #region CreateMethods
 
         public int CreateOneToManyRelationship(string fieldName, string relationName, string primaryEntityName, string relatedEntityName) {
-            var primaryEntity = _contentPartRepository.Table.SingleOrDefault(entity => entity.Name == primaryEntityName);
-            var relatedEntity = _contentPartRepository.Table.SingleOrDefault(entity => entity.Name == relatedEntityName);
+            var primaryEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == primaryEntityName);
+            var relatedEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == relatedEntityName);
 
-            var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.SingleOrDefault(field => field.Name == fieldName);
+            var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.FirstOrDefault(field => field.Name == fieldName);
             if (fieldRecord == null || fieldRecord.Id == 0) {
                 return -1;
             }
@@ -164,8 +164,8 @@ namespace Coevery.Relationship.Services {
             if (oneToMany == null) {
                 return "Invalid model.";
             }
-            var primaryEntity = _contentPartRepository.Table.SingleOrDefault(entity => entity.Name == oneToMany.PrimaryEntity);
-            var relatedEntity = _contentPartRepository.Table.SingleOrDefault(entity => entity.Name == oneToMany.RelatedEntity);
+            var primaryEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == oneToMany.PrimaryEntity);
+            var relatedEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == oneToMany.RelatedEntity);
             if (primaryEntity == null || relatedEntity == null
                 || primaryEntity.Id == 0 || relatedEntity.Id == 0
                 || primaryEntity.Id == relatedEntity.Id) {
@@ -196,7 +196,7 @@ namespace Coevery.Relationship.Services {
             });
             _contentDefinitionService.AddFieldToPart(oneToMany.FieldName, oneToMany.FieldLabel, "ReferenceField", relatedEntity.Name);
             _contentDefinitionService.AlterField(relatedEntity.Name, oneToMany.FieldName, updateModel);
-            var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.SingleOrDefault(field => field.Name == oneToMany.FieldName);
+            var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.FirstOrDefault(field => field.Name == oneToMany.FieldName);
 
             _oneToManyRepository.Create(new OneToManyRelationshipRecord {
                 DeleteOption = (byte) oneToMany.DeleteOption,

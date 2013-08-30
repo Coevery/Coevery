@@ -3,8 +3,9 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'RelationshipsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams',
-            function ($rootScope, $scope, logger, $detour, $stateParams) {
+        ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams',
+            function ($rootScope, $scope, logger, $detour, $resource, $stateParams) {
+                var relationshipDataService = $resource('api/relationship/Relationship');
 
                 var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
                     '<ul class="row-actions pull-right hide">' +
@@ -29,19 +30,15 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);
-                $scope.getAllRelationship = function() {
-
-                    $.ajax({
-                        type: 'Get',
-                        url: 'api/relationship/Relationship/Get?EntityName=' + $stateParams.Id,
-                        success: function (result) {
-                            if (result != null && result.toLowerCase()!="null" ) {
-                                $scope.relationships = JSON.parse(result);
-                            }
-                        },
-                        error: function (result) {
-                            logger.error('Get relationships failed:' + result.responseText);
+                $scope.getAllRelationship = function () {
+                    var items = relationshipDataService.query({ EntityName: $stateParams.Id }, function () {
+                        if (items == null || items.toLowerCase == "null") {
+                            return;
                         }
+                        $scope.totalServerItems = items.length;
+                        $scope.relationships = items;
+                    }, function () {
+                        logger.error('Get relationships failed');
                     });
                 };
 
@@ -59,20 +56,13 @@ define(['core/app/detourService'], function (detour) {
                     }
                 };
                 $scope.delete = function (contentId) {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'api/relationship/Relationship/Delete?RelationshipId=' + contentId,
-                        success: function () {
-                            logger.success("Delete relationship success!");
-                            $scope.getAllRelationship();
-                        },
-                        error: function (result) {
-                            logger.error('Delete relationship failed:' + result.responseText);
-                        }
+                    relationshipDataService.delete({ RelationshipId: contentId }, function () {
+                        $scope.getAllRelationship();
+                        logger.success("Delete the item successful.");
+                    }, function (result) {
+                        logger.error("Failed to delete the relationship:" + result.data.Message);
                     });
                 };
-
-                $scope.getAllRelationship();
             }]
     ]);
 });
