@@ -13,9 +13,9 @@ using Orchard.ContentManagement.MetaData.Models;
 
 namespace Coevery.FormDesigner.Controllers {
     public class LayoutController : ApiController {
-        private IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITemplateViewService _templateViewService;
-        private readonly string _alwaysInLayoutKey = "CoeveryTextFieldSettings.AlwaysInLayout";
+        private const string AlwaysInLayoutKey = "CoeveryTextFieldSettings.AlwaysInLayout";
 
         public LayoutController(IContentDefinitionManager contentDefinitionManager,
             ITemplateViewService templateViewService) {
@@ -26,12 +26,13 @@ namespace Coevery.FormDesigner.Controllers {
         // GET api/leads/lead/5
         public virtual object Get(string id) {
             var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
-            if (contentTypeDefinition == null)
+            if (contentTypeDefinition == null) {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
             string layout = contentTypeDefinition.Settings.ContainsKey("Layout")
-                                ? contentTypeDefinition.Settings["Layout"]
-                                : null;
+                ? contentTypeDefinition.Settings["Layout"]
+                : null;
 
             var layoutInfo = new {
                 id,
@@ -47,11 +48,14 @@ namespace Coevery.FormDesigner.Controllers {
             }
 
             var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
-            if (contentTypeDefinition == null)
+            if (contentTypeDefinition == null) {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
             var layout = GetLayout(contentTypeDefinition, data);
-            if (string.IsNullOrEmpty(layout)) return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+            if (string.IsNullOrEmpty(layout)) {
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+            }
             if (contentTypeDefinition.Settings.ContainsKey("Layout")) {
                 contentTypeDefinition.Settings["Layout"] = layout;
             }
@@ -71,9 +75,9 @@ namespace Coevery.FormDesigner.Controllers {
                     .SelectMany(x => x.Columns)
                     .Where(x => x.Field != null)
                     .Select(x => x.Field).ToList();
-                if (partFields.Any(f => f.Settings.ContainsKey(_alwaysInLayoutKey)
-                    && bool.Parse(f.Settings[_alwaysInLayoutKey])
-                    && !fields.Select(x => x.FieldName).Contains(f.Name))) {
+                if (partFields.Any(f => f.Settings.ContainsKey(AlwaysInLayoutKey)
+                                        && bool.Parse(f.Settings[AlwaysInLayoutKey])
+                                        && !fields.Select(x => x.FieldName).Contains(f.Name))) {
                     return string.Empty;
                 }
                 foreach (var field in fields) {
