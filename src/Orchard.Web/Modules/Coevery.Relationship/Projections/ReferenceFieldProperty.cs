@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Coevery.Relationship.Fields;
@@ -95,8 +97,11 @@ namespace Coevery.Relationship.Projections {
             var referenceContentItem = _contentManager.Get(value.Value);
             var contentItemMetadata = _contentManager.GetItemMetadata(referenceContentItem);
 
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            string pluralContentTypeName = pluralService.Pluralize(referenceContentItem.ContentType);
+            
             var linkTag = new TagBuilder("a");
-            linkTag.Attributes.Add("href", _urlHelper.RouteUrl(contentItemMetadata.DisplayRouteValues));
+            linkTag.Attributes.Add("href", "#/" + pluralContentTypeName + "/View/" + value);
             linkTag.InnerHtml = contentItemMetadata.DisplayText;
             return linkTag.ToString();
         }
