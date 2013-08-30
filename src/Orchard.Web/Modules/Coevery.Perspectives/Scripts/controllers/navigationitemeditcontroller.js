@@ -3,14 +3,28 @@ define(['core/app/detourService'], function (detour) {
     detour.registerController([
        'NavigationItemEditCtrl',
        ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http',
-       function ($timeout, $scope, logger, $detour, $stateParams, $resource,$http) {
+       function ($timeout, $scope, logger, $detour, $stateParams, $resource, $http) {
            
+           var checkValid = function (form) {
+               var validator = form.validate();
+               if (!validator) {
+                   return false;
+               }
+               if (!validator.form()) {
+                   return false;
+               }
+               return true;
+           };
+
            $scope.exit = function () {
                $detour.transitionTo('PerspectiveDetail', { Id: $stateParams.Id });
            };
 
-           $scope.save = function () {
+           $scope.save = function () {       
                var form = $("form[name=myForm]");
+               if (!checkValid(form)) {
+                   return null;
+               }
                var promise = $http({
                    url: form.attr('action'),
                    method: "POST",
@@ -19,7 +33,7 @@ define(['core/app/detourService'], function (detour) {
                }).then(function () {
                    logger.success('Save succeeded.');
                }, function (reason) {
-                   logger.success('Save Failed： ' + reason);
+                   logger.error('Save Failed： ' + reason.data);
                });
                return promise;
            };

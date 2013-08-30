@@ -195,6 +195,11 @@ namespace Coevery.Perspectives.Controllers
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             string pluralContentTypeName = pluralService.Pluralize(model.EntityName);
 
+            if (string.IsNullOrWhiteSpace(model.IconClass)) {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content(T("Icon is required.").ToString());
+            }
+
             //add
             var moduleMenuPart = Services.ContentManager.New<MenuPart>("ModuleMenuItem");
 
