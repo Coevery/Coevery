@@ -57,6 +57,7 @@ namespace Coevery.OptionSet.Settings {
                         model.Options.Split(new[] {Environment.NewLine}, StringSplitOptions.None) : new string[] {};
                     var optionSetPart = _contentManager.New<OptionSetPart>("OptionSet");
                     optionSetPart.As<TitlePart>().Title = builder.Name;
+                    optionSetPart.TermTypeName = "OptionItem";
                     _contentManager.Create(optionSetPart, VersionOptions.Published);
 
                     foreach (var option in options) {

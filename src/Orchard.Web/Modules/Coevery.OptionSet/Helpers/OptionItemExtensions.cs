@@ -10,7 +10,8 @@ namespace Coevery.OptionSet.Helpers {
                 Selectable = term.Selectable,
                 Weight= term.Weight,
                 IsChecked = false,
-                ContentItem = term.ContentItem
+                ContentItem = term.ContentItem,
+                OptionSetId = term.OptionSetId
             };
         }
     }

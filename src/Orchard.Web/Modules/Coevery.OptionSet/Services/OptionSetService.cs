@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Coevery.OptionSet.Models;
+using Coevery.OptionSet.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
@@ -139,6 +140,17 @@ namespace Coevery.OptionSet.Services {
             else {
                 _notifier.Warning(T("The term {0} already exists in this taxonomy", termPart.Name));
             }
+        }
+
+        public bool EditOptionItem(OptionItemEntry newItem) {
+            var oldItem = _contentManager.Get(newItem.Id).As<OptionItemPart>();
+            if (oldItem == null) {
+                return false;
+            }
+            oldItem.Name = newItem.Name;
+            oldItem.Selectable = newItem.Selectable;
+            oldItem.Weight = newItem.Weight;
+            return true;
         }
 
         public void DeleteOptionItem(OptionItemPart optionItemPart) {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Coevery.OptionSet.Models;
+using Coevery.OptionSet.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 
@@ -17,6 +18,8 @@ namespace Coevery.OptionSet.Services {
 
         string GenerateTermTypeName(string taxonomyName);
         OptionItemPart NewTerm(OptionSetPart taxonomy);
+        void CreateTerm(OptionItemPart termPart);
+        bool EditOptionItem(OptionItemEntry newItem);
         IEnumerable<OptionItemPart> GetOptionItemsForContentItem(int contentItemId, string field = null);
         void UpdateTerms(ContentItem contentItem, IEnumerable<OptionItemPart> optionItems, string field);
         IEnumerable<IContent> GetContentItems(OptionItemPart term, int skip = 0, int count = 0, string fieldName = null);

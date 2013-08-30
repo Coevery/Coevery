@@ -1,66 +1,82 @@
 ﻿@using Coevery.OptionSet.Settings
-@model OptionSetFieldSettings
-<section class="control-group data-row">
-    <label class="control-label">@T("Options")</label>
-    <div class="controls">
-        @Html.TextAreaFor(m => m.Options, new {@class = "span12", rows = "25", cols = "80", disabled="disabled"})
-        <p class="help-block">@T("Enter an option per line.")</p>
-    </div>
+@model OptionSetFieldSettings        
+
+<section data-ng-controller="OptionItemsCtrl" data-ng-init="optionSetId='@Model.OptionSetId';getOptionItems()">
+    <section class="control-group data-row">
+        <div class="clearfix">
+            <btn-actions>
+                <button class="btn btn-success" data-ng-click="add()">
+                    <i class="icon-plus"></i>&nbsp;Add
+                </button>
+            </btn-actions>
+        </div>
+        <div class="row-fluid">
+            <section class="gridStyle" data-ng-grid="gridOptions"></section>
+        </div>
+    </section>
+
+    <section class="control-group data-row">
+        <label class="control-label">@T("List mode")</label>
+        <div class="controls">
+            <select id="@Html.FieldIdFor(m => m.ListMode)" name="@Html.FieldNameFor(m => m.ListMode)">
+                @Html.SelectOption(ListMode.Dropdown, Model.ListMode == ListMode.Dropdown, T("Dropdown list").ToString())
+                @Html.SelectOption(ListMode.Radiobutton, Model.ListMode == ListMode.Radiobutton, T("Radio button list").ToString())
+                @Html.SelectOption(ListMode.Listbox, Model.ListMode == ListMode.Listbox, T("Listbox").ToString())
+                @Html.SelectOption(ListMode.Checkbox, Model.ListMode == ListMode.Checkbox, T("Checkbox").ToString())
+            </select>
+        </div>
+    </section>
+
+    <section id="deleteModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3>Confirm</h3>
+        </div>
+        <div class="modal-body">
+            <p>You really want to delete this item?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">No</button>
+            <button class="btn btn-primary" data-ng-click="deleteItem()">Yes</button>
+        </div>
+    </section>
+
+    <section id="editModal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Item</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="inputValue">Title Name</label>
+                    <div class="controls">
+                        <input type="hidden" data-ng-model="itemId"/>
+                        <input id="inputValue" type="text" data-ng-model="itemValue" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputIsSelectable">Is Selectable</label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input id="inputIsSelectable" type="checkbox" data-ng-model="itemSelectable" />
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputWeight">Weight</label>
+                    <div class="controls">
+                        <input id="inputWeight" type="text" data-ng-model="itemWeight" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">No</button>
+            <button class="btn btn-primary" data-ng-click="editFunc()">Yes</button>
+        </div>
+    </section>
+
+    @Html.HiddenFor(model => model.OptionSetId)
 </section>
-<section class="control-group data-row">
-    <label class="control-label">@T("List mode")</label>
-    <div class="controls">
-        <select id="@Html.FieldIdFor(m => m.ListMode)" name="@Html.FieldNameFor(m => m.ListMode)">
-            @Html.SelectOption(ListMode.Dropdown, Model.ListMode == ListMode.Dropdown, T("Dropdown list").ToString())
-            @Html.SelectOption(ListMode.Radiobutton, Model.ListMode == ListMode.Radiobutton, T("Radio button list").ToString())
-            @Html.SelectOption(ListMode.Listbox, Model.ListMode == ListMode.Listbox, T("Listbox").ToString())
-            @Html.SelectOption(ListMode.Checkbox, Model.ListMode == ListMode.Checkbox, T("Checkbox").ToString())
-        </select>
-    </div>
-</section>
-@Html.HiddenFor(model => model.OptionSetId)
 
-@using (Script.Foot()) {
-    <script type="text/javascript">
-        //<![CDATA[
-        function insertAtCursor(myField, myValue) {
-            //IE support
-            if (document.selection) {
-                myField.focus();
-                sel = document.selection.createRange();
-                sel.text = myValue;
-            }
-
-                //MOZILLA/NETSCAPE support
-            else if (myField.selectionStart || myField.selectionStart == '0') {
-                var startPos = myField.selectionStart;
-                var endPos = myField.selectionEnd;
-                var restoreTop = myField.scrollTop;
-
-                myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-
-                myField.selectionStart = startPos + myValue.length;
-                myField.selectionEnd = startPos + myValue.length;
-
-                if (restoreTop > 0) {
-                    myField.scrollTop = restoreTop;
-                }
-            }
-            else {
-                myField.value += myValue;
-            }
-        }
-
-        function interceptTabs(evt, control) {
-            var key = evt.keyCode ? evt.keyCode : evt.which ? evt.which : evt.charCode;
-            if (key == 9) {
-                insertAtCursor(control, '\t');
-                return false;
-            }
-            else {
-                return key;
-            }
-        }
-        //]]>
-    </script>
-}

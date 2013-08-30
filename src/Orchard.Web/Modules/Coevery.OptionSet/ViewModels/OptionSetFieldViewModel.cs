@@ -18,6 +18,7 @@ namespace Coevery.OptionSet.ViewModels {
         public bool Selectable { get; set; }
         public int Weight { get; set; }
         public bool IsChecked { get; set; }
+        public int OptionSetId { get; set; }
         public ContentItem ContentItem { get; set; }
     }
 }
