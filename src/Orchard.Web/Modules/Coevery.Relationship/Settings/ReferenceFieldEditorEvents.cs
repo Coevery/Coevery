@@ -80,27 +80,15 @@ namespace Coevery.Relationship.Settings {
                 builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
                 builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
                 builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.RelationshipId", model.RelationshipId.ToString("D"));
-                builder.WithSetting("ReferenceFieldSettings.QueryId", model.QueryId.ToString("D"));
+                builder.WithSetting("ReferenceFieldSettings.RelationshipId", model.RelationshipId.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.QueryId", model.QueryId.ToString(CultureInfo.InvariantCulture));
             }
             yield return DefinitionTemplate(model);
         }
 
-        private string GetContentTypeFilterState(string entityType) {
-            string format = @"<Form>
-                  <Description></Description>
-                  <ContentTypes>{0}</ContentTypes>
-                  <__RequestVerificationToken>POESz5zBfaUfKi7nV-DN7HBjHfMa6SDP08I_cFQu5y6_iV_PXniWPAJQOFVXsajUk2hk_QMrKZ8fLDCxATbMmuJuNUK_rhBRq2DIld2IJ0E-yGca8Jw8Ma_dWrri63fgR5hmVq1rfuOGFtEM1YJaZUSlgOHVe7RH1GKag_vA2nQ1</__RequestVerificationToken>
-                </Form>";
-            return string.Format(format, entityType);
-        }
-
         private int CreateQuery(string entityType) {
-            var queryItem = _contentManager.New("Query");
-            var queryPart = queryItem.As<QueryPart>();
-            _contentManager.Create(queryItem, VersionOptions.Draft);
+            var queryPart = _contentManager.New<QueryPart>("Query");
             var filterGroup = new FilterGroupRecord();
-            queryPart.Record.FilterGroups.Clear();
             queryPart.Record.FilterGroups.Add(filterGroup);
             var filterRecord = new FilterRecord {
                 Category = "Content",
@@ -109,8 +97,13 @@ namespace Coevery.Relationship.Settings {
                 State = GetContentTypeFilterState(entityType)
             };
             filterGroup.Filters.Add(filterRecord);
-            _contentManager.Publish(queryItem);
-            return queryItem.Id;
+            _contentManager.Create(queryPart);
+            return queryPart.Id;
+        }
+
+        private string GetContentTypeFilterState(string entityType) {
+            const string format = @"<Form><Description></Description><ContentTypes>{0}</ContentTypes></Form>";
+            return string.Format(format, entityType);
         }
     }
 }

@@ -230,11 +230,7 @@ namespace Coevery.Projections.Services
 
         private string GetContentTypeFilterState(string entityType)
         {
-            string format = @"<Form>
-                  <Description></Description>
-                  <ContentTypes>{0}</ContentTypes>
-                  <__RequestVerificationToken>POESz5zBfaUfKi7nV-DN7HBjHfMa6SDP08I_cFQu5y6_iV_PXniWPAJQOFVXsajUk2hk_QMrKZ8fLDCxATbMmuJuNUK_rhBRq2DIld2IJ0E-yGca8Jw8Ma_dWrri63fgR5hmVq1rfuOGFtEM1YJaZUSlgOHVe7RH1GKag_vA2nQ1</__RequestVerificationToken>
-                </Form>";
+            const string format = @"<Form><Description></Description><ContentTypes>{0}</ContentTypes></Form>";
             return string.Format(format, entityType);
         }
 
@@ -276,21 +272,20 @@ namespace Coevery.Projections.Services
                   <StripHtmlTags>false</StripHtmlTags>
                   <TrimWhiteSpace>false</TrimWhiteSpace>
                   <PreserveLines>false</PreserveLines>
-                  <__RequestVerificationToken>ciDAMpqWekeZ9akUdP45wrGCR-RbzW3fKdnX3IztKQZd1zVqvBQLpNHgueKedAEt6YyEZ3kGF1zFcuvCaFedP2XovGdniK5wpqg5TMcxICtLElQDw14kWyePWJx4KI4Wqw8usNPgLFlXNRSQWIcBbv3JNZ5ITLKNigxo4znvIrk1</__RequestVerificationToken>
                     </Form>";
             return string.Format(format, filedName);
         }
 
         private string GetLayoutState(int queryId, int columnCount, string desc) {
             var datas = new Dictionary<string, string> {
-                {"QueryId", queryId.ToString()},
+                {"QueryId", queryId.ToString(CultureInfo.InvariantCulture)},
                 {"Category", "Html"},
                 {"Type", "ngGrid"},
                 {"Description", desc},
                 {"Display", "1"},
                 {"DisplayType", "Summary"},
                 {"Alignment", "horizontal"},
-                {"Columns", columnCount.ToString()},
+                {"Columns", columnCount.ToString(CultureInfo.InvariantCulture)},
                 {"GridId", string.Empty},
                 {"GridClass", string.Empty},
                 {"RowClass", string.Empty}
