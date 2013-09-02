@@ -22,30 +22,31 @@
         <div class="span12">
             <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                              new { @class = "form-horizontal no-border form-fontstyle", @name = "myForm", @ng_submit = "save()", @id = "field-info-form" })) {
+                                              new { @class = "form-horizontal no-border edit-mode", @name = "myForm", @ng_submit = "save()", @id = "field-info-form" }))
+                {
                     @Html.ValidationSummary()
                     <fieldset>
                         <legend>General Information</legend>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label" for="DisplayName">@T("Field Label")</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", autofocus = "autofocus" })
                             </div>
                         </section>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label" for="Name">@T("Field Name")</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.Name, new { @class = "span12", disabled = "disabled" })
                                 @Html.HiddenFor(m => m.Name)
                             </div>
                         </section>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label" for="FieldTypeName">@T("Field Type")</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.FieldDefinition.Name, new { @class = "span12", disabled = "disabled" })
                             </div>
                         </section>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label">
                                 Options
                             </label>
@@ -82,7 +83,7 @@
                                 </label>
                             </div>
                         </section>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label" for="helpText">
                                 @T("Help Text")
                             </label>

@@ -8,7 +8,7 @@
 @model OneToManyRelationshipModel
     
 @helper DisplayInput(string label, HtmlString input) {
-    <section class="control-group">
+    <section class="data-row control-group">
         <label class="control-label">
             @label
         </label>
@@ -55,7 +55,8 @@
 
     <div class="row-fluid">
         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post
-                                              , new { @class = "form-horizontal no-border form-fontstyle", id = "onetomany-form" })) {
+                                              , new { @class = "form-horizontal no-border edit-mode", id = "onetomany-form" }))
+        {
             @Html.ValidationSummary()
             @Html.HiddenFor(model => model.IsCreate, new { id = "IsCreate" })
 
@@ -79,7 +80,7 @@
                                   , Html.TextBoxFor(model => model.RelatedEntity, new { @class = "span12 related-entity", disabled = "disabled" }))
                 }
 
-                <section class="control-group">
+                <section class="data-row control-group">
                     <label class="control-label">
                         What to do if the lookup record is deleted?
                     </label>
@@ -107,7 +108,7 @@
                               , Html.TextBoxFor(model => model.RelatedListLabel, new { @class = "span12" }))
 
                 
-                <section class="control-group">
+                <section class="data-row control-group">
                     <div class="controls">
                         <label class="checkbox">
                             <input type="checkbox" ng-model="showRelatedList" value="true" id="showRelatedList"
@@ -117,7 +118,7 @@
                     </div>
                 </section>              
 
-                <section class="control-group" ng-show="showRelatedList">
+                <section class="data-row control-group" ng-show="showRelatedList">
                     <div class="controls">
                         @Html.ListBoxFor(m=>m.ColumnFieldList, Model.Fields)
                     </div>
@@ -131,7 +132,7 @@
                     @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new { @class = "span12" }))
                     @DisplayInput("Field Name", Html.TextBoxFor(model => model.FieldName, new { @class = "span12" }))
 
-                    <section class="control-group">
+                    <section class="data-row control-group">
                         <label class="control-label">
                             Options
                         </label>
