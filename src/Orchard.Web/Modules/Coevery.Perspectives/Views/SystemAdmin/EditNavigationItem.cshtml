@@ -20,28 +20,29 @@
             <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Url.Action("EditNavigationItem", new { perspectiveId = Model.PrespectiveId, navigationId = Model.NavigationId, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                   FormMethod.Post,
-                                                  new { @class = "form-horizontal form-fontstyle", @name = "myForm", @ng_submit = "save()" })) {
+                                                  new { @class = "form-horizontal edit-mode", @name = "myForm", @ng_submit = "save()" }))
+                {
                     <fieldset>
                         <legend>General Information</legend>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label">Title</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.Title, new { @readonly = "readonly", @class = "span12" })
                             </div>
                         </section>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label">Entity</label>
                             <div class="controls">
                                 @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
                             </div>
                         </section>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label">Color</label>
                             <div class="controls">
                                 <input id="color" type="text" class="minicolors">
                             </div>
                         </section>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label">Icon</label>
                             <div class="controls">
                                 @*<input type="file" id="input04" data-provide="fileinput">*@

@@ -17,10 +17,11 @@
             <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
                                                               FormMethod.Post,
-                                                              new { @class = "form-horizontal form-fontstyle", @name = "myForm" })) {
+                                                              new { @class = "form-horizontal edit-mode", @name = "myForm" }))
+                {
                     <fieldset>
                         <legend>General Information</legend>
-                        <section class="control-group">
+                        <section class="data-row control-group">
                             <label class="control-label">Title</label>
                             <div class="controls">
                                 @Html.TextBoxFor(m => m.Title, new { @class = "span12" })
