@@ -3,6 +3,6 @@ using Orchard;
 
 namespace Coevery.Core.ClientRoute {
     public interface IClientRouteTableManager : IDependency {
-        object GetRouteTable();
+        object GetRouteTable(bool isFrontEnd);
     }
 }

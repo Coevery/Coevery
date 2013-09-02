@@ -29,15 +29,16 @@ namespace Coevery.Core.ClientRoute {
 
         public ILogger Logger { get; set; }
 
-        public object GetRouteTable() {
+        public object GetRouteTable(bool isFrontEnd) {
 
             //return _cacheManager.Get<string, object>("ClientRouteTable", x => {
                 Logger.Information("Start building shape table");
 
-                var alterationSets = _parallelCacheContext.RunInParallel(_clientRouteProviders, provider => {
-                    Feature feature = provider.Metadata.ContainsKey("Feature") ?
-                                                         (Feature) provider.Metadata["Feature"] :
-                                                         null;
+            var alterationSets = _parallelCacheContext.RunInParallel(
+                _clientRouteProviders.Where(provider => provider.Value.IsFrontEnd == isFrontEnd), provider => {
+                    var feature = provider.Metadata.ContainsKey("Feature") ?
+                                      (Feature) provider.Metadata["Feature"] :
+                                      null;
 
                     var builder = new ClientRouteTableBuilder(feature);
                     provider.Value.Discover(builder);

@@ -286,7 +286,11 @@
     <Content Include="web.config" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Scripts\angular-detour.amd.min.js.map">
+      <DependentUpon>angular-detour.amd.js</DependentUpon>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

@@ -155,6 +155,7 @@
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="ClientRoute\IClientRouteProvider.cs" />
     <Compile Include="Serializer.cs" />
+    <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />

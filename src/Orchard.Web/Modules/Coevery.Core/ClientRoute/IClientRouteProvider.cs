@@ -10,12 +10,13 @@ using Orchard.Environment.Extensions.Models;
 namespace Coevery.Core.ClientRoute {
     public interface IClientRouteProvider : IDependency {
         Feature Feature { get; }
+        bool IsFrontEnd { get; }
         void Discover(ClientRouteTableBuilder builder);
     }
 
     public abstract class ClientRouteProviderBase : IClientRouteProvider {
-
         public Feature Feature { get; set; }
+        public bool IsFrontEnd { get; set; }
 
         public abstract void Discover(ClientRouteTableBuilder builder);
 

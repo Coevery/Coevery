@@ -8,7 +8,8 @@
                 lazy: {
                     enabled: true,
                     routeUrl: 'api/CoeveryCore/Route',
-                    stateUrl: 'api/CoeveryCore/State'
+                    stateUrl: 'api/CoeveryCore/State',
+                    routeParameter: 'isFront=false&r'
                 },
                 crossDomain: true,
                 httpMethod: 'GET'

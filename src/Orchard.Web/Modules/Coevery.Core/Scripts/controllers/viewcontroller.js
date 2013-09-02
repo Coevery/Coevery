@@ -1,8 +1,8 @@
-﻿define(['core/app/couchPotatoService', 'core/services/historyservice'], function (couchPotato) {
-    couchPotato.registerController([
+﻿define(['core/app/detourService', 'core/services/historyservice'], function (detour) {
+    detour.registerController([
         'GeneralViewCtrl',
-        ['$timeout', '$rootScope', '$scope', 'logger', '$state', '$stateParams', '$element', 'historyService',
-            function ($timeout, $rootScope, $scope, logger, $state, $stateParams, $element, historyService) {
+        ['$timeout', '$rootScope', '$scope', 'logger', '$detour', '$stateParams', 'historyService',
+            function ($timeout, $rootScope, $scope, logger, $detour, $stateParams, historyService) {
                 var moduleName = $stateParams.Module;
                 var id = $stateParams.Id;
                 $scope.moduleName = moduleName;
@@ -67,10 +67,10 @@
 
 
                 $scope.exit = function () {
-                    $state.transitionTo('List', { Module: moduleName });
+                    $detour.transitionTo('List', { Module: moduleName });
                 };
                 $scope.edit = function () {
-                    $state.transitionTo('Detail', { Module: moduleName, Id: id });
+                    $detour.transitionTo('Detail', { Module: moduleName, Id: id });
                 };
             }]
     ]);

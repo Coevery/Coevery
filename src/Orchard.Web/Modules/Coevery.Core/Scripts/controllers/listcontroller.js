@@ -1,8 +1,8 @@
-﻿define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice'], function (couchPotato) {
-    couchPotato.registerController([
+﻿define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice'], function (detour) {
+    detour.registerController([
       'GeneralListCtrl',
-      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService',
-      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, $location,commonDataService, columnDefinitionService, viewDefinitionService) {
+      ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService',
+      function ($rootScope, $scope, $parse, logger, $detour, $resource, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService) {
           var moduleName = $rootScope.$stateParams.Module;
           var primaryKeyGetter = $parse('ContentId');
           $scope.toolButtonDisplay = false;
@@ -180,7 +180,7 @@
 
           $scope.add = function () {
               $rootScope.Search = $location.$$search;
-              $state.transitionTo('Create', { Module: moduleName});
+              $detour.transitionTo('Create', { Module: moduleName });
           };
 
           $scope.edit = function (id) {
@@ -188,14 +188,14 @@
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
               $rootScope.Search = $location.$$search;
-              $state.transitionTo('Detail', { Module: moduleName, Id: id });
+              $detour.transitionTo('Detail', { Module: moduleName, Id: id });
           };
           $scope.view = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
               $rootScope.Search = $location.$$search;
-              $state.transitionTo('View', { Module: moduleName, Id: id });
+              $detour.transitionTo('View', { Module: moduleName, Id: id });
           };
       }]
     ]);

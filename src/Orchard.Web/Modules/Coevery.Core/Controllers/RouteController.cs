@@ -21,11 +21,11 @@ namespace Coevery.Core.Controllers
         }
 
         // GET api/route
-        public HttpResponseMessage Get() {
+        public HttpResponseMessage Get(bool isFront) {
 
             var routes = new {
                 f = "/404",
-                t = _clientRouteTableManager.GetRouteTable()
+                t = _clientRouteTableManager.GetRouteTable(isFront)
             };
 
             var json = JsonConvert.SerializeObject(routes);

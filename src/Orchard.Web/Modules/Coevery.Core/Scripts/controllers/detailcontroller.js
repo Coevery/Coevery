@@ -1,8 +1,8 @@
-﻿define(['core/app/couchPotatoService', 'core/services/commondataservice'], function (couchPotato) {
-    couchPotato.registerController([
+﻿define(['core/app/detourService', 'core/services/commondataservice'], function (detour) {
+    detour.registerController([
       'GeneralDetailCtrl',
-      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http',
-      function ($timeout, $rootScope, $scope, $q, logger, $state, $http) {
+      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$detour', '$http',
+      function ($timeout, $rootScope, $scope, $q, logger, $detour, $http) {
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
           var validator = $("form[name=myForm]").validate();
@@ -39,11 +39,11 @@
 
           $scope.edit = function () {
               var id = $rootScope.$stateParams.Id;
-              $state.transitionTo('Detail', { Module: moduleName, Id: id });
+              $detour.transitionTo('Detail', { Module: moduleName, Id: id });
           };
 
           $scope.exit = function () {
-              $state.transitionTo('List', { Module: moduleName });
+              $detour.transitionTo('List', { Module: moduleName });
           };
 
           $scope.$on('$viewContentLoaded', function () {
