@@ -2044,6 +2044,10 @@
   <ItemGroup>
     <Content Include="Scripts\js\demo\picklist.min.js.map">
       <DependentUpon>picklist.js</DependentUpon>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LogOn.cshtml" />
+  </ItemGroup>
     </Content>
   </ItemGroup>
   <PropertyGroup>

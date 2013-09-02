@@ -44,7 +44,7 @@ namespace Orchard.Users.Controllers {
         public ILogger Logger { get; set; }
         public Localizer T { get; set; }
 
-        [AlwaysAccessible]
+        [AlwaysAccessible, Themed(Enabled = false)]
         public ActionResult AccessDenied() {
             var returnUrl = Request.QueryString["ReturnUrl"];
             var currentUser = _authenticationService.GetAuthenticatedUser();
@@ -64,7 +64,7 @@ namespace Orchard.Users.Controllers {
             return View();
         }
 
-        [AlwaysAccessible]
+        [AlwaysAccessible, Themed(Enabled = false)]
         public ActionResult LogOn() {
             if (_authenticationService.GetAuthenticatedUser() != null)
                 return Redirect("~/");
@@ -74,7 +74,7 @@ namespace Orchard.Users.Controllers {
         }
 
         [HttpPost]
-        [AlwaysAccessible]
+        [AlwaysAccessible, Themed(Enabled = false)]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings",
             Justification = "Needs to take same parameter type as Controller.Redirect()")]
         public ActionResult LogOn(string userNameOrEmail, string password, string returnUrl, bool rememberMe = false) {
