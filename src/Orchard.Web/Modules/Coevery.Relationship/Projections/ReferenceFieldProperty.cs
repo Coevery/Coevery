@@ -69,37 +69,38 @@ namespace Coevery.Relationship.Projections {
                                     );
                             });
 
-                        membersContext.Member(null, typeof(int), T("Value"), T("The content item id referenced by this field."));
+                        membersContext.Member(null, typeof(int?), T("Value"), T("The content item id referenced by this field."));
                     }
                 }
             }
         }
 
         public dynamic Render(PropertyContext context, ContentItem contentItem, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-            var p = contentItem.Parts.FirstOrDefault( x => x.PartDefinition.Name == part.Name);
+            var p = contentItem.Parts.FirstOrDefault(x => x.PartDefinition.Name == part.Name);
 
-            if(p == null) {
+            if (p == null) {
                 return String.Empty;
             }
 
             var f = p.Fields.OfType<ReferenceField>().FirstOrDefault(x => x.Name == field.Name);
 
-            if(f == null) {
+            if (f == null) {
                 return String.Empty;
             }
 
-            var value = f.Storage.Get<int?>(storageName);
+            var value = f.Storage.Get<string>(storageName);
 
-            if (value == null) {
+            int id;
+            if (value == null || !int.TryParse(value, out id)) {
                 return null;
             }
 
-            var referenceContentItem = _contentManager.Get(value.Value);
+            var referenceContentItem = _contentManager.Get(id);
             var contentItemMetadata = _contentManager.GetItemMetadata(referenceContentItem);
 
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             string pluralContentTypeName = pluralService.Pluralize(referenceContentItem.ContentType);
-            
+
             var linkTag = new TagBuilder("a");
             linkTag.Attributes.Add("href", "#/" + pluralContentTypeName + "/View/" + value);
             linkTag.InnerHtml = contentItemMetadata.DisplayText;

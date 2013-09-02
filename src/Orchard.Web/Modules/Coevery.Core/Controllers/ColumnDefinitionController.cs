@@ -82,8 +82,7 @@ namespace Coevery.Core.Controllers
             if (projectionId == -1) 
                 return properties;
 
-            var projectionItem = _contentManager.Get(projectionId, VersionOptions.Latest);
-            var projectionPart = projectionItem.As<ProjectionPart>();
+            var projectionPart = _contentManager.Get<ProjectionPart>(projectionId);
             var queryPartRecord = projectionPart.Record.QueryPartRecord;
 
             if (queryPartRecord.Layouts.Count == 0) 

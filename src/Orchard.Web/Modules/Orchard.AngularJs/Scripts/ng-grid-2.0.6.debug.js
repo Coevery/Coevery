@@ -3325,7 +3325,7 @@ angular.module("ngGrid").run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put("cellTemplate.html",
-    "<div class=\"ngCellText\" ng-class=\"col.colIndex()\"><span ng-cell-text ng-bind-html-unsafe=\"COL_FIELD\"></span></div>"
+    "<div class=\"ngCellText\" ng-class=\"col.colIndex()\"><span ng-cell-text>{{COL_FIELD CUSTOM_FILTERS}}</span></div>"
   );
 
   $templateCache.put("checkboxCellTemplate.html",
