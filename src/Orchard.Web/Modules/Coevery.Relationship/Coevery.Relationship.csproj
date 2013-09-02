@@ -69,6 +69,10 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.WebPages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
@@ -90,6 +94,7 @@
     <Compile Include="Models\OneToManyRelationshipModel.cs" />
     <Compile Include="Models\ReferenceFieldViewModel.cs" />
     <Compile Include="Models\RelationshipModel.cs" />
+    <Compile Include="Projections\ReferenceFieldProperty.cs" />
     <Compile Include="Records\ManyToManyEntityMapRecord.cs" />
     <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Records\OneToManyRelationshipRecord.cs" />
