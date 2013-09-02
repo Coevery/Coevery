@@ -5,12 +5,14 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Mvc;
+using Coevery.Core;
 using Coevery.Core.Services;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
 using Coevery.Relationship.Models;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents;
 using Orchard.Localization;
 using Orchard.Logging;
@@ -20,11 +22,15 @@ using Orchard.Core.Contents.Controllers;
 namespace Coevery.Relationship.Controllers {
     public class SystemAdminController : Controller, IUpdateModel {
         private readonly IRelationshipService _relationshipService;
+        private readonly IContentDefinitionManager _contentDefinitionManager;
 
-        public SystemAdminController(IOrchardServices orchardServices,
-            IRelationshipService relationshipService) {
+        public SystemAdminController(
+            IOrchardServices orchardServices,
+            IRelationshipService relationshipService,
+            IContentDefinitionManager contentDefinitionManager) {
             Services = orchardServices;
             _relationshipService = relationshipService;
+            _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
         }
 
@@ -69,7 +75,8 @@ namespace Coevery.Relationship.Controllers {
             return View(new OneToManyRelationshipModel {
                 EntityList = _relationshipService.GetEntityNames(id),
                 PrimaryEntity = id,
-                IsCreate = true
+                IsCreate = true,
+                Fields = new List<SelectListItem>()
             });
         }
 
@@ -82,6 +89,9 @@ namespace Coevery.Relationship.Controllers {
             if (oneToMany == null || oneToMany.Id == 0) {
                 return ResponseError("Relationship not found");
             }
+            var fields = _contentDefinitionManager
+                .GetPartDefinition(oneToMany.Relationship.RelatedEntity.Name).Fields
+                .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
             return View("CreateOneToMany", new OneToManyRelationshipModel {
                 IsCreate = false,
                 Name = oneToMany.Relationship.Name,
@@ -90,6 +100,8 @@ namespace Coevery.Relationship.Controllers {
                 RelatedEntity = oneToMany.Relationship.RelatedEntity.Name,
                 RelatedListLabel = oneToMany.RelatedListLabel,
                 ShowRelatedList = oneToMany.ShowRelatedList,
+                ColumnFieldList = oneToMany.RelatedListProjection.LayoutRecord.Properties.Select(x => x.GetFiledName()).ToArray(),
+                Fields = fields
             });
         }
 
@@ -134,7 +146,9 @@ namespace Coevery.Relationship.Controllers {
             return View(new ManyToManyRelationshipModel {
                 EntityList = _relationshipService.GetEntityNames(id),
                 PrimaryEntity = id,
-                IsCreate = true
+                IsCreate = true,
+                PrimaryFields = new List<SelectListItem>(),
+                RelatedFields = new List<SelectListItem>()
             });
         }
 
@@ -147,7 +161,12 @@ namespace Coevery.Relationship.Controllers {
             if (manyToMany == null || manyToMany.Id == 0) {
                 return ResponseError("Relationship not found");
             }
-
+            var primaryFields = _contentDefinitionManager
+                .GetPartDefinition(manyToMany.Relationship.PrimaryEntity.Name).Fields
+                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Name });
+            var relatedFields = _contentDefinitionManager
+               .GetPartDefinition(manyToMany.Relationship.RelatedEntity.Name).Fields
+               .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Name });
             return View("CreateManyToMany", new ManyToManyRelationshipModel {
                 IsCreate = false,
                 Name = manyToMany.Relationship.Name,
@@ -157,6 +176,10 @@ namespace Coevery.Relationship.Controllers {
                 RelatedListLabel = manyToMany.RelatedListLabel,
                 ShowPrimaryList = manyToMany.ShowPrimaryList,
                 ShowRelatedList = manyToMany.ShowRelatedList,
+                PrimaryFields = primaryFields,
+                RelatedFields = relatedFields,
+                PrimaryColumnList = manyToMany.PrimaryListProjection.LayoutRecord.Properties.Select(x => x.GetFiledName()).ToArray(),
+                RelatedColumnList = manyToMany.RelatedListProjection.LayoutRecord.Properties.Select(x => x.GetFiledName()).ToArray()
             });
         }
 

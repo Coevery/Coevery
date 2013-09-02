@@ -26,7 +26,6 @@ namespace Coevery.Relationship.Handlers {
                 return;
             }
             var fieldDefinition = partDefinition.Fields.FirstOrDefault(x => x.Name == context.FieldName);
-            if (fieldDefinition == null) {}
             if (fieldDefinition == null
                 || fieldDefinition.FieldDefinition.Name != "ReferenceField") {
                 return;

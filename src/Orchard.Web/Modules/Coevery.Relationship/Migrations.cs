@@ -13,20 +13,12 @@ namespace Coevery.Relationship {
                     .Column<int>("RelatedEntity_Id", column => column.NotNull())
                 );
 
-            SchemaBuilder.CreateTable("RelationshipColumnRecord",
-                table => table
-                    .Column<int>("Id", column => column.PrimaryKey().Identity())
-                    .Column<int>("Relationship_Id", column => column.NotNull())
-                    .Column<int>("Column_Id", column => column.NotNull())
-                    .Column<bool>("IsRelatedList", column => column.NotNull())
-                    .Column<int>("RelationshipRecord_Id")
-                );
-
             SchemaBuilder.CreateTable("OneToManyRelationshipRecord",
                 table => table
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<int>("Relationship_Id", column => column.Unique())
                     .Column<int>("LookupField_Id", column => column.Nullable())
+                    .Column<int>("RelatedListProjection_Id", column => column.Nullable())
                     .Column<string>("RelatedListLabel", column => column.Nullable())
                     .Column<bool>("ShowRelatedList", column => column.NotNull())
                     .Column<byte>("DeleteOption", column => column.Nullable())
@@ -36,8 +28,10 @@ namespace Coevery.Relationship {
                 table => table
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
                     .Column<int>("Relationship_Id", column => column.Unique())
+                    .Column<int>("RelatedListProjection_Id", column => column.Nullable())
                     .Column<string>("RelatedListLabel", column => column.Nullable())
                     .Column<bool>("ShowRelatedList", column => column.NotNull())
+                    .Column<int>("PrimaryListProjection_Id", column => column.Nullable())
                     .Column<string>("PrimaryListLabel", column => column.Nullable())
                     .Column<bool>("ShowPrimaryList", column => column.NotNull())
                 );

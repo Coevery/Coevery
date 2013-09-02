@@ -1,37 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Threading;
-using System.Web;
 using System.Web.Mvc;
-using Coevery.Core.Controllers;
 using Coevery.Core.DynamicTypeGeneration;
-using Coevery.Core.Handlers;
-using Coevery.Core.Models;
 using Coevery.Core.Services;
 using Coevery.Entities.Services;
-using Coevery.Entities.ViewModels;
-using Coevery.Relationship.Controllers;
-using Coevery.Relationship.Drivers;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Models;
 using Coevery.Relationship.Settings;
+using NHibernate.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Models;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Contents.Controllers;
 using Orchard.Core.Contents.Extensions;
-using Orchard.Core.Settings.Controllers;
-using Orchard.Core.Settings.Metadata;
 using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
 using Orchard.FileSystems.VirtualPath;
-
+using Orchard.Projections.Models;
+using Orchard.Projections.Services;
 
 namespace Coevery.Relationship.Services {
     public class RelationshipService : IRelationshipService {
@@ -40,7 +27,6 @@ namespace Coevery.Relationship.Services {
         private readonly IRepository<RelationshipRecord> _relationshipRepository;
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRepository;
-        private readonly IRepository<RelationshipColumnRecord> _relationshipColumnRepository;
 
         private readonly IRepository<ContentPartDefinitionRecord> _contentPartRepository;
         private readonly ISessionLocator _sessionLocator;
@@ -51,24 +37,26 @@ namespace Coevery.Relationship.Services {
         private readonly IDataMigrationInterpreter _interpreter;
         private readonly SchemaBuilder _schemaBuilder;
         private readonly ISchemaUpdateService _schemaUpdateService;
+        private readonly IContentManager _contentManager;
+        private readonly IProjectionManager _projectionManager;
 
         public RelationshipService(
             IRepository<RelationshipRecord> relationshipRepository,
             IRepository<OneToManyRelationshipRecord> oneToManyRepository,
             IRepository<ManyToManyRelationshipRecord> manyToManyRepository,
-            IRepository<RelationshipColumnRecord> relationshipColumn,
             IRepository<ContentPartDefinitionRecord> contentPartRepository,
             ISessionLocator sessionLocator,
             IContentDefinitionManager contentDefinitionManager,
             IContentDefinitionService contentDefinitionService,
             IVirtualPathProvider virtualPathProvider,
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
-            IDataMigrationInterpreter interpreter, 
-            ISchemaUpdateService schemaUpdateService) {
+            IDataMigrationInterpreter interpreter,
+            ISchemaUpdateService schemaUpdateService,
+            IContentManager contentManager,
+            IProjectionManager projectionManager) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
             _manyToManyRepository = manyToManyRepository;
-            _relationshipColumnRepository = relationshipColumn;
             _contentPartRepository = contentPartRepository;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionService = contentDefinitionService;
@@ -76,6 +64,8 @@ namespace Coevery.Relationship.Services {
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             _interpreter = interpreter;
             _schemaUpdateService = schemaUpdateService;
+            _contentManager = contentManager;
+            _projectionManager = projectionManager;
             _sessionLocator = sessionLocator;
             _schemaBuilder = new SchemaBuilder(_interpreter, "", s => s.Replace(".", "_"));
         }
@@ -110,11 +100,11 @@ namespace Coevery.Relationship.Services {
         }
 
         public OneToManyRelationshipRecord GetOneToMany(int id) {
-            return _oneToManyRepository.Fetch(record => record.Relationship.Id == id).FirstOrDefault();
+            return _oneToManyRepository.Get(record => record.Relationship.Id == id);
         }
 
         public ManyToManyRelationshipRecord GetManyToMany(int id) {
-            return _manyToManyRepository.Fetch(record => record.Relationship.Id == id).FirstOrDefault();
+            return _manyToManyRepository.Get(record => record.Relationship.Id == id);
         }
 
         public RelationshipRecord[] GetRelationships(string entityName) {
@@ -197,22 +187,17 @@ namespace Coevery.Relationship.Services {
             _contentDefinitionService.AlterField(relatedEntity.Name, oneToMany.FieldName, updateModel);
 
             var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.FirstOrDefault(field => field.Name == oneToMany.FieldName);
+            var projectionPart = CreateProjection(oneToMany.RelatedEntity, oneToMany.ColumnFieldList);
 
             _oneToManyRepository.Create(new OneToManyRelationshipRecord {
                 DeleteOption = (byte) oneToMany.DeleteOption,
                 LookupField = fieldRecord,
+                RelatedListProjection = projectionPart.Record,
                 RelatedListLabel = oneToMany.RelatedListLabel,
                 Relationship = relationship,
                 ShowRelatedList = oneToMany.ShowRelatedList
             });
 
-            if (oneToMany.ColumnFieldList != null) {
-                foreach (var colummn in oneToMany.ColumnFieldList) {
-                    if (!CreateColumn(colummn, relatedEntity, relationship, true)) {
-                        return "Invalid field";
-                    }
-                }
-            }
             _schemaUpdateService.CreateColumn(relatedEntity.Name, oneToMany.FieldName, "ReferenceField");
             return null;
         }
@@ -237,29 +222,18 @@ namespace Coevery.Relationship.Services {
                 Type = (byte) RelationshipType.ManyToMany
             });
 
+            var primaryProjectionPart = CreateProjection(manyToMany.PrimaryEntity, manyToMany.PrimaryColumnList);
+            var relatedProjectionPart = CreateProjection(manyToMany.RelatedEntity, manyToMany.RelatedColumnList);
+
             _manyToManyRepository.Create(new ManyToManyRelationshipRecord {
+                PrimaryListProjection = primaryProjectionPart.Record,
                 PrimaryListLabel = manyToMany.PrimaryListLabel,
+                RelatedListProjection = relatedProjectionPart.Record,
                 RelatedListLabel = manyToMany.RelatedListLabel,
                 Relationship = relationship,
                 ShowPrimaryList = manyToMany.ShowPrimaryList,
                 ShowRelatedList = manyToMany.ShowRelatedList
             });
-
-            if (manyToMany.PrimaryColumnList != null) {
-                foreach (var colummn in manyToMany.PrimaryColumnList) {
-                    if (!CreateColumn(colummn, primaryEntity, relationship, false)) {
-                        return "Invalid field";
-                    }
-                }
-            }
-
-            if (manyToMany.RelatedColumnList != null) {
-                foreach (var colummn in manyToMany.RelatedColumnList) {
-                    if (!CreateColumn(colummn, relatedEntity, relationship, true)) {
-                        return "Invalid field";
-                    }
-                }
-            }
 
             GenerateManyToManyParts(manyToMany);
             return null;
@@ -273,7 +247,8 @@ namespace Coevery.Relationship.Services {
             if (record == null) {
                 return;
             }
-            DeleteColumns(record.Id);
+            record.RelatedListProjection.QueryPartRecord.Layouts.Clear();
+            record.RelatedListProjection.QueryPartRecord.FilterGroups.Clear();
             _oneToManyRepository.Delete(record);
             _relationshipRepository.Delete(record.Relationship);
         }
@@ -282,7 +257,10 @@ namespace Coevery.Relationship.Services {
             if (record == null) {
                 return;
             }
-            DeleteColumns(record.Id);
+            record.PrimaryListProjection.QueryPartRecord.Layouts.Clear();
+            record.PrimaryListProjection.QueryPartRecord.FilterGroups.Clear();
+            record.RelatedListProjection.QueryPartRecord.Layouts.Clear();
+            record.RelatedListProjection.QueryPartRecord.FilterGroups.Clear();
             _manyToManyRepository.Delete(record);
             _relationshipRepository.Delete(record.Relationship);
 
@@ -307,36 +285,29 @@ namespace Coevery.Relationship.Services {
             if (manyToManyRecord == null) {
                 return "Invalid relashionship ID.";
             }
+            var relationshipRecord = manyToManyRecord.Relationship;
             manyToManyRecord.ShowPrimaryList = manyToMany.ShowPrimaryList;
             manyToManyRecord.PrimaryListLabel = manyToMany.PrimaryListLabel;
             manyToManyRecord.ShowRelatedList = manyToMany.ShowRelatedList;
             manyToManyRecord.RelatedListLabel = manyToMany.RelatedListLabel;
 
-            var primaryPart = _contentDefinitionManager.GetPartDefinition(manyToManyRecord.Relationship.Name + manyToManyRecord.Relationship.PrimaryEntity.Name + "Part");
+            var primaryPart = _contentDefinitionManager.GetPartDefinition(relationshipRecord.Name + relationshipRecord.PrimaryEntity.Name + "Part");
             primaryPart.Settings["DisplayName"] = manyToMany.RelatedListLabel;
             _contentDefinitionManager.StorePartDefinition(primaryPart);
-            var relatedPart = _contentDefinitionManager.GetPartDefinition(manyToManyRecord.Relationship.Name + manyToManyRecord.Relationship.RelatedEntity.Name + "Part");
+            var relatedPart = _contentDefinitionManager.GetPartDefinition(relationshipRecord.Name + relationshipRecord.RelatedEntity.Name + "Part");
             relatedPart.Settings["DisplayName"] = manyToMany.PrimaryListLabel;
             _contentDefinitionManager.StorePartDefinition(relatedPart);
 
-            DeleteColumns(relationshipId);
             _manyToManyRepository.Update(manyToManyRecord);
 
-            if (manyToMany.PrimaryColumnList != null) {
-                foreach (var colummn in manyToMany.PrimaryColumnList) {
-                    if (!CreateColumn(colummn, manyToManyRecord.Relationship.PrimaryEntity, manyToManyRecord.Relationship, false)) {
-                        return "Invalid field";
-                    }
-                }
-            }
-
-            if (manyToMany.RelatedColumnList != null) {
-                foreach (var colummn in manyToMany.RelatedColumnList) {
-                    if (!CreateColumn(colummn, manyToManyRecord.Relationship.RelatedEntity, manyToManyRecord.Relationship, true)) {
-                        return "Invalid field";
-                    }
-                }
-            }
+            UpdateLayoutProperties(
+                relationshipRecord.PrimaryEntity.Name,
+                manyToManyRecord.PrimaryListProjection.LayoutRecord,
+                manyToMany.PrimaryColumnList);
+            UpdateLayoutProperties(
+                relationshipRecord.RelatedEntity.Name,
+                manyToManyRecord.RelatedListProjection.LayoutRecord,
+                manyToMany.RelatedColumnList);
             return null;
         }
 
@@ -348,23 +319,70 @@ namespace Coevery.Relationship.Services {
 
             oneToManyRecord.ShowRelatedList = oneToMany.ShowRelatedList;
             oneToManyRecord.RelatedListLabel = oneToMany.RelatedListLabel;
-
-            DeleteColumns(relationshipId);
             _oneToManyRepository.Update(oneToManyRecord);
 
-            if (oneToMany.ColumnFieldList != null) {
-                foreach (var colummn in oneToMany.ColumnFieldList) {
-                    if (!CreateColumn(colummn, oneToManyRecord.Relationship.RelatedEntity, oneToManyRecord.Relationship, true)) {
-                        return "Invalid field";
-                    }
-                }
-            }
+            UpdateLayoutProperties(
+                oneToManyRecord.Relationship.RelatedEntity.Name,
+                oneToManyRecord.RelatedListProjection.LayoutRecord,
+                oneToMany.ColumnFieldList);
             return null;
         }
 
         #endregion
 
         #region PrivateMethods
+
+        private void UpdateLayoutProperties(string typeName, LayoutRecord layoutRecord, IEnumerable<string> properties) {
+            layoutRecord.Properties.Clear();
+            if (properties == null) {
+                return;
+            }
+            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors).ToList();
+            string category = typeName + "ContentFields";
+            foreach (var property in properties) {
+                var field = allFields.FirstOrDefault(c => c.Category == category && c.Type.StartsWith(typeName + "." + property));
+                if (field == null) {
+                    continue;
+                }
+                var propertyRecord = new PropertyRecord {
+                    Category = category,
+                    Type = field.Type,
+                    Description = field.Name.Text.Split(':').Length > 0 ? field.Name.Text.Split(':')[0] : string.Empty,
+                    Position = layoutRecord.Properties.Count,
+                    LinkToContent = layoutRecord.Properties.Count == 0
+                };
+                layoutRecord.Properties.Add(propertyRecord);
+            }
+        }
+
+        private ProjectionPart CreateProjection(string typeName, IEnumerable<string> properties) {
+            var projectionItem = _contentManager.New("ProjectionPage");
+            var queryItem = _contentManager.New("Query");
+            var projectionPart = projectionItem.As<ProjectionPart>();
+            var queryPart = queryItem.As<QueryPart>();
+            _contentManager.Create(queryItem);
+
+            projectionPart.Record.QueryPartRecord = queryPart.Record;
+            _contentManager.Create(projectionItem);
+
+            var layoutRecord = new LayoutRecord {Category = "Html", Type = "ngGrid"};
+            queryPart.Record.Layouts.Add(layoutRecord);
+            projectionPart.Record.LayoutRecord = layoutRecord;
+
+            var filterGroup = new FilterGroupRecord();
+            queryPart.Record.FilterGroups.Clear();
+            queryPart.Record.FilterGroups.Add(filterGroup);
+            var filterRecord = new FilterRecord {
+                Category = "Content",
+                Type = "ContentTypes",
+                Position = filterGroup.Filters.Count,
+                State = string.Format("<Form><ContentTypes>{0}</ContentTypes></Form>", typeName)
+            };
+            filterGroup.Filters.Add(filterRecord);
+
+            UpdateLayoutProperties(typeName, layoutRecord, properties);
+            return projectionPart;
+        }
 
         private void GenerateManyToManyParts(ManyToManyRelationshipModel manyToMany) {
             var primaryName = manyToMany.Name + manyToMany.PrimaryEntity;
@@ -408,19 +426,6 @@ namespace Coevery.Relationship.Services {
             return relationship;
         }
 
-        private bool CreateColumn(string fieldName, ContentPartDefinitionRecord entity, RelationshipRecord relationship, bool isRelated) {
-            var field = entity.ContentPartFieldDefinitionRecords.First(f => f.Name == fieldName);
-            if (field == null) {
-                return false;
-            }
-            _relationshipColumnRepository.Create(new RelationshipColumnRecord {
-                Column = field,
-                IsRelatedList = isRelated,
-                RelationshipRecord = relationship
-            });
-            return true;
-        }
-
         private bool RelationshipExists(string name) {
             var relation = _relationshipRepository.Table.FirstOrDefault(record => record.Name == name);
             return relation != null;
@@ -440,12 +445,12 @@ namespace Coevery.Relationship.Services {
         //}
 
         private void DeleteColumns(int relationshipId) {
-            var columnStore = _sessionLocator.For(typeof (RelationshipColumnRecord));
-            var deleteCommand = "DELETE FROM dbo.Coevery_Relationship_RelationshipColumnRecord " +
-                                "WHERE Relationship_Id=" + relationshipId;
+            //var columnStore = _sessionLocator.For(typeof (RelationshipColumnRecord));
+            //var deleteCommand = "DELETE FROM dbo.Coevery_Relationship_RelationshipColumnRecord " +
+            //                    "WHERE Relationship_Id=" + relationshipId;
             //var transaction = columnStore.BeginTransaction();
-            var query = columnStore.CreateSQLQuery(deleteCommand);
-            query.ExecuteUpdate();
+            //var query = columnStore.CreateSQLQuery(deleteCommand);
+            //query.ExecuteUpdate();
             //transaction.Commit();
         }
 

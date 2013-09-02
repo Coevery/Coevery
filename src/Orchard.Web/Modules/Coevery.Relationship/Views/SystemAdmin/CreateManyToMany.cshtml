@@ -79,10 +79,7 @@
                 
                 <section class="control-group" ng-show="showPrimaryList">
                     <div class="controls">
-                        <select id="picklist-current" multiple="multiple" 
-                                name="@Html.NameFor(model => model.PrimaryColumnList)">
-                            <option value="0"> </option>
-                        </select>
+                        @Html.ListBoxFor(m=>m.PrimaryColumnList, Model.PrimaryFields)
                     </div>
                 </section>
             </fieldset>
@@ -104,10 +101,7 @@
 
                 <section class="control-group" ng-show="showRelatedList">
                     <div class="controls">
-                        <select id="picklist-other" multiple="multiple" 
-                            name="@Html.NameFor(model => model.RelatedColumnList)">
-                            <option value="0"> </option>
-                        </select>
+                        @Html.ListBoxFor(m=>m.RelatedColumnList, Model.RelatedFields)
                     </div>
                 </section>
             </fieldset>
@@ -129,7 +123,8 @@
 
     $(document).ready(
         function () {
-            customPicklist($("#picklist-other"));
+            customPicklist($("#@Html.FieldIdFor(m=>m.PrimaryColumnList)"));
+            customPicklist($("#@Html.FieldIdFor(m=>m.RelatedColumnList)"));
 
             var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin",new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
             var versionPri = 0;
@@ -155,9 +150,7 @@
                 );
             };
            
-            var relatedEntityEl;
             if ("@Model.IsCreate" == "False") {
-                relatedEntityEl = $("input.related-entity");
                 $("#relation-name").prop('disabled', true);
                 if ("@Model.ShowPrimaryList" == "True") {
                     setTimeout(function() {
@@ -170,14 +163,11 @@
                     }, 500);
                 }
             } else {                
-                relatedEntityEl = $("select.related-entity option:selected");
                 $("select.related-entity").change(function () {
-                    getFields($("select.related-entity option:selected").val(),versionRel, $("#picklist-other"),true);
+                    getFields($("select.related-entity option:selected").val(), versionRel, $("#@Html.FieldIdFor(m=>m.RelatedColumnList)"), true);
                 });
             }
 
-            getFields($("input.primary-entity").val(), versionPri ,$("#picklist-current"), false);
-            getFields(relatedEntityEl.val(), versionRel,$("#picklist-other"), true);
             $("input.primary-entity").prop('disabled', true);       
         }
     );

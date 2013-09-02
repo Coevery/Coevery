@@ -95,10 +95,8 @@
     <Compile Include="Models\ReferenceFieldViewModel.cs" />
     <Compile Include="Models\RelationshipModel.cs" />
     <Compile Include="Projections\ReferenceFieldProperty.cs" />
-    <Compile Include="Records\ManyToManyEntityMapRecord.cs" />
     <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Records\OneToManyRelationshipRecord.cs" />
-    <Compile Include="Records\RelationshipColumnRecord.cs" />
     <Compile Include="Records\RelationshipRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />

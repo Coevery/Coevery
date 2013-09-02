@@ -119,10 +119,7 @@
 
                 <section class="control-group" ng-show="showRelatedList">
                     <div class="controls">
-                        <select id="picklist-ex" multiple="multiple" 
-                                name="@Html.NameFor(model => model.ColumnFieldList)">
-                            <option value="0"> </option>
-                        </select>
+                        @Html.ListBoxFor(m=>m.ColumnFieldList, Model.Fields)
                     </div>
                 </section>
 
@@ -179,7 +176,7 @@
 
     $(document).ready(
         function () {
-            customPicklist($("#picklist-ex"));
+            customPicklist($("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));
 
             var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
             var version = 0;
@@ -203,9 +200,7 @@
                 );
             };
 
-            var relatedEntityEl;
             if ("@Model.IsCreate" == "False") {
-                relatedEntityEl = $("input.related-entity");
                 setTimeout(function () {
                     $("#relation-deleteOption").click();
                 }, 100);             
@@ -216,14 +211,12 @@
                     }, 500);
                 }
             } else {
-                relatedEntityEl = $("select.related-entity option:selected");
                 $("select.related-entity").change(function () {
-                    getFields($("select.related-entity option:selected").val(), $("#picklist-other"));
+                    getFields($("select.related-entity option:selected").val(), $("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));
                 });
             }
 
             $("input.primary-entity").prop('disabled', true);
-            getFields(relatedEntityEl.val(), $("#picklist-ex"));
         }
     );
 </script>

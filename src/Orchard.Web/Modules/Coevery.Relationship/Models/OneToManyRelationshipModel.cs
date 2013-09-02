@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using Coevery.Relationship.Records;
 
 namespace Coevery.Relationship.Models {
@@ -10,6 +8,7 @@ namespace Coevery.Relationship.Models {
         public bool ShowRelatedList { get; set; }
         public OneToManyDeleteOption DeleteOption { get; set; }
         public string[] ColumnFieldList { get; set; }
+        public IEnumerable<SelectListItem> Fields { get; set; }
 
         //LookupField related
         public string HelpText { get; set; }
