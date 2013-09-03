@@ -100,6 +100,8 @@
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\CustomFieldAttribute.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
+    <Compile Include="Services\IContentFieldValueProvider.cs" />
+    <Compile Include="Services\ContentFieldValueProvider.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
     <Compile Include="Settings\DynamicTypeEditorEvents.cs">

@@ -109,7 +109,6 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
           };
 
           $scope.add = function () {
-              $rootScope.Search = $location.$$search;
               $detour.transitionTo('Create', { Module: $scope.entityTypeName });
           };
 
@@ -117,7 +116,6 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
               if (!id && $scope.selectedItems.length > 0) {
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
-              $rootScope.Search = $location.$$search;
               $detour.transitionTo('Detail', { Module: $scope.entityTypeName, Id: id });
           };
           

@@ -97,6 +97,7 @@
     <Compile Include="Models\LayoutPropertyPart.cs" />
     <Compile Include="Models\LayoutPropertyRecord.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
+    <Compile Include="Services\ContentFieldProperties.cs" />
     <Compile Include="Services\ILayoutPropertyService.cs" />
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\LayoutPropertyService.cs" />
