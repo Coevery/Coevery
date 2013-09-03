@@ -58,16 +58,12 @@ screen < 767px
 
 #wrapper #content-inner {
     position: relative;
-    /*background-image: url(images/content-bg-plain.png);
-    background-size: 251px 1px;
-    background-position: -25px top;
-    background-repeat: repeat-y;*/
 }
 
 
 /* Verticaline
 ================================================== */
-#wrapper #verticaline
+#wrapper #sidebar-separator
 {
     display:block;
     position: fixed;
@@ -78,7 +74,7 @@ screen < 767px
     border-right: #c6c8cc 1px solid;
 }
 
-#wrapper #content.sidebar-minimized #verticaline {
+#wrapper #content.sidebar-minimized #sidebar-separator {
     display:none;
 }
 
@@ -213,12 +209,6 @@ screen < 767px
     overflow: hidden;
 }
 
-
-
-#wrapper #content.sidebar-minimized #content-inner {
-    /*background-image: url(images/content-bg.png);
-    background-size: 70px 1px;*/
-}
 
 #wrapper #content.sidebar-minimized #sidebar #navigation ul.menu {
     min-height: 0 !important;
@@ -454,7 +444,7 @@ screen < 767px
             bottom: 0px;
             border-right: #c6c8cc 1px solid;
         }
-        #wrapper #verticaline
+        #wrapper #sidebar-separator
         {
             display:block;
             position: fixed;
@@ -479,7 +469,7 @@ screen < 767px
             width: 70px;
         }
 
-        #wrapper #content.sidebar-minimized #verticaline {
+        #wrapper #content.sidebar-minimized #sidebar-separator {
             display:none;
         }
 
@@ -487,19 +477,7 @@ screen < 767px
             margin-left: 70px;
         }
 
-        #wrapper #content.sidebar-minimized #content-inner {
-            /*background-image: url(images/content-bg.png);
-            background-position: left top;
-            background-size: 70px 1px;*/
-        }
         /* End Hidden Sidebar */
-
-        #wrapper #content-inner {
-            /*border-top: 0;
-            background-image: url(images/content-bg-plain-gt1200.png);
-            background-position: left top;
-            background-size: 286px 1px;*/
-        }
 
         #wrapper #sidebar #navigation ul.menu > li {
             max-width: 70px;
@@ -568,10 +546,6 @@ screen < 767px
         border: 0;
     }
 
-    #wrapper #content #content-inner {
-        /*background-image: url(images/content-bg.png);
-        background-size: 70px 1px;*/
-    }
 
     #wrapper #content,
     #wrapper #content-wrap,
@@ -1002,7 +976,7 @@ screen < 767px
         white-space: nowrap;
     }
 
-    #wrapper #verticaline
+    #wrapper #sidebar-separator
     {
         display:none;
     }
@@ -1012,21 +986,9 @@ screen < 767px
     #wrapper #content-inner {
         background-image: url(images/@2x/layout/content-bg-plain.png);
     }
-
-    #wrapper #content.sidebar-minimized #content-inner {
-        /*background-image: url(images/@2x/layout/content-bg.png);*/
-    }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) and (min-width: 1281px), only screen and (-moz-min-device-pixel-ratio: 1.5) and (min-width: 1281px), only screen and (-o-min-device-pixel-ratio: 3/2) and (min-width: 1281px), only screen and (min-device-pixel-ratio: 1.5) and (min-width: 1281px) {
-    #wrapper #content.sidebar-minimized #content-inner {
-        /*background-image: url(images/@2x/layout/content-bg.png);*/
-    }
-
-    #wrapper #content-inner {
-        /*border-top: 0;
-        background-image: url(images/@2x/layout/content-bg-plain-gt1200.png);*/
-    }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) and (max-width: 979px), only screen and (-moz-min-device-pixel-ratio: 1.5) and (max-width: 979px), only screen and (-o-min-device-pixel-ratio: 3/2) and (max-width: 979px), only screen and (min-device-pixel-ratio: 1.5) and (max-width: 979px) {

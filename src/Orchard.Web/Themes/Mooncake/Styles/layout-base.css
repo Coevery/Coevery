@@ -130,6 +130,7 @@ body {
         padding-bottom: 0;
         padding-top: 0;
         float: none;
+        margin-left:-15px;
     }
 
         #header .navbar-inner .brand img {

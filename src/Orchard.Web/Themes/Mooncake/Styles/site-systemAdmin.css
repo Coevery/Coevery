@@ -110,26 +110,6 @@
 /* End SystemAdmin Buttons  */
 /* ------------------------------------------------------------------------ */
 
-/*.form-fontstyle1 fieldset legend {
-    font-family: inherit;
-    font-weight: bold;
-    color: inherit;
-    font-size: 14px;
-    border-bottom: 1px solid #ebaf59;
-    margin: 0 0 20px;
-}
-
-    .form-fontstyle1 fieldset legend + .control-group {
-        margin-top: 0;
-    }
-
-.form-fontstyle1 .row-fluid .widget-content {
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    padding: 25px;
-    position: relative;
-}*/
-
 /*Related List*/
 .related-list {
     margin-top: 20px;
@@ -191,13 +171,6 @@ span.fieldtoadd {
     max-height: 400px;
     overflow-y: auto;
 }
-
-/*.form-fontstyle1 .row-fluid .viewfields-widget {
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    padding: 25px;
-    position: relative;
-}*/
 
 .viewfields-widget #sortable li {
     background: url("images/cache.gif") no-repeat 5px;

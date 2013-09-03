@@ -50,9 +50,15 @@ screen < 767px
     z-index: 999;
 }
 
-    #page-header .container {
-        margin-left: 10px;
-    }
+#page-header .container {
+    margin-left: 10px;
+}
+
+.vertical-middle
+{
+    vertical-align:middle;
+}
+
 
 /* Content Wrapper
 ================================================== */
