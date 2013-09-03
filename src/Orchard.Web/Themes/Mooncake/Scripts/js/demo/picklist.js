@@ -191,7 +191,7 @@
 
         _populateLists: function () {
             var self = this,
-				nothingSelected = (self.element[0].selectedIndex <= 0),
+				nothingSelected = (self.element[0].selectedIndex < 0),
 				randomId = self._generateRandomId();
 
             self.element.children().each(function () {

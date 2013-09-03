@@ -2041,6 +2041,11 @@
   <ItemGroup>
     <Content Include="Views\DifferentResourceSystemAdmin.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\js\demo\picklist.min.js.map">
+      <DependentUpon>picklist.js</DependentUpon>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
