@@ -2044,11 +2044,10 @@
   <ItemGroup>
     <Content Include="Scripts\js\demo\picklist.min.js.map">
       <DependentUpon>picklist.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LogOn.cshtml" />
-  </ItemGroup>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
