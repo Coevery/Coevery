@@ -25,9 +25,9 @@ screen < 767px
 /* Body
 ================================================== */
 
-body {
+/*body {
     background: url(images/white_tiles.png);
-}
+}*/
 
 /* Header
 ================================================== */
@@ -58,28 +58,50 @@ body {
 
 #wrapper #content-inner {
     position: relative;
-    background-image: url(images/content-bg-plain.png);
+    /*background-image: url(images/content-bg-plain.png);
     background-size: 251px 1px;
     background-position: -25px top;
-    background-repeat: repeat-y;
+    background-repeat: repeat-y;*/
+}
+
+
+/* Verticaline
+================================================== */
+#wrapper #verticaline
+{
+    display:block;
+    position: fixed;
+    width: 0;
+    top: 69px;
+    bottom: 0px;
+    left: 45px;
+    border-right: #c6c8cc 1px solid;
+}
+
+#wrapper #content.sidebar-minimized #verticaline {
+    display:none;
 }
 
 /* Sidebar
 ================================================== */
 
 #wrapper #sidebar {
-    float: left;
     width: 225px;
-    padding-right: 1px;
+    padding-right: 0px;
     z-index: 600;
-    position: relative;
+    float: none;
+    position: fixed;
+    top: 69px;
+    bottom: 0px;
+    border-right: #c6c8cc 1px solid;
+
 }
 
-    #wrapper #sidebar.affix {
-        position: fixed;
-        float: none;
-        top: 69px;
-    }
+#wrapper #sidebar.affix {
+    position: fixed;
+    float: none;
+    top: 69px;
+}
 
     /* Sidebar Toggle
 ================================================== */
@@ -191,9 +213,11 @@ body {
     overflow: hidden;
 }
 
+
+
 #wrapper #content.sidebar-minimized #content-inner {
-    background-image: url(images/content-bg.png);
-    background-size: 70px 1px;
+    /*background-image: url(images/content-bg.png);
+    background-size: 70px 1px;*/
 }
 
 #wrapper #content.sidebar-minimized #sidebar #navigation ul.menu {
@@ -423,7 +447,22 @@ body {
 
         #wrapper #sidebar {
             width: 285px;
-            padding-right: 1px;
+            padding-right: 0px;
+            position: fixed;
+            float: none;
+            top: 69px;
+            bottom: 0px;
+            border-right: #c6c8cc 1px solid;
+        }
+        #wrapper #verticaline
+        {
+            display:block;
+            position: fixed;
+            width: 0;
+            top: 69px;
+            bottom: 0px;
+            left: 70px;
+            border-right: #c6c8cc 1px solid;
         }
 
         #wrapper #main {
@@ -440,22 +479,26 @@ body {
             width: 70px;
         }
 
+        #wrapper #content.sidebar-minimized #verticaline {
+            display:none;
+        }
+
         #wrapper #content.sidebar-minimized #main {
             margin-left: 70px;
         }
 
         #wrapper #content.sidebar-minimized #content-inner {
-            background-image: url(images/content-bg.png);
+            /*background-image: url(images/content-bg.png);
             background-position: left top;
-            background-size: 70px 1px;
+            background-size: 70px 1px;*/
         }
         /* End Hidden Sidebar */
 
         #wrapper #content-inner {
-            border-top: 0;
+            /*border-top: 0;
             background-image: url(images/content-bg-plain-gt1200.png);
             background-position: left top;
-            background-size: 286px 1px;
+            background-size: 286px 1px;*/
         }
 
         #wrapper #sidebar #navigation ul.menu > li {
@@ -526,8 +569,8 @@ body {
     }
 
     #wrapper #content #content-inner {
-        background-image: url(images/content-bg.png);
-        background-size: 70px 1px;
+        /*background-image: url(images/content-bg.png);
+        background-size: 70px 1px;*/
     }
 
     #wrapper #content,
@@ -545,6 +588,7 @@ body {
             padding-right: 0;
             overflow: visible;
         }
+
 
     #wrapper #sidebar #navigation ul.menu {
         min-height: 0 !important;
@@ -822,6 +866,7 @@ body {
 
     #wrapper #sidebar {
         padding-right: 0;
+        top:0px;
     }
 
         #wrapper #sidebar.affix {
@@ -956,6 +1001,11 @@ body {
         margin: 0;
         white-space: nowrap;
     }
+
+    #wrapper #verticaline
+    {
+        display:none;
+    }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5) {
@@ -964,18 +1014,18 @@ body {
     }
 
     #wrapper #content.sidebar-minimized #content-inner {
-        background-image: url(images/@2x/layout/content-bg.png);
+        /*background-image: url(images/@2x/layout/content-bg.png);*/
     }
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) and (min-width: 1281px), only screen and (-moz-min-device-pixel-ratio: 1.5) and (min-width: 1281px), only screen and (-o-min-device-pixel-ratio: 3/2) and (min-width: 1281px), only screen and (min-device-pixel-ratio: 1.5) and (min-width: 1281px) {
     #wrapper #content.sidebar-minimized #content-inner {
-        background-image: url(images/@2x/layout/content-bg.png);
+        /*background-image: url(images/@2x/layout/content-bg.png);*/
     }
 
     #wrapper #content-inner {
-        border-top: 0;
-        background-image: url(images/@2x/layout/content-bg-plain-gt1200.png);
+        /*border-top: 0;
+        background-image: url(images/@2x/layout/content-bg-plain-gt1200.png);*/
     }
 }
 
