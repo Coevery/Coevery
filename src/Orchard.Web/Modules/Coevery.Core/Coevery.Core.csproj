@@ -157,6 +157,7 @@
     <Compile Include="Serializer.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\CompareContentService.cs" />
+    <Compile Include="Services\AnonymousRoleUpdater.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />
     <Compile Include="Services\SchemaUpdateService.cs" />
@@ -224,6 +225,10 @@
     <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
       <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
       <Name>Orchard.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Roles\Orchard.Roles.csproj">
+      <Project>{d10ad48f-407d-4db5-a328-173ec7cb010f}</Project>
+      <Name>Orchard.Roles</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
       <Project>{6F759635-13D7-4E94-BCC9-80445D63F117}</Project>
