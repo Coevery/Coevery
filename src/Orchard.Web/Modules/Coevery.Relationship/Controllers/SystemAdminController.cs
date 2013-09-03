@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Mvc;
 using Coevery.Core;
-using Coevery.Core.Services;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
 using Coevery.Relationship.Models;
@@ -16,8 +13,6 @@ using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents;
 using Orchard.Localization;
 using Orchard.Logging;
-using Orchard.UI.Notify;
-using Orchard.Core.Contents.Controllers;
 
 namespace Coevery.Relationship.Controllers {
     public class SystemAdminController : Controller, IUpdateModel {
@@ -142,12 +137,14 @@ namespace Coevery.Relationship.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
             }
-
+            var primaryFields = _contentDefinitionManager
+                .GetPartDefinition(id).Fields
+                .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
             return View(new ManyToManyRelationshipModel {
                 EntityList = _relationshipService.GetEntityNames(id),
                 PrimaryEntity = id,
                 IsCreate = true,
-                PrimaryFields = new List<SelectListItem>(),
+                PrimaryFields = primaryFields,
                 RelatedFields = new List<SelectListItem>()
             });
         }
@@ -163,10 +160,10 @@ namespace Coevery.Relationship.Controllers {
             }
             var primaryFields = _contentDefinitionManager
                 .GetPartDefinition(manyToMany.Relationship.PrimaryEntity.Name).Fields
-                .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Name });
+                .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
             var relatedFields = _contentDefinitionManager
-               .GetPartDefinition(manyToMany.Relationship.RelatedEntity.Name).Fields
-               .Select(x => new SelectListItem { Text = x.DisplayName, Value = x.Name });
+                .GetPartDefinition(manyToMany.Relationship.RelatedEntity.Name).Fields
+                .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
             return View("CreateManyToMany", new ManyToManyRelationshipModel {
                 IsCreate = false,
                 Name = manyToMany.Relationship.Name,

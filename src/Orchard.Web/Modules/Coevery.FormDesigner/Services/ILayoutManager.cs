@@ -9,6 +9,7 @@ namespace Coevery.FormDesigner.Services {
     public interface ILayoutManager : IDependency {
         void DeleteField(string typeName, string fieldName);
         void AddField(string typeName, string fieldName);
+        void GenerateDefaultLayout(string typeName);
     }
 
     public class LayoutManager : ILayoutManager {
@@ -64,6 +65,27 @@ namespace Coevery.FormDesigner.Services {
             var field = new XElement("fd-field");
             field.SetAttributeValue("field-name", fieldName);
             emptyColumn.Add(field);
+            typeDefinition.Settings["Layout"] = GetLayoutString(layout);
+            _contentDefinitionManager.StoreTypeDefinition(typeDefinition);
+        }
+
+        public void GenerateDefaultLayout(string typeName) {
+            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(typeName);
+            if (typeDefinition == null) {
+                return;
+            }
+            var layout = GetLayoutElement("<fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"General Information\"></fd-section>");
+            var section = layout.Descendants("fd-section").First();
+            var fields = typeDefinition.Parts.First(x => x.PartDefinition.Name == typeName).PartDefinition.Fields;
+            foreach (var field in fields) {
+                var row = new XElement("fd-row");
+                section.Add(row);
+                var column = new XElement("fd-column");
+                row.Add(column);
+                var fieldElement = new XElement("fd-field");
+                fieldElement.SetAttributeValue("field-name", field.Name);
+                column.Add(fieldElement);
+            }
             typeDefinition.Settings["Layout"] = GetLayoutString(layout);
             _contentDefinitionManager.StoreTypeDefinition(typeDefinition);
         }

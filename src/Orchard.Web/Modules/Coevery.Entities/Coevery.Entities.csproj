@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Events\IEntityEvents.cs" />
     <Compile Include="Events\IFieldEvents.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Permissions.cs" />

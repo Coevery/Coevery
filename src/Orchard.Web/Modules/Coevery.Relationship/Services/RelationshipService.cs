@@ -136,9 +136,12 @@ namespace Coevery.Relationship.Services {
                 Type = (byte) RelationshipType.OneToMany
             });
 
+            var projectionPart = CreateProjection(relatedEntityName, null);
+            
             var oneToMany = new OneToManyRelationshipRecord {
                 DeleteOption = (byte) OneToManyDeleteOption.CascadingDelete,
                 LookupField = fieldRecord,
+                RelatedListProjection = projectionPart.Record,
                 RelatedListLabel = relatedEntityName,
                 Relationship = relationship,
                 ShowRelatedList = false

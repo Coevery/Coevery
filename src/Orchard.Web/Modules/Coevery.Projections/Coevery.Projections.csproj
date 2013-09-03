@@ -91,6 +91,7 @@
     <Compile Include="Controllers\ViewModelController.cs" />
     <Compile Include="Drivers\LayoutPropertyPartDriver.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Handlers\ProjectionEntityEventsHandler.cs" />
     <Compile Include="Handlers\LayoutPropertyPartHandler.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\LayoutPropertyPart.cs" />
@@ -126,6 +127,10 @@
     <ProjectReference Include="..\Coevery.Core\Coevery.Core.csproj">
       <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
       <Name>Coevery.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coevery.Entities\Coevery.Entities.csproj">
+      <Project>{BD9AEC06-5C81-4221-A817-408FB0C4B6C0}</Project>
+      <Name>Coevery.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
