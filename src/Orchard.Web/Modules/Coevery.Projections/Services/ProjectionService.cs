@@ -185,11 +185,12 @@ namespace Coevery.Projections.Services
             LayoutRecord layoutRecord = projectionPart.Record.LayoutRecord;
             layoutRecord.Properties.Clear();
 
-            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors);
             string category = viewModel.Name + "ContentFields";
-            var fields = allFields.Where(c => c.Category == category).ToList();
+            var allFields = _projectionManager.DescribeProperties()
+                .SelectMany(x => x.Descriptors)
+                .Where(x => x.Category == category).ToList();
             foreach (var property in pickedFileds) {
-                var field = allFields.FirstOrDefault(c => c.Category == category && c.Type.StartsWith(viewModel.Name + "." + property));
+                var field = allFields.FirstOrDefault(c => c.Type == string.Format("{0}.{1}.", viewModel.Name, property));
                 if (field == null) {
                     throw new Exception("selected field not found:" + property);
                 }

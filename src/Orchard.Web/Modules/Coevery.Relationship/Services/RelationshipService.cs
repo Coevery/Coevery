@@ -350,10 +350,12 @@ namespace Coevery.Relationship.Services {
             if (properties == null) {
                 return;
             }
-            var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors).ToList();
             string category = typeName + "ContentFields";
+            var allFields = _projectionManager.DescribeProperties()
+                .SelectMany(x => x.Descriptors)
+                .Where(x => x.Category == category).ToList();
             foreach (var property in properties) {
-                var field = allFields.FirstOrDefault(c => c.Category == category && c.Type.StartsWith(typeName + "." + property));
+                var field = allFields.FirstOrDefault(c => c.Type == string.Format("{0}.{1}.", typeName, property));
                 if (field == null) {
                     continue;
                 }
