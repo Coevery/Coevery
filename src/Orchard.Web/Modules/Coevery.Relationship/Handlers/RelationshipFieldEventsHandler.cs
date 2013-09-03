@@ -20,7 +20,10 @@ namespace Coevery.Relationship.Handlers {
             _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public void OnDeleting(FieldEventsContext context) {
+        public void OnCreated(FieldCreatedContext context) {
+        }
+
+        public void OnDeleting(FieldDeletingContext context) {
             var partDefinition = _contentDefinitionManager.GetPartDefinition(context.EtityName);
             if (partDefinition == null) {
                 return;

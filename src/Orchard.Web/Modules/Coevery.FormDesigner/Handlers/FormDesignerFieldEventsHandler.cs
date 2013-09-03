@@ -12,7 +12,13 @@ namespace Coevery.FormDesigner.Handlers {
             _layoutManager = layoutManager;
         }
 
-        public void OnDeleting(FieldEventsContext context) {
+        public void OnCreated(FieldCreatedContext context) {
+            if (context.IsInLayout) {
+                _layoutManager.AddField(context.EtityName, context.FieldName);
+            }
+        }
+
+        public void OnDeleting(FieldDeletingContext context) {
             _layoutManager.DeleteField(context.EtityName, context.FieldName);
         }
     }

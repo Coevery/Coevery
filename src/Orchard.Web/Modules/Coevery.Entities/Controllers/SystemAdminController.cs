@@ -29,6 +29,7 @@ namespace Coevery.Entities.Controllers {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IEntityEvents _entityEvents;
+        private readonly IFieldEvents _fieldEvents;
 
         public SystemAdminController(
             IOrchardServices orchardServices,
@@ -36,7 +37,8 @@ namespace Coevery.Entities.Controllers {
             ISchemaUpdateService schemaUpdateService,
             IContentDefinitionManager contentDefinitionManager,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents,
-            IEntityEvents entityEvents) {
+            IEntityEvents entityEvents,
+            IFieldEvents fieldEvents) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
@@ -44,6 +46,7 @@ namespace Coevery.Entities.Controllers {
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             _entityEvents = entityEvents;
+            _fieldEvents = fieldEvents;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -174,7 +177,12 @@ namespace Coevery.Entities.Controllers {
                 Services.TransactionManager.Cancel();
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message.ToString());
             }
-
+            var context = new FieldCreatedContext {
+                EtityName = id,
+                FieldName = viewModel.Name,
+                IsInLayout = viewModel.AddInLayout
+            };
+            _fieldEvents.OnCreated(context);
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);

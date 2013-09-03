@@ -302,7 +302,7 @@ namespace Coevery.Entities.Services {
         }
 
         public void RemoveFieldFromPart(string fieldName, string partName) {
-            var context = new FieldEventsContext {
+            var context = new FieldDeletingContext {
                 EtityName = partName,
                 FieldName = fieldName
             };

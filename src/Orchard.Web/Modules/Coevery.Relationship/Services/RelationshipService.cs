@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Coevery.Core.DynamicTypeGeneration;
 using Coevery.Core.Services;
+using Coevery.Entities.Events;
 using Coevery.Entities.Services;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Models;
@@ -39,6 +40,7 @@ namespace Coevery.Relationship.Services {
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
+        private readonly IFieldEvents _fieldEvents;
 
         public RelationshipService(
             IRepository<RelationshipRecord> relationshipRepository,
@@ -53,7 +55,8 @@ namespace Coevery.Relationship.Services {
             IDataMigrationInterpreter interpreter,
             ISchemaUpdateService schemaUpdateService,
             IContentManager contentManager,
-            IProjectionManager projectionManager) {
+            IProjectionManager projectionManager, 
+            IFieldEvents fieldEvents) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
             _manyToManyRepository = manyToManyRepository;
@@ -66,6 +69,7 @@ namespace Coevery.Relationship.Services {
             _schemaUpdateService = schemaUpdateService;
             _contentManager = contentManager;
             _projectionManager = projectionManager;
+            _fieldEvents = fieldEvents;
             _sessionLocator = sessionLocator;
             _schemaBuilder = new SchemaBuilder(_interpreter, "", s => s.Replace(".", "_"));
         }
@@ -188,6 +192,12 @@ namespace Coevery.Relationship.Services {
             });
             _contentDefinitionService.AddFieldToPart(oneToMany.FieldName, oneToMany.FieldLabel, "ReferenceField", relatedEntity.Name);
             _contentDefinitionService.AlterField(relatedEntity.Name, oneToMany.FieldName, updateModel);
+            var context = new FieldCreatedContext {
+                EtityName = relatedEntity.Name,
+                FieldName = oneToMany.FieldName,
+                IsInLayout = oneToMany.AlwaysInLayout
+            };
+            _fieldEvents.OnCreated(context);
 
             var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.FirstOrDefault(field => field.Name == oneToMany.FieldName);
             var projectionPart = CreateProjection(oneToMany.RelatedEntity, oneToMany.ColumnFieldList);
