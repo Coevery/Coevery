@@ -8,6 +8,9 @@ define(['core/app/detourService'], function (detour) {
                 $scope.save = function () {
                     ToggleReadonly(false);
                     var form = $('#onetomany-form');
+                    if (!checkValid(form)) {
+                        return null;
+                    }
                     var promise = $http({
                         url: form.attr('action'),
                         method: form.attr('method'),
@@ -42,3 +45,14 @@ function ToggleReadonly(condition) {
     $("input.related-entity").prop('disabled', condition);
     //$("#relation-deleteOption").prop('disabled', condition);
 }
+
+function checkValid(form) {
+    var validator = form.validate();
+    if (!validator) {
+        return false;
+    }
+    if (!validator.form()) {
+        return false;
+    }
+    return true;
+};

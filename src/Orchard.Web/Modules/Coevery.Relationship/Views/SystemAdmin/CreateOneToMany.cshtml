@@ -7,9 +7,9 @@
 @using Orchard.Mvc.Html
 @model OneToManyRelationshipModel
     
-@helper DisplayInput(string label, HtmlString input) {
+@helper DisplayInput(string label, HtmlString input, string labelClass) {
     <section class="data-row control-group">
-        <label class="control-label">
+        <label class="control-label @labelClass">
             @label
         </label>
         <div class="controls">
@@ -64,20 +64,23 @@
                 <legend>General Information</legend>
                                        
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new { @class = "span12", id = "relation-name" }))
+                              , Html.TextBoxFor(model => model.Name, new { @class = "span12", id = "relation-name", required="" })
+                              ,"required")
                     
                 @DisplayInput("Primary Entity"
-                              , Html.TextBoxFor(model => model.PrimaryEntity
-                                                , new { @class = "span12 primary-entity" }))
+                              , Html.TextBoxFor(model => model.PrimaryEntity, new { @class = "span12 primary-entity" })
+                              ,null)
                     
                 @if (Model.IsCreate) {
                     @DisplayInput("Related Entity"
                                   , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList,
-                                                         "Please select related entity", new { @class = "span12 related-entity" }))
+                                                         "Please select related entity", new { @class = "span12 related-entity", required="" })
+                                  ,"required")
                 }
                 else {
                     @DisplayInput("Related Entity"
-                                  , Html.TextBoxFor(model => model.RelatedEntity, new { @class = "span12 related-entity", disabled = "disabled" }))
+                                  , Html.TextBoxFor(model => model.RelatedEntity, new { @class = "span12 related-entity", disabled = "disabled" })
+                                  ,null)
                 }
 
                 <section class="data-row control-group">
@@ -94,7 +97,7 @@
                             Don't allow delete
                         </label>
                         <label class="radio">
-                            @DisplayDeleteOption(OneToManyDeleteOption.CascadingDelete,null)
+                            @DisplayDeleteOption(OneToManyDeleteOption.CascadingDelete,new HtmlString("id='defaultDeleteOption'"))
                             Cascading delete
                         </label>
                     </div>
@@ -105,7 +108,8 @@
                 <legend>Related Entity Display Option</legend>
                 
                 @DisplayInput("Related Entity List Label"
-                              , Html.TextBoxFor(model => model.RelatedListLabel, new { @class = "span12" }))
+                              , Html.TextBoxFor(model => model.RelatedListLabel, new { @class = "span12",required="" })
+                              ,"required")
 
                 
                 <section class="data-row control-group">
@@ -129,8 +133,8 @@
                 if (Model.IsCreate) {
                 <fieldset>
                     <legend>Lookup Field</legend>
-                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new { @class = "span12" }))
-                    @DisplayInput("Field Name", Html.TextBoxFor(model => model.FieldName, new { @class = "span12" }))
+                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new { @class = "span12", required="" }),"required")
+                    @DisplayInput("Field Name", Html.TextBoxFor(model => model.FieldName, new { @class = "span12", required="" }),"required")
 
                     <section class="data-row control-group">
                         <label class="control-label">
@@ -156,7 +160,7 @@
                         </div>
                     </section>
 
-                    @DisplayInput("Help Text", Html.TextAreaFor(model => model.HelpText, new { @class = "span12" }))
+                    @DisplayInput("Help Text", Html.TextAreaFor(model => model.HelpText, new { @class = "span12" }),null)
                 </fieldset>
                 }
         }
@@ -215,6 +219,9 @@
                 $("select.related-entity").change(function () {
                     getFields($("select.related-entity option:selected").val(), $("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));
                 });
+                setTimeout(function () {
+                    $("#defaultDeleteOption").click();
+                }, 100);
             }
 
             $("input.primary-entity").prop('disabled', true);

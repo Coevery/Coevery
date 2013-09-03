@@ -11,6 +11,10 @@ define(['core/app/detourService'], function (detour) {
                 $scope.save = function () {
                     $("input.primary-entity").prop('disabled', false);
                     var form = $('#manytomany-form');
+                    if (!checkValid(form)) {
+                        return null;
+                    }
+
                     var promise = $http({
                         url: form.attr('action'),
                         method: form.attr('method'),
@@ -39,3 +43,14 @@ define(['core/app/detourService'], function (detour) {
             }]
     ]);
 });
+
+function checkValid(form) {
+    var validator = form.validate();
+    if (!validator) {
+        return false;
+    }
+    if (!validator.form()) {
+        return false;
+    }
+    return true;
+};

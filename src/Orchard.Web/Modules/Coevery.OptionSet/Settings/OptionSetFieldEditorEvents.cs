@@ -54,7 +54,7 @@ namespace Coevery.OptionSet.Settings {
 
                 if (model.OptionSetId == 0) {
                     string[] options = (!String.IsNullOrWhiteSpace(model.Options)) ?
-                        model.Options.Split(new[] {Environment.NewLine}, StringSplitOptions.None) : new string[] {};
+                        model.Options.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries) : new string[] {};
                     var optionSetPart = _contentManager.New<OptionSetPart>("OptionSet");
                     optionSetPart.As<TitlePart>().Title = builder.Name;
 

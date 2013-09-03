@@ -12,9 +12,9 @@
     }
 </style>
 
-@helper DisplayInput(string label, HtmlString input) {
+@helper DisplayInput(string label, HtmlString input, string labelClass) {
     <section class="data-row control-group">
-        <label class="control-label">
+        <label class="control-label @labelClass">
             @label
         </label>
         <div class="controls">
@@ -45,20 +45,24 @@
             <fieldset>
                 <legend>General Information</legend>
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new {@class = "span12",id = "relation-name"}))
+                              , Html.TextBoxFor(model => model.Name, new {@class = "span12",id = "relation-name", required=""})
+                              , "required")
                     
                 @DisplayInput("Primary Entity"
                               , Html.TextBoxFor(model => model.PrimaryEntity
-                              , new {@class = "span12 primary-entity"}))
+                              , new {@class = "span12 primary-entity", required=""})
+                              , "required")
                 
                 @if (Model.IsCreate) {
                     @DisplayInput("Related Entity"
                                   , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList,
-                                                         "Please select related entity", new {@class = "span12 related-entity"}))
+                                                         "Please select related entity", new {@class = "span12 related-entity", required=""})
+                                  , "required")
                 }
                 else {
                     @DisplayInput("Related Entity"
-                                  , Html.TextBoxFor(model => model.RelatedEntity, new {@class = "span12 related-entity", disabled="disabled"}))
+                                  , Html.TextBoxFor(model => model.RelatedEntity, new {@class = "span12 related-entity", disabled="disabled"})
+                                  , null)
                 } 
                 
             </fieldset>
@@ -66,7 +70,8 @@
                 <legend>Primary Entity Display Option</legend>
 
                 @DisplayInput("Primary Entity List Label"
-                              , Html.TextBoxFor(model => model.PrimaryListLabel, new {@class = "span12"}))
+                              , Html.TextBoxFor(model => model.PrimaryListLabel, new {@class = "span12", required=""})
+                              , "required")
 
                 <section class="data-row control-group">
                     <div class="controls">
@@ -87,7 +92,8 @@
             <fieldset>
                 <legend>Related Entity Display Option</legend>
                 @DisplayInput("Related Entity List Label"
-                              , Html.TextBoxFor(model => model.RelatedListLabel, new {@class = "span12"}))
+                              , Html.TextBoxFor(model => model.RelatedListLabel, new {@class = "span12", required=""})
+                              , "required")
 
                 
                 <section class="data-row control-group">
