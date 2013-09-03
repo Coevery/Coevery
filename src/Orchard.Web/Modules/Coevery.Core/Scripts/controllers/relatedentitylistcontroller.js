@@ -1,16 +1,14 @@
 ﻿'use strict';
 
-define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (detour) {
+define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice'], function (detour) {
     detour.registerController([
-      'RelatedListCtrl',
-      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService',
-      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService) {
-          var moduleName = $rootScope.$stateParams.Module;
-          
+      'RelatedEntityListCtrl',
+      ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService',
+      function ($rootScope, $scope, $parse, logger, $detour, $resource, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService) {
+
           var primaryKeyGetter = $parse('ContentId');
           $scope.toolButtonDisplay = false;
-          $scope.currentViewId = 0;
-          $scope.moduleName = moduleName;
+          //$scope.moduleName = moduleName;
           
           $scope.definitionViews = [];
           $scope.columnDefs = [];
@@ -31,14 +29,14 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/
               $location.search("PageSize", pageSize);
               $location.search("Page", page);
               $stateParams["PageSize"] = pageSize;
-              var record = commonDataService.get({ contentType: moduleName, pageSize: pageSize, page: page, viewId: $scope.currentViewId }, function () {
+              var record = commonDataService.get({ contentType: $scope.entityTypeName, pageSize: pageSize, page: page, viewId: $scope.viewId }, function () {
                   $scope.myData = record.EntityRecords;
                   $scope.totalServerItems = record.TotalNumber;
                   if (!$scope.$$phase) {
                       $scope.$apply();
                   }
               }, function () {
-                  logger.error("Failed to fetched records for " + moduleName);
+                  logger.error("Failed to fetched records for " + $scope.entityTypeName);
               });
           };
 
@@ -80,18 +78,12 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
-          // fetch view columns
-          $scope.FetchViewColumns = function (viewId) {
-              if (viewId <= 0) return;
-              if (viewId == $scope.currentViewId) return;
-              $scope.currentViewId = viewId;
-              //$location.search("ViewId", viewId);
-              var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function () {
+          $scope.getRelatedData = function () {
+              var gridColumns = columnDefinitionService.query({ contentType: $scope.entityTypeName, viewId: $scope.viewId }, function() {
                   $scope.columnDefs = gridColumns;
                   $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-              }, function () {
+              }, function() {
               });
-
           };
 
           $scope.Refresh = function () {
@@ -110,7 +102,7 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/
               }
               commonDataService.delete({ contentId: ids }, function () {
                   $scope.Refresh();
-                  logger.success('Delete the ' + moduleName + ' successful.');
+                  logger.success('Delete the ' + $scope.entityTypeName + ' successful.');
               }, function () {
                   logger.error('Failed to delete the lead.');
               });
@@ -118,7 +110,7 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/
 
           $scope.add = function () {
               $rootScope.Search = $location.$$search;
-              $state.transitionTo('Create', { Module: moduleName });
+              $detour.transitionTo('Create', { Module: $scope.entityTypeName });
           };
 
           $scope.edit = function (id) {
@@ -126,14 +118,14 @@ define(['core/app/couchPotatoService', 'core/services/commondataservice', 'core/
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
               $rootScope.Search = $location.$$search;
-              $state.transitionTo('Detail', { Module: moduleName, Id: id });
+              $detour.transitionTo('Detail', { Module: $scope.entityTypeName, Id: id });
           };
+          
           $scope.view = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
-              $rootScope.Search = $location.$$search;
-              $state.transitionTo('View', { Module: moduleName, Id: id });
+              $detour.transitionTo('View', { Module: $scope.entityTypeName, Id: id });
           };
       }]
     ]);

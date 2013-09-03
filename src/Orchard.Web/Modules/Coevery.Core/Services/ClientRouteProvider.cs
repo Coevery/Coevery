@@ -58,7 +58,7 @@ namespace Coevery.Core.Services {
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralViewCtrl";
-                    view.Dependencies = ToClientUrl(new[] { "controllers/viewcontroller", "controllers/subviewgridcontroller" });
+                    view.Dependencies = ToClientUrl(new[] { "controllers/viewcontroller", "controllers/relatedentitylistcontroller" });
                 });
         }
     }

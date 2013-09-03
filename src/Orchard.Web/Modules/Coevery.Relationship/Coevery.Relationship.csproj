@@ -107,7 +107,8 @@
     <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
     <Compile Include="Settings\ReferenceFieldSettings.cs" />
     <Compile Include="Models\ReferenceUpdateModel.cs" />
-    <Compile Include="Shapes\RelationShape.cs" />
+    <Compile Include="Shapes\RelatedEntityViewModel.cs" />
+    <Compile Include="Shapes\RelationshipShape.cs" />
     <Compile Include="ViewModels\EditRelationshipViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

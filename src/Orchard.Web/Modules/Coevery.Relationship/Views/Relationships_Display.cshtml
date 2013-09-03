@@ -1,22 +1,20 @@
-﻿@helper GridDisplay(string relationName){
-    <section class="row-fluid related-list">
+﻿@using Coevery.Relationship
+@using Coevery.Relationship.Records
+@{
+    var relationships = (IList<RelatedEntityViewModel>)Enumerable.Cast<RelatedEntityViewModel>(Model.Relationships);
+}
+@foreach (dynamic relationship in relationships) {
+        <section class="row-fluid related-list">
         <header>
-            <h5>@relationName</h5>
-            @*<div class="btn-toolbar">
+            <h5>@relationship.Label</h5>
+            <div class="btn-toolbar">
                 <button class="btn btn-small btn-success">
-                    <i class="icon-plus"></i>&nbsp;New Task
+                    <i class="icon-plus"></i>&nbsp;New
                 </button>
-                <button class="btn btn-small btn-success">
-                    <i class="icon-plus"></i>&nbsp;New Event
-                </button>
-            </div>*@
+            </div>
         </header>
-        <div data-ng-controller='SubViewCtrl'>
-            <div class="gridStyle" data-ng-grid='notesOptions'></div>
+        <div data-ng-controller='RelatedEntityListCtrl' data-ng-init="entityTypeName='@relationship.RelatedEntityName';viewId=@relationship.ProjectionId;getRelatedData()">
+            <div class="gridStyle" data-ng-grid='gridOptions'></div>
         </div>
     </section>
-}
-
-@foreach (var relation in Model.Relations) {
-    @GridDisplay(relation)
 }

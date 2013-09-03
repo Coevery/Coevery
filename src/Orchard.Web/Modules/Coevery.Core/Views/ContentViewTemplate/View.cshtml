@@ -1,9 +1,7 @@
 ﻿@using Orchard.ContentManagement
-@using Orchard.Utility.Extensions
-@model Coevery.Core.ViewModels.ViewWithRelationsModel
 
 @{
-    ContentItem contentItem = Model.Shape.ContentItem;
+    ContentItem contentItem = Model.ContentItem;
 }
 
 <section data-ng-controller="GeneralViewCtrl">
@@ -22,11 +20,11 @@
 
         <div class="row-fluid">
             <section class="view-mode span12">
-                @{ Output.Write(Model.Shape.Layout); }
+                @{ Output.Write(Model.Layout); }
             </section>
         </div> 
         
-        @Display(Model.Shape.Content)
+        @Display(Model.Content)
 
         <section class="row-fluid related-list">
             <header>

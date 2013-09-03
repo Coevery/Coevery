@@ -165,7 +165,6 @@
     <Compile Include="Services\ViewPartService.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="DefaultRoute.cs" />
-    <Compile Include="Shapes\FrontShapes.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
     <Compile Include="ViewModels\CommonListViewModel.cs" />
     <Compile Include="ViewModels\ViewWithRelationsModel.cs" />
@@ -182,7 +181,7 @@
     <Content Include="Scripts\app\detourService.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
-    <Content Include="Scripts\controllers\relatedlistcontroller.js" />
+    <Content Include="Scripts\controllers\relatedentitylistcontroller.js" />
     <Content Include="Scripts\controllers\viewcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />

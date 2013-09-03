@@ -13,9 +13,10 @@ using Orchard.Security.Permissions;
 namespace Orchard.Roles {
     [UsedImplicitly]
     public class AnonymousRoleUpdater : IFeatureEventHandler {
-        private IRepository<RolesPermissionsRecord> _permissionRepository;
+        private readonly IRepository<RolesPermissionsRecord> _permissionRepository;
 
-        public AnonymousRoleUpdater() {
+        public AnonymousRoleUpdater(IRepository<RolesPermissionsRecord> permissionRepository) {
+            _permissionRepository = permissionRepository;
 
             Logger = NullLogger.Instance;
         }

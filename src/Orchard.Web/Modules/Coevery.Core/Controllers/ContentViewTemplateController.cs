@@ -215,15 +215,10 @@ namespace Coevery.Core.Controllers {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);         
             if (contentItem == null)
                 return HttpNotFound();
-            var temp = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType).Parts;
-            var relations = new Dictionary<int, string>();
 
             dynamic model = _contentManager.BuildDisplay(contentItem);
             model.Layout = GetLayout(contentItem);
-            return View(new ViewWithRelationsModel {
-                Shape = model,
-                Relations = relations
-            });
+            return View(model);
         }
 
         [HttpPost]
