@@ -179,6 +179,7 @@
     <Content Include="Scripts\app\detourService.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
+    <Content Include="Scripts\controllers\relatedlistcontroller.js" />
     <Content Include="Scripts\controllers\viewcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />

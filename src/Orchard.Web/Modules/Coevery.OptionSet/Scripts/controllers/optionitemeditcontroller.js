@@ -97,7 +97,6 @@ define(['core/app/detourService'], function(detour) {
                 };
 
                 $scope.getOptionItems = function () {
-                    debugger;
                     var items = optionItemDataService.query({ optionSetId: $scope.optionSetId }, function () {
                         $scope.totalServerItems = items.length;
                         $scope.myData = items;
