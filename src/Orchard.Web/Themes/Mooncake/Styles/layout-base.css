@@ -30,6 +30,36 @@ body {
     padding: 0;
 }
 
+.dateForShort
+{
+    width:100%;
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.date
+{
+     width:100%;
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.input-prepend
+{
+    padding-right:41px;
+}
+
+@media (max-width: 767px)
+{
+    .input-prepend input
+    {
+        width:100%;
+        margin-left:0px;
+        margin-right:0px;
+    }
+}
+
+
 #wrapper {
     max-width: 1536px;
     min-width: 320px;
