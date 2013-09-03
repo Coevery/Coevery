@@ -1,0 +1,22 @@
+﻿@helper GridDisplay(string relationName){
+    <section class="row-fluid related-list">
+        <header>
+            <h5>@relationName</h5>
+            @*<div class="btn-toolbar">
+                <button class="btn btn-small btn-success">
+                    <i class="icon-plus"></i>&nbsp;New Task
+                </button>
+                <button class="btn btn-small btn-success">
+                    <i class="icon-plus"></i>&nbsp;New Event
+                </button>
+            </div>*@
+        </header>
+        <div data-ng-controller='SubViewCtrl'>
+            <div class="gridStyle" data-ng-grid='notesOptions'></div>
+        </div>
+    </section>
+}
+
+@foreach (var relation in Model.Relations) {
+    @GridDisplay(relation)
+}

@@ -1,9 +1,11 @@
 ﻿@using Orchard.ContentManagement
 @using Orchard.Utility.Extensions
+@model Coevery.Core.ViewModels.ViewWithRelationsModel
 
 @{
-    ContentItem contentItem = Model.ContentItem;
+    ContentItem contentItem = Model.Shape.ContentItem;
 }
+
 <section data-ng-controller="GeneralViewCtrl">
     <header id="page-title">
         <h1 class="pull-left">@Html.ItemDisplayText(contentItem) <span>view a data</span></h1>
@@ -20,37 +22,11 @@
 
         <div class="row-fluid">
             <section class="view-mode span12">
-                @{ Output.Write(Model.Layout); }
+                @{ Output.Write(Model.Shape.Layout); }
             </section>
-        </div>
-
-        <section class="row-fluid related-list">
-            <header>
-                <h5>Open Activities</h5>
-                <div class="btn-toolbar">
-                    <button class="btn btn-small btn-success">
-                        <i class="icon-plus"></i>&nbsp;New Task
-                    </button>
-                    <button class="btn btn-small btn-success">
-                        <i class="icon-plus"></i>&nbsp;New Event
-                    </button>
-                </div>
-            </header>
-            <div class="gridStyle" data-ng-grid="openActivitiesOptions"></div>
-        </section>
-
-        <section class="row-fluid related-list">
-            <header>
-                <h5>Notes</h5>
-                <div class="btn-toolbar">
-                    <button class="btn btn-small btn-success">
-                        <i class="icon-plus"></i>&nbsp;New Note
-                    </button>
-                </div>
-            </header>
-            <div class="gridStyle" data-ng-grid="notesOptions"></div>
-        </section>
-
+        </div> 
+        
+        @Display(Model.Shape.Content)
 
         <section class="row-fluid related-list">
             <header>
@@ -60,7 +36,6 @@
         </section>
     </section>
 </section>
-@Display(Model.Content)
 
 <script>
     $(function () {

@@ -107,6 +107,7 @@
     <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
     <Compile Include="Settings\ReferenceFieldSettings.cs" />
     <Compile Include="Models\ReferenceUpdateModel.cs" />
+    <Compile Include="Shapes\RelationShape.cs" />
     <Compile Include="ViewModels\EditRelationshipViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +179,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts\Relationship.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Relationships_Display.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

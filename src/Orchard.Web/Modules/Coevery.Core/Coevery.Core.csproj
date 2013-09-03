@@ -165,8 +165,10 @@
     <Compile Include="Services\ViewPartService.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="DefaultRoute.cs" />
+    <Compile Include="Shapes\FrontShapes.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
     <Compile Include="ViewModels\CommonListViewModel.cs" />
+    <Compile Include="ViewModels\ViewWithRelationsModel.cs" />
     <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
     <Compile Include="ViewModels\ModuleMenuItemEditViewModel.cs" />
   </ItemGroup>

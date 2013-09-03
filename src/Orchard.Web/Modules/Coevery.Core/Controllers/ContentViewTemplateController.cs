@@ -212,13 +212,18 @@ namespace Coevery.Core.Controllers {
         }
 
         public ActionResult View(int id) {
-            var contentItem = _contentManager.Get(id, VersionOptions.Latest);
-
+            var contentItem = _contentManager.Get(id, VersionOptions.Latest);         
             if (contentItem == null)
                 return HttpNotFound();
+            var temp = _contentDefinitionManager.GetTypeDefinition(contentItem.ContentType).Parts;
+            var relations = new Dictionary<int, string>();
+
             dynamic model = _contentManager.BuildDisplay(contentItem);
             model.Layout = GetLayout(contentItem);
-            return View((object)model);
+            return View(new ViewWithRelationsModel {
+                Shape = model,
+                Relations = relations
+            });
         }
 
         [HttpPost]

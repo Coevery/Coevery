@@ -6,45 +6,6 @@
                 var moduleName = $stateParams.Module;
                 var id = $stateParams.Id;
                 $scope.moduleName = moduleName;
-
-                // activities
-                $scope.openActivitiesOptions = {
-                    data: 'activities',
-                    multiSelect: true,
-                    enableRowSelection: true,
-                    showSelectionCheckbox: true,
-                    columnDefs: [
-                        { field: 'subject', displayName: 'Subject' },
-                        { field: 'status', displayName: 'Status' }
-                    ]
-                };
-                angular.extend($scope.openActivitiesOptions, $rootScope.defaultGridOptions);
-
-                $scope.activities = [
-                    { subject: 'Confirm', status: 'Open' },
-                    { subject: 'Meeting', status: 'Open' },
-                    { subject: 'Call', status: 'Open' }
-                ];
-
-                // note
-                $scope.notesOptions = {
-                    data: 'notes',
-                    multiSelect: true,
-                    enableRowSelection: true,
-                    showSelectionCheckbox: true,
-                    columnDefs: [
-                        { field: 'title', displayName: 'Title' },
-                        { field: 'body', displayName: 'Body' }
-                    ]
-                };
-                angular.extend($scope.notesOptions, $rootScope.defaultGridOptions);
-
-
-                $scope.notes = [
-                    { title: 'Lead Way', body: 'Buy the website.' },
-                    { title: 'Confirm', body: 'Make sure.' },
-                    { title: 'Failed', body: 'Unfortunately!' }
-                ];
                 
                 // histories
                 $scope.historiesOptions = {
@@ -65,6 +26,11 @@
                     logger.error("Failed to fetched records for " + moduleName);
                 });
 
+                $scope.generateChildController = function(childName) {
+                    this[childName] = function(items) {
+
+                    };
+                };
 
                 $scope.exit = function () {
                     $detour.transitionTo('List', { Module: moduleName });
@@ -75,3 +41,4 @@
             }]
     ]);
 });
+
