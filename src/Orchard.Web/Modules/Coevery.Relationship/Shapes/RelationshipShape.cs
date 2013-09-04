@@ -47,22 +47,27 @@ namespace Coevery.Relationship.Shapes {
 
                 if (relationshipType == RelationshipType.OneToMany) {
                     var oneToMany = _relationshipService.GetOneToMany(record.Id);
-                    yield return new RelatedEntityViewModel {
-                        Label = oneToMany.RelatedListLabel,
-                        RelatedEntityName = record.RelatedEntity.Name,
-                        ProjectionId = oneToMany.RelatedListProjection.Id
-                    };
+                    if (oneToMany.ShowRelatedList) {
+                        yield return new RelatedEntityViewModel {
+                            Label = oneToMany.RelatedListLabel,
+                            RelatedEntityName = record.RelatedEntity.Name,
+                            ProjectionId = oneToMany.RelatedListProjection.Id
+                        };
+                    }
                 }
                 else {
                     var manyToMany = _relationshipService.GetManyToMany(record.Id);
                     var relatedEntityName = record.PrimaryEntity.Name == contentType ? record.RelatedEntity.Name : record.PrimaryEntity.Name;
                     var projectionId = record.PrimaryEntity.Name == contentType ? manyToMany.RelatedListProjection.Id : manyToMany.PrimaryListProjection.Id;
                     var label = record.PrimaryEntity.Name == contentType ? manyToMany.RelatedListLabel : manyToMany.PrimaryListLabel;
-                    yield return new RelatedEntityViewModel {
-                        Label = label,
-                        RelatedEntityName = relatedEntityName,
-                        ProjectionId = projectionId
-                    };
+                    var showList = record.PrimaryEntity.Name == contentType ? manyToMany.ShowRelatedList : manyToMany.ShowPrimaryList;
+                    if (showList) {
+                        yield return new RelatedEntityViewModel {
+                            Label = label,
+                            RelatedEntityName = relatedEntityName,
+                            ProjectionId = projectionId
+                        };
+                    }
                 }
             }
         }

@@ -7,6 +7,6 @@
 }
 <label class="span3 control-label" for="@Html.FieldIdFor(m => m.ContentId)">@Model.Field.DisplayName</label>
 <div class="control controls">
-    @Html.DropDownListFor(m => m.ContentId, Model.ItemList, new { @class = "textMedium span12"})
+    @Html.DropDownListFor(m => m.ContentId, Model.ItemList, string.Empty, new { @class = "textMedium span12"})
 </div>
 
