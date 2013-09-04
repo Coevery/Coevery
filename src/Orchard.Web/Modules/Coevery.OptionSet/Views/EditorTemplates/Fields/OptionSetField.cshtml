@@ -11,7 +11,7 @@
     @switch (settings.ListMode) {
         case ListMode.Dropdown:
             var options = Model.OptionItems.Select(t => new SelectListItem { Text = t.Name, Value = t.Id.ToString(), Selected = t.Id == Model.SingleTermId });
-            @Html.DropDownListFor(m => m.SingleTermId, options, new{ @class="span12"})
+            @Html.DropDownListFor(m => m.SingleTermId, options,string.Empty, new{ @class="span12"})
             for (int i = 0; i < Model.OptionItems.Count; i++) {
                 @Html.HiddenFor(m => m.OptionItems[i].Id)
             }
