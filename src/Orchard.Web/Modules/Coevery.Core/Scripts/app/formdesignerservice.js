@@ -517,7 +517,6 @@
                     inLayoutFields.push(attrs.fieldName);
 
                     var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]').text();
-                    template = template.replace(/<(input|select|textarea)/ig, '<$1');
                     element.html(template);
                     var control = element.find('.control');
                     control.after('<div class="tools"></div>');
