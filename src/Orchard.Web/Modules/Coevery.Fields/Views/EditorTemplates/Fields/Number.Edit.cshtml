@@ -18,5 +18,8 @@
         @if (settings.DecimalPlaces > 0) {<text> decimalplaces = "@settings.DecimalPlaces" </text>}
            class="textMedium span12 number @decimalplacesclass"
         />
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
+        <span class="help-block">@settings.HelpText</span>
+    }
     @Html.ValidationMessageFor(m => m.Value)
 </div>

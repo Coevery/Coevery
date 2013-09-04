@@ -23,7 +23,7 @@
         <div class="row-fluid">
             <section class="edit-mode span12">
                 @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                          FormMethod.Post, new { @class = "", @name = "myForm" })) {
+                                                          FormMethod.Post, new { @class = "form-horizontal", @name = "myForm" })) {
                     @Html.ValidationSummary()
                     // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
 

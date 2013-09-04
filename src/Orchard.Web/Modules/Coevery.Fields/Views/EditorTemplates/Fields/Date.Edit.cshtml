@@ -19,6 +19,9 @@
         @if (required != null)
         {<text> required data-msg-required="Please fill this field!"</text> } 
         />
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
+        <span class="help-block">@settings.HelpText</span>
+    }
     @Html.ValidationMessageFor(m => m.Value)
 </div>
 <script type="text/javascript">

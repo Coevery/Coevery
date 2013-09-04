@@ -15,5 +15,8 @@
             @if (settings.Required) {<text> required="required"</text> }
             @if (settings.ReadOnly) {<text> readonly="readonly"</text> }
                class="textMedium span12 email" />
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
+        <span class="help-block">@settings.HelpText</span>
+    }
     @Html.ValidationMessageFor(m => m.Value)
 </div>

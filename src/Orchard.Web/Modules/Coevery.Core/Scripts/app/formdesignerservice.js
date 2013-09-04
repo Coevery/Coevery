@@ -565,7 +565,10 @@
                     element[0].removeField = removeField;
 
                     element.dblclick(openPropertyDialog);
-
+                    
+                    element.append("<div style='position:absolute;left:0px;top:0px;width:100%;height:100%;z-index:9999;'></div>");
+                    element.find(".tools").css("z-index", 10000);
+                    
                     function createBlankSpace() {
                         element.append('<div class="span12">Blank Space</div><div class="tools"></div>');
                         var removeItem = $('<fd-tool-remove></fd-tool-remove>');
@@ -693,12 +696,6 @@
                             $compile(removeItem)(scope);
                         }
                     }
-
-
-                    (function () {
-                        element.append("<div style='position:absolute;left:0px;top:0px;width:100%;height:100%;z-index:9999;'></div>");
-                        element.find(".tools").css("z-index", 10000);
-                    })();
                 }
             };
         })

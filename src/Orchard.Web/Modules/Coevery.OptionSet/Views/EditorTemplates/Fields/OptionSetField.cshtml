@@ -57,6 +57,8 @@
         case ListMode.Listbox:
             break;
     }
-    
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
+        <span class="help-block">@settings.HelpText</span>
+    }
     @Html.HiddenFor(m=>m.OptionSetId)
 </div>
