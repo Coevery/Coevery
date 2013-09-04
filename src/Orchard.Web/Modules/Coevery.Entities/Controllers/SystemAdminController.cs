@@ -388,18 +388,7 @@ namespace Coevery.Entities.Controllers {
 
             fieldDefinition.DisplayName = viewModel.DisplayName;
             _contentDefinitionManager.StorePartDefinition(partViewModel._Definition);
-
             _contentDefinitionService.AlterField(id, viewModel.Name, this);
-            if (!ModelState.IsValid) {
-                Services.TransactionManager.Cancel();
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
-            }
-
-            _schemaUpdateService.CreateColumn(partViewModel.Name, field.Name, field.FieldDefinition.Name);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
