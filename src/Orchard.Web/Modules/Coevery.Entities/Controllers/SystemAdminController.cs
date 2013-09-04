@@ -300,12 +300,8 @@ namespace Coevery.Entities.Controllers {
                 Services.TransactionManager.Cancel();
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message.ToString());
             }
-            var context = new FieldCreatedContext {
-                EtityName = id,
-                FieldName = viewModel.Name,
-                IsInLayout = viewModel.AddInLayout
-            };
-            _fieldEvents.OnCreated(context);
+       
+            _fieldEvents.OnCreated(id, viewModel.Name, viewModel.AddInLayout);
             Services.Notifier.Information(T("The \"{0}\" field has been added.", viewModel.DisplayName));
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);

@@ -158,6 +158,7 @@
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\AnonymousRoleUpdater.cs" />
+    <Compile Include="Services\DefaultDataMigrationInterpreter.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />
     <Compile Include="Services\SchemaUpdateService.cs" />

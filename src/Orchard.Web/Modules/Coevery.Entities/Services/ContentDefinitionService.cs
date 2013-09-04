@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Coevery.Core.Services;
-using Coevery.Entities.Events;
 using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
@@ -20,24 +18,18 @@ namespace Coevery.Entities.Services {
         private readonly IEnumerable<IContentPartDriver> _contentPartDrivers;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
-        private readonly IFieldEvents _fieldEvents;
-        private readonly ISchemaUpdateService _schemaUpdateService;
 
         public ContentDefinitionService(
             IOrchardServices services,
             IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IContentPartDriver> contentPartDrivers,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents, 
-            IFieldEvents fieldEvents,
-            ISchemaUpdateService schemaUpdateService) {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             _contentPartDrivers = contentPartDrivers;
             _contentFieldDrivers = contentFieldDrivers;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
-            _fieldEvents = fieldEvents;
-            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -302,16 +294,7 @@ namespace Coevery.Entities.Services {
         }
 
         public void RemoveFieldFromPart(string fieldName, string partName) {
-            var context = new FieldDeletingContext {
-                EtityName = partName,
-                FieldName = fieldName
-            };
-            _fieldEvents.OnDeleting(context);
-            if (context.IsCancel) {
-                return;
-            }
             _contentDefinitionManager.AlterPartDefinition(partName, typeBuilder => typeBuilder.RemoveField(fieldName));
-            _schemaUpdateService.DropColumn(partName, fieldName);
         }
 
         public string GenerateContentTypeNameFromDisplayName(string displayName) {

@@ -12,14 +12,14 @@ namespace Coevery.FormDesigner.Handlers {
             _layoutManager = layoutManager;
         }
 
-        public void OnCreated(FieldCreatedContext context) {
-            if (context.IsInLayout) {
-                _layoutManager.AddField(context.EtityName, context.FieldName);
+        public void OnCreated(string etityName, string fieldName, bool isInLayout) {
+            if (isInLayout) {
+                _layoutManager.AddField(etityName, fieldName);
             }
         }
 
-        public void OnDeleting(FieldDeletingContext context) {
-            _layoutManager.DeleteField(context.EtityName, context.FieldName);
+        public void OnDeleting(string etityName, string fieldName) {
+            _layoutManager.DeleteField(etityName, fieldName);
         }
     }
 }

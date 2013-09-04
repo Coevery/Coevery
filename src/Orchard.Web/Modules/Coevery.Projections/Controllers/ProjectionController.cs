@@ -16,19 +16,20 @@ using Orchard.Utility.Extensions;
 
 namespace Coevery.Projections.Controllers {
     public class ProjectionController : ApiController {
-         private readonly IContentManager _contentManager;
+        private readonly IContentManager _contentManager;
         private readonly IViewPartService _viewPartService;
-        public ProjectionController(IContentManager contentManager,IViewPartService viewPartService) {
+
+        public ProjectionController(
+            IContentManager contentManager,
+            IViewPartService viewPartService) {
             _contentManager = contentManager;
             _viewPartService = viewPartService;
         }
 
-        public IEnumerable<JObject> Get()
-        {
+        public IEnumerable<JObject> Get() {
             List<JObject> re = new List<JObject>();
             var projections = _contentManager.Query<ProjectionPart>().List();
-            foreach (var projectionPart in projections)
-            {
+            foreach (var projectionPart in projections) {
                 string displayName = _contentManager.Get(projectionPart.Record.QueryPartRecord.Id).As<TitlePart>().Title;
                 JObject reObJ = new JObject();
                 reObJ["ContentId"] = projectionPart.Id;
@@ -39,19 +40,16 @@ namespace Coevery.Projections.Controllers {
             return re;
         }
 
-        public IEnumerable<JObject> Get(string id)
-        {
+        public IEnumerable<JObject> Get(string id) {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            if (pluralService.IsPlural(id))
-            {
+            if (pluralService.IsPlural(id)) {
                 id = pluralService.Singularize(id);
             }
 
             List<JObject> re = new List<JObject>();
             var projections = _contentManager.Query<ProjectionPart>().List().Where(t => t.As<TitlePart>().Title == id);
             int viewId = _viewPartService.GetProjectionId(id);
-            foreach (var projectionPart in projections)
-            {
+            foreach (var projectionPart in projections) {
                 string displayName = _contentManager.Get(projectionPart.Record.QueryPartRecord.Id).As<TitlePart>().Title;
                 JObject reObJ = new JObject();
                 reObJ["ContentId"] = projectionPart.Id;
@@ -69,8 +67,7 @@ namespace Coevery.Projections.Controllers {
             _viewPartService.SetView(entityType, id);
         }
 
-        public void Delete(int id)
-        {
+        public void Delete(int id) {
             var contentItem = _contentManager.Get(id);
             _contentManager.Remove(contentItem);
         }

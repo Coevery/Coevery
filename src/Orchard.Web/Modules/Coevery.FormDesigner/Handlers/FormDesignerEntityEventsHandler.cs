@@ -12,5 +12,8 @@ namespace Coevery.FormDesigner.Handlers {
         public void OnCreated(string entityName) {
             _layoutManager.GenerateDefaultLayout(entityName);
         }
+
+        public void OnDeleting(string entityName) {
+        }
     }
 }

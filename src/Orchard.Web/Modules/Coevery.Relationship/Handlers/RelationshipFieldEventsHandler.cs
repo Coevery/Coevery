@@ -20,25 +20,24 @@ namespace Coevery.Relationship.Handlers {
             _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public void OnCreated(FieldCreatedContext context) {
-        }
+        public void OnCreated(string etityName, string fieldName, bool isInLayout) {}
 
-        public void OnDeleting(FieldDeletingContext context) {
-            var partDefinition = _contentDefinitionManager.GetPartDefinition(context.EtityName);
+        public void OnDeleting(string etityName, string fieldName) {
+            var partDefinition = _contentDefinitionManager.GetPartDefinition(etityName);
             if (partDefinition == null) {
                 return;
             }
-            var fieldDefinition = partDefinition.Fields.FirstOrDefault(x => x.Name == context.FieldName);
+            var fieldDefinition = partDefinition.Fields.FirstOrDefault(x => x.Name == fieldName);
             if (fieldDefinition == null
                 || fieldDefinition.FieldDefinition.Name != "ReferenceField") {
                 return;
             }
 
             var oneToManyRecord = _oneToManyRepository
-                .Get(x => x.Relationship.RelatedEntity.Name == context.EtityName
-                          && x.LookupField.Name == context.FieldName);
+                .Get(x => x.Relationship.RelatedEntity.Name == etityName
+                          && x.LookupField.Name == fieldName);
             if (oneToManyRecord != null) {
-                _relationshipService.DeleteOneToManyRelationship(oneToManyRecord);
+                _relationshipService.DeleteRelationship(oneToManyRecord.Relationship);
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Coevery.Core.Services;
+using Coevery.Entities.Events;
 using Coevery.Entities.Services;
 using System.Net;
 using System.Net.Http;
@@ -13,8 +15,9 @@ namespace Coevery.Relationship.Controllers {
         private readonly IRelationshipService _relationshipService;
         private readonly IRepository<RelationshipRecord> _relationshipRepository;
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRelationshipRepository;
-        private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRelationshipRepository;
         private readonly IContentDefinitionService _contentDefinitionService;
+        private readonly IFieldEvents _fieldEvents;
+        private readonly ISchemaUpdateService _schemaUpdateService;
 
         public Localizer T { get; set; }
 
@@ -22,13 +25,15 @@ namespace Coevery.Relationship.Controllers {
             IRelationshipService relationshipService,
             IRepository<RelationshipRecord> relationshipRepository,
             IRepository<OneToManyRelationshipRecord> oneToManyRelationshipRepository,
-            IRepository<ManyToManyRelationshipRecord> manyToManyRelationshipRepository,
-            IContentDefinitionService contentDefinitionService) {
+            IContentDefinitionService contentDefinitionService,
+            IFieldEvents fieldEvents,
+            ISchemaUpdateService schemaUpdateService) {
             _relationshipService = relationshipService;
             _relationshipRepository = relationshipRepository;
             _oneToManyRelationshipRepository = oneToManyRelationshipRepository;
-            _manyToManyRelationshipRepository = manyToManyRelationshipRepository;
             _contentDefinitionService = contentDefinitionService;
+            _fieldEvents = fieldEvents;
+            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -41,13 +46,13 @@ namespace Coevery.Relationship.Controllers {
                 return Request.CreateResponse(HttpStatusCode.NoContent);
             }
             return (from record in temp
-                    select new {
-                        ContentId = record.Id,
-                        Name = record.Name,
-                        PrimaryEntity = record.PrimaryEntity.Name,
-                        RelatedEntity = record.RelatedEntity.Name,
-                        Type = ((RelationshipType) record.Type).ToString()
-                    }).ToArray();
+                select new {
+                    ContentId = record.Id,
+                    Name = record.Name,
+                    PrimaryEntity = record.PrimaryEntity.Name,
+                    RelatedEntity = record.RelatedEntity.Name,
+                    Type = ((RelationshipType) record.Type).ToString()
+                }).ToArray();
         }
 
         public HttpResponseMessage Delete(int relationshipId) {
@@ -55,14 +60,17 @@ namespace Coevery.Relationship.Controllers {
             if (relationship == null) {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid relationship.");
             }
+
             if (relationship.Type == (byte) RelationshipType.OneToMany) {
                 var record = _oneToManyRelationshipRepository.Get(x => x.Relationship == relationship);
-                _relationshipService.DeleteOneToManyRelationship(record);
-                _contentDefinitionService.RemoveFieldFromPart(record.LookupField.Name, relationship.RelatedEntity.Name);
+                string entityName = relationship.RelatedEntity.Name;
+                string fieldName = record.LookupField.Name;
+                _fieldEvents.OnDeleting(entityName, fieldName);
+                _contentDefinitionService.RemoveFieldFromPart(fieldName, entityName);
+                _schemaUpdateService.DropColumn(entityName, fieldName);
             }
             else if (relationship.Type == (byte) RelationshipType.ManyToMany) {
-                var record = _manyToManyRelationshipRepository.Get(x => x.Relationship == relationship);
-                _relationshipService.DeleteManyToManyRelationship(record);
+                _relationshipService.DeleteRelationship(relationship);
             }
             return Request.CreateResponse(HttpStatusCode.OK);
         }
