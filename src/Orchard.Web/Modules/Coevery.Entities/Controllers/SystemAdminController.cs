@@ -311,7 +311,13 @@ namespace Coevery.Entities.Controllers {
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult FieldName(string entityName,string displayName, int version) {
+        public ActionResult FieldName(bool creatingEntity,string entityName,string displayName, int version) {
+            if (creatingEntity) {
+                return Json(new {
+                    result = displayName.ToSafeName(),
+                    version = version
+                });
+            }
             return Json(new {
                 result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName, displayName),
                 version = version

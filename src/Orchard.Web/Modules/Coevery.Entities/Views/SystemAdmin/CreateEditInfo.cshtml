@@ -177,7 +177,7 @@
                 //ignore: "*:not('.toValidate *')",
                 onkeyup: function (element) {
                     if (element.type == "text") {
-                        this.form();
+                        this.element(element);
                     }
                 }
             });
@@ -206,6 +206,7 @@
                 }
                 
                 $.post(jsonUrl, {
+                    creatingEntity: false,
                     entityName: $entityName,
                     displayName: $displayName.val(),
                     version: ++version,
@@ -223,7 +224,7 @@
             $displayName.keyup(function () {
                 compute();
                 setTimeout(function () {
-                    validator.form();
+                    validator.element($name);
                 }, 100);
             });
         });

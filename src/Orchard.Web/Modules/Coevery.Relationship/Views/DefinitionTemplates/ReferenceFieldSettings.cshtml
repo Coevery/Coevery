@@ -38,8 +38,13 @@
         </label>
     </div>
 </section>
-@Html.HiddenFor(model => model.RelationshipId);
-@Html.HiddenFor(m=>m.QueryId)
+@if (Model.RelationshipId > 0) {
+    @Html.HiddenFor(model => model.RelationshipId)
+    @Html.HiddenFor(m => m.QueryId)
+    @Html.HiddenFor(m => m.ContentTypeName)
+    @Html.HiddenFor(model=>model.RelationshipName)
+}
+
 
 
 

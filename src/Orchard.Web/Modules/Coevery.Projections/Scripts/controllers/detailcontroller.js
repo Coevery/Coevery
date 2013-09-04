@@ -39,14 +39,18 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 }
             };
 
-                $scope.save = function() {
+                $scope.save = function () {
+                    var form = $("form[name=myForm]");
+                    if (!checkValid(form)) {
+                        return null;
+                    }
                     var pickListValue = '';
                     for (var i = 0; i < $scope.SelectedColumns.length; i++) {
                         var fieldName = $scope.SelectedColumns[i].FieldName;
                         pickListValue += fieldName + '$';
                     }
                     $('#picklist')[0].value = pickListValue;
-                    var form = $("form[name=myForm]");
+                    
                     var promise = $http({
                         url: form.attr('action'),
                         method: "POST",
@@ -127,3 +131,14 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
             }]
     ]);
 });
+
+function checkValid(form) {
+    var validator = form.validate();
+    if (!validator) {
+        return false;
+    }
+    if (!validator.form()) {
+        return false;
+    }
+    return true;
+};
