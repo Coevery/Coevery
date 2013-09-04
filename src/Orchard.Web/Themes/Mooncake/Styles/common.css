@@ -163,3 +163,8 @@
         margin-top: 16px;
     }
 }
+
+div label.radio,
+div label.checkbox {
+    padding-top: 5px
+}
