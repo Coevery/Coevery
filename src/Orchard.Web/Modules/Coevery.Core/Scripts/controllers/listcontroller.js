@@ -3,7 +3,7 @@
       'GeneralListCtrl',
       ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService',
       function ($rootScope, $scope, $parse, logger, $detour, $resource, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService) {
-          var moduleName = $rootScope.$stateParams.Module;
+          var moduleName = $stateParams.Module;
           var primaryKeyGetter = $parse('ContentId');
           $scope.toolButtonDisplay = false;
           $scope.currentViewId = 0;
@@ -11,9 +11,6 @@
           $scope.definitionViews = [];
           $scope.columnDefs = [];
 
-          if ($rootScope.Search && $rootScope.moduleName == moduleName) {
-              $location.search($rootScope.Search);
-          }
           $rootScope.moduleName = moduleName;
           
           //init pagingoption
@@ -179,7 +176,6 @@
           };
 
           $scope.add = function () {
-              $rootScope.Search = $location.$$search;
               $detour.transitionTo('Create', { Module: moduleName });
           };
 
@@ -187,14 +183,12 @@
               if (!id && $scope.selectedItems.length > 0) {
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
-              $rootScope.Search = $location.$$search;
               $detour.transitionTo('Detail', { Module: moduleName, Id: id });
           };
           $scope.view = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = primaryKeyGetter($scope.selectedItems[0]);
               }
-              $rootScope.Search = $location.$$search;
               $detour.transitionTo('View', { Module: moduleName, Id: id });
           };
       }]

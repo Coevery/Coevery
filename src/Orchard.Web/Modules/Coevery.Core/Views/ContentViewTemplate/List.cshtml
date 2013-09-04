@@ -65,18 +65,18 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" style="">
-                        <li title="" ng-click="CreateView()" style="cursor: pointer;">
-                            <a>
-                              <i class="viewUSelected"></i>创建View
-                            </a>
-                        </li>
-                        <li title="">
-                            <hr style="margin: 0px;" />
-                        </li>
+
                         <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns({{view.ContentId}})" title="" style="cursor: pointer;">
                             <a>
                                 <i ng-class="{'icol-accept':currentViewId ==view.ContentId,'viewUSelected': currentViewId !=view.ContentId}"></i>
                                 {{view.DisplayName}}
+                            </a>
+                        </li>
+                        <li title="" class="divider">
+                        </li>
+                        <li title="" ng-click="CreateView()" style="cursor: pointer;">
+                            <a>
+                                <i class="viewUSelected"></i>Create view
                             </a>
                         </li>
                     </ul>
