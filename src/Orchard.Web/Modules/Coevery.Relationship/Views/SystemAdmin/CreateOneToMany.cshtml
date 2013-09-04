@@ -208,7 +208,8 @@
                 );
             };
 
-            if ("@Model.IsCreate" == "False") {          
+            if ("@Model.IsCreate" == "False") {     
+                $("#relation-name").prop('disabled', true);
             } else {
                 $("select.related-entity").change(function () {
                     getFields($("select.related-entity option:selected").val(), $("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));

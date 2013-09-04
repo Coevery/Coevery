@@ -19,7 +19,10 @@ namespace Coevery.Relationship.Services {
                     descriptor.Url = "/Relationships/{EntityName:[0-9a-zA-Z]+}/CreateOneToMany";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Relationship/CreateOneToMany/' + params.EntityName; }";
+                    view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Relationship/CreateOneToMany/' + $stateParams.EntityName;
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]";
                     view.Controller = "CreateOneToManyCtrl";
                     view.Dependencies = ToClientUrl(new string[] {"controllers/onetomanydetailcontroller"});
                 });
@@ -42,7 +45,10 @@ namespace Coevery.Relationship.Services {
                     descriptor.Url = "/Relationships/{EntityName:[0-9a-zA-Z]+}/CreateManyToMany";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Relationship/CreateManyToMany/' + params.EntityName; }";
+                    view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Relationship/CreateManyToMany/' + $stateParams.EntityName;
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]";
                     view.Controller = "CreateManyToManyCtrl";
                     view.Dependencies = ToClientUrl(new string[] {"controllers/manytomanydetailcontroller"});
                 });
