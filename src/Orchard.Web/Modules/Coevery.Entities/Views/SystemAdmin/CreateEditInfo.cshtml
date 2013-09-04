@@ -185,8 +185,9 @@
             //Auto get name
             var $name = $("#inputFieldName");
             var $displayName = $(".labelForName");
+            var $entityName = '@Request.Url.Segments.LastOrDefault()';
 
-            var jsonUrl = "@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Entities" } })";
+            var jsonUrl = '@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Entities" } })';
             var version = 0;
 
             var nameAltered;
@@ -205,6 +206,7 @@
                 }
                 
                 $.post(jsonUrl, {
+                    entityName: $entityName,
                     displayName: $displayName.val(),
                     version: ++version,
                     __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()

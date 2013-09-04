@@ -71,6 +71,7 @@ namespace Coevery.Relationship.Controllers {
                 EntityList = _relationshipService.GetEntityNames(id),
                 PrimaryEntity = id,
                 IsCreate = true,
+                DeleteOption = OneToManyDeleteOption.CascadingDelete,
                 Fields = new List<SelectListItem>()
             });
         }

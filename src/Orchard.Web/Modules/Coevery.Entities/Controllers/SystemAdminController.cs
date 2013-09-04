@@ -311,9 +311,9 @@ namespace Coevery.Entities.Controllers {
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult FieldName(string displayName, int version) {
+        public ActionResult FieldName(string entityName,string displayName, int version) {
             return Json(new {
-                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName, displayName),
                 version = version
             });
         }  
