@@ -33,7 +33,10 @@
                 };
 
                 $scope.exit = function () {
-                    $detour.transitionTo('List', { Module: moduleName });
+                    if (window.history.length > 1)
+                        window.history.back();
+                    else
+                        $detour.transitionTo('List', { Module: moduleName });
                 };
                 $scope.edit = function () {
                     $detour.transitionTo('Detail', { Module: moduleName, Id: id });

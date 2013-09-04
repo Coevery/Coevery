@@ -43,7 +43,10 @@
           };
 
           $scope.exit = function () {
-              $detour.transitionTo('List', { Module: moduleName });
+              if(window.history.length>1)
+                  window.history.back();
+              else
+                $detour.transitionTo('List', { Module: moduleName });
           };
 
           $scope.$on('$viewContentLoaded', function () {
