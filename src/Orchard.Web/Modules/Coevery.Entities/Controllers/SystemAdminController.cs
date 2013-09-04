@@ -53,6 +53,8 @@ namespace Coevery.Entities.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
+        #region Entity Methods
+
         public ActionResult List(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -68,6 +70,134 @@ namespace Coevery.Entities.Controllers {
             return View(typeViewModel);
         }
 
+        public ActionResult EntityName(string displayName, int version) {
+            return Json(new {
+                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                version = version
+            });
+        }
+
+        [HttpPost, ActionName("Create")]
+        public ActionResult CreatePOST(EditTypeViewModel viewModel) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type."))) {
+                return new HttpUnauthorizedResult();
+            }
+
+            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
+            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
+
+            viewModel.FieldLabel = viewModel.FieldLabel ?? String.Empty;
+            viewModel.FieldName = (viewModel.FieldName ?? viewModel.FieldLabel).ToSafeName();
+
+            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
+                ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
+            }
+
+            if (String.IsNullOrWhiteSpace(viewModel.Name)) {
+                ModelState.AddModelError("Name", T("The Content Type Id can't be empty.").ToString());
+            }
+
+            if (String.IsNullOrWhiteSpace(viewModel.FieldLabel)) {
+                ModelState.AddModelError("DisplayName", T("The Field Label name can't be empty.").ToString());
+            }
+
+            if (String.IsNullOrWhiteSpace(viewModel.FieldName)) {
+                ModelState.AddModelError("Name", T("The Field Name can't be empty.").ToString());
+            }
+
+            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.Name)) {
+                ModelState.AddModelError("Name", T("The name should be singular.").ToString());
+            }
+
+            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
+                ModelState.AddModelError("Name", T("A type with the same Id already exists.").ToString());
+            }
+
+            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
+                ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
+            }
+
+            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase))) {
+                ModelState.AddModelError("DisplayName", T("A type with the same Display Name already exists.").ToString());
+            }
+
+            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.FieldName)) {
+                ModelState.AddModelError("FieldName", T("The field name should be singular.").ToString());
+            }
+
+            if (!String.IsNullOrWhiteSpace(viewModel.FieldName) && !viewModel.FieldName[0].IsLetter()) {
+                ModelState.AddModelError("FieldName", T("The technical field name must start with a letter.").ToString());
+            }
+
+            if (!ModelState.IsValid) {
+                Services.TransactionManager.Cancel();
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                var temp = (from values in ModelState
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
+                return Content(string.Concat(temp));
+            }
+
+            _contentDefinitionService.AlterType(viewModel, this);
+            _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
+
+            _contentDefinitionManager.AlterPartDefinition(viewModel.Name,
+                builder => builder.WithField(viewModel.FieldName,
+                    fieldBuilder => fieldBuilder
+                        .OfType("CoeveryTextField")
+                        .WithDisplayName(viewModel.FieldLabel)
+                        .WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString)
+                        .WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString)
+                        .WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString)
+                        .WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString)
+                        .WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString)
+                        .WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString)
+                        .WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty)
+                        .WithSetting("Storage", "Part")));
+
+            //adds CommonPart by default
+            //_contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
+
+            Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
+            _entityEvents.OnCreated(viewModel.Name);
+
+            _schemaUpdateService.CreateTable(viewModel.Name,
+                context => context.FieldColumn(viewModel.FieldName, "CoeveryTextField"));
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        public ActionResult Edit(string id) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type."))) {
+                return new HttpUnauthorizedResult();
+            }
+
+            var typeViewModel = _contentDefinitionService.GetType(id);
+
+            if (typeViewModel == null) {
+                return HttpNotFound();
+            }
+
+            return View(typeViewModel);
+        }
+
+        public ActionResult Detail(string id) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type."))) {
+                return new HttpUnauthorizedResult();
+            }
+
+            var typeViewModel = _contentDefinitionService.GetType(id);
+
+            if (typeViewModel == null) {
+                return HttpNotFound();
+            }
+
+            return View(typeViewModel);
+        }
+
+        #endregion
+
+        #region Field Methods
         public ActionResult CreateChooseType(string id) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part."))) {
                 return new HttpUnauthorizedResult();
@@ -78,13 +208,6 @@ namespace Coevery.Entities.Controllers {
             };
 
             return View(viewModel);
-        }
-
-        public ActionResult EntityName(string displayName, int version) {
-            return Json(new {
-                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
-                version = version
-            });
         }
 
         public ActionResult CreateEditInfo(string id, string fieldTypeName) {
@@ -193,97 +316,7 @@ namespace Coevery.Entities.Controllers {
                 result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
                 version = version
             });
-        }
-
-        [HttpPost, ActionName("Create")]
-        public ActionResult CreatePOST(EditTypeViewModel viewModel) {
-            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type."))) {
-                return new HttpUnauthorizedResult();
-            }
-
-            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
-            viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
-
-            viewModel.FieldLabel = viewModel.FieldLabel ?? String.Empty;
-            viewModel.FieldName = (viewModel.FieldName ?? viewModel.FieldLabel).ToSafeName();
-
-            if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
-                ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
-            }
-
-            if (String.IsNullOrWhiteSpace(viewModel.Name)) {
-                ModelState.AddModelError("Name", T("The Content Type Id can't be empty.").ToString());
-            }
-
-            if (String.IsNullOrWhiteSpace(viewModel.FieldLabel)) {
-                ModelState.AddModelError("DisplayName", T("The Field Label name can't be empty.").ToString());
-            }
-
-            if (String.IsNullOrWhiteSpace(viewModel.FieldName)) {
-                ModelState.AddModelError("Name", T("The Field Name can't be empty.").ToString());
-            }
-
-            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.Name)) {
-                ModelState.AddModelError("Name", T("The name should be singular.").ToString());
-            }
-
-            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("Name", T("A type with the same Id already exists.").ToString());
-            }
-
-            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
-                ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
-            }
-
-            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("DisplayName", T("A type with the same Display Name already exists.").ToString());
-            }
-
-            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.FieldName)) {
-                ModelState.AddModelError("FieldName", T("The field name should be singular.").ToString());
-            }
-
-            if (!String.IsNullOrWhiteSpace(viewModel.FieldName) && !viewModel.FieldName[0].IsLetter()) {
-                ModelState.AddModelError("FieldName", T("The technical field name must start with a letter.").ToString());
-            }
-
-            if (!ModelState.IsValid) {
-                Services.TransactionManager.Cancel();
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
-            }
-
-            _contentDefinitionService.AlterType(viewModel, this);
-            _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
-
-            _contentDefinitionManager.AlterPartDefinition(viewModel.Name,
-                builder => builder.WithField(viewModel.FieldName,
-                    fieldBuilder => fieldBuilder
-                        .OfType("CoeveryTextField")
-                        .WithDisplayName(viewModel.FieldLabel)
-                        .WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString)
-                        .WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty)
-                        .WithSetting("Storage", "Part")));
-
-            //adds CommonPart by default
-            //_contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
-
-            Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
-            _entityEvents.OnCreated(viewModel.Name);
-
-            _schemaUpdateService.CreateTable(viewModel.Name,
-                context => context.FieldColumn(viewModel.FieldName, "CoeveryTextField"));
-
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
-        }
+        }  
 
         public ActionResult EditFields(string id, string fieldName) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type."))) {
@@ -368,57 +401,11 @@ namespace Coevery.Entities.Controllers {
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult Edit(string id) {
-            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type."))) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var typeViewModel = _contentDefinitionService.GetType(id);
-
-            if (typeViewModel == null) {
-                return HttpNotFound();
-            }
-
-            return View(typeViewModel);
-        }
-
-        [HttpPost, ActionName("Edit")]
-        [FormValueRequired("submit.Delete")]
-        public ActionResult Delete(string id) {
-            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to delete a content type."))) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var typeViewModel = _contentDefinitionService.GetType(id);
-
-            if (typeViewModel == null) {
-                return HttpNotFound();
-            }
-
-            _contentDefinitionService.RemoveType(id, true);
-
-            Services.Notifier.Information(T("\"{0}\" has been removed.", typeViewModel.DisplayName));
-
-            return RedirectToAction("List");
-        }
-
-        public ActionResult Detail(string id) {
-            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type."))) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var typeViewModel = _contentDefinitionService.GetType(id);
-
-            if (typeViewModel == null) {
-                return HttpNotFound();
-            }
-
-            return View(typeViewModel);
-        }
-
         public ActionResult Fields() {
             return View();
         }
+
+        #endregion
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
             return base.TryUpdateModel(model, prefix, includeProperties, excludeProperties);
