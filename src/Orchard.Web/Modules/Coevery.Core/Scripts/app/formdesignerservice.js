@@ -700,18 +700,6 @@
                         element.append("<div style='position:absolute;left:0px;top:0px;width:100%;height:100%;z-index:9999;'></div>");
                         element.find(".tools").css("z-index", 10000);
                     })();
-                    
-                    element.find("input").on("mousedown", function (e) {
-                        //e.preventDefault();
-                        //e.stopPropagation();
-                    });
-                    element.find("input").focus(function () {
-                        //$(this).blur();
-                    });
-
-                    element.mousedown(function () {
-                        
-                    });
                 }
             };
         })
