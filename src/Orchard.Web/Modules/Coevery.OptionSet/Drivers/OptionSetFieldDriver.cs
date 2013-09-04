@@ -151,6 +151,12 @@ namespace Coevery.OptionSet.Drivers {
 
             return term;
         }
+
+        protected override void Describe(DescribeMembersContext context) {
+            context
+                .Member(null, typeof(string), T("Value"), T("The option value of the field."));
+        }
+
     }
 
     internal class TermPartComparer : IEqualityComparer<OptionItemPart> {
