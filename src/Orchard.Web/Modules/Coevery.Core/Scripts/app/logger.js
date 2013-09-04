@@ -1,6 +1,6 @@
 ﻿define(['app'], function (app) {
     $.pnotify.defaults.history = false;
-    $.pnotify.defaults.delay = 200;
+    $.pnotify.defaults.delay = 2000;
     $.pnotify.defaults.before_open = function (pnotify) {
         pnotify.css({
             //"top": ($(window).height() / 2) - (pnotify.height() / 2),

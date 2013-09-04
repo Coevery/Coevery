@@ -9,7 +9,7 @@ namespace Coevery.OptionSet.ViewModels {
         public string DisplayName { get; set; }
         public OptionSetFieldSettings Settings { get; set; }
         public IList<OptionItemEntry> OptionItems { get; set; }
-        public int SingleTermId { get; set; }
+        public int? SingleTermId { get; set; }
     }
 
     public class OptionItemEntry {
