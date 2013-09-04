@@ -26,7 +26,10 @@ define(['core/app/detourService'], function (detour) {
                 $scope.relationshipGridOptions = {
                     data: 'relationships',
                     selectedItems: $scope.selectedItems,
-                    columnDefs: relationshipColumnDefs
+                    columnDefs: relationshipColumnDefs,
+                    multiSelect: true,
+                    enableRowSelection: true,
+                    showSelectionCheckbox: true,
                 };
 
                 angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);

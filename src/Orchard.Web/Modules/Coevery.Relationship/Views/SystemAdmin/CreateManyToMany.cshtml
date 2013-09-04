@@ -77,7 +77,8 @@
                     <div class="controls">
                         <label class="checkbox">
                             <input type="checkbox" ng-model="showPrimaryList" value="true" id="showPrimaryList"
-                                   name="@Html.NameFor(model => model.ShowPrimaryList)"/>
+                                   name="@Html.NameFor(model => model.ShowPrimaryList)"
+                                 @if (Model.ShowRelatedList) { <text> data-ng-init ="showPrimaryList=true" </text>}/>
                             Show Primary Entity List in the Related Entity's Detail Page
                         </label>
                     </div>
@@ -100,7 +101,8 @@
                     <div class="controls">
                         <label class="checkbox">
                             <input type="checkbox" ng-model="showRelatedList" value="true" id="showRelatedList"
-                                   name="@Html.NameFor(model => model.ShowRelatedList)"/>
+                                   name="@Html.NameFor(model => model.ShowRelatedList)"
+                                 @if (Model.ShowRelatedList) { <text> data-ng-init ="showRelatedList=true" </text>}/>
                             Show Related Entity List in the Primary Entity's Detail Page
                         </label>
                     </div>

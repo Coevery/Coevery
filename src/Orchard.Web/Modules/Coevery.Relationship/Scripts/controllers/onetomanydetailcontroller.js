@@ -4,10 +4,12 @@ define(['core/app/detourService'], function (detour) {
         'CreateOneToManyCtrl',
         ['$scope', 'logger', '$detour', '$stateParams', '$http',
             function ($scope, logger, $detour, $stateParams, $http) {
-                $scope.showRelatedList = true;
+
+                $scope.recordDeleteBehavior = 'CascadingDelete';
+                
                 $scope.$watch('required', function (newValue) {
-                    if (newValue && $scope.recordDeleteBehavior == 1) {
-                        $scope.recordDeleteBehavior = 2;
+                    if (newValue && $scope.recordDeleteBehavior == 'NoAction') {
+                        $scope.recordDeleteBehavior = 'CascadingDelete';
                     }
                 });
                 $scope.save = function () {
