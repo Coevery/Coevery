@@ -15,15 +15,16 @@ namespace Coevery.Relationship.Projections {
         }
 
         public override object GetValue(ContentItem contentItem, ContentField field) {
-            var value = field.Storage.Get<string>(null);
+            var value = field.Storage.Get<int?>(null);
 
-            int id;
-            if (value == null || !int.TryParse(value, out id)) {
+            if (value == null) {
                 return null;
             }
 
-            var referenceContentItem = _contentManager.Get(id);
+            var referenceContentItem = _contentManager.Get(value.Value);
             var contentItemMetadata = _contentManager.GetItemMetadata(referenceContentItem);
+
+            return contentItemMetadata.DisplayText;
 
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             string pluralContentTypeName = pluralService.Pluralize(referenceContentItem.ContentType);
