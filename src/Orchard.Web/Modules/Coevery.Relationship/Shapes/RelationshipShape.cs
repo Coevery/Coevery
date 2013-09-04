@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using Coevery.Relationship.Records;
@@ -42,6 +44,8 @@ namespace Coevery.Relationship.Shapes {
             var records = _relationshipService.GetRelationships(contentType)
                 .Where(x => (x.PrimaryEntity.Name == contentType)
                             || ((RelationshipType) x.Type) == RelationshipType.ManyToMany).ToList();
+
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             foreach (var record in records) {
                 var relationshipType = (RelationshipType) record.Type;
 
@@ -50,7 +54,7 @@ namespace Coevery.Relationship.Shapes {
                     if (oneToMany.ShowRelatedList) {
                         yield return new RelatedEntityViewModel {
                             Label = oneToMany.RelatedListLabel,
-                            RelatedEntityName = record.RelatedEntity.Name,
+                            RelatedEntityName = pluralService.Pluralize(record.RelatedEntity.Name),
                             ProjectionId = oneToMany.RelatedListProjection.Id
                         };
                     }
@@ -64,7 +68,7 @@ namespace Coevery.Relationship.Shapes {
                     if (showList) {
                         yield return new RelatedEntityViewModel {
                             Label = label,
-                            RelatedEntityName = relatedEntityName,
+                            RelatedEntityName = pluralService.Pluralize(relatedEntityName),
                             ProjectionId = projectionId
                         };
                     }
