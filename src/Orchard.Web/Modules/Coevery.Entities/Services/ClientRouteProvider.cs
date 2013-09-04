@@ -82,7 +82,6 @@ namespace Coevery.Entities.Services {
 
             builder.Describe("FieldEdit")
                 .Configure(descriptor => {
-                    descriptor.Abstract = true;
                     descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Edit/{FieldName:[0-9a-zA-Z]+}";
                 })
                 .View(view => {
