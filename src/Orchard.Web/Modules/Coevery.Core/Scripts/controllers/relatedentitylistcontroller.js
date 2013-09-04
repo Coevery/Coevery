@@ -1,10 +1,10 @@
 ﻿'use strict';
 
-define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice'], function (detour) {
+define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (detour) {
     detour.registerController([
       'RelatedEntityListCtrl',
-      ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService',
-      function ($rootScope, $scope, $parse, logger, $detour, $resource, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService) {
+      ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService',
+      function ($rootScope, $scope, $parse, logger, $detour, $resource, $stateParams, $location, commonDataService, columnDefinitionService) {
 
           var primaryKeyGetter = $parse('ContentId');
           $scope.toolButtonDisplay = false;

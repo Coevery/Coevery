@@ -127,7 +127,29 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
 
                     });
                 };
+                
                 $scope.InitSeletedFieldData();
+
+                $scope.dragStart = function(e, ui) {
+                    ui.item.data('start', ui.item.index());
+                };
+
+                $scope.dragEnd = function(e, ui) {
+                    var start = ui.item.data('start'),
+                        end = ui.item.index();
+
+                    $scope.SelectedColumns.splice(end, 0,
+                        $scope.SelectedColumns.splice(start, 1)[0]);
+
+                    $scope.$apply();
+                };
+                
+                $('.sortable-list ul').sortable({
+                    placeholder: 'placeholder',
+                    forcePlaceholderSize: true,
+                    start: $scope.dragStart,
+                    update: $scope.dragEnd
+                });
             }]
     ]);
 });
