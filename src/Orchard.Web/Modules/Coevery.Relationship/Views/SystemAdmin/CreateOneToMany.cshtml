@@ -206,22 +206,10 @@
             };
 
             if ("@Model.IsCreate" == "False") {
-                setTimeout(function () {
-                    $("#relation-deleteOption").click();
-                }, 100);             
-                $("#relation-name").prop('disabled', true);
-                if ("@Model.ShowRelatedList" == "True") {
-                    setTimeout(function() {
-                        $("#showRelatedList").click();
-                    }, 500);
-                }
             } else {
                 $("select.related-entity").change(function () {
                     getFields($("select.related-entity option:selected").val(), $("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));
                 });
-                setTimeout(function () {
-                    $("#defaultDeleteOption").click();
-                }, 100);
             }
 
             $("input.primary-entity").prop('disabled', true);

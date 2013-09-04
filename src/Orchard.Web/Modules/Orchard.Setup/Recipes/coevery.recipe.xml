@@ -17,6 +17,7 @@
                    Coevery.Projections,
                    Coevery.DynamicTypes,
                    Coevery.Relationship,
+                   Coevery.OptionSet,
                    Orchard.Alias,
                    Orchard.Autoroute,
                    Orchard.ContentPicker, 

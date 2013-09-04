@@ -159,16 +159,6 @@
            
             if ("@Model.IsCreate" == "False") {
                 $("#relation-name").prop('disabled', true);
-                if ("@Model.ShowPrimaryList" == "True") {
-                    setTimeout(function() {
-                        $("#showPrimaryList").click();
-                    },500);                  
-                }
-                if ("@Model.ShowRelatedList" == "True") {
-                    setTimeout(function() {
-                        $("#showRelatedList").click();
-                    }, 500);
-                }
             } else {                
                 $("select.related-entity").change(function () {
                     getFields($("select.related-entity option:selected").val(), versionRel, $("#@Html.FieldIdFor(m=>m.RelatedColumnList)"), true);

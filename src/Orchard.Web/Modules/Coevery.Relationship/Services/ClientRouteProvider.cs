@@ -29,8 +29,10 @@ namespace Coevery.Relationship.Services {
                     descriptor.Url = "/Relationships/{EntityName:[0-9a-zA-Z]+}/EditOneToMany/{RelationId:[0-9]+}";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Relationship/EditOneToMany/'" +
-                                       " + params.EntityName + '?RelationId=' + params.RelationId; }";
+                    view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Relationship/EditOneToMany/' + $stateParams.EntityName+ '?RelationId=' + $stateParams.RelationId;
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]";
                     view.Controller = "EditOneToManyCtrl";
                     view.Dependencies = ToClientUrl(new string[] {"controllers/editonetomanycontroller"});
                 });
@@ -50,8 +52,10 @@ namespace Coevery.Relationship.Services {
                     descriptor.Url = "/Relationships/{EntityName:[0-9a-zA-Z]+}/EditManyToMany/{RelationId:[0-9]+}";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Relationship/EditManyToMany/'" +
-                                       " + params.EntityName + '?RelationId=' + params.RelationId; }";
+                    view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
+                                                var url = 'SystemAdmin/Relationship/EditManyToMany/' + $stateParams.EntityName+ '?RelationId=' + $stateParams.RelationId;
+                                                return $http.get(url).then(function(response) { return response.data; });
+                                          }]";
                     view.Controller = "EditManyToManyCtrl";
                     view.Dependencies = ToClientUrl(new string[] {"controllers/editmanytomanycontroller"});
                 });
