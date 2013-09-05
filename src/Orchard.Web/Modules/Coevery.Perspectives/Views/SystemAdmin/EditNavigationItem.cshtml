@@ -31,9 +31,9 @@
                             </div>
                         </section>
                         <section class="data-row control-group">
-                            <label class="control-label">Entity</label>
+                            <label class="control-label required">Entity</label>
                             <div class="controls">
-                                @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName" })
+                                @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName", required=""})
                             </div>
                         </section>
                         <section class="data-row control-group">
@@ -43,11 +43,11 @@
                             </div>
                         </section>
                         <section class="data-row control-group">
-                            <label class="control-label">Icon</label>
+                            <label class="control-label required">Icon</label>
                             <div class="controls">
                                 @*<input type="file" id="input04" data-provide="fileinput">*@
                                 <i id="showIconClass" class="@iconClass"></i>
-                                @Html.HiddenFor(m => m.IconClass, new { id = "hfIconClass" })
+                                @Html.HiddenFor(m => m.IconClass, new { id = "hfIconClass", required="" })
                                 <button type="button" class="btn btn-small" ng-click="openDialog()">Select</button>
                             </div>
                         </section>
