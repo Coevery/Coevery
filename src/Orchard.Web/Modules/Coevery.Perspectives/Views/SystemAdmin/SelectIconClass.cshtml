@@ -2,61 +2,61 @@
     <button type="button" class="close" ng-click="closeDialog()">&#215</button>
     <h3>Select Icon</h3>
 </div>
+
+@helper DisplayIcon(string code, string className, string displayName) {
+    <div title='@string.Concat("Code: 0x",code)' class="span3 iconspan"><i class='@string.Concat("coe-icon-",className)'></i> <span class="i-name">@displayName</span></div>
+}
+
 <div class="modal-body">
     <h5>Select the Icon</h5>
         <div class="form-container">
             <div id="icons">
                 <div class="iconrow row">
-                    <div title="Code: 0xe80d" class=" span2 iconspan"><i class="coe-icon-cloud"></i> <span class="i-name">cloud</span></div>
-                    <div title="Code: 0xe818" class=" span2 iconspan"><i class="coe-icon-star"></i> <span class="i-name">star</span></div>
+                    @DisplayIcon("e816","tasks","Tasks")
+                    @DisplayIcon("e80e","calculator","Calculator")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe819" class=" span2 iconspan"><i class="coe-icon-star-empty"></i> <span class="i-name">star-empty</span></div>
-                    <div title="Code: 0xe80c" class=" span2 iconspan"><i class="coe-icon-qrcode"></i> <span class="i-name">qrcode</span></div>
+                    @DisplayIcon("e815","chart-1","Default Chart")
+                    @DisplayIcon("e80b","vcard","Vcard")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe80f" class=" span2 iconspan"><i class="coe-icon-twitter"></i> <span class="i-name">twitter</span></div>
-                    <div title="Code: 0xe80b" class=" span2 iconspan"><i class="coe-icon-facebook"></i> <span class="i-name">facebook</span></div>
+                    @DisplayIcon("e80c","basket","Basket")
+                    @DisplayIcon("e808","list-alt","List")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe803" class=" span2 iconspan"><i class="coe-icon-pinterest-circled"></i> <span class="i-name">pinterest-circled</span></div>
-                    <div title="Code: 0xe813" class=" span2 iconspan"><i class="coe-icon-pinterest-squared"></i> <span class="i-name">pinterest-squared</span></div>
+                    @DisplayIcon("e811","chart-pie","Pie Chart")
+                    @DisplayIcon("e814","credit-card-1","Default CreditCard")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe805" class=" span2 iconspan"><i class="coe-icon-gplus-squared"></i> <span class="i-name">gplus-squared</span></div>
-                    <div title="Code: 0xe804" class=" span2 iconspan"><i class="coe-icon-gplus"></i> <span class="i-name">gplus</span></div>
+                    @DisplayIcon("e803","mail-alt","Mail")
+                    @DisplayIcon("e807","doc-text","Text Document")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe817" class=" span2 iconspan"><i class="coe-icon-flag-empty"></i> <span class="i-name">flag-empty</span></div>
-                    <div title="Code: 0xe80e" class=" span2 iconspan"><i class="coe-icon-flag-checkered"></i> <span class="i-name">flag-checkered</span></div>
+                    @DisplayIcon("e806","dollar","Dollar")
+                    @DisplayIcon("e813","newspaper-1","Default Newspaper")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe809" class=" span2 iconspan"><i class="coe-icon-maxcdn"></i> <span class="i-name">maxcdn</span></div>
-                    <div title="Code: 0xe816" class=" span2 iconspan"><i class="coe-icon-html5"></i> <span class="i-name">html5</span></div>
+                    @DisplayIcon("e802","picture","Picture")
+                    @DisplayIcon("e80d","globe","Globe")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe808" class=" span2 iconspan"><i class="coe-icon-youtube-squared"></i> <span class="i-name">youtube-squared</span></div>
-                    <div title="Code: 0xe807" class=" span2 iconspan"><i class="coe-icon-youtube"></i> <span class="i-name">youtube</span></div>
+                    @DisplayIcon("e810","target","Target")
+                    @DisplayIcon("e800","user","User")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe812" class=" span2 iconspan"><i class="coe-icon-tumblr"></i> <span class="i-name">tumblr</span></div>
-                    <div title="Code: 0xe811" class=" span2 iconspan"><i class="coe-icon-tumblr-squared"></i> <span class="i-name">tumblr-squared</span></div>
+                    @DisplayIcon("e801","users","Users")
+                    @DisplayIcon("e809","credit-card","Credit card")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe815" class=" span2 iconspan"><i class="coe-icon-xing-squared"></i> <span class="i-name">xing-squared</span></div>
-                    <div title="Code: 0xe806" class=" span2 iconspan"><i class="coe-icon-windows"></i> <span class="i-name">windows</span></div>
+                    @DisplayIcon("e804","calendar","Calendar")
+                    @DisplayIcon("e812","chart","Chart")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe801" class=" span2 iconspan"><i class="coe-icon-linux"></i> <span class="i-name">linux</span></div>
-                    <div title="Code: 0xe800" class=" span2 iconspan"><i class="coe-icon-dribbble"></i> <span class="i-name">dribbble</span></div>
+                    @DisplayIcon("e805","chart-bar","Bar Chart")
+                    @DisplayIcon("e80a","newspaper","Newspaper")
                 </div>
                 <div class="iconrow row">
-                    <div title="Code: 0xe814" class=" span2 iconspan"><i class="coe-icon-skype"></i> <span class="i-name">skype</span></div>
-                    <div title="Code: 0xe802" class=" span2 iconspan"><i class="coe-icon-renren"></i> <span class="i-name">renren</span></div>
-                </div>
-                <div class="iconrow row">
-                    <div title="Code: 0xe810" class=" span2 iconspan"><i class="coe-icon-twitter-squared"></i> <span class="i-name">twitter-squared</span></div>
-                    <div title="Code: 0xe80a" class=" span2 iconspan"><i class="coe-icon-facebook-squared"></i> <span class="i-name">facebook-squared</span></div>
+                    @DisplayIcon("e80f","clock","Clock")
                 </div>
             </div>
         </div>
