@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
+﻿using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -11,57 +9,33 @@ using Coevery.Perspectives.Services;
 using Coevery.Perspectives.ViewModels;
 using Orchard;
 using Orchard.ContentManagement.Aspects;
-using Orchard.ContentManagement.MetaData;
-using Orchard.Core.Contents.Controllers;
 using Orchard.Core.Contents.Settings;
 using Orchard.Core.Navigation.Models;
 using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Core.Title.Models;
 using Orchard.Data;
-using Orchard.DisplayManagement;
-using Orchard.Environment.Configuration;
 using Orchard.Localization;
 using Orchard.Logging;
-using Orchard.Mvc.Extensions;
-using Orchard.Security;
-using Orchard.Themes;
 using Orchard.UI.Navigation;
 using Orchard.Utility;
 using Orchard.ContentManagement;
-using IContentManager = Orchard.ContentManagement.IContentManager;
-using VersionOptions = Orchard.ContentManagement.VersionOptions;
 
-namespace Coevery.Perspectives.Controllers
-{
-    public class SystemAdminController : Controller
-    {
+namespace Coevery.Perspectives.Controllers {
+    public class SystemAdminController : Controller {
         private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IRepository<ContentTypeDefinitionRecord> _contentTypeDefinitionRepository;
-        private readonly IPlacementService _placementService;
-        private readonly Lazy<IEnumerable<IShellSettingsManagerEventHandler>> _settingsManagerEventHandlers;
-        private readonly ShellSettings _settings;
         private readonly IContentManager _contentManager;
         private readonly INavigationManager _navigationManager;
+
         public SystemAdminController(
             IOrchardServices orchardServices,
             IContentDefinitionService contentDefinitionService,
-            IContentDefinitionManager contentDefinitionManager,
             IRepository<ContentTypeDefinitionRecord> contentTypeDefinitionRepository,
-            IPlacementService placementService,
-            Lazy<IEnumerable<IShellSettingsManagerEventHandler>> settingsManagerEventHandlers,
-             IContentManager contentManager,
-            ShellSettings settings,
-            INavigationManager navigationManager
-            )
-        {
+            IContentManager contentManager,
+            INavigationManager navigationManager) {
             Services = orchardServices;
             _contentDefinitionService = contentDefinitionService;
-            _contentDefinitionManager = contentDefinitionManager;
             _contentTypeDefinitionRepository = contentTypeDefinitionRepository;
-            _placementService = placementService;
-            _settingsManagerEventHandlers = settingsManagerEventHandlers;
-            _settings = settings;
             _contentManager = contentManager;
             _navigationManager = navigationManager;
             T = NullLocalizer.Instance;
@@ -71,14 +45,12 @@ namespace Coevery.Perspectives.Controllers
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult List(string id)
-        {
+        public ActionResult List(string id) {
             return View();
         }
 
 
-        public ActionResult Create()
-        {
+        public ActionResult Create() {
             PerspectiveViewModel model = new PerspectiveViewModel();
             return View(model);
         }
@@ -98,8 +70,7 @@ namespace Coevery.Perspectives.Controllers
         }
 
 
-        public ActionResult Edit(int id)
-        {
+        public ActionResult Edit(int id) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
             PerspectiveViewModel model = new PerspectiveViewModel();
             model.Title = contentItem.As<TitlePart>().Title;
@@ -108,8 +79,7 @@ namespace Coevery.Perspectives.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
-        public CustomJsonResult EditPOST(int id, PerspectiveViewModel model)
-        {
+        public CustomJsonResult EditPOST(int id, PerspectiveViewModel model) {
             var result = new CustomJsonResult();
             result.Try(() => {
                            var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
@@ -121,8 +91,7 @@ namespace Coevery.Perspectives.Controllers
             return result;
         }
 
-        public ActionResult Detail(int id)
-        {
+        public ActionResult Detail(int id) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
             PerspectiveViewModel model = new PerspectiveViewModel();
             model.Title = contentItem.As<TitlePart>().Title;
@@ -130,9 +99,7 @@ namespace Coevery.Perspectives.Controllers
             return View(model);
         }
 
-        public ActionResult EditNavigationItem(int id)
-        {
-
+        public ActionResult EditNavigationItem(int id) {
             NavigationViewModel model = new NavigationViewModel();
 
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
@@ -144,8 +111,7 @@ namespace Coevery.Perspectives.Controllers
             var perspectiveItem = _contentManager.Get(menuId, VersionOptions.Latest);
             model.Title = perspectiveItem.As<TitlePart>().Title;
             model.IconClass = contentItem.As<ModuleMenuItemPart>().IconClass;
-            model.Entities = metadataTypes.Select(item => new SelectListItem
-            {
+            model.Entities = metadataTypes.Select(item => new SelectListItem {
                 Text = item.Name,
                 Value = item.Name,
                 Selected = item.Name == model.EntityName
@@ -156,8 +122,7 @@ namespace Coevery.Perspectives.Controllers
         }
 
         [HttpPost, ActionName("EditNavigationItem")]
-        public ActionResult EditNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model)
-        {
+        public ActionResult EditNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model) {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             string pluralContentTypeName = pluralService.Pluralize(model.EntityName);
 
@@ -172,14 +137,12 @@ namespace Coevery.Perspectives.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult CreateNavigationItem(int id)
-        {
+        public ActionResult CreateNavigationItem(int id) {
             NavigationViewModel model = new NavigationViewModel();
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
             var perspectiveItem = _contentManager.Get(id, VersionOptions.Latest);
             model.Title = perspectiveItem.As<TitlePart>().Title;
-            model.Entities = metadataTypes.Select(item => new SelectListItem
-            {
+            model.Entities = metadataTypes.Select(item => new SelectListItem {
                 Text = item.Name,
                 Value = item.Name,
                 Selected = item.Name == model.EntityName
@@ -190,13 +153,12 @@ namespace Coevery.Perspectives.Controllers
         }
 
         [HttpPost, ActionName("CreateNavigationItem")]
-        public ActionResult CreateNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model)
-        {
+        public ActionResult CreateNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model) {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             string pluralContentTypeName = pluralService.Pluralize(model.EntityName);
 
             if (string.IsNullOrWhiteSpace(model.IconClass)) {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return Content(T("Icon is required.").ToString());
             }
 
@@ -214,8 +176,9 @@ namespace Coevery.Perspectives.Controllers
             moduleMenuPart.As<ModuleMenuItemPart>().IconClass = model.IconClass;
             //menuPart.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
             Services.ContentManager.Create(moduleMenuPart);
-            if (!moduleMenuPart.ContentItem.Has<IPublishingControlAspect>() && !moduleMenuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
+            if (!moduleMenuPart.ContentItem.Has<IPublishingControlAspect>() && !moduleMenuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable) {
                 _contentManager.Publish(moduleMenuPart.ContentItem);
+            }
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

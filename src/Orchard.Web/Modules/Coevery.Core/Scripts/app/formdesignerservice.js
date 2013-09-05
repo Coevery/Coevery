@@ -670,7 +670,7 @@
                     function changeToRequired(required) {
                         if (required) {
                             if (!element.find('.required-image').length) {
-                                var img = $('<img data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Required" class="required-image" src="/OrchardLocal/Modules/Coevery.Metadata/Styles/formdesigner/images/required12.gif">');
+                                var img = $('<img data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Required" class="required-image">');
                                 element.find('.title').prepend(img);
                             }
                         } else {
@@ -681,7 +681,7 @@
                     function changeToAlwaysOnLayout(required) {
                         if (required) {
                             if (!element.find('.layout-image').length) {
-                                var img = $('<img class="layout-image" src="/OrchardLocal/Modules/Coevery.Metadata/Styles/formdesigner/images/alwaysdisplay12.gif">');
+                                var img = $('<img class="layout-image">');
                                 element.find('.title').prepend(img);
                             }
                             element.find('[fd-tool-remove]').remove();
@@ -1029,7 +1029,7 @@
                         $.ajax({
                             type: 'POST',
                             contentType: 'application/json',
-                            url: '/OrchardLocal/api/formdesigner/layout/' + $stateParams.EntityName,
+                            url: 'api/formdesigner/layout/' + $stateParams.EntityName,
                             data: JSON.stringify(layoutObject),
                             success: function (msg) {
                                 logger.success('Save success');

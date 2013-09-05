@@ -92,6 +92,7 @@
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Extensions\PerspectiveExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Handlers\PerspectiveEntityEventsHandler.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
@@ -135,6 +136,10 @@
       <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
       <Name>Coevery.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Coevery.Entities\Coevery.Entities.csproj">
+      <Project>{BD9AEC06-5C81-4221-A817-408FB0C4B6C0}</Project>
+      <Name>Coevery.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
       <Name>Orchard.Forms</Name>
@@ -163,7 +168,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Drivers\" />
-    <Folder Include="Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Create.cshtml" />
