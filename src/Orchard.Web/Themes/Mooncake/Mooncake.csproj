@@ -1955,9 +1955,6 @@
     <Content Include="Styles\widget.css" />
     <Content Include="Theme.png" />
     <Content Include="Theme.txt" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
@@ -1983,7 +1980,9 @@
     <Content Include="Styles\fonts\icomoon\fonts\icomoon.eot" />
     <Content Include="Styles\fonts\icomoon\fonts\icomoon.ttf" />
     <Content Include="Styles\fonts\icomoon\fonts\icomoon.woff" />
-    <Content Include="Styles\Web.config" />
+    <Content Include="Styles\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
