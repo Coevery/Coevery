@@ -22,6 +22,9 @@
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
+            var entityAll = $("ul.inner-nav>li:first");
+            entityAll.attr("data-ui-route", entityAll.attr("data-ui-route").replace("/?.*", ""));
+            
             $(".menu>li:nth-child(2)").addClass("active");
             $(".menu>li:not(:last):has(ul)").click(function () {
                 var $li = $(this);
@@ -38,14 +41,6 @@
                 if ($lia) {
                     $(location).attr('href', $lia[0].href);
                 }
-            });
-
-            $("ul.inner-nav>li:not(:first)").click(function () {
-                $("ul.inner-nav>li:first").removeClass("active");
-            });
-
-            $("ul.inner-nav>li:first").click(function() {
-                $("ul.inner-nav>li:first").addClass("active");
             });
         });
 
