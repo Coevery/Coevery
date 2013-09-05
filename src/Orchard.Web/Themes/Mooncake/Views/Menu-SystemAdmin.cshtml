@@ -39,6 +39,14 @@
                     $(location).attr('href', $lia[0].href);
                 }
             });
+
+            $("ul.inner-nav>li:not(:first)").click(function () {
+                $("ul.inner-nav>li:first").removeClass("active");
+            });
+
+            $("ul.inner-nav>li:first").click(function() {
+                $("ul.inner-nav>li:first").addClass("active");
+            });
         });
 
         function ToggleButtonClick() {
