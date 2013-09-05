@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
@@ -13,64 +12,40 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Title.Models;
-using Orchard.Data;
 using Orchard.DisplayManagement;
 using Orchard.Forms.Services;
 using Orchard.Localization;
-using Orchard.Projections.Descriptors.Filter;
 using Orchard.Projections.Descriptors.Layout;
-using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Descriptors.SortCriterion;
 using Orchard.Projections.Models;
 using Orchard.Projections.Services;
 using Orchard.Projections.ViewModels;
-using Orchard.Settings;
 using Orchard.UI.Notify;
-using Orchard.Utility;
 
-namespace Coevery.Projections.Services
-{
-    public class ProjectionService : IProjectionService
-    {
-        private readonly IOrchardServices _services;
-        private readonly ISiteService _siteService;
-        private readonly IQueryService _queryService;
+namespace Coevery.Projections.Services {
+    public class ProjectionService : IProjectionService {
         private readonly IProjectionManager _projectionManager;
         private readonly IContentManager _contentManager;
         private readonly IFormManager _formManager;
-        private readonly ITransactionManager _transactionManager;
-        private readonly IRepository<LayoutRecord> _layoutRepository;
         private readonly ILayoutPropertyService _layoutPropertyService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+
         public ProjectionService(
-             IOrchardServices services,
-            IShapeFactory shapeFactory,
-            ISiteService siteService,
-            IQueryService queryService,
+            IOrchardServices services,
             IProjectionManager projectionManager,
             IContentManager contentManager,
             IFormManager formManager,
-            ITransactionManager transactionManager,
-            IRepository<LayoutRecord> layoutRepository,
             ILayoutPropertyService layoutPropertyService,
-            IContentDefinitionManager contentDefinitionManager)
-        {
-            _services = services;
-            _siteService = siteService;
-            _queryService = queryService;
+            IContentDefinitionManager contentDefinitionManager) {
             _projectionManager = projectionManager;
             _contentManager = contentManager;
             _formManager = formManager;
-            _transactionManager = transactionManager;
-            _layoutRepository = layoutRepository;
             Services = services;
             _layoutPropertyService = layoutPropertyService;
             _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
-            Shape = shapeFactory;
         }
 
-        dynamic Shape { get; set; }
         public IOrchardServices Services { get; set; }
         public Localizer T { get; set; }
 
@@ -83,8 +58,7 @@ namespace Coevery.Projections.Services
             return viewModel;
         }
 
-        public ProjectionEditViewModel CreateTempProjection(string entityType)
-        {
+        public ProjectionEditViewModel CreateTempProjection(string entityType) {
             var viewModel = new ProjectionEditViewModel {Name = string.Empty, DisplayName = string.Empty};
 
             //Create Projection&Query
@@ -109,14 +83,15 @@ namespace Coevery.Projections.Services
             //Create ng-grid layout for query
             var layoutViewModel = this.CreateTempLayout(queryPart, "", "ngGrid");
             viewModel.LayoutViewModel = layoutViewModel;
-            if (layoutViewModel != null) projectionPart.Record.LayoutRecord = queryPart.Layouts[0];
+            if (layoutViewModel != null) {
+                projectionPart.Record.LayoutRecord = queryPart.Layouts[0];
+            }
 
             //Create filter  for query
             var filterGroup = new FilterGroupRecord();
             queryPart.Record.FilterGroups.Clear();
             queryPart.Record.FilterGroups.Add(filterGroup);
-            var filterRecord = new FilterRecord
-            {
+            var filterRecord = new FilterRecord {
                 Category = "Content",
                 Type = "ContentTypes",
                 Position = filterGroup.Filters.Count,
@@ -131,8 +106,7 @@ namespace Coevery.Projections.Services
         }
 
 
-        public ProjectionEditViewModel GetProjectionViewModel(int id)
-        {
+        public ProjectionEditViewModel GetProjectionViewModel(int id) {
             var viewModel = new ProjectionEditViewModel();
             //Get Projection&QueryPart
             var projectionItem = _contentManager.Get(id, VersionOptions.Latest);
@@ -154,8 +128,7 @@ namespace Coevery.Projections.Services
             viewModel.AllFields = contentPart == null ? new BindingList<ContentPartFieldDefinition>() : contentPart.Fields;
 
             var sortCriteria = queryPart.SortCriteria.FirstOrDefault();
-            if (sortCriteria != null)
-            {
+            if (sortCriteria != null) {
                 viewModel.SortedBy = sortCriteria.Type;
                 Regex regex = new Regex("<Sort>(.+?)</Sort>");
                 var matche = regex.Match(sortCriteria.State);
@@ -164,8 +137,7 @@ namespace Coevery.Projections.Services
 
             var layoutPropertyPart = _layoutPropertyService.GetLayoutPropertyByQueryid(queryPart.Id);
 
-            if (layoutPropertyPart != null)
-            {
+            if (layoutPropertyPart != null) {
                 viewModel.VisableTo = layoutPropertyPart.VisableTo;
                 viewModel.PageRowCount = layoutPropertyPart.PageRowCount;
             }
@@ -173,34 +145,35 @@ namespace Coevery.Projections.Services
         }
 
         public bool EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds) {
-            if (pickedFileds == null) pickedFileds = new List<string>();
+            if (pickedFileds == null) {
+                pickedFileds = new List<string>();
+            }
             var projectionPart = _contentManager.Get<ProjectionPart>(id, VersionOptions.Latest);
             var queryId = projectionPart.Record.QueryPartRecord.Id;
             var queryPart = _contentManager.Get<QueryPart>(queryId, VersionOptions.Latest);
 
             //Post DisplayName
             queryPart.As<TitlePart>().Title = viewModel.DisplayName;
-            
+
             //Post Selected Fields
             LayoutRecord layoutRecord = projectionPart.Record.LayoutRecord;
             layoutRecord.Properties.Clear();
 
             string category = viewModel.Name + "ContentFields";
-            var allFields = _projectionManager.DescribeProperties()
-                .SelectMany(x => x.Descriptors)
-                .Where(x => x.Category == category).ToList();
+            const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
+            var allFields = _contentDefinitionManager.GetPartDefinition(viewModel.Name).Fields.ToList();
             foreach (var property in pickedFileds) {
-                var field = allFields.FirstOrDefault(c => c.Type == string.Format("{0}.{1}.", viewModel.Name, property));
+                var field = allFields.FirstOrDefault(c => c.Name == property);
                 if (field == null) {
                     throw new Exception("selected field not found:" + property);
                 }
                 var propertyRecord = new PropertyRecord {
                     Category = category,
-                    Type = field.Type,
-                    Description = field.Name.Text.Split(':').Length > 0 ? field.Name.Text.Split(':')[0] : string.Empty,
+                    Type = string.Format("{0}.{1}.", viewModel.Name, property),
+                    Description = field.DisplayName,
                     Position = layoutRecord.Properties.Count,
                     State = GetPropertyState(property),
-                    LinkToContent = layoutRecord.Properties.Count == 0
+                    LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
                 };
                 layoutRecord.Properties.Add(propertyRecord);
             }
@@ -229,20 +202,17 @@ namespace Coevery.Projections.Services
             return true;
         }
 
-        private string GetContentTypeFilterState(string entityType)
-        {
+        private string GetContentTypeFilterState(string entityType) {
             const string format = @"<Form><Description></Description><ContentTypes>{0}</ContentTypes></Form>";
             return string.Format(format, entityType);
         }
 
-        private string GetSortState(string description, string sortMode)
-        {
+        private string GetSortState(string description, string sortMode) {
             string format = @"<Form><Description>{0}</Description><Sort>{1}</Sort></Form>";
             return string.Format(format, description, sortMode == "Desc" ? "true" : "false");
         }
 
-        private string GetPropertyState(string filedName)
-        {
+        private string GetPropertyState(string filedName) {
             //Dictionary<string, string> datas = new Dictionary<string, string>();
             //datas.Add("Description",filedName);
             //var re = FormParametersHelper.ToString(datas);
@@ -296,10 +266,8 @@ namespace Coevery.Projections.Services
             return re;
         }
 
-        private LayoutEditViewModel GetLayoutEditViewModel(LayoutRecord layoutRecord)
-        {
-            if (layoutRecord == null)
-            {
+        private LayoutEditViewModel GetLayoutEditViewModel(LayoutRecord layoutRecord) {
+            if (layoutRecord == null) {
                 return null;
             }
 
@@ -308,8 +276,7 @@ namespace Coevery.Projections.Services
             // build the form, and let external components alter it
             var form = _formManager.Build(layoutDescriptor.Form) ?? Services.New.EmptyForm();
 
-            var viewModel = new LayoutEditViewModel
-            {
+            var viewModel = new LayoutEditViewModel {
                 Id = layoutRecord.Id,
                 QueryId = layoutRecord.QueryPartRecord.Id,
                 Category = layoutDescriptor.Category,
@@ -327,32 +294,27 @@ namespace Coevery.Projections.Services
             _formManager.Bind(form, new DictionaryValueProvider<string>(parameters, CultureInfo.InvariantCulture));
 
             var fieldEntries = new List<PropertyEntry>();
-            foreach (var field in layoutRecord.Properties)
-            {
-
+            foreach (var field in layoutRecord.Properties) {
                 fieldEntries.Add(
-                    new PropertyEntry
-                    {
+                    new PropertyEntry {
                         Category = field.Category,
                         Type = field.Type,
                         PropertyRecordId = field.Id,
                         DisplayText = field.Description,
                         Position = field.Position
                     });
-
             }
             viewModel.Properties = fieldEntries.OrderBy(f => f.Position).ToList();
             return viewModel;
         }
 
-        private LayoutEditViewModel CreateTempLayout(QueryPart query, string category, string type)
-        {
+        private LayoutEditViewModel CreateTempLayout(QueryPart query, string category, string type) {
             LayoutEditViewModel model = new LayoutEditViewModel();
             model.Category = category;
             model.Type = type;
             model.Layout = _projectionManager.DescribeLayouts().SelectMany(x => x.Descriptors).FirstOrDefault(x => x.Category == category && x.Type == type);
 
-            var layoutRecord = new LayoutRecord { Category = "Html", Type = type };
+            var layoutRecord = new LayoutRecord {Category = "Html", Type = type};
 
             // save form parameters
             layoutRecord.Description = "DefaultLayoutFor" + query.Name;
@@ -368,25 +330,21 @@ namespace Coevery.Projections.Services
             return model;
         }
 
-        public AdminEditViewModel GetQueryViewModel(QueryPart query)
-        {
-            var viewModel = new AdminEditViewModel
-            {
+        public AdminEditViewModel GetQueryViewModel(QueryPart query) {
+            var viewModel = new AdminEditViewModel {
                 Id = query.Id,
                 Name = query.Name
             };
 
             #region Load Filters
+
             var filterGroupEntries = new List<FilterGroupEntry>();
-            foreach (var group in query.FilterGroups)
-            {
+            foreach (var group in query.FilterGroups) {
                 var filterEntries = new List<FilterEntry>();
 
-                foreach (var filter in group.Filters)
-                {
+                foreach (var filter in group.Filters) {
                     filterEntries.Add(
-                        new FilterEntry
-                        {
+                        new FilterEntry {
                             Category = filter.Category,
                             Type = filter.Type,
                             FilterRecordId = filter.Id,
@@ -394,7 +352,7 @@ namespace Coevery.Projections.Services
                         });
                 }
 
-                filterGroupEntries.Add(new FilterGroupEntry { Id = group.Id, Filters = filterEntries });
+                filterGroupEntries.Add(new FilterGroupEntry {Id = group.Id, Filters = filterEntries});
             }
 
             viewModel.FilterGroups = filterGroupEntries;
@@ -402,24 +360,22 @@ namespace Coevery.Projections.Services
             #endregion
 
             #region Load Sort criterias
+
             var sortCriterionEntries = new List<SortCriterionEntry>();
             var allSortCriteria = _projectionManager.DescribeSortCriteria().SelectMany(x => x.Descriptors).ToList();
 
-            foreach (var sortCriterion in query.SortCriteria.OrderBy(s => s.Position))
-            {
+            foreach (var sortCriterion in query.SortCriteria.OrderBy(s => s.Position)) {
                 var category = sortCriterion.Category;
                 var type = sortCriterion.Type;
 
                 var f = allSortCriteria.FirstOrDefault(x => category == x.Category && type == x.Type);
-                if (f != null)
-                {
+                if (f != null) {
                     sortCriterionEntries.Add(
-                        new SortCriterionEntry
-                        {
+                        new SortCriterionEntry {
                             Category = f.Category,
                             Type = f.Type,
                             SortCriterionRecordId = sortCriterion.Id,
-                            DisplayText = String.IsNullOrWhiteSpace(sortCriterion.Description) ? f.Display(new SortCriterionContext { State = FormParametersHelper.ToDynamic(sortCriterion.State) }).Text : sortCriterion.Description
+                            DisplayText = String.IsNullOrWhiteSpace(sortCriterion.Description) ? f.Display(new SortCriterionContext {State = FormParametersHelper.ToDynamic(sortCriterion.State)}).Text : sortCriterion.Description
                         });
                 }
             }
@@ -429,23 +385,21 @@ namespace Coevery.Projections.Services
             #endregion
 
             #region Load Layouts
+
             var layoutEntries = new List<LayoutEntry>();
             var allLayouts = _projectionManager.DescribeLayouts().SelectMany(x => x.Descriptors).ToList();
-            foreach (var layout in query.Layouts)
-            {
+            foreach (var layout in query.Layouts) {
                 var category = layout.Category;
                 var type = layout.Type;
 
                 var f = allLayouts.FirstOrDefault(x => category == x.Category && type == x.Type);
-                if (f != null)
-                {
+                if (f != null) {
                     layoutEntries.Add(
-                        new LayoutEntry
-                        {
+                        new LayoutEntry {
                             Category = f.Category,
                             Type = f.Type,
                             LayoutRecordId = layout.Id,
-                            DisplayText = String.IsNullOrWhiteSpace(layout.Description) ? f.Display(new LayoutContext { State = FormParametersHelper.ToDynamic(layout.State) }).Text : layout.Description
+                            DisplayText = String.IsNullOrWhiteSpace(layout.Description) ? f.Display(new LayoutContext {State = FormParametersHelper.ToDynamic(layout.State)}).Text : layout.Description
                         });
                 }
             }
@@ -456,7 +410,5 @@ namespace Coevery.Projections.Services
 
             return viewModel;
         }
-
-
     }
 }

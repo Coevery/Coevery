@@ -14,7 +14,6 @@ using Orchard.Core.Contents.Extensions;
 using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 using Orchard.Projections.Models;
-using Orchard.Projections.Services;
 
 namespace Coevery.Relationship.Services {
     public class RelationshipService : IRelationshipService {
@@ -30,7 +29,6 @@ namespace Coevery.Relationship.Services {
         private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentManager _contentManager;
-        private readonly IProjectionManager _projectionManager;
         private readonly IFieldEvents _fieldEvents;
 
         public RelationshipService(
@@ -43,7 +41,6 @@ namespace Coevery.Relationship.Services {
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
             ISchemaUpdateService schemaUpdateService,
             IContentManager contentManager,
-            IProjectionManager projectionManager,
             IFieldEvents fieldEvents) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
@@ -54,7 +51,6 @@ namespace Coevery.Relationship.Services {
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             _schemaUpdateService = schemaUpdateService;
             _contentManager = contentManager;
-            _projectionManager = projectionManager;
             _fieldEvents = fieldEvents;
         }
 
@@ -309,12 +305,11 @@ namespace Coevery.Relationship.Services {
 
             _manyToManyRepository.Update(manyToManyRecord);
 
-            UpdateLayoutProperties(
-                relationshipRecord.PrimaryEntity.Name,
+            UpdateLayoutProperties(relationshipRecord.PrimaryEntity.Name,
                 manyToManyRecord.PrimaryListProjection.LayoutRecord,
                 manyToMany.PrimaryColumnList);
-            UpdateLayoutProperties(
-                relationshipRecord.RelatedEntity.Name,
+
+            UpdateLayoutProperties(relationshipRecord.RelatedEntity.Name,
                 manyToManyRecord.RelatedListProjection.LayoutRecord,
                 manyToMany.RelatedColumnList);
             return null;
@@ -330,8 +325,7 @@ namespace Coevery.Relationship.Services {
             oneToManyRecord.RelatedListLabel = oneToMany.RelatedListLabel;
             _oneToManyRepository.Update(oneToManyRecord);
 
-            UpdateLayoutProperties(
-                oneToManyRecord.Relationship.RelatedEntity.Name,
+            UpdateLayoutProperties(oneToManyRecord.Relationship.RelatedEntity.Name,
                 oneToManyRecord.RelatedListProjection.LayoutRecord,
                 oneToMany.ColumnFieldList);
             return null;
@@ -347,20 +341,19 @@ namespace Coevery.Relationship.Services {
                 return;
             }
             string category = typeName + "ContentFields";
-            var allFields = _projectionManager.DescribeProperties()
-                .SelectMany(x => x.Descriptors)
-                .Where(x => x.Category == category).ToList();
+            const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
+            var allFields = _contentDefinitionManager.GetPartDefinition(typeName).Fields.ToList();
             foreach (var property in properties) {
-                var field = allFields.FirstOrDefault(c => c.Type == string.Format("{0}.{1}.", typeName, property));
+                var field = allFields.FirstOrDefault(c => c.Name == property);
                 if (field == null) {
                     continue;
                 }
                 var propertyRecord = new PropertyRecord {
                     Category = category,
-                    Type = field.Type,
-                    Description = field.Name.Text.Split(':').Length > 0 ? field.Name.Text.Split(':')[0] : string.Empty,
+                    Type = string.Format("{0}.{1}.", typeName, property),
+                    Description = field.DisplayName,
                     Position = layoutRecord.Properties.Count,
-                    LinkToContent = layoutRecord.Properties.Count == 0
+                    LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
                 };
                 layoutRecord.Properties.Add(propertyRecord);
             }
