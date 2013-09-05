@@ -47,7 +47,7 @@ define(['core/app/detourService'], function (detour) {
                     });
 
                     var promise = $http({
-                        url: '/OrchardLocal/api/formdesigner/layout/' + $stateParams.EntityName,
+                        url: 'api/formdesigner/layout/' + $stateParams.EntityName,
                         method: "POST",
                         data: JSON.stringify(layoutObject),
                         headers: { 'Content-Type': 'application/json' }

@@ -117,7 +117,7 @@
           };
 
           $scope.CreateView = function () {
-              var createViewPath = window.location.origin + '/OrchardLocal/SystemAdmin#/Projections/' + moduleName + '/Create';
+              var createViewPath = 'SystemAdmin#/Projections/' + moduleName + '/Create';
               window.location = createViewPath;
           };
           

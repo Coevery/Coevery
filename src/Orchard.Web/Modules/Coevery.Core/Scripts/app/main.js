@@ -1,8 +1,7 @@
 require.config({
-    baseUrl: '/OrchardLocal',
     paths: {
-        core: 'Modules/Coevery.Core/Scripts',
-        app: 'Modules/Coevery.Core/Scripts/app/' + appPrefix() + 'app'
+        core: './',
+        app: './app/' + appPrefix() + 'app'
     }
 });
 
