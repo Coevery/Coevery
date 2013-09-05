@@ -587,10 +587,8 @@
     <Content Include="Styles\button.css" />
     <Content Include="Styles\css\animation.css" />
     <Content Include="Styles\fonts\fontello\fontello-codes.css" />
-    <Content Include="Styles\fonts\fontello\fontello-codes.css" />
     <Content Include="Styles\fonts\fontello\fontello-embedded.css" />
     <Content Include="Styles\fonts\fontello\fontello-ie7-codes.css" />
-    <Content Include="Styles\fonts\fontello\fontello-ie7.css" />
     <Content Include="Styles\fonts\fontello\fontello-ie7.css" />
     <Content Include="Styles\fonts\fontello\fontello.css" />
     <Content Include="Styles\common.css" />
