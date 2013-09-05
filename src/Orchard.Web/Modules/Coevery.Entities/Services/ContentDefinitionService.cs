@@ -15,19 +15,16 @@ using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinit
 namespace Coevery.Entities.Services {
     public class ContentDefinitionService : IContentDefinitionService {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IEnumerable<IContentPartDriver> _contentPartDrivers;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
 
         public ContentDefinitionService(
             IOrchardServices services,
             IContentDefinitionManager contentDefinitionManager,
-            IEnumerable<IContentPartDriver> contentPartDrivers,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
-            _contentPartDrivers = contentPartDrivers;
             _contentFieldDrivers = contentFieldDrivers;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             T = NullLocalizer.Instance;
@@ -191,25 +188,6 @@ namespace Coevery.Entities.Services {
 
         public void RemovePartFromType(string partName, string typeName) {
             _contentDefinitionManager.AlterTypeDefinition(typeName, typeBuilder => typeBuilder.RemovePart(partName));
-        }
-
-        public IEnumerable<EditPartViewModel> GetParts(bool metadataPartsOnly) {
-            var typeNames = GetTypes().Select(ctd => ctd.Name);
-
-            // user-defined parts
-            // except for those parts with the same name as a type (implicit type's part or a mistake)
-            var userContentParts = _contentDefinitionManager
-                .ListPartDefinitions()
-                .Where(cpd => !typeNames.Contains(cpd.Name))
-                .Select(cpd => new EditPartViewModel(cpd));
-
-            // code-defined parts
-            var codeDefinedParts = metadataPartsOnly ?
-                                       Enumerable.Empty<EditPartViewModel>() :
-                                       _contentPartDrivers.SelectMany(d => d.GetPartInfo().Where(cpd => !userContentParts.Any(m => m.Name == cpd.PartName)).Select(cpi => new EditPartViewModel {Name = cpi.PartName}));
-
-            // Order by display name
-            return userContentParts.Union(codeDefinedParts).OrderBy(m => m.DisplayName);
         }
 
         public EditPartViewModel GetPart(string name) {

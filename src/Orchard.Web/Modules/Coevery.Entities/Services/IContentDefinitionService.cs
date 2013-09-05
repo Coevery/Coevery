@@ -19,7 +19,6 @@ namespace Coevery.Entities.Services {
         string GenerateContentTypeNameFromDisplayName(string displayName);
         string GenerateFieldNameFromDisplayName(string partName, string displayName);
 
-        IEnumerable<EditPartViewModel> GetParts(bool metadataPartsOnly);
         EditPartViewModel GetPart(string name);
         EditPartViewModel AddPart(CreatePartViewModel partViewModel);
         void AlterPart(EditPartViewModel partViewModel, IUpdateModel updater);

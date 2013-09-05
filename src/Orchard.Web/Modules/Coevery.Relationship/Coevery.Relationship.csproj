@@ -84,6 +84,7 @@
     <Compile Include="Drivers\DynamicPrimaryPartDriver.cs" />
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\DynamicRelatedPartDriver.cs" />
+    <Compile Include="Drivers\RelatedListDriver.cs" />
     <Compile Include="Handlers\RelationshipEntityEventsHandler.cs" />
     <Compile Include="Handlers\RelationshipFieldEventsHandler.cs" />
     <Compile Include="Handlers\RelationshipDynamicTypeGenerationEventsHandler.cs" />
@@ -108,8 +109,7 @@
     <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
     <Compile Include="Settings\ReferenceFieldSettings.cs" />
     <Compile Include="Models\ReferenceUpdateModel.cs" />
-    <Compile Include="Shapes\RelatedEntityViewModel.cs" />
-    <Compile Include="Shapes\RelationshipShape.cs" />
+    <Compile Include="ViewModels\RelatedEntityViewModel.cs" />
     <Compile Include="ViewModels\EditRelationshipViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

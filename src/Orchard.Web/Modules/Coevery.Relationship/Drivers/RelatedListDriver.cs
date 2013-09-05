@@ -5,49 +5,40 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using Coevery.Relationship.Records;
-using NHibernate.Linq;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Shapes;
-using Orchard.Environment;
-using Orchard.Localization;
 using Coevery.Relationship.Services;
+using Coevery.Relationship.ViewModels;
+using Orchard.ContentManagement;
+using Orchard.ContentManagement.Drivers;
 
-namespace Coevery.Relationship.Shapes {
-    public class RelationshipShape : IShapeTableProvider {
+namespace Coevery.Relationship.Drivers {
+    public class RelatedListDriver : ContentPartDriver<ContentPart> {
         private readonly IRelationshipService _relationshipService;
 
-        public RelationshipShape(IRelationshipService relationshipService) {
+        public RelatedListDriver(IRelationshipService relationshipService) {
             _relationshipService = relationshipService;
-
-            T = NullLocalizer.Instance;
         }
 
-        public Localizer T { get; set; }
+        protected override DriverResult Display(ContentPart part, string displayType, dynamic shapeHelper) {
+            var dynamicParts = part.ContentItem.Parts.Where(x => x.GetType().Namespace == "Coevery.DynamicTypes.Records").ToList();
+            if (dynamicParts.Any()) {
+                string contentType = part.ContentItem.ContentType;
+                var relationships = GetRelationships(contentType).ToList();
+                if (relationships.Any())
+                    return ContentShape("Relationships_Display",
+                        () => shapeHelper.Relationships_Display(Relationships: relationships));
+            }
 
-        public void Discover(ShapeTableBuilder builder) {
-
-            builder.Describe("Relationships_Display")
-                .OnCreated(created => {
-                    //var relation = created.Shape;
-                    //relation.Metadata.Type = "Relationships_Display";
-                })
-                .OnDisplaying(displaying => {
-                    var shape = displaying.Shape;
-                    string contentType = shape.ContentType;
-                    var relationships = GetRelationships(contentType).ToList();
-                    shape.Relationships = relationships;
-                });
+            return null;
         }
 
         private IEnumerable<RelatedEntityViewModel> GetRelationships(string contentType) {
             var records = _relationshipService.GetRelationships(contentType)
                 .Where(x => (x.PrimaryEntity.Name == contentType)
-                            || ((RelationshipType) x.Type) == RelationshipType.ManyToMany).ToList();
+                            || ((RelationshipType)x.Type) == RelationshipType.ManyToMany).ToList();
 
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             foreach (var record in records) {
-                var relationshipType = (RelationshipType) record.Type;
+                var relationshipType = (RelationshipType)record.Type;
 
                 if (relationshipType == RelationshipType.OneToMany) {
                     var oneToMany = _relationshipService.GetOneToMany(record.Id);
