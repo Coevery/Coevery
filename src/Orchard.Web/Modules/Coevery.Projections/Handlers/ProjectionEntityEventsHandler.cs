@@ -27,15 +27,15 @@ namespace Coevery.Projections.Handlers {
         }
 
         public void OnCreated(string entityName) {
-            var model = _projectionService.CreateTempProjection(entityName);
+            var id = _projectionService.CreateProjection(entityName);
             var fields = _contentDefinitionManager.GetPartDefinition(entityName).Fields.Select(x => x.Name);
             var viewModel = new ProjectionEditViewModel {
                 Name = entityName,
                 DisplayName = entityName + "DefaultView",
                 PageRowCount = 50
             };
-            _projectionService.EditPost(model.Id, viewModel, fields);
-            _viewPartService.SetView(entityName, model.Id);
+            _projectionService.EditPost(id, viewModel, fields);
+            _viewPartService.SetView(entityName, id);
         }
 
         public void OnDeleting(string entityName) {
