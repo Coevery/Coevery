@@ -43,7 +43,7 @@ namespace Coevery.Core {
                 .Attachable()
                 .WithDescription("Provides common information about a content item, such as Owner, Date Created, Modifier and Date Modified."));
 
-            return 2;
+            return 1;
         }
 
         public int UpdateFrom1()

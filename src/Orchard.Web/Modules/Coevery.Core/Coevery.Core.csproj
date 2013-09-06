@@ -137,9 +137,9 @@
     <Compile Include="FrontMenu\FrontMenuAttribute.cs" />
     <Compile Include="Handlers\CoeveryCommonPartHandler.cs" />
     <Compile Include="Handlers\DynamicContentsHandler.cs" />
-    <Compile Include="Models\Common\CoeveryCommonPart.cs" />
-    <Compile Include="Models\Common\CoeveryCommonPartRecord.cs" />
-    <Compile Include="Models\Common\CoeveryCommonPartVersionRecord.cs" />
+    <Compile Include="Models\CoeveryCommonPart.cs" />
+    <Compile Include="Models\CoeveryCommonPartRecord.cs" />
+    <Compile Include="Models\CoeveryCommonPartVersionRecord.cs" />
     <Compile Include="Models\ViewPartRecord.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />

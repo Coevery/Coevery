@@ -4,7 +4,7 @@ using Orchard.Core.Common.Utilities;
 using Orchard.ContentManagement;
 using Orchard.Security;
 
-namespace Coevery.Core.Models.Common {
+namespace Coevery.Core.Models {
     public class CoeveryCommonPart : ContentPart<CoeveryCommonPartRecord>, ICommonPart {
         private readonly LazyField<IUser> _owner = new LazyField<IUser>();
         private readonly LazyField<IUser> _modifier = new LazyField<IUser>();
@@ -12,6 +12,10 @@ namespace Coevery.Core.Models.Common {
 
         public LazyField<IUser>  OwnerField {
             get { return _owner; }
+        }
+
+        public LazyField<IUser> ModifierField {
+            get { return _modifier; }
         }
 
         public LazyField<IContent> ContainerField {
