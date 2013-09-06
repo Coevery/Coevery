@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Design.PluralizationServices;
+﻿using System;
+using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -50,11 +51,10 @@ namespace Coevery.Projections.Controllers {
         [FormValueRequired("submit.Save")]
         public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
             if (id == 0) {
-                var model = _projectionService.CreateTempProjection(viewModel.Name);
-                id = model.Id;
+                id = _projectionService.CreateProjection(viewModel.Name);
             }
-            var pickArray = picklist.Split(new char[] {'$'}).Where(c => !string.IsNullOrEmpty(c)).ToList();
-            bool suc = _projectionService.EditPost(id, viewModel, pickArray);
+            var pickArray = picklist.Split(new[] {'$'}, StringSplitOptions.RemoveEmptyEntries);
+            _projectionService.EditPost(id, viewModel, pickArray);
             return new EmptyResult();
         }
     }
