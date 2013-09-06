@@ -84,12 +84,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Orchard.Specs\Orchard.Specs.csproj">
-      <Project>{7354DF37-934B-46CF-A13C-455D5F5F5413}</Project>
-      <Name>Orchard.Specs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="Boolean.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -120,6 +114,12 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Numeric.feature.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Orchard.Specs\Orchard.Specs.csproj">
+      <Project>{7354df37-934b-46cf-a13c-455d5f5f5413}</Project>
+      <Name>Orchard.Specs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
