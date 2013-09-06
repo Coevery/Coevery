@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-16"?>
-<Tenants>
-  <Default>4|Orchard.Framework;Common;Containers;Contents;Dashboard;Feeds;Navigation;Reports;Scheduling;Settings;Shapes;Title;Orchard.Pages;Orchard.ContentPicker;Orchard.Themes;Orchard.Users;Orchard.Roles;Orchard.Modules;PackagingServices;Orchard.Packaging;Gallery;Orchard.Recipes;Coevery.Core;Orchard.Projections;Orchard.Tokens;Orchard.Forms;Coevery.Entities;Coevery.Core;Coevery.DynamicTypes;Coevery.Perspectives;Coevery.Core;Coevery.FormDesigner;Coevery.Core;Coevery.Fields;Coevery.Core;Coevery.Projections;Coevery.Core;Coevery.DynamicTypes;Coevery.DynamicTypes;Coevery.Relationship;Coevery.Core;Coevery.DynamicTypes;Orchard.Alias;Orchard.Autoroute;Orchard.Alias;Orchard.Tokens;Orchard.ContentPicker;Orchard.jQuery;Orchard.AngularJS;Orchard.jQuery;Orchard.Widgets;Orchard.Scripting;Orchard.Scripting;Orchard.Scripting.Lightweight;Orchard.Scripting;Mooncake;Coevery.OptionSet;|</Default>
-</Tenants>
