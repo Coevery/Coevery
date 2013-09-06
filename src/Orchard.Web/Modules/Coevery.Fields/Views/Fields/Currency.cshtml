@@ -1,0 +1,13 @@
+﻿@using Coevery.Fields.Settings;
+@using Orchard.Utility.Extensions;
+@{
+    decimal? value = Model.ContentField.Value;
+    string valueToDisplay = value.HasValue
+        ? Model.ContentField.Value.ToString("C" + Model.DecimalPlaces)
+        : string.Empty;                
+    string name = Model.ContentField.DisplayName;
+    <span class="control-label">@T(name)</span>
+    <div class="controls">
+        <span class="control-text">@T(valueToDisplay)</span>
+    </div>
+}

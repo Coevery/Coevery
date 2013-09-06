@@ -1,0 +1,15 @@
+Name: Alias
+AntiForgery: enabled
+Author: The Orchard Team
+Website: http://orchardproject.net
+Version: 1.7
+OrchardVersion: 1.3
+Description: Maps friendly urls to specific module actions.
+FeatureDescription: Maps friendly urls to specific module actions.
+Category: Content
+Features:
+    Orchard.Alias.UI:
+		Name: Alias UI
+        Description: Admin user interface for Orchard.Alias.
+		Dependencies: Orchard.Alias
+		Category: Content

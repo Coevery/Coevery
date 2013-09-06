@@ -1,0 +1,75 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('fonts/fontello.eot?57903282');
+  src: url('fonts/fontello.eot?57903282#iefix') format('embedded-opentype'),
+       url('fonts/fontello.woff?57903282') format('woff'),
+       url('fonts/fontello.ttf?57903282') format('truetype'),
+       url('fonts/fontello.svg?57903282#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?57903282#fontello') format('svg');
+  }
+}
+*/
+ 
+ [class^="coe-icon-"]:before, [class*=" coe-icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.coe-icon-tasks:before { content: '\e816'; } /* '' */
+.coe-icon-calculator:before { content: '\e80e'; } /* '' */
+.coe-icon-chart-1:before { content: '\e815'; } /* '' */
+.coe-icon-vcard:before { content: '\e80b'; } /* '' */
+.coe-icon-basket:before { content: '\e80c'; } /* '' */
+.coe-icon-list-alt:before { content: '\e808'; } /* '' */
+.coe-icon-chart-pie:before { content: '\e811'; } /* '' */
+.coe-icon-credit-card-1:before { content: '\e814'; } /* '' */
+.coe-icon-mail-alt:before { content: '\e803'; } /* '' */
+.coe-icon-doc-text:before { content: '\e807'; } /* '' */
+.coe-icon-dollar:before { content: '\e806'; } /* '' */
+.coe-icon-newspaper-1:before { content: '\e813'; } /* '' */
+.coe-icon-picture:before { content: '\e802'; } /* '' */
+.coe-icon-globe:before { content: '\e80d'; } /* '' */
+.coe-icon-target:before { content: '\e810'; } /* '' */
+.coe-icon-user:before { content: '\e800'; } /* '' */
+.coe-icon-users:before { content: '\e801'; } /* '' */
+.coe-icon-credit-card:before { content: '\e809'; } /* '' */
+.coe-icon-calendar:before { content: '\e804'; } /* '' */
+.coe-icon-chart:before { content: '\e812'; } /* '' */
+.coe-icon-chart-bar:before { content: '\e805'; } /* '' */
+.coe-icon-newspaper:before { content: '\e80a'; } /* '' */
+.coe-icon-clock:before { content: '\e80f'; } /* '' */

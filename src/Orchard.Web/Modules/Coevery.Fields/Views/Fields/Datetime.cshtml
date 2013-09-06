@@ -1,0 +1,13 @@
+﻿@using Coevery.Fields.Settings;
+@using Orchard.Utility.Extensions;
+@{
+    DateTime? value = Model.ContentField.Value;
+    string valueToDisplay = value.HasValue
+       ? value.Value.ToString("MM/dd/yyyy hh:mm tt")
+       : string.Empty;
+    string name = Model.ContentField.DisplayName;
+    <span class="control-label">@T(name)</span>
+    <div class="controls">
+        <span class="control-text">@T(valueToDisplay)</span>
+    </div>
+}

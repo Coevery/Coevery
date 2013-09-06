@@ -1,0 +1,8 @@
+﻿<Placement>
+  <!--Reference-->
+  <Place Fields_Reference_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Reference="Content:after;Wrapper=Wrapper_Script"/>
+
+  <Place Parts_Relationship_Edit="Content:11;Wrapper=Wrapper_Script"/>
+  <Place Relationships_Display="Content:5"/>
+</Placement>

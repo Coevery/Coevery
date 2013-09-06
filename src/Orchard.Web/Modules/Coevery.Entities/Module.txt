@@ -1,0 +1,9 @@
+Name: Entities
+AntiForgery: enabled
+Author: cao xiangkun
+Website: http://coevery.codeplex.com
+Version: 1.0
+OrchardVersion: 1.6
+Description: Entities for Coevery CRM
+Dependencies: Coevery.Core,Coevery.DynamicTypes
+Category: Coevery

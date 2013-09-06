@@ -1,0 +1,12 @@
+Name: Default
+DataProvider: SqlServer
+DataConnectionString: Data Source=.;Initial Catalog=Coevery_Web;Integrated Security=true;
+DataTablePrefix: null
+RequestUrlHost: null
+RequestUrlPrefix: null
+EncryptionAlgorithm: AES
+EncryptionKey: 4E77858CCA9D525CD5CCA107715DADEDCF15F60B116B3BFBAB621EDCFC4A093C
+HashAlgorithm: HMACSHA256
+HashKey: FE0C25EAE81DDA1F22A68774A903271B886FCFA94515864D5458ED6418DC65BFE9AA76AD528A7D1CCE09AF5F73376F4D7A94FE5DD9CDBF6A55368EE5237F456C
+State: Running
+Themes: 

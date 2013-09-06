@@ -1,0 +1,23 @@
+Name: Culture Picker
+AntiForgery: disabled
+Author: Sergey Ermakovich
+Website: http://orchardculturepicker.codeplex.com
+Version: 1.6.0.0
+OrchardVersion: 1.5.0
+Description: Allows users to pick a preferred site culture, instead of using a default site culture.
+Features:
+    Orchard.CulturePicker:
+	    Name: Culture Picker
+        Description: Allows users to pick a preferred culture, instead of using a default site culture.
+        Dependencies: Settings, Orchard.Widgets, Orchard.Localization, Orchard.Autoroute
+        Category: Localization
+	Orchard.CulturePicker.MainMenu:
+	    Name: Culture Picker Main Menu Filtering
+        Description: Provides Main menu filtering.
+        Dependencies: Orchard.Localization
+        Category: Localization
+    Orchard.CulturePicker.HomePageRedirect:
+	    Name: Culture Picker Home Page Auto Redirect
+        Description: Automatically redirects a user to the translated home page
+        Dependencies: Orchard.Localization, Orchard.Alias
+        Category: Localization

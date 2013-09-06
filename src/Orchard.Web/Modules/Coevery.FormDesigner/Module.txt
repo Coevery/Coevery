@@ -1,0 +1,9 @@
+Name: FormDesigner
+AntiForgery: enabled
+Author: 
+Website: http://coevery.codeplex.com
+Version: 1.0
+OrchardVersion: 1.6
+Description: Form Designer for Coevery CRM
+Dependencies: Coevery.Core
+Category: Coevery

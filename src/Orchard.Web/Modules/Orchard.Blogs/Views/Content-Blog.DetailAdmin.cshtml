@@ -1,0 +1,10 @@
+﻿@using Orchard.Blogs.Extensions;
+@using Orchard.Blogs.Models;
+@using Orchard.ContentManagement
+
+@{ Layout.Title = T("Manage {0}", Html.ItemDisplayText((IContent)Model.ContentItem)); }
+
+@Display(Model.Header)
+@Display(Model.Actions)
+<div class="manage"><a href="@Url.BlogPostCreate((BlogPart)Model.ContentItem.Get(typeof(BlogPart)))" class="add button primaryAction">@T("New Post")</a></div>
+@Display(Model.Content)

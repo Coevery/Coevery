@@ -1,0 +1,62 @@
+﻿@model Coevery.Entities.ViewModels.EditTypeViewModel
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 style="background-image: none;">Entity Detail <span>show entity detail information</span></h1>
+</header>
+
+<section id="main-content">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget toolbar-Container">
+                <div class="widget-content">
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn" data-ng-click="exit()">Back</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="edit()">Edit</button>
+                        <button type="button" class="btn">Delete</button>
+                        <button type="button" class="btn" data-ng-click="listViewDesigner()">List View Designer</button>
+                        <button type="button" class="btn" data-ng-click="formDesigner()">Form Designer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-content table-container">
+                    <table class="table table-detail-view">
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <th>Display Name</th>
+                                <td>@Model.DisplayName</td>
+                            </tr>
+                            <tr>
+                                <th>Setting</th>
+                                <td>@{Html.RenderTemplates(Model.Templates); }</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="widget">
+                <ul class="nav nav-tabs">
+                    <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
+                    <li data-ng-class="{active: $detour.includes('EntityDetail.Relationships')}"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        <div class="ng-cloak" ui-view>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(function () {
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>

@@ -1,0 +1,10 @@
+﻿@using Orchard.Utility.Extensions;
+@{
+    var optionItems = (IEnumerable<Coevery.OptionSet.Models.OptionItemPart>)Model.OptionItems;
+    string name = @Model.ContentField.DisplayName;
+}
+
+<span class="control-label">@T(name)</span>
+<div class="controls">
+    <span class="control-text">@(new HtmlString(string.Join(", ", optionItems.Select(t => t.Name).ToArray())))</span>
+</div>

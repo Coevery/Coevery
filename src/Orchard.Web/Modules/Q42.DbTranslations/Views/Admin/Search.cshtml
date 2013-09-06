@@ -1,0 +1,27 @@
+﻿@using System.Globalization
+@using Q42.DbTranslations.ViewModels
+@model CultureIndexViewModel
+@{
+  Layout.Title = "Database translations";
+}
+
+<h2>@T("Find a translation")</h2>
+<form method="get">
+  @Html.AntiForgeryTokenOrchard()
+  <input name="querystring" value="@ViewBag.querystring" />
+
+  <select name="culture">
+  @foreach (var state in Model.TranslationStates)
+  { 
+    <option @if (state.Key == ViewBag.culture) {<text>selected="selected"</text>}>@state.Key</option>
+  }
+  </select>
+
+  <input type="submit" value="@T("Find!")" />
+
+</form>
+
+@if (ViewBag.Details is CultureGroupDetailsViewModel)
+{ 
+  @Html.Partial("Details", (CultureGroupDetailsViewModel)ViewBag.Details)
+}

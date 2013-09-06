@@ -1,0 +1,9 @@
+Name: Fields
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coevery.codeplex.com
+Version: 1.6
+OrchardVersion: 1.4
+Description: Some content fields
+Dependencies: Coevery.Core
+Category: Coevery

@@ -1,0 +1,61 @@
+﻿<section class="row-fluid related-list">
+    <header>
+        <h5>Option Items</h5>
+        <div class="btn-toolbar">
+            <button class="btn btn-success btn-small" data-ng-click="add()">
+                <i class="icon-plus"></i>&nbsp;Add
+            </button>
+        </div>
+    </header>
+    <section class="gridStyle" data-ng-grid="gridOptions"></section>
+</section>
+
+<section id="deleteModal" class="modal hide fade" tabindex="-1">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3>Confirm</h3>
+    </div>
+    <div class="modal-body">
+        <p>You really want to delete this item?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">No</button>
+        <button class="btn btn-primary" data-ng-click="deleteItem()">Yes</button>
+    </div>
+</section>
+
+<section id="editModal" class="modal hide fade" tabindex="-1">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Item</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputValue">Title Name</label>
+                <div class="controls">
+                    <input type="hidden" data-ng-model="itemId" />
+                    <input id="inputValue" type="text" data-ng-model="itemValue" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputIsSelectable">Is Selectable</label>
+                <div class="controls">
+                    <label class="checkbox">
+                        <input id="inputIsSelectable" type="checkbox" data-ng-model="itemSelectable" />
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputWeight">Weight</label>
+                <div class="controls">
+                    <input id="inputWeight" type="text" data-ng-model="itemWeight" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">No</button>
+        <button class="btn btn-primary" data-ng-click="editFunc()">Yes</button>
+    </div>
+</section>

@@ -1,0 +1,5 @@
+<RecipeJournal>
+  <Status>Failed</Status>
+  <Message>Executing step Feature.</Message>
+  <Message>Recipe execution with id a6f010e402014d0ab6b11935f9083bd7 was cancelled because the "Feature" step failed to execute. The following exception was thrown: Could not enable feature Orchard.Entites because it was not found.. Refer to the error logs for more information.</Message>
+</RecipeJournal>

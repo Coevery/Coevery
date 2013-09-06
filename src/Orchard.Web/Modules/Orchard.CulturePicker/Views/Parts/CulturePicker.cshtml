@@ -1,0 +1,24 @@
+﻿@using System.Globalization
+@{
+    var availableCultures = Model.AvailableCultures as List<string>;
+
+    var availableCultureswithNames = new List<KeyValuePair<string, string>>(availableCultures.Count);
+    foreach (string culture in availableCultures) {
+        try {
+            var cultureInfo = new CultureInfo(culture);
+            availableCultureswithNames.Add(new KeyValuePair<string, string>(culture, cultureInfo.NativeName));
+        }
+        catch {
+            availableCultureswithNames.Add(new KeyValuePair<string, string>(culture, culture));
+        }
+    }
+    //sort cultures by native name
+    availableCultureswithNames.Sort((k1, k2) => String.CompareOrdinal(k1.Value, k2.Value));
+}
+
+@using (Html.BeginForm("ChangeCulture", "UserCulture", new {Area = "Orchard.CulturePicker"})) {
+    <div class="changeCulture">
+        <label for="CultureName">@T("Language")</label>
+        @Html.DropDownList("CultureName", new SelectList(availableCultureswithNames, "Key", "Value", Model.UserCulture), new {onchange = "submit()"})
+    </div>
+}

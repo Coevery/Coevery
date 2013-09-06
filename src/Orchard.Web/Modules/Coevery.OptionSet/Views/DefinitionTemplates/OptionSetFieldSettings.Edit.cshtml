@@ -1,0 +1,22 @@
+﻿@using Coevery.OptionSet.Settings
+@model OptionSetFieldSettings        
+<section>
+    <section class="control-group data-row">
+        <label class="control-label">@T("List mode")</label>
+        <div class="controls">
+            <select id="@Html.FieldIdFor(m => m.ListMode)" name="@Html.FieldNameFor(m => m.ListMode)">
+                @Html.SelectOption(ListMode.Dropdown, Model.ListMode == ListMode.Dropdown, T("Dropdown list").ToString())
+                @Html.SelectOption(ListMode.Radiobutton, Model.ListMode == ListMode.Radiobutton, T("Radio button list").ToString())
+                @*@Html.SelectOption(ListMode.Listbox, Model.ListMode == ListMode.Listbox, T("Listbox").ToString())*@
+                @Html.SelectOption(ListMode.Checkbox, Model.ListMode == ListMode.Checkbox, T("Checkbox").ToString())
+            </select>
+        </div>
+    </section>
+
+    @Html.HiddenFor(model => model.OptionSetId)
+</section>
+<div ui-view data-ng-init="optionSetId=@Model.OptionSetId">
+</div>
+
+
+

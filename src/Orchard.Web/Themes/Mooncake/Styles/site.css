@@ -1,0 +1,166 @@
+﻿/*#navigation header {
+    display: none;
+}
+#header .navbar-inner {
+    min-height: 69px;
+}
+.icon-form:before{content:"\f03a";}
+.icon-statistics:before{content:"\e0a2";}
+.icol-static-tables {background-position: -160px -208px;}
+.icol-responsive-tables {background-position: -448px -96px;}
+.icol-creative-version {background-position: -496px -160px;}
+.icol-form-layouts {background-position: -384px -112px;}
+.icol-form-elements{background-position: -48px -240px;}
+#navigation .widget:after,
+#navigation .widget:before {
+    content: none;
+}*/
+
+/*#wrapper #content-outer > header {
+  min-height: 50px;
+  padding-right: 20px;
+  padding-left: 20px;
+  background-color: #fafafa;
+  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+  background-repeat: repeat-x;
+  border: 1px solid #d4d4d4;
+  border-width: 1px 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+  *zoom: 1;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}*/
+
+#wrapper #main
+{
+    padding-bottom: 0;
+}
+
+/*Page Title*/
+#page-actions h1
+{
+    float: left;
+    font-size: 24px;
+    color: #444;
+    margin: 0;
+    padding: 10px 0;
+    -webkit-text-shadow: -1px -1px #f0f0f0;
+    text-shadow: -1px -1px #f0f0f0;
+}
+
+    #page-actions h1 > span
+    {
+        color: #777;
+        font-size: 11px;
+        font-weight: normal;
+        padding-left: 6px;
+        margin-left: 6px;
+        border-left: 1px dotted #aaa;
+        line-height: 1;
+        -webkit-text-shadow: none;
+        text-shadow: none;
+    }
+
+#page-actions .btn-toolbar
+{
+    margin: 15px 0;
+}
+
+#page-actions .btn-fixed
+{
+    position: fixed;
+    top: 65px;
+    z-index: 999;
+}
+
+/*Related List*/
+.related-list
+{
+    margin-top: 20px;
+    border-top: 2px solid #41b7d8;
+}
+
+    .related-list > header > h5
+    {
+        margin-right: 40px;
+        display: inline-block;
+    }
+
+    .related-list > header > .btn-toolbar
+    {
+        display: inline-block;
+        font-size: 14px;
+    }
+
+
+
+/*Page Actions*/
+#page-title h1
+{
+    font-size: 24px;
+    margin: 3px 0;
+}
+
+    #page-title h1 span
+    {
+        font-size: 11px;
+        line-height: 1;
+        font-weight: normal;
+        border-left: 1px dotted #aaa;
+        padding-left: 5px;
+    }
+
+#page-title #actions
+{
+    margin-left: 30px;
+    display: none;
+}
+
+/*Icons*/
+.iconrow
+{
+    width: 550px;
+}
+
+.iconspan
+{
+    cursor: pointer;
+}
+
+    .iconspan.selected
+    {
+        background-color: #C9DDE1;
+    }
+
+    .iconspan i,
+    #showIconClass
+    {
+        font-size: 20px;
+    }
+
+.dropdown-menu > li .viewUSelected
+{
+    display: inline-block;
+    width: 20px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: text-top;
+}
+
+#page-actions .btn-group .dropdown-menu>li>a 
+{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+[class^="coe-icon-"]:before, [class*=" coe-icon-"]:before
+{
+    width: .9em;
+    margin-right: 0em;
+    margin-left: 0em;
+}

@@ -1,0 +1,13 @@
+﻿@using Orchard.Mvc.Html
+@using System.Web.Mvc.Html
+@model Coevery.Relationship.ViewModels.EditRelationshipViewModel
+<label class="title control-label">@Model.DisplayName</label>
+<div class="control controls">
+    @Html.ListBoxFor(m => m.SelectedIds, Model.Links, new { @class = "span12" })
+</div>
+
+<script>
+    $(function () {
+        $('#@Html.FieldIdFor(m=>m.SelectedIds)').select2();
+    });
+</script>

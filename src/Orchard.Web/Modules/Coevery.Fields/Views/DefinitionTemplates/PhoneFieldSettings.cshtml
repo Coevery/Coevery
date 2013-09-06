@@ -1,0 +1,12 @@
+﻿@model Coevery.Fields.Settings.PhoneFieldSettings
+@using Coevery.Fields.Settings;
+
+<section class="control-group data-row">
+    <label class="control-label" for="textLength">
+        Dafault Value
+    </label>
+    <div class="controls">
+        @Html.TextBoxFor(m => m.DefaultValue, new { @class = "span12 phonenumber" })
+        @Html.ValidationMessageFor(m=>m.DefaultValue)
+    </div>
+</section>

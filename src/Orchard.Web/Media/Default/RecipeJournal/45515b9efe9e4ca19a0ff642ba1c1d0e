@@ -1,0 +1,5 @@
+<RecipeJournal>
+  <Status>Failed</Status>
+  <Message>Executing step Feature.</Message>
+  <Message>Recipe execution with id 45515b9efe9e4ca19a0ff642ba1c1d0e was cancelled because the "Feature" step failed to execute. The following exception was thrown: Could not enable feature Orchard.Perspectives because it was not found.. Refer to the error logs for more information.</Message>
+</RecipeJournal>
