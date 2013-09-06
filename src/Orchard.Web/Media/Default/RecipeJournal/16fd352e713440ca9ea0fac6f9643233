@@ -1,9 +1,0 @@
-<RecipeJournal>
-  <Status>Failed</Status>
-  <Message>Executing step Feature.</Message>
-  <Message>Executing step Metadata.</Message>
-  <Message>Executing step Settings.</Message>
-  <Message>Executing step Migration.</Message>
-  <Message>Executing step Command.</Message>
-  <Message>Recipe execution with id 16fd352e713440ca9ea0fac6f9643233 was cancelled because the "Command" step failed to execute. The following exception was thrown: Exception has been thrown by the target of an invocation.. Refer to the error logs for more information.</Message>
-</RecipeJournal>

@@ -1,5 +1,0 @@
-<RecipeJournal>
-  <Status>Failed</Status>
-  <Message>Executing step Feature.</Message>
-  <Message>Recipe execution with id b4230fb4148340209af995896fed1ea0 was cancelled because the "Feature" step failed to execute. The following exception was thrown: Could not enable feature Orchard.DynamicTypes because it was not found.. Refer to the error logs for more information.</Message>
-</RecipeJournal>

@@ -1,8 +1,0 @@
-<RecipeJournal>
-  <Status>Complete</Status>
-  <Message>Executing step Feature.</Message>
-  <Message>Executing step Metadata.</Message>
-  <Message>Executing step Settings.</Message>
-  <Message>Executing step Migration.</Message>
-  <Message>Executing step Command.</Message>
-</RecipeJournal>
