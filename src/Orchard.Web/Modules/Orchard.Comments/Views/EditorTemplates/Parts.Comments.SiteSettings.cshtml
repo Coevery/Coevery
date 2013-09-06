@@ -1,0 +1,11 @@
+﻿@model Orchard.Comments.Models.CommentSettingsPartRecord
+
+<fieldset>
+    <legend>@T("Comments")</legend>
+    <div>
+        @Html.EditorFor(m => m.ModerateComments)
+        <label class="forcheckbox" for="CommentSettings_ModerateComments">@T("Comments must be approved before they appear")</label>
+        @Html.ValidationMessage("ModerateComments", "*")
+        <span class="hint">@T("Check if you want to manually approve comments before they can be displayed.")</span>
+    </div>
+</fieldset>

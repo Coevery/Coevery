@@ -1,0 +1,14 @@
+﻿<section data-ng-init="getAllRelationship()">
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            <button class="btn btn-small btn-success dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-plus"></i>&nbsp;Add <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a ng-click="createOneToMany()"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
+                <li><a ng-click="createManyToMany()"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
+            </ul>
+        </div>
+    </div>
+    <section class="gridStyle" data-ng-grid="relationshipGridOptions"></section>
+</section>

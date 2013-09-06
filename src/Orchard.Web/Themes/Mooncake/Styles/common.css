@@ -1,0 +1,170 @@
+﻿/*View Mode*/
+.view-mode {
+}
+
+    .view-mode header {
+        margin: 0;
+        border-bottom: 1px solid #ebaf59;
+    }
+
+        .view-mode header h5 {
+            display: inline-block;
+        }
+
+        .view-mode header .show-button,
+        .view-mode header .hide-button {
+            margin-right: 4px;
+            background-repeat: no-repeat;
+            background-image: url('images/twisty_sprite.png');
+            height: 11px;
+            width: 11px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .view-mode header .show-button {
+            background-position: 0 -11px;
+        }
+
+        .view-mode header .hide-button {
+            background-position: 0 0;
+        }
+
+    .view-mode .data-row {
+        padding: 5px 20px;
+    }
+
+        .view-mode .data-row + .data-row {
+            border-top: 1px solid #ececec;
+        }
+
+        .view-mode .data-row .control-label {
+            text-align: right;
+            width: 120px;
+            float: left;
+            padding-top: 5px;
+            color: #777;
+        }
+
+        .view-mode .data-row .controls {
+            margin-left: 140px;
+        }
+
+            .view-mode .data-row .controls .control-text {
+                padding-top: 5px;
+                display: block;
+            }
+
+    .view-mode form {
+        margin: 0;
+    }
+
+        .view-mode form > .data-section {
+            margin-top: 20px;
+        }
+
+            .view-mode form > .data-section:first-child {
+                margin-top: 0;
+            }
+
+/*Edit Mode*/
+.edit-mode {
+}
+
+    .edit-mode input {
+        margin-bottom: 0;
+    }
+
+    .edit-mode .control-group {
+        margin: 0;
+    }
+
+        .edit-mode .control-group.error {
+            color: #b94a48;
+        }
+
+    .edit-mode legend {
+        font-weight: bold;
+        font-size: 14px;
+        border-bottom: 1px solid #ebaf59;
+        margin: 0 0 20px;
+    }
+
+    .edit-mode .data-row {
+        padding: 0 20px;
+        margin-bottom: 16px;
+    }
+
+        .edit-mode .data-row .control-label {
+            text-align: right;
+            width: 120px;
+            float: left;
+            padding-top: 5px;
+        }
+
+        .edit-mode .data-row .controls.input-append {
+            margin-left: 20px;
+        }
+
+        .edit-mode .data-row .control-label.required:before {
+            content: "*";
+            color: red;
+            margin-right: 5px;
+            vertical-align: top;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        .edit-mode .data-row .controls {
+            margin-left: 140px;
+        }
+
+    .edit-mode form {
+        margin: 0;
+    }
+
+        .edit-mode form > .data-section {
+            margin-top: 20px;
+        }
+
+            .edit-mode form > .data-section:first-child {
+                margin-top: 0;
+            }
+
+/*Notifier/Message box*/
+.alert.ui-pnotify-container.ui-pnotify-shadow {
+    margin-bottom: 0;
+}
+
+#page-actions {
+    min-height: 56px;
+}
+
+/*Date/Time Picker*/
+.edit-mode .controls.input-prepend {
+    display: block;
+}
+
+#loading {
+    position: fixed;
+    left: 50%;
+    top: 71px;
+    margin-left: -35px;
+    display: none;
+    background: gold;
+    padding: 0.3em;
+    font-weight: bold;
+    z-index: 99999;
+}
+
+@media (max-width: 767px) {
+    [fd-column] + [fd-column] {
+        margin-top: 16px;
+    }
+}
+
+div label.radio,
+div label.checkbox {
+    padding-top: 5px
+}

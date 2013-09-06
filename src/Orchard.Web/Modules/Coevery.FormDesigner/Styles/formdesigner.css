@@ -1,0 +1,160 @@
+﻿[fd-row] {
+    position: relative;
+}
+
+[fd-form].markedAbove {
+    border-top: 3px solid red;
+}
+
+[fd-section] {
+    position: relative;
+}
+
+    [fd-section].marked:after,
+    [fd-section].markedAbove:after {
+        content: "";
+        border-top: 3px solid red;
+        display: block;
+        position: absolute;
+        width: 100%;
+    }
+
+    [fd-section].marked:after {
+        bottom: -5px;
+    }
+
+    [fd-section].markedAbove:after {
+        top: -5px;
+    }
+
+    [fd-section] legend > .tools {
+        top: 14px;
+    }
+
+[fd-field] {
+    position: relative;
+}
+
+    [fd-field].selected {
+        background-color: #c7e7af;
+    }
+
+[fd-form] form {
+    min-height: 50px;
+}
+
+.dragging {
+    opacity: 0.3;
+}
+
+#toolboxes .tab-content {
+    padding: 0;
+    border: 0;
+    height: 330px;
+    overflow: auto;
+}
+
+.tools {
+    position: absolute;
+    right: 0px;
+    top: 6px;
+}
+
+    .tools div {
+        height: 18px;
+        width: 20px;
+        cursor: pointer;
+        float: right;
+    }
+
+    .tools .merge {
+        background-image: url(images/merge.png);
+        background-repeat: no-repeat;
+        background-position: 2px 2px;
+    }
+
+    .tools .split {
+        background-image: url(images/split.png);
+        background-repeat: no-repeat;
+        background-position: 2px 2px;
+    }
+
+    .tools .remove {
+        background-image: url(images/wrenchRemove.png);
+        background-repeat: no-repeat;
+        background-position: 2px -14px;
+    }
+
+    .tools .property {
+        background-image: url(images/wrenchRemove.png);
+        background-repeat: no-repeat;
+        background-position: 2px 2px;
+    }
+
+.title img {
+    width: 12px;
+    height: 12px;
+    vertical-align: top;
+    margin-right: 4px;
+}
+
+.highlight {
+    background: #ebf9ff;
+}
+
+.tools .highlight {
+    background-color: #bae9fd;
+}
+
+/* Sidenav for Docs
+-------------------------------------------------- */
+
+.bs-docs-sidenav {
+    width: 200px;
+    padding: 0;
+}
+
+    .bs-docs-sidenav.affix {
+        top: 143px;
+    }
+
+/* Responsive
+-------------------------------------------------- */
+
+/* Desktop large
+------------------------- */
+@media (min-width: 1200px) {
+    .bs-docs-sidenav {
+        width: 226px;
+    }
+}
+
+/* Tablet to desktop
+------------------------- */
+@media (min-width: 768px) and (max-width: 979px) {
+    /* Adjust sidenav width */
+    .bs-docs-sidenav {
+        width: 166px;
+        margin-top: 20px;
+    }
+
+        .bs-docs-sidenav.affix {
+            top: 0;
+        }
+}
+
+/* Tablet
+------------------------- */
+@media (max-width: 767px) {
+    /* Sidenav */
+    .bs-docs-sidenav {
+        width: auto;
+        margin-bottom: 20px;
+    }
+
+        .bs-docs-sidenav.affix {
+            position: static;
+            width: auto;
+            top: 0;
+        }
+}

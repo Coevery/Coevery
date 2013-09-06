@@ -1,0 +1,125 @@
+﻿@using System.Globalization
+@using Q42.DbTranslations.Helpers
+@using Q42.DbTranslations.ViewModels
+@model CultureGroupDetailsViewModel
+@{ Layout.Title = Model.Culture + " Localization"; }
+@using (Script.Foot())
+{ 
+  <script>
+      $(document).ready(function () {
+          $(document).on('click.cluture.translation', '.contribute-banner', function(e) {
+              e.preventDefault();
+              var contInset = $('.contribute-inset');
+              if (contInset.hasClass('hidden')) {
+                  contInset.fadeIn(200).removeClass('hidden');
+              } else {
+                  contInset.fadeOut(200).addClass('hidden');
+              }
+          });
+
+          $(document).on('click.cluture.translation', '.close-inset', function(e) {
+              e.preventDefault();
+              $('.contribute-inset').fadeOut(200).addClass('hidden');
+          });
+      });
+  </script>
+}
+<style>
+  .contribute-banner {
+    position: relative;
+    float: right;
+    height: 30px;
+    width: auto;
+    padding: 16px 10px 6px 30px;
+    margin: 0 0 16px 0;
+    border: 1px solid #eaeaea;
+    background: Whitesmoke url(/Modules/Q42.DbTranslations/Content/info.gif) no-repeat 7px 18px;
+  }
+  .contribute-inset 
+  {
+    position: absolute;
+    float: right;
+    width: 300px;
+    height: auto;
+    padding: 16px;
+    margin-top: 66px;
+    right: 39px;
+    border: 1px solid #c4c3c2;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  }
+  .contribute-inset ,
+  .contribute-banner {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+}
+  .separate + .separate {
+    border-top: 1px dashed #e4e3e2;
+    margin: 16px 0 0 0;
+    padding: 24px 0 8px 0;
+  }
+  .download-link {
+    width: 160px;
+    height: 8px;
+    padding: 8px 16px 8px 30px;
+    background: Whitesmoke url(/Modules/Q42.DbTranslations/Content/icon_download.png) no-repeat 7px 9px;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+  }
+  a.close-inset {
+    position: absolute;
+    margin-top: -1px; top: 0;
+    margin-right: -1px; right: 0;
+    background: Whitesmoke;
+    border: 1px solid #c4c3c2;
+    border-left-color: #eaeaea;
+    border-bottom-color: #eaeaea;
+    padding: 2px 7px;
+    border-bottom-left-radius: 4px;
+    color: #979695;
+  }
+  a.close-inset:hover { color: #000; }
+  .mail-address { color: #1e5d7d; }
+  .hidden { display: none; }
+</style>
+
+<div class="content">
+  <a href="#contribute-info" title="@T("Learn how to contribute your translations")" class="contribute-banner"> @T("Contribute your translations") </a>
+  <div class="contribute-inset hidden">
+    <a href="#" title="close this box" class="close-inset">x</a>
+    <p class="separate">
+      @T("Once you have a partial or complete translation that you want to submit, please send the zipped package of PO files to the list:")
+      <a href="mailto:localizationHelpers@lists.outercurve.org">localizationHelpers@lists.outercurve.org</a>
+    </p>
+    <p class="separate">@Html.ActionLink("Download the zipped PO files", "Download", new {culture = Model.Culture}, new { @class = "download-link"})</p>
+  </div>
+  @Html.ActionLink("Back to the index", "Index")
+  <h2>@Model.Culture - @(new CultureInfo(Model.Culture).DisplayName)</h2>
+  <table class="items">
+    <tr>
+      <th>@T("Module")</th>
+      <th>@T("Total")</th>
+      <th>@T("Translated")</th>
+      <th>@T("Missing")</th>
+    </tr>
+  @foreach (var group in Model.Groups.Where(g => g.TotalCount > 0).OrderByDescending(g => g.TotalCount - g.TranslationCount)) {
+      <tr>
+        <td>
+          <a href="@Url.Action("Details", new {path = group.Path, culture = Model.Culture})">
+          @LocalizationHelpers.GetPoFileName(group.Path)
+        </a>
+        </td>
+        <td>@group.TotalCount</td>
+        <td>@group.TranslationCount</td>
+        <td>@(group.TotalCount - group.TranslationCount)</td>
+      </tr>
+  }
+  </table>
+
+</div>

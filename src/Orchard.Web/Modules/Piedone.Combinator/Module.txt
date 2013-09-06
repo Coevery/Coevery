@@ -1,0 +1,13 @@
+Name: Combinator
+AntiForgery: enabled
+Author: Piedone
+Website: http://combinator.codeplex.com
+Version: 1.4
+OrchardVersion: 1.5
+Description: Combines and minifies (with YUI Compressor) external stylesheets and javascript files
+Features:
+    Piedone.Combinator:
+		Name: Combinator
+        Description: Combines and minifies external stylesheets and javascript files
+		Category: Performance
+		Dependencies: Orchard.jQuery, Piedone.HelpfulLibraries.Serialization, Piedone.HelpfulLibraries.Tasks

@@ -1,0 +1,19 @@
+﻿@model Coevery.Fields.Settings.CoeveryTextFieldSettings
+@using Coevery.Fields.Settings;
+
+<section class="control-group data-row">
+    <label class="control-label" for="textLength">
+        Length
+    </label>
+    <div class="controls">
+        @Html.TextBoxFor(m => m.MaxLength, new { @class = "span12" })
+    </div>
+</section>
+<section class="control-group data-row">
+    <label class="control-label" for="placeHolderText">
+        Place Holder Text
+    </label>
+    <div class="controls">
+        @Html.TextBoxFor(m => m.PlaceHolderText, new { @class = "span12" })
+    </div>
+</section>

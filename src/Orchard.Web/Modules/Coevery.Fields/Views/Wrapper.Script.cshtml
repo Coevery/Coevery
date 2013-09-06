@@ -1,0 +1,30 @@
+﻿@{
+    string templateName;
+    if (Model.TemplateName == "Parts/Relationship.Edit") {
+        templateName = Model.ContentPart.GetType().Name + ".html";
+    }
+    else {
+        templateName = Model.ContentField.Name + ".html";
+    }
+
+    //string settingName = Model.ContentField.Name + ".setting"; 
+}
+<script type="text/ng-template" id="@templateName">
+    @Model.Metadata.ChildContent
+</script>
+
+@*<script type="text/ng-template" id="@settingName">
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label">@Model.ContentField.DisplayName</label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="currentField.readonly" />Read-Only
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="currentField.required" value="2" />Required
+                        </label>
+                    </div>
+                </div>
+            </form>
+</script>*@

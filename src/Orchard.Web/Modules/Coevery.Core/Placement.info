@@ -1,0 +1,6 @@
+﻿<Placement>
+  <Place Parts_ModuleMenuItem_Edit="Content:10"/>
+  <Match DisplayType="Detail" ContentType="ProjectionPage">
+    <Place Parts_Title="-" />
+  </Match>
+</Placement>

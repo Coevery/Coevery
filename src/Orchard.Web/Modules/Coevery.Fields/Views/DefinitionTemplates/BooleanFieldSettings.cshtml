@@ -1,0 +1,30 @@
+﻿@model Coevery.Fields.Settings.BooleanFieldSettings
+@using Coevery.Fields.Settings;
+
+<section class="control-group data-row">
+    <label class="control-label">
+        Default Value
+    </label>
+    <div class="controls">
+        <label class="radio" for="defaultValueTrue">
+            @Html.RadioButtonFor(m => m.DefaultValue, true, new { id = "defaultValueTrue" })
+            @T("True")
+        </label>
+        <label class="radio" for="defaultValueFalse">
+            @Html.RadioButtonFor(m => m.DefaultValue, false, new { id = "defaultValueFalse" })
+            @T("False")
+        </label>
+        @Html.HiddenFor(m=>m.DependencyMode)
+    </div>
+</section>
+<section class="control-group data-row">
+    <label class="control-label">
+        Display Option
+    </label>
+    <div class="controls">
+        <select class="span12" name="@Html.FieldNameFor(m=>m.SelectionMode)">
+            @Html.SelectOption(BooleanDisplayMode.Checkbox, Model.SelectionMode == BooleanDisplayMode.Checkbox, T("Checkbox").ToString())
+            @Html.SelectOption(BooleanDisplayMode.Radiobutton, Model.SelectionMode == BooleanDisplayMode.Radiobutton, T("Radiobutton").ToString())
+        </select>
+    </div>
+</section>

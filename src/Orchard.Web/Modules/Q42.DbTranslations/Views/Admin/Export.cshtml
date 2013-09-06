@@ -1,0 +1,52 @@
+﻿@using System.Globalization
+@using Q42.DbTranslations.ViewModels
+@model CultureIndexViewModel
+@{
+  Layout.Title = "Database translations";
+}
+
+<h2>@T("Contribute")</h2>
+<p>
+  @T("Once you have a partial or complete translation that you want to submit, please send the zipped package of PO files to the list:")
+  <a href="mailto:localizationHelpers@lists.outercurve.org">localizationHelpers@lists.outercurve.org</a>
+</p>
+<p>
+  @T("For more information, see ")
+  <a href="http://www.orchardproject.net/localize">www.orchardproject.net/localize</a>
+</p>
+
+<p>&nbsp;</p>
+
+<h2>@T("Download *.po.zip files")</h2>
+<table class="items">
+  <th>@T("Culture")</th>
+  <th>@T("Translatable")</th>
+  <th>@T("Translated")</th>
+  <th>@T("Missing")</th>
+  @foreach (var translation in Model.TranslationStates.OrderBy(c => c.Key))
+  {
+    var culture = CultureInfo.GetCultureInfoByIetfLanguageTag(translation.Key);
+    <tr>
+      <td>
+        @if (translation.Value.NumberOfTranslatedStrings > 0)
+        {
+          @Html.ActionLink(culture.IetfLanguageTag + " - " + culture.DisplayName, 
+            "Download", new { culture = culture }, new { @class = "download-link" }) 
+        }
+        else
+        { 
+          @(culture.IetfLanguageTag + " - " + culture.DisplayName)
+        }
+      </td>
+      <td>@Model.NumberOfStringsInDefaultCulture</td>
+      <td>@translation.Value.NumberOfTranslatedStrings</td>
+      <td>@(Model.NumberOfStringsInDefaultCulture - translation.Value.NumberOfTranslatedStrings)</td>
+    </tr>
+  }
+</table>
+
+<p>&nbsp;</p>
+
+<h2>@T("Export *.po files to disk")</h2>
+<p>@T("Want to go back to the way it was? Export your translations to disk and disable the Q42.DbTranslations feature. <br />Might also be useful if you want to check your translations into a code repository.")</p>
+@Html.ActionLink("Export!", "PoFilesToDisk", null, new { @class = "button" })

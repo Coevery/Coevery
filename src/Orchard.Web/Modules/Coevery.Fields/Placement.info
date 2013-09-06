@@ -1,0 +1,42 @@
+﻿<Placement>
+  <!-- Text -->
+  <Place Fields_CoeveryText_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_CoeveryText="Content:after;Wrapper=Wrapper_Script"/>
+
+  <!-- Boolean -->
+  <Place Fields_Boolean_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Boolean="Content:after;Wrapper=Wrapper_Script"/>
+  
+  <!-- Email -->
+  <Place Fields_Email_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Email="Content:after;Wrapper=Wrapper_Script"/>
+  
+  <!-- Number -->
+  <Place Fields_Number_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Number="Content:after;Wrapper=Wrapper_Script"/>
+  
+  <!-- Phone -->
+  <Place Fields_Phone_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Phone="Content:after;Wrapper=Wrapper_Script"/>
+  
+  <!-- Url -->
+  <Place Fields_Url_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Url="Content:after;Wrapper=Wrapper_Script"/>
+
+  <!-- Date -->
+  <Place Fields_Date_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Date="Content:after;Wrapper=Wrapper_Script"/>
+  
+  <!-- Datetime -->
+  <Place Fields_Datetime_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Datetime="Content:after;Wrapper=Wrapper_Script"/>
+  
+  <!-- Currency -->
+  <Place Fields_Currency_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_Currency="Content:after;Wrapper=Wrapper_Script"/>
+
+  <!--Taxonomy-->
+  <Place Fields_TaxonomyField_Edit="Content:2.6;Wrapper=Wrapper_Script;"/>
+  <Place Fields_TaxonomyField="Content:after"/>
+  
+</Placement>

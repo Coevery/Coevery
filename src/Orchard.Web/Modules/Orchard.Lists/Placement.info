@@ -1,0 +1,14 @@
+﻿<Placement>
+    <!-- available display shapes -->
+    <!--
+        Parts_Container_Contained_SummaryAdmin
+    -->
+  <Match ContentType="List" DisplayType="Detail">
+    <!-- don't show the List title or Common Metadata -->
+    <Place Parts_Title="-" />
+    <Place Parts_Common_Metadata="-" />
+  </Match>
+  <Match DisplayType="SummaryAdmin">
+    <Place Parts_Container_Contained_SummaryAdmin="Actions:10"/>
+  </Match>
+</Placement>

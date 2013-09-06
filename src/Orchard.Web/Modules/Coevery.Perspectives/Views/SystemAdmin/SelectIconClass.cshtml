@@ -1,0 +1,75 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" ng-click="closeDialog()">&#215</button>
+    <h3>Select Icon</h3>
+</div>
+
+@helper DisplayIcon(string code, string className, string displayName) {
+    <div title='@string.Concat("Code: 0x",code)' class="span2 iconspan"><i class='@string.Concat("coe-icon-",className)'></i> <span class="i-name">@displayName</span></div>
+}
+
+<div class="modal-body">
+    <h5>Select the Icon</h5>
+        <div class="form-container">
+            <div id="icons">
+                <div class="iconrow row">
+                    @DisplayIcon("e816","tasks","Tasks")
+                    @DisplayIcon("e80e","calculator","Calculator")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e815","chart-1","Default Chart")
+                    @DisplayIcon("e80b","vcard","Vcard")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e80c","basket","Basket")
+                    @DisplayIcon("e808","list-alt","List")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e811","chart-pie","Pie Chart")
+                    @DisplayIcon("e814","credit-card-1","Default CreditCard")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e803","mail-alt","Mail")
+                    @DisplayIcon("e807","doc-text","Text Document")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e806","dollar","Dollar")
+                    @DisplayIcon("e813","newspaper-1","Default Newspaper")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e802","picture","Picture")
+                    @DisplayIcon("e80d","globe","Globe")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e810","target","Target")
+                    @DisplayIcon("e800","user","User")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e801","users","Users")
+                    @DisplayIcon("e809","credit-card","Credit card")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e804","calendar","Calendar")
+                    @DisplayIcon("e812","chart","Chart")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e805","chart-bar","Bar Chart")
+                    @DisplayIcon("e80a","newspaper","Newspaper")
+                </div>
+                <div class="iconrow row">
+                    @DisplayIcon("e80f","clock","Clock")
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="selected()">OK</button>
+    <button class="btn" ng-click="closeDialog()">Cancel</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $("div.iconspan").click(function () {
+            $("div.iconspan").removeClass("selected");
+            $(this).addClass("selected");
+        });
+    });
+</script>

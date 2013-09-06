@@ -1,0 +1,54 @@
+﻿@using System.ComponentModel
+@model Coevery.Perspectives.ViewModels.PerspectiveViewModel
+<header id="page-title">
+    <h1 class="pull-left" style="background-image: none;">Perspective Detail <span>show perspective detail information</span></h1>
+</header>
+<section id="main-content">
+    <div id="page-actions" class="clearfix">
+        <btn-actions>
+            <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-small" data-ng-click="editPerspective()">
+                <i class="icon-edit"></i>&nbsp;Edit
+            </button>
+            <button type="button" class="btn btn-small" data-ng-click="deletePerspective()">
+                <i class="icon-remove"></i>&nbsp;Delete
+            </button>
+        </btn-actions>
+    </div>
+    <div class="row-fluid">
+        <section class="view-mode span12">
+            <section>
+                <fieldset>
+                    <header>
+                        <h5>General Info</h5>
+                    </header>
+                    <div class="data-row clearfix">
+                        <div class="span12">
+                            <span class="title control-label">Title</span>
+                            <div class="control controls">
+                                <span class="control-text">@Model.Title</span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </section>
+        </section>
+    </div>
+    <section class="row-fluid related-list">
+        <header>
+            <h5>Navigations</h5>
+            <div class="btn-toolbar" style="padding-left: 0px;">
+                <button class="btn btn-success btn-small" ng-click="addNavigationItem()">
+                    <i class="icon-plus"></i>&nbsp;Add Navigation
+                </button>
+            </div>
+        </header>
+        <section class="gridStyle" ng-grid="gridOptions"></section>
+    </section>
+</section>
+<script type="text/javascript">
+    $(function () {
+        $("#main-content").css("margin-top", $("#page-title").outerHeight(true));
+        $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
+    });
+</script>

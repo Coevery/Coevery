@@ -1,0 +1,11 @@
+﻿@model Coevery.Fields.Settings.EmailFieldSettings
+@using Coevery.Fields.Settings;
+
+<section class="control-group data-row">
+        <label class="control-label" for="textLength">
+            Dafault Value
+        </label>
+        <div class="controls">
+            @Html.TextBoxFor(m => m.DefaultValue, new { @class = "span12 email txtemail" })
+        </div>
+</section>

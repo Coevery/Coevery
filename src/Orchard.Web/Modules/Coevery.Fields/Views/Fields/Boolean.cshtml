@@ -1,0 +1,18 @@
+﻿@using Orchard.Utility.Extensions
+@{
+    string valueToDisplay;
+    bool? booleanValue = Model.ContentField.Value;
+    if (booleanValue.HasValue) {
+        valueToDisplay = booleanValue.Value
+            ? T("True").ToString()
+            : T("False").ToString();
+    }
+    else {
+        valueToDisplay = T(Model.Settings.NotSetLabel).ToString();
+    }
+    string name = Model.ContentField.DisplayName;
+    <span class="control-label">@T(name)</span>
+    <div class="controls">
+        <span class="control-text">@valueToDisplay</span>
+    </div>
+}

@@ -1,0 +1,94 @@
+﻿@using Coevery.OptionSet.Settings
+@model OptionSetFieldViewModel
+@{
+    int termIndex = 0;
+    var settings = Model.Settings;
+    var required = settings.Required ? "required" : null;
+    var validateHelper = settings.Required && (settings.ListMode == ListMode.Radiobutton || settings.ListMode == ListMode.Checkbox) ?
+                             "groupValidationHelper" : null;
+}
+
+<label class="control-label title @required" >@Model.DisplayName</label>
+<div class="control controls @validateHelper">
+
+    @switch (settings.ListMode) {
+        case ListMode.Dropdown:
+            var selectAttributes = new Dictionary<string, object> { { "class", "span12" } };
+            if (!string.IsNullOrWhiteSpace(required)) {
+                selectAttributes.Add(required,null);
+            }
+            var options = Model.OptionItems.Select(t => new SelectListItem { Text = t.Name, Value = t.Id.ToString(), Selected = t.Id == Model.SingleTermId });
+            @Html.DropDownListFor(m => m.SingleTermId, options,string.Empty, selectAttributes)
+            for (int i = 0; i < Model.OptionItems.Count; i++) {
+                @Html.HiddenFor(m => m.OptionItems[i].Id)
+            }
+            break;
+
+        case ListMode.Radiobutton:        
+        case ListMode.Checkbox:      
+            string classString = null;
+            if (settings.ListMode == ListMode.Radiobutton) {
+                classString = "radio";
+            }
+            else if (settings.ListMode == ListMode.Checkbox) {
+                classString = "checkbox";
+            }
+            
+            foreach (var entry in Model.OptionItems) {
+                var ti = termIndex;
+                <label class="@classString">
+                    @{
+                        var disabled = !entry.Selectable;
+                        if (settings.ListMode == ListMode.Radiobutton) {
+                            <input @if (disabled) {
+                                       <text>disabled="disabled"</text>
+                                   } 
+                                type="radio" 
+                                value="@Model.OptionItems[ti].Id" 
+                                @if (entry.Id == Model.SingleTermId) {
+                                    <text>checked="checked"</text>
+                                } 
+                                name="@Html.FieldNameFor(m => m.SingleTermId)" 
+                                id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()"/>
+                        }
+                        else {
+                            <input @if (disabled) {
+                                       <text>disabled="disabled"</text>
+                                   } type="checkbox" value="true" 
+                                @if (entry.IsChecked) {
+                                    <text>checked="checked"</text>
+                                } 
+                                     name="@Html.FieldNameFor(m => m.OptionItems[ti].IsChecked)" 
+                                     id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()"/>
+                        }
+                    }
+                    @entry.Name
+                    @Html.HiddenFor(m => m.OptionItems[ti].Id)
+                </label>
+                termIndex++;
+            }
+            if (!string.IsNullOrWhiteSpace(validateHelper)) {
+                @Html.Hidden("void", null, new {required = "", id = "groupValidationPart"})
+            }
+            break;
+
+        case ListMode.Listbox:
+            break;
+    }
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
+        <span class="help-block">@settings.HelpText</span>
+    }
+    @Html.HiddenFor(m=>m.OptionSetId)
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $(".groupValidationHelper input[type='radio'], .groupValidationHelper input[type='checkbox']").change(function () {
+            if ($(".groupValidationHelper input:checked").length > 0) {
+                $("#groupValidationPart").val("true");
+            } else {
+                $("#groupValidationPart").val("");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,12 @@
+﻿@model Coevery.Core.ViewModels.ModuleMenuItemEditViewModel
+@{
+    Script.Require("ContentPicker").AtFoot();
+    //var title = Model.Part.Record.ContentTypeRecord == null ? new HtmlString(T("Empty").Text) : new HtmlString(Model.Part.Record.ContentTypeRecord.Name);
+}   
+
+<fieldset>
+    <label>@T("Content Type")</label>
+    @Html.DropDownListFor(m=>m.ContenTypeId,Model.ContentTypes)
+    @Html.HiddenFor(m => m.ContenTypeId)
+    <span class="hint">@T("Select the ContentType to display in the menu.")</span>
+</fieldset>

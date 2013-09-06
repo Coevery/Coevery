@@ -1,0 +1,204 @@
+﻿@functions {
+    // To support the layout classifaction below. Implementing as a razor function because we can, could otherwise be a Func<string[], string, string> in the code block following.
+    string CalcuClassify(string[] zoneNames, string classNamePrefix) {
+        var zoneCounter = 0;
+        var zoneNumsFilled = string.Join("", zoneNames.Select(zoneName => { ++zoneCounter; return Model[zoneName] != null ? zoneCounter.ToString() : ""; }).ToArray());
+        return HasText(zoneNumsFilled) ? classNamePrefix + zoneNumsFilled : "";
+    }
+}
+@{
+    /* Global includes for the theme
+    ***************************************************************/
+
+    SetMeta("X-UA-Compatible", "IE=edge,chrome=1");
+    Style.Include("http://fonts.googleapis.com/css?family=Lobster&subset=latin");
+    WorkContext.Layout.Header.Add(Display.BaseResource());
+    WorkContext.Layout.Header.Add(Display.DifferentResourceSystemAdmin());
+    
+    /* Some useful shortcuts or settings
+    ***************************************************************/
+
+    Func<dynamic, dynamic> Zone = x => Display(x); // Zone as an alias for Display to help make it obvious when we're displaying zones
+
+    /* Layout classification based on filled zones
+    ***************************************************************/
+
+    //Add classes to the wrapper div to toggle aside widget zones on and off
+    var asideClass = CalcuClassify(new[] { "AsideFirst", "AsideSecond" }, "aside-"); // for aside-1, aside-2 or aside-12 if any of the aside zones are filled
+    if (HasText(asideClass))
+    {
+        Model.Classes.Add(asideClass);
+    }
+
+    //Add classes to the wrapper div to toggle tripel widget zones on and off
+    var tripelClass = CalcuClassify(new[] { "TripelFirst", "TripelSecond", "TripelThird" }, "tripel-"); // for tripel-1, triple-2, etc. if any of the tripel zones are filled
+    if (HasText(tripelClass))
+    {
+        Model.Classes.Add(tripelClass);
+    }
+
+    //Add classes to the wrapper div to toggle quad widget zones on and off
+    var footerQuadClass = CalcuClassify(new[] { "FooterQuadFirst", "FooterQuadSecond", "FooterQuadThird", "FooterQuadFourth" }, "split-"); // for quad-1, quad-2, etc. if any of the quad zones are filled
+    if (HasText(footerQuadClass))
+    {
+        Model.Classes.Add(footerQuadClass);
+    }
+
+    /* Inserting some ad hoc shapes
+    ***************************************************************/
+    WorkContext.Layout.Header.Add(New.Branding(), "5"); // Site name and link to the home page
+    WorkContext.Layout.Footer.Add(New.BadgeOfHonor(), "5"); // Powered by Orchard
+    WorkContext.Layout.Footer.Add(New.User(), "10"); // Login and dashboard links
+
+    /* Last bit of code to prep the layout wrapper
+    ***************************************************************/
+
+    Model.Id = "wrapper";
+    var tag = Tag(Model, "div"); // using Tag so the layout div gets the classes, id and other attributes added to the Model
+}
+@tag.StartElement
+
+@if (Model.Header != null)
+{
+    <header id="header" class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="brand-wrap pull-left">
+                    <div class="brand-img">
+                        <a class="brand" href="@Href("~/")" style="font-size: 30px;">
+                            <img src="@Href("~/Themes/Mooncake/Styles/images/coevery.png")" alt="" >
+                            Coevery
+                        </a>
+                    </div>
+                </div>
+
+                <div id="header-right" class="clearfix">
+                    <div id="nav-toggle" data-toggle="collapse" data-target="#navigation" class="collapsed">
+                        <i class="icon-caret-down"></i>
+                    </div>
+                    <div id="header-search">
+                        <span id="search-toggle" data-toggle="dropdown">
+                            <i class="icon-search"></i>
+                        </span>
+                        <form class="navbar-search">
+                            <input type="text" class="search-query" placeholder="Search">
+                        </form>
+                    </div>
+                    <div id="dropdown-lists">
+                        <div class="item-wrap">
+                            <a class="item" href="#" data-toggle="dropdown">
+                                <span class="item-icon"><i class="icon-exclamation-sign"></i></span>
+                                <span class="item-label">Notifications</span>
+                                <span class="item-count">4</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item-wrap">
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                <span class="thumbnail">
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/user.jpg")" alt=""></span>
+                                                <span class="details">
+                                                    <strong>John Doe</strong> commented on your photo
+                                                            <span class="time">13 minutes ago</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="thumbnail">
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/user.jpg")" alt=""></span>
+                                                <span class="details">
+                                                    <strong>Jane Roe</strong> commented on your photo
+                                                            <span class="time">27 minutes ago</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <span class="thumbnail">
+                                                    <img src="@Href("~/Themes/Mooncake/Styles/images/user.jpg")" alt=""></span>
+                                                <span class="details">
+                                                    <strong>Billy John</strong> commented on your photo
+                                                            <span class="time">43 minutes ago</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">View all notifications</a></li>
+                            </ul>
+                        </div>
+                        <div class="item-wrap">
+                            <a class="item" href="#" data-toggle="dropdown">
+                                <span class="item-icon"><i class="icon-envelope"></i></span>
+                                <span class="item-label">Messages</span>
+                                <span class="item-count">16</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="header-functions" class="pull-right">
+                        <div id="user-info" class="clearfix">
+                            <span class="info">
+                                Welcome
+                                <span class="name">@WorkContext.CurrentUser.UserName</span>
+                            </span>
+                            <div class="avatar">
+                                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    <img src="@Href("~/Themes/Mooncake/Styles/images/user.jpg")" alt="Avatar">
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="#"><i class="icol-user"></i> My Profile</a></li>                                     
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="@Url.Action( "LogOff", new {Controller = "Account", Area = "Orchard.Users", ReturnUrl = Context.Request.RawUrl})" rel="nofollow">
+                                            <i class="icol-key"> </i>
+                                            @T("Logout")
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="logout-ribbon">
+                            <a href="@Url.Action( "LogOff", new {Controller = "Account", Area = "Orchard.Users", ReturnUrl = Context.Request.RawUrl})" rel="nofollow">
+                                <i class="icon-off"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+}
+<div id="content-wrap">
+    <div id="content">
+        <div id="content-outer">
+            <div id="content-inner">
+                <aside id="sidebar">
+                    <nav id="navigation" class="collapse">
+                        @if (Model.Navigation != null)
+                        {
+                            @Zone(Model.Navigation)
+                        }
+                    </nav>
+                </aside>
+                <div id="sidebar-separator"></div>
+                <section id="main" class="clearfix">
+                    @Zone(Model.Content)
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+@*
+<footer id="footer">
+    <div class="footer-left">novasoftware - <a href="http://www.novasoftware.cn/">http://www.novasoftware.cn/</a></div>
+    <div class="footer-right">
+        <p>Copyright 2013. All Rights Reserved.</p>
+    </div>
+</footer>*@
+<footer>
+    <p class="pull-left">Nova Software - <a href="http://www.novasoftware.cn">http://www.novasoftware.cn</a></p>
+    <p class="pull-right">Copyright 2013. All Rights Reserved.</p>
+</footer>
+
+@tag.EndElement
