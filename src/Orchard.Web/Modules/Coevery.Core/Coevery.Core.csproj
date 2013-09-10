@@ -127,9 +127,6 @@
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
-    <Compile Include="Extensions\CustomJsonResult.cs" />
-    <Compile Include="Extensions\CustomResult.cs" />
-    <Compile Include="Extensions\ICustomResult.cs" />
     <Compile Include="FrontMenu\FrontMenuFilter.cs" />
     <Compile Include="FrontMenu\FrontMenu.cs" />
     <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />

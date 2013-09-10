@@ -56,17 +56,12 @@ namespace Coevery.Perspectives.Controllers {
         }
 
         [HttpPost, ActionName("Create")]
-        public CustomJsonResult CreatePOST(PerspectiveViewModel model) {
-            var result = new CustomJsonResult();
-            result.Try(() => {
-                           var contentItem = _contentManager.New("Menu");
-                           contentItem.As<TitlePart>().Title = model.Title;
-                           _contentManager.Create(contentItem, VersionOptions.Draft);
-                           _contentManager.Publish(contentItem);
-                           result.Value = contentItem.Id;
-                       });
-
-            return result;
+        public ActionResult CreatePOST(PerspectiveViewModel model) {
+            var contentItem = _contentManager.New("Menu");
+            contentItem.As<TitlePart>().Title = model.Title;
+            _contentManager.Create(contentItem, VersionOptions.Draft);
+            _contentManager.Publish(contentItem);
+            return Json(new {id = contentItem.Id});
         }
 
 
@@ -79,16 +74,11 @@ namespace Coevery.Perspectives.Controllers {
         }
 
         [HttpPost, ActionName("Edit")]
-        public CustomJsonResult EditPOST(int id, PerspectiveViewModel model) {
-            var result = new CustomJsonResult();
-            result.Try(() => {
-                           var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
-                           contentItem.As<TitlePart>().Title = model.Title;
-                           _contentManager.Publish(contentItem);
-                           result.Value = contentItem.Id;
-                       });
-
-            return result;
+        public ActionResult EditPOST(int id, PerspectiveViewModel model) {
+            var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
+            contentItem.As<TitlePart>().Title = model.Title;
+            _contentManager.Publish(contentItem);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         public ActionResult Detail(int id) {

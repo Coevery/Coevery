@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
        'NavigationItemEditCtrl',
-       ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http',
-       function ($timeout, $scope, logger, $detour, $stateParams, $resource, $http) {
+       ['$timeout', '$parse', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http',
+       function ($timeout, $parse, $scope, logger, $detour, $stateParams, $resource, $http) {
            
            var checkValid = function (form) {
                var validator = form.validate();
@@ -30,12 +30,23 @@ define(['core/app/detourService'], function (detour) {
                    method: "POST",
                    data: form.serialize() + '&submit.Save=Save',
                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-               }).then(function () {
+               }).then(function (response) {
                    logger.success('Save succeeded.');
+                   return response;
                }, function (reason) {
                    logger.error('Save Failed： ' + reason.data);
                });
                return promise;
+           };
+           
+
+           $scope.saveAndEdit = function () {
+               var promise = $scope.save();
+               promise.then(function (response) {
+                   var getter = $parse('id');
+                   var id = getter(response.data);
+                   $detour.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId:id });
+               });
            };
            
            $scope.saveAndBack = function () {
