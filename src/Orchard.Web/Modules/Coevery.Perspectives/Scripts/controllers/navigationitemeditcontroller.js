@@ -40,12 +40,13 @@ define(['core/app/detourService'], function (detour) {
            };
            
 
-           $scope.saveAndEdit = function () {
+           $scope.saveAndView = function () {
                var promise = $scope.save();
                promise.then(function (response) {
                    var getter = $parse('id');
                    var id = getter(response.data);
-                   $detour.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId:id });
+                   if(id)
+                       $detour.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId: id });
                });
            };
            

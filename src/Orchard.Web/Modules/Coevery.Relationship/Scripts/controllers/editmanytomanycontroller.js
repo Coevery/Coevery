@@ -5,7 +5,7 @@ define(['core/app/detourService'], function (detour) {
         ['$scope', 'logger', '$detour', '$stateParams', '$http',
             function ($scope, logger, $detour, $stateParams, $http) {
                 
-                $scope.save = function () {
+                $scope.saveAndView = function () {
                     ToggleReadonly(false);
                     var form = $('#manytomany-form');
                     if (!checkValid(form)) {
@@ -30,7 +30,7 @@ define(['core/app/detourService'], function (detour) {
                 };
                 
                 $scope.saveAndBack = function () {
-                    var promise = $scope.save();
+                    var promise = $scope.saveAndView();
                     promise && promise.then(function () {
                         $scope.exit();
                     });

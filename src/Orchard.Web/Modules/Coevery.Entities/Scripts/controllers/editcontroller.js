@@ -3,8 +3,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'EntityEditCtrl',
-      ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http',
-      function ($timeout, $scope, logger, $detour, $stateParams, $resource, $http) {
+      ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http','$parse',
+      function ($timeout, $scope, logger, $detour, $stateParams, $resource, $http, $parse) {
           
           var checkValid = function (form) {
               var validator = form.validate();
@@ -27,12 +27,23 @@ define(['core/app/detourService'], function (detour) {
                   method: "POST",
                   data: form.serialize() + '&submit.Save=Save',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-              }).then(function () {
+              }).then(function (response) {
                   logger.success('Save succeeded.');
+                  return response;
               }, function (reason) {
                   logger.error('Save Failed： ' + reason.data);
               });
               return promise;
+          };
+
+          $scope.saveAndView = function () {
+              var promise = $scope.save();
+              promise.then(function (response) {
+                  var getter = $parse('entityName');
+                  var entityName = getter(response.data);
+                  if (entityName)
+                      $detour.transitionTo('EntityEdit', { Id: entityName });
+              });
           };
 
           $scope.saveAndBack = function () {

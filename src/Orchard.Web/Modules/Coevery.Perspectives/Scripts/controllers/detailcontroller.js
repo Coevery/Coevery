@@ -18,7 +18,6 @@ define(['core/app/detourService',
               '<span class="btn-link" ng-click="edit(row.entity.Id)">{{COL_FIELD}}</span>' +
               '</div>';
           $scope.mySelections = [];
-          var moduleName = $stateParams.Module;
           var perpectiveId = $stateParams.Id;
 
           $scope.exit = function () {
@@ -71,19 +70,38 @@ define(['core/app/detourService',
           
 
           $scope.delete = function (navigationId) {
-              perspectiveDataService.delete({ Id: navigationId }, function () {
+              $scope.navigationId = navigationId;
+              $('#myModalNavigation').modal({
+                  backdrop: 'static',
+                  keyboard: true
+              });
+              
+          };
+
+          $scope.deleteNavigation = function () {
+              $('#myModalNavigation').modal('hide');
+              perspectiveDataService.delete({ Id: $scope.navigationId }, function () {
                   $scope.getAllNavigationdata();
-                  logger.success('Delete the ' + moduleName + ' successful.');
-              }, function () {
-                  logger.error('Failed to delete the ' + moduleName);
+                  logger.success('Delete the navigation successful.');
+              }, function (result) {
+                  logger.error('Failed to delete the navigation:' + result.data.Message);
               });
           };
 
           $scope.deletePerspective = function () {
-              navigationDataService.delete({ Id: perpectiveId }, function () {
+              $('#myModalPerspective').modal({
+                  backdrop: 'static',
+                  keyboard: true
+              });
+          };
+
+          $scope.deletePerspectiveInDetails = function () {
+              $('#myModalPerspective').modal('hide');
+              perspectiveDataService.delete({ id: perpectiveId }, function () {
                   $scope.exit();
-              }, function () {
-                  logger.error('Failed to delete the ' + moduleName);
+                  logger.success('Delete the perspective successful.');
+              }, function (result) {
+                  logger.error('Failed to delete the perspective:' + result.data.Message);
               });
           };
 

@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'CreateManyToManyCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$http',
-            function ($scope, logger, $detour, $stateParams, $http) {
+        ['$scope', 'logger', '$detour', '$stateParams', '$http', '$parse',
+            function ($scope, logger, $detour, $stateParams, $http, $parse) {
                 
                 $scope.showPrimaryList = true;
                 $scope.showRelatedList = true;
@@ -20,7 +20,8 @@ define(['core/app/detourService'], function (detour) {
                         method: form.attr('method'),
                         data: form.serialize(),
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                    }).then(function () {
+                    }).then(function (response) {
+                        return response;
                         logger.success('success');
                         $("input.primary-entity").prop('disabled', true);
                     }, function (result) {
@@ -32,6 +33,16 @@ define(['core/app/detourService'], function (detour) {
 
                 $scope.exit = function () {
                     $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
+                };
+
+                $scope.saveAndView = function () {
+                    var promise = $scope.save();
+                    promise.then(function (response) {
+                        var getter = $parse('relationId');
+                        var relationId = getter(response.data);
+                        if (relationId)
+                            $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.EntityName, RelationId: relationId });
+                    });
                 };
                 
                 $scope.saveAndBack = function () {

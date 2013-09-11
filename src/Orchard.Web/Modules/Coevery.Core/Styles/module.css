@@ -145,3 +145,51 @@
     #page-toolbar .btn + .btn {
         margin-left: 5px;
     }
+
+
+
+@media (min-width: 350px)
+{
+    .inputError
+    {
+        display: block;
+        padding: 2px;
+        position: absolute;
+        z-index: 10;
+        right: 5px;
+        top: -10px;
+        font-size: 11px;
+        line-height: 16px;
+        color: #fff;
+        background-color: #cc2828;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: normal;
+    }
+
+        .inputError:after
+        {
+            content: ' ';
+            display: block;
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: #cc2828;
+            right: 10px;
+            top: 20px;
+        }
+}
+
+
+@media (max-width: 350px)
+{
+    .inputError
+    {
+        font-size: 11px;
+    }
+
+    
+    .inputError:after
+    {
+    }
+}

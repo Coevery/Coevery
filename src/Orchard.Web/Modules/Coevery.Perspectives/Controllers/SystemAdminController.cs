@@ -169,8 +169,7 @@ namespace Coevery.Perspectives.Controllers {
             if (!moduleMenuPart.ContentItem.Has<IPublishingControlAspect>() && !moduleMenuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable) {
                 _contentManager.Publish(moduleMenuPart.ContentItem);
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            return Json(new {id = moduleMenuPart.ContentItem.Id});
         }
     }
 }

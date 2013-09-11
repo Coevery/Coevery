@@ -13,7 +13,7 @@ define(['core/app/detourService'], function (detour) {
                   data: form.serialize() + '&submit.Save=Save',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }).then(function (response) {
-                  logger.error('Save Failed： ' + result.data.Message);
+                  logger.success('Save succeeded');
                   return response;
               }, function (reason) {
                   logger.error('Save Failed： ' + reason.data.Message);
@@ -27,7 +27,7 @@ define(['core/app/detourService'], function (detour) {
                   var getter = $parse('id');
                   var id = getter(response.data);
                   if(id)
-                    $detour.transitionTo('PerspectiveDetail', { Id: id });
+                      $detour.transitionTo('PerspectiveEdit', { Id: id });
               });
           };
 

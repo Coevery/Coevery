@@ -50,14 +50,23 @@ define(['core/app/detourService',
                         };
 
                         $scope.delete = function (id) {
-                            projectionDataService.delete({ Id: id }, function () {
+                            $scope.viewId = id;
+                            $('#myModalView').modal({
+                                backdrop: 'static',
+                                keyboard: true
+                            });
+                        };
+
+                        $scope.deleteView = function () {
+                            $('#myModalView').modal('hide');
+                            projectionDataService.delete({ Id: $scope.viewId }, function () {
                                 if ($scope.mySelections.length != 0) {
                                     $scope.mySelections.pop();
                                 }
                                 $scope.getAll();
-                                logger.success('Delete the ' + id + ' successful.');
-                            }, function () {
-                                logger.error('Failed to delete the ' + id);
+                                logger.success('Delete the view successful.');
+                            }, function (result) {
+                                logger.error("Failed to delete the view:" + result.data.Message);
                             });
                         };
 

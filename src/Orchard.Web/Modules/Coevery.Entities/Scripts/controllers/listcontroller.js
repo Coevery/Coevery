@@ -46,14 +46,23 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (entityName) {
-              entityDataService.delete({ name: entityName }, function () {
+              $scope.entityName = entityName;
+              $('#myModalEntity').modal({
+                  backdrop: 'static',
+                  keyboard: true
+              });
+          };
+
+          $scope.deleteEntity = function () {
+              $('#myModalEntity').modal('hide');
+              entityDataService.delete({ name: $scope.entityName }, function () {
                   if ($scope.selectedItems.length != 0) {
                       $scope.selectedItems.pop();
                   }
                   $scope.getAllMetadata();
-                  logger.success("Delete the metadata successful.");
+                  logger.success("Delete the entity successful.");
               }, function (reason) {
-                  logger.error("Failed to delete the metadata." + reason);
+                  logger.error("Failed to delete the entity:" + reason);
               });
           };
 

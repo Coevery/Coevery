@@ -188,7 +188,7 @@ namespace Coevery.Relationship.Services {
             });
 
             _schemaUpdateService.CreateColumn(relatedEntity.Name, oneToMany.FieldName, "ReferenceField");
-            return null;
+            return relationship.Id.ToString();
         }
 
         public string CreateRelationship(ManyToManyRelationshipModel manyToMany) {
@@ -225,7 +225,7 @@ namespace Coevery.Relationship.Services {
             });
 
             GenerateManyToManyParts(manyToMany);
-            return null;
+            return relationship.Id.ToString();
         }
 
         #endregion

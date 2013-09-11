@@ -159,19 +159,29 @@
           };
 
           $scope.delete = function (id) {
+              $scope.entityId = id;
+              $('#myModalEntity').modal({
+                  backdrop: 'static',
+                  keyboard: true
+              });
+          };
+
+          $scope.deleteEntity = function () {
+              $('#myModalEntity').modal('hide');
+              var id = $scope.$$childTail.entityId;
               var ids = [];
               if (id) {
                   ids.push(id);
               } else {
-                  angular.forEach($scope.selectedItems, function (entity) {
+                  angular.forEach($scope.$$childTail.selectedItems, function (entity) {
                       ids.push(primaryKeyGetter(entity));
                   }, ids);
               }
               commonDataService.delete({ contentId: ids }, function () {
-                  $scope.Refresh();
-                  logger.success('Delete the ' + moduleName + ' successful.');
+                  $scope.$$childTail.Refresh();
+                  logger.success('Delete the entity successful.');
               }, function () {
-                  logger.error('Failed to delete the lead.');
+                  logger.error('Failed to delete the entity');
               });
           };
 
