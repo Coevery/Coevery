@@ -78,35 +78,11 @@ namespace Coevery.Core.Controllers {
             dynamic viewModel = Services.New.ViewModel();
             viewModel.DisplayName(contentType.DisplayName);
             viewModel.TypeDefinition(contentType);
-            // viewModel.Columns(this.GetViewColumns(viewId));
             viewModel.ModuleName(moduleName);
             viewModel.ViewId(viewId);
-            //var model = GetListModel(viewId);
-            //viewModel.ListViewModel(model);
             return View(viewModel);
         }
 
-        private IEnumerable<PropertyRecord> GetViewColumns(int viewId) {
-            List<PropertyRecord> re = new List<PropertyRecord>();
-            if (viewId == -1) return re;
-            var projectionItem = _contentManager.Get(viewId, VersionOptions.Latest);
-            var projectionPart = projectionItem.As<ProjectionPart>();
-            var queryPartRecord = projectionPart.Record.QueryPartRecord;
-
-            if (queryPartRecord.Layouts.Count == 0) return re;
-            var properties = queryPartRecord.Layouts[0].Properties;
-            re.AddRange(properties);
-            return re;
-        }
-        private dynamic GetListModel(int viewId) {
-
-            if (viewId == -1) return null;
-
-            var contentItem = _contentManager.Get(viewId, VersionOptions.Latest);
-
-            dynamic model = _contentManager.BuildDisplay(contentItem);
-            return model;
-        }
 
         public ActionResult Create(string id, int? containerId) {
             if (string.IsNullOrEmpty(id))
