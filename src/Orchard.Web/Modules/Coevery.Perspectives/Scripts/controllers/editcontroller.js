@@ -5,7 +5,15 @@ define(['core/app/detourService'], function (detour) {
       ['$timeout', '$parse', '$scope', 'logger', '$detour','$http',
       function ($timeout, $parse,$scope, logger, $detour, $http) {
 
+          var validator = $("form[name=myForm]").validate({
+              errorClass: "inputError"
+          });
+
           $scope.save = function () {
+              if (!validator.form()) {
+                  return null;
+              }
+
               var form = $("form[name=myForm]");
               var promise = $http({
                   url: form.attr('action'),

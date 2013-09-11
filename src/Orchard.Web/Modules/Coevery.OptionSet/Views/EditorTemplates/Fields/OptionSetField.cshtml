@@ -9,7 +9,7 @@
 }
 
 <label class="control-label title @required" >@Model.DisplayName</label>
-<div class="control controls @validateHelper">
+<div class="control controls @validateHelper relativeSetter">
 
     @switch (settings.ListMode) {
         case ListMode.Dropdown:

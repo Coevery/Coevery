@@ -13,7 +13,6 @@
 
           $scope.save = function () {
               if (!validator.form()) {
-
                   return null;
               }
 

@@ -7,7 +7,7 @@
 
 
 <label class="control-label @(settings.Required ? "required" : string.Empty)" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls">
+<div class="control controls relativeSetter">
     <input type="text" 
                id="@Html.FieldIdFor(m => m.Value)" 
                name="@Html.FieldNameFor(m => m.Value)"

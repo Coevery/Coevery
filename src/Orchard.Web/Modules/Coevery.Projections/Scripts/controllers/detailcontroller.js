@@ -39,9 +39,13 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 }
             };
 
+                var validator = $("form[name=myForm]").validate({
+                    errorClass: "inputError"
+                });
+
                 $scope.save = function () {
                     var form = $("form[name=myForm]");
-                    if (!checkValid(form)) {
+                    if (!validator.form()) {
                         return null;
                     }
                     var pickListValue = '';
@@ -164,14 +168,3 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
             }]
     ]);
 });
-
-function checkValid(form) {
-    var validator = form.validate();
-    if (!validator) {
-        return false;
-    }
-    if (!validator.form()) {
-        return false;
-    }
-    return true;
-};

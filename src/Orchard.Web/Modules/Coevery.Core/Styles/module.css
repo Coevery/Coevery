@@ -148,25 +148,25 @@
 
 
 
-@media (min-width: 350px)
-{
-    .inputError
+    @media (min-width: 350px)
     {
-        display: block;
-        padding: 2px;
-        position: absolute;
-        z-index: 10;
-        right: 5px;
-        top: -10px;
-        font-size: 11px;
-        line-height: 16px;
-        color: #fff;
-        background-color: #cc2828;
-        -webkit-border-radius: 4px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: normal;
-    }
+        .inputError
+        {
+            display: block;
+            padding: 2px;
+            position: absolute;
+            z-index: 10;
+            right: 5px;
+            top: -10px;
+            font-size: 11px;
+            line-height: 16px;
+            color: #fff;
+            background-color: #cc2828;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+        }
 
         .inputError:after
         {
@@ -178,18 +178,104 @@
             right: 10px;
             top: 20px;
         }
-}
 
+         .inputErrorLeft
+        {
+            display: block;
+            padding: 2px;
+            position: absolute;
+            z-index: 10;
+            left: 0px;
+            top: -25px;
+            font-size: 11px;
+            line-height: 16px;
+            color: #fff;
+            background-color: #cc2828;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+        }
 
-@media (max-width: 350px)
-{
-    .inputError
-    {
-        font-size: 11px;
+        .inputErrorLeft:after
+        {
+            content: ' ';
+            display: block;
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: #cc2828;
+            left: 10px;
+            top: 20px;
+        }
+
+        .inputErrorForField
+        {
+            display: block;
+            padding: 2px;
+            position: absolute;
+            z-index: 10;
+            left: 10px;
+            top: 90px;
+            font-size: 11px;
+            line-height: 16px;
+            color: #fff;
+            background-color: #cc2828;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+            display:none;
+        }
+
+        .inputErrorForField:after
+        {
+            content: ' ';
+            display: block;
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: #cc2828;
+            left: 5px;
+            top: 19px;
+        }
     }
+
+
+    @media (max-width: 350px)
+    {
+        .inputError
+        {
+            font-size: 11px;
+        }
 
     
-    .inputError:after
-    {
+        .inputError:after
+        {
+        }
+
+        .inputErrorLeft
+        {
+            font-size: 11px;
+        }
+
+    
+        .inputErrorLeft:after
+        {
+        }
+
+        .inputErrorForField
+        {
+            font-size: 11px;
+            color: red;
+            display:none;
+        }
+
+        .inputErrorForField:after
+        {
+        }
     }
-}
+
+    .relativeSetter
+    {
+        position: relative;
+    }
+

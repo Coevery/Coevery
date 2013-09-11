@@ -4,11 +4,14 @@ define(['core/app/detourService'], function (detour) {
         'EditOneToManyCtrl',
         ['$scope', 'logger', '$detour', '$stateParams', '$http',
             function ($scope, logger, $detour, $stateParams, $http) {
+                var validator = $("#onetomany-form").validate({
+                    errorClass: "inputError"
+                });
 
                 $scope.saveAndView = function () {
                     ToggleReadonly(false);
                     var form = $('#onetomany-form');
-                    if (!checkValid(form)) {
+                    if (!validator.form()) {
                         return null;
                     }
                     var promise = $http({
@@ -45,14 +48,3 @@ function ToggleReadonly(condition) {
     $("input.related-entity").prop('disabled', condition);
     //$("#relation-deleteOption").prop('disabled', condition);
 }
-
-function checkValid(form) {
-    var validator = form.validate();
-    if (!validator) {
-        return false;
-    }
-    if (!validator.form()) {
-        return false;
-    }
-    return true;
-};

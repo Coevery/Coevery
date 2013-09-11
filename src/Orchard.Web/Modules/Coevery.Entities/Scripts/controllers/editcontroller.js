@@ -5,20 +5,13 @@ define(['core/app/detourService'], function (detour) {
       'EntityEditCtrl',
       ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http','$parse',
       function ($timeout, $scope, logger, $detour, $stateParams, $resource, $http, $parse) {
-          
-          var checkValid = function (form) {
-              var validator = form.validate();
-              if (!validator) {
-                  return false;
-              }
-              if (!validator.form()) {
-                  return false;
-              }
-              return true;
-          };
+
+          var validator = $("#myForm").validate({
+              errorClass: "inputError"
+          });
 
           $scope.save = function () {
-              if (!checkValid($("#myForm"))) {
+              if (!validator.form()) {
                   return null;
               }
               var form = $("#myForm");

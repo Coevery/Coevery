@@ -5,26 +5,22 @@ define(['core/app/detourService'], function (detour) {
        ['$timeout', '$parse', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http',
        function ($timeout, $parse, $scope, logger, $detour, $stateParams, $resource, $http) {
            
-           var checkValid = function (form) {
-               var validator = form.validate();
-               if (!validator) {
-                   return false;
-               }
-               if (!validator.form()) {
-                   return false;
-               }
-               return true;
-           };
 
            $scope.exit = function () {
                $detour.transitionTo('PerspectiveDetail', { Id: $stateParams.Id });
            };
 
-           $scope.save = function () {       
-               var form = $("form[name=myForm]");
-               if (!checkValid(form)) {
+           var validator = $("form[name=myForm]").validate({
+               errorClass: "inputErrorLeft"
+           });
+
+           $scope.save = function () {
+
+               if (!validator.form()) {
                    return null;
                }
+               var form = $("form[name=myForm]");
+               
                var promise = $http({
                    url: form.attr('action'),
                    method: "POST",
@@ -78,6 +74,7 @@ define(['core/app/detourService'], function (detour) {
                $("#hfIconClass").val(iconClass);
                $("#showIconClass").attr("class", iconClass);
                $scope.dialogSelectIcons = false;
+               validator.form();
            };
        }]
     ]);

@@ -8,10 +8,14 @@ define(['core/app/detourService'], function (detour) {
                 $scope.showPrimaryList = true;
                 $scope.showRelatedList = true;
                 
+                var validator = $("#manytomany-form").validate({
+                    errorClass: "inputError"
+                });
+
                 $scope.save = function () {
                     $("input.primary-entity").prop('disabled', false);
                     var form = $('#manytomany-form');
-                    if (!checkValid(form)) {
+                    if (!validator.form()) {
                         return null;
                     }
 
@@ -54,14 +58,3 @@ define(['core/app/detourService'], function (detour) {
             }]
     ]);
 });
-
-function checkValid(form) {
-    var validator = form.validate();
-    if (!validator) {
-        return false;
-    }
-    if (!validator.form()) {
-        return false;
-    }
-    return true;
-};

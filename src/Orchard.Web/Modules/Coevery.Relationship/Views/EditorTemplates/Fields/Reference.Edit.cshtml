@@ -12,7 +12,7 @@
     }
 }
 <label class="span3 control-label @required" for="@Html.FieldIdFor(m => m.ContentId)">@Model.Field.DisplayName</label>
-<div class="control controls">
+<div class="control controls relativeSetter">
     @Html.DropDownListFor(m => m.ContentId, Model.ItemList,string.Empty, selectAttributes)
     @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
         <span class="help-block">@settings.HelpText</span>
