@@ -279,3 +279,23 @@
         position: relative;
     }
 
+    .popoverTipTitle
+    {
+        text-align:center;
+    }
+
+    .popoverTipContent
+    {
+ 
+    }
+
+    .popoverTipIcon
+    {
+        position: absolute;
+        display: block;
+        right: -20px;
+        top: 8px;
+        cursor:pointer;
+        font-size:initial;
+    }
+

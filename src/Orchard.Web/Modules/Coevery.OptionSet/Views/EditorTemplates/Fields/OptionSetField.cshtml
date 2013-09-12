@@ -9,76 +9,103 @@
 }
 
 <label class="control-label title @required" >@Model.DisplayName</label>
-<div class="control controls @validateHelper relativeSetter">
+<div class="control controls @validateHelper relativeSetter" >
 
     @switch (settings.ListMode) {
         case ListMode.Dropdown:
-            var selectAttributes = new Dictionary<string, object> { { "class", "span12" } };
-            if (!string.IsNullOrWhiteSpace(required)) {
-                selectAttributes.Add(required,null);
+            var selectAttributes = new Dictionary<string, object> { { "class", "span12" }};
+            if (!string.IsNullOrWhiteSpace(required))
+            {
+                selectAttributes.Add(required, null);
+                selectAttributes.Add("rel", "popover");
+                selectAttributes.Add("data-html", "true");
+                selectAttributes.Add("data-placement", "top");
+                selectAttributes.Add("data-content", "<p class='popoverTipContent'>" + settings.HelpText + "</p>");
+                selectAttributes.Add("data-original-title", "");
             }
             var options = Model.OptionItems.Select(t => new SelectListItem { Text = t.Name, Value = t.Id.ToString(), Selected = t.Id == Model.SingleTermId });
-            @Html.DropDownListFor(m => m.SingleTermId, options,string.Empty, selectAttributes)
-            for (int i = 0; i < Model.OptionItems.Count; i++) {
+            @Html.DropDownListFor(m => m.SingleTermId, options, string.Empty, selectAttributes)
+            for (int i = 0; i < Model.OptionItems.Count; i++)
+            {
                 @Html.HiddenFor(m => m.OptionItems[i].Id)
             }
             break;
 
-        case ListMode.Radiobutton:        
-        case ListMode.Checkbox:      
+        case ListMode.Radiobutton:
+        case ListMode.Checkbox:
             string classString = null;
-            if (settings.ListMode == ListMode.Radiobutton) {
+            if (settings.ListMode == ListMode.Radiobutton)
+            {
                 classString = "radio";
             }
-            else if (settings.ListMode == ListMode.Checkbox) {
+            else if (settings.ListMode == ListMode.Checkbox)
+            {
                 classString = "checkbox";
             }
-            
-            foreach (var entry in Model.OptionItems) {
+
+            foreach (var entry in Model.OptionItems)
+            {
                 var ti = termIndex;
                 <label class="@classString">
                     @{
-                        var disabled = !entry.Selectable;
-                        if (settings.ListMode == ListMode.Radiobutton) {
-                            <input @if (disabled) {
+                var disabled = !entry.Selectable;
+                if (settings.ListMode == ListMode.Radiobutton)
+                {
+                            <input @if (disabled)
+                                   {
                                        <text>disabled="disabled"</text>
                                    } 
                                 type="radio" 
                                 value="@Model.OptionItems[ti].Id" 
-                                @if (entry.Id == Model.SingleTermId) {
+                                @if (entry.Id == Model.SingleTermId)
+                                {
                                     <text>checked="checked"</text>
                                 } 
                                 name="@Html.FieldNameFor(m => m.SingleTermId)" 
-                                id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()"/>
-                        }
-                        else {
-                            <input @if (disabled) {
+                                id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()" 
+                                @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+                                {<text> rel="popover" data-html="true" data-placement="top" data-content="<p class='popoverTipContent'>@settings.HelpText</p>" 
+                                data-original-title="" </text>} 
+                                />
+                }
+                else
+                {
+                            <input @if (disabled)
+                                   {
                                        <text>disabled="disabled"</text>
                                    } type="checkbox" value="true" 
-                                @if (entry.IsChecked) {
+                                @if (entry.IsChecked)
+                                {
                                     <text>checked="checked"</text>
                                 } 
                                      name="@Html.FieldNameFor(m => m.OptionItems[ti].IsChecked)" 
-                                     id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()"/>
-                        }
+                                     id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()" 
+                                @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+                                {<text> rel="popover" data-html="true" data-placement="top" data-content="<p class='popoverTipContent'>@settings.HelpText</p>" 
+                                data-original-title="" </text>} 
+                                />
+                }
                     }
                     @entry.Name
                     @Html.HiddenFor(m => m.OptionItems[ti].Id)
                 </label>
                 termIndex++;
             }
-            if (!string.IsNullOrWhiteSpace(validateHelper)) {
-                @Html.Hidden("void", null, new {required = "", id = "groupValidationPart"})
+            if (!string.IsNullOrWhiteSpace(validateHelper))
+            {
+                @Html.Hidden("void", null, new { required = "", id = "groupValidationPart" })
             }
             break;
 
         case ListMode.Listbox:
             break;
     }
-    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
-        <span class="help-block">@settings.HelpText</span>
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+    {
+        <i class="icon-question-sign popoverTipIcon" id="popoverIcon" onmouseover="popShow(this)" onmouseout="hideShow(this)">
+	    </i>
     }
-    @Html.HiddenFor(m=>m.OptionSetId)
+    @Html.HiddenFor(m => m.OptionSetId)
 </div>
 
 <script type="text/javascript">

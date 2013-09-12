@@ -14,9 +14,14 @@
                value="@Model.Value"
             @if (settings.Required) {<text> required="required"</text> }
             @if (settings.ReadOnly) {<text> readonly="readonly"</text> }
-               class="textMedium span12 email" />
-    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
-        <span class="help-block">@settings.HelpText</span>
+               class="textMedium span12 email" 
+            @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+            {<text>rel="popover" data-html="true" data-placement="top" data-content="<p class='popoverTipContent'>@settings.HelpText</p>" 
+            data-original-title="" </text>} />
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+    {
+        <i class="icon-question-sign popoverTipIcon" id="popoverIcon" onmouseover="popShow(this)" onmouseout="hideShow(this)">
+	    </i>
     }
     @Html.ValidationMessageFor(m => m.Value)
 </div>

@@ -9,13 +9,20 @@
     
     if (settings.Required) {
         selectAttributes.Add("required","");
+        selectAttributes.Add("rel", "popover");
+        selectAttributes.Add("data-html", "true");
+        selectAttributes.Add("data-placement", "top");
+        selectAttributes.Add("data-content", "<p class='popoverTipContent'>"+settings.HelpText+"</p>");
+        selectAttributes.Add("data-original-title", "");
     }
 }
 <label class="span3 control-label @required" for="@Html.FieldIdFor(m => m.ContentId)">@Model.Field.DisplayName</label>
 <div class="control controls relativeSetter">
     @Html.DropDownListFor(m => m.ContentId, Model.ItemList,string.Empty, selectAttributes)
-    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
-        <span class="help-block">@settings.HelpText</span>
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+    {
+        <i class="icon-question-sign popoverTipIcon" id="popoverIcon" onmouseover="popShow(this)" onmouseout="hideShow(this)">
+	    </i>
     }
 </div>
 

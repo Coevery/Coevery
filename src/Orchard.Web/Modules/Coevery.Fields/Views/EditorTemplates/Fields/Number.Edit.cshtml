@@ -16,10 +16,15 @@
         @if (settings.ReadOnly) {<text> readonly="readonly"</text> }
         @if (settings.Length > 1) {<text> maxlength="@settings.Length.ToString()"</text>} 
         @if (settings.DecimalPlaces > 0) {<text> decimalplaces = "@settings.DecimalPlaces" </text>}
-           class="textMedium span12 number @decimalplacesclass"
+           class="textMedium span12 number @decimalplacesclass" 
+        @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+            {<text>rel="popover" data-html="true" data-placement="top" data-content="<p class='popoverTipContent'>@settings.HelpText</p>" 
+            data-original-title="" </text>} 
         />
-    @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
-        <span class="help-block">@settings.HelpText</span>
+    @if (!string.IsNullOrWhiteSpace(settings.HelpText))
+    {
+        <i class="icon-question-sign popoverTipIcon" id="popoverIcon" onmouseover="popShow(this)" onmouseout="hideShow(this)">
+	    </i>
     }
     @Html.ValidationMessageFor(m => m.Value)
 </div>

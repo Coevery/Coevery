@@ -104,7 +104,19 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    var popShow = function (target) {
+        var targetObj = $(target).parent().find("input,select").first();
+        targetObj.popover('show');
+        targetObj.focus();
+    }
 
+    var hideShow = function (target) {
+        var targetObj = $(target).parent().find("input,select").first();
+        targetObj.popover('destroy');
+        targetObj.blur();
+    }
+</script>
 @foreach (var item in Model.Templates) {
     Output.Write(Display(item));
 }

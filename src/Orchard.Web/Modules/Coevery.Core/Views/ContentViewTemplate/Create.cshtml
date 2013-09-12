@@ -34,4 +34,17 @@
         </div>
     </section>
 </section>
+<script type="text/javascript">
+    var popShow = function (target) {
+        var targetObj = $(target).parent().find("input,select").first();
+        targetObj.popover('show');
+        targetObj.focus();
+    }
+
+    var hideShow = function (target) {
+        var targetObj = $(target).parent().find("input,select").first();
+        targetObj.popover('destroy');
+        targetObj.blur();
+    }
+</script>
 @Display(Model)
