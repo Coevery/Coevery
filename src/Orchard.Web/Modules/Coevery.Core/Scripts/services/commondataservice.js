@@ -9,12 +9,8 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'commonDataService',
         ['$rootScope', '$resource', function ($rootScope, $resource) {
-            return $resource('api/CoeveryCore/Common/:contentType:contentId:PageSize:Page:ViewId',
+            return $resource('api/CoeveryCore/Common/:contentType',
                 { contentType: '@contentType' },
-                { contentId: '@ContentId' },
-                { pageSize: '@PageSize' },
-                { viewId: '@ViewId' },
-                { page: '@Page' },
                 { update: { method: 'PUT' } });
         }]
     ]);

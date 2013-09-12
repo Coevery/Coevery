@@ -14,20 +14,20 @@ namespace Orchard.Projections.Handlers {
     public class FieldIndexPartHandler : ContentHandler {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IFieldIndexService _fieldIndexService;
-        private readonly IFieldStorageProvider _fieldStorageProvider;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
+        private readonly IFieldStorageProviderSelector _fieldStorageProviderSelector;
 
         public FieldIndexPartHandler(
             IContentDefinitionManager contentDefinitionManager,
             IRepository<FieldIndexPartRecord> repository,
             IFieldIndexService fieldIndexService,
-            IFieldStorageProvider fieldStorageProvider,
-            IEnumerable<IContentFieldDriver> contentFieldDrivers) {
+            IEnumerable<IContentFieldDriver> contentFieldDrivers, 
+            IFieldStorageProviderSelector fieldStorageProviderSelector) {
             Filters.Add(StorageFilter.For(repository));
             _contentDefinitionManager = contentDefinitionManager;
             _fieldIndexService = fieldIndexService;
-            _fieldStorageProvider = fieldStorageProvider;
             _contentFieldDrivers = contentFieldDrivers;
+            _fieldStorageProviderSelector = fieldStorageProviderSelector;
 
             OnPublishing<FieldIndexPart>(Publishing);
         }
@@ -47,7 +47,9 @@ namespace Orchard.Projections.Handlers {
         public void Publishing(PublishContentContext context, FieldIndexPart fieldIndexPart) {
             foreach (var part in fieldIndexPart.ContentItem.Parts) {
                 foreach(var field in part.PartDefinition.Fields) {
-                    
+                    // get the correct field storage provider
+                    var fieldStorageProvider = _fieldStorageProviderSelector.GetProvider(field);
+
                     // get all drivers for the current field type
                     // the driver will describe what values of the field should be indexed
                     var drivers = _contentFieldDrivers.Where(x => x.GetFieldInfo().Any(fi => fi.FieldTypeName == field.FieldDefinition.Name)).ToList();
@@ -56,7 +58,7 @@ namespace Orchard.Projections.Handlers {
                     ContentPartFieldDefinition localField = field;
                     var membersContext = new DescribeMembersContext( 
                         (storageName, storageType, displayName, description) => {
-                            var fieldStorage = _fieldStorageProvider.BindStorage(localPart, localField);
+                            var fieldStorage = fieldStorageProvider.BindStorage(localPart, localField);
 
                             // fieldStorage.Get<T>(storageName)
                             var getter = typeof(IFieldStorage).GetMethod("Get").MakeGenericMethod(storageType);
