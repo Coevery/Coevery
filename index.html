@@ -1,83 +1,511 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Coevery</title>
+	<meta name="description" content="instructions about free coevery CRM, which belongs to novasoftware.com">
+    <meta name="author" content="nova software - coevery team">
+    <meta name="HandheldFriendly" content="true">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+				
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/supersized.shutter.css" />
+	<link rel="stylesheet" href="css/jquery.fancybox.css" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,800,800italic,700italic'
+        rel='stylesheet' type='text/css'>
+	<!-- favicon -->
+	<link rel="shortcut icon" href="favicon.png">
+	<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>			
+	<![endif]-->
+</head>
+<body id="body">
+    <div id="supersized"></div>
+    
+    <!--home-->
+    <div id="home" class="rowd home">
+		<div class="columns_50">
+			<div class="slidecaption">
+		        <div class="caption-heading">Coevery</div>
+                    <span class="dsc">
+                        A flexible streamlined web development environment for designing data-centric business applications, 
+                        which can make it possible to build data-centric applications quickly without writing any code. 
+                    </span>
+                    <ul id="homefeature" class="list3">
+                        <li>Customizable Entities and Fields</li>
+                        <li>Customizable ListView</li>
+                        <li>Customizable Form Designer</li>
+                        <li>Extendible Objects and Attributes</li>
+                    </ul>
+                    <div class="cta margin_botom_50">
+                        <div class="cta-right">
+                            Read More
+                        </div>
+                        <div class="cta-left">
+                            <a href="#instructions"></a>
+                        </div>
+                    </div>
+		    </div>
+		</div>
+		<div class="columns_50 last">
+		<div id="content">
+            <img src="images/imagenew.png" alt="Coevery" style="margin-top:50px;"/>
+		</div><!--content -->
+	</div>
+	</div>
+    <!--end home-->
+    <div class="clearfix"></div>
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <title>Coevery by Coevery</title>
-  </head>
-
-  <body>
-    <header>
-      <div class="inner">
-        <h1>Coevery</h1>
-        <h2></h2>
-        <a href="https://github.com/Coevery/Coevery" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/Coevery/Coevery/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/Coevery/Coevery/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/Coevery/Coevery"></a> is maintained by <a href="https://github.com/Coevery">Coevery</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+    <!-- MENU -->
+    <div class="menu">
+        <div class="inner-menu">
+            <div class="menu-inner">
+                <div class="left">
+                    <div class="logo">
+                        <img src="images/Coevery.png" alt="" />Coevery
+                    </div>
+                </div>
+                <!-- logo -->
+                <div class="right">
+                    <ul class="nav">
+                        <li class="active"><a href="#home">Home</a></li>
+                        <li><a href="#feature">Feature</a></li>
+                        <li><a href="#instructions">Instructions</a></li>
+                        <li><a href="#download">Download</a></li>
+                        <li><a href="#support">Support</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- /MENU -->
+        
+    <!-- feature -->
+    <div class="rowd clearfix white" id="feature">
+        <div class="container">
+            <header>
+                <div class="header_text">
+                    <span class="header_title">What you can get</span>
+                    <span class="border"></span>
+                    Made by passion for the fullfillment of engadgement of latest generation will lead to the 
+                    <span>flexibility, expandability</span> and <span>accessibility</span>
+                </div>
+            </header>
+            <div class="clearfix"></div>
 
-  
-  </body>
+            <div class="columns_4 margin_botom_50">
+				<div class="process_overview">
+					<!--<div class="big-icon">
+						<span class="big">24</span>
+						<span class="small">seven</span>
+					</div>-->
+					<div class="overview">
+						<h3>Flexibility</h3>
+                        <p>
+                            System provide default layout and view, but you can change it according to your requirement. 
+                        </p>
+                        <ul class="list2">
+                            <li>Customizable Entities and Fields</li>
+                            <li>Customizable ListView</li>
+                            <li>Customizable Form Designer</li>
+                        </ul>
+					</div>
+				</div>	
+			</div><!-- columns_3 -->
+			<div class="columns_4 margin_botom_50 margright_0">
+				<div class="process_overview">
+					<!--<div class="big-icon">
+						<span class="big">80</span>
+						<span class="small">gb</span>
+					</div>-->
+					<div class="overview">
+						<h3>Expandability</h3>
+                        <p>
+                            For its unique extendibility, Coevery makes it quite easy to add new objects, attributes, data, 
+                            functions for different users.
+                        </p>
+					</div>
+				</div>		
+			</div>
+
+			<div class="columns_4 last">
+				<div class="process_overview">
+					<!--<div class="big-icon">
+						<span class="big">50</span>
+						<span class="small">acres</span>
+					</div>-->
+					<div class="overview">
+						<h3>Accessibility</h3>
+                        <p>
+                            You can access your business on Coevery at anywhere by supporting mobile, ipad, PC and other equipments
+                        </p>
+					</div>
+				</div>		
+			</div>
+        </div>
+    </div>
+    <!-- feature END -->
+    <div class="clearfix"></div>
+        
+    <!--instructions-->
+    <div id="instructions" class="rowd clearfix grey">
+        <div class="container">
+            <header>
+                <div class="header_text">
+                    <span class="header_title">Instructions</span>
+                    <span class="border"></span>
+                    <p>
+                        Coevery uses the modern .NET stack of technologies and MVC pattern, 
+                        and wrap them in an abstraction layer optimized for <span>data</span> management and maintenance. 
+                        The first edition has been successfully released on 2013/9/6. 
+                        Later we will deliver you more fantastic user experience.
+                    </p>
+                    In the Preview edition, you can see <span>five</span> modules in the Navigation set by administrator. 
+                    And <span>Entities</span>，<span>fields</span>,  <span>layouts</span>, <span>views</span> 
+                    can be added by yourself in the administrator settings. 
+                    Following are the tips for your <span>customization</span>
+                </div>
+            </header>
+            <div class="clearfix"></div>
+
+            <div class="product_screenshot margin_botom_50">
+			    <div class="columns_50 margin_botom_50">
+			        <span class="step_number left big">1</span>
+                    <p>
+                        Log into administrative page by clicking Admin button in the dropdown list of the admin icon. 
+                        Then you will enter into a page showing all Entities and Perspectives.
+                    </p>
+			    </div>
+			    <div class="columns_50 margin_botom_50 margright1_0">
+			        <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction1.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction1.png" alt="instruction step 1"/>
+			            </a>
+			        </div>
+			    </div>
+
+                <div class="columns_50 margin_botom_50">
+                    <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction2.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction2.png" alt="instruction step 2"/>
+			            </a>
+			        </div>
+			    </div>
+			    <div class="columns_50 margin_botom2_50 margright1_0">
+			        <span class="step_number big right">2</span>
+                    <p>
+                        If the inbuilt modules set by administrator can’t meet your needs, you can add a new entity by clicking Add Button. 
+                        There some required information should be needed such as Display Name, Name, Record Name Label and Record Name. 
+                        Record Name will be added as a system field used as a title to display on the detail page.
+                    </p>
+			    </div>
+                    
+                <div class="columns_50 margin_botom_50">
+			        <span class="step_number left big">3</span>
+                    <p>
+                        Once you add an Entity，the next step to do is adding fields for this new module. 
+                        Click the Entity name in the navigation on the left side to enter into entity detail page. 
+                        Add New Field Form will pop up after you click New Field button. 
+                        Then you just have to follow the wizard steps to finish you field adding.  
+                        Until now 11 kinds of fields can be used.
+                    </p>
+                    <ul class="list2">
+                        <li>For Option Set field, you need to set some default value in the Picklist to select from.</li>
+                        <li>For Reference field, you should create relationship between the two modules for data exchange.</li>
+                    </ul>
+			    </div>
+			    <div class="columns_50 margin_botom2_50 margright1_0">
+			        <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction3.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction3.png" alt="instruction step 3"/>
+			            </a>
+			        </div>
+			    </div>
+
+                <div class="columns_50 margin_botom_50">
+                    <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction4.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction4.png" alt="instruction step 4"/>
+			            </a>
+			        </div>
+			    </div>
+			    <div class="columns_50 margin_botom2_50 margright1_0">
+			        <span class="step_number big right">4</span>
+                    <p>
+                        The following important things to do is setting the grid list view and layout for your new module in Entity detail page. 
+                        Click Add button on Views tab on the red circle position as the red circle shows left.
+                    </p>
+			    </div>
+
+                <div class="columns_50 margin_botom_50">
+			        <span class="step_number left big">5</span>
+                    <p>
+                        Then you will come to view detail page. 
+                        Drag the fields from left to right panel you want to display in the grid list view to add them in the grid. 
+                        Drag fields up and down to adjust the column order.
+                    </p>
+			    </div>
+			    <div class="columns_50 margin_botom2_50 margright1_0">
+			        <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction5.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction5.png" alt="instruction step 5"/>
+			            </a>
+			        </div>
+			    </div>
+
+                <div class="columns_50 margin_botom_50">
+                    <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction6.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction6.png" alt="instruction step 6"/>
+			            </a>
+			        </div>
+			    </div>
+			    <div class="columns_50 margin_botom2_50 margright1_0">
+			        <span class="step_number big right">6</span>
+                    <p>
+                        The layout of Record detail page can be either before setting list view or after it. 
+                        Click Form Designer Button in the Entity Detail page. 
+                        Then Form designer will be displayed as the following page. 
+                        On the Layout Tab, you can group your displayed fields by adding section, Columns Width can be changed as you like. 
+                        On the Fields Tab, you can decide which fields to display in the layout. 
+                    </p>
+                    <p>
+                        After doing those steps, do not forget to relate the Entity to a Perspective.
+                    </p>
+			    </div>
+
+                <div class="columns_50 margin_botom_50">
+			        <span class="step_number left big">7</span>
+                    <p>
+                        Click Manage Perspective in the Navigation to enter into Perspective Management page. 
+                        First you should click Add button to add a perspective, there you need a title as the Perspective display name.
+                    </p>
+			    </div>
+			    <div class="columns_50 margin_botom2_50 margright1_0">
+			        <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction7.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction7.png" alt="instruction step 7"/>
+			            </a>
+			        </div>
+			    </div>
+
+                <div class="columns_50 margin_botom_50">
+                    <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction8.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction8.png" alt="instruction step 8"/>
+			            </a>
+			        </div>
+			    </div>
+			    <div class="columns_50 margin_botom2_50 margright1_0">
+			        <span class="step_number big right">8</span>
+                    <p>
+                        Click the link under the name of perspective, you will enter into perspective Detail page. 
+                        Click Add Navigation to relate a specific entity to the perspective. 
+                        Choose an Entity from the dropdown list and select a suitable icon from presupposed item. 
+                        Finally click Save Button, your settings are successful.  
+                    </p>
+			    </div>
+
+                <div class="columns_50 margin_botom_50">
+			        <span class="step_number left big">9</span>
+                    <p>
+                        Click Coevery icon to enter into foreground, you will see the modules you have added.
+                    </p>
+			    </div>
+			    <div class="columns_50 last">
+			        <div class="product_image">
+			            <a class="view-image" href="images/instructions/instruction9.png" data-fancybox-group="gallery">
+                            <img src="images/instructions/instruction9.png" alt="instruction step 9"/>
+			            </a>
+			        </div>
+			    </div>
+			</div>
+        </div>
+    </div>
+    <!-- end instructions -->
+    <div class="clearfix"></div>
+    
+    <!--download-->
+    <div id="download" class="rowd clearfix white">
+        <div class="container">
+            <header>
+                <div class="header_text">
+                    <span class="header_title">Download</span>
+                    <span class="border"></span>
+                    <p>You can get more details at 
+                        <a href="https://github.com/Coevery/Coevery">GitHub</a> 
+                        <span class="or">OR</span> download it below.
+                    </p>
+                </div>
+            </header>
+            <div class="clearfix"></div>
+            <div class="product_screenshot margin_botom_50">
+                <div class="columns_50 margin_botom_50">
+                    <a href="https://github.com/Coevery/Coevery/zipball/master" class="button">
+                        <small>Download</small>
+                        .zip file
+                    </a>
+                </div>
+                <div class="columns_50 last">
+                    <a href="https://github.com/Coevery/Coevery/tarball/master" class="button">
+                        <small>Download</small>
+                        .tar.gz file
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end download -->
+    <div class="clearfix"></div>
+
+    <!--support-->
+    <div id="support" class="rowd clearfix grey">
+        <div class="container">
+            <header>
+                <div class="header_text">
+                    <span class="header_title">Support</span>
+                    <span class="border"></span>
+                </div>
+            </header>
+            <div class="content margin_botom_50">
+                <h4>Below are some basic definitions. And more supports are just coming...</h4>
+                <ul class="list2">
+                    <li><strong>Perspective</strong>: The Primary Menu displays in the Navigation</li>
+                    <li><strong>Entities</strong>: Modules related to a specific perspective</li>
+                    <li><strong>Fields</strong>: Attributes to describe the records.</li>
+                    <li>
+                        <strong>Listview Designer</strong>: 
+                        Designer to customize list view by choosing which fields to display and adjusting the column order
+                    </li>
+                    <li>
+                        <strong>Form Designer</strong>: 
+                        Designer to customize layout of the detail page by adding sections and fields to display
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--end support-->
+    <div class="clearfix"></div>
+    
+    <!--contact-->
+    <div id="contact" class="rowd clearfix promo-line black">
+        <div class="container">
+            <div class="columns_3">
+                <div class="call-info">
+                    <a href="#">
+                        <div class="circle-btn">
+                            <span class="icon-phone"></span>
+                        </div>
+                        <h4><span>+86 23 68795169</span></h4>
+                    </a>
+                </div>
+            </div>
+            <div class="columns_3">
+                <div class="download-info">
+                    <a href="https://github.com/Coevery/Coevery">
+                        <div class="circle-btn">
+                            <div class="icon-github"></div>
+                        </div>
+                        <h4 style="float: right; margin-top: 10px;margin-right: 38%;">
+                            <span>View project on</span> GitHub
+                        </h4>
+                    </a>
+                </div>
+            </div>
+            <div class="columns_3 last">
+                <div class="social-info">
+                    <h4>Follow Us:</h4>
+                    <ul>
+                        <li><a href="#">
+                                <div class="circle-btn-small">
+                                    <span class="icon-twitter"></span>
+                                </div>
+                            </a>
+                        </li>
+                        <li><a href="#">
+                                <div class="circle-btn-small">
+                                    <span class="icon-fb"></span>
+                                </div>
+                            </a>
+                        </li>
+                        <li><a href="#">
+                                <div class="circle-btn-small">
+                                    <span class="icon-v"></span>
+                                </div>
+                            </a>
+                        </li>
+                        <li><a href="#">
+                                <div class="circle-btn-small">
+                                    <span class="icon-goog"></span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- end contact -->
+    <div class="clearfix"></div>
+    
+    <!--footer-->
+    <div class="clearfix footer">
+		<div class="container">
+			<div class="left">
+			    <div class="logo">
+                    <img src="images/coevery.png" alt=""/>Coevery
+			    </div>
+				<p class="copyright">© Copyright 2013 NovaSoftware.com</p>
+			</div><!-- logo -->
+			<div class="right">
+			    <ul class="footer-menu">
+				    <li><a href="#home">Home</a></li>
+				    <li><a href="#">F.A.Q</a></li>
+				    <li><a href="#support">Support</a></li>
+				    <li><a href="#">Sitemap</a></li>
+				    <li><a href="#contact">Contact</a></li>
+				</ul>
+			</div>
+		    <div class="clearfix"></div>
+		</div>
+    </div>		
+	<!--end footer-->			
+
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>	
+	<script type='text/javascript' src='js/jquery.easing.1.3.js'></script> 
+	<script type='text/javascript' src='js/modernizr-2.6.1-respond-1.1.0.min.js'></script>
+	<!--<script type='text/javascript' src='js/jquery.hashtag.js'></script> -->
+	<!--<script type="text/javascript" src="js/bootstrap-tooltip.js"></script>-->
+	<script type="text/javascript" src="js/retina.js"></script>
+	<script type="text/javascript" src="js/jquery.sticky.js"></script>
+	<script type='text/javascript' src='js/slideshow.js'></script> 
+	<script type='text/javascript' src='js/supersized.js'></script>
+	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+	<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
+	<script type="text/javascript" src="js/jquery.fancybox.js"></script>
+	<script type="text/javascript" src="js/jquery.easytabs.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+			
+	<script type="text/javascript">
+	    $(window).load(function () {
+
+	        $('.how_to_1').hover(
+            function () {
+                $(this).find('.how_to_grow1').animate({ scale: '1' });
+                $(this).find('.how_to_grow2').animate({ scale: '1' });
+                $(this).find('.how_to_grow3').animate({ scale: '1' });
+            },
+            function () {
+                $(this).find('.how_to_grow1').animate({ scale: '0' });
+                $(this).find('.how_to_grow2').animate({ scale: '0' });
+                $(this).find('.how_to_grow3').animate({ scale: '0' });
+            }
+
+            );
+	    });
+		</script>
+</body>		
 </html>
