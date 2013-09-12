@@ -134,6 +134,10 @@
               $scope.filters.splice(index, 1);
           };
 
+          $("#closeFilterLink").bind("click", function (event) {
+              event.stopPropagation();
+          });
+
           $scope.expendCollapse = function () {
               if ($('#collapseBtn').hasClass('icon-collapse-hide')) {
                   $('#collapseBtn').removeClass('icon-collapse-hide');
