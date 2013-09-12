@@ -10,8 +10,11 @@
                 $scope.moduleName = moduleName;
                 $scope.definitionViews = [];
                 $scope.columnDefs = [];
-
                 $rootScope.moduleName = moduleName;
+                
+                // filters
+                $scope.filters = [];
+                var needNewFilterEditor = false;
 
                 //init pagingoption
                 var pageSizes = [50, 100, 200];
@@ -34,6 +37,8 @@
                         PageSize: pageSize,
                         Page: page,
                         ViewId: $scope.currentViewId,
+                        FilterGroupId: $scope.currentFilter.Id,
+                        NeedSave: false,
                         Filters: $('#filter-form').serializeArray()
                     };
                     $http.post(url, data).then(function(response) {
@@ -59,15 +64,7 @@
                     }
                 }, true);
 
-                $scope.$watch('filterOptions', function(newVal, oldVal) {
-                    if (newVal !== oldVal) {
-                        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-                    }
-                }, true);
-
-
                 $scope.selectedItems = [];
-
                 $scope.gridOptions = {
                     data: 'myData',
                     enablePaging: true,
@@ -79,7 +76,6 @@
                     pagingOptions: $scope.pagingOptions,
                     columnDefs: "columnDefs"
                 };
-
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 // fetch view columns
@@ -126,24 +122,13 @@
 
                 $scope.FetchDefinitionViews();
 
-                var idIndex = 1;
-                $scope.filters = [{ id: '1' }];
-                $scope.addFilter = function() {
-                    idIndex++;
-                    $scope.filters.splice($scope.filters.length, 0, { id: idIndex });
-                };
-
-                $scope.removeFilter = function(index) {
-                    $scope.filters.splice(index, 1);
-                };
-
           $("#closeFilterLink").bind("click", function (event) {
               event.stopPropagation();
           });
 
                 $scope.expendCollapse = function() {
-                    $scope.fetchFieldFilters();
                     if ($('#collapseBtn').hasClass('icon-collapse-up')) {
+                        fetchFieldFilters();
                         $('#collapseBtn').addClass('icon-collapse-down');
                         $('#collapseBtn').removeClass('icon-collapse-up');
                         $('#closeFilterLink').css('display', '');
@@ -160,16 +145,16 @@
 
               $('#collapseHeader').click();
                 $scope.delete = function(id) {
-              $scope.entityId = id;
-              $('#myModalEntity').modal({
-                  backdrop: 'static',
-                  keyboard: true
-              });
-          };
+                    $scope.entityId = id;
+                    $('#myModalEntity').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    });
+                };
 
-          $scope.deleteEntity = function () {
-              $('#myModalEntity').modal('hide');
-              var id = $scope.$$childTail.entityId;
+                $scope.deleteEntity = function() {
+                    $('#myModalEntity').modal('hide');
+                    var id = $scope.$$childTail.entityId;
                     var ids = [];
                     if (id) {
                         ids.push(id);
@@ -203,7 +188,9 @@
                     $detour.transitionTo('View', { Module: moduleName, Id: id });
                 };
 
-                $scope.fetchFieldFilters = function() {
+                // filters
+
+                function fetchFieldFilters() {
                     if ($scope.fieldFilters) {
                         return;
                     }
@@ -211,7 +198,7 @@
                     $http.get(url).then(function(response) {
                         $scope.fieldFilters = response.data;
                     });
-                };
+                }
 
                 $scope.showFilterEditor = function(fieldFilter, $event) {
                     $('#filter-editor').html($('script[type="text/ng-template"]#' + fieldFilter.FormName).text());
@@ -219,20 +206,22 @@
 
                 $scope.loadFilter = function(filter) {
                     $scope.currentFilter = filter;
-                    var url = 'Coevery/CoeveryCore/Filter/Edit/' + filter.Id;
-                    $http.get(url).then(function(response) { $('#filter-editor').html(response.data); });
+                    $scope.filters = filter.Filters;
+                    needNewFilterEditor = true;
+                    //var url = 'Coevery/CoeveryCore/Filter/Edit/' + filter.Id;
+                    //$http.get(url).then(function(response) { $('#filter-editor').html(response.data); });
                     $('#filterCollapse').css('display', '');
-                    if ($('#collapseBtn').hasClass('icon-collapse-up')) return;
+                    //if ($('#collapseBtn').hasClass('icon-collapse-up')) return;
                 };
 
-                $scope.FetchDefinitionFilters = function() {
+                $scope.fetchDefinitionFilters = function() {
                     var filters = filterDefinitionService.query({ contentType: moduleName }, function() {
                         $scope.definitionFilters = filters;
                     }, function() {
                         logger.error("Failed to fetched filters for " + moduleName);
                     });
                 };
-                $scope.FetchDefinitionFilters();
+                $scope.fetchDefinitionFilters();
             }]
     ]);
 });

@@ -146,6 +146,8 @@ namespace Coevery.Core.Controllers {
             public int PageSize { get; set; }
             public int Page { get; set; }
             public int ViewId { get; set; }
+            public int FilterGroupId { get; set; }
+            public bool NeedSave { get; set; }
             public FilterData[] Filters { get; set; }
         }
 
