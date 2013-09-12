@@ -14,16 +14,16 @@ using Orchard.Projections.Services;
 namespace Coevery.Projections.Controllers {
     public class FilterController : ApiController {
         private readonly IRepository<EntityFilterRecord> _entityFilterRepository;
-        private readonly IRepository<FilterRecord> _filterRepository;
+        private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
         private readonly IProjectionManager _projectionManager;
 
         public FilterController(
             IRepository<EntityFilterRecord> entityFilterRepository,
             IProjectionManager projectionManager,
-            IRepository<FilterRecord> filterRepository) {
+            IRepository<FilterGroupRecord> filterGroupRepository) {
             _entityFilterRepository = entityFilterRepository;
             _projectionManager = projectionManager;
-            _filterRepository = filterRepository;
+            _filterGroupRepository = filterGroupRepository;
         }
 
         public IEnumerable<JObject> Get(string id) {
@@ -31,23 +31,23 @@ namespace Coevery.Projections.Controllers {
             if (pluralService.IsPlural(id)) {
                 id = pluralService.Singularize(id);
             }
-            var re = new List<JObject>();
+            var entityFilters = new List<JObject>();
             var entityFilterRecords = _entityFilterRepository.Table.Where(x => x.EntityName == id);
             foreach (var entityFilterRecord in entityFilterRecords) {
-                var groupObj = new JObject();
-                groupObj["Id"] = entityFilterRecord.FilterGroupRecord.Id;
-                groupObj["Title"] = entityFilterRecord.Title;
+                var filterGroup = new JObject();
+                filterGroup["Id"] = entityFilterRecord.FilterGroupRecord.Id;
+                filterGroup["Title"] = entityFilterRecord.Title;
                 var filters = new JArray();
-                foreach (var filter in entityFilterRecord.FilterGroupRecord.Filters) {
-                    var filterObj = new JObject();
-                    filterObj["Type"] = filter.Type;
-                    filterObj["State"] = FormParametersHelper.ToDynamic(filter.State);
+                foreach (var filterRecord in entityFilterRecord.FilterGroupRecord.Filters) {
+                    var filter = new JObject();
+                    filter["Type"] = filterRecord.Type;
+                    filter["State"] = FormParametersHelper.ToDynamic(filterRecord.State);
                     filters.Add(filter);
                 }
-                groupObj["Filters"] = filters;
-                re.Add(groupObj);
+                filterGroup["Filters"] = filters;
+                entityFilters.Add(filterGroup);
             }
-            return re;
+            return entityFilters;
         }
 
         private void Test() {
@@ -55,18 +55,18 @@ namespace Coevery.Projections.Controllers {
                 Category = "LeadContentFields",
                 Type = "Lead.Topic.",
                 Position = 0,
-                Description = "Test Filter"
             };
             var state = new {
                 Value = "Lead 1"
             };
             filterRecord.State = FormParametersHelper.ToString(state);
-            _filterRepository.Create(filterRecord);
             var groupRecord = new FilterGroupRecord();
+            _filterGroupRepository.Create(groupRecord);
             groupRecord.Filters.Add(filterRecord);
             _entityFilterRepository.Create(new EntityFilterRecord {
                 EntityName = "Lead",
-                FilterGroupRecord = groupRecord
+                FilterGroupRecord = groupRecord,
+                Title = "Test Filter"
             });
         }
     }
