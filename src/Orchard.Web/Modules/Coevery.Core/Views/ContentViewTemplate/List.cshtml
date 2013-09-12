@@ -91,21 +91,19 @@
             </div>
         </div>
 
-       <div id="filterCollapse" class="row-fluid" style="font-size:13px;display:none;">
+       <div id="filterCollapse" class="row-fluid filter-collapse">
             <div class="accordion">
                 <div class="accordion-group">
-                    <div style="padding: 2px; background-color: #fff6c3;">
-                        <a style="text-decoration:none;" data-toggle="collapse" href="#collapseZone">
-                            <span id="collapseBtn" class="icon-collapse-hide" data-ng-click="expendCollapse()"></span>
-                        </a>
-                        <span style=" font-weight: bold;">过滤器 总费用 &gt; 7.00, 总费用 &gt; 50.00, 总费用 &gt; 30.00</span>
-                        <span id="closeFilterLink" class="close" style="display:none;" data-ng-click="closeFilterCollapse()">×</span>
+                    <div id="collapseHeader" class="collapseHeader" data-toggle="collapse" href="#collapseZone" data-ng-click="expendCollapse()">
+                        <span id="collapseBtn" class="icon-collapse-hide"></span>
+                        <span class="filterInfo">过滤器 总费用 &gt; 7.00, 总费用 &gt; 50.00, 总费用 &gt; 30.00</span>
+                        <span id="closeFilterLink" class="close" data-ng-click="closeFilterCollapse()">×</span>
                     </div>
                     <div id="collapseZone" class="collapse">
-                        <div  style="padding: 0px;background-color: #fefefe;" class="accordion-inner">
-                            <div class="form-horizontal" style="margin:0px;">
-                                <div class="control-group" style="padding: 5px; margin: 0px;">
-                                    <div style=" float: left; padding: 2px;">
+                        <div class="accordion-inner collapseZone">
+                            <div class="form-horizontal filterForm">
+                                <div class="control-group filterCreatorWrap" style="margin:0px;">
+                                    <div class="filterCreatorContent">
                                         <div class="btn-group">
                                             <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
                                                 总费用
@@ -116,31 +114,33 @@
                                             </ul>
                                         </div>
                                         <div class="btn-group" style="margin-left:0px;">
-                                            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                                                &gt;
-                                                <span class="caret"></span>
-                                            </button><ul class="dropdown-menu">
-                                                <li><a href="javascript:void(0);">&gt;</a></li>
-                                                <li><a href="javascript:void(0);">&lt;</a></li>
-                                            </ul>
+                                            <div class="btn-group" >
+                                                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                                                    &gt;
+                                                    <span class="caret"></span>
+                                                </button><ul class="dropdown-menu">
+                                                    <li><a href="javascript:void(0);">&gt;</a></li>
+                                                    <li><a href="javascript:void(0);">&lt;</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="filterInput">
                                         </div>
-                                        <input type="text" style="height: 16px;line-height: 16px;">
                                     </div>
-                                    <span class="close" style="line-height:30px;float:left;">×</span>
+                                    <span class="close deleteBtn">×</span>
                                 </div>
-                                <div class="" style="padding: 10px 0px 10px 5px;">
+                                <div class="filterAddNewWrap">
                                     <a href="javascript:void(0);"> + Add another</a>
                                 </div>
-                                <div style="padding: 5px;">
-                                    <div style="float:left;">
+                                <div class="filterAppWrap">
+                                    <div class="filterOkCancelWrap">
                                         <button class="btn btn-small btn-primary">Apply</button>
                                         <button class="btn btn-small" data-ng-click="closeFilterCollapse()">Close</button>
                                     </div>
-                                    <label class="checkbox" style="display: inline-block;margin-left: 5px;float: left;padding-top: 3px;">
+                                    <label class="checkbox checkInput">
                                         <input type="checkbox">
                                         Save Filter
                                     </label>
-                                    <input type="text" style="height: 16px;line-height: 16px;margin-left: 5px;" placeholder="enter the filter's name">
+                                    <input type="text" class="filterInput" placeholder="enter the filter's name">
                                 </div>
                             </div>
                         </div>

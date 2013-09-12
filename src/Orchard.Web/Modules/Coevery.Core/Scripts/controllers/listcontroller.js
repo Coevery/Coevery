@@ -138,12 +138,11 @@
               if ($('#collapseBtn').hasClass('icon-collapse-hide')) {
                   $('#collapseBtn').removeClass('icon-collapse-hide');
                   $('#collapseBtn').addClass('icon-collapse-show');
-                  $('#closeFilterLink').css('display', '');
-
+                  $('#closeFilterLink').css('display', 'none');
               } else {
                   $('#collapseBtn').removeClass('icon-collapse-show');
                   $('#collapseBtn').addClass('icon-collapse-hide');
-                  $('#closeFilterLink').css('display', 'none');
+                  $('#closeFilterLink').css('display', '');
               }
           };
 
@@ -152,10 +151,10 @@
           };
 
           $scope.openFilterCollapse = function (fiterId) {
-              $('#filterCollapse').css('display', '');
+              $('#filterCollapse').css('display', 'block');
               if ($('#collapseBtn').hasClass('icon-collapse-show')) return;
+              $('#collapseHeader').click();
               $scope.expendCollapse();
-              $('#collapseBtn').click();
           };
 
           $scope.delete = function (id) {
