@@ -14,10 +14,21 @@ namespace Coevery.Projections {
                 );
 
             ContentDefinitionManager.AlterTypeDefinition("LayoutProperty", cfg => cfg
-                 .WithPart("LayoutPropertyPart")
+                .WithPart("LayoutPropertyPart")
                 .DisplayedAs("LayoutProperty")
                 );
             return 1;
+        }
+
+        public int UpdateFrom1() {
+            SchemaBuilder.CreateTable("EntityFilterRecord",
+                table => table
+                    .Column<int>("Id", c => c.PrimaryKey().Identity())
+                    .Column<string>("EntityName")
+                    .Column<string>("Title")
+                    .Column<int>("FilterGroupRecord_id")
+                );
+            return 2;
         }
     }
 }
