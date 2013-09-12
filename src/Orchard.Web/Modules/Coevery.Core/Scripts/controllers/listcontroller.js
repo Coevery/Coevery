@@ -135,14 +135,14 @@
           };
 
           $scope.expendCollapse = function () {
-              if ($('#collapseBtn').hasClass('icon-collapse-up')) {
-                  $('#collapseBtn').addClass('icon-collapse-down');
-                  $('#collapseBtn').removeClass('icon-collapse-up');
+              if ($('#collapseBtn').hasClass('icon-collapse-hide')) {
+                  $('#collapseBtn').removeClass('icon-collapse-hide');
+                  $('#collapseBtn').addClass('icon-collapse-show');
                   $('#closeFilterLink').css('display', '');
 
               } else {
-                  $('#collapseBtn').removeClass('icon-collapse-down');
-                  $('#collapseBtn').addClass('icon-collapse-up');
+                  $('#collapseBtn').removeClass('icon-collapse-show');
+                  $('#collapseBtn').addClass('icon-collapse-hide');
                   $('#closeFilterLink').css('display', 'none');
               }
           };
@@ -153,7 +153,7 @@
 
           $scope.openFilterCollapse = function (fiterId) {
               $('#filterCollapse').css('display', '');
-              if ($('#collapseBtn').hasClass('icon-collapse-up')) return;
+              if ($('#collapseBtn').hasClass('icon-collapse-show')) return;
               $scope.expendCollapse();
               $('#collapseBtn').click();
           };

@@ -299,3 +299,30 @@
         font-size:initial;
     }
 
+    .icon-collapse-show
+    {
+        margin-left: 4px; 
+        margin-bottom: 4px;
+        background-repeat: no-repeat; 
+        background-image: url('/OrchardLocal/Themes/Mooncake/Styles/images/twisty_sprite.png'); 
+        height: 11px; 
+        width: 11px; 
+        display: inline-block; 
+        cursor: pointer; 
+        background-position: 0 0px;
+        
+    }
+
+    .icon-collapse-hide
+    {
+        margin-left: 4px; 
+        margin-bottom: 4px;
+        background-repeat: no-repeat; 
+        background-image: url('/OrchardLocal/Themes/Mooncake/Styles/images/twisty_sprite.png'); 
+        height: 11px; 
+        width: 11px; 
+        display: inline-block; 
+        cursor: pointer; 
+        background-position: 0 -11px;
+    }
+

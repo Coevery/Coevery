@@ -91,77 +91,57 @@
             </div>
         </div>
 
-        <div class="row-fluid">
-            <div id="filterCollapse" class="accordion" style="margin-top: 10px; margin-bottom: 10px; display: none;">
+       <div id="filterCollapse" class="row-fluid" style="font-size:13px;display:none;">
+            <div class="accordion">
                 <div class="accordion-group">
-                    <div class="accordion-heading" style="background-color: rgb(255,237,135);">
-                        <div class="accordion-toggle" style="cursor: auto;">
-                            <a style="background: transparent;" data-toggle="collapse"
-                                data-parent="#demo-accordion-01" href="#collapse-01">
-                                <span class="btn" style="background: transparent; border: 0px;" ng-click="expendCollapse()"><i id="collapseBtn" class="icon-collapse-down"></i></span>
-                            </a>
-                            <span style="background: transparent;">过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
-                            <span style="background: transparent; float: right;"><a id="closeFilterLink" ng-click="closeFilterCollapse()" style="cursor: pointer; background: transparent; font-size: 25px; color: rgb(51,84,127);">×</a></span>
-                        </div>
-
+                    <div style="padding: 2px; background-color: #fff6c3;">
+                        <a style="text-decoration:none;" data-toggle="collapse" href="#collapseZone">
+                            <span id="collapseBtn" class="icon-collapse-hide" data-ng-click="expendCollapse()"></span>
+                        </a>
+                        <span style=" font-weight: bold;">过滤器 总费用 &gt; 7.00, 总费用 &gt; 50.00, 总费用 &gt; 30.00</span>
+                        <span id="closeFilterLink" class="close" style="display:none;" data-ng-click="closeFilterCollapse()">×</span>
                     </div>
-                    <div id="collapse-01" class="collapse" style="background-color: rgb(255,246,195);">
-                        <div class="accordion-inner" style="padding: 0px;">
-
-                            <div class="widget-content form-container">
-                                <form class="form-horizontal">
-
-                                    <div ng-repeat="filter in filters" id="input_cloning_template{{filter.id}}" class="control-group" style="border-top: 0px; border-bottom: 1px solid #ccc; padding: 5px 20px 5px 20px; margin: 0px;" idtemplate="input_cloning_template">
-                                        <div class="btn-toolbar" style="margin: 0px; float: left;">
-                                            <div class="btn-group">
-                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                    <span>总费用{{filter.id}}</span>
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" style="">
-                                                    <li title="" style="cursor: pointer;">态状</li>
-                                                    <li title="" style="cursor: pointer;">总费用</li>
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                    <span>></span>
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" style="">
-                                                    <li title="" style="cursor: pointer;">></li>
-                                                    <li title="" style="cursor: pointer;"><</li>
-                                                </ul>
-                                            </div>
-                                            <input type="text" id="input_cloning_0_input" name="text[0]" idtemplate="input_cloning_%23index%23_input" nametemplate="text%5B%23index%23%5D">
+                    <div id="collapseZone" class="collapse">
+                        <div  style="padding: 0px;background-color: #fefefe;" class="accordion-inner">
+                            <div class="form-horizontal" style="margin:0px;">
+                                <div class="control-group" style="padding: 5px; margin: 0px;">
+                                    <div style=" float: left; padding: 2px;">
+                                        <div class="btn-group">
+                                            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                                                总费用
+                                                <span class="caret"></span>
+                                            </button><ul class="dropdown-menu">
+                                                <li><a href="javascript:void(0);">总费用</a></li>
+                                                <li><a href="javascript:void(0);">态状</a></li>
+                                            </ul>
                                         </div>
-                                        <span class="close" id="input_cloning_remove_current" ng-click="removeFilter($index)" style="display: inline; float: right;">×</span>
+                                        <div class="btn-group" style="margin-left:0px;">
+                                            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                                                &gt;
+                                                <span class="caret"></span>
+                                            </button><ul class="dropdown-menu">
+                                                <li><a href="javascript:void(0);">&gt;</a></li>
+                                                <li><a href="javascript:void(0);">&lt;</a></li>
+                                            </ul>
+                                        </div>
+                                        <input type="text" style="height: 16px;line-height: 16px;">
                                     </div>
-
-                                    <div class="control-group" style="border-top: 0px; padding-top: 15px; padding-left: 22px;">
-                                        <div style="float: left;">
-                                            <span class="btn btn-mini" id="input_cloning_add" ng-click="addFilter()"><i class="icon-plus"></i></span><span>&nbsp;Add another</span>
-                                        </div>
-                                        <div style="margin-left: 10px; float: left;">
-
-                                            <label class="checkbox">
-                                                <input type="checkbox">
-                                                Save Filter
-                                            </label>
-                                        </div>
-
-                                        <div style="margin-left: 10px; float: left;">
-                                            <label class="span1" style="padding-right: 8px;">VisableTo</label>
-                                            <select id="userDropdown" class="span2" style="margin-top: -3px;">
-                                                <option>Me</option>
-                                            </select>
-                                        </div>
+                                    <span class="close" style="line-height:30px;float:left;">×</span>
+                                </div>
+                                <div class="" style="padding: 10px 0px 10px 5px;">
+                                    <a href="javascript:void(0);"> + Add another</a>
+                                </div>
+                                <div style="padding: 5px;">
+                                    <div style="float:left;">
+                                        <button class="btn btn-small btn-primary">Apply</button>
+                                        <button class="btn btn-small" data-ng-click="closeFilterCollapse()">Close</button>
                                     </div>
-                                    <div style="margin: 0 0 5px 20px;">
-                                        <button type="submit" class="btn btn-primary">Apply</button>
-                                        <button class="btn" ng-click="closeFilterCollapse()">Close</button>
-                                    </div>
-                                </form>
+                                    <label class="checkbox" style="display: inline-block;margin-left: 5px;float: left;padding-top: 3px;">
+                                        <input type="checkbox">
+                                        Save Filter
+                                    </label>
+                                    <input type="text" style="height: 16px;line-height: 16px;margin-left: 5px;" placeholder="enter the filter's name">
+                                </div>
                             </div>
                         </div>
                     </div>
