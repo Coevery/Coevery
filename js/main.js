@@ -60,26 +60,23 @@ jQuery(document).ready(function () {
 		var target_offset = jQuery("#"+trgt).offset();
 		var target_top = target_offset.top;
 		jQuery('html, body').animate({scrollTop:target_top}, 900);
-	});	
-});
-			
-jQuery(document).ready(function() {
-jQuery('.view-image').fancybox({
-'titlePosition'	: 'over'
-});
-});
-jQuery(document).ready(function() {
-	//var $content 		= $("#content");
-	
-	//// Run easytabs
-  	//$content.easytabs({
-	//  animate			: true,
-	//  updateHash		: false,
-	  
-	//  transitionIn: 'fadeIn',
+	});
+    
+	jQuery('.view-image').fancybox({
+	    'titlePosition': 'over'
+	});
+
+    //var $content 		= $("#content");
+
+    //// Run easytabs
+    //$content.easytabs({
+    //  animate			: true,
+    //  updateHash		: false,
+
+    //  transitionIn: 'fadeIn',
     //  transitionOut: 'fadeOut',
-	//  animationSpeed	:600,
-	//  tabs				:"> .menu-tab > ul > li",
-	//  tabActiveClass	:'active',
-	//});
+    //  animationSpeed	:600,
+    //  tabs				:"> .menu-tab > ul > li",
+    //  tabActiveClass	:'active',
+    //});
 });
