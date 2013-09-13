@@ -33,14 +33,14 @@ using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 
 namespace Coevery.Core.Controllers {
-    public class ContentViewTemplateController : Controller, IUpdateModel {
+    public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
         private readonly IViewPartService _projectionService;
 
-        public ContentViewTemplateController(
+        public ViewTemplateController(
             IOrchardServices orchardServices,
             IContentManager contentManager,
             IContentDefinitionManager contentDefinitionManager,
@@ -75,12 +75,12 @@ namespace Coevery.Core.Controllers {
             var contentType = _contentDefinitionManager.GetTypeDefinition(id);
             int viewId = _projectionService.GetProjectionId(id);
 
-            dynamic viewModel = Services.New.ViewModel();
-            viewModel.DisplayName(contentType.DisplayName);
-            viewModel.TypeDefinition(contentType);
-            viewModel.ModuleName(moduleName);
-            viewModel.ViewId(viewId);
-            return View(viewModel);
+            dynamic model = Services.New.Content__List();
+            model.DisplayName(contentType.DisplayName);
+            model.TypeDefinition(contentType);
+            model.ModuleName(moduleName);
+            model.ViewId(viewId);
+            return View(model);
         }
 
 

@@ -117,7 +117,7 @@
     <Compile Include="Controllers\GridTemplateController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
-    <Compile Include="Controllers\ContentViewTemplateController.cs" />
+    <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="Controllers\ColumnDefinitionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -151,7 +151,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="ClientRoute\IClientRouteProvider.cs" />
-    <Compile Include="Serializer.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\AnonymousRoleUpdater.cs" />
@@ -205,10 +204,12 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\GridTemplate\DefaultFooterTemplate.cshtml" />
     <Content Include="Views\GridTemplate\LinkCellTemplate.cshtml" />
-    <Content Include="Views\ContentViewTemplate\View.cshtml" />
-    <Content Include="Views\List.cshtml" />
+    <Content Include="Views\ViewTemplate\View.cshtml" />
+    <Content Include="Views\Content-List.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Items\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
@@ -256,19 +257,19 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\List.cshtml">
+    <Content Include="Views\ViewTemplate\List.cshtml">
       <SubType>
       </SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\CreatableTypeList.cshtml" />
+    <Content Include="Views\ViewTemplate\CreatableTypeList.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\Edit.cshtml" />
+    <Content Include="Views\ViewTemplate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\Create.cshtml" />
+    <Content Include="Views\ViewTemplate\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content.Edit-Default.cshtml">
