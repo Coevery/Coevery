@@ -69,17 +69,17 @@ jQuery('.view-image').fancybox({
 });
 });
 jQuery(document).ready(function() {
-	var $content 		= $("#content");
+	//var $content 		= $("#content");
 	
-	// Run easytabs
-  	$content.easytabs({
-	  animate			: true,
-	  updateHash		: false,
+	//// Run easytabs
+  	//$content.easytabs({
+	//  animate			: true,
+	//  updateHash		: false,
 	  
-	  transitionIn: 'fadeIn',
-      transitionOut: 'fadeOut',
-	  animationSpeed	:600,
-	  tabs				:"> .menu-tab > ul > li",
-	  tabActiveClass	:'active',
-	});
+	//  transitionIn: 'fadeIn',
+    //  transitionOut: 'fadeOut',
+	//  animationSpeed	:600,
+	//  tabs				:"> .menu-tab > ul > li",
+	//  tabActiveClass	:'active',
+	//});
 });
