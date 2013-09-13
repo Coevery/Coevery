@@ -42,6 +42,7 @@ h6{ font-size:14px;}
 a {text-decoration: none; }
 
 /*add by philo*/
+
 .right{
     float:right;
     margin-right:10px;
@@ -1417,6 +1418,10 @@ span.text_how{
 	margin-top:100px;
 	}
     
+    #content img {
+        margin-top:50px;
+        margin-left: -80px;
+    }
 	.or{
 		/*position:absolute;*/
 		/*display:block;*/
@@ -1653,6 +1658,7 @@ span.featured_title{
         /*added by philo*/
         #content img{
             width:100%;
+            margin: 0;
         }
         /*end added*/
 	.container { width: 300px; }
