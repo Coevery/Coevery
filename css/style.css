@@ -287,7 +287,7 @@ header {
 	font:normal 18px/40px 'Open Sans', Arial, Helvetica,sans-serif; 
 	color:#444; 
 	display: table;
-	margin:100px 0px 70px 0px;
+	margin:100px 0px 40px 0px;
 	text-align:left;
 }
 header .header_text span{
@@ -592,10 +592,9 @@ a#product-next
 	width:114px;
 }
 .big{
-	font: bold 80px/67px 'Open Sans';
+	font: bold 80px/88px 'Open Sans';
 	display:block;
 	text-transform:uppercase;
-	
 	color:#0097d9;
 	
 }
