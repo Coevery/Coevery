@@ -57,6 +57,5 @@ jQuery(function($) {
         progress_bar: 1,			// Timer for each slide							
         mouse_scrub: 0
     });
-    
-    $("#defaultslide").remove();
+    setTimeout($("#defaultslide").fadeOut("slow").remove(), 3000);
 });
