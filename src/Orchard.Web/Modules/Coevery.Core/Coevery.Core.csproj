@@ -164,6 +164,9 @@
     <Compile Include="Services\ViewPartService.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="DefaultRoute.cs" />
+    <Compile Include="ViewModels\FilterData.cs" />
+    <Compile Include="ViewModels\Data.cs" />
+    <Compile Include="ViewModels\ListQueryModel.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
     <Compile Include="ViewModels\FieldFilterViewModel.cs" />
     <Compile Include="ViewModels\ViewWithRelationsModel.cs" />
@@ -187,6 +190,7 @@
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
     <None Include="Scripts\i18n\resources-locale_en-us.json" />
     <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
+    <Content Include="Scripts\directives\filter-directive.js" />
     <Content Include="Scripts\directives\layout-directive.js" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />
@@ -208,7 +212,6 @@
     <Content Include="Views\GridTemplate\DefaultFooterTemplate.cshtml" />
     <Content Include="Views\GridTemplate\LinkCellTemplate.cshtml" />
     <Content Include="Views\ContentViewTemplate\View.cshtml" />
-    <Content Include="Views\Filter\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

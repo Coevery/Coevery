@@ -24,23 +24,6 @@ namespace Coevery.Core.Controllers {
             _formManager = formManager;
         }
 
-        public ActionResult Edit(int id) {
-            var filterRecord = _filterRepository.Get(id);
-            if (filterRecord == null) {
-                return HttpNotFound();
-            }
-            var filter = _projectionManager.DescribeFilters()
-                .Where(x => x.Category == filterRecord.Category)
-                .SelectMany(x => x.Descriptors)
-                .First(x => x.Type == filterRecord.Type);
-
-            var form = filter.Form == null ? null : _formManager.Build(filter.Form);
-            var parameters = FormParametersHelper.FromString(filterRecord.State);
-            _formManager.Bind(form, new DictionaryValueProvider<string>(parameters, CultureInfo.InvariantCulture));
-
-            return View(form);
-        }
-
         public ActionResult GetFieldFilters(string id) {
             if (string.IsNullOrWhiteSpace(id)) {
                 return null;

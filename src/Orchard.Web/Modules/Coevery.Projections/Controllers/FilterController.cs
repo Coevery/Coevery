@@ -2,9 +2,9 @@
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 using Coevery.Projections.Models;
+using Coevery.Projections.ViewModels;
 using Newtonsoft.Json.Linq;
 using Orchard.Data;
 using Orchard.Forms.Services;
@@ -15,14 +15,11 @@ namespace Coevery.Projections.Controllers {
     public class FilterController : ApiController {
         private readonly IRepository<EntityFilterRecord> _entityFilterRepository;
         private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
-        private readonly IProjectionManager _projectionManager;
 
         public FilterController(
             IRepository<EntityFilterRecord> entityFilterRepository,
-            IProjectionManager projectionManager,
             IRepository<FilterGroupRecord> filterGroupRepository) {
             _entityFilterRepository = entityFilterRepository;
-            _projectionManager = projectionManager;
             _filterGroupRepository = filterGroupRepository;
         }
 
@@ -35,7 +32,8 @@ namespace Coevery.Projections.Controllers {
             var entityFilterRecords = _entityFilterRepository.Table.Where(x => x.EntityName == id);
             foreach (var entityFilterRecord in entityFilterRecords) {
                 var filterGroup = new JObject();
-                filterGroup["Id"] = entityFilterRecord.FilterGroupRecord.Id;
+                filterGroup["Id"] = entityFilterRecord.Id;
+                filterGroup["FilterGroupId"] = entityFilterRecord.FilterGroupRecord.Id;
                 filterGroup["Title"] = entityFilterRecord.Title;
                 var filters = new JArray();
                 foreach (var filterRecord in entityFilterRecord.FilterGroupRecord.Filters) {
@@ -50,24 +48,52 @@ namespace Coevery.Projections.Controllers {
             return entityFilters;
         }
 
-        private void Test() {
-            var filterRecord = new FilterRecord {
-                Category = "LeadContentFields",
-                Type = "Lead.Topic.",
-                Position = 0,
-            };
-            var state = new {
-                Value = "Lead 1"
-            };
-            filterRecord.State = FormParametersHelper.ToString(state);
-            var groupRecord = new FilterGroupRecord();
-            _filterGroupRepository.Create(groupRecord);
-            groupRecord.Filters.Add(filterRecord);
-            _entityFilterRepository.Create(new EntityFilterRecord {
-                EntityName = "Lead",
-                FilterGroupRecord = groupRecord,
-                Title = "Test Filter"
-            });
+        public IEnumerable<JObject> Post(string id, FilterViewModel model) {
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            if (pluralService.IsPlural(id)) {
+                id = pluralService.Singularize(id);
+            }
+            FilterGroupRecord groupRecord;
+            if (model.Id == 0) {
+                groupRecord = new FilterGroupRecord();
+                _filterGroupRepository.Create(groupRecord);
+                _entityFilterRepository.Create(new EntityFilterRecord {
+                    EntityName = id,
+                    FilterGroupRecord = groupRecord,
+                    Title = model.Title
+                });
+            }
+            else {
+                var entityFilterRecord = _entityFilterRepository.Get(model.Id);
+                entityFilterRecord.Title = model.Title;
+                groupRecord = entityFilterRecord.FilterGroupRecord;
+                groupRecord.Filters.Clear();
+            }
+
+            foreach (var filter in model.Filters) {
+                if (filter.FormData.Length == 0) {
+                    continue;
+                }
+                var record = new FilterRecord {
+                    Category = id + "ContentFields",
+                    Type = filter.Type,
+                };
+                var dictionary = filter.FormData.ToDictionary(x => x.Name, x => x.Value);
+                record.State = FormParametersHelper.ToString(dictionary);
+                groupRecord.Filters.Add(record);
+            }
+
+            return Get(id);
+        }
+
+        public void Delete(string id, int filterId) {
+            var entityFilterRecord = _entityFilterRepository.Get(filterId);
+            if (entityFilterRecord == null) {
+                return;
+            }
+            entityFilterRecord.FilterGroupRecord.Filters.Clear();
+            _filterGroupRepository.Delete(entityFilterRecord.FilterGroupRecord);
+            _entityFilterRepository.Delete(entityFilterRecord);
         }
     }
 }

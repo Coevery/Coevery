@@ -1,8 +1,8 @@
 ﻿define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function(detour) {
     detour.registerController([
         'GeneralListCtrl',
-        ['$rootScope', '$scope', '$parse', '$http', 'logger', '$detour', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
-            function($rootScope, $scope, $parse, $http, logger, $detour, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
+        ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$detour', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
+            function($rootScope, $scope, $parse, $http, logger, $compile, $detour, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
                 var moduleName = $stateParams.Module;
                 var primaryKeyGetter = $parse('ContentId');
                 $scope.toolButtonDisplay = false;
@@ -11,10 +11,6 @@
                 $scope.definitionViews = [];
                 $scope.columnDefs = [];
                 $rootScope.moduleName = moduleName;
-                
-                // filters
-                $scope.filters = [];
-                var needNewFilterEditor = false;
 
                 //init pagingoption
                 var pageSizes = [50, 100, 200];
@@ -28,7 +24,9 @@
                     currentPage: currentPage
                 };
 
-                $scope.getPagedDataAsync = function(pageSize, page) {
+                $scope.getPagedDataAsync = function () {
+                    var pageSize = $scope.pagingOptions.pageSize;
+                    var page = $scope.pagingOptions.currentPage;
                     $location.search("PageSize", pageSize);
                     $location.search("Page", page);
                     $stateParams["PageSize"] = pageSize;
@@ -37,9 +35,8 @@
                         PageSize: pageSize,
                         Page: page,
                         ViewId: $scope.currentViewId,
-                        FilterGroupId: $scope.currentFilter.Id,
-                        NeedSave: false,
-                        Filters: $('#filter-form').serializeArray()
+                        FilterGroupId: currentFilterGroupId,
+                        Filters: getFilters()
                     };
                     $http.post(url, data).then(function(response) {
                         $scope.myData = response.data.EntityRecords;
@@ -60,7 +57,7 @@
                                 return;
                             }
                         }
-                        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                        $scope.getPagedDataAsync();
                     }
                 }, true);
 
@@ -86,13 +83,13 @@
                     $location.search("ViewId", viewId);
                     var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function() {
                         $scope.columnDefs = gridColumns;
-                        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                        $scope.getPagedDataAsync();
                     }, function() {
                     });
                 };
 
                 $scope.Refresh = function() {
-                    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                    $scope.getPagedDataAsync();
                 };
 
                 // init views
@@ -122,28 +119,6 @@
 
                 $scope.FetchDefinitionViews();
 
-          $("#closeFilterLink").bind("click", function (event) {
-              event.stopPropagation();
-          });
-
-                $scope.expendCollapse = function() {
-                    if ($('#collapseBtn').hasClass('icon-collapse-up')) {
-                        fetchFieldFilters();
-                        $('#collapseBtn').addClass('icon-collapse-down');
-                        $('#collapseBtn').removeClass('icon-collapse-up');
-                        $('#closeFilterLink').css('display', '');
-                    } else {
-                        $('#collapseBtn').removeClass('icon-collapse-down');
-                        $('#collapseBtn').addClass('icon-collapse-up');
-                        $('#closeFilterLink').css('display', 'none');
-                    }
-                };
-
-                $scope.closeFilterCollapse = function() {
-                    $('#filterCollapse').css('display', 'none');
-                };
-
-              $('#collapseHeader').click();
                 $scope.delete = function(id) {
                     $scope.entityId = id;
                     $('#myModalEntity').modal({
@@ -181,6 +156,7 @@
                     }
                     $detour.transitionTo('Detail', { Module: moduleName, Id: id });
                 };
+
                 $scope.view = function(id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = primaryKeyGetter($scope.selectedItems[0]);
@@ -189,29 +165,72 @@
                 };
 
                 // filters
+                $scope.currentFilter = {};
+                var needNewFilterEditor = false,
+                    currentFilterGroupId = 0;
 
-                function fetchFieldFilters() {
-                    if ($scope.fieldFilters) {
-                        return;
+                $scope.applyFilter = function() {
+                    var needSave = !!$('#filter-save-box:checked').length;
+                    currentFilterGroupId = 0;
+                    $scope.getPagedDataAsync();
+                    if (needSave) {
+                        var filter = {
+                            Id: $scope.currentFilter.Id,
+                            FilterGroupId: $scope.currentFilter.FilterGroupId,
+                            Title: $scope.currentFilter.Title,
+                            Filters: getFilters()
+                        };
+
+                        var url = 'api/Projections/Filter/' + moduleName;
+                        $http.post(url, filter).then(function (response) {
+                            $scope.definitionFilters = response.data;
+                        }, function () {
+                            logger.error("Save filter failed.");
+                        });
                     }
-                    var url = 'Coevery/CoeveryCore/Filter/GetFieldFilters/' + moduleName;
-                    $http.get(url).then(function(response) {
-                        $scope.fieldFilters = response.data;
-                    });
-                }
+                };
 
-                $scope.showFilterEditor = function(fieldFilter, $event) {
-                    $('#filter-editor').html($('script[type="text/ng-template"]#' + fieldFilter.FormName).text());
+                $scope.expendCollapse = function() {
+                    if ($('#collapseBtn').hasClass('icon-collapse-hide')) {
+                        showFilterEditorZone();
+                    } else {
+                        hideFilterEditorZone();
+                    }
+                };
+                hideFilterEditorZone();
+
+                $scope.closeFilterCollapse = function() {
+                    $('#filterCollapse').hide();
+                    currentFilterGroupId = 0;
+                    $scope.currentFilter = {};
+                    $('.filterCreatorWrap').empty();
+                    $scope.getPagedDataAsync();
                 };
 
                 $scope.loadFilter = function(filter) {
                     $scope.currentFilter = filter;
-                    $scope.filters = filter.Filters;
+                    currentFilterGroupId = filter.FilterGroupId;
                     needNewFilterEditor = true;
-                    //var url = 'Coevery/CoeveryCore/Filter/Edit/' + filter.Id;
-                    //$http.get(url).then(function(response) { $('#filter-editor').html(response.data); });
-                    $('#filterCollapse').css('display', '');
-                    //if ($('#collapseBtn').hasClass('icon-collapse-up')) return;
+                    $('#filterCollapse').show();
+                    hideFilterEditorZone();
+                    $scope.getPagedDataAsync();
+                };
+
+                $scope.createFilter = function() {
+                    $scope.currentFilter = {};
+                    needNewFilterEditor = true;
+                    $('#filterCollapse').show();
+                    showFilterEditorZone();
+                };
+
+                $scope.deleteFilter = function(filter) {
+                    var index = $scope.definitionFilters.indexOf(filter);
+                    $scope.definitionFilters.splice(index, 1);
+                    filterDefinitionService.delete({ filterId: filter.Id, contentType: moduleName });
+                };
+
+                $scope.addNewFilterCondition = function() {
+                    addNewEditor();
                 };
 
                 $scope.fetchDefinitionFilters = function() {
@@ -222,6 +241,72 @@
                     });
                 };
                 $scope.fetchDefinitionFilters();
+
+                function displayFilterEditors() {
+                    if ($scope.fieldFilters) {
+                        loadEditors();
+                        return;
+                    }
+                    var url = 'Coevery/CoeveryCore/Filter/GetFieldFilters/' + moduleName;
+                    $http.get(url).then(function (response) {
+                        $scope.fieldFilters = response.data;
+                        loadEditors();
+                    });
+                }
+                
+                function loadEditors() {
+                    if (!needNewFilterEditor) {
+                        return;
+                    }
+                    $('.filterCreatorWrap').empty();
+                    if ($scope.currentFilter.Id) {
+                        var filters = $scope.currentFilter.Filters;
+                        $.each(filters, function() {
+                            addNewEditor({
+                                Type: this.Type,
+                                State: this.State
+                            });
+                        });
+                    } else {
+                        addNewEditor();
+                    }
+                    needNewFilterEditor = false;
+                }
+
+                function getFilters() {
+                    var forms = $('.filterCreatorWrap').find('form');
+                    var filters = [];
+                    $.each(forms, function() {
+                        var form = $(this);
+                        filters.push({
+                            Type: form.data('Type'),
+                            FormData: form.serializeArray()
+                        });
+                    });
+                    return filters;
+                }
+
+                function showFilterEditorZone() {
+                    displayFilterEditors();
+                    $('#collapseBtn').addClass('icon-collapse-show');
+                    $('#collapseBtn').removeClass('icon-collapse-hide');
+                    $('#closeFilterLink').hide();
+                    $('#collapseZone').show();
+                }
+
+                function hideFilterEditorZone() {
+                    $('#collapseBtn').removeClass('icon-collapse-show');
+                    $('#collapseBtn').addClass('icon-collapse-hide');
+                    $('#closeFilterLink').show();
+                    $('#collapseZone').hide();
+                }
+                
+                function addNewEditor(args) {
+                    $scope.filterArgs = args;
+                    var editor = $('<filter-editor filter-args="filterArgs" field-filters="fieldFilters"></filter-editor>');
+                    $compile(editor)($scope);
+                    $('.filterCreatorWrap').append(editor);
+                }
             }]
     ]);
 });

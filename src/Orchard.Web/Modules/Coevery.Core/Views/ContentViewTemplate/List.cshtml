@@ -40,13 +40,12 @@
                 <ul class="dropdown-menu">
                     <li ng-repeat="filter in definitionFilters" ng-click="loadFilter({{filter}})" style="cursor: pointer;">
                         <a>
-                            <i ng-class="{'icol-accept':currentFilter.Id ==filter.Id,'viewUSelected': currentFilter.Id !=filter.Id}"></i>
-                            {{filter.Title}}<div style="float: right; text-decoration: underline;">Delete</div>
+                            <i ng-class="{'icol-accept':currentFilter.Id == filter.Id}"></i>
+                            {{filter.Title}}<div style="float: right; text-decoration: underline;" ng-click="deleteFilter(filter)">Delete</div>
                         </a>
                     </li>
                     <li class="divider"></li>
-                    <li style="cursor: pointer;"><a>Create filter</a>
-                    </li>
+                    <li><a href="" ng-click="createFilter()">Create filter</a></li>
                 </ul>
             </div>
 
@@ -55,8 +54,7 @@
                     <i class="icon-th-large"></i>&nbsp;View
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" style="">
-
+                <ul class="dropdown-menu">
                     <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns({{view.ContentId}})" title="" style="cursor: pointer;">
                         <a>
                             <i ng-class="{'icol-accept':currentViewId ==view.ContentId,'viewUSelected': currentViewId !=view.ContentId}"></i>
@@ -82,56 +80,31 @@
         </div>
     </div>
 
-       <div id="filterCollapse" class="row-fluid filter-collapse">
+    <div id="filterCollapse" class="row-fluid filter-collapse">
         <div class="accordion">
             <div class="accordion-group">
-                    <div id="collapseHeader" class="collapseHeader" data-toggle="collapse" href="#collapseZone" data-ng-click="expendCollapse()">
-                        <span id="collapseBtn" class="icon-collapse-hide"></span>
-                        <span class="filterInfo">过滤器 总费用 &gt; 7.00, 总费用 &gt; 50.00, 总费用 &gt; 30.00</span>
-                        <span id="closeFilterLink" class="close" data-ng-click="closeFilterCollapse()">×</span>
+                <div id="collapseHeader" class="collapseHeader" ng-click="expendCollapse()">
+                    <span id="collapseBtn" class="icon-collapse-hide"></span>
+                    <span class="filterInfo">过滤器 总费用 &gt; 7.00, 总费用 &gt; 50.00, 总费用 &gt; 30.00</span>
+                    <span id="closeFilterLink" class="close" ng-click="closeFilterCollapse()">×</span>
                 </div>
-                <div id="collapseZone" class="collapse">
-                        <div class="accordion-inner collapseZone">
-                            <div class="form-horizontal filterForm">
-                                <div class="control-group filterCreatorWrap" style="margin:0px;">
-                                    <div class="filterCreatorContent">
-                                    <div class="btn-group">
-                                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                                            总费用
-                                            <span class="caret"></span>
-                                        </button><ul class="dropdown-menu">
-                                                     <li><a href="javascript:void(0);">总费用</a></li>
-                                                     <li><a href="javascript:void(0);">态状</a></li>
-                                                 </ul>
-                                    </div>
-                                    <div class="btn-group" style="margin-left: 0px;">
-                                            <div class="btn-group" >
-                                                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                                                    &gt;
-                                                    <span class="caret"></span>
-                                                </button><ul class="dropdown-menu">
-                                                    <li><a href="javascript:void(0);">&gt;</a></li>
-                                                    <li><a href="javascript:void(0);">&lt;</a></li>
-                                                </ul>
-                                            </div>
-                                            <input type="text" class="filterInput">
-                                        </div>
-                                    </div>
-                                    <span class="close deleteBtn">×</span>
-                                </div>
-                                <div class="filterAddNewWrap">
-                                <a href="javascript:void(0);"> + Add another</a>
+                <div id="collapseZone">
+                    <div class="accordion-inner collapseZone">
+                        <div class="form-horizontal filterForm">
+                            <div class="control-group filterCreatorWrap">
                             </div>
-                                <div class="filterAppWrap">
-                                    <div class="filterOkCancelWrap">
-                                    <button class="btn btn-small btn-primary">Apply</button>
-                                    <button class="btn btn-small" data-ng-click="closeFilterCollapse()">Close</button>
+                            <div class="filterAddNewWrap">
+                                <a href="" ng-click="addNewFilterCondition()">+ Add another filter condition</a>
+                            </div>
+                            <div class="filterAppWrap">
+                                <div class="filterOkCancelWrap">
+                                    <button class="btn btn-small btn-primary" ng-click="applyFilter()">Apply</button>
+                                    <button class="btn btn-small" ng-click="closeFilterCollapse()">Close</button>
                                 </div>
-                                    <label class="checkbox checkInput">
-                                    <input type="checkbox">
-                                    Save Filter
+                                <label class="checkbox checkInput">
+                                    <input type="checkbox" id="filter-save-box">Save Filter
                                 </label>
-                                    <input type="text" class="filterInput" placeholder="enter the filter's name">
+                                <input type="text" class="filterInput" ng-model="currentFilter.Title" placeholder="enter the filter's name">
                             </div>
                         </div>
                     </div>

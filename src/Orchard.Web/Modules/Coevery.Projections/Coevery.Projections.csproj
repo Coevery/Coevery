@@ -106,6 +106,7 @@
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\LayoutPropertyService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
+    <Compile Include="ViewModels\FilterViewModel.cs" />
     <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
