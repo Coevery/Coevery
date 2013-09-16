@@ -62,16 +62,24 @@ namespace Coevery.Projections {
 
         public int UpdateFrom2() {
 
-            SchemaBuilder.CreateTable("ListViewPartRecord",
-                table => table
-                    .ContentPartRecord()
-                    .Column<string>("ItemContentType")
-                    .Column<string>("VisableTo")
-                );
-
             SchemaBuilder.AlterTable("ListViewPartRecord",
                 table => table
                     .AddColumn<bool>("IsDefault", column => column.WithDefault(false)));
+
+            SchemaBuilder.ExecuteSql(@" UPDATE Coevery_Projections_ListViewPartRecord
+                                        SET	IsDefault = 1
+                                        FROM	Coevery_Projections_ListViewPartRecord l
+                                        WHERE NOT EXISTS(   SELECT * 
+                                                            FROM Coevery_Projections_ListViewPartRecord lvp 
+                                                            WHERE lvp.ItemContentType = l.ItemContentType AND lvp.IsDefault = 1)");
+
+            SchemaBuilder.ExecuteSql(@" UPDATE Orchard_Framework_ContentItemRecord
+                                        SET	ContentType_id	= (SELECT Id FROM Orchard_Framework_ContentTypeRecord WHERE Name = 'LayoutProperty')
+                                        FROM Coevery_Projections_ListViewPartRecord lvp INNER JOIN Orchard_Framework_ContentItemRecord i ON	i.Id = lvp.Id
+
+                                        UPDATE	Orchard_Framework_ContentTypeRecord
+                                        SET		Name = 'ListViewPage'
+                                        WHERE	Name = 'LayoutPropert'");
 
             ContentDefinitionManager.AlterTypeDefinition("ListViewPage",
                 cfg => cfg
