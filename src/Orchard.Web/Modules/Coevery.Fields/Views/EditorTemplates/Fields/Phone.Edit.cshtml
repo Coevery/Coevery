@@ -7,7 +7,7 @@
 
 
 <label class="control-label" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls relativeSetter">
+<div class="control controls errortips">
     <input type="text" 
            id="@Html.FieldIdFor(m => m.Value)" 
            name="@Html.FieldNameFor(m => m.Value)"
@@ -15,14 +15,7 @@
         @if (settings.Required) {<text> required="required"</text> }
         @if (settings.ReadOnly) {<text> readonly="readonly"</text> }
            class="textMedium span12 phonenumber" 
-        @if (!string.IsNullOrWhiteSpace(settings.HelpText))
-            {<text>rel="popover" data-html="true" data-placement="top" data-content="<p class='popoverTipContent'>@settings.HelpText</p>" 
-            data-original-title="" </text>} 
+        @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text=@settings.HelpText</text> } 
         />
-    @if (!string.IsNullOrWhiteSpace(settings.HelpText))
-    {
-        <i class="icon-question-sign popoverTipIcon" id="popoverIcon" onmouseover="popShow(this)" onmouseout="hideShow(this)">
-	    </i>
-    }
     @Html.ValidationMessageFor(m => m.Value)
 </div>

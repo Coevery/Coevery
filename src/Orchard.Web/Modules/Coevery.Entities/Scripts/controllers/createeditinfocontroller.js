@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateEditInfoCtrl',
-        ['$scope', 'logger', '$stateParams', '$detour',
-            function ($scope, logger, $stateParams, $detour) {
+        ['$scope', 'logger', '$stateParams', '$detour', '$http',
+            function ($scope, logger, $stateParams, $detour, $http) {
                 var entityName = $stateParams.Id;
                 var checkValid = function (form) {
                     var validator = form.validate();
@@ -46,20 +46,35 @@ define(['core/app/detourService'], function (detour) {
                         return;
                     }
                     var form = $('#field-info-form');
-                    $.ajax({
+                    //$.ajax({
+                    //    url: form.attr('action'),
+                    //    type: form.attr('method'),
+                    //    data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
+                    //    success: function (result) {                           
+                    //        logger.success('success');
+                    //        $scope.$parent.getAllField();
+                    //        $detour.transitionTo('EntityDetail.Fields', { Id: entityName });                          
+                    //        $scope.closeDialog();
+                    //    },
+                    //    error: function (result) {
+                    //        logger.error('Failed:\n'+result.responseText);
+                    //    }
+                    //});
+
+                    var promise = $http({
                         url: form.attr('action'),
-                        type: form.attr('method'),
+                        method: form.attr('method'),
                         data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
-                        success: function (result) {                           
-                            logger.success('success');
-                            $scope.$parent.getAllField();
-                            $detour.transitionTo('EntityDetail.Fields', { Id: entityName });                          
-                            $scope.closeDialog();
-                        },
-                        error: function (result) {
-                            logger.error('Failed:\n'+result.responseText);
-                        }
-                    });                    
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function () {
+                        logger.success('success');
+                        $scope.$parent.getAllField();
+                        $detour.transitionTo('EntityDetail.Fields', { Id: entityName });                          
+                        $scope.closeDialog();
+                    }, function (reason) {
+                        logger.error('Failed:\n' + reason.responseText);
+                    });
+                    return promise;
                 };
 
                 $scope.$on('$destroy', function () {

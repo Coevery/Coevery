@@ -9,7 +9,8 @@
 }
 
 <label class="control-label title @required" >@Model.DisplayName</label>
-<div class="control controls @validateHelper relativeSetter" >
+<div class="control controls @validateHelper errortips" 
+    >
 
     @switch (settings.ListMode) {
         case ListMode.Dropdown:
@@ -17,12 +18,13 @@
             if (!string.IsNullOrWhiteSpace(required))
             {
                 selectAttributes.Add(required, null);
-                selectAttributes.Add("rel", "popover");
-                selectAttributes.Add("data-html", "true");
-                selectAttributes.Add("data-placement", "top");
-                selectAttributes.Add("data-content", "<p class='popoverTipContent'>" + settings.HelpText + "</p>");
-                selectAttributes.Add("data-original-title", "");
             }
+
+            if (!string.IsNullOrWhiteSpace(settings.HelpText))
+            {
+                selectAttributes.Add("helper:text", settings.HelpText);
+            }
+            
             var options = Model.OptionItems.Select(t => new SelectListItem { Text = t.Name, Value = t.Id.ToString(), Selected = t.Id == Model.SingleTermId });
             @Html.DropDownListFor(m => m.SingleTermId, options, string.Empty, selectAttributes)
             for (int i = 0; i < Model.OptionItems.Count; i++)
@@ -63,9 +65,7 @@
                                 } 
                                 name="@Html.FieldNameFor(m => m.SingleTermId)" 
                                 id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()" 
-                                @if (!string.IsNullOrWhiteSpace(settings.HelpText))
-                                {<text> rel="popover" data-html="true" data-placement="top" data-content="<p class='popoverTipContent'>@settings.HelpText</p>" 
-                                data-original-title="" </text>} 
+                                @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text=@settings.HelpText</text> } 
                                 />
                 }
                 else
@@ -80,9 +80,7 @@
                                 } 
                                      name="@Html.FieldNameFor(m => m.OptionItems[ti].IsChecked)" 
                                      id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()" 
-                                @if (!string.IsNullOrWhiteSpace(settings.HelpText))
-                                {<text> rel="popover" data-html="true" data-placement="top" data-content="<p class='popoverTipContent'>@settings.HelpText</p>" 
-                                data-original-title="" </text>} 
+                                @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text=@settings.HelpText</text> } 
                                 />
                 }
                     }
@@ -99,11 +97,6 @@
 
         case ListMode.Listbox:
             break;
-    }
-    @if (!string.IsNullOrWhiteSpace(settings.HelpText))
-    {
-        <i class="icon-question-sign popoverTipIcon" id="popoverIcon" onmouseover="popShow(this)" onmouseout="hideShow(this)">
-	    </i>
     }
     @Html.HiddenFor(m => m.OptionSetId)
 </div>

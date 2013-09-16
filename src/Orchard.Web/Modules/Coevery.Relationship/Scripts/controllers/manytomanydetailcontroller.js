@@ -47,6 +47,7 @@ define(['core/app/detourService'], function (detour) {
                         if (relationId)
                             $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.EntityName, RelationId: relationId });
                     });
+                    return promise;
                 };
                 
                 $scope.saveAndBack = function () {
@@ -54,6 +55,7 @@ define(['core/app/detourService'], function (detour) {
                     promise && promise.then(function () {
                         $scope.exit();
                     });
+                    return promise;
                 };
             }]
     ]);

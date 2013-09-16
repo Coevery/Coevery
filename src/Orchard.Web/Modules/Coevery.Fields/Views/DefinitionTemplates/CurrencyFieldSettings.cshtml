@@ -5,7 +5,7 @@
     <label class="control-label">
         Length
     </label>
-    <div class="controls relativeSetter">
+    <div class="controls errortips">
         @Html.TextBoxFor(l => l.Length, new { @class = "span12 digits", id = "currencyLength", name = "currencyLength" })
     </div>
 </section>
@@ -14,7 +14,7 @@
     <label class="control-label">
         Decimal Places
     </label>
-    <div class="controls relativeSetter">
+    <div class="controls errortips">
         @Html.TextBoxFor(d => d.DecimalPlaces, new { @class = "span12 digits", id = "decimalPlace", name = "decimalPlace" })
     </div>
 </section>
@@ -23,7 +23,7 @@
     <label class="control-label">
         Default Value
     </label>
-    <div class="controls relativeSetter">
+    <div class="controls errortips">
         @Html.TextBoxFor(d => d.DefaultValue, new { @class = "span12", id = "currencyDefault", name = "currencyDefault" })
     </div>
 </section>
