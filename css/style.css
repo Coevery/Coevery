@@ -62,7 +62,7 @@ a {text-decoration: none; }
 	-webkit-transition: background-color 0.1s linear, color 0.1s linear;
 	-moz-transition: background-color 0.1s linear, color 0.1s linear;
 	border-color:#000;
-    padding-top:4px;
+    /*padding-top:4px;*/
     text-align:center;
     margin-right:10px;
 }
