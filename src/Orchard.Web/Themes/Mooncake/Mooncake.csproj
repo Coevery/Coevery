@@ -2040,8 +2040,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\InputWrapper.cshtml" />
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

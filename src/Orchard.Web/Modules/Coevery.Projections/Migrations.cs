@@ -88,7 +88,7 @@ namespace Coevery.Projections {
             return 3;
         }
         
-         public int UpdateFrom2() {
+         public int UpdateFrom3() {
             SchemaBuilder.CreateTable("EntityFilterRecord",
                 table => table
                     .Column<int>("Id", c => c.PrimaryKey().Identity())
@@ -96,7 +96,7 @@ namespace Coevery.Projections {
                     .Column<string>("Title")
                     .Column<int>("FilterGroupRecord_id")
                 );
-            return 3;
+            return 4;
         }
 
     }
