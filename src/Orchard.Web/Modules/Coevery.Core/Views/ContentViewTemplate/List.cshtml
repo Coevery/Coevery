@@ -40,12 +40,16 @@
                 <ul class="dropdown-menu">
                     <li ng-repeat="filter in definitionFilters" ng-click="loadFilter({{filter}})" style="cursor: pointer;">
                         <a>
-                            <i ng-class="{'icol-accept':currentFilter.Id == filter.Id}"></i>
+                            <i ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
                             {{filter.Title}}<div style="float: right; text-decoration: underline;" ng-click="deleteFilter(filter)">Delete</div>
                         </a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="" ng-click="createFilter()">Create filter</a></li>
+                    <li>
+                        <a href="" ng-click="createFilter()">
+                            <i class="viewUSelected"></i>Create filter
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -85,7 +89,7 @@
             <div class="accordion-group">
                 <div id="collapseHeader" class="collapseHeader" ng-click="expendCollapse()">
                     <span id="collapseBtn" class="icon-collapse-hide"></span>
-                    <span class="filterInfo">过滤器 总费用 &gt; 7.00, 总费用 &gt; 50.00, 总费用 &gt; 30.00</span>
+                    <span class="filterInfo">Filter</span>
                     <span id="closeFilterLink" class="close" ng-click="closeFilterCollapse()">×</span>
                 </div>
                 <div id="collapseZone">

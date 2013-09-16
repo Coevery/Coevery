@@ -28,12 +28,12 @@ namespace Coevery.Projections.FilterEditors.Forms {
                         _Operator: Shape.SelectList(
                             Id: "operator", Name: "Operator",
                             Size: 1,
-                            Classes: new[] { "textMedium", "tokenized" },
+                            //Classes: new[] { "show-tick" },
                             Multiple: false
                         ),
                         _Value: Shape.TextBox(
                             Id: "value", Name: "Value",
-                            Classes: new[] { "textMedium", "tokenized" }
+                            Classes: new[] { "filterInput" }
                             )
                         );
 
