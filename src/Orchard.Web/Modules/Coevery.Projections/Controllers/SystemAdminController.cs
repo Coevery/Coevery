@@ -34,7 +34,11 @@ namespace Coevery.Projections.Controllers {
             if (pluralService.IsPlural(id)) {
                 id = pluralService.Singularize(id);
             }
-            var viewModel = _projectionService.GetTempProjection(id);
+            var viewModel = new ProjectionEditViewModel {
+                ItemContentType = id,
+                DisplayName = string.Empty,
+                Fields = _projectionService.GetFieldDescriptors(id)
+            };
             return View("Edit", viewModel);
         }
 
@@ -50,9 +54,6 @@ namespace Coevery.Projections.Controllers {
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
         public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
-            if (id == 0) {
-                id = _projectionService.CreateProjection(viewModel.Name);
-            }
             var pickArray = picklist.Split(new[] {'$'}, StringSplitOptions.RemoveEmptyEntries);
             _projectionService.EditPost(id, viewModel, pickArray);
             return new EmptyResult();

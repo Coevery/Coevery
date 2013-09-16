@@ -47,7 +47,7 @@ namespace Coevery.Projections {
                                                 INNER JOIN Settings_ContentTypeDefinitionRecord t 
                                                 ON t.Id = v.ContentTypeDefinitionRecord_id");
 
-            var dropViewPartRecordTable =_dialect.GetDropTableString("Coevery_Core_ViewPartRecord");
+            var dropViewPartRecordTable = _dialect.GetDropTableString("Coevery_Core_ViewPartRecord");
             SchemaBuilder.ExecuteSql(dropViewPartRecordTable);
             SchemaBuilder.DropTable("LayoutPropertyRecord");
 
@@ -58,6 +58,26 @@ namespace Coevery.Projections {
                     .DisplayedAs("List View"));
 
             return 2;
+        }
+
+        public int UpdateFrom2() {
+
+            SchemaBuilder.CreateTable("ListViewPartRecord",
+                table => table
+                    .ContentPartRecord()
+                    .Column<string>("ItemContentType")
+                    .Column<string>("VisableTo")
+                );
+
+            SchemaBuilder.AlterTable("ListViewPartRecord",
+                table => table
+                    .AddColumn<bool>("IsDefault", column => column.WithDefault(false)));
+
+            ContentDefinitionManager.AlterTypeDefinition("ListViewPage",
+                cfg => cfg
+                    .WithPart("TitlePart"));
+
+            return 3;
         }
     }
 }

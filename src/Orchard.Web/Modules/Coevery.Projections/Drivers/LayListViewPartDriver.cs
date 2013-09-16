@@ -9,9 +9,9 @@ using Orchard.Projections.Models;
 
 namespace Coevery.Projections.Drivers {
 
-    public class LayoutPropertyPartDriver : ContentPartDriver<LayoutPropertyPart>
+    public class LayListViewPartDriver : ContentPartDriver<ListViewPart>
     {
-        protected override DriverResult Editor(LayoutPropertyPart part, IUpdateModel updater, dynamic shapeHelper)
+        protected override DriverResult Editor(ListViewPart part, IUpdateModel updater, dynamic shapeHelper)
         {
             if(updater == null) {
                 return null;

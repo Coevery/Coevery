@@ -12,30 +12,26 @@ namespace Coevery.Projections.Handlers {
     public class ProjectionEntityEventsHandler : IEntityEvents {
         private readonly IProjectionService _projectionService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IViewPartService _viewPartService;
         private readonly IContentManager _contentManager;
 
         public ProjectionEntityEventsHandler(
             IProjectionService projectionService,
             IContentDefinitionManager contentDefinitionManager,
-            IViewPartService viewPartService,
             IContentManager contentManager) {
             _projectionService = projectionService;
             _contentDefinitionManager = contentDefinitionManager;
-            _viewPartService = viewPartService;
             _contentManager = contentManager;
         }
 
         public void OnCreated(string entityName) {
-            var id = _projectionService.CreateProjection(entityName);
             var fields = _contentDefinitionManager.GetPartDefinition(entityName).Fields.Select(x => x.Name);
             var viewModel = new ProjectionEditViewModel {
-                Name = entityName,
-                DisplayName = entityName + "DefaultView",
-                PageRowCount = 50
+                ItemContentType = entityName,
+                DisplayName = entityName + " DefaultView",
+                PageRowCount = 50,
+                IsDefault = true
             };
-            _projectionService.EditPost(id, viewModel, fields);
-            _viewPartService.SetView(entityName, id);
+            _projectionService.EditPost(0, viewModel, fields);
         }
 
         public void OnDeleting(string entityName) {
