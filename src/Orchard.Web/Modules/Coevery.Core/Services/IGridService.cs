@@ -5,7 +5,8 @@ using System.Text;
 using Orchard;
 
 namespace Coevery.Core.Services {
-    public interface IGridService:IDependency {
-        object GetPageRows(int page, int rows, IEnumerable<object> totalRecords);
+    public interface IGridService : IDependency {
+        IEnumerable<TRow> GetPagedRows<TRow>(int page, int rows, IEnumerable<TRow> totalRecords);
+        IEnumerable<TRow> GetSortedRows<TRow>(string sidx, string sord, IEnumerable<TRow> rawRecords);
     }
 }

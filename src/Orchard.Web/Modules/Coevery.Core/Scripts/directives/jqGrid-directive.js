@@ -20,7 +20,7 @@
                   }
                   //logger.info("Initializing the grid");
                   $grid = $element.find("table.gridz");
-                  gridOptions.pager = $element.find(".gridz-pager").attr("id") || "gridz-pager";
+                  gridOptions.pager = '#'+ ($element.find(".gridz-pager").attr("id") || "gridz-pager");
                   gridOptions.gridComplete = function () {
                       var width;
                       width = $element.parent().width() - 1;
@@ -69,11 +69,23 @@
                       id = $(this).parents("tr:first").attr("id");
                       return editItem(id);
                   });
-                  $grid.on("click", ".view-action", function (event) {
+                  $grid.on("click.view-action", ".view-action", function (event) {
                       var id;
                       event.preventDefault();
                       id = $(this).attr("data-id");
                       return $scope.view(id);
+                  });
+                  $grid.on("click.edit-action", ".edit-action", function (event) {
+                      var id;
+                      event.preventDefault();
+                      id = $(this).attr("data-id");
+                      return $scope.edit(id);
+                  });
+                  $grid.on("click.delete-action", ".delete-action", function (event) {
+                      var id;
+                      event.preventDefault();
+                      id = $(this).attr("data-id");
+                      return $scope.delete(id);
                   });
                   $(window).bind('resize', function () {
                       $grid.setGridWidth($('#page-actions').width(), false); //Resized to new width as buttons
