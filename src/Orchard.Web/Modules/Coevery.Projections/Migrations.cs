@@ -47,7 +47,7 @@ namespace Coevery.Projections {
                                                 INNER JOIN Settings_ContentTypeDefinitionRecord t 
                                                 ON t.Id = v.ContentTypeDefinitionRecord_id");
 
-            var dropViewPartRecordTable =_dialect.GetDropTableString("Coevery_Core_ViewPartRecord");
+            var dropViewPartRecordTable = _dialect.GetDropTableString("Coevery_Core_ViewPartRecord");
             SchemaBuilder.ExecuteSql(dropViewPartRecordTable);
             SchemaBuilder.DropTable("LayoutPropertyRecord");
 
@@ -58,6 +58,34 @@ namespace Coevery.Projections {
                     .DisplayedAs("List View"));
 
             return 2;
+        }
+
+        public int UpdateFrom2() {
+
+            SchemaBuilder.AlterTable("ListViewPartRecord",
+                table => table
+                    .AddColumn<bool>("IsDefault", column => column.WithDefault(false)));
+
+            SchemaBuilder.ExecuteSql(@" UPDATE Coevery_Projections_ListViewPartRecord
+                                        SET	IsDefault = 1
+                                        FROM	Coevery_Projections_ListViewPartRecord l
+                                        WHERE NOT EXISTS(   SELECT * 
+                                                            FROM Coevery_Projections_ListViewPartRecord lvp 
+                                                            WHERE lvp.ItemContentType = l.ItemContentType AND lvp.IsDefault = 1)");
+
+            SchemaBuilder.ExecuteSql(@" UPDATE Orchard_Framework_ContentItemRecord
+                                        SET	ContentType_id	= (SELECT Id FROM Orchard_Framework_ContentTypeRecord WHERE Name = 'LayoutProperty')
+                                        FROM Coevery_Projections_ListViewPartRecord lvp INNER JOIN Orchard_Framework_ContentItemRecord i ON	i.Id = lvp.Id
+
+                                        UPDATE	Orchard_Framework_ContentTypeRecord
+                                        SET		Name = 'ListViewPage'
+                                        WHERE	Name = 'LayoutPropert'");
+
+            ContentDefinitionManager.AlterTypeDefinition("ListViewPage",
+                cfg => cfg
+                    .WithPart("TitlePart"));
+
+            return 3;
         }
     }
 }

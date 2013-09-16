@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
        'viewDefinitionService',
        ['$rootScope', '$resource', function ($rootScope, $resource) {
-           return $resource('api/CoeveryCore/ViewDefinition/:contentType:contentId',
+           return $resource('api/Projections/ViewDefinition/:contentType:contentId',
                { contentType: '@contentType' },
                { contentId: '@ContentId' },
                { update: { method: 'PUT' } });

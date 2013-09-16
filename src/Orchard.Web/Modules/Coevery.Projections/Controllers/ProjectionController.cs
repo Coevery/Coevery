@@ -7,7 +7,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Core.Services;
+using Coevery.Projections.Models;
 using Newtonsoft.Json.Linq;
+using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Core.Title.Models;
 using Orchard.Localization;
@@ -17,14 +19,15 @@ using Orchard.Utility.Extensions;
 namespace Coevery.Projections.Controllers {
     public class ProjectionController : ApiController {
         private readonly IContentManager _contentManager;
-        private readonly IViewPartService _viewPartService;
 
         public ProjectionController(
             IContentManager contentManager,
-            IViewPartService viewPartService) {
+            IOrchardServices orchardServices) {
             _contentManager = contentManager;
-            _viewPartService = viewPartService;
+            Services = orchardServices;
         }
+
+        public IOrchardServices Services { get; private set; }
 
         public IEnumerable<JObject> Get() {
             List<JObject> re = new List<JObject>();
@@ -46,25 +49,32 @@ namespace Coevery.Projections.Controllers {
                 id = pluralService.Singularize(id);
             }
 
-            List<JObject> re = new List<JObject>();
-            var projections = _contentManager.Query<ProjectionPart>().List().Where(t => t.As<TitlePart>().Title == id);
-            int viewId = _viewPartService.GetProjectionId(id);
-            foreach (var projectionPart in projections) {
-                string displayName = _contentManager.Get(projectionPart.Record.QueryPartRecord.Id).As<TitlePart>().Title;
-                JObject reObJ = new JObject();
-                reObJ["ContentId"] = projectionPart.Id;
-                reObJ["EntityType"] = projectionPart.As<TitlePart>().Title;
-                reObJ["DisplayName"] = displayName;
-                reObJ["Default"] = projectionPart.Id == viewId;
-                re.Add(reObJ);
+            var views = new List<JObject>();
+            var queries = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
+                .Where(v => v.ItemContentType == id);
+            var listViews = queries.List().ToList();
+            foreach (var record in listViews) {
+                var view = new JObject();
+                view["ContentId"] = record.Id;
+                view["EntityType"] = record.ItemContentType;
+                view["DisplayName"] = record.As<TitlePart>().Title;
+                view["Default"] = record.IsDefault;
+                views.Add(view);
             }
-            return re;
+            return views;
         }
 
         public void Post(dynamic viewPart) {
             int id = int.Parse(viewPart.Id.ToString());
-            string entityType = viewPart.EntityType.ToString();
-            _viewPartService.SetView(entityType, id);
+            var listView = Services.ContentManager.Get<ListViewPart>(id);
+
+            var queries = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
+                .Where(v => v.ItemContentType == listView.ItemContentType);
+            var listViews = queries.List().ToList();
+            foreach (var view in listViews) {
+                view.IsDefault = false;
+            }
+            listView.IsDefault = true;
         }
 
         public void Delete(int id) {

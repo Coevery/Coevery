@@ -37,8 +37,6 @@ namespace Coevery.Core.Controllers {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
-        private readonly ISiteService _siteService;
-        private readonly IViewPartService _projectionService;
 
         public ViewTemplateController(
             IOrchardServices orchardServices,
@@ -46,14 +44,11 @@ namespace Coevery.Core.Controllers {
             IContentDefinitionManager contentDefinitionManager,
             ITransactionManager transactionManager,
             ISiteService siteService,
-            IShapeFactory shapeFactory,
-            IViewPartService projectionService) {
+            IShapeFactory shapeFactory) {
             Services = orchardServices;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
             _transactionManager = transactionManager;
-            _siteService = siteService;
-            _projectionService = projectionService;
 
             T = NullLocalizer.Instance;
             Logger = NullLogger.Instance;
@@ -73,13 +68,11 @@ namespace Coevery.Core.Controllers {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             id = pluralService.Singularize(id);
             var contentType = _contentDefinitionManager.GetTypeDefinition(id);
-            int viewId = _projectionService.GetProjectionId(id);
 
             dynamic model = Services.New.Content__List();
             model.DisplayName(contentType.DisplayName);
             model.TypeDefinition(contentType);
             model.ModuleName(moduleName);
-            model.ViewId(viewId);
             return View(model);
         }
 
