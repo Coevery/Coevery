@@ -158,9 +158,7 @@ namespace Coevery.Core.Controllers {
                 return this.RedirectLocal(returnUrl);
             }
 
-            //return RedirectToAction("List", new {Id = id});
-            var adminRouteValues = _contentManager.GetItemMetadata(contentItem).AdminRouteValues;
-            return RedirectToRoute(adminRouteValues);
+            return Json(new { Id = contentItem.Id });
         }
 
         public ActionResult Edit(int id) {

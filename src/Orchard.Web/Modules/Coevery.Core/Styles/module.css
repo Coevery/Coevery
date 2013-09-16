@@ -145,3 +145,270 @@
     #page-toolbar .btn + .btn {
         margin-left: 5px;
     }
+
+
+
+    @media (min-width: 350px)
+    {
+        .inputError
+        {
+            display: block;
+            padding: 2px;
+            position: absolute;
+            z-index: 10;
+            right: 5px;
+            top: -10px;
+            font-size: 11px;
+            line-height: 16px;
+            color: #fff;
+            background-color: #cc2828;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .inputError:after
+        {
+            content: ' ';
+            display: block;
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: #cc2828;
+            right: 10px;
+            top: 20px;
+        }
+
+         .inputErrorLeft
+        {
+            display: block;
+            padding: 2px;
+            position: absolute;
+            z-index: 10;
+            left: 0px;
+            top: -25px;
+            font-size: 11px;
+            line-height: 16px;
+            color: #fff;
+            background-color: #cc2828;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .inputErrorLeft:after
+        {
+            content: ' ';
+            display: block;
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: #cc2828;
+            left: 10px;
+            top: 20px;
+        }
+
+        .inputErrorForField
+        {
+            display: block;
+            padding: 2px;
+            position: absolute;
+            z-index: 10;
+            left: 10px;
+            top: 90px;
+            font-size: 11px;
+            line-height: 16px;
+            color: #fff;
+            background-color: #cc2828;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: normal;
+            display:none;
+        }
+
+        .inputErrorForField:after
+        {
+            content: ' ';
+            display: block;
+            position: absolute;
+            border: 5px solid transparent;
+            border-top-color: #cc2828;
+            left: 5px;
+            top: 19px;
+        }
+    }
+
+
+    @media (max-width: 350px)
+    {
+        .inputError
+        {
+            font-size: 11px;
+        }
+
+    
+        .inputError:after
+        {
+        }
+
+        .inputErrorLeft
+        {
+            font-size: 11px;
+        }
+
+    
+        .inputErrorLeft:after
+        {
+        }
+
+        .inputErrorForField
+        {
+            font-size: 11px;
+            color: red;
+            display:none;
+        }
+
+        .inputErrorForField:after
+        {
+        }
+    }
+
+    .relativeSetter
+    {
+        position: relative;
+    }
+
+    .popoverTipTitle
+    {
+        text-align:center;
+    }
+
+    .popoverTipContent
+    {
+ 
+    }
+
+    .popoverTipIcon
+    {
+        position: absolute;
+        display: block;
+        right: -20px;
+        top: 8px;
+        cursor:pointer;
+        font-size:initial;
+    }
+
+
+    /*filter page css*/
+    .filter-collapse
+    {
+        font-size:13px;
+        display:none;
+    }
+
+    .filter-collapse .collapseHeader
+    {
+        padding: 2px; 
+        background-color: #fff6c3; 
+        cursor:pointer;
+    }
+
+    .filter-collapse .collapseHeader .filterInfo
+    {
+        font-weight:bold;
+    }
+
+    .filter-collapse .collapseZone
+    {
+        padding: 0px;
+        background-color: #fefefe;
+    }
+
+    .filter-collapse .collapseZone .filterForm
+    {
+        margin:0px;
+    }
+
+    .filterForm .filterCreatorWrap
+    {
+       padding: 2px; 
+       margin: 0px;
+    }
+
+    .filterForm .filterCreatorWrap .filterCreatorContent
+    {
+        float: left; 
+        padding: 5px;
+    }
+
+    .filterForm .filterCreatorWrap .filterInput
+    {
+        height: 16px;
+        line-height: 16px; 
+        margin-left:4px;
+    }
+
+    .filterForm .filterCreatorWrap .deleteBtn
+    {
+        line-height:30px;
+        float:left;
+        margin-top:3px;
+    }
+
+    .filterForm .filterAddNewWrap
+    {
+        padding: 10px 0px 10px 5px;
+    }
+
+
+    .filterForm .filterAppWrap
+    {
+        padding: 5px;
+    }
+
+    .filterForm .filterAppWrap .filterOkCancelWrap
+    {
+        float:left;
+    }
+
+    .filterForm .filterAppWrap .checkInput
+    {
+        display: inline-block;margin-left: 5px;float: left;padding-top: 3px;
+    }
+
+    .filterForm .filterAppWrap .filterInput
+    {
+        height: 16px;line-height: 16px;margin-left: 5px;
+    }
+
+ 
+    
+
+    .icon-collapse-show
+    {
+        margin-left: 4px; 
+        margin-bottom: 4px;
+        background-repeat: no-repeat; 
+        background-image: url('/OrchardLocal/Themes/Mooncake/Styles/images/twisty_sprite.png'); 
+        height: 11px; 
+        width: 11px; 
+        display: inline-block; 
+        cursor: pointer; 
+        background-position: 0 0px;
+        
+    }
+
+    .icon-collapse-hide
+    {
+        margin-left: 4px; 
+        margin-bottom: 4px;
+        background-repeat: no-repeat; 
+        background-image: url('/OrchardLocal/Themes/Mooncake/Styles/images/twisty_sprite.png'); 
+        height: 11px; 
+        width: 11px; 
+        display: inline-block; 
+        cursor: pointer; 
+        background-position: 0 -11px;
+    }
+

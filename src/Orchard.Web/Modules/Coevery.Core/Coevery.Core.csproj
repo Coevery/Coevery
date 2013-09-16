@@ -137,6 +137,7 @@
     <Compile Include="Models\CoeveryCommonPart.cs" />
     <Compile Include="Models\CoeveryCommonPartRecord.cs" />
     <Compile Include="Models\CoeveryCommonPartVersionRecord.cs" />
+    <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Models\ViewPartRecord.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
@@ -155,6 +156,8 @@
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\AnonymousRoleUpdater.cs" />
     <Compile Include="Services\DefaultDataMigrationInterpreter.cs" />
+    <Compile Include="Services\GridService.cs" />
+    <Compile Include="Services\IGridService.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />
     <Compile Include="Services\SchemaUpdateService.cs" />
@@ -178,6 +181,7 @@
     <Content Include="Scripts\app\detourService.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
+    <Content Include="Scripts\controllers\agGridCtrl.js" />
     <Content Include="Scripts\controllers\relatedentitylistcontroller.js" />
     <Content Include="Scripts\controllers\viewcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
@@ -185,6 +189,7 @@
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
     <None Include="Scripts\i18n\resources-locale_en-us.json" />
     <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
+    <Content Include="Scripts\directives\jqGrid-directive.js" />
     <Content Include="Scripts\directives\layout-directive.js" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />

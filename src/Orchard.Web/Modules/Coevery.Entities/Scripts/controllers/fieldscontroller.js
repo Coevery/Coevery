@@ -102,8 +102,8 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     fieldDataService.delete({ name: deleteField, parentname: entityName }, function () {
                         $scope.getAllField();
                         logger.success("Delete the field successful.");
-                    }, function () {
-                        logger.error("Failed to delete the field.");
+                    }, function (reason) {
+                        logger.error("Failed to delete the field:" + reason);
                     });
                 };
 

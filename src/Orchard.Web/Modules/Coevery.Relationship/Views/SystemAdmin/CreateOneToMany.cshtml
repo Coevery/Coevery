@@ -12,7 +12,7 @@
         <label class="control-label @labelClass">
             @label
         </label>
-        <div class="controls">
+        <div class="controls relativeSetter">
             @input
         </div>
     </section>
@@ -51,7 +51,7 @@
     <div id="page-actions" class="clearfix">
         <btn-actions>
             <button class="btn btn-small" data-ng-click="exit()">Back</button>
-            <button data-ng-click="save()" class="btn btn-primary btn-small">Save</button>
+            <button data-ng-click="saveAndView()" class="btn btn-primary btn-small">Save</button>
             <button class="btn btn-small btn-primary" ng-click="saveAndBack()">Save & Back</button>
         </btn-actions>
     </div>

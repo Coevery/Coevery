@@ -92,6 +92,16 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
 
 
           $scope.delete = function (id) {
+              $scope.entityId = id;
+              $('#myModalRelationship').modal({
+                  backdrop: 'static',
+                  keyboard: true
+              });
+          };
+
+          $rootScope.deleteRelationship = function () {
+              $('#myModalRelationship').modal('hide');
+              var id = $scope.entityId;
               var ids = [];
               if (id) {
                   ids.push(id);
@@ -102,9 +112,9 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
               }
               commonDataService.delete({ contentId: ids }, function () {
                   $scope.Refresh();
-                  logger.success('Delete the ' + $scope.entityTypeName + ' successful.');
+                  logger.success('Delete the relationship successful.');
               }, function () {
-                  logger.error('Failed to delete the lead.');
+                  logger.error('Failed to delete the relationship');
               });
           };
 

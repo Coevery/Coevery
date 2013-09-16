@@ -134,16 +134,19 @@
               $scope.filters.splice(index, 1);
           };
 
-          $scope.expendCollapse = function () {
-              if ($('#collapseBtn').hasClass('icon-collapse-up')) {
-                  $('#collapseBtn').addClass('icon-collapse-down');
-                  $('#collapseBtn').removeClass('icon-collapse-up');
-                  $('#closeFilterLink').css('display', '');
+          $("#closeFilterLink").bind("click", function (event) {
+              event.stopPropagation();
+          });
 
-              } else {
-                  $('#collapseBtn').removeClass('icon-collapse-down');
-                  $('#collapseBtn').addClass('icon-collapse-up');
+          $scope.expendCollapse = function () {
+              if ($('#collapseBtn').hasClass('icon-collapse-hide')) {
+                  $('#collapseBtn').removeClass('icon-collapse-hide');
+                  $('#collapseBtn').addClass('icon-collapse-show');
                   $('#closeFilterLink').css('display', 'none');
+              } else {
+                  $('#collapseBtn').removeClass('icon-collapse-show');
+                  $('#collapseBtn').addClass('icon-collapse-hide');
+                  $('#closeFilterLink').css('display', '');
               }
           };
 
@@ -152,26 +155,36 @@
           };
 
           $scope.openFilterCollapse = function (fiterId) {
-              $('#filterCollapse').css('display', '');
-              if ($('#collapseBtn').hasClass('icon-collapse-up')) return;
+              $('#filterCollapse').css('display', 'block');
+              if ($('#collapseBtn').hasClass('icon-collapse-show')) return;
+              $('#collapseHeader').click();
               $scope.expendCollapse();
-              $('#collapseBtn').click();
           };
 
           $scope.delete = function (id) {
+              $scope.entityId = id;
+              $('#myModalEntity').modal({
+                  backdrop: 'static',
+                  keyboard: true
+              });
+          };
+
+          $scope.deleteEntity = function () {
+              $('#myModalEntity').modal('hide');
+              var id = $scope.$$childTail.entityId;
               var ids = [];
               if (id) {
                   ids.push(id);
               } else {
-                  angular.forEach($scope.selectedItems, function (entity) {
+                  angular.forEach($scope.$$childTail.selectedItems, function (entity) {
                       ids.push(primaryKeyGetter(entity));
                   }, ids);
               }
               commonDataService.delete({ contentId: ids }, function () {
-                  $scope.Refresh();
-                  logger.success('Delete the ' + moduleName + ' successful.');
+                  $scope.$$childTail.Refresh();
+                  logger.success('Delete the entity successful.');
               }, function () {
-                  logger.error('Failed to delete the lead.');
+                  logger.error('Failed to delete the entity');
               });
           };
 

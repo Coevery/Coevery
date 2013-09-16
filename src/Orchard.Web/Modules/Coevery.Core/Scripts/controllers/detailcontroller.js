@@ -1,11 +1,15 @@
 ﻿define(['core/app/detourService', 'core/services/commondataservice'], function (detour) {
     detour.registerController([
       'GeneralDetailCtrl',
-      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$detour', '$http',
-      function ($timeout, $rootScope, $scope, $q, logger, $detour, $http) {
+      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$detour', '$http','$parse',
+      function ($timeout, $rootScope, $scope, $q, logger, $detour, $http, $parse) {
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
-          var validator = $("form[name=myForm]").validate();
+          var validator = $("form[name=myForm]").validate({
+              errorClass: "inputError"
+          });
+
+          
 
           $scope.save = function () {
               if (!validator.form()) {
@@ -18,12 +22,23 @@
                   method: "POST",
                   data: form.serialize() + '&submit.Save=Save',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-              }).then(function () {
+              }).then(function (response) {
                   logger.success('Save succeeded.');
+                  return response;
               }, function (reason) {
                   logger.error('Save Failed： ' + reason.data);
               });
               return promise;
+          };
+
+          $scope.saveAndView = function () {
+              var promise = $scope.save();
+              promise.then(function (response) {
+                  var getter = $parse('Id');
+                  var Id = getter(response.data);
+                  if (Id)
+                      $detour.transitionTo('Detail', { Module: moduleName, Id: Id });
+              });
           };
 
           $scope.saveAndBack = function () {
@@ -43,9 +58,9 @@
           };
 
           $scope.exit = function () {
-              if(window.history.length>1)
-                  window.history.back();
-              else
+              //if(window.history.length>1)
+              //    window.history.back();
+              //else
                 $detour.transitionTo('List', { Module: moduleName });
           };
 

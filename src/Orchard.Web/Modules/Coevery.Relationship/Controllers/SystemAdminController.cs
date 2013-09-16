@@ -108,9 +108,15 @@ namespace Coevery.Relationship.Controllers {
             }
 
             if (oneToMany.IsCreate) {
-                var errorMessage = _relationshipService.CreateRelationship(oneToMany);
-                if (!string.IsNullOrWhiteSpace(errorMessage)) {
-                    ModelState.AddModelError("OneToManyRelation", T(errorMessage).ToString());
+                var backMessage = _relationshipService.CreateRelationship(oneToMany);
+                int relationId;
+                if (int.TryParse(backMessage.ToString(),out relationId))
+                {
+                    return Json(new { relationId = relationId });
+                }
+                if (!string.IsNullOrWhiteSpace(backMessage))
+                {
+                    ModelState.AddModelError("OneToManyRelation", T(backMessage).ToString());
                     return ResponseError("");
                 }
             }
@@ -188,9 +194,15 @@ namespace Coevery.Relationship.Controllers {
             }
 
             if (manyToMany.IsCreate) {
-                var errorMessage = _relationshipService.CreateRelationship(manyToMany);
-                if (!string.IsNullOrWhiteSpace(errorMessage)) {
-                    ModelState.AddModelError("ManyToManyRelation", T(errorMessage).ToString());
+                var backMessage = _relationshipService.CreateRelationship(manyToMany);
+                int relationId;
+                if (int.TryParse(backMessage.ToString(), out relationId))
+                {
+                    return Json(new { relationId = relationId });
+                }
+                if (!string.IsNullOrWhiteSpace(backMessage))
+                {
+                    ModelState.AddModelError("ManyToManyRelation", T(backMessage).ToString());
                     return ResponseError("");
                 }
             }

@@ -12,7 +12,6 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
               '<span class="btn-link" ng-click="view(row.entity.Id)">{{COL_FIELD}}</span>' +
               '</div>';
           $scope.mySelections = [];
-          var moduleName = $stateParams.Module;
           var t = function (str) {
               var result = i18n.t(str);
               return result;
@@ -33,11 +32,20 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (id) {
-              perspectiveDataService.delete({ Id: id }, function () {
+              $scope.perspectiveId = id;
+              $('#myModalPerspective').modal({
+                  backdrop: 'static',
+                  keyboard: true
+              });
+          };
+
+          $scope.deletePerspective = function () {
+              $('#myModalPerspective').modal('hide');
+              perspectiveDataService.delete({ id: $scope.perspectiveId }, function () {
                   $scope.getAllPerspective();
-                  logger.success('Delete the ' + moduleName + ' successful.');
-              }, function () {
-                  logger.error('Failed to delete the ' + moduleName);
+                  logger.success('Delete the perspective successful.');
+              }, function (result) {
+                  logger.error('Failed to delete the perspective:' + result.data.Message);
               });
           };
 
