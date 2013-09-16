@@ -82,3 +82,13 @@ div.ui-state-default.ui-jqgrid-pager.ui-corner-bottom {
 .ui-jqgrid .ui-jqgrid-htable tr th div {
     height: 20px;
 }
+
+td [class^="icon-"], 
+td [class*=" icon-"] {
+    padding: 0 3px;
+}
+
+td .btn-link {
+    position: relative;
+    left: -1%;
+}

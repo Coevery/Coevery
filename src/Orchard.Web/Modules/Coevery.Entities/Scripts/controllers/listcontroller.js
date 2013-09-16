@@ -19,14 +19,14 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           //var columns = [t('DisplayName'), t('IsDeployed')];
-          var columns = ['Id', 'DisplayName', 'IsDeployed'];
+          var columns = ['Id', 'Display Name', 'Is Deployed'];
 
           var metadataColumnDefs = [
               { "name": columns[0], "index": columns[0], hidden: true },
               {
-                  "name": columns[1], "index": columns[1], width: 450, formatter: cellLinkTemplate, align: 'center'
+                  "name": 'DisplayName', "index": 'DisplayName', width: 450, formatter: cellLinkTemplate, align: 'center'
               },
-              { "name": columns[2], "index": columns[2], width: 450, align: 'center' }];
+              { "name": 'IsDeployed', "index": 'IsDeployed', width: 450, align: 'center' }];
 
           $scope.selectedItems = [];
           $scope.gridOptions = {

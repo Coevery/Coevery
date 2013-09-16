@@ -30,8 +30,7 @@ namespace Coevery.Core.Services {
             try {
                 if (sord == "asc") {
                     return rawRecords.OrderBy(row => row.GetType().GetProperty(sidx).GetValue(row, null));
-                }
-                else if (sord == "desc") {
+                } else if (sord == "desc") {
                     return rawRecords.OrderByDescending(row => row.GetType().GetProperty(sidx).GetValue(row, null));
                 }
             }
@@ -39,7 +38,8 @@ namespace Coevery.Core.Services {
                 Logger.Log(LogLevel.Error, ex, "The column name is invalid property for the row model.");
             }
             finally {
-                Logger.Log(LogLevel.Error, null,"Sort rows for grid failed!");
+                if (string.IsNullOrWhiteSpace(sidx) || string.IsNullOrWhiteSpace(sord))
+                    Logger.Log(LogLevel.Error, null, "Sort rows for grid failed!");
             }
             return null;
         }
