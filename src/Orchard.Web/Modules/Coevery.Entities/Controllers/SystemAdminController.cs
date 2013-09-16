@@ -165,7 +165,7 @@ namespace Coevery.Entities.Controllers {
             _schemaUpdateService.CreateTable(viewModel.Name,
                 context => context.FieldColumn(viewModel.FieldName, "CoeveryTextField"));
 
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            return Json(new { entityName = viewModel.Name });
         }
 
         public ActionResult Edit(string id) {

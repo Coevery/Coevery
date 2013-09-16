@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Core.Services;
+using Coevery.Core.Models;
 using Coevery.Entities.Events;
+using Coevery.Entities.Models;
 using Coevery.Entities.Services;
 using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
@@ -30,29 +33,43 @@ namespace Coevery.Entities.Controllers {
 
         public Localizer T { get; set; }
 
-        // GET api/Entities/Entity
-        public IEnumerable<object> Get() {
+        //GET api/Entities/Entity
+        public object Get(int rows, int page, string sidx, string sord) {
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
 
             var query = from type in metadataTypes
-                let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                select new {type.DisplayName, type.Name, setting.IsDeployed};
-            return query;
+                        let setting = type.Settings.GetModel<DynamicTypeSettings>()
+                        select new EntitiyListGridModel {
+                            Id = type.Name, 
+                            DisplayName = type.DisplayName, 
+                            IsDeployed = setting.IsDeployed
+                        };
+
+            var totalRecords = query.Count();
+            //var postsortPage = _gridService.GetSortedRows(sidx, sord, query);
+            //_gridService.GetPagedRows(page, rows, postsortPage)
+
+            return new {
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                page = page,
+                records = totalRecords,
+                rows = query
+            };
         }
 
-        // GET api/Entities/Entity/:entityName
+        //GET api/Entities/Entity/:entityName
         public object Get(string name) {
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
 
             var query = from type in metadataTypes
-                let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                let fields = type.Fields.Select(f => new {
-                    f.Name,
-                    f.DisplayName,
-                    FieldType = f.FieldDefinition.Name.CamelFriendly(),
-                    f.Settings.GetModel<FieldSettings>(f.FieldDefinition.Name + "Settings").IsSystemField
-                })
-                select new {type.DisplayName, type.Name, setting.IsDeployed, Fields = fields};
+                        let setting = type.Settings.GetModel<DynamicTypeSettings>()
+                        let fields = type.Fields.Select(f => new {
+                            f.Name,
+                            f.DisplayName,
+                            FieldType = f.FieldDefinition.Name.CamelFriendly(),
+                            f.Settings.GetModel<FieldSettings>(f.FieldDefinition.Name + "Settings").IsSystemField
+                        })
+                        select new { type.DisplayName, type.Name, setting.IsDeployed, Fields = fields };
             var entityType = query.SingleOrDefault();
             return entityType;
         }

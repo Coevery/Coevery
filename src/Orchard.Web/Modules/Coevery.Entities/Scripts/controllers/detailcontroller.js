@@ -14,12 +14,21 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     $detour.transitionTo('EntityEdit', { Id: $stateParams.Id });
                 };
 
-                $scope.delete = function() {
+                $scope.delete = function () {
+                    $('#myModalEntity').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    });
+                   
+                };
+
+                $scope.deleteEntity = function () {
+                    $('#myModalEntity').modal('hide');
                     entityDataService.delete({ name: $stateParams.Id }, function () {
                         $detour.transitionTo('EntityList');
                         logger.success("Delete the entity successful.");
                     }, function (reason) {
-                        logger.error("Failed to delete the entity." + reason);
+                        logger.error("Failed to delete the entity:" + reason);
                     });
                 };
                 

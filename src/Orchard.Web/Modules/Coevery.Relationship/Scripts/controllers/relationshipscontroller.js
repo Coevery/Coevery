@@ -59,11 +59,20 @@ define(['core/app/detourService'], function (detour) {
                     }
                 };
                 $scope.delete = function (contentId) {
-                    relationshipDataService.delete({ RelationshipId: contentId }, function () {
+                    $scope.relationshipId = contentId;
+                    $('#myModalRelationship').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    });
+                };
+
+                $scope.deleteRelationship = function () {
+                    $('#myModalRelationship').modal('hide');
+                    relationshipDataService.delete({ RelationshipId: $scope.relationshipId }, function () {
                         $scope.getAllRelationship();
-                        logger.success("Delete the item successful.");
-                    }, function (result) {
-                        logger.error("Failed to delete the relationship:" + result.data.Message);
+                        logger.success("Delete the relationship successful.");
+                    }, function (reason) {
+                        logger.error("Failed to delete the relationship:" + reason);
                     });
                 };
             }]

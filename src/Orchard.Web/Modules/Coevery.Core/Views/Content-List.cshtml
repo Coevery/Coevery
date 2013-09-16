@@ -16,7 +16,7 @@
                     <button class="btn btn-small" data-ng-click="edit()" data-ng-disabled="selectedItems.length > 1">
                         <i class="icon-edit"></i>&nbsp;Edit
                     </button>
-                    <button class="btn btn-small">
+                    <button class="btn btn-small" data-ng-click="delete()">
                         <i class="icon-remove"></i>&nbsp;Delete
                     </button>
                 </div>
@@ -91,77 +91,57 @@
             </div>
         </div>
 
-        <div class="row-fluid">
-            <div id="filterCollapse" class="accordion" style="margin-top: 10px; margin-bottom: 10px; display: none;">
+       <div id="filterCollapse" class="row-fluid filter-collapse">
+            <div class="accordion">
                 <div class="accordion-group">
-                    <div class="accordion-heading" style="background-color: rgb(255,237,135);">
-                        <div class="accordion-toggle" style="cursor: auto;">
-                            <a style="background: transparent;" data-toggle="collapse"
-                                data-parent="#demo-accordion-01" href="#collapse-01">
-                                <span class="btn" style="background: transparent; border: 0px;" ng-click="expendCollapse()"><i id="collapseBtn" class="icon-collapse-down"></i></span>
-                            </a>
-                            <span style="background: transparent;">过滤器 总费用 > 7.00, 总费用 > 50.00, 总费用 > 30.00</span>
-                            <span style="background: transparent; float: right;"><a id="closeFilterLink" ng-click="closeFilterCollapse()" style="cursor: pointer; background: transparent; font-size: 25px; color: rgb(51,84,127);">×</a></span>
-                        </div>
-
+                    <div id="collapseHeader" class="collapseHeader" data-toggle="collapse" href="#collapseZone" data-ng-click="expendCollapse()">
+                        <span id="collapseBtn" class="icon-collapse-hide"></span>
+                        <span class="filterInfo">过滤器 总费用 &gt; 7.00, 总费用 &gt; 50.00, 总费用 &gt; 30.00</span>
+                        <span id="closeFilterLink" class="close" data-ng-click="closeFilterCollapse()">×</span>
                     </div>
-                    <div id="collapse-01" class="collapse" style="background-color: rgb(255,246,195);">
-                        <div class="accordion-inner" style="padding: 0px;">
-
-                            <div class="widget-content form-container">
-                                <form class="form-horizontal">
-
-                                    <div ng-repeat="filter in filters" id="input_cloning_template{{filter.id}}" class="control-group" style="border-top: 0px; border-bottom: 1px solid #ccc; padding: 5px 20px 5px 20px; margin: 0px;" idtemplate="input_cloning_template">
-                                        <div class="btn-toolbar" style="margin: 0px; float: left;">
-                                            <div class="btn-group">
-                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                    <span>总费用{{filter.id}}</span>
+                    <div id="collapseZone" class="collapse">
+                        <div class="accordion-inner collapseZone">
+                            <div class="form-horizontal filterForm">
+                                <div class="control-group filterCreatorWrap" style="margin:0px;">
+                                    <div class="filterCreatorContent">
+                                        <div class="btn-group">
+                                            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                                                总费用
+                                                <span class="caret"></span>
+                                            </button><ul class="dropdown-menu">
+                                                <li><a href="javascript:void(0);">总费用</a></li>
+                                                <li><a href="javascript:void(0);">态状</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="btn-group" style="margin-left:0px;">
+                                            <div class="btn-group" >
+                                                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                                                    &gt;
                                                     <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" style="">
-                                                    <li title="" style="cursor: pointer;">态状</li>
-                                                    <li title="" style="cursor: pointer;">总费用</li>
+                                                </button><ul class="dropdown-menu">
+                                                    <li><a href="javascript:void(0);">&gt;</a></li>
+                                                    <li><a href="javascript:void(0);">&lt;</a></li>
                                                 </ul>
                                             </div>
-                                            <div class="btn-group">
-                                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                    <span>></span>
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" style="">
-                                                    <li title="" style="cursor: pointer;">></li>
-                                                    <li title="" style="cursor: pointer;"><</li>
-                                                </ul>
-                                            </div>
-                                            <input type="text" id="input_cloning_0_input" name="text[0]" idtemplate="input_cloning_%23index%23_input" nametemplate="text%5B%23index%23%5D">
-                                        </div>
-                                        <span class="close" id="input_cloning_remove_current" ng-click="removeFilter($index)" style="display: inline; float: right;">×</span>
-                                    </div>
-
-                                    <div class="control-group" style="border-top: 0px; padding-top: 15px; padding-left: 22px;">
-                                        <div style="float: left;">
-                                            <span class="btn btn-mini" id="input_cloning_add" ng-click="addFilter()"><i class="icon-plus"></i></span><span>&nbsp;Add another</span>
-                                        </div>
-                                        <div style="margin-left: 10px; float: left;">
-
-                                            <label class="checkbox">
-                                                <input type="checkbox">
-                                                Save Filter
-                                            </label>
-                                        </div>
-
-                                        <div style="margin-left: 10px; float: left;">
-                                            <label class="span1" style="padding-right: 8px;">VisableTo</label>
-                                            <select id="userDropdown" class="span2" style="margin-top: -3px;">
-                                                <option>Me</option>
-                                            </select>
+                                            <input type="text" class="filterInput">
                                         </div>
                                     </div>
-                                    <div style="margin: 0 0 5px 20px;">
-                                        <button type="submit" class="btn btn-primary">Apply</button>
-                                        <button class="btn" ng-click="closeFilterCollapse()">Close</button>
+                                    <span class="close deleteBtn">×</span>
+                                </div>
+                                <div class="filterAddNewWrap">
+                                    <a href="javascript:void(0);"> + Add another</a>
+                                </div>
+                                <div class="filterAppWrap">
+                                    <div class="filterOkCancelWrap">
+                                        <button class="btn btn-small btn-primary">Apply</button>
+                                        <button class="btn btn-small" data-ng-click="closeFilterCollapse()">Close</button>
                                     </div>
-                                </form>
+                                    <label class="checkbox checkInput">
+                                        <input type="checkbox">
+                                        Save Filter
+                                    </label>
+                                    <input type="text" class="filterInput" placeholder="enter the filter's name">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -173,4 +153,18 @@
             <section class="gridStyle" data-ng-grid="gridOptions"></section>
         </div>
     </section>
+</section>
+<section id="myModalEntity" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Confirm</h3>
+    </div>
+    <div class="modal-body">
+        <p>You really want to delete this entity?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+        <button class="btn btn-primary" ng-click="deleteEntity()">Yes</button>
+        <input type="hidden" ng-model="entityId"/>
+    </div>
 </section>

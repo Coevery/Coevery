@@ -7,7 +7,7 @@
     <div id="page-actions" class="clearfix">
         <btn-actions>
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
-            <button type="button" class="btn btn-small btn-primary" data-ng-click="save()">Save</button>
+            <button type="button" class="btn btn-small btn-primary" data-ng-click="saveAndView()">Save</button>
             <button class="btn btn-small btn-primary" ng-click="saveAndBack()">Save & Back</button>
         </btn-actions>
     </div>
@@ -23,13 +23,13 @@
                         <legend>General Information</legend>
                         <section class="data-row control-group">
                             <label class="control-label required" for="DisplayName">@T("Display Name")</label>
-                            <div class="controls">
+                            <div class="controls relativeSetter">
                                 @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus",required="" })
                             </div>
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required" for="Name">@T("Name")</label>
-                            <div class="controls">
+                            <div class="controls relativeSetter">
                                 @Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
                                 <span class="help-block">@T("Technical name of the type.")</span>
                             </div>
@@ -52,17 +52,18 @@
                         </section>
                         <section class="data-row control-group">                          
                             <label class="control-label required" for="FieldLabel">@T("Record Name Label")</label>
-                            <div class="controls">
+                            <div class="controls relativeSetter">
                                 @Html.TextBoxFor(m => m.FieldLabel, new { @class = "span12 labelForFieldName", required="" })
                             </div>
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required" for="FieldName">@T("Record Name")</label>
-                            <div class="controls">
+                            <div class="controls relativeSetter">
                                 @Html.TextBoxFor(m => m.FieldName, new { @class = "span12 nameisnotid required safename", @id = "FieldName" })
                             </div>
                         </section>
                     </fieldset>
+                    //@Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
                 }
             </div>
         </div>
@@ -71,7 +72,6 @@
 
 <script type="text/javascript">
     $(function () {
-
         //Validation
         $.validator.addMethod("safename", function (value) {
             return (/^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value));
@@ -85,6 +85,7 @@
                     this.element(element);
                 }
             },
+            errorClass: "inputError"
         });
 
         //Auto get name

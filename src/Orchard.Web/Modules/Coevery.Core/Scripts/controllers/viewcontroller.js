@@ -33,9 +33,9 @@
                 };
 
                 $scope.exit = function () {
-                    if (window.history.length > 1)
-                        window.history.back();
-                    else
+                    //if (window.history.length > 1)
+                    //    window.history.back();
+                    //else
                         $detour.transitionTo('List', { Module: moduleName });
                 };
                 $scope.edit = function () {

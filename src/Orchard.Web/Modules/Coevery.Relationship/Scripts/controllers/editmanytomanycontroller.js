@@ -4,11 +4,15 @@ define(['core/app/detourService'], function (detour) {
         'EditManyToManyCtrl',
         ['$scope', 'logger', '$detour', '$stateParams', '$http',
             function ($scope, logger, $detour, $stateParams, $http) {
-                
-                $scope.save = function () {
+
+                var validator = $("#manytomany-form").validate({
+                    errorClass: "inputError"
+                });
+
+                $scope.saveAndView = function () {
                     ToggleReadonly(false);
                     var form = $('#manytomany-form');
-                    if (!checkValid(form)) {
+                    if (!validator.form()) {
                         return null;
                     }
                     var promise = $http({
@@ -30,7 +34,7 @@ define(['core/app/detourService'], function (detour) {
                 };
                 
                 $scope.saveAndBack = function () {
-                    var promise = $scope.save();
+                    var promise = $scope.saveAndView();
                     promise && promise.then(function () {
                         $scope.exit();
                     });
@@ -44,14 +48,3 @@ function ToggleReadonly(condition) {
     $("#relation-name").prop('disabled', condition);
     $("input.related-entity").prop('disabled', condition);
 }
-
-function checkValid(form) {
-    var validator = form.validate();
-    if (!validator) {
-        return false;
-    }
-    if (!validator.form()) {
-        return false;
-    }
-    return true;
-};

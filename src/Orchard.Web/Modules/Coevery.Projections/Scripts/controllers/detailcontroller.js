@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function(detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource','$http', 'projectionDataService', 'viewmodelDataService',
-            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource,$http, projectionDataService, viewmodelDataService) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource','$http', 'projectionDataService', 'viewmodelDataService','$parse',
+            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, $http, projectionDataService, viewmodelDataService, $parse) {
                 var name = $stateParams.Id;
                 $scope.mySelections = [];
                 $scope.fieldCoumns = [];
@@ -39,9 +39,13 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 }
             };
 
+                var validator = $("form[name=myForm]").validate({
+                    errorClass: "inputError"
+                });
+
                 $scope.save = function () {
                     var form = $("form[name=myForm]");
-                    if (!checkValid(form)) {
+                    if (!validator.form()) {
                         return null;
                     }
                     var pickListValue = '';
@@ -56,12 +60,23 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         method: "POST",
                         data: form.serialize() + '&submit.Save=Save',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                    }).then(function () {
+                    }).then(function (response) {
                         logger.success('Save succeeded.');
+                        return response;
                     }, function (reason) {
                         logger.error('Save Failed： ' + reason);
                     });
                     return promise;
+                };
+
+                $scope.saveAndView = function () {
+                    var promise = $scope.save();
+                    promise.then(function (response) {
+                        var getter = $parse('id');
+                        var id = getter(response.data);
+                        if (id)
+                            $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
+                    });
                 };
 
                 $scope.saveAndBack = function () {
@@ -153,14 +168,3 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
             }]
     ]);
 });
-
-function checkValid(form) {
-    var validator = form.validate();
-    if (!validator) {
-        return false;
-    }
-    if (!validator.form()) {
-        return false;
-    }
-    return true;
-};

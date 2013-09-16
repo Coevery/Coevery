@@ -2,7 +2,7 @@
 @model OptionSetFieldSettings
 <section class="control-group data-row">
     <label class="control-label">@T("Options")</label>
-    <div class="controls">
+    <div class="controls relativeSetter">
         @Html.TextAreaFor(m => m.Options, new {@class = "span12", rows = "25", cols = "80", required=""})
         <p class="help-block">@T("Enter an option per line.")</p>
     </div>
