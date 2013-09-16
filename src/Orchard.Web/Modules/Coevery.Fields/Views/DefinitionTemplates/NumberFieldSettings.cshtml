@@ -5,7 +5,7 @@
     <label class="control-label" for="numberLength">
         Length
     </label>
-    <div class="controls relativeSetter">
+    <div class="controls errortips">
         @Html.TextBoxFor(l => l.Length,new { @class = "span12 number" ,id = "numberLength"})
         @Html.ValidationMessageFor(m=>m.Length)
     </div>
@@ -15,7 +15,7 @@
     <label class="control-label" for="numberDot">
         Decimal Places
     </label>
-    <div class="controls relativeSetter">
+    <div class="controls errortips">
         @Html.TextBoxFor(d => d.DecimalPlaces,new { @class = "span12 number" ,id = "numberDot"})
         @Html.ValidationMessageFor(m=>m.Length)
     </div>
@@ -25,7 +25,7 @@
     <label class="control-label" for="numberDefault">
         Default Value
     </label>
-    <div class="controls relativeSetter">
+    <div class="controls errortips">
         @Html.TextBoxFor(d => d.DefaultValue,new { @class = "span12 number" ,id = "numberDefault"})
         @Html.ValidationMessageFor(m=>m.DefaultValue)
     </div>

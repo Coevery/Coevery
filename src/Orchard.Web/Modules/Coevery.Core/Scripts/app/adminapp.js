@@ -1,7 +1,7 @@
-﻿define(['angular-detour', 'core/app/formdesignerservice'], function () {
+﻿define(['angular-detour', 'core/app/formdesignerservice', 'core/directives/common'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner', 'coevery.grid', 'SharedServices', 'ui.bootstrap']);
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner', 'coevery.grid', 'SharedServices', 'ui.bootstrap', 'coevery.common']);
     coevery.config(['$locationProvider', '$provide', '$detourProvider',
         function ($locationProvider, $provide, $detourProvider) {
             $detourProvider.loader = {
@@ -36,7 +36,7 @@
             //that it the only reason this is necessary
             $rootScope.$detour = $detour;
             $rootScope.$stateParams = $stateParams;
-            $rootScope.$on('$viewContentLoaded',function() {
+            $rootScope.$on('$viewContentLoaded', function () {
                 $(window).scrollTop(0);
             });
 

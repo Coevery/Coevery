@@ -1,7 +1,7 @@
-﻿define(['angular-detour'], function () {
+﻿define(['angular-detour', 'core/directives/common'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.compat', 'ui.utils', 'coevery.layout', 'coevery.grid', 'SharedServices', 'angular-underscore']);
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.compat', 'ui.utils', 'coevery.layout', 'coevery.grid', 'SharedServices', 'angular-underscore', 'coevery.common']);
     coevery.config(['$detourProvider', '$provide',
         function ($detourProvider, $provide) {        
             $detourProvider.loader = {
@@ -29,6 +29,11 @@
             $rootScope.$detour = $detour;
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
+
+            $rootScope.$on('$viewContentLoaded', function () {
+               
+            });
+
             $rootScope.i18nextOptions = {
                 resGetPath: 'i18n/__ns_____lng__.json',
                 lowerCaseLng: true,

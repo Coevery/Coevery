@@ -14,8 +14,8 @@
         <div id="page-actions" class="clearfix">
             <btn-actions>
                 <button class="btn btn-small" ng-click="exit()">Back</button>
-                <button class="btn btn-small btn-primary" ng-click="saveAndView()">Save</button>
-                <button class="btn btn-small btn-primary" ng-click="saveAndBack()">Save & Back</button>
+                <button class="btn btn-small btn-primary" data-indi-click="saveAndView()">Save</button>
+                <button class="btn btn-small btn-primary" data-indi-click="saveAndBack()">Save & Back</button>
             </btn-actions>
         </div>
 
@@ -33,17 +33,4 @@
         </div>
     </section>
 </section>
-<script type="text/javascript">
-    var popShow = function (target) {
-        var targetObj = $(target).parent().find("input,select").first();
-        targetObj.popover('show');
-        targetObj.focus();
-    }
-
-    var hideShow = function (target) {
-        var targetObj = $(target).parent().find("input,select").first();
-        targetObj.popover('destroy');
-        targetObj.blur();
-    }
-</script>
 @Display(Model)

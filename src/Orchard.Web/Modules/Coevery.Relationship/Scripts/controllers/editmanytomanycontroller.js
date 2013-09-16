@@ -38,6 +38,7 @@ define(['core/app/detourService'], function (detour) {
                     promise && promise.then(function () {
                         $scope.exit();
                     });
+                    return promise;
                 };
             }]
     ]);

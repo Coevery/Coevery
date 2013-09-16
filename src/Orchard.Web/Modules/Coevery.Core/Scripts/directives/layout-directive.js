@@ -49,7 +49,7 @@ angular.module('coevery.layout', [])
             }
         };
     })
-    .directive('fdField', function () {
+    .directive('fdField', function ($compile) {
         return {
             template: function (element) {
                 return $('.edit-mode:first').length
@@ -61,6 +61,7 @@ angular.module('coevery.layout', [])
             link: function (scope, element, attrs) {
                 var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]');
                 element.html(template.text());
+                $compile(element.children())(scope);
             }
         };
     })

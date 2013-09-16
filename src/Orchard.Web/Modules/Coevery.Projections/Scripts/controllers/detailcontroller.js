@@ -77,6 +77,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         if (id)
                             $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
                     });
+                    return promise;
                 };
 
                 $scope.saveAndBack = function () {
@@ -85,6 +86,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         $scope.exit();
                     }, function () {
                     });
+                    return promise;
                 };
                 
                 $scope.change = function() {
