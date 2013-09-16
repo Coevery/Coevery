@@ -3,44 +3,40 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
       'EntityListCtrl',
-      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', 
+      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService',
       function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService) {
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-              '<ul class="row-actions pull-right hide">' +
-              '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
-              '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
-              '</ul>' +
-              '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
-              '</div>';
-          $scope.selectedItems = [];
-
           var t = function (str) {
               var result = i18n.t(str);
               return result;
           };
 
-          var metadataColumnDefs = [
-              { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString },
-              { field: 'IsDeployed', displayName: t('IsDeployed') }];
-
-          $scope.pagingOptions = {
-              pageSizes: [50, 100, 200],
-              pageSize: 50,
-              currentPage: 1
+          var cellLinkTemplate = function (cellvalue, options, rowObject) {
+              return '<ul class="row-actions pull-right hide">' +
+                  '<li class="icon-edit edit-action" data-id="' + options.rowId + '" title="Edit"></li>' +
+                  '<li class="icon-remove delete-action" data-id="' + options.rowId + '" title="Delete"></li>' +
+                  '</ul>' +
+                  '<span class="btn-link view-action" data-id="' + options.rowId + '">' + cellvalue +
+                  '</span>';
           };
 
-          $scope.totalServerItems = 2;
+          //var columns = [t('DisplayName'), t('IsDeployed')];
+          var columns = ['Id', 'DisplayName', 'IsDeployed'];
 
+          var metadataColumnDefs = [
+              { "name": columns[0], "index": columns[0], hidden: true },
+              {
+                  "name": columns[1], "index": columns[1], width: 450, formatter: cellLinkTemplate, align: 'center'
+              },
+              { "name": columns[2], "index": columns[2], width: 450, align: 'center' }];
+
+          $scope.selectedItems = [];
           $scope.gridOptions = {
-              data: 'myData',
-              enablePaging: true,
-              showFooter: true,
-              multiSelect: true,
-              enableRowSelection: true,
-              showSelectionCheckbox: true,
-              selectedItems: $scope.selectedItems,
-              columnDefs: metadataColumnDefs,
-              pagingOptions: $scope.pagingOptions
+              datatype: "json",
+              url: "api/entities/entity/request",
+              colNames: columns,
+              colModel: metadataColumnDefs,
+              rowNum: 10,
+              rowList: [10, 20, 50],
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
@@ -79,15 +75,39 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           $scope.getAllMetadata = function () {
+              $("#gridList").trigger("reloadGrid");
+          };
+
+      }]
+    ]);
+});
+
+//Abondoned codes
+/*
+$scope.pagingOptions = {
+              pageSizes: [50, 100, 200],
+              pageSize: 50,
+              currentPage: 1
+          };
+
+
+var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
+              '<ul class="row-actions pull-right hide">' +
+              '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
+              '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
+              '</ul>' +
+              '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
+              '</div>';
+          $scope.selectedItems = [];
+
+          var metadataColumnDefs = [
+              { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString },
+              { field: 'IsDeployed', displayName: t('IsDeployed') }];
+
               var metadatas = entityDataService.query(function () {
                   $scope.myData = metadatas;
                   $scope.totalServerItems = metadatas.length;
               }, function () {
                   logger.error("Failed to fetched Metadata.");
               });
-          };
-
-          $scope.getAllMetadata();
-      }]
-    ]);
-});
+*/
