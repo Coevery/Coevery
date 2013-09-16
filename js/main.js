@@ -64,7 +64,7 @@ jQuery(function ($) {
         progress_bar: 1,			// Timer for each slide							
         mouse_scrub: 0
     });
-    setTimeout($("#defaultslide").fadeOut("slow").remove(), 3000);
+    //setTimeout($("#defaultslide").fadeOut("slow").remove(), 3000);
 });
 
 jQuery(document).ready(function() {

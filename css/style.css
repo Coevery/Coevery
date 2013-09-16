@@ -43,6 +43,10 @@ a {text-decoration: none; }
 
 /*add by philo*/
 
+header h2{
+    margin-top:40px;
+}
+
 .right{
     float:right;
     margin-right:10px;
