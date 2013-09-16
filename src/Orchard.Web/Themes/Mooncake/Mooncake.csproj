@@ -577,6 +577,9 @@
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
     <Content Include="Scripts\plugins\bootstrap-select\bootstrap-select.js" />
     <Content Include="Scripts\plugins\bootstrap-select\bootstrap-select.min.js" />
+    <Content Include="Scripts\plugins\i18n\grid.locale-en.js" />
+    <Content Include="Scripts\plugins\jquery.jqGrid.min.js" />
+    <Content Include="Scripts\plugins\jquery.jqGrid.src.js" />
     <Content Include="Scripts\plugins\select2\select2.js" />
     <Content Include="Scripts\plugins\select2\select2.min.js" />
     <Content Include="Styles\bootstrap-datetimepicker.min.css" />
@@ -602,6 +605,7 @@
     <Content Include="Styles\fonts\icomoon\style.css" />
     <Content Include="Styles\fonts\fontello\fonts\fontello.svg" />
     <Content Include="Styles\form.css" />
+    <Content Include="Styles\grid.css" />
     <Content Include="Styles\icons.css" />
     <Content Include="Styles\images\coevery.png" />
     <Content Include="Styles\images\%402x\layout\content-bg-plain-gt1200.png" />
@@ -1947,6 +1951,7 @@
     <Content Include="Styles\plugins\select2\select2.png" />
     <Content Include="Styles\plugins\select2\select2x2.png" />
     <Content Include="Styles\plugins\select2\spinner.gif" />
+    <Content Include="Styles\plugins\ui.jqgrid.css" />
     <Content Include="Styles\site-SystemAdmin.css" />
     <Content Include="Styles\site.css" />
     <Content Include="Styles\table.css" />
@@ -2035,6 +2040,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\InputWrapper.cshtml" />
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

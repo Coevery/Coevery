@@ -46,33 +46,10 @@
         <section class="gridStyle" ng-grid="gridOptions"></section>
     </section>
 </section>
-<section id="myModalPerspective" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Confirm</h3>
-    </div>
-    <div class="modal-body">
-        <p>You really want to delete this perspective?</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-        <button class="btn btn-primary" ng-click="deletePerspectiveInDetails()">Yes</button>
-    </div>
-</section>
 
-<section id="myModalNavigation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Confirm</h3>
-    </div>
-    <div class="modal-body">
-        <p>You really want to delete this navigation?</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
-        <button class="btn btn-primary" ng-click="deleteNavigation()">Yes</button>
-    </div>
-</section>
+<data-del:Confirm del:Id="myModalPerspective" confirm:msg="You really want to delete this perspective?" del:Fuc="deletePerspectiveInDetails()"></data-del:Confirm>
+
+<data-del:Confirm del:Id="myModalNavigation" confirm:msg="You really want to delete this navigation?" del:Fuc="deleteNavigation()"></data-del:Confirm>
 
 <script type="text/javascript">
     $(function () {

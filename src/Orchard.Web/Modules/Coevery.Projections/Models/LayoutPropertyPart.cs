@@ -2,22 +2,21 @@
 using Orchard.Projections.Models;
 
 namespace Coevery.Projections.Models {
-    public class LayoutPropertyPart : ContentPart<LayoutPropertyRecord>
+    public class ListViewPart : ContentPart<ListViewPartRecord>
     {
-
-        public virtual string VisableTo
+        public string VisableTo
         {
             get { return Record.VisableTo; }
             set { Record.VisableTo = value; }
         }
 
-        public virtual int PageRowCount
+        public int PageRowCount
         {
             get { return Record.PageRowCount; }
             set { Record.PageRowCount = value; }
         }
 
-        public virtual int QueryPartRecord_id
+        public int QueryPartRecord_id
         {
             get { return Record.QueryPartRecord_id; }
             set { Record.QueryPartRecord_id = value; }

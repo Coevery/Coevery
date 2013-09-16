@@ -1,7 +1,7 @@
-﻿define(['angular-detour', 'core/app/formdesignerservice'], function () {
+﻿define(['angular-detour', 'core/app/formdesignerservice', 'core/directives/common'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner', 'SharedServices', 'ui.bootstrap']);
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner', 'coevery.grid', 'SharedServices', 'ui.bootstrap', 'coevery.common']);
     coevery.config(['$locationProvider', '$provide', '$detourProvider',
         function ($locationProvider, $provide, $detourProvider) {
             $detourProvider.loader = {
@@ -36,7 +36,7 @@
             //that it the only reason this is necessary
             $rootScope.$detour = $detour;
             $rootScope.$stateParams = $stateParams;
-            $rootScope.$on('$viewContentLoaded',function() {
+            $rootScope.$on('$viewContentLoaded', function () {
                 $(window).scrollTop(0);
             });
 
@@ -75,16 +75,33 @@
                 return minHeight;
             }
 
+            //$rootScope.defaultGridOptions = {
+            //    plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 0 }), new ngGridRowSelectionPlugin()],
+            //    //multiSelect: false,
+            //    //enableRowSelection: true,
+            //    enableColumnResize: true,
+            //    enableColumnReordering: true,
+            //    enablePaging: true,
+            //    showFooter: true,
+            //    totalServerItems: "totalServerItems",
+            //    footerTemplate: 'Coevery/CoeveryCore/GridTemplate/DefaultFooterTemplate'
+            //};
+            
             $rootScope.defaultGridOptions = {
-                plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 0 }), new ngGridRowSelectionPlugin()],
-                //multiSelect: false,
-                //enableRowSelection: true,
-                enableColumnResize: true,
-                enableColumnReordering: true,
-                enablePaging: true,
-                showFooter: true,
-                totalServerItems: "totalServerItems",
-                footerTemplate: 'Coevery/CoeveryCore/GridTemplate/DefaultFooterTemplate'
+                pagerpos: "right",
+                recordpos: "left",
+                //autowidth: true,
+                sortable: true,
+                height: "100%",
+                viewrecords: true,
+                multiselect: true,
+                multiboxonly: true,
+                shrinkToFit: false,
+                loadui: "disable",
+                jsonReader: {
+                    repeatitems: false,
+                    id: "0"
+                }
             };
         }
     ]);

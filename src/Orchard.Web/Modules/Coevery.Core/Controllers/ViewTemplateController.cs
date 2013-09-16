@@ -25,12 +25,12 @@ using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 
 namespace Coevery.Core.Controllers {
-    public class ContentViewTemplateController : Controller, IUpdateModel {
+    public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IFieldTypeEditor> _fieldTypeEditors;
         private readonly IFormManager _formManager;
 
-        public ContentViewTemplateController(
+        public ViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IFieldTypeEditor> fieldTypeEditors, 
@@ -56,7 +56,7 @@ namespace Coevery.Core.Controllers {
                 .Select(x => x.FormName)
                 .Distinct()
                 .Select(x => _formManager.Build(x));
-            var model = Services.New.ViewModel().FilterEditors(editors);
+            var model = Services.New.Content__List().FilterEditors(editors);
             return View(model);
         }
 

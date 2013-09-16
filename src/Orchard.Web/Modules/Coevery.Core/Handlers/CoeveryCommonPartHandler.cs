@@ -45,7 +45,7 @@ namespace Coevery.Core.Handlers {
             OnUpdated<CoeveryCommonPart>(AssignUpdateUser);
             OnUpdated<CoeveryCommonPart>(AssignUpdateDates);
 
-            //OnVersioning<CoeveryCommonPart>(AssignVersioningDates);
+            OnVersioning<CoeveryCommonPart>(AssignVersioningDates);
 
             //OnPublishing<CommonPart>(AssignPublishingDates);
 
@@ -110,23 +110,23 @@ namespace Coevery.Core.Handlers {
             part.VersionModifiedUtc = utcNow;
         }
 
-        //protected void AssignVersioningDates(VersionContentContext context, CoeveryCommonPart existing, CoeveryCommonPart building) {
-        //    var utcNow = _clock.UtcNow;
+        protected void AssignVersioningDates(VersionContentContext context, CoeveryCommonPart existing, CoeveryCommonPart building) {
+            var utcNow = _clock.UtcNow;
 
-        //     // assign the created date
-        //    building.VersionCreatedUtc = utcNow;
-        //    // assign modified date for the new version
-        //    building.VersionModifiedUtc = utcNow;
-        //    // publish date should be null until publish method called
-        //    //building.VersionPublishedUtc = null;
+            // assign the created date
+            building.VersionCreatedUtc = utcNow;
+            // assign modified date for the new version
+            building.VersionModifiedUtc = utcNow;
+            // publish date should be null until publish method called
+            //building.VersionPublishedUtc = null;
 
-        //    // assign the created
-        //    building.CreatedUtc = existing.CreatedUtc ?? _clock.UtcNow;
-        //    // persist any published dates
-        //    //building.PublishedUtc = existing.PublishedUtc;
-        //    // assign modified date for the new version
-        //    building.ModifiedUtc = _clock.UtcNow;
-        //}
+            // assign the created
+            building.CreatedUtc = existing.CreatedUtc ?? _clock.UtcNow;
+            // persist any published dates
+            //building.PublishedUtc = existing.PublishedUtc;
+            // assign modified date for the new version
+            building.ModifiedUtc = _clock.UtcNow;
+        }
 
 
         //protected void AssignPublishingDates(PublishContentContext context, CommonPart part) {

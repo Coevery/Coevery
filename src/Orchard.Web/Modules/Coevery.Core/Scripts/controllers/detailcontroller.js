@@ -9,8 +9,6 @@
               errorClass: "inputError"
           });
 
-          
-
           $scope.save = function () {
               if (!validator.form()) {
                   return null;
@@ -39,6 +37,7 @@
                   if (Id)
                       $detour.transitionTo('Detail', { Module: moduleName, Id: Id });
               });
+              return promise;
           };
 
           $scope.saveAndBack = function () {
@@ -46,6 +45,7 @@
               promise && promise.then(function () {
                   $scope.exit();
               });
+              return promise;
           };
 
           $scope.change = function () {
@@ -64,7 +64,10 @@
                 $detour.transitionTo('List', { Module: moduleName });
           };
 
+
+
           $scope.$on('$viewContentLoaded', function () {
+              
           });
       }]
     ]);

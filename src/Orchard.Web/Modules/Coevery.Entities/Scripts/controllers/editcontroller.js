@@ -37,6 +37,7 @@ define(['core/app/detourService'], function (detour) {
                   if (entityName)
                       $detour.transitionTo('EntityEdit', { Id: entityName });
               });
+              return promise;
           };
 
           $scope.saveAndBack = function () {
@@ -44,6 +45,7 @@ define(['core/app/detourService'], function (detour) {
               promise && promise.then(function () {
                   $scope.exit();
               });
+              return promise;
           };
           
           $scope.exit = function () {

@@ -40,6 +40,7 @@ define(['core/app/detourService'], function (detour) {
                         $scope.exit();
                     }, function () {
                     });
+                    return promise;
                 };
             }]
     ]);

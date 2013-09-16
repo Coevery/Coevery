@@ -19,7 +19,7 @@ namespace Coevery.Core {
                 return null;
             routeData.Values["area"] = "Coevery.Core";
             routeData.DataTokens["area"] = "Coevery.Core";
-            routeData.Values["controller"] = "ContentViewTemplate";
+            routeData.Values["controller"] = "ViewTemplate";
             return routeData;
         }
 

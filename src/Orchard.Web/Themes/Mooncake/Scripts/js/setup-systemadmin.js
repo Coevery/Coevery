@@ -155,11 +155,11 @@
 	
 	    // Gridview row menu
 		$(document)
-            .on('mouseover.ngRow', '.ngGrid .ngRow', function (e) {
+            .on('mouseover tr', '.ui-jqgrid-btable tr', function (e) {
                 $(this).find('.row-actions').removeClass('hide');
             });
 		$(document)
-            .on('mouseout.ngRow', '.ngGrid .ngRow', function (e) {
+            .on('mouseout tr', '.ui-jqgrid-btable tr', function (e) {
                 $(this).find('.row-actions').addClass('hide');
             });
 	    

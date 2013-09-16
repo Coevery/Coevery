@@ -118,7 +118,7 @@
     <Compile Include="Controllers\GridTemplateController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
-    <Compile Include="Controllers\ContentViewTemplateController.cs" />
+    <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="Controllers\ColumnDefinitionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -138,6 +138,7 @@
     <Compile Include="Models\CoeveryCommonPart.cs" />
     <Compile Include="Models\CoeveryCommonPartRecord.cs" />
     <Compile Include="Models\CoeveryCommonPartVersionRecord.cs" />
+    <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Models\ViewPartRecord.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
@@ -152,11 +153,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="ClientRoute\IClientRouteProvider.cs" />
-    <Compile Include="Serializer.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\AnonymousRoleUpdater.cs" />
     <Compile Include="Services\DefaultDataMigrationInterpreter.cs" />
+    <Compile Include="Services\GridService.cs" />
+    <Compile Include="Services\IGridService.cs" />
     <Compile Include="Services\IViewPartService.cs" />
     <Compile Include="Services\PropertyRecordExtension.cs" />
     <Compile Include="Services\SchemaUpdateService.cs" />
@@ -183,6 +185,7 @@
     <Content Include="Scripts\app\detourService.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
+    <Content Include="Scripts\controllers\agGridCtrl.js" />
     <Content Include="Scripts\controllers\relatedentitylistcontroller.js" />
     <Content Include="Scripts\controllers\viewcontroller.js" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
@@ -191,6 +194,7 @@
     <None Include="Scripts\i18n\resources-locale_en-us.json" />
     <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
     <Content Include="Scripts\directives\filter-directive.js" />
+    <Content Include="Scripts\directives\jqGrid-directive.js" />
     <Content Include="Scripts\directives\layout-directive.js" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />
@@ -211,9 +215,12 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\GridTemplate\DefaultFooterTemplate.cshtml" />
     <Content Include="Views\GridTemplate\LinkCellTemplate.cshtml" />
-    <Content Include="Views\ContentViewTemplate\View.cshtml" />
+    <Content Include="Views\ViewTemplate\View.cshtml" />
+    <Content Include="Views\Content-List.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Items\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
@@ -261,19 +268,19 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\List.cshtml">
+    <Content Include="Views\ViewTemplate\List.cshtml">
       <SubType>
       </SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\CreatableTypeList.cshtml" />
+    <Content Include="Views\ViewTemplate\CreatableTypeList.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\Edit.cshtml" />
+    <Content Include="Views\ViewTemplate\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ContentViewTemplate\Create.cshtml" />
+    <Content Include="Views\ViewTemplate\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content.Edit-Default.cshtml">

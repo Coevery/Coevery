@@ -10,8 +10,8 @@
     <div id="page-actions" class="clearfix">
         <btn-actions>
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
-            <button type="button" class="btn btn-small btn-primary" data-ng-click="saveAndView()">Save</button>
-            <button class="btn btn-primary btn-small" data-ng-click="saveAndBack()">Save & Back</button>
+            <button type="button" class="btn btn-small btn-primary" data-indi-click="saveAndView()">Save</button>
+            <button class="btn btn-primary btn-small" data-indi-click="saveAndBack()">Save & Back</button>
         </btn-actions>
     </div>
 
@@ -32,7 +32,7 @@
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required">Entity</label>
-                            <div class="controls relativeSetter">
+                            <div class="controls errortips">
                                 @Html.DropDownList("EntityName", Model.Entities, new { id = "EntityName", required=""})
                             </div>
                         </section>
@@ -44,7 +44,7 @@
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required">Icon</label>
-                            <div class="controls relativeSetter">
+                            <div class="controls errortips">
                                 @*<input type="file" id="input04" data-provide="fileinput">*@
                                 <i id="showIconClass" class="@iconClass"></i>
                                 @Html.HiddenFor(m => m.IconClass, new { id = "hfIconClass", required="" })

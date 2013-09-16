@@ -518,6 +518,7 @@
 
                     var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]').text();
                     element.html(template);
+                    $compile(element.children())(scope);
                     var control = element.find('.control');
                     control.after('<div class="tools"></div>');
 
