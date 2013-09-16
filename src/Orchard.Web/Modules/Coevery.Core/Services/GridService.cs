@@ -15,12 +15,7 @@ namespace Coevery.Core.Services {
         }
 
         public IEnumerable<TRow> GetPagedRows<TRow>(int page, int rows, IEnumerable<TRow> totalRecords) {
-            var length = Math.Min(rows, totalRecords.Count());
-            var result = new TRow[length];
-            for (var index = 0; index < length; index++) {
-                result[index] = totalRecords.ElementAtOrDefault(index + (page - 1) * rows);
-            }
-            return result;
+            return totalRecords.Skip((page - 1) * rows).Take(rows);
         }
 
         public IEnumerable<TRow> GetSortedRows<TRow>(string sidx, string sord, IEnumerable<TRow> rawRecords) {

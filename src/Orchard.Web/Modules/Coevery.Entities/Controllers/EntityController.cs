@@ -20,17 +20,14 @@ namespace Coevery.Entities.Controllers {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IEntityEvents _entityEvents;
-        private readonly IGridService _gridService;
 
         public EntityController(
             IContentDefinitionService contentDefinitionService,
             ISchemaUpdateService schemaUpdateService,
-            IEntityEvents entityEvents,
-            IGridService gridService) {
+            IEntityEvents entityEvents) {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             _entityEvents = entityEvents;
-            _gridService = gridService;
             T = NullLocalizer.Instance;
         }
 
@@ -39,8 +36,6 @@ namespace Coevery.Entities.Controllers {
         //GET api/Entities/Entity
         public object Get(int rows, int page, string sidx, string sord) {
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
-            //var rows = request.Rows;
-            //var page = request.Page;
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
@@ -51,13 +46,14 @@ namespace Coevery.Entities.Controllers {
                         };
 
             var totalRecords = query.Count();
-            var postsortPage = _gridService.GetSortedRows(sidx, sord, query);
+            //var postsortPage = _gridService.GetSortedRows(sidx, sord, query);
+            //_gridService.GetPagedRows(page, rows, postsortPage)
 
             return new {
                 total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
                 page = page,
                 records = totalRecords,
-                rows = _gridService.GetPagedRows(page, rows, postsortPage)
+                rows = query
             };
         }
 

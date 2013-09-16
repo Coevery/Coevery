@@ -11,31 +11,29 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           var cellLinkTemplate = function (cellvalue, options, rowObject) {
-              return '<section class="row-actions pull-right hide">' +
+              return '<div class="gridCellText">' +
+                  '<section class="row-actions hide">' +
                   '<span class="icon-edit edit-action" data-id="' + options.rowId + '" title="Edit"></span>' +
                   '<span class="icon-remove delete-action" data-id="' + options.rowId + '" title="Delete"></span>' +
                   '</section>' +
-                  '<span class="btn-link view-action" data-id="' + options.rowId + '">' + cellvalue + '</span>';
+                  '<span class="btn-link view-action" data-id="' + options.rowId + '">' + cellvalue + '</span> </div>';
           };
 
-          //var columns = [t('DisplayName'), t('IsDeployed')];
-          var columns = ['Id', 'Display Name', 'Is Deployed'];
-
           var metadataColumnDefs = [
-              { "name": columns[0], "index": columns[0], hidden: true },
+              { "name": 'Id', "index": 'Id', label: 'Id', hidden: true },
               {
-                  "name": 'DisplayName', "index": 'DisplayName', width: 450, formatter: cellLinkTemplate, align: 'center'
+                  "name": 'DisplayName', "index": 'DisplayName', label: t('Display Name'), width: 450, formatter: cellLinkTemplate, align: 'center'
               },
-              { "name": 'IsDeployed', "index": 'IsDeployed', width: 450, align: 'center' }];
+              { "name": 'IsDeployed', "index": 'IsDeployed', label: t('Is Deployed'), width: 450, align: 'center' }];
 
           $scope.selectedItems = [];
           $scope.gridOptions = {
               datatype: "json",
-              url: "api/entities/entity/request",
-              colNames: columns,
+              url: "api/entities/entity",
               colModel: metadataColumnDefs,
-              rowNum: 10,
-              rowList: [10, 20, 50],
+              rowNum: 50,
+              rowList: [50, 100, 200],
+              loadonce: true
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
