@@ -8,6 +8,7 @@ using System.Web.Http;
 using Coevery.Core.Services;
 using Coevery.Core.Models;
 using Coevery.Entities.Events;
+using Coevery.Entities.Models;
 using Coevery.Entities.Services;
 using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
@@ -36,22 +37,27 @@ namespace Coevery.Entities.Controllers {
         public Localizer T { get; set; }
 
         //GET api/Entities/Entity
-        public object Get(int rows, int page) {
+        public object Get(int rows, int page, string sidx, string sord) {
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
             //var rows = request.Rows;
             //var page = request.Page;
 
             var query = from type in metadataTypes
                         let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                        select new { Id = type.Name, type.DisplayName, setting.IsDeployed };
+                        select new EntitiyListGridModel {
+                            Id = type.Name, 
+                            DisplayName = type.DisplayName, 
+                            IsDeployed = setting.IsDeployed
+                        };
 
             var totalRecords = query.Count();
+            var postsortPage = _gridService.GetSortedRows(sidx, sord, query);
 
             return new {
-                total = Math.Ceiling((double)totalRecords / rows),
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
                 page = page,
                 records = totalRecords,
-                rows = _gridService.GetPageRows(page, rows, query)
+                rows = _gridService.GetPagedRows(page, rows, postsortPage)
             };
         }
 

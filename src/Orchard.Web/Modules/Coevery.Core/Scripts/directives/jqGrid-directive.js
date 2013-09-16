@@ -75,6 +75,18 @@
                       id = $(this).attr("data-id");
                       return $scope.view(id);
                   });
+                  $grid.on("click", ".edit-action", function (event) {
+                      var id;
+                      event.preventDefault();
+                      id = $(this).attr("data-id");
+                      return $scope.edit(id);
+                  });
+                  $grid.on("click", ".delete-action", function (event) {
+                      var id;
+                      event.preventDefault();
+                      id = $(this).attr("data-id");
+                      return $scope.delete(id);
+                  });
                   $(window).bind('resize', function () {
                       $grid.setGridWidth($('#page-actions').width(), false); //Resized to new width as buttons
                   }).trigger('resize');

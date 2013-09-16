@@ -11,12 +11,11 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           var cellLinkTemplate = function (cellvalue, options, rowObject) {
-              return '<ul class="row-actions pull-right hide">' +
-                  '<li class="icon-edit edit-action" data-id="' + options.rowId + '" title="Edit"></li>' +
-                  '<li class="icon-remove delete-action" data-id="' + options.rowId + '" title="Delete"></li>' +
-                  '</ul>' +
-                  '<span class="btn-link view-action" data-id="' + options.rowId + '">' + cellvalue +
-                  '</span>';
+              return '<section class="row-actions pull-right hide">' +
+                  '<span class="icon-edit edit-action" data-id="' + options.rowId + '" title="Edit"></span>' +
+                  '<span class="icon-remove delete-action" data-id="' + options.rowId + '" title="Delete"></span>' +
+                  '</section>' +
+                  '<span class="btn-link view-action" data-id="' + options.rowId + '">' + cellvalue + '</span>';
           };
 
           //var columns = [t('DisplayName'), t('IsDeployed')];
