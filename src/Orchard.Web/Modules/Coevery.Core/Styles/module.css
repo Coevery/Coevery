@@ -301,6 +301,14 @@
 
 
     /*filter page css*/
+    .field-selector {
+        float: left;
+    }
+
+    .field-editor {
+        float: left;
+    }
+
     .filter-collapse
     {
         font-size:13px;
@@ -330,16 +338,17 @@
         margin:0px;
     }
 
-    .filterForm .filterCreatorWrap
+    .filterForm .filterCreatorWrap.control-group
     {
        padding: 2px; 
-       margin: 0px;
+       margin-bottom: 0px;
     }
 
     .filterForm .filterCreatorWrap .filterCreatorContent
     {
         float: left; 
         padding: 5px;
+        margin: 0;
     }
 
     .filterForm .filterCreatorWrap .filterInput
@@ -351,9 +360,7 @@
 
     .filterForm .filterCreatorWrap .deleteBtn
     {
-        line-height:30px;
         float:left;
-        margin-top:3px;
     }
 
     .filterForm .filterAddNewWrap
@@ -385,7 +392,7 @@
  
     
 
-    .icon-collapse-show
+    .icon-collapse-hide
     {
         margin-left: 4px; 
         margin-bottom: 4px;
@@ -399,7 +406,7 @@
         
     }
 
-    .icon-collapse-hide
+    .icon-collapse-show
     {
         margin-left: 4px; 
         margin-bottom: 4px;

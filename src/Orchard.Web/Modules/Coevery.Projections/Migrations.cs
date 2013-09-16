@@ -87,5 +87,17 @@ namespace Coevery.Projections {
 
             return 3;
         }
+        
+         public int UpdateFrom2() {
+            SchemaBuilder.CreateTable("EntityFilterRecord",
+                table => table
+                    .Column<int>("Id", c => c.PrimaryKey().Identity())
+                    .Column<string>("EntityName")
+                    .Column<string>("Title")
+                    .Column<int>("FilterGroupRecord_id")
+                );
+            return 3;
+        }
+
     }
 }

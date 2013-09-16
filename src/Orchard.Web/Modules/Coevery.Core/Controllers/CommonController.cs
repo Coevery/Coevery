@@ -2,10 +2,13 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Core.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NHibernate.Linq;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Data;
 using Orchard.Forms.Services;
 using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Models;
@@ -15,41 +18,59 @@ using Orchard.Tokens;
 
 namespace Coevery.Core.Controllers {
     public class CommonController : ApiController {
-        private IContentManager _contentManager;
+        private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         private readonly ITokenizer _tokenizer;
+        private readonly IRepository<FilterRecord> _filterRepository;
+        private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
 
-        public CommonController(IContentManager iContentManager,
+        public CommonController(
+            IContentManager iContentManager,
             IOrchardServices orchardServices,
             IProjectionManager projectionManager,
-            ITokenizer tokenizer) {
+            ITokenizer tokenizer,
+            IRepository<FilterRecord> filterRepository,
+            IRepository<FilterGroupRecord> filterGroupRepository) {
             _contentManager = iContentManager;
             Services = orchardServices;
             _projectionManager = projectionManager;
             _tokenizer = tokenizer;
+            _filterRepository = filterRepository;
+            _filterGroupRepository = filterGroupRepository;
         }
 
         public IOrchardServices Services { get; private set; }
 
-        // GET api/leads/lead
-        public HttpResponseMessage Get(string id, int pageSize, int page, int viewId) {
+        public HttpResponseMessage Post(string id, ListQueryModel model) {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
-            var part = GetProjectionPartRecord(viewId);
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            id = pluralService.Singularize(id);
+
+            var part = GetProjectionPartRecord(model.ViewId);
             IEnumerable<JObject> entityRecords = new List<JObject>();
             int totalNumber = 0;
             if (part != null) {
+                var filterRecords = CreateFilters(id, model);
+                var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
+                filterRecords.ForEach(filters.Add);
+
                 totalNumber = _projectionManager.GetCount(part.Record.QueryPartRecord.Id);
-                int skipCount = pageSize*(page - 1);
-                int pageCount = totalNumber <= pageSize*page ? totalNumber - pageSize*(page - 1) : pageSize;
+                int skipCount = model.PageSize*(model.Page - 1);
+                int pageCount = totalNumber <= model.PageSize*model.Page ? totalNumber - model.PageSize*(model.Page - 1) : model.PageSize;
                 entityRecords = GetLayoutComponents(part, skipCount, pageCount);
+
+                foreach (var record in filterRecords) {
+                    filters.Remove(record);
+                    if (model.FilterGroupId == 0) {
+                        _filterRepository.Delete(record);
+                    }
+                }
             }
             var returnResult = new {TotalNumber = totalNumber, EntityRecords = entityRecords};
             var json = JsonConvert.SerializeObject(returnResult);
-
             var message = new HttpResponseMessage {Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")};
-
             return message;
         }
 
@@ -61,8 +82,33 @@ namespace Coevery.Core.Controllers {
             }
         }
 
+        private IList<FilterRecord> CreateFilters(string entityName, ListQueryModel model) {
+            IList<FilterRecord> filterRecords;
+            if (model.FilterGroupId == 0) {
+                filterRecords = new List<FilterRecord>();
+                foreach (var filter in model.Filters) {
+                    if (filter.FormData.Length == 0) {
+                        continue;
+                    }
+                    var record = new FilterRecord {
+                        Category = entityName + "ContentFields",
+                        Type = filter.Type,
+                    };
+                    var dictionary = filter.FormData.ToDictionary(x => x.Name, x => x.Value);
+                    record.State = FormParametersHelper.ToString(dictionary);
+                    filterRecords.Add(record);
+                }
+            }
+            else {
+                filterRecords = _filterGroupRepository.Get(model.FilterGroupId).Filters;
+            }
+            return filterRecords;
+        }
+
         private ProjectionPart GetProjectionPartRecord(int viewId) {
-            if (viewId == -1) return null;
+            if (viewId == -1) {
+                return null;
+            }
             var projectionContentItem = _contentManager.Get(viewId, VersionOptions.Latest);
             var part = projectionContentItem.As<ProjectionPart>();
             return part;

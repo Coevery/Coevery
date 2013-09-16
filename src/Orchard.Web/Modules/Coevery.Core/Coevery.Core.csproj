@@ -112,6 +112,7 @@
     <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
     <Compile Include="ContentPartFieldStorage\DefaultContentPartFieldStorageProvider.cs" />
     <Compile Include="ContentPartFieldStorage\DefaultCotentPartFieldStorage.cs" />
+    <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\GridTemplateController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
@@ -161,8 +162,11 @@
     <Compile Include="Services\TemplateViewService.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="DefaultRoute.cs" />
+    <Compile Include="ViewModels\FilterData.cs" />
+    <Compile Include="ViewModels\Data.cs" />
+    <Compile Include="ViewModels\ListQueryModel.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
-    <Compile Include="ViewModels\CommonListViewModel.cs" />
+    <Compile Include="ViewModels\FieldFilterViewModel.cs" />
     <Compile Include="ViewModels\ViewWithRelationsModel.cs" />
     <Compile Include="ViewModels\CreateMenuItemViewModel.cs" />
     <Compile Include="ViewModels\ModuleMenuItemEditViewModel.cs" />
@@ -185,10 +189,12 @@
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
     <None Include="Scripts\i18n\resources-locale_en-us.json" />
     <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
+    <Content Include="Scripts\directives\filter-directive.js" />
     <Content Include="Scripts\directives\jqGrid-directive.js" />
     <Content Include="Scripts\directives\layout-directive.js" />
     <Content Include="Scripts\services\commondataservice.js" />
     <Content Include="Scripts\services\columndefinitionservice.js" />
+    <Content Include="Scripts\services\filterdefinitionservice.js" />
     <Content Include="Scripts\services\historyservice.js" />
     <Content Include="Scripts\services\viewdefinitionservice.js" />
     <Content Include="Scripts\services\loadingservice.js" />

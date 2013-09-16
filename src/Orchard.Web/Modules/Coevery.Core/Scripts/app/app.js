@@ -1,7 +1,7 @@
 ﻿define(['angular-detour', 'core/directives/common'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.compat', 'ui.utils', 'coevery.layout', 'coevery.grid', 'SharedServices', 'angular-underscore', 'coevery.common']);
+    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.compat', 'ui.utils', 'coevery.layout', 'coevery.grid', 'SharedServices', 'angular-underscore', 'coevery.common', 'coevery.filter']);
     coevery.config(['$detourProvider', '$provide',
         function ($detourProvider, $provide) {        
             $detourProvider.loader = {
