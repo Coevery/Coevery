@@ -95,6 +95,7 @@
     <Compile Include="Events\IEntityEvents.cs" />
     <Compile Include="Events\IFieldEvents.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Models\EntitiyListGridModel.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
@@ -176,7 +177,6 @@
   <ItemGroup>
     <Folder Include="Drivers\" />
     <Folder Include="Handlers\" />
-    <Folder Include="Models\" />
     <Folder Include="Records\" />
   </ItemGroup>
   <ItemGroup>

@@ -33,14 +33,14 @@ using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 
 namespace Coevery.Core.Controllers {
-    public class ContentViewTemplateController : Controller, IUpdateModel {
+    public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
         private readonly IViewPartService _projectionService;
 
-        public ContentViewTemplateController(
+        public ViewTemplateController(
             IOrchardServices orchardServices,
             IContentManager contentManager,
             IContentDefinitionManager contentDefinitionManager,
@@ -75,38 +75,14 @@ namespace Coevery.Core.Controllers {
             var contentType = _contentDefinitionManager.GetTypeDefinition(id);
             int viewId = _projectionService.GetProjectionId(id);
 
-            dynamic viewModel = Services.New.ViewModel();
-            viewModel.DisplayName(contentType.DisplayName);
-            viewModel.TypeDefinition(contentType);
-            // viewModel.Columns(this.GetViewColumns(viewId));
-            viewModel.ModuleName(moduleName);
-            viewModel.ViewId(viewId);
-            //var model = GetListModel(viewId);
-            //viewModel.ListViewModel(model);
-            return View(viewModel);
+            dynamic model = Services.New.Content__List();
+            model.DisplayName(contentType.DisplayName);
+            model.TypeDefinition(contentType);
+            model.ModuleName(moduleName);
+            model.ViewId(viewId);
+            return View(model);
         }
 
-        private IEnumerable<PropertyRecord> GetViewColumns(int viewId) {
-            List<PropertyRecord> re = new List<PropertyRecord>();
-            if (viewId == -1) return re;
-            var projectionItem = _contentManager.Get(viewId, VersionOptions.Latest);
-            var projectionPart = projectionItem.As<ProjectionPart>();
-            var queryPartRecord = projectionPart.Record.QueryPartRecord;
-
-            if (queryPartRecord.Layouts.Count == 0) return re;
-            var properties = queryPartRecord.Layouts[0].Properties;
-            re.AddRange(properties);
-            return re;
-        }
-        private dynamic GetListModel(int viewId) {
-
-            if (viewId == -1) return null;
-
-            var contentItem = _contentManager.Get(viewId, VersionOptions.Latest);
-
-            dynamic model = _contentManager.BuildDisplay(contentItem);
-            return model;
-        }
 
         public ActionResult Create(string id, int? containerId) {
             if (string.IsNullOrEmpty(id))

@@ -12,8 +12,8 @@
                 <button class="btn btn-small" data-ng-click="Refresh()">
                     <i class="icon-refresh"></i>&nbsp;Refresh
                 </button>
-                <div class="btn-group" ng-show="selectedItems.length > 0">
-                    <button class="btn btn-small" data-ng-click="edit()" ng-disabled="selectedItems.length > 1">
+                <div class="btn-group" data-ng-show="selectedItems.length > 0">
+                    <button class="btn btn-small" data-ng-click="edit()" data-ng-disabled="selectedItems.length > 1">
                         <i class="icon-edit"></i>&nbsp;Edit
                     </button>
                     <button class="btn btn-small" data-ng-click="delete()">
@@ -40,15 +40,15 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li title="" style="cursor: pointer;">
-                            <a ng-click="openFilterCollapse(1)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                            <a data-ng-click="openFilterCollapse(1)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
                             </a>
                         </li>
                         <li title="" style="cursor: pointer;">
-                            <a ng-click="openFilterCollapse(2)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                            <a data-ng-click="openFilterCollapse(2)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
                             </a>
                         </li>
                         <li title="" style="cursor: pointer;">
-                            <a ng-click="openFilterCollapse(3)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
+                            <a data-ng-click="openFilterCollapse(3)">价格过滤<div style="float: right; text-decoration: underline;">删除</div>
                             </a>
                         </li>
                         <li title="">

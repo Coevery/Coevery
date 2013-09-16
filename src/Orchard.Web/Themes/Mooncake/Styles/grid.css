@@ -1,0 +1,111 @@
+﻿
+.ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all table,
+.ui-jqgrid .ui-paging-info,
+.ui-widget-content th.ui-th-column
+ {
+    color: #444444;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.ui-jqgrid tr {
+    height: 30px;
+}
+
+.ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all,
+tr.ui-widget-content {
+    border-left: 0 none;
+    border-right: 0 none;
+    border-radius: 0;
+}
+
+.ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all {
+    border-bottom: none;
+}
+
+/*header style
+------------------------------------------*/
+.ui-jqgrid .ui-jqgrid-htable tr th div {
+    height: 20px;
+}
+
+div.ui-state-default.ui-jqgrid-hdiv,
+.ui-widget-content th.ui-th-column {
+    background-image: none;
+    background-color: #EEEEEE;
+    font-weight: bold;
+}
+
+/*cell style
+------------------------------------------*/
+.ui-jqgrid input[type="checkbox"] {
+    margin-top: 0;
+}
+
+.ui-jqgrid tbody tr.ui-row-rtl td,
+.ui-jqgrid tbody tr.ui-row-ltr td {
+    border-left: 0 none;
+    border-right: 0 none;
+}
+
+/*pager style
+------------------------------------------*/
+div.ui-state-default.ui-jqgrid-pager.ui-corner-bottom {
+    background-image: none;
+    background-color: white;
+    border-radius: 0;
+    height: 50px;
+}
+
+.ui-state-default.ui-jqgrid-pager {
+    overflow-x: auto;
+}
+
+.ui-jqgrid .ui-pg-table tr td {
+    padding: 0;
+}
+
+.ui-pg-table .ui-state-hover,
+.ui-pg-table .ui-state-focus
+{
+    border: 0 none transparent;
+}
+
+.ui-jqgrid td select.ui-pg-selbox {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    height: 24px;
+}
+
+@media (max-width: 776px) {
+
+    input.ui-pg-input {
+        width: 100px;
+    }
+
+    select.ui-pg-selbox {
+        width: 130px;
+    }
+}
+
+/*Inner cell action
+------------------------------------------*/
+div.gridCellText {
+    position: relative;
+}
+
+.row-actions {
+    position: absolute;
+    right: 0;
+}
+
+td [class^="icon-"], 
+td [class*=" icon-"] {
+    padding: 0 3px;
+}
+
+td .btn-link {
+    position: relative;
+    left: -1%;
+}

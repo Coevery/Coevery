@@ -6,11 +6,6 @@ using Orchard.Data.Migration;
 namespace Coevery.Core {
     public class Migrations : DataMigrationImpl {
         public int Create() {
-            SchemaBuilder.CreateTable("ModuleMenuItemPartRecord",
-                table => table
-                    .ContentPartRecord()
-                    .Column<int>("ContentTypeDefinitionRecord_id")
-                );
 
             SchemaBuilder.CreateTable("CoeveryCommonPartRecord",
                 table => table
@@ -27,6 +22,12 @@ namespace Coevery.Core {
                     .ContentPartVersionRecord()
                     .Column<DateTime>("CreatedUtc")
                     .Column<DateTime>("ModifiedUtc")
+                );
+
+            SchemaBuilder.CreateTable("ModuleMenuItemPartRecord",
+                table => table
+                    .ContentPartRecord()
+                    .Column<int>("ContentTypeDefinitionRecord_id")
                 );
 
             ContentDefinitionManager.AlterTypeDefinition("ModuleMenuItem", cfg => cfg
