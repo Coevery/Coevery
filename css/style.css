@@ -85,7 +85,7 @@ a {text-decoration: none; }
     width: 64px;
     height: 64px;
     margin-left: 12px;
-    background: transparent url(../images/github-cat64.png) 0 0 no-repeat;
+    background:url(../images/contact_sprite.png) no-repeat 2px -154px;
 }
 #support strong{
     font-weight: bold;
@@ -928,7 +928,7 @@ ul.footer-menu{
 	width:26px;
 	height:33px;
 	
-	background:url(../images/phone.png) no-repeat 17px 13px;
+	background:url(../images/contact_sprite.png) no-repeat 16px -62px;
 }
 .download-info span{
 	color:#fff;
@@ -1012,21 +1012,19 @@ ul.footer-menu{
 .social-info ul li a:hover .circle-btn-small{
 	background-color:#0097d9;
 }
-.circle-btn-small .icon-twitter{	
-	;
+.circle-btn-small .icon-twitter{
 	float:left;
 	display:block;
 	width:30px;
 	height:37px;
-	background:url(../images/twitter.png) no-repeat 5px 7px;
+	background:url(../images/contact_sprite.png) no-repeat 5px -190px;
 }
-.circle-btn-small .icon-fb{	
-	
+.circle-btn-small .icon-fb{
 	float:left;
 	display:block;
 	width:30px;
 	height:37px;
-	background:url(../images/facebook.png) no-repeat 5px 5px;
+	background:url(../images/contact_sprite.png) no-repeat 5px -32px;
 }
 .circle-btn-small .icon-v{	
 	
@@ -1034,7 +1032,7 @@ ul.footer-menu{
 	display:block;
 	width:30px;
 	height:37px;
-	background:url(../images/vimeo.png) no-repeat 5px 5px;
+	background:url(../images/contact_sprite.png) no-repeat 5px 5px;
 }	
 .circle-btn-small .icon-goog{	
 	
@@ -1042,7 +1040,7 @@ ul.footer-menu{
 	display:block;
 	width:30px;
 	height:37px;
-	background:url(../images/google.png) no-repeat 5px 5px;
+	background:url(../images/contact_sprite.png) no-repeat 5px -110px;
 }	
 			
 			
