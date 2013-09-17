@@ -14,7 +14,7 @@
                   $scope[alias] = gridCtrl;
               }
               initializeGrid = function (gridOptions) {
-                  var $grid, editItem, showItem;
+                  var $grid;
                   if (gridOptions == null) {
                       return null;
                   }
@@ -37,65 +37,35 @@
                       });
                   };
                   $grid.jqGrid(gridOptions);
-                  showItem = function (id) {
-                      return $scope.$apply(function () {
-                          if ($scope.showItem != null) {
-                              return $scope.showItem(id);
-                          } else {
-                              return logger.error("`$scope.showItem` is not defined");
-                          }
-                      });
-                  };
-                  editItem = function (id) {
-                      return $scope.$apply(function () {
-                          if ($scope.editItem != null) {
-                              return $scope.editItem(id);
-                          } else {
-                              return logger.error("`$scope.editItem` is not defined");
-                          }
-                      });
-                  };
-                  $grid.on("showAction", function (event, id) {
+                  
+                  $grid.on("click.view-action", ".view-action", function (event) {        
                       event.preventDefault();
-                      return showItem(id);
-                  });
-                  $grid.on("editAction", function (event, id) {
-                      event.preventDefault();
-                      return editItem(id);
-                  });
-                  $grid.on("click", "a.editActionLink", function (event) {
                       var id;
-                      event.preventDefault();
-                      id = $(this).parents("tr:first").attr("id");
-                      return editItem(id);
-                  });
-                  $grid.on("click.view-action", ".view-action", function (event) {
-                      var id;
-                      event.preventDefault();
                       id = $(this).attr("data-id");
                       return $scope.view(id);
                   });
                   $grid.on("click.edit-action", ".edit-action", function (event) {
-                      var id;
                       event.preventDefault();
+                      var id;
                       id = $(this).attr("data-id");
                       return $scope.edit(id);
                   });
-                  $grid.on("click.delete-action", ".delete-action", function (event) {
-                      var id;
+                  $grid.on("click.default-action", ".default-action", function (event) {
                       event.preventDefault();
+                      var id;
                       id = $(this).attr("data-id");
-                      return $scope.delete(id);
+                      return $scope.setDefault(id);
                   });
+                  
                   $(window).bind('resize', function () {
                       $grid.setGridWidth($('#page-actions').width(), false); //Resized to new width as buttons
                   }).trigger('resize');
 
-                  return $grid.on("deleteAction", function (event, id) {
+                  return $grid.on("click.delete-action", ".delete-action", function (event) {
                       event.preventDefault();
-                      return $scope.$apply(function () {
-                          return $scope.deleteItem(id);
-                      });
+                      var id;
+                      id = $(this).attr("data-id");
+                      return $scope.delete(id);
                   });
               };
 
@@ -152,3 +122,45 @@
     });
 
 }).call(this);
+
+/*Current Useless Code
+showItem = function (id) {
+                      return $scope.$apply(function () {
+                          if ($scope.showItem != null) {
+                              return $scope.showItem(id);
+                          } else {
+                              return logger.error("`$scope.showItem` is not defined");
+                          }
+                      });
+                  };
+                  editItem = function (id) {
+                      return $scope.$apply(function () {
+                          if ($scope.editItem != null) {
+                              return $scope.editItem(id);
+                          } else {
+                              return logger.error("`$scope.editItem` is not defined");
+                          }
+                      });
+                  };
+                  $grid.on("showAction", function (event, id) {
+                      event.preventDefault();
+                      return showItem(id);
+                  });
+                  $grid.on("editAction", function (event, id) {
+                      event.preventDefault();
+                      return editItem(id);
+                  });
+                  $grid.on("click", "a.editActionLink", function (event) {
+                      var id;
+                      event.preventDefault();
+                      id = $(this).parents("tr:first").attr("id");
+                      return editItem(id);
+                  });
+
+                  return $grid.on("deleteAction", function (event, id) {
+                      event.preventDefault();
+                      return $scope.$apply(function () {
+                          return $scope.deleteItem(id);
+                      });
+                  });
+*/

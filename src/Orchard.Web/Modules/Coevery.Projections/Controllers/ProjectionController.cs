@@ -43,7 +43,7 @@ namespace Coevery.Projections.Controllers {
             return re;
         }
 
-        public IEnumerable<JObject> Get(string id) {
+        public object Get(string id, int page, int rows) {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             if (pluralService.IsPlural(id)) {
                 id = pluralService.Singularize(id);
@@ -51,17 +51,23 @@ namespace Coevery.Projections.Controllers {
 
             var views = new List<JObject>();
             var queries = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
-                .Where(v => v.ItemContentType == id);
-            var listViews = queries.List().ToList();
-            foreach (var record in listViews) {
-                var view = new JObject();
-                view["ContentId"] = record.Id;
-                view["EntityType"] = record.ItemContentType;
-                view["DisplayName"] = record.As<TitlePart>().Title;
-                view["Default"] = record.IsDefault;
-                views.Add(view);
-            }
-            return views;
+                .Where(v => v.ItemContentType == id).List();
+
+            var query = from record in queries
+                        select new {
+                            ContentId = record.Id,
+                            EntityType = record.ItemContentType,
+                            DisplayName = record.As<TitlePart>().Title,
+                            Default = record.IsDefault
+                        };
+
+            var totalRecords = query.Count();
+            return new {
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                page = page,
+                records = totalRecords,
+                rows = query
+            };
         }
 
         public void Post(dynamic viewPart) {

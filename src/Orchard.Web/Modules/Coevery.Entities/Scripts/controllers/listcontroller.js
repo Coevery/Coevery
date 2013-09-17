@@ -10,30 +10,18 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               return result;
           };
 
-          var cellLinkTemplate = function (cellvalue, options, rowObject) {
-              return '<div class="gridCellText">' +
-                  '<section class="row-actions hide">' +
-                  '<span class="icon-edit edit-action" data-id="' + options.rowId + '" title="Edit"></span>' +
-                  '<span class="icon-remove delete-action" data-id="' + options.rowId + '" title="Delete"></span>' +
-                  '</section>' +
-                  '<span class="btn-link view-action" data-id="' + options.rowId + '">' + cellvalue + '</span> </div>';
-          };
-
           var metadataColumnDefs = [
-              { "name": 'Id', "index": 'Id', label: 'Id', hidden: true },
+              { name: 'Id', label: 'Id', hidden: true },
               {
-                  "name": 'DisplayName', "index": 'DisplayName', label: t('Display Name'), width: 450, formatter: cellLinkTemplate, align: 'center'
+                  name: 'DisplayName', label: t('Display Name'), width: 450,
+                  formatter: $rootScope.cellLinkTemplate,
+                  formatoptions: { hasView: true }
               },
-              { "name": 'IsDeployed', "index": 'IsDeployed', label: t('Is Deployed'), width: 450, align: 'center' }];
+              { name: 'IsDeployed', label: t('Is Deployed'), width: 450, }];
 
-          $scope.selectedItems = [];
           $scope.gridOptions = {
-              datatype: "json",
               url: "api/entities/entity",
               colModel: metadataColumnDefs,
-              rowNum: 50,
-              rowList: [50, 100, 200],
-              loadonce: true
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
@@ -72,39 +60,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           $scope.getAllMetadata = function () {
-              $("#gridList").trigger("reloadGrid");
+              $("#gridList").jqGrid('setGridParam', {
+                  datatype: "json"
+              }).trigger('reloadGrid');
           };
-
       }]
     ]);
 });
-
-//Abondoned codes
-/*
-$scope.pagingOptions = {
-              pageSizes: [50, 100, 200],
-              pageSize: 50,
-              currentPage: 1
-          };
-
-
-var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-              '<ul class="row-actions pull-right hide">' +
-              '<li class="icon-edit" ng-click="edit(row.entity.Name)" title="Edit"></li>' +
-              '<li class="icon-remove" ng-click="delete(row.entity.Name)" title="Delete"></li>' +
-              '</ul>' +
-              '<span class="btn-link" ng-click="view(row.entity.Name)">{{COL_FIELD}}</span>' +
-              '</div>';
-          $scope.selectedItems = [];
-
-          var metadataColumnDefs = [
-              { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString },
-              { field: 'IsDeployed', displayName: t('IsDeployed') }];
-
-              var metadatas = entityDataService.query(function () {
-                  $scope.myData = metadatas;
-                  $scope.totalServerItems = metadatas.length;
-              }, function () {
-                  logger.error("Failed to fetched Metadata.");
-              });
-*/

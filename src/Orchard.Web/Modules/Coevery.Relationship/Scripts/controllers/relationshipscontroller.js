@@ -7,42 +7,29 @@ define(['core/app/detourService'], function (detour) {
             function ($rootScope, $scope, logger, $detour, $resource, $stateParams) {
                 var relationshipDataService = $resource('api/relationship/Relationship');
 
-                var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-                    '<ul class="row-actions pull-right hide">' +
-                    '<li class="icon-edit" ng-click="edit(row.entity.ContentId, row.entity.Type)" title="Edit"></li>' +
-                    '<li class="icon-remove" ng-click="delete(row.entity.ContentId)" title="Delete"></li>' +
-                    '</ul>' +
-                    '<span class="btn-link" ng-click="edit(row.entity.ContentId, row.entity.Type)">{{COL_FIELD}}</span>' +
-                    '</div>';
-
                 var relationshipColumnDefs = [
-                    { field: 'Name', displayName: 'Relationship Name', cellTemplate: cellTemplateString },
-                    { field: 'PrimaryEntity', displayName: 'Primary Entity' },
-                    { field: 'RelatedEntity', displayName: 'Related Entity' },
-                    { field: 'Type', displayName: 'Type' }
+                    { name: 'ContentId', label: 'Content Id', hidden: true },
+                    {
+                        name: 'Name', label: 'Relationship Name', width: 225,
+                        formatter: $rootScope.cellLinkTemplate,
+                        formatoptions: { useType: true }
+                    },
+                    { name: 'PrimaryEntity', label: 'Primary Entity', width: 220 },
+                    { name: 'RelatedEntity', label: 'Related Entity', width: 220 },
+                    { name: 'Type', label: 'Type', width: 225 }
                 ];
 
-                $scope.selectedItems = [];
-                $scope.relationshipGridOptions = {
-                    data: 'relationships',
-                    selectedItems: $scope.selectedItems,
-                    columnDefs: relationshipColumnDefs,
-                    multiSelect: true,
-                    enableRowSelection: true,
-                    showSelectionCheckbox: true,
+                $scope.gridOptions = {
+                    url: "api/relationship/Relationship?entityName=" + $stateParams.Id,
+                    colModel: relationshipColumnDefs
                 };
 
-                angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);
+                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+                
                 $scope.getAllRelationship = function () {
-                    var items = relationshipDataService.query({ EntityName: $stateParams.Id }, function () {
-                        if (items == null || items.toLowerCase == "null") {
-                            return;
-                        }
-                        $scope.totalServerItems = items.length;
-                        $scope.relationships = items;
-                    }, function () {
-                        logger.error('Get relationships failed');
-                    });
+                    $("#relationList").jqGrid('setGridParam', {
+                        datatype: "json"
+                    }).trigger('reloadGrid');
                 };
 
                 $scope.createOneToMany = function () {
@@ -51,11 +38,12 @@ define(['core/app/detourService'], function (detour) {
                 $scope.createManyToMany = function () {
                     $detour.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
                 };
-                $scope.edit = function (contentId, type) {
-                    if (type == "OneToMany") {
-                        $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: contentId });
-                    } else if(type == "ManyToMany") {
-                        $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: contentId });
+                $scope.edit = function (paramString) {
+                    var params = JSON.parse(paramString);
+                    if (params.type == "OneToMany") {
+                        $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.id });
+                    } else if (params.type == "ManyToMany") {
+                        $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.id });
                     }
                 };
                 $scope.delete = function (contentId) {

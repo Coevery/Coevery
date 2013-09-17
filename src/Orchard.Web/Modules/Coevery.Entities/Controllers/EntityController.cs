@@ -34,7 +34,7 @@ namespace Coevery.Entities.Controllers {
         public Localizer T { get; set; }
 
         //GET api/Entities/Entity
-        public object Get(int rows, int page, string sidx, string sord) {
+        public object Get(int rows, int page) {
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
 
             var query = from type in metadataTypes
@@ -55,23 +55,6 @@ namespace Coevery.Entities.Controllers {
                 records = totalRecords,
                 rows = query
             };
-        }
-
-        //GET api/Entities/Entity/:entityName
-        public object Get(string name) {
-            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
-
-            var query = from type in metadataTypes
-                        let setting = type.Settings.GetModel<DynamicTypeSettings>()
-                        let fields = type.Fields.Select(f => new {
-                            f.Name,
-                            f.DisplayName,
-                            FieldType = f.FieldDefinition.Name.CamelFriendly(),
-                            f.Settings.GetModel<FieldSettings>(f.FieldDefinition.Name + "Settings").IsSystemField
-                        })
-                        select new { type.DisplayName, type.Name, setting.IsDeployed, Fields = fields };
-            var entityType = query.SingleOrDefault();
-            return entityType;
         }
 
         // DELETE api/Entities/Entity/:entityName

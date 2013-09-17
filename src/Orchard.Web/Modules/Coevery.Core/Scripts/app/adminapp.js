@@ -45,64 +45,68 @@
                 lowerCaseLng: true,
                 ns: 'resources-locale'
             };
-
-            function getGridMinHeight(currentGrid) {
-                var findGrids = $(".gridStyle.ng-scope.ngGrid");
-                var availHeight = window.innerHeight -
-                    $("#header").outerHeight(true) -
-                    $("#footer").outerHeight(true);
-                var currentGridNumber = 0;
-                if (isNaN(availHeight)) {
-                    alert("Wrong variable used!");
-                }
-
-                for (var index = 0; index < findGrids.length; index++) {
-                    var tempGrid = findGrids.eq(-index - 1);
-                    availHeight -= tempGrid.height();
-                    if (tempGrid.find(currentGrid) != 0) {
-                        currentGridNumber = index + 1;
-                    }
-                    '<span class="{3}" data-id= {1} > {2} </span> </div>';
-                }
-
-                //Decide whether current grid can use auto minHight;
-                if (availHeight < 0 || currentGridNumber > Math.ceil((availHeight - findGrids.last().offset().top) % 100)) {
-                    return 150;
-                }
-                var minHeight = availHeight - currentGrid.offset().top + currentGrid.parent().height();
-                if (minHeight < 200) {
-                    minHeight = 200;
-                }
-                return minHeight;
+            
+            if (!String.prototype.format) {
+                String.prototype.format = function () {
+                    var args = arguments;
+                    return this.replace(/{(\d+)}/g, function (match, number) {
+                        return typeof args[number] != 'undefined'
+                          ? args[number]
+                          : match
+                        ;
+                    });
+                };
             }
 
-            //$rootScope.defaultGridOptions = {
-            //    plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 0 }), new ngGridRowSelectionPlugin()],
-            //    //multiSelect: false,
-            //    //enableRowSelection: true,
-            //    enableColumnResize: true,
-            //    enableColumnReordering: true,
-            //    enablePaging: true,
-            //    showFooter: true,
-            //    totalServerItems: "totalServerItems",
-            //    footerTemplate: 'Coevery/CoeveryCore/GridTemplate/DefaultFooterTemplate'
-            //};
-            
+            $rootScope.cellLinkTemplate = function (cellvalue, options, rowObject) {
+                var template = '<div class="gridCellText">' +
+                    '<section class="row-actions hide">' +
+                    '<span class="icon-edit edit-action" data-id={0} title="Edit"></span>' +
+                    '<span class="icon-remove delete-action" data-id= {1} title="Delete"></span>' +
+                    '{4}</section>' +
+                    '<span class={3} data-id= {1} > {2} </span> </div>';
+                if (!options.colModel.formatoptions) {
+                    return template.format(options.rowId, options.rowId, cellvalue, '', '');
+                }
+                
+                var editParams, viewStyle, defaultStyle;
+                if (options.colModel.formatoptions.useType) {
+                    editParams = JSON.stringify({ id: options.rowId , type: rowObject.Type });
+                } else {
+                    editParams = options.rowId;
+                }
+                if (options.colModel.formatoptions.hasView) {
+                    viewStyle = 'btn-link view-action';
+                } else {
+                    viewStyle = '';
+                }
+                if (options.colModel.formatoptions.hasDefault) {
+                    defaultStyle = '<span class="icon-tags default-action" data-id="' + options.rowId + '" title="Set Default"></span>';
+                } else {
+                    defaultStyle = '';
+                }
+
+                return template.format(editParams, options.rowId, cellvalue, viewStyle, defaultStyle);
+            };
+
             $rootScope.defaultGridOptions = {
+                datatype: "json",
+                loadonce: true,
                 pagerpos: "right",
                 recordpos: "left",
-                //autowidth: true,
                 sortable: true,
                 height: "100%",
                 viewrecords: true,
                 multiselect: true,
                 multiboxonly: true,
                 shrinkToFit: false,
+                rowNum: 50,
+                rowList: [50, 100, 200],
                 loadui: "disable",
                 jsonReader: {
                     repeatitems: false,
-                    id: "0"
-                }
+                    id: "0" //Get Id from first column
+                },
             };
         }
     ]);

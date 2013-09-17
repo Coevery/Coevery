@@ -3,26 +3,19 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/fielddataservice'], function (detour) {
     detour.registerController([
         'FieldsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$dialog', 'entityDataService', 'fieldDataService',
-            function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, entityDataService, fieldDataService) {
-                var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-                    '<ul class="row-actions pull-right hide">' +
-                    '<li class="icon-edit" ng-click="edit(row.entity.Name,row.entity.FieldType)" title="Edit"></li>' +
-                    '<li class="icon-remove" ng-click="delete(row.entity.Name)" ng-hide="row.entity.IsSystemField"  title="Delete"></li>' +
-                    '</ul>' +
-                    '<span class="btn-link" ng-click="edit(row.entity.Name,row.entity.FieldType)">{{COL_FIELD}}</span>' +
-                    '</div>';
+        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$dialog', 'fieldDataService',
+            function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, fieldDataService) {
 
-                $scope.mySelections = [];
+                $scope.selectedItems = [];
                 var entityName = $stateParams.Id;
                 var fieldColumnDefs = [
+                    { name: 'Name', label: 'Field Name', width: 180, formatter: $rootScope.cellLinkTemplate },
                     {
-                        field: 'DisplayName', displayName: 'Field Label', cellTemplate: cellTemplateString
+                        name: 'DisplayName', label: 'Field Label', width: 180
                     },
-                    { field: 'Name', displayName: 'Field Name'},
-                    { field: 'Type', displayName: 'Type'},
-                    { field: 'FieldType', displayName: 'Field Type' },
-                    { field: 'ControlField', displayName: 'Control Field' }
+                    { name: 'FieldType', label: 'Field Type', width: 180 },
+                    { name: 'Type', label: 'Type' ,width: 172},
+                    { name: 'ControlField', label: 'Control Field',width: 172 }
                 ];
 
                 function test() {
@@ -38,12 +31,8 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.gridOptions = {
-                    data: 'myData',
-                    multiSelect: true,
-                    enableRowSelection: true,
-                    showSelectionCheckbox: true,
-                    selectedItems: $scope.mySelections,//selectedItems,
-                    columnDefs: fieldColumnDefs,
+                    url: "api/entities/field?name=" + entityName,
+                    colModel: fieldColumnDefs
                 };
 
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
@@ -56,7 +45,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.$on('toStep1', function () {
                     $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
-                });   
+                });
 
                 $scope.dialog = null;
 
@@ -98,16 +87,15 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.deleteField = function () {
                     $('#myModal').modal('hide');
-
                     fieldDataService.delete({ name: deleteField, parentname: entityName }, function () {
-                        $scope.getAllField();
                         logger.success("Delete the field successful.");
+                        $scope.getAllField();
                     }, function (reason) {
                         logger.error("Failed to delete the field:" + reason);
                     });
                 };
 
-                $scope.edit = function (fieldName, fieldType) {
+                $scope.edit = function (fieldName) {
                     $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: fieldName });
                 };
                 $scope.gotoDependency = function () {
@@ -115,21 +103,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.getAllField = function () {
-                    var metaData = entityDataService.get({ name: entityName }, function () {
-                        $scope.item = metaData;
-                        $scope.myData = metaData.Fields;
-                        $.each($scope.myData, function () {
-                            var type = this.IsSystemField ? 'System Field' : 'User Field';
-                            $.extend(this, { Type: type });
-                        });
-                        $scope.userFields = [
-                            { DisplayName: 'Full Name', Name: 'FullName', FieldType: 'Input Field' }
-                        ];
-                    }, function () {
-                        logger.error("The metadata does not exist.");
-                    });
+                    $("#fieldList").jqGrid('setGridParam', {
+                        datatype: "json"
+                    }).trigger('reloadGrid');
                 };
-                $scope.getAllField();
             }]
     ]);
 });

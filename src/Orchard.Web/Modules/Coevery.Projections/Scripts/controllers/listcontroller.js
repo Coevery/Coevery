@@ -6,47 +6,29 @@ define(['core/app/detourService',
                 'ProjectionListCtrl',
                 ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'projectionDataService',
                     function ($rootScope, $scope, logger, $detour, $resource, $stateParams, projectionDataService) {
-
                         var t = function (str) {
                             var result = i18n.t(str);
                             return result;
                         };
-
-                        var actionTemplate = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-                            '<span>{{COL_FIELD}}</span>' +
-                            '<ul class="row-actions pull-right hide">' +
-                            '<li class="icon-edit" ng-click="edit(row.entity.ContentId)" title="Edit"></li>' +
-                            '<li class="icon-remove" ng-click="delete(row.entity.ContentId)" title="Delete"></li>' +
-                            '<li class="icon-tags" ng-click="setDefault(row.entity.ContentId)" title="Set Default"></li>' +
-                            '</ul>' +
-                            '</div>';
                         var columnDefs = [
-                            { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: actionTemplate },
-                            { field: 'EntityType', displayName: t('EntityType') },            
-                            { field: 'Default', displayName: t('Default') }];
-                        $scope.mySelections = [];
-                        $scope.pagingOptions = {
-                            pageSizes: [50, 100, 200],
-                            pageSize: 50,
-                            currentPage: 1
-                        };
+                            { name: 'ContentId', label: t('Content Id'), hidden: true },
+                            {
+                                name: 'DisplayName', label: t('Display Name'), width: 300,
+                                formatter: $rootScope.cellLinkTemplate,
+                                formatoptions: { hasDefault: true }
+                            },
+                            { name: 'EntityType', label: t('Entity Type'), width: 300 },
+                            { name: 'Default', label: t('Default'), width: 275 }];
 
                         $scope.gridOptions = {
-                            data: 'myData',
-                            enablePaging: true,
-                            showFooter: true,
-                            multiSelect: true,
-                            enableRowSelection: true,
-                            showSelectionCheckbox: true,
-                            selectedItems: $scope.mySelections,
-                            columnDefs: columnDefs,
-                            pagingOptions: $scope.pagingOptions
+                            url: "api/projections/Projection?id=" + $stateParams.Id,
+                            colModel: columnDefs
                         };
 
                         angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                         $scope.exit = function () {
-                            $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.EntityName });
+                            $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.Id });
                         };
 
                         $scope.delete = function (id) {
@@ -60,8 +42,8 @@ define(['core/app/detourService',
                         $scope.deleteView = function () {
                             $('#myModalView').modal('hide');
                             projectionDataService.delete({ Id: $scope.viewId }, function () {
-                                if ($scope.mySelections.length != 0) {
-                                    $scope.mySelections.pop();
+                                if ($scope.selectedItems.length != 0) {
+                                    $scope.selectedItems.pop();
                                 }
                                 $scope.getAll();
                                 logger.success('Delete the view successful.');
@@ -80,8 +62,8 @@ define(['core/app/detourService',
 
                         $scope.setDefault = function (id) {
                             var result = projectionDataService.save({ Id: id, EntityType: $stateParams.Id }, function () {
-                                if ($scope.mySelections.length != 0) {
-                                    $scope.mySelections.pop();
+                                if ($scope.selectedItems.length != 0) {
+                                    $scope.selectedItems.pop();
                                 }
                                 $scope.getAll();
                             }, function () {
@@ -90,14 +72,18 @@ define(['core/app/detourService',
                         };
 
                         $scope.getAll = function () {
-                            var records = projectionDataService.query({ Name: $stateParams.Id }, function () {
+                            $("#viewList").jqGrid('setGridParam', {
+                                datatype: "json"
+                            }).trigger('reloadGrid');
+                        };
+                    }]
+            ]);
+        });
+
+/*Abondoned fields
+var records = projectionDataService.query({ Name: $stateParams.Id }, function () {
                                 $scope.myData = records;
                             }, function () {
                                 logger.error("Failed to fetched projections for " + $stateParams.EntityName);
                             });
-                        };
-
-                        $scope.getAll();
-                    }]
-            ]);
-        });
+*/

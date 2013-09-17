@@ -1,16 +1,11 @@
 ﻿
 .ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all table,
 .ui-jqgrid .ui-paging-info,
-.ui-widget-content th.ui-th-column
- {
+.ui-widget-content th.ui-th-column {
     color: #444444;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 20px;
-}
-
-.ui-jqgrid tr {
-    height: 30px;
 }
 
 .ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all,
@@ -37,18 +32,44 @@ div.ui-state-default.ui-jqgrid-hdiv,
     font-weight: bold;
 }
 
+.ui-jqgrid .ui-jqgrid-hdiv {
+    border-bottom: 0;
+}
+/*row style
+------------------------------------------*/
+.ui-jqgrid tr {
+    border-color: #D2D2D2;
+    height: 30px;
+}
+
+    .ui-jqgrid tr.ui-state-highlight {
+        background-color: #F2F7FF;
+    }
+
+.ui-jqgrid .ui-jqgrid-btable tr {
+    border-color: #D2D2D2;
+    height: 30px;
+}
+.ui-jqgrid .ui-jqgrid-btable tr:last-child {
+    border-bottom: none;
+}
 /*cell style
 ------------------------------------------*/
 .ui-jqgrid input[type="checkbox"] {
     margin-top: 0;
 }
 
-.ui-jqgrid tbody tr.ui-row-rtl td,
-.ui-jqgrid tbody tr.ui-row-ltr td {
-    border-left: 0 none;
-    border-right: 0 none;
+.ui-jqgrid .ui-jqgrid-btable tr.ui-row-ltr.ui-widget-content td,
+.ui-jqgrid .ui-jqgrid-btable tr.ui-row-ltr.ui-widget-content.ui-state-hover td,
+.ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content td,
+.ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content.ui-state-hover td {
+    border-left: 0 none transparent;
+    border-right: 0 none transparent;
 }
 
+.ui-jqgrid .ui-jqgrid-btable tr:last-child td {
+    border-bottom: 0;
+}
 /*pager style
 ------------------------------------------*/
 div.ui-state-default.ui-jqgrid-pager.ui-corner-bottom {
@@ -67,8 +88,7 @@ div.ui-state-default.ui-jqgrid-pager.ui-corner-bottom {
 }
 
 .ui-pg-table .ui-state-hover,
-.ui-pg-table .ui-state-focus
-{
+.ui-pg-table .ui-state-focus {
     border: 0 none transparent;
 }
 
@@ -100,12 +120,12 @@ div.gridCellText {
     right: 0;
 }
 
-td [class^="icon-"], 
+td [class^="icon-"],
 td [class*=" icon-"] {
     padding: 0 3px;
 }
 
 td .btn-link {
     position: relative;
-    left: -1%;
+    left: 1%;
 }

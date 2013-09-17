@@ -3,17 +3,17 @@
         <i class="icon-plus"></i>&nbsp;New Field
     </button>
     <button class="btn btn-small" ng-click="gotoDependency()">Field Dependency</button>
-    <div class="btn-group" ng-show="mySelections.length > 0">
-        <button class="btn btn-small" data-ng-click="edit(mySelections[0].Name)" ng-disabled="mySelections.length > 1">
+    <div class="btn-group" ng-show="selectedItems.length > 0">
+        <button class="btn btn-small" data-ng-click="edit(selectedItems[0])" ng-disabled="selectedItems.length > 1">
             <i class="icon-edit"></i>&nbsp;Edit
         </button>
-        <button class="btn btn-small" data-ng-click="delete(mySelections[0].Name)">
+        <button class="btn btn-small" data-ng-click="delete(selectedItems[0])">
             <i class="icon-remove"></i>&nbsp;Delete
         </button>
     </div>
 </div>
 <div class="row-fluid">
-    <section class="gridStyle" ng-grid="gridOptions"></section>
+     <div class="row-fluid" data-ag-grid="gridOptions" data-ag-grid-name="fieldList"> </div>
 </div>
 
 <div id="modalTemplate" class="ng-cloak" ui-view>

@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Core.Services;
 using Coevery.Entities.Events;
 using Coevery.Entities.Services;
+using Coevery.Entities.Settings;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Localization;
 using Orchard.Utility.Extensions;
@@ -31,9 +33,28 @@ namespace Coevery.Entities.Controllers {
         public Localizer T { get; set; }
 
         // GET api/metadata/field
-        public object Get(string name) {
-            var type = _contentDefinitionService.GetType(name);
-            return type.Fields.Select(f => new {f.DisplayName, Name = f.FieldDefinition.Name.CamelFriendly()}).ToList();
+        public object Get(string name, int page, int rows) {
+            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
+
+            var query = from type in metadataTypes
+                        from field in type.Fields
+                        let setting = type.Settings.GetModel<DynamicTypeSettings>()
+                        select new {
+                            field.Name,
+                            field.DisplayName,
+                            FieldType = field.FieldDefinition.Name.CamelFriendly(),
+                            Type = field.Settings.GetModel<FieldSettings>(field.FieldDefinition.Name + "Settings").IsSystemField
+                            ? "System Field" : "User Field",
+                            ControllField = string.Empty
+                        };
+
+            var totalRecords = query.Count();
+            return new {
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                page = page,
+                records = totalRecords,
+                rows = query
+            };
         }
 
         // DELETE api/metadata/field/name
