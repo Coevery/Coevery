@@ -4,24 +4,14 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Coevery.Core.ViewModels;
-using Orchard.Data;
-using Orchard.Forms.Services;
-using Orchard.Projections.Models;
 using Orchard.Projections.Services;
 
 namespace Coevery.Core.Controllers {
     public class FilterController : Controller {
-        private readonly IRepository<FilterRecord> _filterRepository;
         private readonly IProjectionManager _projectionManager;
-        private readonly IFormManager _formManager;
 
-        public FilterController(
-            IRepository<FilterRecord> filterRepository,
-            IProjectionManager projectionManager,
-            IFormManager formManager) {
-            _filterRepository = filterRepository;
+        public FilterController(IProjectionManager projectionManager) {
             _projectionManager = projectionManager;
-            _formManager = formManager;
         }
 
         public ActionResult GetFieldFilters(string id) {

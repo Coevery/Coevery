@@ -27,7 +27,6 @@ angular.module('coevery.filter', [])
                     editor.find('[name="' + property + '"]:first').val(args.State[property]);
                 }
                 $compile(editor.children())(scope);
-                element.find('select').selectpicker({ style: "btn-small" });
 
                 scope.showFilterEditor = function(field) {
                     editor.empty();
@@ -35,7 +34,6 @@ angular.module('coevery.filter', [])
                     element.data('Type', field.Type);
                     editor.append($('script[type="text/ng-template"]#' + field.FormName).text());
                     $compile(editor.children())(scope);
-                    element.find('select').selectpicker({ style: "btn-small" });
                 };
 
                 scope.delete = function() {
@@ -54,6 +52,7 @@ angular.module('coevery.filter', [])
                 var max = siblings.filter('[name="Max"]:first');
                 displayNumericEditorOptions();
                 element.change(displayNumericEditorOptions);
+                element.selectpicker();
 
                 function displayNumericEditorOptions() {
                     element.children("option:selected").each(function() {
@@ -86,6 +85,7 @@ angular.module('coevery.filter', [])
                 var max = siblings.filter(':has([name="Max"]):first');
                 displayNumericEditorOptions();
                 element.change(displayNumericEditorOptions);
+                element.selectpicker();
 
                 function displayNumericEditorOptions() {
                     element.children("option:selected").each(function() {
@@ -104,16 +104,19 @@ angular.module('coevery.filter', [])
             }
         };
     })
-    .directive('filterReferenceValue', function ($http) {
+    .directive('filterReferenceValue', function($http) {
         return {
             restrict: 'A',
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 var arr = element.parents('form:first').data('Type').split('.', 2);
                 var entityName = arr[0];
                 var fieldName = arr[1];
                 var url = 'api/Projections/Reference/' + entityName + '?fieldName=' + fieldName;
-                $http.get(url).then(function (response) {
-
+                $http.get(url).then(function(response) {
+                    $.each(response.data, function() {
+                        element.append('<option value="' + this.Id + '">' + this.DisplayText + '</option>');
+                    });
+                    element.selectpicker();
                 });
             }
         };
