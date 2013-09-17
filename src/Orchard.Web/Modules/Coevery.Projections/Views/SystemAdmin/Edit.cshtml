@@ -98,11 +98,11 @@
                                                 @foreach (var field in Model.Fields) {
                                                     string fieldName = field.Name.Text;
                                                     <tr>
-                                                        <td name="unselectedField">@fieldName</td>
+                                                        <td class="unselectedField" filed-type="@field.Type">@fieldName</td>
                                                         <td class="rightCell">
-                                                            <span  ng-class="LabelClass('@fieldName')">Added</span>
-                                                            <span  ng-style="ButtonStyle('@fieldName')" class=""style="line-height: 14px;">
-                                                                <button class="btn-link" ng-click="addfield('@field.Type')" type="button" style="line-height: 14px;">Add</button>
+                                                            <span ng-class="LabelClass('@fieldName')">Added</span>
+                                                            <span ng-style="ButtonStyle('@fieldName')" class=""style="line-height: 14px;">
+                                                                <button class="btn-link" ng-click="addfield('@field.Type','@fieldName')" type="button" style="line-height: 14px;">Add</button>
                                                             </span>
                                                         </td>
                                                     </tr>
@@ -118,7 +118,7 @@
                                         <input id="picklist" name="picklist" type="hidden" />
                                         <div class="sortable-list">
                                             <ul id="sortable">
-                                                <li ng-repeat="selectedColumn in SelectedColumns" style=""><span style="margin-left: 3px;">{{selectedColumn.FieldName}}</span>
+                                                <li ng-repeat="selectedColumn in SelectedColumns" style=""><span style="margin-left: 3px;">{{selectedColumn.DisplayName}}</span>
                                                     <div class="pull-right">
                                                         <button class="btn-link" type="button" ng-click="removefield($index)">Remove</button>
                                                     </div>

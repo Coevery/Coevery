@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
@@ -30,24 +31,18 @@ namespace Coevery.Projections.Controllers {
         }
 
         public IEnumerable<object> Get(int id) {
-            var properties = GetProperties(id);
-            return properties.Select(c => new {FieldName = c.Type});
-        }
+            if (id <= 0)
+                return null;
 
-        private IEnumerable<PropertyRecord> GetProperties(int projectionId) {
-            IList<PropertyRecord> properties = new List<PropertyRecord>();
-            if (projectionId <= 0)
-                return properties;
-
-            var listViewPart = _contentManager.Get<ListViewPart>(projectionId, VersionOptions.Latest);
+            var listViewPart = _contentManager.Get<ListViewPart>(id, VersionOptions.Latest);
             var projectionPart = listViewPart.As<ProjectionPart>();
             var queryPartRecord = projectionPart.Record.QueryPartRecord;
             if (queryPartRecord.Layouts.Count == 0)
-                return properties;
+                return null;
             string category = listViewPart.ItemContentType + "ContentFields";
             var allFields = _projectionManager.DescribeProperties().SelectMany(x => x.Descriptors).Where(c => c.Category == category);
-            properties = queryPartRecord.Layouts[0].Properties.Where(c => allFields.Select(d => d.Type).Contains(c.Type)).ToList();
-            return properties;
+            var fieldDescriptors = queryPartRecord.Layouts[0].Properties.OrderBy(p => p.Position).Select(p => allFields.Select(d => new {Descriptor = d, Property = p}).FirstOrDefault(x => x.Descriptor.Type == p.Type)).ToList();
+            return fieldDescriptors.Select(x => new {FieldName = x.Descriptor.Type, DisplayName = x.Descriptor.Name.Text});
         }
     }
 }

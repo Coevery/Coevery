@@ -68,7 +68,7 @@ namespace Coevery.Fields.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context
-                .Member(null, typeof(bool), T("Value"), T("The boolean value of the field."));
+                .Member(null, typeof(bool), null, T("The boolean value of the field."));
         }
     }
 }

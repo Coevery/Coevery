@@ -108,7 +108,7 @@ namespace Coevery.Relationship.Drivers {
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(int?), T("Value"), T("The content item id referenced by this field."));
+            context.Member(null, typeof(int?), null, T("The content item id referenced by this field."));
         }
     }
 }

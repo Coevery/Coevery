@@ -154,7 +154,7 @@ namespace Coevery.OptionSet.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context
-                .Member(null, typeof(string), T("Value"), T("The option value of the field."));
+                .Member(null, typeof(string), null, T("The option value of the field."));
         }
 
     }
