@@ -3,6 +3,7 @@
         'GeneralViewCtrl',
         ['$timeout', '$rootScope', '$scope', 'logger', '$detour', '$stateParams', 'historyService',
             function ($timeout, $rootScope, $scope, logger, $detour, $stateParams, historyService) {
+                var menuName = $stateParams.Navigation;
                 var moduleName = $stateParams.Module;
                 var id = $stateParams.Id;
                 $scope.moduleName = moduleName;
@@ -36,10 +37,10 @@
                     //if (window.history.length > 1)
                     //    window.history.back();
                     //else
-                        $detour.transitionTo('List', { Module: moduleName });
+                    $detour.transitionTo('List', { Navigation: menuName, Module: moduleName });
                 };
                 $scope.edit = function () {
-                    $detour.transitionTo('Detail', { Module: moduleName, Id: id });
+                    $detour.transitionTo('Detail', { Navigation: menuName, Module: moduleName, Id: id });
                 };
             }]
     ]);

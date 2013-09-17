@@ -3,6 +3,7 @@
       'GeneralDetailCtrl',
       ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$detour', '$http','$parse',
       function ($timeout, $rootScope, $scope, $q, logger, $detour, $http, $parse) {
+          var menuName = $rootScope.$stateParams.Navigation;
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
           var validator = $("form[name=myForm]").validate({
@@ -35,7 +36,7 @@
                   var getter = $parse('Id');
                   var Id = getter(response.data);
                   if (Id)
-                      $detour.transitionTo('Detail', { Module: moduleName, Id: Id });
+                      $detour.transitionTo('Detail', { Navigation: menuName, Module: moduleName, Id: Id });
               });
               return promise;
           };
@@ -54,14 +55,14 @@
 
           $scope.edit = function () {
               var id = $rootScope.$stateParams.Id;
-              $detour.transitionTo('Detail', { Module: moduleName, Id: id });
+              $detour.transitionTo('Detail', { Navigation: menuName, Module: moduleName, Id: id });
           };
 
           $scope.exit = function () {
               //if(window.history.length>1)
               //    window.history.back();
               //else
-                $detour.transitionTo('List', { Module: moduleName });
+              $detour.transitionTo('List', { Navigation: menuName, Module: moduleName });
           };
 
 

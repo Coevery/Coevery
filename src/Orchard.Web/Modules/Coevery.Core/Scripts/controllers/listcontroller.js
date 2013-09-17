@@ -3,6 +3,7 @@
         'GeneralListCtrl',
         ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$detour', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
             function($rootScope, $scope, $parse, $http, logger, $compile, $detour, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
+                var menuName = $stateParams.Navigation;
                 var moduleName = $stateParams.Module;
                 var primaryKeyGetter = $parse('ContentId');
                 $scope.toolButtonDisplay = false;
@@ -147,21 +148,21 @@
                 };
 
                 $scope.add = function() {
-                    $detour.transitionTo('Create', { Module: moduleName });
+                    $detour.transitionTo('Create', { Navigation: menuName, Module: moduleName });
                 };
 
                 $scope.edit = function(id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = primaryKeyGetter($scope.selectedItems[0]);
                     }
-                    $detour.transitionTo('Detail', { Module: moduleName, Id: id });
+                    $detour.transitionTo('Detail', { Navigation: menuName, Module: moduleName, Id: id });
                 };
 
                 $scope.view = function(id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = primaryKeyGetter($scope.selectedItems[0]);
                     }
-                    $detour.transitionTo('View', { Module: moduleName, Id: id });
+                    $detour.transitionTo('View', { Navigation: menuName, Module: moduleName, Id: id });
                 };
 
                 // filters

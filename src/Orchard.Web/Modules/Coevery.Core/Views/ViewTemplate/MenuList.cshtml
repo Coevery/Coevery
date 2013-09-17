@@ -1,0 +1,52 @@
+﻿@using Orchard.Utility.Extensions;
+<div>
+
+</div>
+@*<div id="nav-selector">
+    <div class="dropdown">
+        @if (Model.Items.Count > 0) {
+            var menu = Model;
+            
+            <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                <span id="first-menu-title" data-label-placement title="@menu.Items[0].Text.Text">@menu.Items[0].Text.Text</span><b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
+                @foreach (var item in menu.Items) {
+                    <li data-nav-target="#@idText" data-nav-parent="#navigation">
+                        <input type="radio" id="menu_@idText" name="ex4" value="@idText"><label for="menu_@idText"><strong>@item.Text.Text</strong></label>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>*@
+
+@*<nav id="navigation">
+    @{
+        foreach (var firstLevelMenuItem in Model) {
+            IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
+            string idText = firstLevelMenuItem.Text.TextHint;
+            idText = idText.ToSafeName();
+            var isFirst = ((IEnumerable<dynamic>) Model).ToList().IndexOf(firstLevelMenuItem) == 0;
+            var inClass = isFirst ? "in" : string.Empty;
+            <ul class="collapse @inClass" id="@idText" >
+                @if (secondLevelMenuItems.Any(menuItem => !menuItem.LocalNav) || !firstLevelMenuItem.LinkToFirstChild) {
+                    foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
+                        string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
+
+                        var secondLevelUrl = secondLevelMenuItem.Href;
+                        var classes =(IList<string>)secondLevelMenuItem.Classes;
+                        if (!classes.Any()) {classes.Add("icon-home");}
+
+                        <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
+                            <a href="@secondLevelUrl" title="@secondLevelTextHint">
+                                <i class="@string.Join(" ", classes.ToArray()) vertical-middle"></i>
+                                <span class="nav-title vertical-middle">@secondLevelMenuItem.Text</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        }
+    }
+</nav>*@
