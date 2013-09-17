@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Projections.FieldTypeEditors;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
@@ -19,28 +20,31 @@ namespace Coevery.Projections.Providers.Filters {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IEnumerable<IFieldTypeEditor> _fieldTypeEditors;
+        private readonly IEnumerable<ILogicFieldTypeEditor> _logicFieldTypeEditors;
 
         public ContentFieldsFilter(
             IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
-            IEnumerable<IFieldTypeEditor> fieldTypeEditors) {
+            IEnumerable<IFieldTypeEditor> fieldTypeEditors,
+            IEnumerable<ILogicFieldTypeEditor> logicFieldTypeEditors) {
             _contentDefinitionManager = contentDefinitionManager;
             _contentFieldDrivers = contentFieldDrivers;
             _fieldTypeEditors = fieldTypeEditors;
+            _logicFieldTypeEditors = logicFieldTypeEditors;
             T = NullLocalizer.Instance;
         }
 
         public Localizer T { get; set; }
 
         public void Describe(DescribeFilterContext describe) {
-            foreach(var part in _contentDefinitionManager.ListPartDefinitions()) {
-                if(!part.Fields.Any()) {
+            foreach (var part in _contentDefinitionManager.ListPartDefinitions()) {
+                if (!part.Fields.Any()) {
                     continue;
                 }
 
                 var descriptor = describe.For(part.Name + "ContentFields", T("{0} Content Fields", part.Name.CamelFriendly()), T("Content Fields for {0}", part.Name.CamelFriendly()));
 
-                foreach(var field in part.Fields) {
+                foreach (var field in part.Fields) {
                     var localField = field;
                     var localPart = part;
                     var drivers = _contentFieldDrivers.Where(x => x.GetFieldInfo().Any(fi => fi.FieldTypeName == localField.FieldDefinition.Name)).ToList();
@@ -48,11 +52,8 @@ namespace Coevery.Projections.Providers.Filters {
                     var membersContext = new DescribeMembersContext(
                         (storageName, storageType, displayName, description) => {
                             // look for a compatible field type editor
-                            IFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(storageType));
-
-                            if(fieldTypeEditor == null) {
-                                return;
-                            }
+                            IFieldTypeEditor fieldTypeEditor = _logicFieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name))
+                                                               ?? _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(storageType));
 
                             descriptor.Element(
                                 type: localPart.Name + "." + localField.Name + "." + storageName,
@@ -62,8 +63,8 @@ namespace Coevery.Projections.Providers.Filters {
                                 display: context => fieldTypeEditor.DisplayFilter(localPart.Name.CamelFriendly() + "." + localField.DisplayName, storageName, context.State),
                                 form: fieldTypeEditor.FormName);
                         });
-                    
-                    foreach(var driver in drivers) {
+
+                    foreach (var driver in drivers) {
                         driver.Describe(membersContext);
                     }
                 }
@@ -93,6 +94,4 @@ namespace Coevery.Projections.Providers.Filters {
             return T("Field {0} {1} \"{2}\"", fieldDefinition.Name, op, value);
         }
     }
-
-
 }

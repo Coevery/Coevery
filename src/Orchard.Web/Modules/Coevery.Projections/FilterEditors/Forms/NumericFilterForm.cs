@@ -4,24 +4,20 @@ using System.Globalization;
 using System.Web.Mvc;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
-using Orchard.Environment;
 using Orchard.Environment.Extensions;
 using Orchard.Forms.Services;
 using Orchard.Localization;
-using Orchard.UI.Resources;
 
 namespace Coevery.Projections.FilterEditors.Forms {
     [OrchardSuppressDependency("Orchard.Projections.FilterEditors.Forms.NumericFilterForm")]
     public class NumericFilterForm : IFormProvider {
         public const string FormName = "NumericFilter";
-        private readonly Work<IResourceManager> _resourceManager;
 
         protected dynamic Shape { get; set; }
         public Localizer T { get; set; }
 
-        public NumericFilterForm(IShapeFactory shapeFactory, Work<IResourceManager> resourceManager) {
+        public NumericFilterForm(IShapeFactory shapeFactory) {
             Shape = shapeFactory;
-            _resourceManager = resourceManager;
             T = NullLocalizer.Instance;
         }
 
@@ -44,7 +40,6 @@ namespace Coevery.Projections.FilterEditors.Forms {
                         Operators: operators
                         );
 
-                    //_resourceManager.Value.Include("script", "~/Modules/Coevery.Projections/Scripts/Test.js", "~/Modules/Coevery.Projections/Scripts/Test.js");
                     return f;
                 };
 

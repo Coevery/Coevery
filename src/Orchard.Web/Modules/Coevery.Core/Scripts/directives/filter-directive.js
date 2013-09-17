@@ -71,4 +71,50 @@ angular.module('coevery.filter', [])
                 }
             }
         };
+    })
+    .directive('filterDateOperator', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var options = attrs.filterDateOperator == 'date'
+                    ? { pickTime: false }
+                    : { pick12HourFormat: true, pickSeconds: false };
+                var siblings = element.siblings();
+                siblings.datetimepicker(options);
+                var single = siblings.filter(':has([name="Value"]):first');
+                var min = siblings.filter(':has([name="Min"]):first');
+                var max = siblings.filter(':has([name="Max"]):first');
+                displayNumericEditorOptions();
+                element.change(displayNumericEditorOptions);
+
+                function displayNumericEditorOptions() {
+                    element.children("option:selected").each(function() {
+                        var val = $(this).val();
+                        if (val == 'Between' || val == 'NotBetween') {
+                            single.hide();
+                            min.show();
+                            max.show();
+                        } else {
+                            single.show();
+                            min.hide();
+                            max.hide();
+                        }
+                    });
+                }
+            }
+        };
+    })
+    .directive('filterReferenceValue', function ($http) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var arr = element.parents('form:first').data('Type').split('.', 2);
+                var entityName = arr[0];
+                var fieldName = arr[1];
+                var url = 'api/Projections/Reference/' + entityName + '?fieldName=' + fieldName;
+                $http.get(url).then(function (response) {
+
+                });
+            }
+        };
     });
