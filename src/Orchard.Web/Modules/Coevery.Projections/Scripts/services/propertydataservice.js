@@ -7,9 +7,9 @@ define(['core/app/detourService'], function (detour) {
 
     //Although this is an AngularJS factory I prefer the term "service" for data operations
     detour.registerFactory([
-        'viewmodelDataService',
+        'propertyDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            return $resource('api/projections/ViewModel/:Id',
+            return $resource('api/projections/property/:Id',
                 { Id: '@Id' },
                 { update: { method: 'PUT' } });
         }]

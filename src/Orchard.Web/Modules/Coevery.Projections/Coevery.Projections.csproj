@@ -98,7 +98,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ViewDefinitionController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
-    <Compile Include="Controllers\ViewModelController.cs" />
+    <Compile Include="Controllers\PropertyController.cs" />
     <Compile Include="Drivers\LayListViewPartDriver.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FilterEditors\Forms\BooleanFilterForm.cs" />
@@ -118,7 +118,7 @@
     <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
-    <Content Include="Scripts\services\viewmodeldataservice.js" />
+    <Content Include="Scripts\services\propertydataservice.js" />
     <Content Include="Scripts\services\projectiondataservice.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />

@@ -1,9 +1,9 @@
 ﻿'use strict';
-define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function(detour) {
+define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/propertydataservice'], function (detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource','$http', 'projectionDataService', 'viewmodelDataService','$parse',
-            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, $http, projectionDataService, viewmodelDataService, $parse) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource', '$http', 'projectionDataService', 'propertyDataService', '$parse',
+            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, $http, projectionDataService, propertyDataService, $parse) {
                 var name = $stateParams.Id;
                 $scope.mySelections = [];
                 $scope.fieldCoumns = [];
@@ -43,7 +43,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                     errorClass: "inputError"
                 });
 
-                $scope.save = function () {
+                $scope.save = function() {
                     var form = $("form[name=myForm]");
                     if (!validator.form()) {
                         return null;
@@ -54,16 +54,16 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         pickListValue += fieldName + '$';
                     }
                     $('#picklist')[0].value = pickListValue;
-                    
+
                     var promise = $http({
                         url: form.attr('action'),
                         method: "POST",
                         data: form.serialize() + '&submit.Save=Save',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                    }).then(function (response) {
+                    }).then(function(response) {
                         logger.success('Save succeeded.');
                         return response;
-                    }, function (reason) {
+                    }, function(reason) {
                         logger.error('Save Failed： ' + reason);
                     });
                     return promise;
@@ -97,10 +97,9 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                     $detour.transitionTo('EntityDetail.Views', { Id: $stateParams.EntityName });
                 };
 
-                $scope.addfield = function(fieldName) {
-                    var selectedField = { FieldName: fieldName };
+                $scope.addfield = function(fieldName, displayName) {
+                    var selectedField = { FieldName: fieldName, DisplayName: displayName };
                     $scope.SelectedColumns.splice($scope.SelectedColumns.length, 0, selectedField);
-
                 };
 
                 $scope.removefield = function(index) {
@@ -108,13 +107,14 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 };
 
                 $scope.AddAll = function() {
-                    $.each($('td[name = "unselectedField"]'), function (i, v) {
-                        var fieldName = $(v).text();
-                        var exsitsItem = $($scope.SelectedColumns).filter(function () {
+                    $.each($('td.unselectedField'), function(i, v) {
+                        var displayName = $(v).text();
+                        var filedName = $(v).attr('filed-type');
+                        var exsitsItem = $($scope.SelectedColumns).filter(function() {
                             return this.FieldName == fieldName;
-                        }).first();
+                        });
                         if (exsitsItem.length <= 0) {
-                            $scope.addfield(fieldName);
+                            $scope.addfield(filedName, displayName);
                         }
                     });
                 };
@@ -127,19 +127,23 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 };
 
                 $scope.ButtonStyle = function(fieldName) {
-                    for (var i = 0; i < $scope.SelectedColumns.length; i++) {
-                        if ($scope.SelectedColumns[i].FieldName == fieldName)
-                            return { 'display': 'none' };
+                    var selected = $.grep($scope.SelectedColumns, function(n, i) {
+                        return n.FieldName == fieldName;
+                    });
+                    if (selected.length > 0) {
+                        return { 'display': 'none' };
                     }
                     return { 'display': 'block' };
                 };
 
 
                 $scope.InitSeletedFieldData = function() {
-                    var viewModel = viewmodelDataService.query({ id: $stateParams.Id }, function() {
-                        for (var i = 0; i < viewModel.length; i++) {
-                            $scope.addfield(viewModel[i].FieldName);
-                        }
+                    var id = $stateParams.Id || -1;
+                    var properties = propertyDataService.query({ id: id }, function() {
+                        properties = properties || [];
+                        $.each(properties, function(index, value) {
+                            $scope.addfield(value.FieldName, value.DisplayName);
+                        });
                     }, function() {
 
                     });
