@@ -1,9 +1,9 @@
 ﻿'use strict';
-define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function(detour) {
+define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/propertydataservice'], function (detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource','$http', 'projectionDataService', 'viewmodelDataService','$parse',
-            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, $http, projectionDataService, viewmodelDataService, $parse) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource', '$http', 'projectionDataService', 'propertyDataService', '$parse',
+            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, $http, projectionDataService, propertyDataService, $parse) {
                 var name = $stateParams.Id;
                 $scope.mySelections = [];
                 $scope.fieldCoumns = [];
@@ -135,8 +135,9 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 };
 
 
-                $scope.InitSeletedFieldData = function() {
-                    var viewModel = viewmodelDataService.query({ id: $stateParams.Id }, function() {
+                $scope.InitSeletedFieldData = function () {
+                    var id = $stateParams.Id || -1;
+                    var viewModel = propertyDataService.query({ id: id }, function () {
                         for (var i = 0; i < viewModel.length; i++) {
                             $scope.addfield(viewModel[i].FieldName);
                         }
