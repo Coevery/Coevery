@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Orchard.ContentManagement;
@@ -23,30 +24,23 @@ namespace Coevery.Projections.FilterEditors.Forms {
         public void Describe(DescribeContext context) {
             Func<IShapeFactory, object> form =
                 shape => {
-                    var f = Shape.Form(
-                        Id: "StringFilter",
-                        _Operator: Shape.SelectList(
-                            Id: "operator", Name: "Operator",
-                            Size: 1,
-                            //Classes: new[] { "show-tick" },
-                            Multiple: false
-                        ),
-                        _Value: Shape.TextBox(
-                            Id: "value", Name: "Value",
-                            Classes: new[] { "filterInput" }
-                            )
-                        );
+                    var operators = new List<SelectListItem> {
+                        new SelectListItem {Value = Convert.ToString(StringOperator.Equals), Text = T("Is equal to").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.NotEquals), Text = T("Is not equal to").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.Contains), Text = T("Contains").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.ContainsAny), Text = T("Contains any word").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.ContainsAll), Text = T("Contains all words").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.Starts), Text = T("Starts with").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.NotStarts), Text = T("Does not start with").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.Ends), Text = T("Ends with").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.NotEnds), Text = T("Does not end with").Text},
+                        new SelectListItem {Value = Convert.ToString(StringOperator.NotContains), Text = T("Does not contain").Text}
+                    };
 
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.Equals), Text = T("Is equal to").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.NotEquals), Text = T("Is not equal to").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.Contains), Text = T("Contains").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.ContainsAny), Text = T("Contains any word").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.ContainsAll), Text = T("Contains all words").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.Starts), Text = T("Starts with").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.NotStarts), Text = T("Does not start with").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.Ends), Text = T("Ends with").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.NotEnds), Text = T("Does not end with").Text });
-                    f._Operator.Add(new SelectListItem { Value = Convert.ToString(StringOperator.NotContains), Text = T("Does not contain").Text });
+                    var f = Shape.FilterEditors_StringFilter(
+                        Id: FormName,
+                        Operators: operators
+                        );
 
                     return f;
                 };

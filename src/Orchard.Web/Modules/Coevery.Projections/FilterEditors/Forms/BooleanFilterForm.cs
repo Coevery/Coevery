@@ -20,31 +20,7 @@ namespace Coevery.Projections.FilterEditors.Forms {
 
         public void Describe(DescribeContext context) {
             Func<IShapeFactory, object> form =
-                shape => {
-                    var f = Shape.Form(
-                        Id: "BooleanFilter",
-                        _Options: Shape.Fieldset(
-                            _ValueUndefined: Shape.Radio(
-                                Id: "value-undefined", Name: "Value",
-                                Title: T("Undefined"), Value: "undefined"
-                                ),
-                            _LabelTrue: Shape.InputLabel(
-                                Title: T("Yes"),
-                                For: "value-true"
-                                ),
-                            _ValueTrue: Shape.Radio(
-                                Id: "value-true", Name: "Value",
-                                Title: T("Yes"), Value: "true", Checked: true
-                                ),
-                            _ValueFalse: Shape.Radio(
-                                Id: "value-false", Name: "Value",
-                                Title: T("No"), Value: "false"
-                                ),
-                            Description: T("Enter the value the string should be.")
-                            ));
-
-                    return f;
-                };
+                shape => Shape.FilterEditors_BooleanFilter(Id:FormName);
 
             context.Form(FormName, form);
         }

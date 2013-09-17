@@ -126,6 +126,6 @@
 
 @foreach (var editor in Model.FilterEditors) {
     <script type="text/ng-template" id="@editor.Id">
-    @DisplayChildren(editor)
+    @Display(editor)
     </script>
 }

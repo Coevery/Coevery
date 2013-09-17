@@ -1,16 +1,16 @@
 angular.module('coevery.filter', [])
-    .directive('filterEditor', function() {
+    .directive('filterEditor', function($compile) {
         return {
             template: '<form class="filterCreatorContent span12"><div class="btn-group field-selector"><button class="btn btn-small dropdown-toggle" data-toggle="dropdown">{{fieldTitle}}&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu"><li ng-repeat="field in fieldFilters"><a href="" ng-click="showFilterEditor(field)">{{field.DisplayName}}</a></li></ul></div><div class="field-editor"></div><span class="close deleteBtn" ng-click="delete()">x</span></form>',
             replace: true,
             restrict: 'E',
             transclude: true,
             scope: { filterArgs: '=?filterArgs', fieldFilters: '=fieldFilters' },
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 var args = scope.filterArgs
                     ? scope.filterArgs
                     : { Type: scope.fieldFilters[0].Type };
-              
+
                 var type = args.Type;
                 element.data('Type', type);
                 var fieldFilter;
@@ -26,6 +26,7 @@ angular.module('coevery.filter', [])
                 for (var property in args.State) {
                     editor.find('[name="' + property + '"]:first').val(args.State[property]);
                 }
+                $compile(editor.children())(scope);
                 element.find('select').selectpicker({ style: "btn-small" });
 
                 scope.showFilterEditor = function(field) {
@@ -33,12 +34,41 @@ angular.module('coevery.filter', [])
                     scope.fieldTitle = field.DisplayName;
                     element.data('Type', field.Type);
                     editor.append($('script[type="text/ng-template"]#' + field.FormName).text());
+                    $compile(editor.children())(scope);
                     element.find('select').selectpicker({ style: "btn-small" });
                 };
 
                 scope.delete = function() {
                     element.remove();
                 };
+            }
+        };
+    })
+    .directive('filterNumericOperator', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var siblings = element.siblings();
+                var single = siblings.filter('[name="Value"]:first');
+                var min = siblings.filter('[name="Min"]:first');
+                var max = siblings.filter('[name="Max"]:first');
+                displayNumericEditorOptions();
+                element.change(displayNumericEditorOptions);
+
+                function displayNumericEditorOptions() {
+                    element.children("option:selected").each(function() {
+                        var val = $(this).val();
+                        if (val == 'Between' || val == 'NotBetween') {
+                            single.hide();
+                            min.show();
+                            max.show();
+                        } else {
+                            single.show();
+                            min.hide();
+                            max.hide();
+                        }
+                    });
+                }
             }
         };
     });

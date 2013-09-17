@@ -102,6 +102,7 @@
     <Compile Include="Drivers\LayListViewPartDriver.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FilterEditors\Forms\BooleanFilterForm.cs" />
+    <Compile Include="FilterEditors\Forms\NumericFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\StringFilterForm.cs" />
     <Compile Include="Handlers\ProjectionEntityEventsHandler.cs" />
     <Compile Include="Handlers\ListViewPartHandler.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Models\ListViewPart.cs" />
     <Compile Include="Models\EntityFilterRecord.cs" />
     <Compile Include="Models\ListViewPartRecord.cs" />
+    <Compile Include="Providers\Filters\ContentFieldsFilter.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentFieldProperties.cs" />
     <Compile Include="Services\IProjectionService.cs" />
@@ -176,6 +178,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FilterEditors.StringFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FilterEditors.BooleanFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FilterEditors.NumericFilter.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
