@@ -62,6 +62,7 @@
                     if (tempGrid.find(currentGrid) != 0) {
                         currentGridNumber = index + 1;
                     }
+                    '<span class="{3}" data-id= {1} > {2} </span> </div>';
                 }
 
                 //Decide whether current grid can use auto minHight;
