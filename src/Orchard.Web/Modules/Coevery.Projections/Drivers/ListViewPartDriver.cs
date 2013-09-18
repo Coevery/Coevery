@@ -30,7 +30,11 @@ namespace Coevery.Projections.Drivers {
             return Combined(
                 ContentShape("Parts_ListView",
                     () => shapeHelper.Parts_ListView(FilterEditors: editors)),
-                ContentShape("Entity_Buttons", buttons => buttons)
+                ContentShape("Parts_ListView_Buttons", buttons => buttons),
+                ContentShape("Parts_ListView_Filters", filters => filters),
+                ContentShape("Parts_ListView_FilterContent", filterContent => filterContent),
+                ContentShape("Parts_ListView_Views", views => views),
+                ContentShape("Parts_ListView_Search", search => search)
                 );
         }
     }

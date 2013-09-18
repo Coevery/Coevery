@@ -178,13 +178,25 @@
     <Content Include="Views\SystemAdmin\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts.ListView.cshtml" />
+    <Content Include="Views\Parts\ListView.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts.Title-ListViewPage.cshtml" />
+    <Content Include="Views\Parts\Title-ListViewPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Entity.Buttons.cshtml" />
+    <Content Include="Views\Parts\ListView.Buttons.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\ListView.Filters.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\ListView.Views.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\ListView.FilterContent.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\ListView.Search.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

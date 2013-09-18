@@ -6,95 +6,12 @@
                 @Display(Model.Actions)
              </btn-actions>
         }
-
         <div class="btn-toolbar pull-right">
             @if (Model.Sidebar != null) {
                 @Display(Model.Sidebar)
             }
-            <div class="btn-group">
-                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-filter"></i>&nbsp;Filter
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li ng-repeat="filter in definitionFilters" ng-click="loadFilter({{filter}})" style="cursor: pointer;">
-                        <a>
-                            <i ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
-                            {{filter.Title}}<div style="float: right; text-decoration: underline;" ng-click="deleteFilter(filter)">Delete</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="" ng-click="createFilter()">
-                            <i class="viewUSelected"></i>Create filter
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="btn-group">
-                <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-th-large"></i>&nbsp;View
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns({{view.ContentId}})" title="" style="cursor: pointer;">
-                        <a>
-                            <i ng-class="{'icol-accept':currentViewId ==view.ContentId,'viewUSelected': currentViewId !=view.ContentId}"></i>
-                            {{view.DisplayName}}
-                        </a>
-                    </li>
-                    <li title="" class="divider"></li>
-                    <li title="" ng-click="CreateView()" style="cursor: pointer;">
-                        <a>
-                            <i class="viewUSelected"></i>Create view
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="input-append" style="margin: 0px 0px 0px 10px;">
-                <input type="text" style="width: 150px; height: 16px; line-height: 16px; font-size: 13px;">
-                <button type="button" class="btn btn-small">
-                    <i class="icol-magnifier"></i>
-                </button>
-            </div>
         </div>
     </div>
-
-    <div id="filterCollapse" class="row-fluid filter-collapse">
-        <div class="accordion">
-            <div class="accordion-group">
-                <div id="collapseHeader" class="collapseHeader" ng-click="expendCollapse()">
-                    <span id="collapseBtn" class="icon-collapse-hide"></span>
-                    <span class="filterInfo">Filter</span>
-                    <span id="closeFilterLink" class="close" ng-click="closeFilterCollapse()">×</span>
-                </div>
-                <div id="collapseZone">
-                    <div class="accordion-inner collapseZone">
-                        <div class="form-horizontal filterForm">
-                            <div class="control-group filterCreatorWrap">
-                            </div>
-                            <div class="filterAddNewWrap">
-                                <a href="" ng-click="addNewFilterCondition()">+ Add another filter condition</a>
-                            </div>
-                            <div class="filterAppWrap">
-                                <div class="filterOkCancelWrap">
-                                    <button class="btn btn-small btn-primary" ng-click="applyFilter()">Apply</button>
-                                    <button class="btn btn-small" ng-click="closeFilterCollapse()">Close</button>
-                                </div>
-                                <label class="checkbox checkInput">
-                                    <input type="checkbox" id="filter-save-box">Save Filter
-                                </label>
-                                <input type="text" class="filterInput" ng-model="currentFilter.Title" placeholder="enter the filter's name">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     @Display(Model.Content)
 </section>
 

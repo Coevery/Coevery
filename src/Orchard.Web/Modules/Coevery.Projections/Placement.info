@@ -1,4 +1,8 @@
 ﻿<Placement>
+  <Place Parts_ListView_FilterContent="Content:1"/>
   <Place Parts_ListView="Content:2"/>
-  <Place Entity_Buttons="Actions:2"/>
+  <Place Parts_ListView_Buttons="Actions:2"/>
+  <Place Parts_ListView_Filters="Sidebar:2"/>
+  <Place Parts_ListView_Views="Sidebar:3"/>
+  <Place Parts_ListView_Search="Sidebar:4"/>
 </Placement>
