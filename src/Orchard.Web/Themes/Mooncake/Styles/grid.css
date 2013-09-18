@@ -61,8 +61,10 @@ div.ui-state-default.ui-jqgrid-hdiv,
 
 .ui-jqgrid .ui-jqgrid-btable tr.ui-row-ltr.ui-widget-content td,
 .ui-jqgrid .ui-jqgrid-btable tr.ui-row-ltr.ui-widget-content.ui-state-hover td,
+.ui-jqgrid .ui-jqgrid-btable tr.ui-row-ltr.ui-widget-content.ui-state-focus td,
 .ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content td,
-.ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content.ui-state-hover td {
+.ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content.ui-state-hover td,
+.ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content.ui-state-focus td {
     border-left: 0 none transparent;
     border-right: 0 none transparent;
 }

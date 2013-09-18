@@ -18,7 +18,7 @@ namespace Coevery.OptionSet.Services {
 
         string GenerateTermTypeName(string taxonomyName);
         OptionItemPart NewTerm(OptionSetPart taxonomy);
-        void CreateTerm(OptionItemPart termPart);
+        bool CreateTerm(OptionItemPart termPart);
         bool EditOptionItem(OptionItemEntry newItem);
         IEnumerable<OptionItemPart> GetOptionItemsForContentItem(int contentItemId, string field = null);
         void UpdateTerms(ContentItem contentItem, IEnumerable<OptionItemPart> optionItems, string field);

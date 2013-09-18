@@ -130,16 +130,16 @@ namespace Coevery.OptionSet.Services {
                 .FirstOrDefault();
         }
 
-        public void CreateTerm(OptionItemPart termPart) {
+        public bool CreateTerm(OptionItemPart termPart) {
             if (GetTermByName(termPart.OptionSetId, termPart.Name) == null) {
                 _authorizationService.CheckAccess(Permissions.CreateTerm, _services.WorkContext.CurrentUser, null);
 
                 termPart.As<ICommonPart>().Container = GetOptionSet(termPart.OptionSetId).ContentItem;
                 _contentManager.Create(termPart);
+                return true;
             }
-            else {
-                _notifier.Warning(T("The term {0} already exists in this taxonomy", termPart.Name));
-            }
+            _notifier.Warning(T("The term {0} already exists in this taxonomy", termPart.Name));
+            return false;
         }
 
         public bool EditOptionItem(OptionItemEntry newItem) {

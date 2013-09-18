@@ -4,13 +4,6 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
       'PerspectiveListCtrl',
       ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'perspectiveDataService',
       function ($rootScope, $scope, logger, $detour, $resource, $stateParams, perspectiveDataService) {
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-              '<ul class="row-actions pull-right hide">' +
-              '<li class="icon-edit" ng-click="edit(row.entity.Id)" title="Edit"></li>' +
-              '<li class="icon-remove" ng-click="delete(row.entity.Id)" title="Delete"></li>' +
-              '</ul>' +
-              '<span class="btn-link" ng-click="view(row.entity.Id)">{{COL_FIELD}}</span>' +
-              '</div>';
           $scope.mySelections = [];
           var t = function (str) {
               var result = i18n.t(str);
@@ -18,15 +11,16 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           };
 
           var perspectiveColumnDefs = [
-              { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString }];
+              { name: 'Id', label: t('Id'), hidden: true },
+              {
+                  name: 'DisplayName', label: t('DisplayName'), width: 905,
+                  formatter: $rootScope.cellLinkTemplate,
+                  formatoptions: { hasView: true }
+              }];
 
           $scope.gridOptions = {
-              data: 'myData',
-              multiSelect: true,
-              enableRowSelection: true,
-              showSelectionCheckbox: true,
-              selectedItems: $scope.mySelections,
-              columnDefs: perspectiveColumnDefs,
+              url: "api/perspectives/Perspective",
+              colModel: perspectiveColumnDefs
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
@@ -62,13 +56,10 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           };
 
           $scope.getAllPerspective = function () {
-              var perspectives = perspectiveDataService.query(function () {
-                  $scope.myData = perspectives;
-              }, function () {
-                  logger.error("Failed to fetched Metadata.");
-              });
+              $("#perspectiveList").jqGrid('setGridParam', {
+                  datatype: "json"
+              }).trigger('reloadGrid');
           };
-          $scope.getAllPerspective();
       }]
     ]);
 });

@@ -22,6 +22,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           $scope.gridOptions = {
               url: "api/entities/entity",
               colModel: metadataColumnDefs,
+              //hoverrows: false
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);

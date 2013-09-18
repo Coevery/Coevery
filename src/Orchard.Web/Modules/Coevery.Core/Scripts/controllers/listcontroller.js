@@ -18,11 +18,6 @@
                 if (!currentPage) currentPage = 1;
                 var pageSize = parseInt($location.$$search['PageSize']);
                 if (!pageSize | pageSizes.indexOf(pageSize) < 0) pageSize = 50;
-                $scope.pagingOptions = {
-                    pageSizes: pageSizes,
-                    pageSize: pageSize,
-                    currentPage: currentPage
-                };
 
                 $scope.getPagedDataAsync = function () {
                     var pageSize = $scope.pagingOptions.pageSize;
@@ -46,32 +41,12 @@
                     });
                 };
 
-                $scope.$watch('pagingOptions', function(newVal, oldVal) {
-                    if (newVal !== oldVal) {
-                        if (newVal.pageSize != oldVal.pageSize) {
-                            var maxPage = Math.ceil($scope.totalServerItems / newVal.pageSize);
-                            //var currentPage = Math.ceil(oldVal.pageSize * $scope.pagingOptions.currentPage / newVal.pageSize);
-                            //if (currentPage > maxPage) currentPage = maxPage;
-                            if ($scope.pagingOptions.currentPage > maxPage) {
-                                $scope.pagingOptions.currentPage = maxPage;
-                                return;
-                            }
-                        }
-                        $scope.getPagedDataAsync();
-                    }
-                }, true);
-
-                $scope.selectedItems = [];
                 $scope.gridOptions = {
-                    data: 'myData',
-                    enablePaging: true,
-                    showFooter: true,
-                    multiSelect: true,
-                    enableRowSelection: true,
-                    showSelectionCheckbox: true,
-                    selectedItems: $scope.selectedItems,
-                    pagingOptions: $scope.pagingOptions,
-                    columnDefs: "columnDefs"
+                    url: "api/entities/entity",
+                    rowNum: pageSize,
+                    rowList: pageSizes,
+                    page: currentPage,
+                    colModel: $scope.columnDefs
                 };
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
@@ -310,3 +285,20 @@
             }]
     ]);
 });
+
+/*Abandoned code
+$scope.$watch('pagingOptions', function(newVal, oldVal) {
+                    if (newVal !== oldVal) {
+                        if (newVal.pageSize != oldVal.pageSize) {
+                            var maxPage = Math.ceil($scope.totalServerItems / newVal.pageSize);
+                            //var currentPage = Math.ceil(oldVal.pageSize * $scope.pagingOptions.currentPage / newVal.pageSize);
+                            //if (currentPage > maxPage) currentPage = maxPage;
+                            if ($scope.pagingOptions.currentPage > maxPage) {
+                                $scope.pagingOptions.currentPage = maxPage;
+                                return;
+                            }
+                        }
+                        $scope.getPagedDataAsync();
+                    }
+                }, true);
+*/

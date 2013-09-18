@@ -12,7 +12,7 @@ define(['core/app/detourService'], function (detour) {
                     {
                         name: 'Name', label: 'Relationship Name', width: 225,
                         formatter: $rootScope.cellLinkTemplate,
-                        formatoptions: { useType: true }
+                        formatoptions: { editRow: true }
                     },
                     { name: 'PrimaryEntity', label: 'Primary Entity', width: 220 },
                     { name: 'RelatedEntity', label: 'Related Entity', width: 220 },
@@ -40,10 +40,10 @@ define(['core/app/detourService'], function (detour) {
                 };
                 $scope.edit = function (paramString) {
                     var params = JSON.parse(paramString);
-                    if (params.type == "OneToMany") {
-                        $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.id });
-                    } else if (params.type == "ManyToMany") {
-                        $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.id });
+                    if (params.Type == "OneToMany") {
+                        $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
+                    } else if (params.Type == "ManyToMany") {
+                        $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
                     }
                 };
                 $scope.delete = function (contentId) {
