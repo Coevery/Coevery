@@ -59,12 +59,10 @@ div.ui-state-default.ui-jqgrid-hdiv,
     margin-top: 0;
 }
 
-.ui-jqgrid .ui-jqgrid-btable tr.ui-row-ltr.ui-widget-content td,
-.ui-jqgrid .ui-jqgrid-btable tr.ui-row-ltr.ui-widget-content.ui-state-hover td,
-.ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content td,
-.ui-jqgrid .ui-jqgrid-btable tr.ui-row-rtl.ui-widget-content.ui-state-hover td {
-    border-left: 0 none transparent;
-    border-right: 0 none transparent;
+.ui-jqgrid .ui-jqgrid-btable tr.jqgfirstrow td,
+.ui-jqgrid .ui-jqgrid-btable tr.ui-widget-content td {
+    border-left: 0;
+    border-right: 0;
 }
 
 .ui-jqgrid .ui-jqgrid-btable tr:last-child td {
