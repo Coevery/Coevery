@@ -119,6 +119,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
+    <Compile Include="ViewModels\BooleanFieldViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
     <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
