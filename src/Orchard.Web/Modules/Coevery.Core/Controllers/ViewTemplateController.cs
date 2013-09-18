@@ -28,8 +28,8 @@ using Orchard.UI.Navigation;
 namespace Coevery.Core.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IEnumerable<IFieldTypeEditor> _fieldTypeEditors;
-        private readonly IFormManager _formManager;
+
+
         private readonly INavigationManager _navigationManager;
 
         public ViewTemplateController(
@@ -40,8 +40,6 @@ namespace Coevery.Core.Controllers {
             INavigationManager navigationManager){
             Services = orchardServices;
             _contentDefinitionManager = contentDefinitionManager;
-            _fieldTypeEditors = fieldTypeEditors;
-            _formManager = formManager;
 
             T = NullLocalizer.Instance;
             Logger = NullLogger.Instance;
@@ -68,11 +66,10 @@ namespace Coevery.Core.Controllers {
             if (string.IsNullOrEmpty(id)) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var editors = _fieldTypeEditors
-                .Select(x => x.FormName)
-                .Distinct()
-                .Select(x => _formManager.Build(x));
-            var model = Services.New.Content__List().FilterEditors(editors);
+
+            var contentItem = Services.ContentManager.New("ListViewPage");
+            var model = Services.ContentManager.BuildDisplay(contentItem);
+            
             return View(model);
         }
 
