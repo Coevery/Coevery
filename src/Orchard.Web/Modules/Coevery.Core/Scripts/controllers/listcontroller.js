@@ -5,7 +5,7 @@
             function($rootScope, $scope, $parse, $http, logger, $compile, $detour, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
                 var navigationId = $stateParams.NavigationId;
                 var moduleName = $stateParams.Module;
-                var primaryKeyGetter = $parse('ContentId');
+                $scope.isInit = true;
                 $scope.toolButtonDisplay = false;
                 $scope.currentViewId = 0;
                 $scope.moduleName = moduleName;
@@ -17,39 +17,21 @@
                 var pageSizes = [50, 100, 200];
                 var currentPage = parseInt($location.$$search['Page']);
                 if (!currentPage) currentPage = 1;
-                var pageSize = parseInt($location.$$search['PageSize']);
+                var pageSize = parseInt($location.$$search['Rows']);
                 if (!pageSize | pageSizes.indexOf(pageSize) < 0) pageSize = 50;
 
-                $scope.getPagedDataAsync = function () {
-                    var pageSize = $scope.pagingOptions.pageSize;
-                    var page = $scope.pagingOptions.currentPage;
-                    $location.search("PageSize", pageSize);
-                    $location.search("Page", page);
-                    $stateParams["PageSize"] = pageSize;
-                    var url = 'api/CoeveryCore/Common/' + moduleName;
-                    var data = {
-                        PageSize: pageSize,
-                        Page: page,
+                var getPostData = function() {
+                    return {
                         ViewId: $scope.currentViewId,
                         FilterGroupId: currentFilterGroupId,
                         Filters: getFilters()
                     };
-                    $http.post(url, data).then(function(response) {
-                        $scope.myData = response.data.EntityRecords;
-                        $scope.totalServerItems = response.data.TotalNumber;
-                    }, function() {
-                        logger.error("Failed to fetched records for " + moduleName);
-                    });
                 };
-
-                $scope.gridOptions = {
-                    url: "api/entities/entity",
-                    rowNum: pageSize,
-                    rowList: pageSizes,
-                    page: currentPage,
-                    colModel: $scope.columnDefs
+                $scope.getPagedDataAsync = function () {
+                    $("#contentList").jqGrid('setGridParam', {
+                        postData: getPostData()
+                    }).trigger('reloadGrid');
                 };
-                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 // fetch view columns
                 $scope.FetchViewColumns = function(viewId) {
@@ -57,10 +39,36 @@
                     if (viewId == $scope.currentViewId) return;
                     $scope.currentViewId = viewId;
                     $location.search("ViewId", viewId);
-                    var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function() {
+                    var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function () {
+                        $.each(gridColumns, function (index, value) {
+                            if (value.formatter) {
+                                value.formatter = $rootScope[value.formatter];
+                            }
+                        });
                         $scope.columnDefs = gridColumns;
-                        $scope.getPagedDataAsync();
-                    }, function() {
+                        if (!$scope.isInit) {
+                            $scope.getPagedDataAsync();
+                        } else {
+                            $scope.gridOptions = {
+                                url: 'api/CoeveryCore/Common/' + moduleName,
+                                mtype: "post",
+                                postData: getPostData(),
+                                rowNum: pageSize,
+                                rowList: pageSizes,
+                                page: currentPage,
+                                colModel: $scope.columnDefs,
+                                loadComplete: function (data) {
+                                    currentPage = data.page;
+                                    pageSize = data.records;
+                                },
+                                loadError: function (xhr, status, error) {
+                                    logger.error("Failed to fetched records for " + moduleName + ":\n" + error);
+                                }
+                            };
+                            angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+                        }
+                    }, function (response) {
+                        logger.error("Failed to fetched columns");
                     });
                 };
 
@@ -94,7 +102,8 @@
                 };
 
                 $scope.FetchDefinitionViews();
-
+                
+                /*Grid methods*/
                 $scope.delete = function(id) {
                     $scope.entityId = id;
                     $('#myModalEntity').modal({
@@ -105,18 +114,22 @@
 
                 $scope.deleteEntity = function() {
                     $('#myModalEntity').modal('hide');
-                    var id = $scope.$$childTail.entityId;
-                    var ids = [];
-                    if (id) {
-                        ids.push(id);
-                    } else {
-                        angular.forEach($scope.selectedItems, function(entity) {
-                            ids.push(primaryKeyGetter(entity));
-                        }, ids);
+                    //var id = $scope.$$childTail.entityId;
+                    if (!$scope.entityId) {
+                        logger.error('No data selected.');
+                        return;
                     }
+                    var ids;
+                    if ($.isArray($scope.entityId)) {
+                        ids = $scope.entityId.join(",");
+                    } else {
+                        ids = $scope.entityId.toString();
+                    } 
                     commonDataService.delete({ contentId: ids }, function() {
                         $scope.Refresh();
                         logger.success('Delete the ' + moduleName + ' successful.');
+                        $scope.entityId = [];
+                        $scope.selectedItems = [];
                     }, function() {
                         logger.error('Failed to delete the lead.');
                     });
@@ -128,14 +141,14 @@
 
                 $scope.edit = function(id) {
                     if (!id && $scope.selectedItems.length > 0) {
-                        id = primaryKeyGetter($scope.selectedItems[0]);
+                        id = $scope.selectedItems[0];
                     }
                     $detour.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
 
                 $scope.view = function(id) {
                     if (!id && $scope.selectedItems.length > 0) {
-                        id = primaryKeyGetter($scope.selectedItems[0]);
+                        id = $scope.selectedItems[0];
                     }
                     $detour.transitionTo('View', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
@@ -288,6 +301,8 @@
 });
 
 /*Abandoned code
+var primaryKeyGetter = $parse('ContentId');
+
 $scope.$watch('pagingOptions', function(newVal, oldVal) {
                     if (newVal !== oldVal) {
                         if (newVal.pageSize != oldVal.pageSize) {

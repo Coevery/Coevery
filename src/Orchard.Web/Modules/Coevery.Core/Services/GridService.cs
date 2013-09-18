@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json.Linq;
 using Orchard.Localization;
 using Orchard.Logging;
 
@@ -23,6 +24,15 @@ namespace Coevery.Core.Services {
                 return rawRecords;
             }
             try {
+                if (typeof (JObject) == typeof (TRow)) {
+                    if (sord == "asc") {
+                        return rawRecords.OrderBy(row => (row as JObject)[sidx]);
+                    } else if (sord == "desc") {
+                        return rawRecords.OrderByDescending(row => (row as JObject)[sidx]);
+                    }
+                    return null;
+                }
+
                 if (sord == "asc") {
                     return rawRecords.OrderBy(row => row.GetType().GetProperty(sidx).GetValue(row, null));
                 } else if (sord == "desc") {

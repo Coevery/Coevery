@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Core.Services;
 using Coevery.Core.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,6 +25,7 @@ namespace Coevery.Core.Controllers {
         private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         private readonly ITokenizer _tokenizer;
+        private readonly IGridService _gridService;
         private readonly IRepository<FilterRecord> _filterRepository;
         private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
 
@@ -31,19 +34,21 @@ namespace Coevery.Core.Controllers {
             IOrchardServices orchardServices,
             IProjectionManager projectionManager,
             ITokenizer tokenizer,
+            IGridService gridService,
             IRepository<FilterRecord> filterRepository,
             IRepository<FilterGroupRecord> filterGroupRepository) {
             _contentManager = iContentManager;
             Services = orchardServices;
             _projectionManager = projectionManager;
             _tokenizer = tokenizer;
+            _gridService = gridService;
             _filterRepository = filterRepository;
             _filterGroupRepository = filterGroupRepository;
         }
 
         public IOrchardServices Services { get; private set; }
 
-        public HttpResponseMessage Post(string id, ListQueryModel model) {
+        public object Post(string id, ListQueryModel model) {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
@@ -51,17 +56,21 @@ namespace Coevery.Core.Controllers {
             id = pluralService.Singularize(id);
 
             var part = GetProjectionPartRecord(model.ViewId);
-            IEnumerable<JObject> entityRecords = new List<JObject>();
-            int totalNumber = 0;
+            var totalNumber = 0;
+            IEnumerable<JObject> entityRecords = null;
             if (part != null) {
+                if (model.Filters == null) {
+                    model.Filters = new FilterData[] { };
+                }
+                
                 var filterRecords = CreateFilters(id, model);
                 var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
                 filterRecords.ForEach(filters.Add);
 
                 totalNumber = _projectionManager.GetCount(part.Record.QueryPartRecord.Id);
-                int skipCount = model.PageSize*(model.Page - 1);
-                int pageCount = totalNumber <= model.PageSize*model.Page ? totalNumber - model.PageSize*(model.Page - 1) : model.PageSize;
-                entityRecords = GetLayoutComponents(part, skipCount, pageCount);
+                //var skipCount = model.rows*(model.page - 1);
+                //var pageCount = totalNumber <= model.rows*model.page ? totalNumber - model.rows*(model.page - 1) : model.rows;
+                entityRecords = GetLayoutComponents(part, 0, 0);
 
                 foreach (var record in filterRecords) {
                     filters.Remove(record);
@@ -70,14 +79,29 @@ namespace Coevery.Core.Controllers {
                     }
                 }
             }
-            var returnResult = new {TotalNumber = totalNumber, EntityRecords = entityRecords};
-            var json = JsonConvert.SerializeObject(returnResult);
-            var message = new HttpResponseMessage {Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")};
-            return message;
+
+            if (entityRecords == null || !entityRecords.Any()) {
+                return new {
+                    total = 0,
+                    page = 0,
+                    records = 0,
+                    rows = string.Empty
+                };
+            }
+            var postsortPage = _gridService.GetSortedRows(model.Sidx, model.Sord, entityRecords);
+            //var json = JsonConvert.SerializeObject(returnResult);
+            //var message = new HttpResponseMessage {Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")};
+            
+            return new {
+                total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
+                page = model.Page,
+                records = entityRecords.Count(),
+                rows = _gridService.GetPagedRows(model.Page, model.Rows, postsortPage)
+            };
         }
 
-        public void Delete(string id) {
-            string[] idList = id.Split(new char[] {','});
+        public void Delete(string contentId) {
+            var idList = contentId.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
             foreach (var idItem in idList) {
                 var contentItem = _contentManager.Get(int.Parse(idItem), VersionOptions.Latest);
                 _contentManager.Remove(contentItem);

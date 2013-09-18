@@ -24,6 +24,12 @@ tr.ui-widget-content {
 .ui-jqgrid .ui-jqgrid-htable tr th div {
     height: 20px;
 }
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column:not(:first-child) {
+    text-align: left;
+}
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column:not(:first-child) div {
+    padding-left: 10px;
+}
 
 div.ui-state-default.ui-jqgrid-hdiv,
 .ui-widget-content th.ui-th-column {
