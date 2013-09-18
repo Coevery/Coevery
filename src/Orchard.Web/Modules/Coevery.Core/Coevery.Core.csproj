@@ -212,7 +212,6 @@
     <Content Include="Views\GridTemplate\DefaultFooterTemplate.cshtml" />
     <Content Include="Views\GridTemplate\LinkCellTemplate.cshtml" />
     <Content Include="Views\ViewTemplate\View.cshtml" />
-    <Content Include="Views\Content-List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Items\" />

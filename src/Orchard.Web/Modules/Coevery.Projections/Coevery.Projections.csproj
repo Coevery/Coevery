@@ -99,7 +99,7 @@
     <Compile Include="Controllers\ViewDefinitionController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
-    <Compile Include="Drivers\LayListViewPartDriver.cs" />
+    <Compile Include="Drivers\ListViewPartDriver.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FilterEditors\Forms\BooleanFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\StringFilterForm.cs" />
@@ -176,6 +176,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.ListView.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts.Title-ListViewPage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Entity.Buttons.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
