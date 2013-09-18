@@ -51,14 +51,10 @@ namespace Coevery.Core.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult MenuList(int id)
+        public ActionResult MenuList()
         {
             const string menuName = "FrontMenu";
             IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
-            if (id<0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             return View(menuItems);
         }
 
