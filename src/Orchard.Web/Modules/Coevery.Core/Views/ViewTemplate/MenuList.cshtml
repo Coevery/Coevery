@@ -1,52 +1,25 @@
-﻿@using Orchard.Utility.Extensions;
-<div>
-
-</div>
-@*<div id="nav-selector">
+﻿<div id="nav-selector">
     <div class="dropdown">
-        @if (Model.Items.Count > 0) {
-            var menu = Model;
-            
-            <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                <span id="first-menu-title" data-label-placement title="@menu.Items[0].Text.Text">@menu.Items[0].Text.Text</span><b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
-                @foreach (var item in menu.Items) {
-                    <li data-nav-target="#@idText" data-nav-parent="#navigation">
-                        <input type="radio" id="menu_@idText" name="ex4" value="@idText"><label for="menu_@idText"><strong>@item.Text.Text</strong></label>
-                    </li>
-                }
-            </ul>
-        }
+        <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+            <span data-label-placement title="{{navdata.curr.Text.Text}}">{{navdata.curr.Text.Text}}</span><b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
+            <li data-ng-repeat="nav in navdata.alls" data-ng-class="{active: $uiRoute}" data-ui-route="{{nav.Href}}/?.*">
+                <a href="{{nav.Href}}" title="{{nav.Text.Text}}">
+                    <label><strong>{{nav.Text.Text}}</strong></label>
+                </a>
+            </li>
+        </ul>
     </div>
-</div>*@
+</div>
 
-@*<nav id="navigation">
-    @{
-        foreach (var firstLevelMenuItem in Model) {
-            IEnumerable<dynamic> secondLevelMenuItems = firstLevelMenuItem;
-            string idText = firstLevelMenuItem.Text.TextHint;
-            idText = idText.ToSafeName();
-            var isFirst = ((IEnumerable<dynamic>) Model).ToList().IndexOf(firstLevelMenuItem) == 0;
-            var inClass = isFirst ? "in" : string.Empty;
-            <ul class="collapse @inClass" id="@idText" >
-                @if (secondLevelMenuItems.Any(menuItem => !menuItem.LocalNav) || !firstLevelMenuItem.LinkToFirstChild) {
-                    foreach (var secondLevelMenuItem in secondLevelMenuItems.Where(menuItem => !menuItem.LocalNav)) {
-                        string secondLevelTextHint = secondLevelMenuItem.Text.TextHint;
-
-                        var secondLevelUrl = secondLevelMenuItem.Href;
-                        var classes =(IList<string>)secondLevelMenuItem.Classes;
-                        if (!classes.Any()) {classes.Add("icon-home");}
-
-                        <li data-ng-class="{active: $uiRoute}" data-ui-route="@secondLevelUrl/?.*">
-                            <a href="@secondLevelUrl" title="@secondLevelTextHint">
-                                <i class="@string.Join(" ", classes.ToArray()) vertical-middle"></i>
-                                <span class="nav-title vertical-middle">@secondLevelMenuItem.Text</span>
-                            </a>
-                        </li>
-                    }
-                }
-            </ul>
-        }
-    }
-</nav>*@
+<nav id="navigation">
+    <ul class="collapse in">
+        <li  data-ng-repeat="menu in navdata.curr.Items" data-ng-class="{active: $uiRoute}" data-ui-route="{{menu.Href}}/?.*">
+            <a href="{{menu.Href}}" title="{{menu.Text.Text}}">
+                <i class="{{menu.classesstr}} vertical-middle"></i>
+                <span class="nav-title vertical-middle">{{menu.Text.Text}}</span>
+            </a>
+        </li>
+    </ul>
+</nav>

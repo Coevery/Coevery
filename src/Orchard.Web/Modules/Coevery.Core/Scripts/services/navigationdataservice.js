@@ -7,11 +7,11 @@ define(['core/app/detourService'], function (detour) {
 
     //Although this is an AngularJS factory I prefer the term "service" for data operations
     detour.registerFactory([
-        'menuDataService',
+        'navigationDataService',
         ['$rootScope', '$resource', function ($rootScope, $resource) {
-            return $resource('api/CoeveryCore/Navigation/:menuId',
-                { menuId: '@menuId' },
-                { update: { method: 'PUT' } });
+            return $resource('api/CoeveryCore/Navigation/:navigationId',
+                { navigationId: '@navigationId' },
+                { query: { method: 'GET', isArray: false} });
         }]
     ]);
 });

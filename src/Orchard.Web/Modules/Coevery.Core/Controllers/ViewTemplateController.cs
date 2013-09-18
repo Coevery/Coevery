@@ -23,21 +23,13 @@ using Orchard.Mvc.Html;
 using Orchard.Projections.FieldTypeEditors;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
-using Orchard.Core.Navigation.Services;
-using Orchard.Core.Title.Models;
-using Orchard.Core.Navigation.ViewModels;
-using Orchard.Core.Navigation.Models;
 using Orchard.UI.Navigation;
-using Orchard.UI;
-
 
 namespace Coevery.Core.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IFieldTypeEditor> _fieldTypeEditors;
         private readonly IFormManager _formManager;
-        private readonly IMenuService _menuService;
-        private readonly IMenuManager _menuManager;
         private readonly INavigationManager _navigationManager;
 
         public ViewTemplateController(
@@ -45,9 +37,7 @@ namespace Coevery.Core.Controllers {
             IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IFieldTypeEditor> fieldTypeEditors, 
             IFormManager formManager,
-            IMenuService menuService,
-            INavigationManager navigationManager,
-            IMenuManager menuManager){
+            INavigationManager navigationManager){
             Services = orchardServices;
             _contentDefinitionManager = contentDefinitionManager;
             _fieldTypeEditors = fieldTypeEditors;
@@ -55,8 +45,7 @@ namespace Coevery.Core.Controllers {
 
             T = NullLocalizer.Instance;
             Logger = NullLogger.Instance;
-            _menuService = menuService;
-            _menuManager = menuManager;
+
             _navigationManager = navigationManager;
         }
 
@@ -64,33 +53,15 @@ namespace Coevery.Core.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult MenuList()
+        public ActionResult MenuList(int id)
         {
-            //if (string.IsNullOrEmpty(id))
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //var menuId = _menuService.GetMenu(id).Id;
-            //IEnumerable<TitlePart> menus = Services.ContentManager.Query<TitlePart, TitlePartRecord>().OrderBy(x => x.Title).ForType("Menu").List();
-            //IContent currentMenu = menus.FirstOrDefault(menu => menu.Id == menuId);
-            //NavigationManagementViewModel model = new NavigationManagementViewModel();
-            //model.MenuItemEntries = _menuService.GetMenuParts(menuId).Select(CreateMenuItemEntries).OrderBy(menuPartEntry => menuPartEntry.Position, new FlatPositionComparer()).ToList();
-            //model.MenuItemDescriptors = _menuManager.GetMenuItemTypes();
-            //model.Menus = menus;
-            //model.CurrentMenu = currentMenu;
-            return View();
-        }
-
-        private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart)
-        {
-            return new MenuItemEntry
+            const string menuName = "FrontMenu";
+            IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
+            if (id<0)
             {
-                MenuItemId = menuPart.Id,
-                IsMenuItem = menuPart.Is<MenuItemPart>(),
-                Text = menuPart.MenuText,
-                Position = menuPart.MenuPosition,
-                ContentItem = menuPart.ContentItem,
-            };
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View(menuItems);
         }
 
         public ActionResult List(string id) {

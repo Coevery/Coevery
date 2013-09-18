@@ -34,15 +34,20 @@ namespace Coevery.Core.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
             const string menuName = "FrontMenu";
-            IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
+            IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName).Where(item=>!item.LocalNav);
             MenuItem menuItem;
             if (id == 0)
-                menuItem = menuItems.First();
+                menuItem = menuItems.Where(item => !item.LocalNav).Count() == 0 ? null : menuItems.Where(item => !item.LocalNav).First();
             else
             {
-                var tempItems = menuItems.Where(item => _menuService.GetMenu(item.Text.Text).Id == id);
+                var tempItems = menuItems.Where(item => _menuService.GetMenu(item.Text.Text).Id == id && !item.LocalNav);
                 menuItem = tempItems.Count() == 0 ? null : tempItems.First();
             }
+
+            foreach (MenuItem m in menuItems)
+                ChangeHref(m, "/OrchardLocal/Coevery#");
+            ChangeHref(menuItem, "/OrchardLocal/Coevery#");
+
             var returnResult = new { alls = menuItems, curr = menuItem };
             var json = JsonConvert.SerializeObject(returnResult);
             
@@ -50,5 +55,20 @@ namespace Coevery.Core.Controllers
             return message;
         }
 
+        private void ChangeHref(MenuItem menuItem,string hrefstr)
+        {
+            if (menuItem==null) return;
+            var menuContent = _menuService.GetMenu(menuItem.Text.Text);
+            hrefstr += "/";
+            hrefstr += menuContent != null ? menuContent.Id.ToString() : menuItem .Text.Text;
+            menuItem.Href = hrefstr;
+            if (menuItem.Items.Count() == 0)
+                return;
+            foreach (MenuItem _menuItem in menuItem.Items)
+            {
+               
+                ChangeHref(_menuItem, hrefstr);
+            }
+        }
     }
 }

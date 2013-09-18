@@ -183,7 +183,7 @@
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
     <Content Include="Scripts\controllers\agGridCtrl.js" />
-    <Content Include="Scripts\controllers\menulistcontroller.js" />
+    <Content Include="Scripts\controllers\navigationcontroller.js" />
     <Content Include="Scripts\controllers\relatedentitylistcontroller.js" />
     <Content Include="Scripts\controllers\subviewgridcontroller.js" />
     <Content Include="Scripts\controllers\viewcontroller.js" />
@@ -200,7 +200,7 @@
     <Content Include="Scripts\services\columndefinitionservice.js" />
     <Content Include="Scripts\services\filterdefinitionservice.js" />
     <Content Include="Scripts\services\historyservice.js" />
-    <Content Include="Scripts\services\menuservice.js" />
+    <Content Include="Scripts\services\navigationdataservice.js" />
     <Content Include="Scripts\services\viewdefinitionservice.js" />
     <Content Include="Scripts\services\loadingservice.js" />
     <Content Include="Styles\module.css" />
