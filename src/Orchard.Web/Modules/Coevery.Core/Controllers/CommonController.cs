@@ -19,6 +19,7 @@ using Orchard.Projections.Models;
 using Orchard.Projections.Services;
 using System.Linq;
 using Orchard.Tokens;
+using Orchard.UI.Navigation;
 
 namespace Coevery.Core.Controllers {
     public class CommonController : ApiController {
@@ -52,36 +53,42 @@ namespace Coevery.Core.Controllers {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
+
+            var part = GetProjectionPartRecord(model.ViewId);
+            if (part == null) {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
+            }
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             id = pluralService.Singularize(id);
 
-            var part = GetProjectionPartRecord(model.ViewId);
-            var totalNumber = 0;
-            IEnumerable<JObject> entityRecords = null;
-            if (part != null) {
-                if (model.Filters == null) {
-                    model.Filters = new FilterData[] { };
-                }
+            return GetFilteredRecords(id, part, model, p => {
+                var totalRecords = _projectionManager.GetCount(p.Record.QueryPartRecord.Id);
+                var pageSize = model.Rows;
+                var totalPages = (int) Math.Ceiling((float) totalRecords/(float) pageSize);
 
-                var filterRecords = CreateFilters(id, model);
-                var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
-                filterRecords.ForEach(filters.Add);
+                var pager = new Pager(Services.WorkContext.CurrentSite, model.Page, pageSize);
+                var records = GetLayoutComponents(p, pager.GetStartIndex(), pager.PageSize);
 
-                totalNumber = _projectionManager.GetCount(part.Record.QueryPartRecord.Id);
-                if (totalNumber <= model.Rows*(model.Page - 1)) {
-                    return new {
-                        total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
-                        page = model.Page,
-                        records = 0,
-                        rows = string.Empty
-                    };
-                }
-                var skipCount = model.Rows * (model.Page - 1);
-                var pageCount = (totalNumber <= model.Rows * model.Page)
-                    ? totalNumber-model.Rows * (model.Page-1)
-                    : model.Rows;
-                entityRecords = GetLayoutComponents(part, skipCount, pageCount);
+                return new {
+                    totalPages = totalPages,
+                    page = model.Page,
+                    totalRecords = totalRecords,
+                    rows = records
+                };
+            });
+        }
 
+        private object GetFilteredRecords(string id, ProjectionPart part, ListQueryModel model, Func<ProjectionPart, object> query) {
+            model.Filters = model.Filters ?? new FilterData[] {};
+
+            var filterRecords = CreateFilters(id, model);
+            var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
+            filterRecords.ForEach(filters.Add);
+            try {
+                return query(part);
+            }
+
+            finally {
                 foreach (var record in filterRecords) {
                     filters.Remove(record);
                     if (model.FilterGroupId == 0) {
@@ -89,29 +96,10 @@ namespace Coevery.Core.Controllers {
                     }
                 }
             }
-
-            if (entityRecords == null || !entityRecords.Any()) {
-                return new {
-                    total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
-                    page = model.Page,
-                    records = 0,
-                    rows = string.Empty
-                };
-            }
-            //var postsortPage = _gridService.GetSortedRows(model.Sidx, model.Sord, entityRecords);_gridService.GetPagedRows(model.Page, model.Rows, postsortPage)
-            //var json = JsonConvert.SerializeObject(returnResult);
-            //var message = new HttpResponseMessage {Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")};
-
-            return new {
-                total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
-                page = model.Page,
-                records = entityRecords.Count(),
-                rows = entityRecords
-            };
         }
 
         public void Delete(string contentId) {
-            var idList = contentId.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var idList = contentId.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             foreach (var idItem in idList) {
                 var contentItem = _contentManager.Get(int.Parse(idItem), VersionOptions.Latest);
                 _contentManager.Remove(contentItem);
