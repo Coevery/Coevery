@@ -28,18 +28,15 @@ using System.Linq;
 using Orchard.Projections.Services;
 using Orchard.Tokens;
 
-namespace Coevery.Core.Controllers
-{
-    public class ColumnDefinitionController :ApiController
-    {
+namespace Coevery.Core.Controllers {
+    public class ColumnDefinitionController : ApiController {
         private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         private readonly ITemplateViewService _templateViewService;
         public ColumnDefinitionController(IContentManager iContentManager,
             IOrchardServices orchardServices,
-            IProjectionManager projectionManager, 
-            ITemplateViewService templateViewService)
-        {
+            IProjectionManager projectionManager,
+            ITemplateViewService templateViewService) {
             _contentManager = iContentManager;
             Services = orchardServices;
             _projectionManager = projectionManager;
@@ -50,27 +47,33 @@ namespace Coevery.Core.Controllers
         public IOrchardServices Services { get; private set; }
 
         // GET api/leads/lead
-        public HttpResponseMessage Get(string id, int viewId)
-        {
+        public HttpResponseMessage Get(string id, int viewId) {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
-            var columns = new List<JObject>();
+
+            var firstColumn = new JObject();
+            firstColumn["name"] = "ContentId";
+            firstColumn["label"] = T("Content Id").Text;
+            firstColumn["hidden"] = true;
+
+            var columns = new List<JObject> { firstColumn };
             var properties = GetProperties(viewId);
-            string linkCellTemplae = _templateViewService.RenderView("Coevery.Core", "GridTemplate", "LinkCellTemplate");
-            foreach (var property in properties)
-            {
+            //string linkCellTemplae = _templateViewService.RenderView("Coevery.Core", "GridTemplate", "LinkCellTemplate");
+            foreach (var property in properties) {
                 var column = new JObject();
                 var filedName = property.GetFiledName();
-                column["field"] = filedName;
-                column["displayName"] = T(property.Description).Text;
-                if (property.LinkToContent)
-                {
-                    column["cellTemplate"] = linkCellTemplae;
+                column["name"] = filedName;
+                column["label"] = T(property.Description).Text;
+                if (property.LinkToContent) {
+                    var formatOpt = new JObject();
+                    formatOpt["hasView"] = true;
+                    column["formatter"] = "cellLinkTemplate";
+                    column["formatoptions"] = formatOpt;
                 }
                 columns.Add(column);
             }
-            
+
             var json = JsonConvert.SerializeObject(columns);
             var message = new HttpResponseMessage { Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json") };
 
@@ -79,17 +82,17 @@ namespace Coevery.Core.Controllers
 
         private IEnumerable<PropertyRecord> GetProperties(int projectionId) {
             IList<PropertyRecord> properties = new List<PropertyRecord>();
-            if (projectionId == -1) 
+            if (projectionId == -1)
                 return properties;
 
             var projectionPart = _contentManager.Get<ProjectionPart>(projectionId);
             var queryPartRecord = projectionPart.Record.QueryPartRecord;
 
-            if (queryPartRecord.Layouts.Count == 0) 
+            if (queryPartRecord.Layouts.Count == 0)
                 return properties;
             var allFielDescriptors = _projectionManager.DescribeProperties().ToList();
             var fieldDescriptors = queryPartRecord.Layouts[0].Properties.OrderBy(p => p.Position).Select(p => allFielDescriptors.SelectMany(x => x.Descriptors).Select(d => new { Descriptor = d, Property = p }).FirstOrDefault(x => x.Descriptor.Category == p.Category && x.Descriptor.Type == p.Type)).ToList();
-            properties = fieldDescriptors.Where(c => c != null).Select(c=>c.Property).ToList();
+            properties = fieldDescriptors.Where(c => c != null).Select(c => c.Property).ToList();
             return properties;
         }
     }

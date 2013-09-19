@@ -14,7 +14,7 @@ using Orchard.Localization;
 
 namespace Coevery.OptionSet.Controllers {
     public class OptionItemController : ApiController {
-        private readonly IOptionSetService _optionSetService;     
+        private readonly IOptionSetService _optionSetService;
         public OptionItemController(
             IOptionSetService optionSetService,
             IOrchardServices orchardServices) {
@@ -26,22 +26,31 @@ namespace Coevery.OptionSet.Controllers {
         public IOrchardServices Services { get; set; }
 
         // GET api/<controller>
-        public object Get(int optionSetId) {
+        public object Get(int optionSetId, int page, int rows) {
             var result = _optionSetService.GetOptionItems(optionSetId);
             if (!result.Any()) {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            return result.Select(part=>part.CreateTermEntry());
+            var query = result.Select(part => part.CreateTermEntry());
+            var totalRecords = query.Count();
+            return new {
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                page = page,
+                records = totalRecords,
+                rows = query
+            };
         }
 
         // POST api/<controller>
-        public void Post(OptionItemEntry optionItem) {
+        public HttpResponseMessage Post(OptionItemEntry optionItem) {
             var itemPart = Services.ContentManager.New<OptionItemPart>("OptionItem");
             itemPart.OptionSetId = optionItem.OptionSetId;
             itemPart.Name = optionItem.Name;
             itemPart.Selectable = optionItem.Selectable;
             itemPart.Weight = optionItem.Weight;
-            _optionSetService.CreateTerm(itemPart);
+            return _optionSetService.CreateTerm(itemPart)
+                ? Request.CreateResponse(HttpStatusCode.OK)
+               : Request.CreateResponse(HttpStatusCode.Conflict, T("The term {0} already exists in this optionset", itemPart.Name));
         }
 
         // PUT api/<controller>/...

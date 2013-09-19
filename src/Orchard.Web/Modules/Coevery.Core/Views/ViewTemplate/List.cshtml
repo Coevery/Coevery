@@ -1,1 +1,22 @@
-﻿@Display(Model)
+﻿@Display(Model.Header)
+<section id="main-content">
+    <div id="page-actions" class="clearfix">
+        @if (Model.Actions != null) {
+            <btn-actions>
+                @Display(Model.Actions)
+             </btn-actions>
+        }
+        <div class="btn-toolbar pull-right">
+            @if (Model.Sidebar != null) {
+                @Display(Model.Sidebar)
+            }
+        </div>
+    </div>
+    @Display(Model.Content)
+</section>
+
+@if (Model.Footer != null) {
+    <footer>
+        @Display(Model.Footer)
+    </footer>
+}

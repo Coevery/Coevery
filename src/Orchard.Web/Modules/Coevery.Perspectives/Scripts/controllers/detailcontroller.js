@@ -9,15 +9,6 @@ define(['core/app/detourService',
           'perspectiveDataService',
           'navigationDataService',
       function ($rootScope, $timeout, $scope, logger, $detour, $stateParams, $resource, perspectiveDataService, navigationDataService) {
-
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-              '<ul class="row-actions pull-right hide">' +
-              '<li class="icon-edit" ng-click="edit(row.entity.Id)" title="Edit"></li>' +
-              '<li class="icon-remove" ng-click="delete(row.entity.Id)" title="Delete"></li>' +
-              '</ul>' +
-              '<span class="btn-link" ng-click="edit(row.entity.Id)">{{COL_FIELD}}</span>' +
-              '</div>';
-          $scope.mySelections = [];
           var perpectiveId = $stateParams.Id;
 
           $scope.exit = function () {
@@ -42,17 +33,16 @@ define(['core/app/detourService',
           };
           
           var navigationColumnDefs = [
-              { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString }];
+              { name: 'Id', label: t('Id'), hidden: true },
+              {
+                  name: 'DisplayName', label: t('DisplayName'), width: 905,
+                  formatter: $rootScope.cellLinkTemplate,
+                  formatoptions: { hasView: true }
+              }];
 
           $scope.gridOptions = {
-              data: 'myData',
-              selectedItems: $scope.mySelections,
-              multiSelect: false,
-              enableRowSelection: false,
-              showColumnMenu: true,
-              enableColumnResize: true,
-              enableColumnReordering: true,
-              columnDefs: navigationColumnDefs
+              url: "api/perspectives/Navigation?id=" + perpectiveId,
+              colModel: navigationColumnDefs
           };
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
@@ -63,7 +53,9 @@ define(['core/app/detourService',
           $scope.edit = function (navigationId) {
               $detour.transitionTo('EditNavigationItem', {Id:perpectiveId, NId: navigationId });
           };
-          
+
+          $scope.view = $scope.edit;
+
           $scope.editPerspective = function () {
               $detour.transitionTo('PerspectiveEdit', { Id: perpectiveId });
           };
@@ -84,7 +76,7 @@ define(['core/app/detourService',
                   $scope.getAllNavigationdata();
                   logger.success('Delete the navigation successful.');
               }, function (result) {
-                  logger.error('Failed to delete the navigation:' + result.data.Message);
+                  logger.error('Failed to delete the navigation:' + result);
               });
           };
 
@@ -107,13 +99,10 @@ define(['core/app/detourService',
 
 
           $scope.getAllNavigationdata = function () {
-              var navigations = navigationDataService.query({ Id: perpectiveId }, function () {
-                  $scope.myData = navigations;
-              }, function () {
-                  logger.error("Failed to fetched Metadata.");
-              });
+              $("#navigationList").jqGrid('setGridParam', {
+                  datatype: "json"
+              }).trigger('reloadGrid');
           };
-          $scope.getAllNavigationdata();
       }]
     ]);
 });

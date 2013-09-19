@@ -64,14 +64,14 @@
                     '<span class="icon-edit edit-action" data-id={0} title="Edit"></span>' +
                     '<span class="icon-remove delete-action" data-id= {1} title="Delete"></span>' +
                     '{4}</section>' +
-                    '<span class={3} data-id= {1} > {2} </span> </div>';
+                    '<span class=\"{3}\" data-id= {1} > {2} </span> </div>';
                 if (!options.colModel.formatoptions) {
                     return template.format(options.rowId, options.rowId, cellvalue, '', '');
                 }
                 
                 var editParams, viewStyle, defaultStyle;
-                if (options.colModel.formatoptions.useType) {
-                    editParams = JSON.stringify({ id: options.rowId , type: rowObject.Type });
+                if (options.colModel.formatoptions.editRow) {
+                    editParams = JSON.stringify(rowObject);
                 } else {
                     editParams = options.rowId;
                 }

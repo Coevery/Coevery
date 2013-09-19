@@ -23,40 +23,53 @@ using Orchard.Mvc.Html;
 using Orchard.Projections.FieldTypeEditors;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
+using Orchard.UI.Navigation;
 
 namespace Coevery.Core.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IEnumerable<IFieldTypeEditor> _fieldTypeEditors;
-        private readonly IFormManager _formManager;
+
+
+        private readonly INavigationManager _navigationManager;
 
         public ViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IFieldTypeEditor> fieldTypeEditors, 
-            IFormManager formManager) {
+            IFormManager formManager,
+            INavigationManager navigationManager){
             Services = orchardServices;
             _contentDefinitionManager = contentDefinitionManager;
-            _fieldTypeEditors = fieldTypeEditors;
-            _formManager = formManager;
 
             T = NullLocalizer.Instance;
             Logger = NullLogger.Instance;
+
+            _navigationManager = navigationManager;
         }
 
         public IOrchardServices Services { get; private set; }
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
+        public ActionResult MenuList(int id)
+        {
+            const string menuName = "FrontMenu";
+            IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
+            if (id<0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View(menuItems);
+        }
+
         public ActionResult List(string id) {
             if (string.IsNullOrEmpty(id)) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var editors = _fieldTypeEditors
-                .Select(x => x.FormName)
-                .Distinct()
-                .Select(x => _formManager.Build(x));
-            var model = Services.New.Content__List().FilterEditors(editors);
+
+            var contentItem = Services.ContentManager.New("ListViewPage");
+            var model = Services.ContentManager.BuildDisplay(contentItem);
+            
             return View(model);
         }
 
@@ -257,5 +270,6 @@ namespace Coevery.Core.Controllers {
         void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
         }
+
     }
 }
