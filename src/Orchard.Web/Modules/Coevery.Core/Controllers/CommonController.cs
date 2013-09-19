@@ -12,6 +12,7 @@ using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Data;
 using Orchard.Forms.Services;
+using Orchard.Projections.Descriptors.Filter;
 using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Models;
 using Orchard.Projections.Services;
@@ -53,8 +54,9 @@ namespace Coevery.Core.Controllers {
             var part = GetProjectionPartRecord(model.ViewId);
             IEnumerable<JObject> entityRecords = new List<JObject>();
             int totalNumber = 0;
+            string filterDescription = null;
             if (part != null) {
-                var filterRecords = CreateFilters(id, model);
+                var filterRecords = CreateFilters(id, model, out filterDescription);
                 var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
                 filterRecords.ForEach(filters.Add);
 
@@ -70,7 +72,11 @@ namespace Coevery.Core.Controllers {
                     }
                 }
             }
-            var returnResult = new {TotalNumber = totalNumber, EntityRecords = entityRecords};
+            var returnResult = new {
+                TotalNumber = totalNumber,
+                EntityRecords = entityRecords,
+                FilterDescription = filterDescription
+            };
             var json = JsonConvert.SerializeObject(returnResult);
             var message = new HttpResponseMessage {Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")};
             return message;
@@ -84,9 +90,13 @@ namespace Coevery.Core.Controllers {
             }
         }
 
-        private IList<FilterRecord> CreateFilters(string entityName, ListQueryModel model) {
+        private IList<FilterRecord> CreateFilters(string entityName, ListQueryModel model, out string filterDescription) {
             IList<FilterRecord> filterRecords;
             if (model.FilterGroupId == 0) {
+                var filterDescriptors = _projectionManager.DescribeFilters()
+                    .Where(x => x.Category == entityName + "ContentFields")
+                    .SelectMany(x => x.Descriptors).ToList();
+                filterDescription = string.Empty;
                 filterRecords = new List<FilterRecord>();
                 foreach (var filter in model.Filters) {
                     if (filter.FormData.Length == 0) {
@@ -107,10 +117,13 @@ namespace Coevery.Core.Controllers {
                     }
                     record.State = FormParametersHelper.ToString(dictionary);
                     filterRecords.Add(record);
+                    var descriptor = filterDescriptors.First(x => x.Type == filter.Type);
+                    filterDescription += descriptor.Display(new FilterContext {State = FormParametersHelper.ToDynamic(record.State)}).Text;
                 }
             }
             else {
                 filterRecords = _filterGroupRepository.Get(model.FilterGroupId).Filters;
+                filterDescription = null;
             }
             return filterRecords;
         }

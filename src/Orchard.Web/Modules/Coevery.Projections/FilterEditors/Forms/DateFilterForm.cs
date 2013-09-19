@@ -95,40 +95,28 @@ namespace Coevery.Projections.FilterEditors.Forms {
 
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
             var op = (DateTimeOperator) Enum.Parse(typeof (DateTimeOperator), Convert.ToString(formState.Operator));
-            string type = Convert.ToString(formState.ValueType);
             string value = Convert.ToString(formState.Value);
             string min = Convert.ToString(formState.Min);
             string max = Convert.ToString(formState.Max);
-            string valueUnit = Convert.ToString(formState.ValueUnit);
-            string minUnit = Convert.ToString(formState.MinUnit);
-            string maxUnit = Convert.ToString(formState.MaxUnit);
-
-            if (type == "0") {
-                valueUnit = minUnit = maxUnit = String.Empty;
-            }
-            else {
-                valueUnit = " " + valueUnit;
-                minUnit = " " + minUnit;
-                maxUnit = " " + maxUnit;
-            }
+            fieldName = fieldName.Split('.')[1];
 
             switch (op) {
                 case DateTimeOperator.LessThan:
-                    return T("{0} is less than {1}{2}", fieldName, value, T(valueUnit).Text);
+                    return T("{0} is less than {1}", fieldName, value);
                 case DateTimeOperator.LessThanEquals:
-                    return T("{0} is less or equal than {1}{2}", fieldName, value, T(valueUnit).Text);
+                    return T("{0} is less or equal than {1}", fieldName, value);
                 case DateTimeOperator.Equals:
-                    return T("{0} equals {1}{2}", fieldName, value, T(valueUnit).Text);
+                    return T("{0} equals {1}", fieldName, value);
                 case DateTimeOperator.NotEquals:
-                    return T("{0} is not equal to {1}{2}", fieldName, value, T(valueUnit).Text);
+                    return T("{0} is not equal to {1}", fieldName, value);
                 case DateTimeOperator.GreaterThan:
-                    return T("{0} is greater than {1}{2}", fieldName, value, T(valueUnit).Text);
+                    return T("{0} is greater than {1}", fieldName, value);
                 case DateTimeOperator.GreaterThanEquals:
-                    return T("{0} is greater or equal than {1}{2}", fieldName, value, T(valueUnit).Text);
+                    return T("{0} is greater or equal than {1}", fieldName, value);
                 case DateTimeOperator.Between:
-                    return T("{0} is between {1}{2} and {3}{4}", fieldName, min, T(minUnit).Text, max, T(maxUnit).Text);
+                    return T("{0} is between {1} and {2}", fieldName, min, max);
                 case DateTimeOperator.NotBetween:
-                    return T("{0} is not between {1}{2} and {3}{4}", fieldName, min, T(minUnit).Text, max, T(maxUnit).Text);
+                    return T("{0} is not between {1} and {2}", fieldName, min, max);
             }
 
             // should never be hit, but fail safe

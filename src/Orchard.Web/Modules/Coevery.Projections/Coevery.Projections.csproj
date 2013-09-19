@@ -103,11 +103,16 @@
     <Compile Include="Controllers\ViewModelController.cs" />
     <Compile Include="Drivers\LayListViewPartDriver.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="FieldTypeEditors\BooleanFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\DecimalFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\FloatFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\IntegerFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\OptionSetFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\ReferenceFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\DateFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\DateTimeFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\ILogicFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\StringFieldTypeEditor.cs" />
     <Compile Include="FilterEditors\Forms\OptionSetFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\ReferenceFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\BooleanFilterForm.cs" />

@@ -33,15 +33,12 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
-            if (formState.Value == "undefined") {
-                return T("{0} is undefined", fieldName);
-            }
+            var op = (ReferenceOperator)Enum.Parse(typeof(ReferenceOperator), (string)formState.Operator);
+            string value = formState.Value;
+            var items = value.Split('&').Select(int.Parse).ToArray();
+            fieldName = fieldName.Split('.')[1];
 
-            bool value = Convert.ToBoolean(formState.Value);
-
-            return value
-                ? T("{0} is true", fieldName)
-                : T("{0} is false", fieldName);
+            return T("");
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {
