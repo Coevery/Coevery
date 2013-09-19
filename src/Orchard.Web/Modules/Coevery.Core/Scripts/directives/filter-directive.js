@@ -24,7 +24,11 @@ angular.module('coevery.filter', [])
                 editor.append($('script[type="text/ng-template"]#' + fieldFilter.FormName).text());
                 scope.fieldTitle = fieldFilter.DisplayName;
                 for (var property in args.State) {
-                    editor.find('[name="' + property + '"]:first').val(args.State[property]);
+                    var formElement = editor.find('[name="' + property + '"]:first');
+                    var value = formElement.is('select[multiple]')
+                        ? args.State[property].split('&')
+                        : args.State[property];
+                    formElement.val(value);
                 }
                 $compile(editor.children())(scope);
 

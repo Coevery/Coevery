@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Castle.Core;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.Forms.Services;
@@ -36,17 +38,10 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {
-            if (formState.Value == "undefined") {
-                return x => x.IsNull(property);
-            }
+            string value = formState.Value;
+            var items = value.Split('&').Select(int.Parse).ToArray();
 
-            bool value = Convert.ToBoolean(formState.Value);
-
-            if (value) {
-                return x => x.Gt(property, (long) 0);
-            }
-
-            return x => x.Eq(property, (long) 0);
+            return x => x.In(property, items);
         }
     }
 }

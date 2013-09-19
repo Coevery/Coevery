@@ -96,7 +96,15 @@ namespace Coevery.Core.Controllers {
                         Category = entityName + "ContentFields",
                         Type = filter.Type,
                     };
-                    var dictionary = filter.FormData.ToDictionary(x => x.Name, x => x.Value);
+                    var dictionary = new Dictionary<string, string>();
+                    foreach (var data in filter.FormData) {
+                        if (dictionary.ContainsKey(data.Name)) {
+                            dictionary[data.Name] += "&" + data.Value;
+                        }
+                        else {
+                            dictionary.Add(data.Name, data.Value);
+                        }
+                    }
                     record.State = FormParametersHelper.ToString(dictionary);
                     filterRecords.Add(record);
                 }
