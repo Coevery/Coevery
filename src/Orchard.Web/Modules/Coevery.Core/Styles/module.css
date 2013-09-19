@@ -348,6 +348,21 @@
         font-weight:bold;
     }
 
+    .filter-collapse .collapseHeader .filterTitle
+    {
+        color: #999;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .filter-collapse .collapseHeader .deleteBtn
+    {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        float: none;
+    }
+
     .filter-collapse .collapseZone
     {
         padding: 0px;
@@ -370,7 +385,7 @@
     {
         float: left; 
         padding: 0px;
-        margin: 0px;
+        margin:0px 0px 5px 0px;
     }
 
     .filterForm .filterCreatorWrap .filterInput
@@ -389,7 +404,7 @@
 
     .filterForm .filterAddNewWrap
     {
-        padding: 20px 0px;
+        padding: 15px 0px 20px 0px;
     }
 
 
