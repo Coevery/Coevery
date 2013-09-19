@@ -5762,19 +5762,20 @@ function LocationHashbangUrl(appBase, hashPrefix) {
    * @param {string} url Hashbang url
    * @private
    */
-  this.$$parse = function(url) {
-    matchUrl(url, this);
-    var withoutBaseUrl = beginsWith(appBase, url) || beginsWith(appBaseNoFile, url);
-    if (!isString(withoutBaseUrl)) {
-      throw new Error('Invalid url "' + url + '", does not start with "' + appBase +  '".');
-    }
-    var withoutHashUrl = withoutBaseUrl.charAt(0) == '#' ? beginsWith(hashPrefix, withoutBaseUrl) : withoutBaseUrl;
-    if (!isString(withoutHashUrl)) {
-      throw new Error('Invalid url "' + url + '", missing hash prefix "' + hashPrefix + '".');
-    }
-    matchAppUrl(withoutHashUrl, this);
-    this.$$compose();
-  };
+    this.$$parse = function(url) {
+        var withoutBaseUrl = beginsWith(appBase, url) || beginsWith(appBaseNoFile, url);
+        var withoutHashUrl = withoutBaseUrl.charAt(0) == '#'
+            ? beginsWith(hashPrefix, withoutBaseUrl)
+            : (this.$$html5)
+                ? withoutBaseUrl
+                : '';
+
+        if (!isString(withoutHashUrl)) {
+            throw $locationMinErr('ihshprfx', 'Invalid url "{0}", missing hash prefix "{1}".', url, hashPrefix);
+        }
+        matchAppUrl(withoutHashUrl, this);
+        this.$$compose();
+    };
 
   /**
    * Compose hashbang url and update `absUrl` property

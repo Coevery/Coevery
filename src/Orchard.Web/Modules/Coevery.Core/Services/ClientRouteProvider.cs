@@ -8,29 +8,35 @@ namespace Coevery.Core.Services {
         }
 
         public override void Discover(ClientRouteTableBuilder builder) {
-            ClientViewDescriptor navview = new ClientViewDescriptor()
+            var navigationView = new ClientViewDescriptor()
             {
                 Name = "menulist",
                 TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = 'Coevery/CoeveryCore/ViewTemplate/MenuList/'+$stateParams.NavigationId;
+                        var url = 'Coevery/CoeveryCore/ViewTemplate/MenuList';
                         return $http.get(url).then(function (response) { return response.data; });
                     }]",
                 Controller = "NavigationCtrl",
                 Dependencies = ToClientUrl(new[] { "controllers/navigationcontroller" })
             };
 
-            builder.Describe("Navigation")
+            builder.Describe("Root")
                 .Configure(descriptor =>
                 {
+                    descriptor.Url = "";
+                    descriptor.Views.Add(navigationView);
+                });
+
+            builder.Describe("Navigation")
+                .Configure(descriptor => {
                     descriptor.Url = "/{NavigationId:[0-9]+}";
-                    descriptor.Views.Add(navview);
+                    descriptor.Views.Add(navigationView);
                 });
 
             builder.Describe("List")
                 .Configure(descriptor =>
                 {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}";
-                    descriptor.Views.Add(navview);
+                    descriptor.Views.Add(navigationView);
                 })
                 .View(view =>
                 {
@@ -46,7 +52,7 @@ namespace Coevery.Core.Services {
                 .Configure(descriptor =>
                 {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}/Create";
-                    descriptor.Views.Add(navview);
+                    descriptor.Views.Add(navigationView);
                 })
                 .View(view =>
                 {
@@ -62,7 +68,7 @@ namespace Coevery.Core.Services {
                 .Configure(descriptor =>
                 {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}";
-                    descriptor.Views.Add(navview);
+                    descriptor.Views.Add(navigationView);
                 })
                 .View(view =>
                 {
@@ -78,7 +84,7 @@ namespace Coevery.Core.Services {
                 .Configure(descriptor =>
                 {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}/View/{Id:[0-9a-zA-Z]+}";
-                    descriptor.Views.Add(navview);
+                    descriptor.Views.Add(navigationView);
                 })
                 .View(view =>
                 {
