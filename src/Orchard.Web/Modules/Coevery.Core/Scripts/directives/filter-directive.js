@@ -9,13 +9,13 @@ angular.module('coevery.filter', [])
             link: function(scope, element, attrs) {
                 var args = scope.filterArgs
                     ? scope.filterArgs
-                    : { Type: scope.fieldFilters[0].Type };
+                    : { Type: scope.fieldFilters[0].Type, State: {} };
 
-                var type = args.Type;
-                element.data('Type', type);
+                scope.args = args;
+                element.data('Type', args.Type);
                 var fieldFilter;
                 $.each(scope.fieldFilters, function() {
-                    if (this.Type == type) {
+                    if (this.Type == args.Type) {
                         fieldFilter = this;
                         return false;
                     }
@@ -25,16 +25,14 @@ angular.module('coevery.filter', [])
                 scope.fieldTitle = fieldFilter.DisplayName;
                 for (var property in args.State) {
                     var formElement = editor.find('[name="' + property + '"]:first');
-                    var value = formElement.is('select[multiple]')
-                        ? args.State[property].split('&')
-                        : args.State[property];
-                    formElement.val(value);
+                    formElement.val(args.State[property]);
                 }
                 $compile(editor.children())(scope);
 
                 scope.showFilterEditor = function(field) {
                     editor.empty();
                     scope.fieldTitle = field.DisplayName;
+                    scope.args.Type = field.Type;
                     element.data('Type', field.Type);
                     editor.append($('script[type="text/ng-template"]#' + field.FormName).text());
                     $compile(editor.children())(scope);
@@ -43,6 +41,14 @@ angular.module('coevery.filter', [])
                 scope.delete = function() {
                     element.remove();
                 };
+            }
+        };
+    })
+    .directive('selectpicker', function() {
+        return {
+            restrict: 'C',
+            link: function(scope, element, attrs) {
+                element.selectpicker();
             }
         };
     })
@@ -56,7 +62,6 @@ angular.module('coevery.filter', [])
                 var max = siblings.filter('[name="Max"]:first');
                 displayNumericEditorOptions();
                 element.change(displayNumericEditorOptions);
-                element.selectpicker();
 
                 function displayNumericEditorOptions() {
                     element.children("option:selected").each(function() {
@@ -89,7 +94,6 @@ angular.module('coevery.filter', [])
                 var max = siblings.filter(':has([name="Max"]):first');
                 displayNumericEditorOptions();
                 element.change(displayNumericEditorOptions);
-                element.selectpicker();
 
                 function displayNumericEditorOptions() {
                     element.children("option:selected").each(function() {
@@ -112,29 +116,48 @@ angular.module('coevery.filter', [])
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
-                var arr = element.parents('form:first').data('Type').split('.', 2);
-                var entityName = arr[0];
-                var fieldName = arr[1];
-                var url = 'api/Projections/Reference/' + entityName + '?fieldName=' + fieldName;
-                $http.get(url).then(function(response) {
-                    $.each(response.data, function() {
+                var container = element.parents('.filterCreatorWrap:first'),
+                    options = container.data('reference-options'),
+                    typeName = scope.args.Type;
+
+                options = options ? options : {};
+                if (options[typeName]) {
+                    displayOptions(options[typeName]);
+                } else {
+                    var arr = typeName.split('.', 2),
+                        entityName = arr[0],
+                        fieldName = arr[1],
+                        url = 'api/Projections/Reference/' + entityName + '?fieldName=' + fieldName;
+                    $http.get(url).then(function(response) {
+                        displayOptions(response.data);
+                        options[typeName] = response.data;
+                        container.data('reference-options', options);
+                    });
+                }
+
+                function displayOptions(data) {
+                    $.each(data, function() {
                         element.append('<option value="' + this.Id + '">' + this.DisplayText + '</option>');
                     });
+                    var value = scope.args.State[element.attr('name')]
+                        ? scope.args.State[element.attr('name')].split('&')
+                        : null;
+                    element.val(value);
                     element.selectpicker();
-                });
+                }
             }
         };
     })
-    .directive('filterOptionsetValue', function ($http) {
+    .directive('filterOptionsetValue', function($http) {
         return {
             restrict: 'A',
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 var arr = element.parents('form:first').data('Type').split('.', 2);
                 var entityName = arr[0];
                 var fieldName = arr[1];
                 var url = 'api/Projections/OptionSet/' + entityName + '?fieldName=' + fieldName;
-                $http.get(url).then(function (response) {
-                    $.each(response.data, function () {
+                $http.get(url).then(function(response) {
+                    $.each(response.data, function() {
                         element.append('<option value="' + this.ID + '">' + this.DisplayText + '</option>');
                     });
                     element.selectpicker();
