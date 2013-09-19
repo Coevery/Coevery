@@ -1,2 +1,2 @@
-﻿@Html.DropDownList("Operator", (IEnumerable<SelectListItem>)Model.Operators)
+﻿@Html.DropDownList("Operator", (IEnumerable<SelectListItem>)Model.Operators, new {@class = "selectpicker", data_style = "btn-small"})
 <select name="Value" data-live-search="true" data-style="btn-small" multiple filter-optionset-value> </select>
