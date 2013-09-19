@@ -15,8 +15,6 @@ namespace Coevery.Fields.Drivers {
         public NumberFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Number";
-            Description = "Allows users to enter number with specified length and decimal place.";
         }
 
         public Localizer T { get; set; }

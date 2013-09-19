@@ -22,6 +22,11 @@ namespace Coevery.OptionSet.Settings {
 
         public Localizer T { get; set; }
 
+        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+            var model = string.Empty;
+            yield return DisplayTemplate(model, "OptionSet", null);
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "OptionSetField") {
                 var model = definition.Settings.GetModel<OptionSetFieldSettings>();

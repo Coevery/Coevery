@@ -15,8 +15,6 @@ namespace Coevery.Fields.Drivers {
         public CurrencyFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Currency";
-            Description = "Allows users to enter currency number.";
         }
 
         public Localizer T { get; set; }

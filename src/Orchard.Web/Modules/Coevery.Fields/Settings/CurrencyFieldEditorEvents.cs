@@ -9,6 +9,10 @@ using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
     public class CurrencyFieldEditorEvents : FieldEditorEvents {
+        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+            var model = string.Empty;
+            yield return DisplayTemplate(model, "Currency", null);
+        }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "CurrencyField"

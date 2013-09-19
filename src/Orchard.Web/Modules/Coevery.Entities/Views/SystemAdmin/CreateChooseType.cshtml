@@ -10,17 +10,8 @@
         <div class="form-container">
             <form id="field-type-form" class="no-border">
                 @{
-                    foreach (var field in Model.Fields)
-                    {
-                    <section class="control-group">
-                        <div class="controls">
-                            <label class="radio">
-                                <input type="radio" ng-model="fieldType" value="@field.FieldTypeName">
-                                @field.DisplayName
-                                <span class="help-inline">@field.Description</span>
-                            </label>
-                        </div>
-                    </section>
+                    foreach (var field in Model.Fields) {
+                        Html.RenderTemplates(field);
                     }
                 }
             </form>

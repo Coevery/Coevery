@@ -16,8 +16,6 @@ namespace Coevery.Fields.Drivers {
         public DateFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Date";
-            Description = "Allows users to enter date.";
         }
 
         public Localizer T { get; set; }

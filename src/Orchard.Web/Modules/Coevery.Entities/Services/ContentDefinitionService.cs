@@ -7,6 +7,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
+using Orchard.ContentManagement.ViewModels;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Localization;
 using Orchard.Utility.Extensions;
@@ -234,8 +235,9 @@ namespace Coevery.Entities.Services {
             _contentDefinitionManager.DeletePartDefinition(name);
         }
 
-        public IEnumerable<ContentFieldInfo> GetFields() {
-            return _contentFieldDrivers.Where(d=>IsCustomFieldDriver(d.GetType())).SelectMany(d => d.GetFieldInfo());
+        public IEnumerable<TemplateViewModel> GetFields() {
+            //return _contentFieldDrivers.Where(d=>IsCustomFieldDriver(d.GetType())).SelectMany(d => d.GetFieldInfo());
+            return _contentDefinitionEditorEvents.FieldDescriptor();
         }
 
         private bool IsCustomFieldDriver(Type driverType) {

@@ -2,11 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using Coevery.Entities.ViewModels;
 using Orchard.ContentManagement.MetaData;
+using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Entities.ViewModels {
     public class AddFieldViewModel {
         public AddFieldViewModel() {
-            Fields = new List<ContentFieldInfo>();
+            Fields = new List<TemplateViewModel>();
         }
 
         /// <summary>
@@ -42,8 +43,8 @@ namespace Coevery.Entities.ViewModels {
         /// <summary>
         /// List of the available Field types
         /// </summary>
-        public IEnumerable<ContentFieldInfo> Fields { get; set; }
+        public IEnumerable<TemplateViewModel> Fields { get; set; }
 
-        public IEnumerable<Orchard.ContentManagement.ViewModels.TemplateViewModel> TypeTemplates { get; set; }
+        public IEnumerable<TemplateViewModel> TypeTemplates { get; set; }
     }
 }

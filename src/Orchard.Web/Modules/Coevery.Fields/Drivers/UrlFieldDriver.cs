@@ -16,8 +16,6 @@ namespace Coevery.Fields.Drivers {
         public UrlFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Url";
-            Description = "Allows users to enter Url address.";
         }
 
         public Localizer T { get; set; }

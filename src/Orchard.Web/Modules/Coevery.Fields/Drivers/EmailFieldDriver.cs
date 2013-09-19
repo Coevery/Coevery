@@ -20,8 +20,6 @@ namespace Coevery.Fields.Drivers {
         public EmailFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Email";
-            Description = "Allows users to enter Email address.";
         }
 
         public Localizer T { get; set; }

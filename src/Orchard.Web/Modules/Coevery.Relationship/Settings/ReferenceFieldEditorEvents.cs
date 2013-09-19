@@ -37,6 +37,10 @@ namespace Coevery.Relationship.Settings {
             _httpContextAccessor = httpContextAccessor;
             T = NullLocalizer.Instance;
         }
+        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+            var model = string.Empty;
+            yield return DisplayTemplate(model, "Reference", null);
+        }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "ReferenceField" ||

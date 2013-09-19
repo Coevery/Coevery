@@ -205,7 +205,7 @@ namespace Coevery.Entities.Controllers {
             }
 
             var viewModel = new AddFieldViewModel {
-                Fields = _contentDefinitionService.GetFields().OrderBy(x => x.FieldTypeName),
+                Fields = _contentDefinitionService.GetFields().OrderBy(x => x.TemplateName),
             };
 
             return View(viewModel);

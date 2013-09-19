@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
+using Orchard.DisplayManagement;
 using Orchard.Events;
 
 namespace Coevery.Entities.Settings {
     public interface IContentDefinitionEditorEvents : IEventHandler {
+        IEnumerable<TemplateViewModel> FieldDescriptor();
+
         IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition);
         IEnumerable<TemplateViewModel> TypePartEditor(ContentTypePartDefinition definition);
         IEnumerable<TemplateViewModel> PartEditor(ContentPartDefinition definition);
@@ -20,6 +24,10 @@ namespace Coevery.Entities.Settings {
     }
 
     public abstract class ContentDefinitionEditorEventsBase : IContentDefinitionEditorEvents {
+        public virtual IEnumerable<TemplateViewModel> FieldDescriptor() {
+            return null;
+        }
+
         public virtual IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition) {
             return Enumerable.Empty<TemplateViewModel>();
         }
@@ -54,6 +62,12 @@ namespace Coevery.Entities.Settings {
 
         protected static TemplateViewModel DefinitionTemplate<TModel>(TModel model) {
             return DefinitionTemplate(model, typeof(TModel).Name, typeof(TModel).Name);
+        }
+
+        protected static TemplateViewModel DisplayTemplate<TModel>(TModel model, string templateName, string prefix) {
+            return new TemplateViewModel(model, prefix) {
+                TemplateName = "DisplayTemplates/" + templateName
+            };
         }
 
         protected static TemplateViewModel DefinitionTemplate<TModel>(TModel model, string templateName, string prefix) {

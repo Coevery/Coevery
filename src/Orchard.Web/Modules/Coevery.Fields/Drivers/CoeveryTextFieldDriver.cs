@@ -16,8 +16,6 @@ namespace Coevery.Fields.Drivers {
         public CoeveryTextFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Text";
-            Description = "Allows users to enter any combination of letters and numbers.";
         }
 
         public Localizer T { get; set; }

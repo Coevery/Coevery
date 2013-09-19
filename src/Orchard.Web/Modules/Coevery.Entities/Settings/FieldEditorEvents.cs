@@ -3,6 +3,7 @@ using Orchard.ContentManagement.MetaData.Builders;
 
 namespace Coevery.Entities.Settings {
     public class FieldEditorEvents : ContentDefinitionEditorEventsBase {
+
         protected void UpdateSettings(FieldSettings model, ContentPartFieldDefinitionBuilder builder, string prefix) {
             model.HelpText = model.HelpText ?? string.Empty;
             builder.WithSetting(prefix + ".HelpText", model.HelpText);

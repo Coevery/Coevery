@@ -18,8 +18,6 @@ namespace Coevery.Fields.Drivers {
         public PhoneFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Phone";
-            Description = "Allows users to enter phone numbers.";
         }
 
         public Localizer T { get; set; }

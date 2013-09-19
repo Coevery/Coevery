@@ -8,6 +8,10 @@ using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
     public class DatetimeFieldEditorEvents : FieldEditorEvents {
+        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+            var model = string.Empty;
+            yield return DisplayTemplate(model, "Datetime", null);
+        }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "DatetimeField"

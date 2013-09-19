@@ -8,6 +8,10 @@ using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
     public class UrlFieldEditorEvents : FieldEditorEvents {
+        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+            var model = string.Empty;
+            yield return DisplayTemplate(model, "Url", null);
+        }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "UrlField"

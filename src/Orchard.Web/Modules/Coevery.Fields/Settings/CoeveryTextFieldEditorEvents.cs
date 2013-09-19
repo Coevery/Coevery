@@ -9,6 +9,11 @@ using Orchard.ContentManagement.ViewModels;
 namespace Coevery.Fields.Settings {
     public class CoeveryTextFieldEditorEvents : FieldEditorEvents {
 
+        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+            var model = string.Empty;
+            yield return DisplayTemplate(model, "CoeveryText", null);
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "CoeveryTextField"
                 || definition.FieldDefinition.Name == "CoeveryTextFieldCreate") {

@@ -41,8 +41,6 @@ namespace Coevery.Relationship.Drivers {
             _contentManager = contentManager;
             _projectionManager = projectionManager;
             T = NullLocalizer.Instance;
-            DisplayName = "Reference";
-            Description = "Allows users to relation to another content.";
         }
 
         public Localizer T { get; set; }

@@ -29,8 +29,6 @@ namespace Coevery.OptionSet.Drivers {
             _optionSetService = optionSetService;
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Option Set";
-            Description = "Allows users to select a value from a list you define.";
         }
 
         public Localizer T { get; set; }
