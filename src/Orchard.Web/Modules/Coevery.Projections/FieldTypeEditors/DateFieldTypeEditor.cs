@@ -8,13 +8,19 @@ using Orchard.Services;
 namespace Coevery.Projections.FieldTypeEditors {
     public class DateFieldTypeEditor : ILogicFieldTypeEditor {
         private readonly IClock _clock;
-        
+
         public Localizer T { get; set; }
+
+        public bool NeedApplyFilter {
+            get { return false; }
+        }
 
         public DateFieldTypeEditor(IClock clock) {
             _clock = clock;
             T = NullLocalizer.Instance;
         }
+
+        public void ApplyFilter(dynamic context) {}
 
         public bool CanHandle(string fieldTypeName) {
             return fieldTypeName == "DateField";

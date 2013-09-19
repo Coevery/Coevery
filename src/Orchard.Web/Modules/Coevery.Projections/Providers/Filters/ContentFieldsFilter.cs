@@ -72,19 +72,26 @@ namespace Coevery.Projections.Providers.Filters {
         }
 
         public void ApplyFilter(FilterContext context, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-            var propertyName = String.Join(".", part.Name, field.Name, storageName ?? "");
+            var logicFieldTypeEditor = fieldTypeEditor as ILogicFieldTypeEditor;
+            if (logicFieldTypeEditor != null
+                && logicFieldTypeEditor.NeedApplyFilter) {
+                logicFieldTypeEditor.ApplyFilter(context);
+            }
+            else {
+                var propertyName = String.Join(".", part.Name, field.Name, storageName ?? "");
 
-            // use an alias with the join so that two filters on the same Field Type wont collide
-            var relationship = fieldTypeEditor.GetFilterRelationship(propertyName.ToSafeName());
+                // use an alias with the join so that two filters on the same Field Type wont collide
+                var relationship = fieldTypeEditor.GetFilterRelationship(propertyName.ToSafeName());
 
-            // generate the predicate based on the editor which has been used
-            Action<IHqlExpressionFactory> predicate = fieldTypeEditor.GetFilterPredicate(context.State);
+                // generate the predicate based on the editor which has been used
+                Action<IHqlExpressionFactory> predicate = fieldTypeEditor.GetFilterPredicate(context.State);
 
-            // combines the predicate with a filter on the specific property name of the storage, as implemented in FieldIndexService
-            Action<IHqlExpressionFactory> andPredicate = x => x.And(y => y.Eq("PropertyName", propertyName), predicate);
+                // combines the predicate with a filter on the specific property name of the storage, as implemented in FieldIndexService
+                Action<IHqlExpressionFactory> andPredicate = x => x.And(y => y.Eq("PropertyName", propertyName), predicate);
 
-            // apply where clause
-            context.Query = context.Query.Where(relationship, andPredicate);
+                // apply where clause
+                context.Query = context.Query.Where(relationship, andPredicate);
+            }
         }
 
         public LocalizedString DisplayFilter(FilterContext context, ContentPartDefinition part, ContentPartFieldDefinition fieldDefinition) {

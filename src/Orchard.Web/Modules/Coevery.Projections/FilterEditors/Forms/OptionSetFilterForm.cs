@@ -6,26 +6,21 @@ using Orchard.DisplayManagement;
 using Orchard.Forms.Services;
 using Orchard.Localization;
 
-namespace Coevery.Projections.FilterEditors.Forms
-{
-    public class OptionSetFilterForm : IFormProvider
-    {
+namespace Coevery.Projections.FilterEditors.Forms {
+    public class OptionSetFilterForm : IFormProvider {
         public const string FormName = "OptionSetFilter";
 
         protected dynamic Shape { get; set; }
         public Localizer T { get; set; }
 
-        public OptionSetFilterForm(IShapeFactory shapeFactory)
-        {
+        public OptionSetFilterForm(IShapeFactory shapeFactory) {
             Shape = shapeFactory;
             T = NullLocalizer.Instance;
         }
 
-        public void Describe(DescribeContext context)
-        {
+        public void Describe(DescribeContext context) {
             Func<IShapeFactory, object> form =
-                shape =>
-                {
+                shape => {
                     var operators = new List<SelectListItem> {
                         new SelectListItem {Value = Convert.ToString(OptionSetOperator.MatchesAny), Text = T("Maches any").Text},
                         new SelectListItem {Value = Convert.ToString(OptionSetOperator.MatchesAll), Text = T("Maches all").Text},
@@ -42,11 +37,9 @@ namespace Coevery.Projections.FilterEditors.Forms
             context.Form(FormName, form);
         }
 
-        public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T)
-        {
-            var op = (OptionSetOperator)Enum.Parse(typeof(OptionSetOperator), Convert.ToString(formState.Operator));
-            switch (op)
-            {
+        public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
+            var op = (OptionSetOperator) Enum.Parse(typeof (OptionSetOperator), Convert.ToString(formState.Operator));
+            switch (op) {
                 case OptionSetOperator.MatchesAny:
                     return T("{0} matches any to '{1}'", fieldName, "");
                 case OptionSetOperator.MatchesAll:
@@ -57,34 +50,9 @@ namespace Coevery.Projections.FilterEditors.Forms
                     throw new ArgumentOutOfRangeException();
             }
         }
-
-        public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property)
-        {
-
-            var op = (OptionSetOperator)Enum.Parse(typeof(OptionSetOperator), Convert.ToString(formState.Operator));
-            string value = Convert.ToString(formState.Value);
-            string[] valueArrStr = value.Split(new string[] { "&" }, StringSplitOptions.RemoveEmptyEntries);
-            List<int> valueArr = new List<int>();
-            foreach (var item in valueArrStr)
-            {
-                valueArr.Add(int.Parse(item));
-            }
-            switch (op)
-            {
-                case OptionSetOperator.MatchesAny:
-                    return x => x.In(property, valueArr);
-                case OptionSetOperator.MatchesAll:
-                    return x => x.In(property, valueArr);
-                case OptionSetOperator.NotMatchesAny:
-                    return x => x.In(property, valueArr);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
     }
 
-    public enum OptionSetOperator
-    {
+    public enum OptionSetOperator {
         MatchesAny,
         MatchesAll,
         NotMatchesAny

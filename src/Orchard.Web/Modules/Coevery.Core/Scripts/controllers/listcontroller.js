@@ -304,8 +304,8 @@
                 function addNewEditor(args) {
                     $scope.filterArgs = args;
                     var editor = $('<filter-editor filter-args="filterArgs" field-filters="fieldFilters"></filter-editor>');
-                    $compile(editor)($scope);
                     $('.filterCreatorWrap').append(editor);
+                    $compile(editor)($scope);
                 }
             }]
     ]);

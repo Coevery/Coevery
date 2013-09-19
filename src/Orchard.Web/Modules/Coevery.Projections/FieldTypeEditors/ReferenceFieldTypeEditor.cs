@@ -8,9 +8,15 @@ namespace Coevery.Projections.FieldTypeEditors {
     public class ReferenceFieldTypeEditor : ILogicFieldTypeEditor {
         public Localizer T { get; set; }
 
+        public bool NeedApplyFilter {
+            get { return false; }
+        }
+
         public ReferenceFieldTypeEditor() {
             T = NullLocalizer.Instance;
         }
+
+        public void ApplyFilter(dynamic context) {}
 
         public bool CanHandle(string fieldTypeName) {
             return fieldTypeName == "ReferenceField";
