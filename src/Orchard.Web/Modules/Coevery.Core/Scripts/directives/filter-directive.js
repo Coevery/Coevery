@@ -120,4 +120,21 @@ angular.module('coevery.filter', [])
                 });
             }
         };
+    })
+    .directive('filterOptionsetValue', function ($http) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var arr = element.parents('form:first').data('Type').split('.', 2);
+                var entityName = arr[0];
+                var fieldName = arr[1];
+                var url = 'api/Projections/OptionSet/' + entityName + '?fieldName=' + fieldName;
+                $http.get(url).then(function (response) {
+                    $.each(response.data, function () {
+                        element.append('<option value="' + this.ID + '">' + this.DisplayText + '</option>');
+                    });
+                    element.selectpicker();
+                });
+            }
+        };
     });
