@@ -1,4 +1,43 @@
 angular.module('coevery.common', [])
+    .directive("coDeleteButton", ['$compile', '$parse', function ($compile, $parse) {
+        return {
+            restrict: "A",
+            scope: { confirmMessage: '@confirmMessage', deleteAction: '@deleteAction' },
+            link: function(scope, element, attrs) {
+                var template = '<div class="modal hide fade">\
+                          <div class="modal-header">\
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
+                            <h3>Delete Confirm</h3>\
+                          </div>\
+                          <div class="modal-body">\
+                            <p>{{confirmMessage}}</p>\
+                          </div>\
+                          <div class="modal-footer">\
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>\
+                            <button class="btn btn-primary" ng-click="delete()">Yes</button>\
+                          </div>\
+                    </div>';
+                var modal = $(template);
+                var link = $compile(modal);
+                link(scope);
+
+                element.on('click', showModal);
+
+                function showModal() {
+                    $(modal).modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    });
+                }
+
+                scope.delete = function(event) {
+                    $(modal).modal('hide');
+                    var fn = $parse('$parent.' + scope.deleteAction);
+                    fn(scope, { $event: event });
+                };
+            }
+        };
+    }])
     .directive('delConfirm', function () {
         return {
             template: function (element, attrs) {
