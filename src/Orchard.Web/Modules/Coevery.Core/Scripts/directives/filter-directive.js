@@ -56,7 +56,7 @@ angular.module('coevery.filter', [])
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
-                var siblings = element.siblings();
+                var siblings = element.siblings().children();
                 var single = siblings.filter('[name="Value"]:first');
                 var min = siblings.filter('[name="Min"]:first');
                 var max = siblings.filter('[name="Max"]:first');
@@ -68,12 +68,18 @@ angular.module('coevery.filter', [])
                         var val = $(this).val();
                         if (val == 'Between' || val == 'NotBetween') {
                             single.hide();
+                            single.attr('required', null);
                             min.show();
+                            min.attr('required', '');
                             max.show();
+                            max.attr('required', '');
                         } else {
                             single.show();
+                            single.attr('required', '');
                             min.hide();
+                            min.attr('required', null);
                             max.hide();
+                            max.attr('required', null);
                         }
                     });
                 }
@@ -90,8 +96,11 @@ angular.module('coevery.filter', [])
                 var siblings = element.siblings();
                 siblings.datetimepicker(options);
                 var single = siblings.filter(':has([name="Value"]):first');
+                var singleInput = single.children(':input');
                 var min = siblings.filter(':has([name="Min"]):first');
+                var minInput = min.children(':input');
                 var max = siblings.filter(':has([name="Max"]):first');
+                var maxInput = max.children(':input');
                 displayNumericEditorOptions();
                 element.change(displayNumericEditorOptions);
 
@@ -100,12 +109,18 @@ angular.module('coevery.filter', [])
                         var val = $(this).val();
                         if (val == 'Between' || val == 'NotBetween') {
                             single.hide();
+                            singleInput.attr('required', null);
                             min.show();
+                            minInput.attr('required', '');
                             max.show();
+                            maxInput.attr('required', '');
                         } else {
                             single.show();
+                            singleInput.attr('required', '');
                             min.hide();
+                            minInput.attr('required', null);
                             max.hide();
+                            maxInput.attr('required', null);
                         }
                     });
                 }

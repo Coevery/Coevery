@@ -1,5 +1,4 @@
 ﻿using System;
-using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
 using Orchard.Environment.Extensions;
 using Orchard.Forms.Services;
@@ -23,32 +22,6 @@ namespace Coevery.Projections.FilterEditors.Forms {
                 shape => Shape.FilterEditors_BooleanFilter(Id:FormName);
 
             context.Form(FormName, form);
-        }
-
-        public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
-            if (formState.Value == "undefined") {
-                return T("{0} is undefined", fieldName);
-            }
-
-            bool value = Convert.ToBoolean(formState.Value);
-
-            return value
-                ? T("{0} is true", fieldName)
-                : T("{0} is false", fieldName);
-        }
-
-        public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {
-            if (formState.Value == "undefined") {
-                return x => x.IsNull(property);
-            }
-
-            bool value = Convert.ToBoolean(formState.Value);
-
-            if (value) {
-                return x => x.Gt(property, (long) 0);
-            }
-
-            return x => x.Eq(property, (long) 0);
         }
     }
 }

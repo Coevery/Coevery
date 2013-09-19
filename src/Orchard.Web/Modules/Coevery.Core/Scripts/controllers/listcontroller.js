@@ -169,7 +169,16 @@
                 var needNewFilterEditor = false,
                     currentFilterGroupId = 0;
 
-                $scope.applyFilter = function() {
+                $scope.applyFilter = function () {
+                    var forms = $('.filterCreatorWrap').find('form');
+                    var passValidate = true;
+                    forms.each(function() {
+                        var validator = $(this).validate({ errorClass: "inputError" });
+                        passValidate = validator.form() && passValidate;
+                    });
+                    if (!passValidate) {
+                        return;
+                    }
                     var needSave = !!$('#filter-save-box:checked').length;
                     currentFilterGroupId = 0;
                     $scope.getPagedDataAsync();
