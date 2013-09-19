@@ -101,6 +101,7 @@
                                 <a href="" ng-click="addNewFilterCondition()">+ Add another filter condition</a>
                             </div>
                             <div class="filterAppWrap">
+                                <input type="text" class="filterInput" ng-model="currentFilter.Title" placeholder="enter the filter's name11">
                                 <div class="filterOkCancelWrap">
                                     <button class="btn btn-small btn-primary" ng-click="applyFilter()">Apply</button>
                                     <button class="btn btn-small" ng-click="closeFilterCollapse()">Close</button>
@@ -108,7 +109,6 @@
                                 <label class="checkbox checkInput">
                                     <input type="checkbox" id="filter-save-box">Save Filter
                                 </label>
-                                <input type="text" class="filterInput" ng-model="currentFilter.Title" placeholder="enter the filter's name">
                             </div>
                         </div>
                     </div>

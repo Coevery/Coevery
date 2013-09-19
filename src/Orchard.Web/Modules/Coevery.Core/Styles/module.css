@@ -302,11 +302,32 @@
 
     /*filter page css*/
     .field-selector {
-        float: left;
+        /*float: left;*/
+        /*padding-top:1px;*/
     }
 
     .field-editor {
-        float: left;
+        display: inline-block;
+        margin-left:5px;
+    }
+
+    .field-editor > select
+    {
+        margin-right: 1px;
+    }
+
+    .field-editor .input-prepend{
+        padding-right:0px;
+    }
+
+    .field-editor .input-prepend span.add-on{
+        height: 16px;
+        line-height: 16px;
+    }
+
+    .field-editor .input-prepend span.add-on + input{
+        height: 16px;
+        line-height: 16px;
     }
 
     .filter-collapse
@@ -336,57 +357,73 @@
     .filter-collapse .collapseZone .filterForm
     {
         margin:0px;
+        padding:10px;
     }
 
     .filterForm .filterCreatorWrap.control-group
     {
-       padding: 2px; 
+       padding: 0px; 
        margin-bottom: 0px;
     }
 
     .filterForm .filterCreatorWrap .filterCreatorContent
     {
         float: left; 
-        padding: 5px;
-        margin: 0;
+        padding: 0px;
+        margin: 0px;
     }
 
     .filterForm .filterCreatorWrap .filterInput
     {
         height: 16px;
         line-height: 16px; 
-        margin-left:4px;
     }
 
-    .filterForm .filterCreatorWrap .deleteBtn
+    .filterForm .filterCreatorWrap .deleteBtn.close
     {
-        float:left;
+        float:none;
+        display:inline-block;
+        margin:0px 25px;
+        font-size:16px;
     }
 
     .filterForm .filterAddNewWrap
     {
-        padding: 10px 0px 10px 5px;
+        padding: 20px 0px;
     }
 
 
     .filterForm .filterAppWrap
     {
-        padding: 5px;
+        padding: 0px;
     }
 
     .filterForm .filterAppWrap .filterOkCancelWrap
     {
-        float:left;
+        display: inline-block;
     }
+
+    .filterForm .filterAppWrap .filterOkCancelWrap .btn-small
+    {
+        margin-left:2px;
+    }
+    
 
     .filterForm .filterAppWrap .checkInput
     {
-        display: inline-block;margin-left: 5px;float: left;padding-top: 3px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+        padding-top: 3px;
     }
 
     .filterForm .filterAppWrap .filterInput
     {
-        height: 16px;line-height: 16px;margin-left: 5px;
+        height: 16px;
+        line-height: 16px;
+        margin-left: 0px;
+        display: block;
+        margin-bottom: 10px;
     }
 
  
