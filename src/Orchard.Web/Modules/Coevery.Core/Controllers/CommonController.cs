@@ -62,15 +62,25 @@ namespace Coevery.Core.Controllers {
                 if (model.Filters == null) {
                     model.Filters = new FilterData[] { };
                 }
-                
+
                 var filterRecords = CreateFilters(id, model);
                 var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
                 filterRecords.ForEach(filters.Add);
 
                 totalNumber = _projectionManager.GetCount(part.Record.QueryPartRecord.Id);
-                //var skipCount = model.rows*(model.page - 1);
-                //var pageCount = totalNumber <= model.rows*model.page ? totalNumber - model.rows*(model.page - 1) : model.rows;
-                entityRecords = GetLayoutComponents(part, 0, 0);
+                if (totalNumber <= model.Rows*(model.Page - 1)) {
+                    return new {
+                        total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
+                        page = model.Page,
+                        records = 0,
+                        rows = string.Empty
+                    };
+                }
+                var skipCount = model.Rows * (model.Page - 1);
+                var pageCount = (totalNumber <= model.Rows * model.Page)
+                    ? totalNumber-model.Rows * (model.Page-1)
+                    : model.Rows;
+                entityRecords = GetLayoutComponents(part, skipCount, pageCount);
 
                 foreach (var record in filterRecords) {
                     filters.Remove(record);
@@ -82,26 +92,26 @@ namespace Coevery.Core.Controllers {
 
             if (entityRecords == null || !entityRecords.Any()) {
                 return new {
-                    total = 0,
-                    page = 0,
+                    total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
+                    page = model.Page,
                     records = 0,
                     rows = string.Empty
                 };
             }
-            var postsortPage = _gridService.GetSortedRows(model.Sidx, model.Sord, entityRecords);
+            //var postsortPage = _gridService.GetSortedRows(model.Sidx, model.Sord, entityRecords);_gridService.GetPagedRows(model.Page, model.Rows, postsortPage)
             //var json = JsonConvert.SerializeObject(returnResult);
             //var message = new HttpResponseMessage {Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")};
-            
+
             return new {
                 total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
                 page = model.Page,
                 records = entityRecords.Count(),
-                rows = _gridService.GetPagedRows(model.Page, model.Rows, postsortPage)
+                rows = entityRecords
             };
         }
 
         public void Delete(string contentId) {
-            var idList = contentId.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            var idList = contentId.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var idItem in idList) {
                 var contentItem = _contentManager.Get(int.Parse(idItem), VersionOptions.Latest);
                 _contentManager.Remove(contentItem);
@@ -124,8 +134,7 @@ namespace Coevery.Core.Controllers {
                     record.State = FormParametersHelper.ToString(dictionary);
                     filterRecords.Add(record);
                 }
-            }
-            else {
+            } else {
                 filterRecords = _filterGroupRepository.Get(model.FilterGroupId).Filters;
             }
             return filterRecords;
@@ -146,11 +155,11 @@ namespace Coevery.Core.Controllers {
 
             // applying layout
             var layout = part.Record.LayoutRecord;
-            var tokens = new Dictionary<string, object> {{"Content", part.ContentItem}};
+            var tokens = new Dictionary<string, object> { { "Content", part.ContentItem } };
             var allFielDescriptors = _projectionManager.DescribeProperties().ToList();
-            var fieldDescriptors = layout.Properties.OrderBy(p => p.Position).Select(p => allFielDescriptors.SelectMany(x => x.Descriptors).Select(d => new {Descriptor = d, Property = p}).FirstOrDefault(x => x.Descriptor.Category == p.Category && x.Descriptor.Type == p.Type)).ToList();
+            var fieldDescriptors = layout.Properties.OrderBy(p => p.Position).Select(p => allFielDescriptors.SelectMany(x => x.Descriptors).Select(d => new { Descriptor = d, Property = p }).FirstOrDefault(x => x.Descriptor.Category == p.Category && x.Descriptor.Type == p.Type)).ToList();
             fieldDescriptors = fieldDescriptors.Where(c => c != null).ToList();
-            var tokenizedDescriptors = fieldDescriptors.Select(fd => new {fd.Descriptor, fd.Property, State = FormParametersHelper.ToDynamic(_tokenizer.Replace(fd.Property.State, tokens))}).ToList();
+            var tokenizedDescriptors = fieldDescriptors.Select(fd => new { fd.Descriptor, fd.Property, State = FormParametersHelper.ToDynamic(_tokenizer.Replace(fd.Property.State, tokens)) }).ToList();
 
             // execute the query
             var contentItems = _projectionManager.GetContentItems(query.Id, skipCount, pageCount).ToList();

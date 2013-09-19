@@ -1,0 +1,20 @@
+﻿<div class="btn-group">
+    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+        <i class="icon-th-large"></i>&nbsp;View
+                    <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns({{view.ContentId}})" title="" style="cursor: pointer;">
+            <a>
+                <i ng-class="{'icol-accept':currentViewId ==view.ContentId,'viewUSelected': currentViewId !=view.ContentId}"></i>
+                {{view.DisplayName}}
+            </a>
+        </li>
+        <li title="" class="divider"></li>
+        <li title="" ng-click="CreateView()" style="cursor: pointer;">
+            <a>
+                <i class="viewUSelected"></i>Create view
+            </a>
+        </li>
+    </ul>
+</div>

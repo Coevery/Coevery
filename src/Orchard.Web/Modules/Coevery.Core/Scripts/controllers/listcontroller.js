@@ -27,6 +27,12 @@
                         Filters: getFilters()
                     };
                 };
+                //var getPageSize = function() {
+                //    return pageSize;
+                //};
+                //var getPage = function() {
+                //    return currentPage;
+                //};
                 $scope.getPagedDataAsync = function () {
                     $("#contentList").jqGrid('setGridParam', {
                         postData: getPostData()
