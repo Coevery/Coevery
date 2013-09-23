@@ -358,7 +358,7 @@
     .filter-collapse .collapseHeader .deleteBtn
     {
         display: inline-block;
-        vertical-align: middle;
+        vertical-align: top;
         margin-left: 10px;
         float: none;
     }

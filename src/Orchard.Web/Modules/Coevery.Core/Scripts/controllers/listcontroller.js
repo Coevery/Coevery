@@ -41,6 +41,7 @@
                     $http.post(url, data).then(function(response) {
                         $scope.myData = response.data.EntityRecords;
                         $scope.totalServerItems = response.data.TotalNumber;
+                        $scope.filterDescription = response.data.FilterDescription;
                     }, function() {
                         logger.error("Failed to fetched records for " + moduleName);
                     });
@@ -216,7 +217,8 @@
                     $scope.getPagedDataAsync();
                 };
 
-                $scope.loadFilter = function(filter) {
+                $scope.loadFilter = function (filter) {
+                    $scope.filterDescription = filter.Title;
                     $scope.currentFilter = filter;
                     currentFilterGroupId = filter.FilterGroupId;
                     needNewFilterEditor = true;
