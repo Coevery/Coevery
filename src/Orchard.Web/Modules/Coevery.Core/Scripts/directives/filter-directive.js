@@ -163,20 +163,39 @@ angular.module('coevery.filter', [])
             }
         };
     })
-    .directive('filterOptionsetValue', function($http) {
+    .directive('filterOptionsetValue', function ($http) {
         return {
             restrict: 'A',
-            link: function(scope, element, attrs) {
-                var arr = element.parents('form:first').data('Type').split('.', 2);
-                var entityName = arr[0];
-                var fieldName = arr[1];
-                var url = 'api/Projections/OptionSet/' + entityName + '?fieldName=' + fieldName;
-                $http.get(url).then(function(response) {
-                    $.each(response.data, function() {
+            link: function (scope, element, attrs) {
+                var container = element.parents('.filterCreatorWrap:first'),
+                    options = container.data('filter-options'),
+                    typeName = scope.args.Type;
+
+                options = options ? options : {};
+                if (options[typeName]) {
+                    displayOptions(options[typeName]);
+                } else {
+                    var arr = typeName.split('.', 2),
+                        entityName = arr[0],
+                        fieldName = arr[1],
+                        url = 'api/Projections/OptionSet/' + entityName + '?fieldName=' + fieldName;
+                    $http.get(url).then(function (response) {
+                        displayOptions(response.data);
+                        options[typeName] = response.data;
+                        container.data('filter-options', options);
+                    });
+                }
+
+                function displayOptions(data) {
+                    $.each(data, function () {
                         element.append('<option value="' + this.ID + '">' + this.DisplayText + '</option>');
                     });
+                    var value = scope.args.State[element.attr('name')]
+                     ? scope.args.State[element.attr('name')].split('&')
+                     : null;
+                    element.val(value);
                     element.selectpicker();
-                });
+                }
             }
         };
     });
