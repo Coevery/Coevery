@@ -218,7 +218,8 @@
                 };
 
                 $scope.loadFilter = function (filter) {
-                    $scope.filterDescription = filter.Title;
+                    $scope.filterTitle = filter.Title;
+                    $scope.filterDescription = '';
                     $scope.currentFilter = filter;
                     currentFilterGroupId = filter.FilterGroupId;
                     needNewFilterEditor = true;
@@ -229,12 +230,17 @@
 
                 $scope.createFilter = function() {
                     $scope.currentFilter = {};
+                    $scope.filterTitle = '';
+                    $scope.filterDescription = '';
                     needNewFilterEditor = true;
                     $('#filterCollapse').show();
                     showFilterEditorZone();
                 };
 
-                $scope.deleteFilter = function(filter) {
+                $scope.deleteFilter = function (filter) {
+                    if (filter.FilterGroupId == currentFilterGroupId) {
+                        currentFilterGroupId = 0;
+                    }
                     var index = $scope.definitionFilters.indexOf(filter);
                     $scope.definitionFilters.splice(index, 1);
                     filterDefinitionService.delete({ filterId: filter.Id, contentType: moduleName });
