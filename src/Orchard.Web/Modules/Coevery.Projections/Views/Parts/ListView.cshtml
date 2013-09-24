@@ -4,6 +4,6 @@
 <data-del:confirm del:id="myModalEntity" confirm:msg="You really want to delete this entity?" del:fuc="deleteEntity()"></data-del:confirm>
 @foreach (var editor in Model.FilterEditors) {
     <script type="text/ng-template" id="@editor.Id">
-    @DisplayChildren(editor)
+    @Display(editor)
     </script>
 }

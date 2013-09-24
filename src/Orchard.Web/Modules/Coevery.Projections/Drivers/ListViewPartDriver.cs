@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Coevery.Projections.Models;
-using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
-using Orchard.ContentManagement.Handlers;
 using Orchard.Forms.Services;
 using Orchard.Projections.FieldTypeEditors;
-using Orchard.Projections.Models;
 
 namespace Coevery.Projections.Drivers {
 

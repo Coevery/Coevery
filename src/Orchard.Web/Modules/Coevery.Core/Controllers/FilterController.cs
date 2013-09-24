@@ -26,16 +26,12 @@ namespace Coevery.Core.Controllers {
                 .Where(x => x.Category == category)
                 .SelectMany(x => x.Descriptors);
 
-            var fieldFilters = new List<FieldFilterViewModel>();
-            foreach (var filter in filters) {
-                string name = filter.Name.Text;
-                string displayName = name.Substring(0, name.Length - ":Value".Length);
-                fieldFilters.Add(new FieldFilterViewModel {
-                    DisplayName = displayName,
+            var fieldFilters = filters.Select(filter =>
+                new FieldFilterViewModel {
+                    DisplayName = filter.Name.Text,
                     FormName = filter.Form,
                     Type = filter.Type
-                });
-            }
+                }).ToList();
             return Json(fieldFilters, JsonRequestBehavior.AllowGet);
         }
     }

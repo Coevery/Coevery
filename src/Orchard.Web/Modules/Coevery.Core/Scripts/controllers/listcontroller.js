@@ -26,7 +26,6 @@
                         FilterGroupId: currentFilterGroupId,
                         Filters: getFilters()
                     };
-                        $scope.filterDescription = response.data.FilterDescription;
                 };
                 //var getPageSize = function() {
                 //    return pageSize;
@@ -67,6 +66,8 @@
                                 loadComplete: function (data) {
                                     currentPage = data.page;
                                     pageSize = data.records;
+                                    $scope.filterDescription = data.filterDescription;
+                                    $scope.$apply();
                                 },
                                 loadError: function (xhr, status, error) {
                                     logger.error("Failed to fetched records for " + moduleName + ":\n" + error);

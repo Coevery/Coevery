@@ -13,14 +13,12 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Common.Models;
 using Orchard.Core.Containers.Models;
 using Orchard.Core.Contents;
-using Orchard.Forms.Services;
 using Orchard.Mvc;
 using Orchard.Core.Contents.Settings;
 using Orchard.Localization;
 using Orchard.Logging;
 using Orchard.Mvc.Extensions;
 using Orchard.Mvc.Html;
-using Orchard.Projections.FieldTypeEditors;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 using Orchard.UI.Navigation;
@@ -28,15 +26,11 @@ using Orchard.UI.Navigation;
 namespace Coevery.Core.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-
-
         private readonly INavigationManager _navigationManager;
 
         public ViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionManager contentDefinitionManager,
-            IEnumerable<IFieldTypeEditor> fieldTypeEditors, 
-            IFormManager formManager,
             INavigationManager navigationManager){
             Services = orchardServices;
             _contentDefinitionManager = contentDefinitionManager;

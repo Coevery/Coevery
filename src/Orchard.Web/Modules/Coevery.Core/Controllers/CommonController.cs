@@ -71,11 +71,18 @@ namespace Coevery.Core.Controllers {
 
                 totalNumber = _projectionManager.GetCount(part.Record.QueryPartRecord.Id);
                 if (totalNumber <= model.Rows*(model.Page - 1)) {
+                    foreach (var record in filterRecords) {
+                        filters.Remove(record);
+                        if (model.FilterGroupId == 0) {
+                            _filterRepository.Delete(record);
+                        }
+                    }
                     return new {
                         total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
                         page = model.Page,
                         records = 0,
-                        rows = string.Empty
+                        rows = string.Empty,
+                        filterDescription
                     };
                 }
                 var skipCount = model.Rows * (model.Page - 1);
@@ -97,7 +104,8 @@ namespace Coevery.Core.Controllers {
                     total = Convert.ToInt32(Math.Ceiling((double)totalNumber / model.Rows)),
                     page = model.Page,
                     records = 0,
-                    rows = string.Empty
+                    rows = string.Empty,
+                    filterDescription
                 };
             }
             //var postsortPage = _gridService.GetSortedRows(model.Sidx, model.Sord, entityRecords);_gridService.GetPagedRows(model.Page, model.Rows, postsortPage)
@@ -109,7 +117,7 @@ namespace Coevery.Core.Controllers {
                 page = model.Page,
                 records = entityRecords.Count(),
                 rows = entityRecords,
-                FilterDescription = filterDescription
+                filterDescription
             };
         }
 
