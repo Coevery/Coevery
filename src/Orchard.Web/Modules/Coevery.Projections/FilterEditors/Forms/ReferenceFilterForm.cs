@@ -51,7 +51,7 @@ namespace Coevery.Projections.FilterEditors.Forms {
                 case ReferenceOperator.MatchesAny:
                     return x => x.In(property, items);
                 case ReferenceOperator.NotMatchesAny:
-                    return x => x.Not(a => a.In(property, items));
+                    return x => x.Or(l => l.Not(a => a.In(property, items)), r => r.IsNull(property));
                 default:
                     throw new ArgumentOutOfRangeException();
             }

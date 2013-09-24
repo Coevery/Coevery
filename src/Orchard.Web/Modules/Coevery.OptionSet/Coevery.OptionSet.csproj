@@ -106,8 +106,6 @@
     <Compile Include="Models\OptionItemContainerPartRecord.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Projections\OptionSetFieldValeProvider.cs" />
-    <Compile Include="Projections\TermsFilter.cs" />
-    <Compile Include="Projections\TermsFilterForms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fields\OptionSetField.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
