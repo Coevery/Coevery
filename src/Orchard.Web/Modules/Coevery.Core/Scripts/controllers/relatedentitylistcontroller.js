@@ -6,9 +6,7 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
       ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService',
       function ($rootScope, $scope, $parse, logger, $detour, $resource, $stateParams, $location, commonDataService, columnDefinitionService) {
 
-          var primaryKeyGetter = $parse('ContentId');
           $scope.toolButtonDisplay = false;
-          //$scope.moduleName = moduleName;
           $scope.isInit = true;
           $scope.definitionViews = [];
           $scope.columnDefs = [];
@@ -22,9 +20,7 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
           
           var getPostData = function () {
               return {
-                  ViewId: $scope.viewId,
-                  //FilterGroupId: currentFilterGroupId,
-                  //Filters: getFilters()
+                  ViewId: $scope.viewId
               };
           };
           $scope.getPagedDataAsync = function () {
@@ -79,14 +75,9 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
 
           $scope.delete = function (id) {
               $scope.entityId = id;
-              $('#myModalRelationship').modal({
-                  backdrop: 'static',
-                  keyboard: true
-              });
           };
 
           $rootScope.deleteRelationship = function () {
-              $('#myModalRelationship').modal('hide');
               if (!$scope.entityId) {
                   logger.error('No data selected.');
                   return;
@@ -122,7 +113,7 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
               if (!id && $scope.selectedItems.length > 0) {
                   id = $scope.selectedItems[0];
               }
-              $detour.transitionTo('View', { NavigationId: null, Module: $scope.entityTypeName, Id: id });
+              $detour.transitionTo('View', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
           };
       }]
     ]);

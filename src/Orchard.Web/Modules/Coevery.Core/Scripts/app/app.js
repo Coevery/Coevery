@@ -90,6 +90,9 @@
                 autowidth: true,
                 loadui: "disable",
                 jsonReader: {
+                    page: "page",
+                    total: "totalPages",
+                    records: "totalRecords",
                     repeatitems: false,
                     id: "0" //Get Id from first column
                 },
