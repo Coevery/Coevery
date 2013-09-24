@@ -13,7 +13,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           var perspectiveColumnDefs = [
               { name: 'Id', label: t('Id'), hidden: true },
               {
-                  name: 'DisplayName', label: t('DisplayName'), width: 905,
+                  name: 'DisplayName', label: t('DisplayName'), 
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
               }];

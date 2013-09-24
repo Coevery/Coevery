@@ -13,12 +13,12 @@ define(['core/app/detourService',
                         var columnDefs = [
                             { name: 'ContentId', label: t('Content Id'), hidden: true },
                             {
-                                name: 'DisplayName', label: t('Display Name'), width: 300,
+                                name: 'DisplayName', label: t('Display Name'),
                                 formatter: $rootScope.cellLinkTemplate,
                                 formatoptions: { hasDefault: true }
                             },
-                            { name: 'EntityType', label: t('Entity Type'), width: 300 },
-                            { name: 'Default', label: t('Default'), width: 275 }];
+                            { name: 'EntityType', label: t('Entity Type') },
+                            { name: 'Default', label: t('Default') }];
 
                         $scope.gridOptions = {
                             url: "api/projections/Projection?id=" + $stateParams.Id,

@@ -1,4 +1,9 @@
 ﻿
+.ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all {
+    border-top: 1px solid #D2D2D2; 
+    border-bottom: none;
+}
+
 .ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all table,
 .ui-jqgrid .ui-paging-info,
 .ui-widget-content th.ui-th-column {
@@ -15,12 +20,12 @@ tr.ui-widget-content {
     border-radius: 0;
 }
 
-.ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all {
-    border-bottom: none;
-}
-
 /*header style
 ------------------------------------------*/
+.ui-jqgrid .ui-jqgrid-htable tr th {
+    padding-left: 1px;
+}
+
 .ui-jqgrid .ui-jqgrid-htable tr th div {
     height: 20px;
 }
@@ -33,7 +38,7 @@ tr.ui-widget-content {
         padding-left: 10px;
     }
 
-div.ui-state-default.ui-jqgrid-hdiv,
+div.ui-jqgrid-hdiv,
 .ui-widget-content th.ui-th-column {
     background-image: none;
     background-color: #EEEEEE;
@@ -43,12 +48,18 @@ div.ui-state-default.ui-jqgrid-hdiv,
 .ui-jqgrid .ui-jqgrid-hdiv {
     border-bottom: 0;
 }
+
 /*row style
 ------------------------------------------*/
 .ui-jqgrid tr {
     border-color: #D2D2D2;
     height: 30px;
 }
+
+    .ui-jqgrid tr.ui-state-hover {
+        border-left: none;
+        border-right: none;
+    }
 
     .ui-jqgrid tr.ui-state-highlight {
         background-color: #F2F7FF;
@@ -69,26 +80,45 @@ div.ui-state-default.ui-jqgrid-hdiv,
     margin-top: 0;
 }
 
+.ui-jqgrid td,
+.ui-jqgrid th * {
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.ui-jqgrid .ui-jqgrid-btable td:not(:first-child),
+.ui-jqgrid th:not(:first-child) {
+    min-width: 50px;
+}
+
 .ui-jqgrid .ui-jqgrid-btable tr.jqgfirstrow td,
 .ui-jqgrid .ui-jqgrid-btable tr.ui-widget-content td {
-    border-left: 0;
-    border-right: 0;
+    border-left: none;
+    border-right: none;
 }
 
 .ui-jqgrid .ui-jqgrid-btable tr:last-child td {
-    border-bottom: 0;
+    border-bottom: none;
 }
 /*pager style
 ------------------------------------------*/
-div.ui-state-default.ui-jqgrid-pager.ui-corner-bottom {
+div.ui-jqgrid-pager.ui-corner-bottom {
     background-image: none;
     background-color: white;
     border-radius: 0;
     height: 50px;
 }
 
-.ui-state-default.ui-jqgrid-pager {
-    overflow-x: auto;
+@media (max-width: 480px) {
+    .ui-pg-table .ui-pg-table td:nth-child(4),
+    .ui-pg-table .ui-pg-table td:last-child {
+        display: none;
+    }
+    td > .ui-pg-table {
+        left: -30px
+    }
 }
 
 .ui-jqgrid .ui-pg-table tr td {
@@ -114,24 +144,35 @@ select.ui-pg-selbox {
     width: 70px;
 }
 
-
 /*Inner cell action
 ------------------------------------------*/
 div.gridCellText {
+    height: 30px;
     position: relative;
+}
+
+tr:hover div.gridCellText {
+    padding-right: 26px;
+}
+
+div.gridCellText > span {
+    display: block;
+    line-height: 30px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    vertical-align: central;
 }
 
 .gridCellText .row-actions {
     position: absolute;
     right: 0;
+    line-height: 30px;
 }
 
 td [class^="icon-"],
 td [class*=" icon-"] {
     padding: 0 3px;
-}
-
-td .btn-link {
-    position: relative;
-    left: 1%;
 }

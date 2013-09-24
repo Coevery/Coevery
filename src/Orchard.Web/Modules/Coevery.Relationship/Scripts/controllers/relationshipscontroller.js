@@ -10,13 +10,13 @@ define(['core/app/detourService'], function (detour) {
                 var relationshipColumnDefs = [
                     { name: 'ContentId', label: 'Content Id', hidden: true },
                     {
-                        name: 'Name', label: 'Relationship Name', width: 225,
+                        name: 'Name', label: 'Relationship Name',
                         formatter: $rootScope.cellLinkTemplate,
                         formatoptions: { editRow: true }
                     },
-                    { name: 'PrimaryEntity', label: 'Primary Entity', width: 220 },
-                    { name: 'RelatedEntity', label: 'Related Entity', width: 220 },
-                    { name: 'Type', label: 'Type', width: 225 }
+                    { name: 'PrimaryEntity', label: 'Primary Entity' },
+                    { name: 'RelatedEntity', label: 'Related Entity' },
+                    { name: 'Type', label: 'Type' }
                 ];
 
                 $scope.gridOptions = {

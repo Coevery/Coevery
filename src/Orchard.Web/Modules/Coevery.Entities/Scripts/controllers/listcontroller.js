@@ -13,16 +13,15 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           var metadataColumnDefs = [
               { name: 'Id', label: 'Id', hidden: true },
               {
-                  name: 'DisplayName', label: t('Display Name'), width: 450,
+                  name: 'DisplayName', label: t('Display Name'), 
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
               },
-              { name: 'IsDeployed', label: t('Is Deployed'), width: 450, }];
+              { name: 'IsDeployed', label: t('Is Deployed'),  }];
 
           $scope.gridOptions = {
               url: "api/entities/entity",
               colModel: metadataColumnDefs,
-              //hoverrows: false
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);

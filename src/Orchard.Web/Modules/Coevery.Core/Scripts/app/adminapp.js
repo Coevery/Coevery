@@ -99,7 +99,7 @@
                 viewrecords: true,
                 multiselect: true,
                 multiboxonly: true,
-                shrinkToFit: false,
+                autowidth:true,
                 rowNum: 50,
                 rowList: [50, 100, 200],
                 loadui: "disable",

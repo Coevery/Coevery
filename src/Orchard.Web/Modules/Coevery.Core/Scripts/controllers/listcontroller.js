@@ -15,10 +15,10 @@
 
                 //init pagingoption
                 var pageSizes = [50, 100, 200];
-                var currentPage = parseInt($location.$$search['Page']);
+                var currentPage = parseInt($location.$$search['Page'],10);
                 if (!currentPage) currentPage = 1;
-                var pageSize = parseInt($location.$$search['Rows']);
-                if (!pageSize | pageSizes.indexOf(pageSize) < 0) pageSize = 50;
+                var pageSize = parseInt($location.$$search['Rows'],10);
+                if (!pageSize || pageSizes.indexOf(pageSize) < 0) pageSize = 50;
 
                 var getPostData = function() {
                     return {

@@ -58,7 +58,8 @@
                   });
                   
                   $(window).bind('resize', function () {
-                      $grid.setGridWidth($('#page-actions').width(), false); //Resized to new width as buttons
+                      var targetWidth = $('#page-actions').width();
+                      $grid.setGridWidth(targetWidth, false).trigger('reloadGrid'); //Resized to new width as buttons
                   }).trigger('resize');
 
                   return $grid.on("click.delete-action", ".delete-action", function (event) {

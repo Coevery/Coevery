@@ -9,12 +9,12 @@ define(['core/app/detourService'], function(detour) {
                 var optionColumnDefs = [
                     { name: 'Id', label: 'Id', sorttype:'int', hidden: true },
                     {
-                        name: 'Name', label: 'Value', width: 295,
+                        name: 'Name', label: 'Value', 
                         formatter: $rootScope.cellLinkTemplate,
                         formatoptions: { editRow: true }
                     },
-                    { name: 'Selectable', label: 'Selectable', width: 291},
-                    { name: 'Weight', label: 'Weight', sorttype: 'int', width: 291 }
+                    { name: 'Selectable', label: 'Selectable',},
+                    { name: 'Weight', label: 'Weight', sorttype: 'int' }
                 ];
 
                 $scope.gridOptions = {
