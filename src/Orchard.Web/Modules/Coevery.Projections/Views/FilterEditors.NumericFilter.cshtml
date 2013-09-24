@@ -1,0 +1,10 @@
+﻿@Html.DropDownList("Operator", (IEnumerable<SelectListItem>) Model.Operators, new {@class = "selectpicker", filter_numeric_operator = "", data_style = "btn-small"})
+<span class="errortips">
+    <input type="text" name="Value" class="filterInput input-small number"/>
+</span>
+<span class="errortips">
+    <input type="text" name="Min" class="filterInput input-small number"/>
+</span> 
+<span class="errortips">
+    <input type="text" name="Max" class="filterInput input-small number"/>
+</span>

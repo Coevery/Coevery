@@ -96,12 +96,29 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\OptionSetController.cs" />
+    <Compile Include="Controllers\ReferenceController.cs" />
     <Compile Include="Controllers\ViewDefinitionController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
     <Compile Include="Drivers\ListViewPartDriver.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="FieldTypeEditors\BooleanFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\DecimalFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\FloatFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\IntegerFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\OptionSetFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\ReferenceFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\DateFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\DateTimeFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\ILogicFieldTypeEditor.cs" />
+    <Compile Include="FieldTypeEditors\StringFieldTypeEditor.cs" />
+    <Compile Include="FilterEditors\Forms\OptionSetFilterForm.cs" />
+    <Compile Include="FilterEditors\Forms\ReferenceFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\BooleanFilterForm.cs" />
+    <Compile Include="FilterEditors\Forms\DateFilterForm.cs" />
+    <Compile Include="FilterEditors\Forms\DateTimeFilterForm.cs" />
+    <Compile Include="FilterEditors\Forms\NumericFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\StringFilterForm.cs" />
     <Compile Include="Handlers\ProjectionEntityEventsHandler.cs" />
     <Compile Include="Handlers\ListViewPartHandler.cs" />
@@ -110,6 +127,7 @@
     <Compile Include="Models\ListViewPart.cs" />
     <Compile Include="Models\EntityFilterRecord.cs" />
     <Compile Include="Models\ListViewPartRecord.cs" />
+    <Compile Include="Providers\Filters\ContentFieldsFilter.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentFieldProperties.cs" />
     <Compile Include="Services\IProjectionService.cs" />
@@ -146,6 +164,10 @@
       <Project>{BD9AEC06-5C81-4221-A817-408FB0C4B6C0}</Project>
       <Name>Coevery.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Coevery.OptionSet\Coevery.OptionSet.csproj">
+      <Project>{816560ff-2267-4ca1-8e24-635431f8d8c8}</Project>
+      <Name>Coevery.OptionSet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
       <Name>Orchard.Forms</Name>
@@ -181,6 +203,15 @@
     <Content Include="Views\Parts\ListView.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\FilterEditors.StringFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FilterEditors.BooleanFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FilterEditors.NumericFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Parts\Title-ListViewPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -190,13 +221,25 @@
     <Content Include="Views\Parts\ListView.Filters.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\FilterEditors.DateTimeFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Parts\ListView.Views.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FilterEditors.DateFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Parts\ListView.FilterContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\FilterEditors.ReferenceFilter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Parts\ListView.Search.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FilterEditors.OptionSetFilter.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

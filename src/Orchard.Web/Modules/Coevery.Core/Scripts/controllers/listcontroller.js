@@ -26,6 +26,7 @@
                         FilterGroupId: currentFilterGroupId,
                         Filters: getFilters()
                     };
+                        $scope.filterDescription = response.data.FilterDescription;
                 };
                 //var getPageSize = function() {
                 //    return pageSize;
@@ -164,7 +165,16 @@
                 var needNewFilterEditor = false,
                     currentFilterGroupId = 0;
 
-                $scope.applyFilter = function() {
+                $scope.applyFilter = function () {
+                    var forms = $('.filterCreatorWrap').find('form');
+                    var passValidate = true;
+                    forms.each(function() {
+                        var validator = $(this).validate({ errorClass: "inputError" });
+                        passValidate = validator.form() && passValidate;
+                    });
+                    if (!passValidate) {
+                        return;
+                    }
                     var needSave = !!$('#filter-save-box:checked').length;
                     currentFilterGroupId = 0;
                     $scope.getPagedDataAsync();
@@ -202,7 +212,9 @@
                     $scope.getPagedDataAsync();
                 };
 
-                $scope.loadFilter = function(filter) {
+                $scope.loadFilter = function (filter) {
+                    $scope.filterTitle = filter.Title;
+                    $scope.filterDescription = '';
                     $scope.currentFilter = filter;
                     currentFilterGroupId = filter.FilterGroupId;
                     needNewFilterEditor = true;
@@ -213,12 +225,17 @@
 
                 $scope.createFilter = function() {
                     $scope.currentFilter = {};
+                    $scope.filterTitle = '';
+                    $scope.filterDescription = '';
                     needNewFilterEditor = true;
                     $('#filterCollapse').show();
                     showFilterEditorZone();
                 };
 
-                $scope.deleteFilter = function(filter) {
+                $scope.deleteFilter = function (filter) {
+                    if (filter.FilterGroupId == currentFilterGroupId) {
+                        currentFilterGroupId = 0;
+                    }
                     var index = $scope.definitionFilters.indexOf(filter);
                     $scope.definitionFilters.splice(index, 1);
                     filterDefinitionService.delete({ filterId: filter.Id, contentType: moduleName });
@@ -299,8 +316,8 @@
                 function addNewEditor(args) {
                     $scope.filterArgs = args;
                     var editor = $('<filter-editor filter-args="filterArgs" field-filters="fieldFilters"></filter-editor>');
-                    $compile(editor)($scope);
                     $('.filterCreatorWrap').append(editor);
+                    $compile(editor)($scope);
                 }
             }]
     ]);

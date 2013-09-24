@@ -90,7 +90,8 @@
                 <div id="collapseHeader" class="collapseHeader" ng-click="expendCollapse()">
                     <span id="collapseBtn" class="icon-collapse-hide"></span>
                     <span class="filterInfo">Filter</span>
-                    <span id="closeFilterLink" class="close" ng-click="closeFilterCollapse()">×</span>
+                    <span class="filterTitle">{{filterTitle}}{{filterDescription}}</span>
+                    <span id="closeFilterLink" class="close deleteBtn" ng-click="closeFilterCollapse()">×</span>
                 </div>
                 <div id="collapseZone">
                     <div class="accordion-inner collapseZone">
@@ -101,6 +102,8 @@
                                 <a href="" ng-click="addNewFilterCondition()">+ Add another filter condition</a>
                             </div>
                             <div class="filterAppWrap">
+                                <label for="filter-title" class="title-label">Filter Name</label>
+                                <input id="filter-title" type="text" class="filterInput" ng-model="currentFilter.Title" placeholder="enter the filter's name">
                                 <div class="filterOkCancelWrap">
                                     <button class="btn btn-small btn-primary" ng-click="applyFilter()">Apply</button>
                                     <button class="btn btn-small" ng-click="closeFilterCollapse()">Close</button>
@@ -108,7 +111,6 @@
                                 <label class="checkbox checkInput">
                                     <input type="checkbox" id="filter-save-box">Save Filter
                                 </label>
-                                <input type="text" class="filterInput" ng-model="currentFilter.Title" placeholder="enter the filter's name">
                             </div>
                         </div>
                     </div>
@@ -124,6 +126,6 @@
 
 @foreach (var editor in Model.FilterEditors) {
     <script type="text/ng-template" id="@editor.Id">
-    @DisplayChildren(editor)
+    @Display(editor)
     </script>
 }

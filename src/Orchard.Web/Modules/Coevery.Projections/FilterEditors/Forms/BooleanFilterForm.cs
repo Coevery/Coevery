@@ -20,59 +20,27 @@ namespace Coevery.Projections.FilterEditors.Forms {
 
         public void Describe(DescribeContext context) {
             Func<IShapeFactory, object> form =
-                shape => {
-                    var f = Shape.Form(
-                        Id: "BooleanFilter",
-                        _Options: Shape.Fieldset(
-                            _ValueUndefined: Shape.Radio(
-                                Id: "value-undefined", Name: "Value",
-                                Title: T("Undefined"), Value: "undefined"
-                                ),
-                            _LabelTrue: Shape.InputLabel(
-                                Title: T("Yes"),
-                                For: "value-true"
-                                ),
-                            _ValueTrue: Shape.Radio(
-                                Id: "value-true", Name: "Value",
-                                Title: T("Yes"), Value: "true", Checked: true
-                                ),
-                            _ValueFalse: Shape.Radio(
-                                Id: "value-false", Name: "Value",
-                                Title: T("No"), Value: "false"
-                                ),
-                            Description: T("Enter the value the string should be.")
-                            ));
-
-                    return f;
-                };
+                shape => Shape.FilterEditors_BooleanFilter(Id: FormName);
 
             context.Form(FormName, form);
         }
 
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
-            if (formState.Value == "undefined") {
-                return T("{0} is undefined", fieldName);
-            }
-
             bool value = Convert.ToBoolean(formState.Value);
-
+            fieldName = fieldName.Split('.')[1];
             return value
                 ? T("{0} is true", fieldName)
                 : T("{0} is false", fieldName);
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {
-            if (formState.Value == "undefined") {
-                return x => x.IsNull(property);
-            }
-
             bool value = Convert.ToBoolean(formState.Value);
 
             if (value) {
                 return x => x.Gt(property, (long) 0);
             }
 
-            return x => x.Eq(property, (long) 0);
+            return x => x.Or(l => l.Eq(property, (long) 0), r => r.IsNull(property));
         }
     }
 }
