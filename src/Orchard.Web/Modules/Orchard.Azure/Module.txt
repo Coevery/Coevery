@@ -1,0 +1,21 @@
+﻿Name: Azure
+AntiForgery: enabled
+Author: The Orchard Team
+Website: http://orchardproject.net
+Version: 1.0
+OrchardVersion: 1.7.1
+Description: Provides a set of Orchard service implementations targeting Windows Azure services.
+Features:
+	Orchard.Azure:
+		Name: Windows Azure Media Storage
+		Description: Activates an Orchard media storage provider that targets Windows Azure Blob Storage.
+		Category: Hosting
+	Orchard.Azure.OutputCache:
+		Name: Windows Azure Output Cache
+		Description: Activates an Orchard output cache provider that targets Windows Azure Cache.
+		Dependencies: Orchard.OutputCache
+		Category: Performance
+	Orchard.Azure.DatabaseCache:
+		Name: Windows Azure Database Cache
+		Description: Activates an NHibernate second-level cache provider that targets Windows Azure Cache.
+		Category: Performance

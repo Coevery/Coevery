@@ -82,6 +82,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
+    <Compile Include="Handlers\ContentHandler.cs" />
     <Compile Include="ImportExport\RulesExportEventHandler.cs" />
     <Compile Include="ImportExport\RulesCustomExportStep.cs" />
     <Compile Include="ImportExport\RulesRecipeHandler.cs" />
@@ -138,6 +139,8 @@
     <Compile Include="Models\TypeDescriptor.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\RuleRecord.cs" />
+    <Compile Include="Providers\ContentEvents.cs" />
+    <Compile Include="Providers\ContentForms.cs" />
     <Compile Include="Providers\ScheduleForms.cs" />
     <Compile Include="Providers\ScheduleActions.cs" />
     <Compile Include="Providers\NotificationForms.cs" />

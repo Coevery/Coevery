@@ -196,7 +196,7 @@ namespace Orchard.Utility.Extensions {
             return (c == '\r' || c == '\n' || c == '\t' || c == '\f' || c == ' ');
         }
 
-        public static string RemoveDiacritics(string name) {
+        public static string RemoveDiacritics(this string name) {
             string stFormD = name.Normalize(NormalizationForm.FormD);
             var sb = new StringBuilder();
 
@@ -215,13 +215,12 @@ namespace Orchard.Utility.Extensions {
                 return subject;
             }
 
-            Array.Sort(stripped);
             var result = new char[subject.Length];
 
             var cursor = 0;
             for (var i = 0; i < subject.Length; i++) {
                 char current = subject[i];
-                if (Array.BinarySearch(stripped, current) < 0) {
+                if (Array.IndexOf(stripped, current) < 0) {
                     result[cursor++] = current;
                 }
             }

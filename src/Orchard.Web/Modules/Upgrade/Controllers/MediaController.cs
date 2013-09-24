@@ -175,7 +175,7 @@ namespace Upgrade.Controllers {
                 .Where(x => x.Field.FieldDefinition.Name == "MediaPickerField");
 
             foreach (var match in matches) {
-                foreach (var contentItem in _orchardServices.ContentManager.Query().ForType(match.Type.Name).List()) {
+                foreach (var contentItem in _orchardServices.ContentManager.Query().ForType(match.Type.Name).ForVersion(VersionOptions.AllVersions).List()) {
                     var contentPart = contentItem.Parts.FirstOrDefault(x => x.PartDefinition.Name == match.Part.PartDefinition.Name);
                     if (contentPart != null) {
                         dynamic contentField = contentPart.Fields.FirstOrDefault(x => x.Name == match.Field.Name);
@@ -185,6 +185,14 @@ namespace Upgrade.Controllers {
                             var media = _orchardServices.ContentManager.Query().ForPart<MediaPart>().Where<MediaPartRecord>(x => filename == x.FileName).Slice(0, 1).FirstOrDefault();
                             if (media != null) {
                                 contentField.Url = "{" + media.Id + "}";
+                            }
+                            else {
+                                // We don't want "broken" links left behind so instead want them converted to empty fields as broken links cause the page to crash
+                                // Because this might be run "twice", don't override already valid contentField Url's
+                                string contentFieldUrl = contentField.Url;
+                                if (!contentFieldUrl.StartsWith("{")) {
+                                    contentField.Url = "";
+                                }
                             }
                         }
                     }

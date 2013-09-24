@@ -141,6 +141,7 @@
     <Compile Include="CodeGeneration\Commands\CodeGenerationCommandsTests.cs" />
     <Compile Include="Comments\Services\CommentServiceTests.cs" />
     <Compile Include="Email\EmailChannelTests.cs" />
+    <Compile Include="ImageProcessing\ImageProcessingTests.cs" />
     <Compile Include="ImportExport\Services\ImportExportServiceTests.cs" />
     <Compile Include="Indexing\IndexingTaskExecutorTests.cs" />
     <Compile Include="Indexing\LuceneIndexProviderTests.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Widgets\RuleEngine\UrlRuleProviderTest.cs" />
     <Compile Include="Widgets\Services\WidgetsServiceTest.cs" />
     <Compile Include="Widgets\WidgetsTests.cs" />
+    <Compile Include="Workflows\Activities\WebRequestActivityTests.cs" />
     <Compile Include="XmlRpc\Controllers\LiveWriterControllerTests.cs" />
     <Compile Include="XmlRpc\Controllers\HomeControllerTests.cs" />
     <Compile Include="XmlRpc\Services\XmlRpcReaderTests.cs" />
@@ -217,6 +219,10 @@
     <ProjectReference Include="..\Orchard.Web\Modules\Orchard.Indexing\Orchard.Indexing.csproj">
       <Project>{EA2B9121-EF54-40A6-A53E-6593C86EE696}</Project>
       <Name>Orchard.Indexing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Web\Modules\Orchard.MediaProcessing\Orchard.MediaProcessing.csproj">
+      <Project>{08191FCD-7258-4F19-95FB-AEC3DE77B2EB}</Project>
+      <Name>Orchard.MediaProcessing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Web\Modules\Orchard.Media\Orchard.Media.csproj">
       <Project>{D9A7B330-CD22-4DA1-A95A-8DE1982AD8EB}</Project>
@@ -273,6 +279,10 @@
     <ProjectReference Include="..\Orchard.Web\Modules\Orchard.Widgets\Orchard.Widgets.csproj">
       <Project>{194D3CCC-1153-474D-8176-FDE8D7D0D0BD}</Project>
       <Name>Orchard.Widgets</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Web\Modules\Orchard.Workflows\Orchard.Workflows.csproj">
+      <Project>{7059493C-8251-4764-9C1E-2368B8B485BC}</Project>
+      <Name>Orchard.Workflows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard\Orchard.Framework.csproj">
       <Project>{2D1D92BB-4555-4CBE-8D0E-63563D6CE4C6}</Project>

@@ -60,11 +60,11 @@ namespace Orchard.ContentTypes.Controllers {
             });
         }
 
-        public ActionResult Create() {
+        public ActionResult Create(string suggestion) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type.")))
                 return new HttpUnauthorizedResult();
 
-            return View(new CreateTypeViewModel());
+            return View(new CreateTypeViewModel { DisplayName = suggestion, Name = suggestion.ToSafeName() });
         }
 
         [HttpPost, ActionName("Create")]
@@ -106,6 +106,7 @@ namespace Orchard.ContentTypes.Controllers {
             _contentDefinitionService.AddPartToType("CommonPart", viewModel.Name);
 
             var typeViewModel = new EditTypeViewModel(contentTypeDefinition);
+
 
             Services.Notifier.Information(T("The \"{0}\" content type has been created.", typeViewModel.DisplayName));
 
@@ -374,11 +375,11 @@ namespace Orchard.ContentTypes.Controllers {
             });
         }
 
-        public ActionResult CreatePart() {
+        public ActionResult CreatePart(string suggestion) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content part.")))
                 return new HttpUnauthorizedResult();
 
-            return View(new CreatePartViewModel());
+            return View(new CreatePartViewModel { Name = suggestion.ToSafeName() });
         }
 
         [HttpPost, ActionName("CreatePart")]

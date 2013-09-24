@@ -152,29 +152,29 @@ namespace Orchard.ContentManagement.Drivers {
             string contentType = shape.ContentItem.ContentType;
 
             // whether the content type has been created dynamically or not
-            var dynamicType = string.Equals(partName, contentType, StringComparison.Ordinal);
+            var dynamicType = String.Equals(partName, contentType, StringComparison.Ordinal);
 
             // [ShapeType__FieldName] e.g. Fields/Common.Text-Teaser
-            if ( !string.IsNullOrEmpty(fieldName) )
+            if ( !String.IsNullOrEmpty(fieldName) )
                 metadata.Alternates.Add(shapeType + "__" + EncodeAlternateElement(fieldName));
 
             // [ShapeType__PartName] e.g. Fields/Common.Text-TeaserPart
-            if ( !string.IsNullOrEmpty(partName) ) {
+            if ( !String.IsNullOrEmpty(partName) ) {
                 metadata.Alternates.Add(shapeType + "__" + EncodeAlternateElement(partName));
             }
 
             // [ShapeType]__[ContentType]__[PartName] e.g. Fields/Common.Text-Blog-TeaserPart
-            if ( !string.IsNullOrEmpty(partName) && !string.IsNullOrEmpty(contentType) && !dynamicType ) {
+            if ( !String.IsNullOrEmpty(partName) && !String.IsNullOrEmpty(contentType) && !dynamicType ) {
                 metadata.Alternates.Add(EncodeAlternateElement(shapeType + "__" + contentType + "__" + partName));
             }
 
             // [ShapeType]__[PartName]__[FieldName] e.g. Fields/Common.Text-TeaserPart-Teaser
-            if ( !string.IsNullOrEmpty(partName) && !string.IsNullOrEmpty(fieldName) ) {
+            if ( !String.IsNullOrEmpty(partName) && !String.IsNullOrEmpty(fieldName) ) {
                 metadata.Alternates.Add(EncodeAlternateElement(shapeType + "__" + partName + "__" + fieldName));
             }
 
             // [ShapeType]__[ContentType]__[FieldName] e.g. Fields/Common.Text-Blog-Teaser
-            if ( !string.IsNullOrEmpty(contentType) && !string.IsNullOrEmpty(fieldName) ) {
+            if ( !String.IsNullOrEmpty(contentType) && !String.IsNullOrEmpty(fieldName) ) {
                 metadata.Alternates.Add(EncodeAlternateElement(shapeType + "__" + contentType + "__" + fieldName));
             }
 
