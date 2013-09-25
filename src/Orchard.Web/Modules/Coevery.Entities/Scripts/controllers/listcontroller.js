@@ -27,16 +27,9 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (entityName) {
-              $scope.entityName = entityName;
-              $('#myModalEntity').modal({
-                  backdrop: 'static',
-                  keyboard: true
-              });
-          };
-
-          $scope.deleteEntity = function () {
-              $('#myModalEntity').modal('hide');
-              entityDataService.delete({ name: $scope.entityName }, function () {
+              var deleteEntity = entityName || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+              if (!deleteEntity) return;
+              entityDataService.delete({ name: deleteEntity }, function () {
                   if ($scope.selectedItems.length != 0) {
                       $scope.selectedItems.pop();
                   }

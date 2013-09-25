@@ -47,16 +47,10 @@ define(['core/app/detourService'], function (detour) {
                     }
                 };
                 $scope.delete = function (contentId) {
-                    $scope.relationshipId = contentId;
-                    $('#myModalRelationship').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    });
-                };
-
-                $scope.deleteRelationship = function () {
-                    $('#myModalRelationship').modal('hide');
-                    relationshipDataService.delete({ RelationshipId: $scope.relationshipId }, function () {
+                    var deleteRelationship = contentId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                    if (!deleteRelationship) return;
+                    
+                    relationshipDataService.delete({ RelationshipId: deleteRelationship }, function () {
                         $scope.getAllRelationship();
                         logger.success("Delete the relationship successful.");
                     }, function (reason) {

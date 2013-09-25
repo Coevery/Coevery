@@ -62,12 +62,13 @@
                       $grid.setGridWidth(targetWidth, false).trigger('reloadGrid'); //Resized to new width as buttons
                   }).trigger('resize');
 
-                  return $grid.on("click.delete-action", ".delete-action", function (event) {
-                      event.preventDefault();
-                      var id;
-                      id = $(this).attr("data-id");
-                      return $scope.delete(id);
-                  });
+                  //todo: need to refactor
+                  //return $grid.on("click.delete-action", ".delete-action", function (event) {
+                  //    event.preventDefault();
+                  //    var id;
+                  //    id = $(this).attr("data-id");
+                  //    return $scope.delete(id);
+                  //});
               };
 
               return $scope.$watch(attrs.agGrid, initializeGrid);

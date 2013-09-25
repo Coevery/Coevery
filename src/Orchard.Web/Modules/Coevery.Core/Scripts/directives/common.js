@@ -38,28 +38,28 @@ angular.module('coevery.common', [])
             }
         };
     }])
-    .directive('delConfirm', function () {
-        return {
-            template: function (element, attrs) {
-                var templateHtml = '<section id="' + attrs.delId + '" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-                templateHtml += '<div class="modal-header">';
-                templateHtml += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>';
-                templateHtml += '<h3 id="myModalLabel">Confirm</h3>';
-                templateHtml += '</div>';
-                templateHtml += '<div class="modal-body">';
-                templateHtml += '<p>' + attrs.confirmMsg + '</p>';
-                templateHtml += '</div>';
-                templateHtml += '<div class="modal-footer">';
-                templateHtml += '<button class="btn" data-dismiss="modal" aria-hidden="true">No</button>';
-                templateHtml += '<button class="btn btn-primary" ng-click="' + attrs.delFuc + '">Yes</button>';
-                templateHtml += '</div>';
-                templateHtml += '</section>';
-                return templateHtml;
-            },
-            replace: true,
-            restrict: 'E'
-        };
-    })
+    //.directive('delConfirm', function () {
+    //    return {
+    //        template: function (element, attrs) {
+    //            var templateHtml = '<section id="' + attrs.delId + '" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+    //            templateHtml += '<div class="modal-header">';
+    //            templateHtml += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>';
+    //            templateHtml += '<h3 id="myModalLabel">Confirm</h3>';
+    //            templateHtml += '</div>';
+    //            templateHtml += '<div class="modal-body">';
+    //            templateHtml += '<p>' + attrs.confirmMsg + '</p>';
+    //            templateHtml += '</div>';
+    //            templateHtml += '<div class="modal-footer">';
+    //            templateHtml += '<button class="btn" data-dismiss="modal" aria-hidden="true">No</button>';
+    //            templateHtml += '<button class="btn btn-primary" ng-click="' + attrs.delFuc + '">Yes</button>';
+    //            templateHtml += '</div>';
+    //            templateHtml += '</section>';
+    //            return templateHtml;
+    //        },
+    //        replace: true,
+    //        restrict: 'E'
+    //    };
+    //})
     .directive('helperText', function () {
         return {
             restrict: 'A',

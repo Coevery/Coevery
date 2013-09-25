@@ -62,17 +62,7 @@ define(['core/app/detourService',
           
 
           $scope.delete = function (navigationId) {
-              $scope.navigationId = navigationId;
-              $('#myModalNavigation').modal({
-                  backdrop: 'static',
-                  keyboard: true
-              });
-              
-          };
-
-          $scope.deleteNavigation = function () {
-              $('#myModalNavigation').modal('hide');
-              perspectiveDataService.delete({ Id: $scope.navigationId }, function () {
+              perspectiveDataService.delete({ Id: navigationId }, function () {
                   $scope.getAllNavigationdata();
                   logger.success('Delete the navigation successful.');
               }, function (result) {
@@ -81,14 +71,6 @@ define(['core/app/detourService',
           };
 
           $scope.deletePerspective = function () {
-              $('#myModalPerspective').modal({
-                  backdrop: 'static',
-                  keyboard: true
-              });
-          };
-
-          $scope.deletePerspectiveInDetails = function () {
-              $('#myModalPerspective').modal('hide');
               perspectiveDataService.delete({ id: perpectiveId }, function () {
                   $scope.exit();
                   logger.success('Delete the perspective successful.');

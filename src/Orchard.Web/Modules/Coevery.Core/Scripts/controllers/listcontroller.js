@@ -112,36 +112,45 @@
                 $scope.FetchDefinitionViews();
                 
                 /*Grid methods*/
-                $scope.delete = function(id) {
-                    $scope.entityId = id;
-                    $('#myModalEntity').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    });
-                };
-
-                $scope.deleteEntity = function() {
-                    $('#myModalEntity').modal('hide');
-                    //var id = $scope.$$childTail.entityId;
-                    if (!$scope.entityId) {
+                $scope.delete = function (id) {
+                    var deleteEntity = id || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                    if (!deleteEntity) {
                         logger.error('No data selected.');
                         return;
                     }
-                    var ids;
-                    if ($.isArray($scope.entityId)) {
-                        ids = $scope.entityId.join(",");
-                    } else {
-                        ids = $scope.entityId.toString();
-                    } 
-                    commonDataService.delete({ contentId: ids }, function() {
+
+                    commonDataService.delete({ contentId: deleteEntity }, function () {
                         $scope.Refresh();
-                        logger.success('Delete the ' + moduleName + ' successful.');
+                        logger.success('Delete the ' + moduleName + ' successfully.');
                         $scope.entityId = [];
                         $scope.selectedItems = [];
-                    }, function() {
-                        logger.error('Failed to delete the lead.');
+                    }, function () {
+                        logger.error('Failed to delete the ' + moduleName + '.');
                     });
                 };
+
+                //$scope.deleteEntity = function() {
+                //    //$('#myModalEntity').modal('hide');
+                //    //var id = $scope.$$childTail.entityId;
+                //    if (!$scope.entityId) {
+                //        logger.error('No data selected.');
+                //        return;
+                //    }
+                //    var ids;
+                //    if ($.isArray($scope.entityId)) {
+                //        ids = $scope.entityId.join(",");
+                //    } else {
+                //        ids = $scope.entityId.toString();
+                //    } 
+                //    commonDataService.delete({ contentId: ids }, function() {
+                //        $scope.Refresh();
+                //        logger.success('Delete the ' + moduleName + ' successfully.');
+                //        $scope.entityId = [];
+                //        $scope.selectedItems = [];
+                //    }, function() {
+                //        logger.error('Failed to delete the '+ moduleName + '.');
+                //    });
+                //};
 
                 $scope.add = function() {
                     $detour.transitionTo('Create', { NavigationId: navigationId, Module: moduleName });

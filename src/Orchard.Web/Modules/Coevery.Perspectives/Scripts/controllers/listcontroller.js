@@ -26,16 +26,8 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (id) {
-              $scope.perspectiveId = id;
-              $('#myModalPerspective').modal({
-                  backdrop: 'static',
-                  keyboard: true
-              });
-          };
-
-          $scope.deletePerspective = function () {
-              $('#myModalPerspective').modal('hide');
-              perspectiveDataService.delete({ id: $scope.perspectiveId }, function () {
+              //$scope.perspectiveId = id;
+              perspectiveDataService.delete({ id: id }, function () {
                   $scope.getAllPerspective();
                   logger.success('Delete the perspective successful.');
               }, function (result) {
