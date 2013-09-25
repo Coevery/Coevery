@@ -54,7 +54,6 @@ namespace Coevery.Core.Controllers {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
-
             var part = GetProjectionPartRecord(model.ViewId);
             if (part == null) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
@@ -62,7 +61,7 @@ namespace Coevery.Core.Controllers {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             id = pluralService.Singularize(id);
             string filterDescription = null;
-
+            
             return GetFilteredRecords(id, part, out filterDescription, model, p => {
                 var totalRecords = _projectionManager.GetCount(p.Record.QueryPartRecord.Id);
                 _gridService.GenerateSortCriteria(id,model.Sidx, model.Sord, p.Record.QueryPartRecord.Id);
@@ -117,6 +116,24 @@ namespace Coevery.Core.Controllers {
                     .Where(x => x.Category == entityName + "ContentFields")
                     .SelectMany(x => x.Descriptors).ToList();
                 filterRecords = new List<FilterRecord>();
+                if (model.IsRelationList) {
+                    if (model.RelationType == "OneToMany") {
+                        var settings = new Dictionary<string, string> {
+                            {"Operator","MatchesAny"},
+                            {"Value",model.CurrentItem.ToString("D")}
+                        };
+                        var relationFilter = new FilterRecord {
+                            Category = entityName + "ContentFields",
+                            Type = entityName + "." + model.RelationId + ".",
+                            State = FormParametersHelper.ToString(settings),
+                            Description = "Only show entries related to current item."
+                        };
+                        filterRecords.Add(relationFilter);
+                        var descriptor = filterDescriptors.First(x => x.Type == relationFilter.Type);
+                        filterDescription += descriptor.Display(new FilterContext { State = FormParametersHelper.ToDynamic(relationFilter.State) }).Text;
+                    }
+                }
+
                 foreach (var filter in model.Filters) {
                     if (filter.FormData.Length == 0) {
                         continue;

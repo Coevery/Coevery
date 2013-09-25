@@ -20,7 +20,12 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
           
           var getPostData = function () {
               return {
-                  ViewId: $scope.viewId
+                  ViewId: $scope.viewId,
+                  IsRelationList: true,
+                  CurrentItem: $scope.$stateParams.Id,
+                  RelationId: $scope.relationId,
+                  RelationType: $scope.relationType,
+                  FilterGroupId: 0
               };
           };
           $scope.getPagedDataAsync = function () {
@@ -59,7 +64,7 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
                               pageSize = data.records;
                           },
                           loadError: function (xhr, status, error) {
-                              logger.error("Failed to fetched records for " + moduleName + ":\n" + error);
+                              logger.error("Failed to fetched records for " + $scope.entityTypeName + ":\n" + error);
                           }
                       };
                       angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);

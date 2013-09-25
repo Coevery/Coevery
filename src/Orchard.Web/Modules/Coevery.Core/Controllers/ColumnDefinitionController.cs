@@ -71,6 +71,9 @@ namespace Coevery.Core.Controllers {
                     column["formatter"] = "cellLinkTemplate";
                     column["formatoptions"] = formatOpt;
                 }
+                if (property.CustomPropertyTag == "OptionSetField" || property.CustomPropertyTag == "ReferenceField") {
+                    column["sortable"] = false;
+                }
                 columns.Add(column);
             }
 
