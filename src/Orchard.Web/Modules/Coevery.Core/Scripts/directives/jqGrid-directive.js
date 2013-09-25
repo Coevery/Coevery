@@ -58,8 +58,11 @@
                   });
                   
                   $(window).bind('resize', function () {
-                      var targetWidth = $('#page-actions').width();
-                      $grid.setGridWidth(targetWidth, false).trigger('reloadGrid'); //Resized to new width as buttons
+                      var target = $('#page-actions');
+                      if (target.length === 0) {
+                          return;
+                      }
+                      $grid.setGridWidth(target.width(), false).trigger('reloadGrid'); //Resized to new width as buttons
                   }).trigger('resize');
 
                   //todo: need to refactor

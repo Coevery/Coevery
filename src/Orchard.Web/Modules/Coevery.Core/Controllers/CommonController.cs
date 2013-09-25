@@ -65,9 +65,9 @@ namespace Coevery.Core.Controllers {
 
             return GetFilteredRecords(id, part, out filterDescription, model, p => {
                 var totalRecords = _projectionManager.GetCount(p.Record.QueryPartRecord.Id);
+                _gridService.GenerateSortCriteria(id,model.Sidx, model.Sord, p.Record.QueryPartRecord.Id);
                 var pageSize = model.Rows;
                 var totalPages = (int) Math.Ceiling((float) totalRecords/(float) pageSize);
-
                 var pager = new Pager(Services.WorkContext.CurrentSite, model.Page, pageSize);
                 var records = GetLayoutComponents(p, pager.GetStartIndex(), pager.PageSize);
 

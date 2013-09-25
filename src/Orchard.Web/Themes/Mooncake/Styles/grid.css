@@ -64,6 +64,8 @@ div.ui-jqgrid-hdiv,
     .ui-jqgrid tr.ui-state-highlight {
         background-color: #F2F7FF;
         background-image: none;
+        border-left: none;
+        border-right: none;
     }
 
 .ui-jqgrid .ui-jqgrid-btable tr {

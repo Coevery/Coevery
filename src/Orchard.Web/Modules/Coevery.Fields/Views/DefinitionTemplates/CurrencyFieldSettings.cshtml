@@ -54,6 +54,9 @@
         });
 
         $.validator.addMethod("decimalFormat", function (value, element, params) {
+            if (!value) {
+                return true;
+            }
             var paramArray = params.split(',');
             var tempInt = parseInt(value);
             return !isNaN(tempInt) && tempInt.toString().length <= paramArray[0] &&
