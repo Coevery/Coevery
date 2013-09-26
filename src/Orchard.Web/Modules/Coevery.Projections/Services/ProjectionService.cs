@@ -2,22 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web.Mvc;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Core.Title.Models;
 using Orchard.Forms.Services;
 using Orchard.Localization;
-using Orchard.Projections.Descriptors.Layout;
-using Orchard.Projections.Descriptors.SortCriterion;
 using Orchard.Projections.Models;
 using Orchard.Projections.Services;
-using Orchard.Projections.ViewModels;
 using Orchard.Projections.Descriptors.Property;
 
 namespace Coevery.Projections.Services {
