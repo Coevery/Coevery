@@ -20,12 +20,15 @@ namespace Coevery.Entities.Controllers {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IEntityEvents _entityEvents;
+        private readonly IContentMetadataService _contentMetadataService;
 
         public EntityController(
             IContentDefinitionService contentDefinitionService,
+            IContentMetadataService contentMetadataService,
             ISchemaUpdateService schemaUpdateService,
             IEntityEvents entityEvents) {
             _contentDefinitionService = contentDefinitionService;
+            _contentMetadataService = contentMetadataService;
             _schemaUpdateService = schemaUpdateService;
             _entityEvents = entityEvents;
             T = NullLocalizer.Instance;
@@ -35,7 +38,7 @@ namespace Coevery.Entities.Controllers {
 
         //GET api/Entities/Entity
         public object Get(int rows, int page) {
-            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+            var metadataTypes = _contentMetadataService.GetRawEntities();
 
             var query = from type in metadataTypes
                         select new EntitiyListGridModel {
@@ -44,8 +47,6 @@ namespace Coevery.Entities.Controllers {
                         };
 
             var totalRecords = query.Count();
-            //var postsortPage = _gridService.GetSortedRows(sidx, sord, query);
-            //_gridService.GetPagedRows(page, rows, postsortPage)
 
             return new {
                 total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),

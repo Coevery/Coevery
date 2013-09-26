@@ -7,6 +7,7 @@ using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
 using Coevery.Core.Services;
 using Coevery.Entities.Events;
+using Coevery.Entities.Services;
 using Coevery.Entities.Settings;
 using Coevery.Entities.ViewModels;
 using Orchard;
@@ -29,6 +30,7 @@ namespace Coevery.Entities.Controllers {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IEntityEvents _entityEvents;
+        private readonly IContentMetadataService _contentMetadataService;
         private readonly IFieldEvents _fieldEvents;
 
         public SystemAdminController(
@@ -37,6 +39,7 @@ namespace Coevery.Entities.Controllers {
             ISchemaUpdateService schemaUpdateService,
             IContentDefinitionManager contentDefinitionManager,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents,
+            IContentMetadataService contentMetadataService,
             IEntityEvents entityEvents,
             IFieldEvents fieldEvents) {
             Services = orchardServices;
@@ -45,6 +48,7 @@ namespace Coevery.Entities.Controllers {
             T = NullLocalizer.Instance;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _contentMetadataService = contentMetadataService;
             _entityEvents = entityEvents;
             _fieldEvents = fieldEvents;
         }
@@ -137,34 +141,7 @@ namespace Coevery.Entities.Controllers {
                             select error.ErrorMessage).ToArray();
                 return Content(string.Concat(temp));
             }
-
-            _contentDefinitionService.AlterType(viewModel, this);
-            _contentDefinitionService.AddPartToType(viewModel.Name, viewModel.Name);
-            _contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
-
-            _contentDefinitionManager.AlterPartDefinition(viewModel.Name,
-                builder => builder.WithField(viewModel.FieldName,
-                    fieldBuilder => fieldBuilder
-                        .OfType("CoeveryTextField")
-                        .WithDisplayName(viewModel.FieldLabel)
-                        .WithSetting("CoeveryTextFieldSettings.IsDispalyField", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.Required", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.ReadOnly", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.IsSystemField", bool.TrueString)
-                        .WithSetting("CoeveryTextFieldSettings.IsAudit", bool.FalseString)
-                        .WithSetting("CoeveryTextFieldSettings.HelpText", string.Empty)
-                        .WithSetting("Storage", "Part")));
-
-            //adds CommonPart by default
-            //_contentDefinitionService.AddPartToType("CoeveryCommonPart", viewModel.Name);
-
-            Services.Notifier.Information(T("The \"{0}\" content type has been created.", viewModel.DisplayName));
-            _entityEvents.OnCreated(viewModel.Name);
-
-            _schemaUpdateService.CreateTable(viewModel.Name,
-                context => context.FieldColumn(viewModel.FieldName, "CoeveryTextField"));
-
+            _contentMetadataService.CreateEntity(viewModel);
             return Json(new { entityName = viewModel.Name });
         }
 
