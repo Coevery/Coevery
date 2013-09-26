@@ -41,8 +41,9 @@ namespace Coevery.Entities.Controllers {
             var metadataTypes = _contentMetadataService.GetRawEntities();
 
             var query = from type in metadataTypes
-                        select new EntitiyListGridModel {
-                            Id = type.Name, 
+                        select new {
+                            Id = type.Id,
+                            Name = type.Name, 
                             DisplayName = type.DisplayName
                         };
 

@@ -159,12 +159,13 @@ namespace Coevery.Entities.Controllers {
             return View(typeViewModel);
         }
 
-        public ActionResult Detail(string id) {
+        public ActionResult Detail(int id) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type."))) {
                 return new HttpUnauthorizedResult();
             }
 
-            var typeViewModel = _contentDefinitionService.GetType(id);
+            //var typeViewModel = _contentDefinitionService.GetType(id);
+            var typeViewModel = _contentMetadataService.GetEntity(id);
 
             if (typeViewModel == null) {
                 return HttpNotFound();

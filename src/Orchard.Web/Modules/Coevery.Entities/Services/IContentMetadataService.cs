@@ -16,6 +16,7 @@ namespace Coevery.Entities.Services {
     public interface IContentMetadataService : IDependency {
         bool CreateEntity(EditTypeViewModel sourceModel);
         IEnumerable<EntityMetadataPart> GetRawEntities();
+        EditTypeViewModel GetEntity(int id);
     }
 
     public class ContentMetadataService : IContentMetadataService {
@@ -35,6 +36,17 @@ namespace Coevery.Entities.Services {
         public IEnumerable<EntityMetadataPart> GetRawEntities() {
             return _services.ContentManager.Query<EntityMetadataPart, EntityMetadataRecord>()
                 .ForVersion(VersionOptions.Latest).List();
+        }
+
+        public EditTypeViewModel GetEntity(int id) {
+            var entity = _services.ContentManager.Get<EntityMetadataPart>(id,VersionOptions.Latest);
+            if (entity == null) {
+                return null;
+            }
+            return new EditTypeViewModel {
+                DisplayName = entity.DisplayName,
+                Name = entity.Name
+            };
         }
 
         public bool CreateEntity(EditTypeViewModel sourceModel) {
@@ -67,6 +79,8 @@ namespace Coevery.Entities.Services {
             _services.ContentManager.Create(entityDraft, VersionOptions.Draft);
             return true;
         }
+
+        
     }
 }
 

@@ -11,11 +11,14 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           var metadataColumnDefs = [
-              { name: 'Id', label: 'Id', hidden: true },
+              { name: 'Id', label: 'Id', hidden: true, sorttype: 'int' },
               {
-                  name: 'DisplayName', label: t('Display Name'), 
+                  name: 'Name', label: 'Name',
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
+              },
+              {
+                  name: 'DisplayName', label: t('Display Name')
               }];
 
           $scope.gridOptions = {
