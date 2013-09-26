@@ -173,7 +173,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup />
-    <Folder Include="Views\DefinitionTemplates\" />
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
   </ItemGroup>
