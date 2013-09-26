@@ -7,6 +7,5 @@ namespace Coevery.Entities.Models {
     public class EntitiyListGridModel {
         public string Id { get; set; }
         public string DisplayName { get; set; }
-        public bool IsDeployed { get; set; }
     }
 }

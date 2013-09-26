@@ -38,7 +38,6 @@ namespace Coevery.Entities.Controllers {
 
             var query = from type in metadataTypes
                         from field in type.Fields
-                        let setting = type.Settings.GetModel<DynamicTypeSettings>()
                         select new {
                             field.Name,
                             field.DisplayName,

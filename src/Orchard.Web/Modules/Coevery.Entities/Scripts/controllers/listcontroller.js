@@ -16,8 +16,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   name: 'DisplayName', label: t('Display Name'), 
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
-              },
-              { name: 'IsDeployed', label: t('Is Deployed'),  }];
+              }];
 
           $scope.gridOptions = {
               url: "api/entities/entity",
