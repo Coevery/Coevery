@@ -40,9 +40,8 @@ namespace Coevery.Core.Services {
                         { "Sort", sortInfo.Last() == "asc"}
                     }),
                     Description = sortInfo.First(),
-                    Position = index
+                    Position = ++index
                 });
-                index++;
             }
             return true;
         }
