@@ -92,10 +92,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Drivers\EntityMetadataPartDriver.cs" />
     <Compile Include="Events\IEntityEvents.cs" />
     <Compile Include="Events\IFieldEvents.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Handlers\EntityMetadataPartHandler.cs" />
+    <Compile Include="Migrations.cs" />
+    <Compile Include="Models\EntityMetadataPart.cs" />
+    <Compile Include="Models\FieldMetadataRecord.cs" />
     <Compile Include="Models\EntitiyListGridModel.cs" />
+    <Compile Include="Models\EntityMetadataRecord.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
@@ -173,11 +179,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Drivers\" />
-    <Folder Include="Handlers\" />
-    <Folder Include="Records\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
   </ItemGroup>
