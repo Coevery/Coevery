@@ -44,7 +44,12 @@ namespace Coevery.Relationship.Controllers {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The entity doesn't exist!");
             }
             if (temp.Length == 0) {
-                return Request.CreateResponse(HttpStatusCode.NoContent);
+                return new {
+                    total = 0,
+                    page = page,
+                    records = 0,
+                    rows = string.Empty
+                };
             }
             var query = from record in temp
                         select new {

@@ -78,20 +78,17 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
               $scope.getPagedDataAsync();
           };
 
-          $scope.delete = function (id) {
-              $scope.entityId = id;
-          };
-
-          $rootScope.deleteRelationship = function () {
-              if (!$scope.entityId) {
+          $rootScope.delete = function (id) {
+              var deleteRelationship = id || $scope.selectedItems.length > 0 ? $scope.selectedItems : null;
+              if (!deleteRelationship) {
                   logger.error('No data selected.');
                   return;
               }
               var ids;
-              if ($.isArray($scope.entityId)) {
-                  ids = $scope.entityId.join(",");
+              if ($.isArray(deleteRelationship)) {
+                  ids = deleteRelationship.join(",");
               } else {
-                  ids = $scope.entityId.toString();
+                  ids = deleteRelationship.toString();
               }
               commonDataService.delete({ contentId: ids }, function () {
                   $scope.Refresh();
