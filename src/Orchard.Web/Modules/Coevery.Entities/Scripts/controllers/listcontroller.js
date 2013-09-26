@@ -3,8 +3,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
       'EntityListCtrl',
-      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService',
-      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService) {
+      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService', '$http',
+      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService, $http) {
           var t = function (str) {
               var result = i18n.t(str);
               return result;
@@ -58,6 +58,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               $("#gridList").jqGrid('setGridParam', {
                   datatype: "json"
               }).trigger('reloadGrid');
+          };
+
+          $scope.publish = function() {
+              $http.get('Entities/SystemAdmin/Publish/' + $scope.selectedItems[0]);
           };
       }]
     ]);

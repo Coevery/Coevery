@@ -81,6 +81,10 @@ namespace Coevery.Entities.Controllers {
             });
         }
 
+        public void Publish(string id) {
+            
+        }
+
         [HttpPost, ActionName("Create")]
         public ActionResult CreatePOST(EditTypeViewModel viewModel) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type."))) {
