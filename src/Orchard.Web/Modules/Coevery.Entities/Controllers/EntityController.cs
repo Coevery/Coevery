@@ -38,11 +38,9 @@ namespace Coevery.Entities.Controllers {
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
 
             var query = from type in metadataTypes
-                        let setting = type.Settings.GetModel<DynamicTypeSettings>()
                         select new EntitiyListGridModel {
                             Id = type.Name, 
-                            DisplayName = type.DisplayName, 
-                            IsDeployed = setting.IsDeployed
+                            DisplayName = type.DisplayName
                         };
 
             var totalRecords = query.Count();

@@ -9,7 +9,7 @@
             <button type="button" class="btn btn-small" data-ng-click="edit()">
                 <i class="icon-edit"></i>&nbsp;Edit
             </button>
-            <button type="button" class="btn btn-small" data-ng-click="delete()">
+            <button type="button" class="btn btn-small" co-delete-button confirm-message="You really want to delete this entity?" delete-action="delete()">
                 <i class="icon-remove"></i>&nbsp;Delete
             </button>
             <button type="button" class="btn btn-small" data-ng-click="formDesigner()">Form Designer</button>
@@ -35,12 +35,6 @@
                             <span class="control-text">@Model.DisplayName</span>
                         </div>
                     </div>
-                    <div class="data-row clearfix">
-                        <span class="title control-label">Setting</span>
-                        <div class="controls">
-                            <span class="control-text">@{Html.RenderTemplates(Model.Templates); }</span>
-                        </div>
-                    </div>
                 </section>
             </div>
 
@@ -62,7 +56,7 @@
         </div>
     </div>
 </section>
-<data-del:Confirm del:Id="myModalEntity" confirm:msg="You really want to delete this entity?" del:Fuc="deleteEntity()"></data-del:Confirm>
+
 <script type="text/javascript">
     $(function () {
         $("#main-content").css("margin-top", $("#page-title").outerHeight(true));

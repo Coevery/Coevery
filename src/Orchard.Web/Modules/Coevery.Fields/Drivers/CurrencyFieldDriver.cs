@@ -40,7 +40,9 @@ namespace Coevery.Fields.Drivers {
             if (!field.Value.HasValue) {                
                 field.Value = settings.DefaultValue;
             }
-            field.Value = Math.Round(field.Value.Value, settings.DecimalPlaces);
+            else {
+                field.Value = Math.Round(field.Value.Value, settings.DecimalPlaces);
+            }
 
             return ContentShape("Fields_Currency_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
@@ -77,7 +79,7 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(decimal?), null, T("The decimal value of the field."));
+            context.Member(null, typeof(decimal), null, T("The decimal value of the field."));
         }
     }
 }

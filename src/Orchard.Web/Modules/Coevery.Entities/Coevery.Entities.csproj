@@ -111,12 +111,6 @@
     <Compile Include="Services\ContentFieldValueProvider.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
-    <Compile Include="Settings\DynamicTypeEditorEvents.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Settings\DynamicTypeSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Settings\FieldEditorEvents.cs" />
     <Compile Include="Settings\FieldSettings.cs">
       <SubType>Code</SubType>
@@ -126,7 +120,6 @@
     </Compile>
     <Compile Include="ViewModels\AddFieldViewModel.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
-    <Compile Include="ViewModels\DynamicTypeSettingsViewModel.cs" />
     <Compile Include="ViewModels\EditFieldNameViewModel.cs" />
     <Compile Include="ViewModels\EditFieldViewModel.cs" />
     <Compile Include="ViewModels\EditPartFieldViewModel.cs" />
@@ -180,14 +173,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup />
+    <Folder Include="Views\DefinitionTemplates\" />
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\DefinitionTemplates\DynamicTypeSettingsViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Edit.cshtml" />

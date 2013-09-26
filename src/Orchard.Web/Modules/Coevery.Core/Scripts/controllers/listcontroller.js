@@ -1,8 +1,8 @@
-﻿define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function(detour) {
+﻿define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function (detour) {
     detour.registerController([
         'GeneralListCtrl',
         ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$detour', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
-            function($rootScope, $scope, $parse, $http, logger, $compile, $detour, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
+            function ($rootScope, $scope, $parse, $http, logger, $compile, $detour, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
                 var navigationId = $stateParams.NavigationId;
                 var moduleName = $stateParams.Module;
                 $scope.isInit = true;
@@ -15,12 +15,12 @@
 
                 //init pagingoption
                 var pageSizes = [50, 100, 200];
-                var currentPage = parseInt($location.$$search['Page'],10);
+                var currentPage = parseInt($location.$$search['Page'], 10);
                 if (!currentPage) currentPage = 1;
-                var pageSize = parseInt($location.$$search['Rows'],10);
+                var pageSize = parseInt($location.$$search['Rows'], 10);
                 if (!pageSize || pageSizes.indexOf(pageSize) < 0) pageSize = 50;
 
-                var getPostData = function() {
+                var getPostData = function () {
                     return {
                         ViewId: $scope.currentViewId,
                         FilterGroupId: currentFilterGroupId,
@@ -40,7 +40,7 @@
                 };
 
                 // fetch view columns
-                $scope.FetchViewColumns = function(viewId) {
+                $scope.FetchViewColumns = function (viewId) {
                     if (viewId <= 0) return;
                     if (viewId == $scope.currentViewId) return;
                     $scope.currentViewId = viewId;
@@ -80,17 +80,17 @@
                     });
                 };
 
-                $scope.Refresh = function() {
+                $scope.Refresh = function () {
                     $scope.getPagedDataAsync();
                 };
 
                 // init views
-                $scope.FetchDefinitionViews = function() {
-                    var views = viewDefinitionService.query({ contentType: moduleName }, function() {
+                $scope.FetchDefinitionViews = function () {
+                    var views = viewDefinitionService.query({ contentType: moduleName }, function () {
                         $scope.definitionViews = views;
                         var defaultViewId = $location.$$search['ViewId'];
                         if (!defaultViewId) {
-                            views.forEach(function(value, index) {
+                            views.forEach(function (value, index) {
                                 if (value.Default) {
                                     defaultViewId = value.ContentId;
                                 }
@@ -99,62 +99,54 @@
                                 defaultViewId = views[0].ContentId;
                         }
                         $scope.FetchViewColumns(defaultViewId);
-                    }, function() {
+                    }, function () {
                         logger.error("Failed to fetched views for " + moduleName);
                     });
                 };
 
-                $scope.CreateView = function() {
+                $scope.CreateView = function () {
                     var createViewPath = 'SystemAdmin#/Projections/' + moduleName + '/Create';
                     window.location = createViewPath;
                 };
 
                 $scope.FetchDefinitionViews();
-                
-                /*Grid methods*/
-                $scope.delete = function(id) {
-                    $scope.entityId = id;
-                    $('#myModalEntity').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    });
-                };
 
-                $scope.deleteEntity = function() {
-                    $('#myModalEntity').modal('hide');
-                    //var id = $scope.$$childTail.entityId;
-                    if (!$scope.entityId) {
+                /*Grid methods*/
+                $scope.delete = function (id) {
+                    var deleteRelationship = id || $scope.selectedItems.length > 0 ? $scope.selectedItems : null;
+
+                    if (!deleteRelationship) {
                         logger.error('No data selected.');
                         return;
                     }
                     var ids;
-                    if ($.isArray($scope.entityId)) {
-                        ids = $scope.entityId.join(",");
+                    if ($.isArray(deleteRelationship)) {
+                        ids = deleteRelationship.join(",");
                     } else {
-                        ids = $scope.entityId.toString();
-                    } 
-                    commonDataService.delete({ contentId: ids }, function() {
+                        ids = deleteRelationship.toString();
+                    }
+                    commonDataService.delete({ contentId: ids }, function () {
                         $scope.Refresh();
                         logger.success('Delete the ' + moduleName + ' successful.');
                         $scope.entityId = [];
                         $scope.selectedItems = [];
-                    }, function() {
+                    }, function () {
                         logger.error('Failed to delete the lead.');
                     });
                 };
 
-                $scope.add = function() {
+                $scope.add = function () {
                     $detour.transitionTo('Create', { NavigationId: navigationId, Module: moduleName });
                 };
 
-                $scope.edit = function(id) {
+                $scope.edit = function (id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = $scope.selectedItems[0];
                     }
                     $detour.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
 
-                $scope.view = function(id) {
+                $scope.view = function (id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = $scope.selectedItems[0];
                     }
@@ -169,7 +161,7 @@
                 $scope.applyFilter = function () {
                     var forms = $('.filterCreatorWrap').find('form');
                     var passValidate = true;
-                    forms.each(function() {
+                    forms.each(function () {
                         var validator = $(this).validate({ errorClass: "inputError" });
                         passValidate = validator.form() && passValidate;
                     });
@@ -196,7 +188,7 @@
                     }
                 };
 
-                $scope.expendCollapse = function() {
+                $scope.expendCollapse = function () {
                     if ($('#collapseBtn').hasClass('icon-collapse-hide')) {
                         showFilterEditorZone();
                     } else {
@@ -205,7 +197,7 @@
                 };
                 hideFilterEditorZone();
 
-                $scope.closeFilterCollapse = function() {
+                $scope.closeFilterCollapse = function () {
                     $('#filterCollapse').hide();
                     currentFilterGroupId = 0;
                     $scope.currentFilter = {};
@@ -224,7 +216,7 @@
                     $scope.getPagedDataAsync();
                 };
 
-                $scope.createFilter = function() {
+                $scope.createFilter = function () {
                     $scope.currentFilter = {};
                     $scope.filterTitle = '';
                     $scope.filterDescription = '';
@@ -242,14 +234,14 @@
                     filterDefinitionService.delete({ filterId: filter.Id, contentType: moduleName });
                 };
 
-                $scope.addNewFilterCondition = function() {
+                $scope.addNewFilterCondition = function () {
                     addNewEditor();
                 };
 
-                $scope.fetchDefinitionFilters = function() {
-                    var filters = filterDefinitionService.query({ contentType: moduleName }, function() {
+                $scope.fetchDefinitionFilters = function () {
+                    var filters = filterDefinitionService.query({ contentType: moduleName }, function () {
                         $scope.definitionFilters = filters;
-                    }, function() {
+                    }, function () {
                         logger.error("Failed to fetched filters for " + moduleName);
                     });
                 };
@@ -266,7 +258,7 @@
                         loadEditors();
                     });
                 }
-                
+
                 function loadEditors() {
                     if (!needNewFilterEditor) {
                         return;
@@ -274,7 +266,7 @@
                     $('.filterCreatorWrap').empty();
                     if ($scope.currentFilter.Id) {
                         var filters = $scope.currentFilter.Filters;
-                        $.each(filters, function() {
+                        $.each(filters, function () {
                             addNewEditor({
                                 Type: this.Type,
                                 State: this.State
@@ -289,7 +281,7 @@
                 function getFilters() {
                     var forms = $('.filterCreatorWrap').find('form');
                     var filters = [];
-                    $.each(forms, function() {
+                    $.each(forms, function () {
                         var form = $(this);
                         filters.push({
                             Type: form.data('Type'),
@@ -313,7 +305,7 @@
                     $('#closeFilterLink').show();
                     $('#collapseZone').hide();
                 }
-                
+
                 function addNewEditor(args) {
                     $scope.filterArgs = args;
                     var editor = $('<filter-editor filter-args="filterArgs" field-filters="fieldFilters"></filter-editor>');

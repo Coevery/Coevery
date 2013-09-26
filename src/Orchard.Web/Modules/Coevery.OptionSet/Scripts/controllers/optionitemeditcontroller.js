@@ -75,19 +75,13 @@ define(['core/app/detourService'], function(detour) {
                         });
                 }
 
-                $scope.delete = function(itemId) {
-                    $scope.itemId = itemId;
-                    $('#deleteModal').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    });
-                };
-                $scope.deleteItem = function() {
-                    $('#deleteModal').modal('hide');
-                    optionItemDataService.delete({ Id: $scope.itemId }, function () {
+                $scope.delete = function (itemId) {
+                    var deleteItem = itemId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                    if (!deleteItem) return;
+                    optionItemDataService.delete({ Id: deleteItem }, function () {
                         $scope.getOptionItems();
                         logger.success("Delete the item successful.");
-                    }, function() {
+                    }, function () {
                         logger.error("Failed to delete the item.");
                     });
                 };

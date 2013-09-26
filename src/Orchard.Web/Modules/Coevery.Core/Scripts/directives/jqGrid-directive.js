@@ -4,7 +4,7 @@
     gridz = angular.module("coevery.grid", []);
 
     gridz.directive("agGrid", [
-      "logger", function (logger) {
+      "$rootScope","$compile", "logger", function ($rootScope,$compile, logger) {
           var link;
           link = function ($scope, $element, attrs, gridCtrl) {
               var alias, initializeGrid;
@@ -24,6 +24,9 @@
                   gridOptions.gridComplete = function () {
                       var width;
                       width = $element.parent().width() - 1;
+                      var complieFunc = $compile($("div.gridCellText"));
+                      complieFunc($scope);
+
                       return $grid.setGridWidth(width);
                   };
                   gridOptions.onSelectRow = function () {
@@ -42,31 +45,50 @@
                       event.preventDefault();
                       var id;
                       id = $(this).attr("data-id");
-                      return $scope.view(id);
+                      $scope.$on("ViewAction", function (subevent, args) {
+                          subevent.preventDefault();
+                          $scope.view(args);
+                      });
+                      $rootScope.$broadcast("ViewAction", id);
                   });
                   $grid.on("click.edit-action", ".edit-action", function (event) {
                       event.preventDefault();
                       var id;
                       id = $(this).attr("data-id");
-                      return $scope.edit(id);
+                      $scope.$on("EditAction", function (subevent, args) {
+                          subevent.preventDefault();
+                          $scope.edit(args);
+                      });
+                      $rootScope.$broadcast("EditAction", id);
                   });
                   $grid.on("click.default-action", ".default-action", function (event) {
                       event.preventDefault();
                       var id;
                       id = $(this).attr("data-id");
-                      return $scope.setDefault(id);
+                      $scope.$on("DefaultAction", function (subevent, args) {
+                          subevent.preventDefault();
+                          $scope.setDefault(args);
+                      });
+                      $rootScope.$broadcast("DefaultAction", id);
                   });
                   
                   $(window).bind('resize', function () {
-                      var targetWidth = $('#page-actions').width();
-                      $grid.setGridWidth(targetWidth, false).trigger('reloadGrid'); //Resized to new width as buttons
+                      var target = $('#page-actions');
+                      if (target.length === 0) {
+                          return;
+                      }
+                      $grid.setGridWidth(target.width(), false).trigger('reloadGrid'); //Resized to new width as buttons
                   }).trigger('resize');
 
                   return $grid.on("click.delete-action", ".delete-action", function (event) {
                       event.preventDefault();
                       var id;
                       id = $(this).attr("data-id");
-                      return $scope.delete(id);
+                      $scope.$on("DeleteAction", function (subevent, args) {
+                          //subevent.preventDefault();
+                          $scope.delete(args);
+                      });
+                      $rootScope.$broadcast("DeleteAction", id);
                   });
               };
 

@@ -17,7 +17,6 @@ define(['core/app/detourService',
                                 formatter: $rootScope.cellLinkTemplate,
                                 formatoptions: { hasDefault: true }
                             },
-                            { name: 'EntityType', label: t('Entity Type') },
                             { name: 'Default', label: t('Default') }];
 
                         $scope.gridOptions = {
@@ -32,16 +31,9 @@ define(['core/app/detourService',
                         };
 
                         $scope.delete = function (id) {
-                            $scope.viewId = id;
-                            $('#myModalView').modal({
-                                backdrop: 'static',
-                                keyboard: true
-                            });
-                        };
-
-                        $scope.deleteView = function () {
-                            $('#myModalView').modal('hide');
-                            projectionDataService.delete({ Id: $scope.viewId }, function () {
+                            var deleteView = id || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                            if (!deleteView) return;
+                            projectionDataService.delete({ Id: deleteView }, function () {
                                 if ($scope.selectedItems.length != 0) {
                                     $scope.selectedItems.pop();
                                 }
@@ -50,6 +42,7 @@ define(['core/app/detourService',
                             }, function (result) {
                                 logger.error("Failed to delete the view:" + result.data.Message);
                             });
+
                         };
 
                         $scope.add = function () {
