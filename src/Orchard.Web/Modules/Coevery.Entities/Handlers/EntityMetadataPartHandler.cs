@@ -6,16 +6,16 @@ using Orchard.Data;
 
 namespace Coevery.Entities.Handlers {
     public class EntityMetadataPartHandler : ContentHandler {
+        private readonly IRepository<EntityMetadataRecord> _entityMetadataRepository;
         private readonly IRepository<FieldMetadataRecord> _fieldMetadataRepository;
 
         public EntityMetadataPartHandler(
-            IRepository<EntityMetadataRecord> repository,
+            IRepository<EntityMetadataRecord> entityMetadataRepository,
             IRepository<FieldMetadataRecord> fieldMetadataRepository) {
             _fieldMetadataRepository = fieldMetadataRepository;
+            _entityMetadataRepository = entityMetadataRepository;
 
-            Filters.Add(StorageFilter.For(repository));
-
-            OnPublished<EntityMetadataPart>((context, part) => { });
+            Filters.Add(StorageFilter.For(entityMetadataRepository));
         }
 
         protected override void Versioning(VersionContentContext context) {
@@ -30,6 +30,10 @@ namespace Coevery.Entities.Handlers {
                 _fieldMetadataRepository.Create(newRecord);
                 building.Record.FieldMetadataRecords.Add(newRecord);
             }
+        }
+
+        protected override void Published(PublishContentContext context) {
+           
         }
     }
 }
