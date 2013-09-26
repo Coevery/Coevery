@@ -34,6 +34,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   }
                   $scope.getAllMetadata();
                   logger.success("Delete the entity successful.");
+                  window.location.reload();
               }, function (reason) {
                   logger.error("Failed to delete the entity:" + reason);
               });

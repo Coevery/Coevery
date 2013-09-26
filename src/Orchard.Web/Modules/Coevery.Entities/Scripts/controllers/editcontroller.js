@@ -22,6 +22,7 @@ define(['core/app/detourService'], function (detour) {
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }).then(function (response) {
                   logger.success('Save succeeded.');
+                  window.location.reload();
                   return response;
               }, function (reason) {
                   logger.error('Save Failed： ' + reason.data);
