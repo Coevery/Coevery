@@ -36,7 +36,7 @@ namespace Coevery.Projections.Controllers {
                 string displayName = _contentManager.Get(projectionPart.Record.QueryPartRecord.Id).As<TitlePart>().Title;
                 JObject reObJ = new JObject();
                 reObJ["ContentId"] = projectionPart.Id;
-                reObJ["EntityType"] = projectionPart.As<TitlePart>().Title;
+                //reObJ["EntityType"] = projectionPart.As<TitlePart>().Title;
                 reObJ["DisplayName"] = displayName;
                 re.Add(reObJ);
             }
@@ -56,7 +56,7 @@ namespace Coevery.Projections.Controllers {
             var query = from record in queries
                         select new {
                             ContentId = record.Id,
-                            EntityType = record.ItemContentType,
+                            //EntityType = record.ItemContentType,
                             DisplayName = record.As<TitlePart>().Title,
                             Default = record.IsDefault
                         };

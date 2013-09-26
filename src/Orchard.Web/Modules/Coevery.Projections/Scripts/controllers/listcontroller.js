@@ -17,7 +17,6 @@ define(['core/app/detourService',
                                 formatter: $rootScope.cellLinkTemplate,
                                 formatoptions: { hasDefault: true }
                             },
-                            { name: 'EntityType', label: t('Entity Type') },
                             { name: 'Default', label: t('Default') }];
 
                         $scope.gridOptions = {
