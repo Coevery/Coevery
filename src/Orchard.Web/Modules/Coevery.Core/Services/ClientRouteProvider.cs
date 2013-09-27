@@ -8,20 +8,18 @@ namespace Coevery.Core.Services {
         }
 
         public override void Discover(ClientRouteTableBuilder builder) {
-            var navigationView = new ClientViewDescriptor()
-            {
+            var navigationView = new ClientViewDescriptor() {
                 Name = "menulist",
                 TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                         var url = 'Coevery/CoeveryCore/ViewTemplate/MenuList';
                         return $http.get(url).then(function (response) { return response.data; });
                     }]",
-                Controller = "NavigationCtrl",
-                Dependencies = ToClientUrl(new[] { "controllers/navigationcontroller" })
+                Controller = "NavigationCtrl"
             };
+            navigationView.AddDependencies(ToClientUrl, "controllers/navigationcontroller");
 
             builder.Describe("Root")
-                .Configure(descriptor =>
-                {
+                .Configure(descriptor => {
                     descriptor.Url = "";
                     descriptor.Views.Add(navigationView);
                 });
@@ -33,67 +31,59 @@ namespace Coevery.Core.Services {
                 });
 
             builder.Describe("List")
-                .Configure(descriptor =>
-                {
+                .Configure(descriptor => {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}";
                     descriptor.Views.Add(navigationView);
                 })
-                .View(view =>
-                {
+                .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                         var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/List/' + $stateParams.Module;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralListCtrl";
-                    view.Dependencies = ToClientUrl(new[] { "controllers/listcontroller" });
+                    view.AddDependencies(ToClientUrl, new[] {"controllers/listcontroller"});
                 });
 
             builder.Describe("Create")
-                .Configure(descriptor =>
-                {
+                .Configure(descriptor => {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}/Create";
                     descriptor.Views.Add(navigationView);
                 })
-                .View(view =>
-                {
+                .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                         var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/Create/' + $stateParams.Module;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralDetailCtrl";
-                    view.Dependencies = ToClientUrl(new[] { "controllers/detailcontroller" });
+                    view.AddDependencies(ToClientUrl, new[] {"controllers/detailcontroller"});
                 });
 
             builder.Describe("Detail")
-                .Configure(descriptor =>
-                {
+                .Configure(descriptor => {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}/{Id:[0-9a-zA-Z]+}";
                     descriptor.Views.Add(navigationView);
                 })
-                .View(view =>
-                {
+                .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                         var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/Edit/' + $stateParams.Id;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralDetailCtrl";
-                    view.Dependencies = ToClientUrl(new[] { "controllers/detailcontroller" });
+                    view.AddDependencies(ToClientUrl, new[] {"controllers/detailcontroller"});
                 });
 
             builder.Describe("View")
-                .Configure(descriptor =>
-                {
+                .Configure(descriptor => {
                     descriptor.Url = "/{NavigationId:[0-9]+}/{Module:[a-zA-Z]+}/View/{Id:[0-9a-zA-Z]+}";
                     descriptor.Views.Add(navigationView);
                 })
-                .View(view =>
-                {
+                .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
                         var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/View/' + $stateParams.Id;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralViewCtrl";
-                    view.Dependencies = ToClientUrl(new[] { "controllers/viewcontroller", "controllers/relatedentitylistcontroller" });
+                    view.AddDependencies(ToClientUrl, "controllers/viewcontroller");
                 });
         }
     }

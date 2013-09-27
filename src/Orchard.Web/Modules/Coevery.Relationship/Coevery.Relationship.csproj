@@ -81,7 +81,7 @@
     <Compile Include="Drivers\DynamicPrimaryPartDriver.cs" />
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\DynamicRelatedPartDriver.cs" />
-    <Compile Include="Drivers\RelatedListDriver.cs" />
+    <Compile Include="Drivers\RelatedEntityListDriver.cs" />
     <Compile Include="Handlers\RelationshipEntityEventsHandler.cs" />
     <Compile Include="Handlers\RelationshipFieldEventsHandler.cs" />
     <Compile Include="Handlers\RelationshipDynamicTypeGenerationEventsHandler.cs" />
@@ -115,6 +115,7 @@
     <Content Include="Scripts\controllers\editonetomanycontroller.js" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
+    <Content Include="Scripts\controllers\relatedentitylistcontroller.js" />
     <Content Include="Scripts\controllers\relationshipscontroller.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -180,7 +181,7 @@
     <Content Include="Views\EditorTemplates\Parts\Relationship.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Relationships_Display.cshtml" />
+    <Content Include="Views\RelatedEntityList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DisplayTemplates\Reference.cshtml" />

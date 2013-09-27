@@ -11,10 +11,10 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 
 namespace Coevery.Relationship.Drivers {
-    public class RelatedListDriver : ContentPartDriver<ContentPart> {
+    public class RelatedEntityListDriver : ContentPartDriver<ContentPart> {
         private readonly IRelationshipService _relationshipService;
 
-        public RelatedListDriver(IRelationshipService relationshipService) {
+        public RelatedEntityListDriver(IRelationshipService relationshipService) {
             _relationshipService = relationshipService;
         }
 
@@ -24,7 +24,7 @@ namespace Coevery.Relationship.Drivers {
                 string contentType = part.ContentItem.ContentType;
                 var relationships = GetRelationships(contentType).ToList();
                 if (relationships.Any())
-                    return ContentShape("Relationships_Display",
+                    return ContentShape("RelatedEntityList",
                         () => shapeHelper.Relationships_Display(Relationships: relationships));
             }
 

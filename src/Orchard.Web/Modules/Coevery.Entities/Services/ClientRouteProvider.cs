@@ -11,7 +11,7 @@ namespace Coevery.Entities.Services {
                 .View(view => {
                     view.TemplateUrl = "'SystemAdmin/Entities/List'";
                     view.Controller = "EntityListCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/listcontroller"});
+                    view.AddDependencies(ToClientUrl, "controllers/listcontroller");
                 });
 
             builder.Describe("EntityCreate")
@@ -21,7 +21,7 @@ namespace Coevery.Entities.Services {
                 .View(view => {
                     view.TemplateUrl = "'SystemAdmin/Entities/Create'";
                     view.Controller = "EntityEditCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/editcontroller"});
+                    view.AddDependencies(ToClientUrl, "controllers/editcontroller");
                 });
 
             builder.Describe("EntityEdit")
@@ -34,7 +34,7 @@ namespace Coevery.Entities.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EntityEditCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/editcontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/editcontroller" });
                 });
 
             builder.Describe("EntityDetail")
@@ -48,14 +48,14 @@ namespace Coevery.Entities.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EntityDetailCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/detailcontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/detailcontroller" });
                 });
 
             builder.Describe("EntityDetail.Fields")
                 .View(view => {
                     view.TemplateUrl = "'SystemAdmin/Entities/Fields'";
                     view.Controller = "FieldsCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/fieldscontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/fieldscontroller" });
                 });
 
             #region Operate fields
@@ -67,7 +67,7 @@ namespace Coevery.Entities.Services {
                 .View(view => {
                     view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/CreateChooseType/' + params.Id; }";
                     view.Controller = "FieldCreateChooseTypeCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/createchoosetypecontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/createchoosetypecontroller" });
                 });
 
             builder.Describe("EntityDetail.Fields.CreateEditInfo")
@@ -77,7 +77,7 @@ namespace Coevery.Entities.Services {
                 .View(view => {
                     view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/CreateEditInfo/' + params.Id + '?FieldTypeName=' + params.FieldTypeName; }";
                     view.Controller = "FieldCreateEditInfoCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/createeditinfocontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/createeditinfocontroller" });
                 });
 
             builder.Describe("FieldEdit")
@@ -90,7 +90,7 @@ namespace Coevery.Entities.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "FieldEditCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/editfieldscontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/editfieldscontroller" });
                 });
 
             builder.Describe("FieldDependencyList")
@@ -100,7 +100,7 @@ namespace Coevery.Entities.Services {
                 .View(view => {
                     view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/DependencyList/' + params.EntityName; }";
                     view.Controller = "FieldDependencyListCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/dependencylistcontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/dependencylistcontroller" });
                 });
 
             builder.Describe("FieldDependencyCreate")
@@ -110,7 +110,7 @@ namespace Coevery.Entities.Services {
                 .View(view => {
                     view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/CreateDependency/' + params.EntityName; }";
                     view.Controller = "FieldDependencyCreateCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/dependencycreatecontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/dependencycreatecontroller" });
                 });
 
             builder.Describe("FieldDependencyEdit")
@@ -120,7 +120,7 @@ namespace Coevery.Entities.Services {
                 .View(view => {
                     view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/EditDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }";
                     view.Controller = "FieldDependencyEditCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/dependencyeditcontroller"});
+                    view.AddDependencies(ToClientUrl, new string[] { "controllers/dependencyeditcontroller" });
                 });
 
             #endregion

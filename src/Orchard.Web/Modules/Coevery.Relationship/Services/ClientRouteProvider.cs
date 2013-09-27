@@ -11,7 +11,7 @@ namespace Coevery.Relationship.Services {
                 .View(view => {
                     view.TemplateUrl = "'SystemAdmin/Relationship/Relationships'";
                     view.Controller = "RelationshipsCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/relationshipscontroller"});
+                    view.AddDependencies(ToClientUrl, new[] {"controllers/relationshipscontroller"});
                 });
 
             builder.Describe("CreateOneToMany")
@@ -24,7 +24,7 @@ namespace Coevery.Relationship.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "CreateOneToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/onetomanydetailcontroller"});
+                    view.AddDependencies(ToClientUrl, new string[] {"controllers/onetomanydetailcontroller"});
                 });
 
             builder.Describe("EditOneToMany")
@@ -37,7 +37,7 @@ namespace Coevery.Relationship.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EditOneToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/editonetomanycontroller"});
+                    view.AddDependencies(ToClientUrl, new string[] {"controllers/editonetomanycontroller"});
                 });
 
             builder.Describe("CreateManyToMany")
@@ -50,7 +50,7 @@ namespace Coevery.Relationship.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "CreateManyToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/manytomanydetailcontroller"});
+                    view.AddDependencies(ToClientUrl, new string[] {"controllers/manytomanydetailcontroller"});
                 });
 
             builder.Describe("EditManyToMany")
@@ -63,8 +63,11 @@ namespace Coevery.Relationship.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EditManyToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/editmanytomanycontroller"});
+                    view.AddDependencies(ToClientUrl, new string[] {"controllers/editmanytomanycontroller"});
                 });
+
+            builder.Describe("View")
+                .View(view => view.AddDependencies(ToClientUrl, "controllers/relatedentitylistcontroller"));
         }
     }
 }

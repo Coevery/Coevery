@@ -1,4 +1,4 @@
-﻿define(['core/app/detourService', 'core/services/commondataservice'], function (detour) {
+﻿define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'GeneralDetailCtrl',
       ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$detour', '$http','$parse',

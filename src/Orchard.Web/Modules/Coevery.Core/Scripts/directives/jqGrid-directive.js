@@ -16,7 +16,7 @@
               initializeGrid = function (gridOptions) {
                   var $grid;
                   if (gridOptions == null) {
-                      return null;
+                      return;
                   }
                   //logger.info("Initializing the grid");
                   $grid = $element.find("table.gridz");
@@ -72,14 +72,26 @@
                       $rootScope.$broadcast("DefaultAction", id);
                   });
                   
-                  $(window).bind('resize', function () {
-                      var target = $('#page-actions');
-                      if (target.length === 0) {
-                          return;
-                      }
-                      $grid.setGridWidth(target.width(), false).trigger('reloadGrid'); //Resized to new width as buttons
-                  }).trigger('resize');
+                  /*
+                    adds listener to resize grid to parent container when window is resized.
+                    This will work for reponsive and fluid layouts
+                  */
 
+
+                  function responsiveResize() {
+                      var gboxId = "#gbox_" + ($grid.attr("id"));
+                      return $(window).on("resize", function (event, ui) {
+                          var curWidth, parWidth, w;
+                          parWidth = $(gboxId).parent().width();
+                          curWidth = $(gboxId).width();
+                          w = parWidth - 1;
+                          if (Math.abs(w - curWidth) > 2) {
+                              $grid.setGridWidth(w);
+                          }
+                      });
+                  };
+
+                  responsiveResize();
                   return $grid.on("click.delete-action", ".delete-action", function (event) {
                       event.preventDefault();
                       var id;

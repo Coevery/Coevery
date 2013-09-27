@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'commonDataService',
         ['$rootScope', '$resource', function ($rootScope, $resource) {
-            return $resource('api/CoeveryCore/Common/:contentType',
+            return $resource('api/projections/entity/:contentType',
                 { contentType: '@contentType' },
                 { update: { method: 'PUT' } });
         }]

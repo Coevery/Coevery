@@ -1,4 +1,4 @@
-﻿define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function (detour) {
+﻿define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function (detour) {
     detour.registerController([
         'GeneralListCtrl',
         ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$detour', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
@@ -27,16 +27,10 @@
                         Filters: getFilters()
                     };
                 };
-                //var getPageSize = function() {
-                //    return pageSize;
-                //};
-                //var getPage = function() {
-                //    return currentPage;
-                //};
+
                 $scope.getPagedDataAsync = function () {
-                    $("#contentList").jqGrid('setGridParam', {
-                        postData: getPostData()
-                    }).trigger('reloadGrid');
+                    $scope.contentList.setParam({ postData: getPostData() });
+                    $scope.contentList.reload();
                 };
 
                 // fetch view columns
@@ -56,7 +50,7 @@
                             $scope.getPagedDataAsync();
                         } else {
                             $scope.gridOptions = {
-                                url: 'api/CoeveryCore/Common/' + moduleName,
+                                url: 'api/projections/entity/' + moduleName,
                                 mtype: "post",
                                 postData: getPostData(),
                                 rowNum: pageSize,
@@ -315,22 +309,3 @@
             }]
     ]);
 });
-
-/*Abandoned code
-var primaryKeyGetter = $parse('ContentId');
-
-$scope.$watch('pagingOptions', function(newVal, oldVal) {
-                    if (newVal !== oldVal) {
-                        if (newVal.pageSize != oldVal.pageSize) {
-                            var maxPage = Math.ceil($scope.totalServerItems / newVal.pageSize);
-                            //var currentPage = Math.ceil(oldVal.pageSize * $scope.pagingOptions.currentPage / newVal.pageSize);
-                            //if (currentPage > maxPage) currentPage = maxPage;
-                            if ($scope.pagingOptions.currentPage > maxPage) {
-                                $scope.pagingOptions.currentPage = maxPage;
-                                return;
-                            }
-                        }
-                        $scope.getPagedDataAsync();
-                    }
-                }, true);
-*/

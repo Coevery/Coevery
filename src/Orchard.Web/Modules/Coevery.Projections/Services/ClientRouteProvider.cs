@@ -21,7 +21,7 @@ namespace Coevery.Projections.Services
                 .View(view => {
                     view.TemplateUrl = "'SystemAdmin/Projections/List'";
                     view.Controller = "ProjectionListCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/listcontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/listcontroller" });
                 });
 
             builder.Describe("ProjectionCreate")
@@ -31,7 +31,7 @@ namespace Coevery.Projections.Services
                 .View(view => {
                     view.TemplateUrl = "function(params) { return 'SystemAdmin/Projections/Create/' + params.EntityName;}";
                     view.Controller = "ProjectionDetailCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/detailcontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/detailcontroller" });
                 });
 
             builder.Describe("ProjectionEdit")
@@ -44,7 +44,7 @@ namespace Coevery.Projections.Services
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "ProjectionDetailCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/detailcontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/detailcontroller" });
                 });
         }
     }

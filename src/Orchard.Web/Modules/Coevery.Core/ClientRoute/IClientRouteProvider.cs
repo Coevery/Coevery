@@ -20,13 +20,11 @@ namespace Coevery.Core.ClientRoute {
 
         public abstract void Discover(ClientRouteTableBuilder builder);
 
-        protected string[] ToClientUrl(IEnumerable<string> scripts) {
+        protected string ToClientUrl(string script) {
             var basePath = VirtualPathUtility.AppendTrailingSlash(Feature.Descriptor.Extension.Location + "/" + Feature.Descriptor.Extension.Id);
-            if (scripts == null) return null;
-            var results = scripts.Select(scriptPath =>
-                VirtualPathUtility.Combine(VirtualPathUtility.Combine(basePath, "Scripts/"), scriptPath + ".js"))
-                .Select(VirtualPathUtility.ToAbsolute).ToArray();
-            return results;
+            if (script == null) return null;
+            var virtualPath = VirtualPathUtility.Combine(VirtualPathUtility.Combine(basePath, "Scripts/"), script + ".js");
+            return VirtualPathUtility.ToAbsolute(virtualPath);
         }
     }
 }

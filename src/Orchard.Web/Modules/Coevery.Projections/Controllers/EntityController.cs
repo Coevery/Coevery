@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Core;
 using Coevery.Core.Services;
 using Coevery.Core.ViewModels;
 using Newtonsoft.Json;
@@ -22,8 +23,8 @@ using System.Linq;
 using Orchard.Tokens;
 using Orchard.UI.Navigation;
 
-namespace Coevery.Core.Controllers {
-    public class CommonController : ApiController {
+namespace Coevery.Projections.Controllers {
+    public class EntityController : ApiController {
         private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         private readonly ITokenizer _tokenizer;
@@ -31,7 +32,7 @@ namespace Coevery.Core.Controllers {
         private readonly IRepository<FilterRecord> _filterRepository;
         private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
 
-        public CommonController(
+        public EntityController(
             IContentManager iContentManager,
             IOrchardServices orchardServices,
             IProjectionManager projectionManager,

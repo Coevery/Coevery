@@ -15,7 +15,7 @@ namespace Coevery.FormDesigner.Services {
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "FormDesignerCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/formdesignercontroller"});
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/formdesignercontroller" });
                 });
         }
     }

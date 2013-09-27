@@ -12,7 +12,7 @@ namespace Coevery.OptionSet.Services {
                 .View(view => {
                     view.TemplateUrl = "'SystemAdmin/OptionSet/List'";
                     view.Controller = "OptionItemsCtrl";
-                    view.Dependencies = ToClientUrl(new[] { "controllers/optionitemeditcontroller", "services/optionitemdataservice" });
+                    view.AddDependencies(ToClientUrl, new[] { "controllers/optionitemeditcontroller", "services/optionitemdataservice" });
                 });
         }
     }

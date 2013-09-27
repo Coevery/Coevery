@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-define(['core/app/detourService', 'core/services/commondataservice', 'core/services/columndefinitionservice'], function (detour) {
+define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/columndefinitionservice'], function (detour) {
     detour.registerController([
       'RelatedEntityListCtrl',
       ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService',
@@ -29,9 +29,8 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
               };
           };
           $scope.getPagedDataAsync = function () {
-              $("#referenceList").jqGrid('setGridParam', {
-                  postData: getPostData()
-              }).trigger('reloadGrid');
+              $scope.referenceList.setParam({ postData: getPostData() });
+              $scope.referenceList.reload();
           };
 
           $scope.$watch('filterOptions', function (newVal, oldVal) {
@@ -52,7 +51,7 @@ define(['core/app/detourService', 'core/services/commondataservice', 'core/servi
                       $scope.getPagedDataAsync();
                   } else {
                       $scope.gridOptions = {
-                          url: 'api/CoeveryCore/Common/' + $scope.entityTypeName,
+                          url: 'api/projections/entity/' + $scope.entityTypeName,
                           mtype: "post",
                           postData: getPostData(),
                           rowNum: pageSize,
