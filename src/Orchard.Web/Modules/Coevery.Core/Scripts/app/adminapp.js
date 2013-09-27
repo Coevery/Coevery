@@ -63,7 +63,7 @@
                     '<section class="row-actions hide">' +
                     '<span class="icon-edit edit-action" data-id={0} title="Edit"></span>' +
                     '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
-                    'delete-action="delete({1})" data-id= {1} title="Delete"></span>{4}</section>' +
+                    'delete-action="delete({1})" title="Delete"></span>{4}</section>' +
                     '<span class=\"{3}\" data-id= {1} > {2} </span> </div>';
                 if (!options.colModel.formatoptions) {
                     return template.format(options.rowId, options.rowId, cellvalue, '', '');

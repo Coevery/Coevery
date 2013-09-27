@@ -58,15 +58,19 @@ namespace Coevery.Entities.Controllers {
         }
 
         // DELETE api/Entities/Entity/:entityName
-        public virtual HttpResponseMessage Delete(string name) {
-            var typeViewModel = _contentDefinitionService.GetType(name);
+        public virtual HttpResponseMessage Delete(int name) {
+            var entityName = _contentMetadataService.TryDeleteEntity(name);
+            if (entityName == null) {
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            var typeViewModel = _contentDefinitionService.GetType(entityName);
 
             if (typeViewModel == null) {
                 return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
-            _entityEvents.OnDeleting(name);
-            _contentDefinitionService.RemoveType(name, true);
-            _schemaUpdateService.DropTable(name);
+            _entityEvents.OnDeleting(entityName);
+            _contentDefinitionService.RemoveType(entityName, true);
+            _schemaUpdateService.DropTable(entityName);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

@@ -22,9 +22,12 @@ namespace Coevery.Entities.Services {
         EntityMetadataPart GetEntity(int id);
         EntityMetadataPart GetEntity(string name);
         bool CheckEntityCreationValid(string name, string displayName);
+        string ConstructEntityName(string entityName);
+        string TryDeleteEntity(int id);
 
         IEnumerable<FieldMetadataRecord> GetFieldsList(int entityId);
         SettingsDictionary ParseSetting(string setting);
+        string ConstructFieldName(string entityName, string displayName);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
         bool CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
     }
@@ -72,6 +75,13 @@ namespace Coevery.Entities.Services {
             return entity.First();
         }
 
+        public string ConstructEntityName(string entityName) {
+            var resultName = entityName;
+            while (GetEntity(resultName) != null)
+                resultName = VersionName(resultName);
+            return resultName;
+        }
+
         public bool CreateEntity(EditTypeViewModel sourceModel) {
             var entityDraft = _services.ContentManager.New<EntityMetadataPart>("EntityMetadata");
             var baseFieldSetting = new SettingsDictionary {
@@ -97,6 +107,15 @@ namespace Coevery.Entities.Services {
             return true;
         }
 
+        public string TryDeleteEntity(int id) {
+            var entity = GetEntity(id);
+            if (!entity.ContentItem.VersionRecord.Published) {
+                entity.FieldMetadataRecords.Clear();
+                _services.ContentManager.Remove(entity.ContentItem);
+                return null;
+            }
+            return entity.Name;
+        }
         #endregion
 
         #region Field Related
@@ -117,8 +136,19 @@ namespace Coevery.Entities.Services {
 
         public bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName) {
             return !entity.FieldMetadataRecords.Any(
-                field => string.Equals(field.Name, name,StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(ParseSetting(field.Settings)["DisplayName"],displayName,StringComparison.OrdinalIgnoreCase));
+                field => string.Equals(field.Name, name, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(ParseSetting(field.Settings)["DisplayName"], displayName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public string ConstructFieldName(string entityName, string displayName) {
+            var entity = GetEntity(entityName);
+            if (entity == null) {
+                throw new ArgumentException("The entity doesn't exist: " + entityName);
+            }
+            var resultName = displayName;
+            while (entity.FieldMetadataRecords.Any(x => String.Equals(resultName, x.Name, StringComparison.OrdinalIgnoreCase)))
+                resultName = VersionName(resultName);
+            return resultName;
         }
 
         public bool CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel) {
@@ -179,6 +209,20 @@ namespace Coevery.Entities.Services {
         }
         #endregion
         #endregion
+
+        private static string VersionName(string name) {
+            int version;
+            var nameParts = name.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (nameParts.Length > 1 && int.TryParse(nameParts.Last(), out version)) {
+                version = version > 0 ? ++version : 2;
+                //this could unintentionally chomp something that looks like a version
+                name = string.Join("_", nameParts.Take(nameParts.Length - 1));
+            } else {
+                version = 2;
+            }
+            return string.Format("{0}_{1}", name, version);
+        }
     }
 }
 

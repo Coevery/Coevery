@@ -76,7 +76,7 @@ namespace Coevery.Entities.Controllers {
 
         public ActionResult EntityName(string displayName, int version) {
             return Json(new {
-                result = _contentDefinitionService.GenerateContentTypeNameFromDisplayName(displayName),
+                result = _contentMetadataService.ConstructEntityName(displayName.ToSafeName()),
                 version = version
             });
         }
@@ -264,8 +264,7 @@ namespace Coevery.Entities.Controllers {
                 });
             }
             return Json(new {
-                //result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName, displayName),
-                result = displayName.ToSafeName(),
+                result = _contentMetadataService.ConstructFieldName(entityName,displayName.ToSafeName()),
                 version = version
             });
         }  
@@ -415,6 +414,7 @@ namespace Coevery.Entities.Controllers {
     }
 }
 
+/*Abandoned Codes
 //With SafeName, this is redundant.
 //if (!String.IsNullOrWhiteSpace(viewModel.FieldName) && !viewModel.FieldName[0].IsLetter()) {
 //    ModelState.AddModelError("FieldName", T("The technical field name shouldn't start with a letter.").ToString());
@@ -427,3 +427,5 @@ namespace Coevery.Entities.Controllers {
 //if ( _contentDefinitionService.GetTypes().Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
 //    ModelState.AddModelError("Name", T("A type with the same Id already exists.").ToString());
 //}
+ result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName, displayName),
+ */

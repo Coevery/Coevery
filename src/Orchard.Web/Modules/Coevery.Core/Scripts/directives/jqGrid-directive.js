@@ -86,16 +86,18 @@
                       $grid.setGridWidth(target.width(), false).trigger('reloadGrid'); //Resized to new width as buttons
                   }).trigger('resize');
 
-                  return $grid.on("click.delete-action", ".delete-action", function (event) {
-                      event.preventDefault();
-                      var id;
-                      id = $(this).attr("data-id");
-                      $scope.$on("DeleteAction", function (subevent, args) {
-                          //subevent.preventDefault();
-                          $scope.delete(args);
-                      });
-                      $rootScope.$broadcast("DeleteAction", id);
-                  });
+                  //return $grid.on("click.delete-action", ".delete-action", function (event) {
+                  //    event.preventDefault();
+                  //    var id;
+                  //    id = $(this).attr("data-id");
+                  //    $scope.$on("DeleteAction", function (subevent, args) {
+                  //        //subevent.preventDefault();
+                  //        $scope.delete(args);
+                  //    });
+                  //    $rootScope.$broadcast("DeleteAction", id);
+                  //});
+
+                  return $grid;
               };
 
               return $scope.$watch(attrs.agGrid, initializeGrid);
