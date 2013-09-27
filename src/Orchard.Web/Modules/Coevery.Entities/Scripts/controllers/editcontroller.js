@@ -32,7 +32,7 @@ define(['core/app/detourService'], function (detour) {
 
           $scope.saveAndView = function () {
               var promise = $scope.save();
-              promise.then(function (response) {
+              promise.done(function (response) {
                   var getter = $parse('entityName');
                   var entityName = getter(response.data);
                   if (entityName)

@@ -57,7 +57,7 @@
                             </div>
                         </section>
                     </fieldset>
-                    //@Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
+                    @Html.HiddenFor(model=>model.Id)
                 }
             </div>
         </div>
