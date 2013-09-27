@@ -227,7 +227,7 @@ namespace Coevery.Entities.Controllers {
             }
 
             try {
-                _contentMetadataService.CreateField(entity, viewModel);
+                _contentMetadataService.CreateField(entity, viewModel,this);
                 if (!ModelState.IsValid) {
                     Services.TransactionManager.Cancel();
                     Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -257,7 +257,8 @@ namespace Coevery.Entities.Controllers {
                 });
             }
             return Json(new {
-                result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName, displayName),
+                //result = _contentDefinitionService.GenerateFieldNameFromDisplayName(entityName, displayName),
+                result = displayName.ToSafeName(),
                 version = version
             });
         }  

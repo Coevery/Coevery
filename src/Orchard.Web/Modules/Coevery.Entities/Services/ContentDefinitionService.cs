@@ -336,7 +336,7 @@ namespace Coevery.Entities.Services {
             return string.Format("{0}_{1}", name, version);
         }
 
-        private class Updater : IUpdateModel {
+        public class Updater : IUpdateModel {
             private readonly IUpdateModel _thunk;
 
             public Updater(IUpdateModel thunk) {

@@ -8,10 +8,12 @@ using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
+using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.MetaData.Services;
 using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
+using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinitionEditorEvents;
 
 namespace Coevery.Entities.Services {
     public interface IContentMetadataService : IDependency {
@@ -24,21 +26,24 @@ namespace Coevery.Entities.Services {
         IEnumerable<FieldMetadataRecord> GetFieldsList(int entityId);
         SettingsDictionary ParseSetting(string setting);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
-        bool CreateField(EntityMetadataPart entity, AddFieldViewModel sourceModel);
+        bool CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
     }
 
     public class ContentMetadataService : IContentMetadataService {
         private readonly IOrchardServices _services;
         private readonly ISettingsFormatter _settingsFormatter;
         private readonly IRepository<ContentFieldDefinitionRecord> _fieldDefinitionRepository;
+        private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         public ContentMetadataService(
             IOrchardServices services,
             ISettingsFormatter settingsFormatter,
-            IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository
+            IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents
             ) {
             _services = services;
             _settingsFormatter = settingsFormatter;
             _fieldDefinitionRepository = fieldDefinitionRepository;
+            _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
         }
 
         #region Entity Related
@@ -84,17 +89,11 @@ namespace Coevery.Entities.Services {
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
             //entityDraft.Settings = sourceModel.Settings;
-            var baseFieldDefinition = _fieldDefinitionRepository.Get(def => def.Name == "CoeveryTextField");
-            if (baseFieldDefinition == null) {
-                baseFieldDefinition = new ContentFieldDefinitionRecord { Name = "CoeveryTextField" };
-                _fieldDefinitionRepository.Create(baseFieldDefinition);
-            }
 
             entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
-                //EntityMetadataRecord = 
                 Name = sourceModel.FieldName,
-                ContentFieldDefinitionRecord = baseFieldDefinition,
-                Settings = _settingsFormatter.Map(baseFieldSetting).ToString()
+                ContentFieldDefinitionRecord = FetchFieldDefinition("CoeveryTextField"),
+                Settings = CompileSetting(baseFieldSetting)
             });
             _services.ContentManager.Create(entityDraft, VersionOptions.Draft);
             return true;
@@ -112,15 +111,75 @@ namespace Coevery.Entities.Services {
                 : _settingsFormatter.Map(XElement.Parse(setting));
         }
 
+        private string CompileSetting(SettingsDictionary settings) {
+            return settings == null
+                       ? null
+                       : _settingsFormatter.Map(settings).ToString();
+        }
+
         public bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName) {
             return !entity.FieldMetadataRecords.Any(
                 field => string.Equals(field.Name, name,StringComparison.OrdinalIgnoreCase)
                     || string.Equals(ParseSetting(field.Settings)["DisplayName"],displayName,StringComparison.OrdinalIgnoreCase));
         }
 
-        public bool CreateField(EntityMetadataPart entity,AddFieldViewModel sourceModel) {
+        public bool CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel) {
+            var fieldBase = new ContentPartFieldDefinition(viewModel.Name) {
+                DisplayName = viewModel.DisplayName
+            };
+            var builder = new FieldConfigurerImpl(fieldBase);
+            builder.OfType(viewModel.FieldTypeName);
+            _contentDefinitionEditorEvents.PartFieldEditorUpdate(builder, updateModel);
+            entity.FieldMetadataRecords.Add(new FieldMetadataRecord {
+                ContentFieldDefinitionRecord = FetchFieldDefinition(viewModel.FieldTypeName),
+                Name = viewModel.Name,
+                Settings = CompileSetting(builder.Build().Settings)
+            });
             return true;
         }
+
+        #region Field Private Methods
+        private ContentFieldDefinitionRecord FetchFieldDefinition(string fieldType) {
+            var baseFieldDefinition = _fieldDefinitionRepository.Get(def => def.Name == fieldType);
+            if (baseFieldDefinition == null) {
+                baseFieldDefinition = new ContentFieldDefinitionRecord { Name = fieldType };
+                _fieldDefinitionRepository.Create(baseFieldDefinition);
+            }
+            return baseFieldDefinition;
+        }
+
+        class FieldConfigurerImpl : ContentPartFieldDefinitionBuilder {
+            private ContentFieldDefinition _fieldDefinition;
+            private readonly string _fieldName;
+
+            public FieldConfigurerImpl(ContentPartFieldDefinition field)
+                : base(field) {
+                _fieldDefinition = field.FieldDefinition;
+                _fieldName = field.Name;
+            }
+            public ContentPartFieldDefinition Build() {
+                return new ContentPartFieldDefinition(_fieldDefinition, _fieldName, _settings);
+            }
+
+            public override string Name {
+                get { return _fieldName; }
+            }
+
+            public override string FieldType {
+                get { return _fieldDefinition.Name; }
+            }
+
+            public override ContentPartFieldDefinitionBuilder OfType(ContentFieldDefinition fieldDefinition) {
+                _fieldDefinition = fieldDefinition;
+                return this;
+            }
+
+            public override ContentPartFieldDefinitionBuilder OfType(string fieldType) {
+                _fieldDefinition = new ContentFieldDefinition(fieldType);
+                return this;
+            }
+        }
+        #endregion
         #endregion
     }
 }
