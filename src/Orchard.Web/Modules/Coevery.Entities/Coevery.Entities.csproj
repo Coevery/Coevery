@@ -109,7 +109,7 @@
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Services\IContentFieldValueProvider.cs" />
     <Compile Include="Services\ContentFieldValueProvider.cs" />
-    <Compile Include="Services\IContentMetadataService.cs" />
+    <Compile Include="Services\ContentMetadataService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
     <Compile Include="Settings\FieldEditorEvents.cs" />

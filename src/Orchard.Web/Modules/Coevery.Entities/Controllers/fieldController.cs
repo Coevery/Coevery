@@ -17,12 +17,15 @@ namespace Coevery.Entities.Controllers {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IFieldEvents _fieldEvents;
         private readonly ISchemaUpdateService _schemaUpdateService;
+        private readonly IContentMetadataService _contentMetadataService;
 
         public FieldController(
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionManager contentDefinitionManager,
             IFieldEvents fieldEvents,
-            ISchemaUpdateService schemaUpdateService) {
+            ISchemaUpdateService schemaUpdateService,
+            IContentMetadataService contentMetadataService) {
+            _contentMetadataService = contentMetadataService;
             _contentDefinitionService = contentDefinitionService;
             _contentDefinitionManager = contentDefinitionManager;
             _fieldEvents = fieldEvents;
@@ -33,16 +36,18 @@ namespace Coevery.Entities.Controllers {
         public Localizer T { get; set; }
 
         // GET api/metadata/field
-        public object Get(string name, int page, int rows) {
-            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
+        public object Get(int name, int page, int rows) {
+            var metadataTypes = _contentMetadataService.GetFieldsList(name);
 
-            var query = from type in metadataTypes
-                        from field in type.Fields
+            var query = from field in metadataTypes
+                        let fieldType = field.ContentFieldDefinitionRecord.Name
+                        let setting = _contentMetadataService.ParseSetting(field.Settings)
                         select new {
                             field.Name,
-                            field.DisplayName,
-                            FieldType = field.FieldDefinition.Name.CamelFriendly(),
-                            Type = field.Settings.GetModel<FieldSettings>(field.FieldDefinition.Name + "Settings").IsSystemField
+                            field.Id,
+                            DisplayName = setting["DisplayName"],
+                            FieldType = fieldType.CamelFriendly(),
+                            Type = setting.GetModel<FieldSettings>(fieldType+"Settings").IsSystemField
                             ? "System Field" : "User Field",
                             ControllField = string.Empty
                         };
@@ -74,3 +79,7 @@ namespace Coevery.Entities.Controllers {
         }
     }
 }
+
+/*Abandoned Code
+var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
+ */

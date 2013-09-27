@@ -87,10 +87,10 @@ namespace Coevery.Entities.Controllers {
                 return new HttpUnauthorizedResult();
             }
 
-            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
+            viewModel.DisplayName = string.IsNullOrWhiteSpace(viewModel.DisplayName) ? String.Empty : viewModel.DisplayName.Trim();
             viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
 
-            viewModel.FieldLabel = viewModel.FieldLabel ?? String.Empty;
+            viewModel.FieldLabel = string.IsNullOrWhiteSpace(viewModel.FieldLabel) ? String.Empty : viewModel.FieldLabel.Trim();
             viewModel.FieldName = (viewModel.FieldName ?? viewModel.FieldLabel).ToSafeName();
 
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
@@ -99,6 +99,8 @@ namespace Coevery.Entities.Controllers {
 
             if (String.IsNullOrWhiteSpace(viewModel.Name)) {
                 ModelState.AddModelError("Name", T("The Content Type Id can't be empty.").ToString());
+            } else if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.Name)) {
+                ModelState.AddModelError("Name", T("The name should be singular.").ToString());
             }
 
             if (String.IsNullOrWhiteSpace(viewModel.FieldLabel)) {
@@ -107,30 +109,12 @@ namespace Coevery.Entities.Controllers {
 
             if (String.IsNullOrWhiteSpace(viewModel.FieldName)) {
                 ModelState.AddModelError("Name", T("The Field Name can't be empty.").ToString());
-            }
-
-            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.Name)) {
-                ModelState.AddModelError("Name", T("The name should be singular.").ToString());
-            }
-
-            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("Name", T("A type with the same Id already exists.").ToString());
-            }
-
-            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
-                ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
-            }
-
-            if (_contentDefinitionService.GetTypes().Any(t => String.Equals(t.DisplayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("DisplayName", T("A type with the same Display Name already exists.").ToString());
-            }
-
-            if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.FieldName)) {
+            } else if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.FieldName)) {
                 ModelState.AddModelError("FieldName", T("The field name should be singular.").ToString());
             }
 
-            if (!String.IsNullOrWhiteSpace(viewModel.FieldName) && !viewModel.FieldName[0].IsLetter()) {
-                ModelState.AddModelError("FieldName", T("The technical field name must start with a letter.").ToString());
+            if ( !_contentMetadataService.CheckEntityCreationValid(viewModel.Name,viewModel.DisplayName)) {
+                ModelState.AddModelError("Name", T("A type with the same Name or DisplayName already exists.").ToString());
             }
 
             if (!ModelState.IsValid) {
@@ -159,19 +143,23 @@ namespace Coevery.Entities.Controllers {
             return View(typeViewModel);
         }
 
-        public ActionResult Detail(int id) {
+        public ActionResult Detail(string id) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content type."))) {
                 return new HttpUnauthorizedResult();
             }
 
             //var typeViewModel = _contentDefinitionService.GetType(id);
-            var typeViewModel = _contentMetadataService.GetEntity(id);
+            var entity = _contentMetadataService.GetEntity(id);
 
-            if (typeViewModel == null) {
+            if (entity == null) {
                 return HttpNotFound();
             }
 
-            return View(typeViewModel);
+            return View(new EditTypeViewModel {
+                Id = entity.Id,
+                Name = entity.Name,
+                DisplayName = entity.DisplayName
+            });
         }
 
         #endregion
@@ -212,23 +200,14 @@ namespace Coevery.Entities.Controllers {
                 return new HttpUnauthorizedResult();
             }
 
-            var partViewModel = _contentDefinitionService.GetPart(id);
-            var typeViewModel = _contentDefinitionService.GetType(id);
-
-            if (partViewModel == null) {
-                // id passed in might be that of a type w/ no implicit field
-                if (typeViewModel != null) {
-                    partViewModel = new EditPartViewModel {Name = typeViewModel.Name};
-                    _contentDefinitionService.AddPart(new CreatePartViewModel {Name = partViewModel.Name});
-                    _contentDefinitionService.AddPartToType(partViewModel.Name, typeViewModel.Name);
-                }
-                else {
-                    return HttpNotFound();
-                }
+            var entity = _contentMetadataService.GetEntity(id);
+            if (entity == null) {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Content(string.Format("The entity with name \"{0}\" doesn't exist!",id));
             }
 
-            viewModel.DisplayName = viewModel.DisplayName ?? String.Empty;
-            viewModel.DisplayName = viewModel.DisplayName.Trim();
+            viewModel.DisplayName = string.IsNullOrWhiteSpace(viewModel.DisplayName)
+                ? String.Empty : viewModel.DisplayName.Trim();
             viewModel.Name = (viewModel.Name ?? viewModel.DisplayName).ToSafeName();
 
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
@@ -243,26 +222,12 @@ namespace Coevery.Entities.Controllers {
                 ModelState.AddModelError("Name", T("The Field Name can't be any case of 'Id'.").ToString());
             }
 
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("Name", T("A field with the same name already exists.").ToString());
-            }
-
-            if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
-                ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
-            }
-
-            if (!String.Equals(viewModel.Name, viewModel.Name.ToSafeName(), StringComparison.OrdinalIgnoreCase)) {
-                ModelState.AddModelError("Name", T("The technical name contains invalid characters.").ToString());
-            }
-
-            if (_contentDefinitionService.GetPart(partViewModel.Name).Fields.Any(t => String.Equals(t.DisplayName.Trim(), Convert.ToString(viewModel.DisplayName).Trim(), StringComparison.OrdinalIgnoreCase))) {
-                ModelState.AddModelError("DisplayName", T("A field with the same Display Name already exists.").ToString());
+            if (!_contentMetadataService.CheckFieldCreationValid(entity,viewModel.Name,viewModel.DisplayName)) {
+                ModelState.AddModelError("Name", T("A field with the same name or displayName already exists.").ToString());
             }
 
             try {
-                _contentDefinitionService.AddFieldToPart(viewModel.Name, viewModel.DisplayName, viewModel.FieldTypeName, partViewModel.Name);
-                _contentDefinitionService.AlterField(partViewModel.Name, viewModel.Name, this);
-
+                _contentMetadataService.CreateField(entity, viewModel);
                 if (!ModelState.IsValid) {
                     Services.TransactionManager.Cancel();
                     Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -270,8 +235,6 @@ namespace Coevery.Entities.Controllers {
                         .Select(m => m.ErrorMessage).ToArray();
                     return Content(string.Concat(errors));
                 }
-
-                _schemaUpdateService.CreateColumn(typeViewModel.Name, viewModel.Name, viewModel.FieldTypeName);
             }
             catch (Exception ex) {
                 var message = T("The \"{0}\" field was not added. {1}", viewModel.DisplayName, ex.Message);
@@ -443,3 +406,16 @@ namespace Coevery.Entities.Controllers {
         }
     }
 }
+
+//With SafeName, this is redundant.
+//if (!String.IsNullOrWhiteSpace(viewModel.FieldName) && !viewModel.FieldName[0].IsLetter()) {
+//    ModelState.AddModelError("FieldName", T("The technical field name shouldn't start with a letter.").ToString());
+//}
+
+//With SafeName, this is redundant.
+//if (!String.IsNullOrWhiteSpace(viewModel.Name) && !viewModel.Name[0].IsLetter()) {
+//    ModelState.AddModelError("Name", T("The technical name must start with a letter.").ToString());
+//}
+//if ( _contentDefinitionService.GetTypes().Any(t => String.Equals(t.Name.Trim(), viewModel.Name.Trim(), StringComparison.OrdinalIgnoreCase))) {
+//    ModelState.AddModelError("Name", T("A type with the same Id already exists.").ToString());
+//}
