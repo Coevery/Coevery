@@ -81,8 +81,11 @@ namespace Coevery.Entities.Controllers {
             });
         }
 
-        public void Publish(string id) {
-            
+        public void Publish(int id) {
+            var t = Services.ContentManager.Get(id, VersionOptions.Latest);
+            Services.ContentManager.Publish(t);
+            //var t = Services.ContentManager.Get<EntityMetadataPart>(id, VersionOptions.DraftRequired);
+            //t.DisplayName = "Modify";
         }
 
         [HttpPost, ActionName("Create")]
