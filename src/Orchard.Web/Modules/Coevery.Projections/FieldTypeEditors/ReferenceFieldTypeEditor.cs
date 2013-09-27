@@ -2,23 +2,19 @@
 using Coevery.Projections.FilterEditors.Forms;
 using Orchard.ContentManagement;
 using Orchard.Localization;
+using Orchard.Projections.FieldTypeEditors;
 using Orchard.Projections.Models;
 
 namespace Coevery.Projections.FieldTypeEditors {
-    public class ReferenceFieldTypeEditor : ILogicFieldTypeEditor {
+    public class ReferenceFieldTypeEditor : IConcreteFieldTypeEditor {
         public Localizer T { get; set; }
-
-        public bool NeedApplyFilter {
-            get { return false; }
-        }
+        public Filter Filter { get; set; }
 
         public ReferenceFieldTypeEditor() {
             T = NullLocalizer.Instance;
         }
 
-        public void ApplyFilter(dynamic context) {}
-
-        public bool CanHandle(string fieldTypeName) {
+        public bool CanHandle(string fieldTypeName, Type storageType) {
             return fieldTypeName == "ReferenceField";
         }
 

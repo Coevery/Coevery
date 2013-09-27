@@ -3,25 +3,26 @@ using System.Linq;
 using Coevery.OptionSet.Models;
 using Coevery.Projections.FilterEditors.Forms;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Localization;
+using Orchard.Projections.Descriptors.Filter;
+using Orchard.Projections.FieldTypeEditors;
 
 namespace Coevery.Projections.FieldTypeEditors {
-    public class OptionSetFieldTypeEditor : ILogicFieldTypeEditor {
+    public class OptionSetFieldTypeEditor : IConcreteFieldTypeEditor {
         public Localizer T { get; set; }
-
-        public bool NeedApplyFilter {
-            get { return true; }
-        }
+        public Filter Filter { get; set; }
 
         public OptionSetFieldTypeEditor() {
             T = NullLocalizer.Instance;
+            Filter = ApplyFilter;
         }
 
-        public bool CanHandle(string fieldTypeName) {
+        public bool CanHandle(string fieldTypeName, Type storageType) {
             return fieldTypeName == "OptionSetField";
         }
 
-        public void ApplyFilter(dynamic context) {
+        public void ApplyFilter(FilterContext context, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
             var op = (OptionSetOperator) Enum.Parse(typeof (OptionSetOperator), (string) context.State.Operator);
             string value = context.State.Value;
             if (value == null) {
@@ -70,5 +71,6 @@ namespace Coevery.Projections.FieldTypeEditors {
         public Action<IAliasFactory> GetFilterRelationship(string aliasName) {
             return null;
         }
+
     }
 }

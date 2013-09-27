@@ -2,27 +2,23 @@
 using Coevery.Projections.FilterEditors.Forms;
 using Orchard.ContentManagement;
 using Orchard.Localization;
+using Orchard.Projections.FieldTypeEditors;
 using Orchard.Projections.Models;
 using Orchard.Services;
 
 namespace Coevery.Projections.FieldTypeEditors {
-    public class DateFieldTypeEditor : ILogicFieldTypeEditor {
+    public class DateFieldTypeEditor : IConcreteFieldTypeEditor {
         private readonly IClock _clock;
 
         public Localizer T { get; set; }
-
-        public bool NeedApplyFilter {
-            get { return false; }
-        }
+        public Filter Filter { get; set; }
 
         public DateFieldTypeEditor(IClock clock) {
             _clock = clock;
             T = NullLocalizer.Instance;
         }
 
-        public void ApplyFilter(dynamic context) {}
-
-        public bool CanHandle(string fieldTypeName) {
+        public bool CanHandle(string fieldTypeName, Type storageType) {
             return fieldTypeName == "DateField";
         }
 

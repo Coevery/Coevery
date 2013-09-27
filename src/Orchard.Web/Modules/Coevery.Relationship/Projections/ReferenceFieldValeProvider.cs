@@ -24,8 +24,6 @@ namespace Coevery.Relationship.Projections {
             var referenceContentItem = _contentManager.Get(value.Value);
             var contentItemMetadata = _contentManager.GetItemMetadata(referenceContentItem);
 
-            return contentItemMetadata.DisplayText;
-
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             string pluralContentTypeName = pluralService.Pluralize(referenceContentItem.ContentType);
 
