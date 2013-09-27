@@ -53,12 +53,10 @@ namespace Coevery.Entities.Services {
         }
 
         public bool CheckEntityCreationValid(string name, string displayName) {
-            var result = _services.ContentManager.Query<EntityMetadataPart, EntityMetadataRecord>()
-                                  .ForVersion(VersionOptions.Latest)
-                                  .Where(record => string.Equals(record.Name, name, StringComparison.OrdinalIgnoreCase)
-                                      || string.Equals(record.DisplayName, displayName, StringComparison.OrdinalIgnoreCase))
-                                  .List();
-            return !(result != null && result.Any());
+            return !_services.ContentManager
+                .Query<EntityMetadataPart>(VersionOptions.Latest, "EntityMetadata").List()
+                .Any(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase)
+                          || string.Equals(x.DisplayName, displayName, StringComparison.OrdinalIgnoreCase));
         }
 
         public EntityMetadataPart GetEntity(int id) {
