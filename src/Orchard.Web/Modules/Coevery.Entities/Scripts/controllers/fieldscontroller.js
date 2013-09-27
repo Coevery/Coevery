@@ -78,10 +78,11 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
                 };
 
-                $scope.delete = function (field) {
-                    var deleteField = field || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                $scope.delete = function () {
+                    var deleteField = $scope.selectedItems.length > 0 ? $scope.selectedRow[0].Id : null;
                     if (!deleteField) return;
-                    fieldDataService.delete({ name: deleteField, parentname: entityName }, function () {
+                    fieldDataService.delete({ name: deleteField }, function () {
+                        $scope.selectedItems = [];
                         logger.success("Delete the field successful.");
                         $scope.getAllField();
                     }, function (reason) {

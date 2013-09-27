@@ -62,19 +62,26 @@ namespace Coevery.Entities.Controllers {
         }
 
         // DELETE api/metadata/field/name
-        public virtual HttpResponseMessage Delete(string name, string parentname) {
-            var partDefinition = _contentDefinitionManager.GetPartDefinition(parentname);
+        public virtual HttpResponseMessage Delete(int name) {
+            var deleteInfo = _contentMetadataService.TryDeleteField(name);
+            if (deleteInfo == null) {
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+
+            var fieldName = deleteInfo.FieldName;
+            var entityName = deleteInfo.EntityName;
+            var partDefinition = _contentDefinitionManager.GetPartDefinition(entityName);
             if (partDefinition == null) {
                 return Request.CreateResponse(HttpStatusCode.MethodNotAllowed, "Entity is not exist.");
             }
-            var fieldDefinition = partDefinition.Fields.FirstOrDefault(x => x.Name == name);
+            var fieldDefinition = partDefinition.Fields.FirstOrDefault(x => x.Name == fieldName);
             if (fieldDefinition == null) {
                 return Request.CreateResponse(HttpStatusCode.MethodNotAllowed, "Field is not exist.");
             }
 
-            _fieldEvents.OnDeleting(parentname, name);
-            _contentDefinitionService.RemoveFieldFromPart(name, parentname);
-            _schemaUpdateService.DropColumn(parentname, name);
+            _fieldEvents.OnDeleting(entityName, fieldName);
+            _contentDefinitionService.RemoveFieldFromPart(fieldName, entityName);
+            _schemaUpdateService.DropColumn(entityName, fieldName);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

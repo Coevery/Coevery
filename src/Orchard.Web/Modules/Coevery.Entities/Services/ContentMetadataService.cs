@@ -30,22 +30,26 @@ namespace Coevery.Entities.Services {
         string ConstructFieldName(string entityName, string displayName);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
         bool CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
+        FieldWithEntityInfoModel TryDeleteField(int id);
     }
 
     public class ContentMetadataService : IContentMetadataService {
         private readonly IOrchardServices _services;
         private readonly ISettingsFormatter _settingsFormatter;
         private readonly IRepository<ContentFieldDefinitionRecord> _fieldDefinitionRepository;
+        private readonly IRepository<FieldMetadataRecord> _fieldMetadataRepository;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         public ContentMetadataService(
             IOrchardServices services,
             ISettingsFormatter settingsFormatter,
             IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
+            IRepository<FieldMetadataRecord> fieldMetadataRepository,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents
             ) {
             _services = services;
             _settingsFormatter = settingsFormatter;
             _fieldDefinitionRepository = fieldDefinitionRepository;
+            _fieldMetadataRepository = fieldMetadataRepository;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
         }
 
@@ -109,9 +113,12 @@ namespace Coevery.Entities.Services {
 
         public string TryDeleteEntity(int id) {
             var entity = GetEntity(id);
+            if (entity == null) {
+                throw new NullReferenceException("Invalid id");
+            }
+            entity.FieldMetadataRecords.Clear();
+            _services.ContentManager.Remove(entity.ContentItem);
             if (!entity.ContentItem.VersionRecord.Published) {
-                entity.FieldMetadataRecords.Clear();
-                _services.ContentManager.Remove(entity.ContentItem);
                 return null;
             }
             return entity.Name;
@@ -166,6 +173,23 @@ namespace Coevery.Entities.Services {
             return true;
         }
 
+        public FieldWithEntityInfoModel TryDeleteField(int id) {
+            var field = _fieldMetadataRepository.Get(id);
+            var entity = _services.ContentManager.Get(field.EntityMetadataRecord.Id,VersionOptions.Latest).As<EntityMetadataPart>();
+            if (entity == null) {
+                throw new NullReferenceException("Invalid id");
+            }
+            entity.FieldMetadataRecords.Remove(field);
+            if (!entity.ContentItem.VersionRecord.Published) {
+                return null;
+            }
+            return new FieldWithEntityInfoModel {
+                EntityId = entity.Id,
+                EntityName = entity.Name,
+                FieldId = field.Id,
+                FieldName = field.Name
+            };
+        }
         #region Field Private Methods
         private ContentFieldDefinitionRecord FetchFieldDefinition(string fieldType) {
             var baseFieldDefinition = _fieldDefinitionRepository.Get(def => def.Name == fieldType);
