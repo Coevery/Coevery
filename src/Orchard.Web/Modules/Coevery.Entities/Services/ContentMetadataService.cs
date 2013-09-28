@@ -93,8 +93,8 @@ namespace Coevery.Entities.Services {
 
         public EntityMetadataPart GetDraftEntity(string name) {
             var entity = GetEntity(name);
-            return entity == null ? 
-                null : 
+            return entity == null ?
+                null :
                 Services.ContentManager.Get<EntityMetadataPart>(entity.Id, VersionOptions.DraftRequired);
         }
 
@@ -137,7 +137,7 @@ namespace Coevery.Entities.Services {
                 throw new NullReferenceException("Invalid id");
             }
             entity.FieldMetadataRecords.Clear();
-                Services.ContentManager.Remove(entity.ContentItem);
+            Services.ContentManager.Remove(entity.ContentItem);
             if (!entity.ContentItem.VersionRecord.Published) {
                 return null;
             }
@@ -206,7 +206,7 @@ namespace Coevery.Entities.Services {
 
         public FieldWithEntityInfoModel TryDeleteField(int id) {
             var field = _fieldMetadataRepository.Get(id);
-            var entity = _services.ContentManager.Get(field.EntityMetadataRecord.Id,VersionOptions.Latest).As<EntityMetadataPart>();
+            var entity = Services.ContentManager.Get(field.EntityMetadataRecord.Id, VersionOptions.Latest).As<EntityMetadataPart>();
             if (entity == null) {
                 throw new NullReferenceException("Invalid id");
             }
@@ -221,6 +221,7 @@ namespace Coevery.Entities.Services {
                 FieldName = field.Name
             };
         }
+
         #region Field Private Methods
 
         private ContentFieldDefinitionRecord FetchFieldDefinition(string fieldType) {
