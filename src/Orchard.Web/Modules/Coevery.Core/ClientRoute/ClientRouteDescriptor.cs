@@ -24,7 +24,7 @@ namespace Coevery.Core.ClientRoute {
 
         //public string Controller { get; set; }
 
-        internal List<ClientViewDescriptor> Views {
+        public List<ClientViewDescriptor> Views {
             get { return _views; }
         }
 

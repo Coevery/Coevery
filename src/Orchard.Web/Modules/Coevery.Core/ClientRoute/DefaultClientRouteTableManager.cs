@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using Autofac.Features.Metadata;
 using Newtonsoft.Json;
@@ -30,8 +31,6 @@ namespace Coevery.Core.ClientRoute {
         public ILogger Logger { get; set; }
 
         public object GetRouteTable(bool isFrontEnd) {
-
-            //return _cacheManager.Get<string, object>("ClientRouteTable", x => {
                 Logger.Information("Start building shape table");
 
             var alterationSets = _parallelCacheContext.RunInParallel(
@@ -45,22 +44,26 @@ namespace Coevery.Core.ClientRoute {
                     return builder.BuildAlterations().ToReadOnlyCollection();
                 });
 
-                var alterations = alterationSets
-                    .SelectMany(shapeAlterations => shapeAlterations)
-                    .ToList();
+            var alterations = alterationSets
+                .SelectMany(shapeAlterations => shapeAlterations)
+                .ToList();
 
-                var routeNodes = alterations.GroupBy(alteration => alteration.RouteName, StringComparer.OrdinalIgnoreCase)
-                                            .Select(group => new ClientRouteNode {Name = GetRouteName(group.Key), FullName = group.Key})
-                                            .ToList();
-
-                var rootNodes = routeNodes.Where(node => !node.FullName.Contains("."));
-                PopulateChildren(routeNodes);
-
-                var routes = GenerateRoutes(rootNodes, alterations);
-
+                var routes=GenerateRoutes(alterations);
                 Logger.Information("Done building shape table");
                 return routes;
-            //});
+        }
+
+        private List<ClientRouteDescriptor> GenerateRoutes(List<ClientRouteAlteration> alterations)
+        {
+            var routes = new List<ClientRouteDescriptor>();
+            foreach (var alteration in alterations)
+            {
+                var descriptor = new ClientRouteDescriptor { RouteName = alteration.RouteName};
+                alteration.Alter(descriptor);
+                routes.Add(descriptor);
+            }
+            routes = routes.OrderBy(item =>new Regex(@"\.").Matches(item.RouteName).Count).ToList();
+            return routes;
         }
 
         private IDictionary<string, object> GenerateRoutes(IEnumerable<ClientRouteNode> rootNodes, List<ClientRouteAlteration> alterations) {
