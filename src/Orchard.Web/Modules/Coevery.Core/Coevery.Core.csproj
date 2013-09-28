@@ -114,12 +114,10 @@
     <Compile Include="ContentPartFieldStorage\DefaultCotentPartFieldStorage.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
-    <Compile Include="Controllers\GridTemplateController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Controllers\ViewTemplateController.cs" />
-    <Compile Include="Controllers\ColumnDefinitionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="CoreShapes.cs" />
     <Compile Include="Drivers\DynamicContentsDriver.cs" />
@@ -211,8 +209,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\GridTemplate\DefaultFooterTemplate.cshtml" />
-    <Content Include="Views\GridTemplate\LinkCellTemplate.cshtml" />
     <Content Include="Views\ViewTemplate\View.cshtml" />
     <Content Include="Views\ViewTemplate\MenuList.cshtml" />
   </ItemGroup>

@@ -145,7 +145,6 @@ namespace Coevery.Projections.Services {
                     Description = field.DisplayName,
                     Position = layoutRecord.Properties.Count,
                     State = GetPropertyState(property),
-                    CustomPropertyTag = field.FieldDefinition.Name,
                     LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
                 };
                 layoutRecord.Properties.Add(propertyRecord);

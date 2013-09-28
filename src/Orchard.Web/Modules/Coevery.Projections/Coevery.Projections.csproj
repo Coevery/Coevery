@@ -105,7 +105,6 @@
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Controllers\OptionSetController.cs" />
     <Compile Include="Controllers\ReferenceController.cs" />
-    <Compile Include="Controllers\ViewDefinitionController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
     <Compile Include="Drivers\ListViewPartDriver.cs" />

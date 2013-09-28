@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using Coevery.Core.Services;
 using Coevery.Projections.Models;
-using Newtonsoft.Json.Linq;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Core.Title.Models;
-using Orchard.Localization;
-using Orchard.Projections.Models;
-using Orchard.Utility.Extensions;
 
 namespace Coevery.Projections.Controllers {
     public class ProjectionController : ApiController {
@@ -29,18 +22,21 @@ namespace Coevery.Projections.Controllers {
 
         public IOrchardServices Services { get; private set; }
 
-        public IEnumerable<JObject> Get() {
-            List<JObject> re = new List<JObject>();
-            var projections = _contentManager.Query<ProjectionPart>().List();
-            foreach (var projectionPart in projections) {
-                string displayName = _contentManager.Get(projectionPart.Record.QueryPartRecord.Id).As<TitlePart>().Title;
-                JObject reObJ = new JObject();
-                reObJ["ContentId"] = projectionPart.Id;
-                //reObJ["EntityType"] = projectionPart.As<TitlePart>().Title;
-                reObJ["DisplayName"] = displayName;
-                re.Add(reObJ);
+        public IEnumerable<object> Get(string id) {
+            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            if (pluralService.IsPlural(id)) {
+                id = pluralService.Singularize(id);
             }
-            return re;
+
+            var query = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
+                .Where(v => v.ItemContentType == id).List().Select(record => new {
+                    ContentId = record.Id,
+                    EntityType = record.ItemContentType,
+                    DisplayName = record.As<TitlePart>().Title,
+                    Default = record.IsDefault
+                }).ToList();
+
+            return query;
         }
 
         public object Get(string id, int page, int rows) {
@@ -49,21 +45,16 @@ namespace Coevery.Projections.Controllers {
                 id = pluralService.Singularize(id);
             }
 
-            var views = new List<JObject>();
-            var queries = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
-                .Where(v => v.ItemContentType == id).List();
-
-            var query = from record in queries
-                        select new {
-                            ContentId = record.Id,
-                            //EntityType = record.ItemContentType,
-                            DisplayName = record.As<TitlePart>().Title,
-                            Default = record.IsDefault
-                        };
+            var query = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
+                .Where(v => v.ItemContentType == id).List().Select(record => new {
+                    ContentId = record.Id,
+                    DisplayName = record.As<TitlePart>().Title,
+                    Default = record.IsDefault
+                }).ToList();
 
             var totalRecords = query.Count();
             return new {
-                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                total = Convert.ToInt32(Math.Ceiling((double) totalRecords/rows)),
                 page = page,
                 records = totalRecords,
                 rows = query
