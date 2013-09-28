@@ -47,21 +47,27 @@ namespace Coevery.Core.ClientRoute {
             var alterations = alterationSets
                 .SelectMany(shapeAlterations => shapeAlterations)
                 .ToList();
+            var distinctRouteNames = alterations.GroupBy(item => item.RouteName, StringComparer.OrdinalIgnoreCase)
+                .Select(item=>item.Key).ToList();
 
-                var routes=GenerateRoutes(alterations);
-                Logger.Information("Done building shape table");
-                return routes;
+            var routes = GenerateRoutes(distinctRouteNames, alterations);
+            Logger.Information("Done building shape table");
+            return routes;
         }
 
-        private List<ClientRouteDescriptor> GenerateRoutes(List<ClientRouteAlteration> alterations)
+        private List<ClientRouteDescriptor> GenerateRoutes(List<string> distinctRouteNames, List<ClientRouteAlteration> alterations)
         {
             var routes = new List<ClientRouteDescriptor>();
-            foreach (var alteration in alterations)
+            foreach (var routeName in distinctRouteNames)
             {
-                var descriptor = new ClientRouteDescriptor { RouteName = alteration.RouteName};
-                alteration.Alter(descriptor);
+                var descriptor = new ClientRouteDescriptor { RouteName = routeName };
+                foreach (var alteration in alterations.Where(item => item.RouteName == routeName))
+                {
+                    alteration.Alter(descriptor);
+                }
                 routes.Add(descriptor);
             }
+            
             routes = routes.OrderBy(item =>new Regex(@"\.").Matches(item.RouteName).Count).ToList();
             return routes;
         }
