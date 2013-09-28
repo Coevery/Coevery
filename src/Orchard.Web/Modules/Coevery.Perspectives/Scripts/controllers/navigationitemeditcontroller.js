@@ -2,12 +2,12 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
        'NavigationItemEditCtrl',
-       ['$timeout', '$parse', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http',
-       function ($timeout, $parse, $scope, logger, $detour, $stateParams, $resource, $http) {
+       ['$timeout', '$parse', '$scope', 'logger', '$state', '$stateParams', '$resource','$http',
+       function ($timeout, $parse, $scope, logger, $state, $stateParams, $resource, $http) {
            
 
            $scope.exit = function () {
-               $detour.transitionTo('PerspectiveDetail', { Id: $stateParams.Id });
+               $state.transitionTo('PerspectiveDetail', { Id: $stateParams.Id });
            };
 
            var validator = $("form[name=myForm]").validate({
@@ -42,7 +42,7 @@ define(['core/app/detourService'], function (detour) {
                    var getter = $parse('id');
                    var id = getter(response.data);
                    if(id)
-                       $detour.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId: id });
+                       $state.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId: id });
                });
                return promise;
            };

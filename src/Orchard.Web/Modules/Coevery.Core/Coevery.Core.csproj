@@ -211,6 +211,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\ViewTemplate\View.cshtml" />
     <Content Include="Views\ViewTemplate\MenuList.cshtml" />
+    <Content Include="Views\ViewTemplate\RegisterRouter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Items\" />

@@ -3,20 +3,20 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
         'EntityDetailCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams','entityDataService',
-            function ($scope, logger, $detour, $stateParams, entityDataService) {
+        ['$scope', 'logger', '$state', '$stateParams','entityDataService',
+            function ($scope, logger, $state, $stateParams, entityDataService) {
 
                 $scope.exit = function() {
-                    $detour.transitionTo('EntityList');
+                    $state.transitionTo('EntityList');
                 };
                 
                 $scope.edit = function () {
-                    $detour.transitionTo('EntityEdit', { Id: $stateParams.Id });
+                    $state.transitionTo('EntityEdit', { Id: $stateParams.Id });
                 };
 
                 $scope.delete = function () {
                     entityDataService.delete({ name: $stateParams.Id }, function () {
-                        $detour.transitionTo('EntityList');
+                        $state.transitionTo('EntityList');
                         logger.success("Delete the entity successful.");
                     }, function (reason) {
                         logger.error("Failed to delete the entity:" + reason);
@@ -24,7 +24,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.formDesigner = function() {
-                    $detour.transitionTo('FormDesigner', { EntityName: $stateParams.Id });
+                    $state.transitionTo('FormDesigner', { EntityName: $stateParams.Id });
                 };
             }]
     ]);

@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'CreateManyToManyCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$http', '$parse',
-            function ($scope, logger, $detour, $stateParams, $http, $parse) {
+        ['$scope', 'logger', '$state', '$stateParams', '$http', '$parse',
+            function ($scope, logger, $state, $stateParams, $http, $parse) {
                 
                 $scope.showPrimaryList = true;
                 $scope.showRelatedList = true;
@@ -36,7 +36,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
+                    $state.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
                 };
 
                 $scope.saveAndView = function () {
@@ -45,7 +45,7 @@ define(['core/app/detourService'], function (detour) {
                         var getter = $parse('relationId');
                         var relationId = getter(response.data);
                         if (relationId)
-                            $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.EntityName, RelationId: relationId });
+                            $state.transitionTo('EditManyToMany', { EntityName: $stateParams.EntityName, RelationId: relationId });
                     });
                     return promise;
                 };

@@ -4,15 +4,15 @@ define(['core/app/detourService',
         'Modules/Coevery.Perspectives/Scripts/services/navigationdataservice'], function (detour) {
             detour.registerController([
       'PerspectiveDetailCtrl',
-      ['$rootScope', '$timeout', '$scope', 'logger', '$detour', '$stateParams',
+      ['$rootScope', '$timeout', '$scope', 'logger', '$state', '$stateParams',
           '$resource', 
           'perspectiveDataService',
           'navigationDataService',
-      function ($rootScope, $timeout, $scope, logger, $detour, $stateParams, $resource, perspectiveDataService, navigationDataService) {
+      function ($rootScope, $timeout, $scope, logger, $state, $stateParams, $resource, perspectiveDataService, navigationDataService) {
           var perpectiveId = $stateParams.Id;
 
           $scope.exit = function () {
-              $detour.transitionTo('PerspectiveList');
+              $state.transitionTo('PerspectiveList');
           };
 
           $scope.save = function () {
@@ -47,17 +47,17 @@ define(['core/app/detourService',
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.addNavigationItem = function () {
-              $detour.transitionTo('CreateNavigationItem', { Id: perpectiveId });
+              $state.transitionTo('CreateNavigationItem', { Id: perpectiveId });
           };
 
           $scope.edit = function (navigationId) {
-              $detour.transitionTo('EditNavigationItem', {Id:perpectiveId, NId: navigationId });
+              $state.transitionTo('EditNavigationItem', {Id:perpectiveId, NId: navigationId });
           };
 
           $scope.view = $scope.edit;
 
           $scope.editPerspective = function () {
-              $detour.transitionTo('PerspectiveEdit', { Id: perpectiveId });
+              $state.transitionTo('PerspectiveEdit', { Id: perpectiveId });
           };
           
 

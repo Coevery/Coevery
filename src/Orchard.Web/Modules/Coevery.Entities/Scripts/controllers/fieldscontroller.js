@@ -3,8 +3,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice', 'Modules/Coevery.Entities/Scripts/services/fielddataservice'], function (detour) {
     detour.registerController([
         'FieldsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$dialog', 'fieldDataService',
-            function ($rootScope, $scope, logger, $detour, $stateParams, $dialog, fieldDataService) {
+        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', '$dialog', 'fieldDataService',
+            function ($rootScope, $scope, logger, $state, $stateParams, $dialog, fieldDataService) {
 
                 $scope.selectedItems = [];
                 var entityName = $stateParams.Id;
@@ -40,20 +40,20 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 //Dialog action
 
                 $scope.$on('toStep2', function (event, fieldInfo) {
-                    $detour.transitionTo('EntityDetail.Fields.CreateEditInfo', { Id: entityName, FieldTypeName: fieldInfo });
+                    $state.transitionTo('EntityDetail.Fields.CreateEditInfo', { Id: entityName, FieldTypeName: fieldInfo });
                 });
 
                 $scope.$on('toStep1', function () {
-                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
+                    $state.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
                 });
 
                 $scope.dialog = null;
 
                 $scope.$watch('dialog._open', function (newValue, oldValue) {
                     if (newValue == false && oldValue == true &&
-                        ($detour.current.name == 'EntityDetail.Fields.Create' ||
-                            $detour.current.name == 'EntityDetail.Fields.CreateEditInfo')) {
-                        $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                        ($state.current.name == 'EntityDetail.Fields.Create' ||
+                            $state.current.name == 'EntityDetail.Fields.CreateEditInfo')) {
+                        $state.transitionTo('EntityDetail.Fields', { Id: entityName });
                     }
                 });
 
@@ -73,7 +73,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 //Page action
 
                 $scope.add = function () {
-                    $detour.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
+                    $state.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
                 };
 
                 $scope.delete = function(field) {
@@ -88,10 +88,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.edit = function (fieldName) {
-                    $detour.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: fieldName });
+                    $state.transitionTo('FieldEdit.Items', { EntityName: entityName, FieldName: fieldName });
                 };
                 $scope.gotoDependency = function () {
-                    $detour.transitionTo('FieldDependencyList', { EntityName: entityName });
+                    $state.transitionTo('FieldDependencyList', { EntityName: entityName });
                 };
 
                 $scope.getAllField = function () {

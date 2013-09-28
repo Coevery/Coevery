@@ -22,16 +22,19 @@ using Orchard.Mvc.Html;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 using Orchard.UI.Navigation;
+using Coevery.Core.ClientRoute;
 
 namespace Coevery.Core.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly INavigationManager _navigationManager;
+        private readonly IClientRouteTableManager _clientRouteTableManager;
 
         public ViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionManager contentDefinitionManager,
-            INavigationManager navigationManager){
+            INavigationManager navigationManager,
+            IClientRouteTableManager clientRouteTableManager){
             Services = orchardServices;
             _contentDefinitionManager = contentDefinitionManager;
 
@@ -39,6 +42,7 @@ namespace Coevery.Core.Controllers {
             Logger = NullLogger.Instance;
 
             _navigationManager = navigationManager;
+            _clientRouteTableManager = clientRouteTableManager;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -50,6 +54,12 @@ namespace Coevery.Core.Controllers {
             const string menuName = "FrontMenu";
             IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
             return View(menuItems);
+        }
+
+        public ActionResult RegisterRouter(bool id)
+        {
+            List<ClientRouteDescriptor> routes = _clientRouteTableManager.GetRouteTable(id) as List<ClientRouteDescriptor>;
+            return PartialView(routes);
         }
 
         public ActionResult List(string id) {

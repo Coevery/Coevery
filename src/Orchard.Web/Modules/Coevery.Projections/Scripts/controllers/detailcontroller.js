@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/propertydataservice'], function (detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource', '$http', 'projectionDataService', 'propertyDataService', '$parse',
-            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, $http, projectionDataService, propertyDataService, $parse) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$state', '$stateParams', '$resource', '$http', 'projectionDataService', 'propertyDataService', '$parse',
+            function ($rootScope, $scope, $timeout, logger, $state, $stateParams, $resource, $http, projectionDataService, propertyDataService, $parse) {
                 var name = $stateParams.Id;
                 $scope.mySelections = [];
                 $scope.fieldCoumns = [];
@@ -75,7 +75,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         var getter = $parse('id');
                         var id = getter(response.data);
                         if (id)
-                            $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
+                            $state.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
                     });
                     return promise;
                 };
@@ -94,7 +94,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 };
 
                 $scope.exit = function() {
-                    $detour.transitionTo('EntityDetail.Views', { Id: $stateParams.EntityName });
+                    $state.transitionTo('EntityDetail.Views', { Id: $stateParams.EntityName });
                 };
 
                 $scope.addfield = function(fieldName, displayName) {

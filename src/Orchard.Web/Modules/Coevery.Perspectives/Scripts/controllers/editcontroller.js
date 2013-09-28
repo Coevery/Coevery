@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'PerspectiveEditCtrl',
-      ['$timeout', '$parse', '$scope', 'logger', '$detour','$http',
-      function ($timeout, $parse,$scope, logger, $detour, $http) {
+      ['$timeout', '$parse', '$scope', 'logger', '$state','$http',
+      function ($timeout, $parse,$scope, logger, $state, $http) {
 
           var validator = $("form[name=myForm]").validate({
               errorClass: "inputError"
@@ -35,7 +35,7 @@ define(['core/app/detourService'], function (detour) {
                   var getter = $parse('id');
                   var id = getter(response.data);
                   if(id)
-                      $detour.transitionTo('PerspectiveEdit', { Id: id });
+                      $state.transitionTo('PerspectiveEdit', { Id: id });
               });
               return promise;
           };
@@ -49,7 +49,7 @@ define(['core/app/detourService'], function (detour) {
           };
           
           $scope.exit = function () {
-              $detour.transitionTo('PerspectiveList');
+              $state.transitionTo('PerspectiveList');
           };
       }]
     ]);

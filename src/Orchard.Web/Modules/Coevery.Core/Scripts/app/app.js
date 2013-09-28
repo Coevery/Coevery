@@ -1,32 +1,16 @@
-﻿define(['angular-detour', 'core/directives/common'], function () {
+﻿define(['core/directives/common'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.compat', 'ui.utils', 'coevery.layout', 'coevery.grid', 'SharedServices', 'angular-underscore', 'coevery.common', 'coevery.filter']);
-    coevery.config(['$detourProvider', '$provide',
-        function ($detourProvider, $provide) {        
-            $detourProvider.loader = {
-                lazy: {
-                    enabled: true,
-                    routeUrl: 'api/CoeveryCore/Route',
-                    stateUrl: 'api/CoeveryCore/State',
-                    routeParameter: 'isFront=true&r'
-                },
-                crossDomain: true,
-                httpMethod: 'GET'
-            };
-        }
-    ]);
-
-    coevery.run(['$rootScope', '$state', '$stateParams', '$detour',
-        function ($rootScope, $state, $stateParams, $detour) {
+    coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato',
+        function ($rootScope, $state, $stateParams, $couchPotato) {
             //"cheating" so that couchPotato is available in requirejs
             //define modules -- we want run-time registration of components
             //to take place within those modules because it allows
             //for them to have their own dependencies also be lazy-loaded.
             //this is what requirejs is good at.
-            coevery.detour = $detour;
+            coevery.detour = $couchPotato;
             
-            $rootScope.$detour = $detour;
+            $rootScope.$detour = $couchPotato;
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 

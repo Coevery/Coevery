@@ -3,8 +3,8 @@
 define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/columndefinitionservice'], function (detour) {
     detour.registerController([
       'RelatedEntityListCtrl',
-      ['$rootScope', '$scope', '$parse', 'logger', '$detour', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService',
-      function ($rootScope, $scope, $parse, logger, $detour, $resource, $stateParams, $location, commonDataService, columnDefinitionService) {
+      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService',
+      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, $location, commonDataService, columnDefinitionService) {
 
           $scope.toolButtonDisplay = false;
           $scope.isInit = true;
@@ -100,21 +100,21 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
           };
 
           $scope.add = function () {
-              $detour.transitionTo('Create', { NavigationId: null , Module: $scope.entityTypeName });
+              $state.transitionTo('Create', { NavigationId: null , Module: $scope.entityTypeName });
           };
 
           $scope.edit = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = $scope.selectedItems[0];
               }
-              $detour.transitionTo('Detail', { NavigationId: null, Module: $scope.entityTypeName, Id: id });
+              $state.transitionTo('Detail', { NavigationId: null, Module: $scope.entityTypeName, Id: id });
           };
           
           $scope.view = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = $scope.selectedItems[0];
               }
-              $detour.transitionTo('View', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
+              $state.transitionTo('View', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
           };
       }]
     ]);

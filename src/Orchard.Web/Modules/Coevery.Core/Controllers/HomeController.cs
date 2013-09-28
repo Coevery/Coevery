@@ -9,6 +9,7 @@ namespace Coevery.Leads.Controllers
 {
     public class HomeController : Controller
     {
+
         [FrontMenuAttribute, Themed]
         public ActionResult Index(string returnUrl)
         {
