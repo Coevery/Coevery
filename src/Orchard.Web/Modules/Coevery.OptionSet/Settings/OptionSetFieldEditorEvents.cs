@@ -38,7 +38,6 @@ namespace Coevery.OptionSet.Settings {
             }
             var model = new OptionSetFieldSettings();
             if (updateModel.TryUpdateModel(model, "OptionSetFieldSettings", null, null)) {
-
                 UpdateSettings(model, settingsDictionary, "OptionSetFieldSettings");
                 if (model.OptionSetId == 0) {
                     model.OptionSetId = CreateOptionSetPart(fieldName, model);
@@ -49,6 +48,19 @@ namespace Coevery.OptionSet.Settings {
                 }
                 settingsDictionary["ReferenceFieldSettings.OptionSetId"] = model.OptionSetId.ToString("D");
                 settingsDictionary["ReferenceFieldSettings.ListMode"] = model.ListMode.ToString();
+            }
+        }
+
+        public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
+            if (builder.FieldType != "OptionSetField") {
+                return;
+            }
+
+            var model = settingsDictionary.TryGetModel<OptionSetFieldSettings>();
+            if (model != null) {
+                UpdateSettings(model, builder, "OptionSetFieldSettings");
+                builder.WithSetting("OptionSetFieldSettings.OptionSetId", model.OptionSetId.ToString());
+                builder.WithSetting("OptionSetFieldSettings.ListMode", model.ListMode.ToString());
             }
         }
 
@@ -83,35 +95,9 @@ namespace Coevery.OptionSet.Settings {
             }
         }
 
-        public override IEnumerable<TemplateViewModel> PartFieldEditorUpdate(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
-            if (builder.FieldType != "OptionSetField") {
-                yield break;
-            }
-
-            var model = new OptionSetFieldSettings();
-
-            if (updateModel.TryUpdateModel(model, "OptionSetFieldSettings", null, null)) {
-                UpdateSettings(model, builder, "OptionSetFieldSettings");
-
-                if (model.OptionSetId == 0) {
-                    model.OptionSetId = CreateOptionSetPart(builder.Name, model);
-                    if (model.OptionSetId == -1) {
-                        updateModel.AddModelError("OptionSet",T("No items inputted"));
-                        yield break;
-                    }
-                }
-
-                builder
-                    .WithSetting("OptionSetFieldSettings.OptionSetId", model.OptionSetId.ToString())
-                    .WithSetting("OptionSetFieldSettings.ListMode", model.ListMode.ToString());
-            }
-
-            yield return DefinitionTemplate(model);
-        }
-
         private int CreateOptionSetPart(string name, OptionSetFieldSettings model) {
             var options = (!String.IsNullOrWhiteSpace(model.Options)) ?
-                        model.Options.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) : null;
+                model.Options.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries) : null;
 
             if (options == null) {
                 return -1;

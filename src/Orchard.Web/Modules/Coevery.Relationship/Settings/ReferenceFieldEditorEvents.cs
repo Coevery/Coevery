@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
 using Coevery.Entities.Services;
 using Coevery.Entities.Settings;
 using Coevery.Relationship.Services;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
-using Orchard.Core.Title.Models;
-using Orchard.Environment.Extensions;
 using Orchard.Mvc;
 using Orchard.Projections.Models;
 using Orchard.Localization;
-using Orchard.Projections.Services;
 
 namespace Coevery.Relationship.Settings {
     public class ReferenceFieldEditorEvents : FieldEditorEvents {
@@ -37,6 +31,7 @@ namespace Coevery.Relationship.Settings {
             _httpContextAccessor = httpContextAccessor;
             T = NullLocalizer.Instance;
         }
+
         public override IEnumerable<TemplateViewModel> FieldDescriptor() {
             var model = string.Empty;
             yield return DisplayTemplate(model, "Reference", null);
@@ -57,6 +52,33 @@ namespace Coevery.Relationship.Settings {
             }
         }
 
+        public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
+            if (builder.FieldType != "ReferenceField") {
+                return;
+            }
+
+            var model = settingsDictionary.TryGetModel<ReferenceFieldSettings>();
+            if (model != null) {
+                if (model.QueryId <= 0) {
+                    model.QueryId = CreateQuery(model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
+                }
+
+                if (model.RelationshipId <= 0) {
+                    var httpContext = _httpContextAccessor.Current();
+                    var routeValues = httpContext.Request.RequestContext.RouteData.Values;
+                    var entityName = routeValues["id"].ToString();
+                    model.RelationshipId = _relationshipService.CreateOneToManyRelationship(builder.Name, model.RelationshipName, model.ContentTypeName, entityName);
+                }
+
+                UpdateSettings(model, builder, "ReferenceFieldSettings");
+                builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.RelationshipId", model.RelationshipId.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.QueryId", model.QueryId.ToString(CultureInfo.InvariantCulture));
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "ReferenceField" ||
                 definition.FieldDefinition.Name == "ReferenceFieldCreate") {
@@ -69,40 +91,6 @@ namespace Coevery.Relationship.Settings {
                 }).ToList();
                 yield return DefinitionTemplate(model);
             }
-        }
-
-        public override IEnumerable<TemplateViewModel> PartFieldEditorUpdate(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
-            if (builder.FieldType != "ReferenceField") {
-                yield break;
-            }
-            var model = new ReferenceFieldSettings();
-            if (updateModel.TryUpdateModel(model, "ReferenceFieldSettings", null, null)) {
-                UpdateSettings(model, builder, "ReferenceFieldSettings");
-
-                if (model.QueryId <= 0) {
-                    model.QueryId = CreateQuery(model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
-                }
-
-                if (model.RelationshipId <= 0) {
-                    var httpContext = _httpContextAccessor.Current();
-                    var routeValues = httpContext.Request.RequestContext.RouteData.Values;
-                    var entityName = routeValues["id"].ToString();
-                    model.RelationshipId = _relationshipService.CreateOneToManyRelationship(builder.Name, model.RelationshipName, model.ContentTypeName, entityName);
-                }
-
-                if (model.QueryId <= 0 || model.RelationshipId <= 0) {
-                    updateModel.AddModelError("QueryOrRelation", T("Invalid Query or Relationship Id"));
-                    yield break;
-                }
-
-                UpdateSettings(model, builder, "ReferenceFieldSettings");
-                builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.RelationshipId", model.RelationshipId.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.QueryId", model.QueryId.ToString(CultureInfo.InvariantCulture));
-            }
-            yield return DefinitionTemplate(model);
         }
 
         private int CreateQuery(string entityType) {
