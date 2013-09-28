@@ -24,6 +24,18 @@ namespace Coevery.Fields.Settings {
             }
         }
 
+        public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
+            if (builder.FieldType != "CoeveryTextField") {
+                return;
+            }
+            var model = settingsDictionary.TryGetModel<CoeveryTextFieldSettings>();
+            if (model != null) {
+                UpdateSettings(model, builder, "CoeveryTextFieldSettings");
+                builder.WithSetting("CoeveryTextFieldSettings.MaxLength", model.MaxLength.ToString());
+                builder.WithSetting("CoeveryTextFieldSettings.PlaceHolderText", model.PlaceHolderText);
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "CoeveryTextField"
                 || definition.FieldDefinition.Name == "CoeveryTextFieldCreate") {

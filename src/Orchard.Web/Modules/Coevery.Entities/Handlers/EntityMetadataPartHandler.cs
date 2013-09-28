@@ -12,6 +12,7 @@ using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Services;
 using Orchard.Data;
 using Orchard.Logging;
+using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinitionEditorEvents;
 
 namespace Coevery.Entities.Handlers {
     public class EntityMetadataPartHandler : ContentHandler {
@@ -22,6 +23,7 @@ namespace Coevery.Entities.Handlers {
         private readonly IEntityEvents _entityEvents;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IFieldEvents _fieldEvents;
+        private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
 
         public EntityMetadataPartHandler(
             IRepository<EntityMetadataRecord> entityMetadataRepository,
@@ -31,7 +33,8 @@ namespace Coevery.Entities.Handlers {
             ISettingsFormatter settingsFormatter,
             IEntityEvents entityEvents,
             ISchemaUpdateService schemaUpdateService,
-            IFieldEvents fieldEvents) {
+            IFieldEvents fieldEvents, 
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             _fieldMetadataRepository = fieldMetadataRepository;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
@@ -39,6 +42,7 @@ namespace Coevery.Entities.Handlers {
             _entityEvents = entityEvents;
             _schemaUpdateService = schemaUpdateService;
             _fieldEvents = fieldEvents;
+            _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
 
             Filters.Add(StorageFilter.For(entityMetadataRepository));
             OnVersioning<EntityMetadataPart>(OnVersioning);
@@ -129,12 +133,11 @@ namespace Coevery.Entities.Handlers {
             string fieldTypeName = record.ContentFieldDefinitionRecord.Name;
 
             partBuilder.WithField(record.Name, fieldBuilder => {
-                fieldBuilder.OfType(fieldTypeName);
-                foreach (var setting in settings) {
-                    fieldBuilder.WithSetting(setting.Key, setting.Value);
-                }
+                fieldBuilder.OfType(fieldTypeName).WithSetting("Storage", "Part");
+
+                _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
             });
-            //_fieldEvents.OnCreated(partBuilder.Name, record.Name, bool.Parse(settings["AddInLayout"]));
+            _fieldEvents.OnCreated(partBuilder.Name, record.Name, bool.Parse(settings["AddInLayout"]));
         }
 
         private XElement Parse(string settings) {

@@ -6,7 +6,6 @@ using Coevery.Entities.Models;
 using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.MetaData.Services;
 using Orchard.Core.Settings.Metadata.Records;
@@ -187,15 +186,10 @@ namespace Coevery.Entities.Services {
         }
 
         public void CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel) {
-            //var fieldBase = new ContentPartFieldDefinition(viewModel.Name) {
-            //    DisplayName = viewModel.DisplayName
-            //};
-            //var builder = new FieldConfigurerImpl(fieldBase);
-            //builder.OfType(viewModel.FieldTypeName);
-            //_contentDefinitionEditorEvents.PartFieldEditorUpdate(builder, updateModel);
             var settingsDictionary = new SettingsDictionary();
             settingsDictionary["DisplayName"] = viewModel.DisplayName;
-            _contentDefinitionEditorEvents.UpdateFieldSettings(viewModel.FieldTypeName, viewModel.Name, settingsDictionary, updateModel);
+            settingsDictionary["AddInLayout"] = viewModel.AddInLayout.ToString();
+            _contentDefinitionEditorEvents.UpdateFieldSettings(viewModel.FieldTypeName, settingsDictionary, updateModel);
             entity.FieldMetadataRecords.Add(new FieldMetadataRecord {
                 ContentFieldDefinitionRecord = FetchFieldDefinition(viewModel.FieldTypeName),
                 Name = viewModel.Name,
@@ -207,6 +201,7 @@ namespace Coevery.Entities.Services {
             var settingsDictionary = ParseSetting(record.Settings);
             settingsDictionary["DisplayName"] = displayName;
             _contentDefinitionEditorEvents.UpdateFieldSettings(record.ContentFieldDefinitionRecord.Name, record.Name, settingsDictionary, updateModel);
+            record.Settings = CompileSetting(settingsDictionary);
         }
 
         public FieldWithEntityInfoModel TryDeleteField(int id) {
@@ -239,39 +234,6 @@ namespace Coevery.Entities.Services {
                 _fieldDefinitionRepository.Create(baseFieldDefinition);
             }
             return baseFieldDefinition;
-        }
-
-        private class FieldConfigurerImpl : ContentPartFieldDefinitionBuilder {
-            private ContentFieldDefinition _fieldDefinition;
-            private readonly string _fieldName;
-
-            public FieldConfigurerImpl(ContentPartFieldDefinition field)
-                : base(field) {
-                _fieldDefinition = field.FieldDefinition;
-                _fieldName = field.Name;
-            }
-
-            public ContentPartFieldDefinition Build() {
-                return new ContentPartFieldDefinition(_fieldDefinition, _fieldName, _settings);
-            }
-
-            public override string Name {
-                get { return _fieldName; }
-            }
-
-            public override string FieldType {
-                get { return _fieldDefinition.Name; }
-            }
-
-            public override ContentPartFieldDefinitionBuilder OfType(ContentFieldDefinition fieldDefinition) {
-                _fieldDefinition = fieldDefinition;
-                return this;
-            }
-
-            public override ContentPartFieldDefinitionBuilder OfType(string fieldType) {
-                _fieldDefinition = new ContentFieldDefinition(fieldType);
-                return this;
-            }
         }
 
         #endregion
