@@ -20,6 +20,7 @@ namespace Coevery.Entities.Services {
         IEnumerable<EntityMetadataPart> GetRawEntities();
         EntityMetadataPart GetEntity(int id);
         EntityMetadataPart GetEntity(string name);
+        EntityMetadataPart GetDraftEntity(int id);
         EntityMetadataPart GetDraftEntity(string name);
         bool CheckEntityCreationValid(string name, string displayName);
         bool CheckEntityPublished(string name);
@@ -99,6 +100,10 @@ namespace Coevery.Entities.Services {
             return Services.ContentManager
                 .Query<EntityMetadataPart>(VersionOptions.Latest, "EntityMetadata")
                 .List().FirstOrDefault(x => x.Name == name);
+        }
+
+        public EntityMetadataPart GetDraftEntity(int id) {
+            return Services.ContentManager.Get<EntityMetadataPart>(id, VersionOptions.DraftRequired);
         }
 
         public EntityMetadataPart GetDraftEntity(string name) {
@@ -227,7 +232,7 @@ namespace Coevery.Entities.Services {
 
         public bool DeleteField(int id) {
             var field = _fieldMetadataRepository.Get(id);
-            var entity = GetEntity(field.EntityMetadataRecord.ContentItemRecord.Id);
+            var entity = GetDraftEntity(field.EntityMetadataRecord.ContentItemRecord.Id);
             if (entity == null) {
                 return false;
             }
