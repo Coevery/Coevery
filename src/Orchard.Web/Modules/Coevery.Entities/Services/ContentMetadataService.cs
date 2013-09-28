@@ -120,6 +120,7 @@ namespace Coevery.Entities.Services {
             var entityDraft = Services.ContentManager.New<EntityMetadataPart>("EntityMetadata");
             var baseFieldSetting = new SettingsDictionary {
                 {"DisplayName", sourceModel.FieldLabel},
+                {"AddInLayout", bool.TrueString},
                 {"Storage", "Part"},
                 {"CoeveryTextFieldSettings.IsDispalyField", bool.TrueString},
                 {"CoeveryTextFieldSettings.Required", bool.TrueString},

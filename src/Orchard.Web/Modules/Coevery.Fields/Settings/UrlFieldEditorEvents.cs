@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
@@ -24,26 +23,24 @@ namespace Coevery.Fields.Settings {
             }
         }
 
+        public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
+            if (builder.FieldType != "UrlField") {
+                return;
+            }
+
+            var model = settingsDictionary.TryGetModel<UrlFieldSettings>();
+            if (model != null) {
+                UpdateSettings(model, builder, "UrlFieldSettings");
+                builder.WithSetting("UrlFieldSettings.DefaultValue", model.DefaultValue);
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "UrlField"
                 || definition.FieldDefinition.Name == "UrlFieldCreate") {
                 var model = definition.Settings.GetModel<UrlFieldSettings>();
                 yield return DefinitionTemplate(model);
             }
-        }
-
-        public override IEnumerable<TemplateViewModel> PartFieldEditorUpdate(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
-            if (builder.FieldType != "UrlField") {
-                yield break;
-            }
-
-            var model = new UrlFieldSettings();
-            if (updateModel.TryUpdateModel(model, "UrlFieldSettings", null, null)) {
-                UpdateSettings(model, builder, "UrlFieldSettings");
-                builder.WithSetting("UrlFieldSettings.DefaultValue", model.DefaultValue);
-            }
-
-            yield return DefinitionTemplate(model);
         }
     }
 }

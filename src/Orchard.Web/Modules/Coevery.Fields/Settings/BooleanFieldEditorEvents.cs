@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
     public class BooleanFieldEditorEvents : FieldEditorEvents {
-
         public override IEnumerable<TemplateViewModel> FieldDescriptor() {
             var model = string.Empty;
             yield return DisplayTemplate(model, "Boolean", null);
@@ -28,6 +25,20 @@ namespace Coevery.Fields.Settings {
             }
         }
 
+        public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
+            if (builder.FieldType != "BooleanField") {
+                return;
+            }
+
+            var model = settingsDictionary.TryGetModel<BooleanFieldSettings>();
+            if (model != null) {
+                UpdateSettings(model, builder, "BooleanFieldSettings");
+                builder.WithSetting("BooleanFieldSettings.SelectionMode", model.SelectionMode.ToString());
+                builder.WithSetting("BooleanFieldSettings.DependencyMode", model.DependencyMode.ToString());
+                builder.WithSetting("BooleanFieldSettings.DefaultValue", model.DefaultValue.ToString());
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "BooleanField"
                 || definition.FieldDefinition.Name == "BooleanFieldCreate") {
@@ -38,22 +49,6 @@ namespace Coevery.Fields.Settings {
                 var model = definition.Settings.GetModel<BooleanFieldDisplaySettings>();
                 yield return DefinitionTemplate(model);
             }
-        }
-
-        public override IEnumerable<TemplateViewModel> PartFieldEditorUpdate(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
-            if (builder.FieldType != "BooleanField") {
-                yield break;
-            }
-
-            var model = new BooleanFieldSettings();
-            if (updateModel.TryUpdateModel(model, "BooleanFieldSettings", null, null)) {
-                UpdateSettings(model, builder, "BooleanFieldSettings");
-                builder.WithSetting("BooleanFieldSettings.SelectionMode", model.SelectionMode.ToString());
-                builder.WithSetting("BooleanFieldSettings.DependencyMode", model.DependencyMode.ToString());
-                builder.WithSetting("BooleanFieldSettings.DefaultValue", model.DefaultValue.ToString());
-            }
-
-            yield return DefinitionTemplate(model);
         }
     }
 }

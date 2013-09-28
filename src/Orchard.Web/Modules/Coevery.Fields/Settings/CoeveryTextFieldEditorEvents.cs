@@ -43,20 +43,5 @@ namespace Coevery.Fields.Settings {
                 yield return DefinitionTemplate(model);
             }
         }
-
-        public override IEnumerable<TemplateViewModel> PartFieldEditorUpdate(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
-            if (builder.FieldType != "CoeveryTextField") {
-                yield break;
-            }
-
-            var model = new CoeveryTextFieldSettings();
-            if (updateModel.TryUpdateModel(model, "CoeveryTextFieldSettings", null, null)) {
-                UpdateSettings(model, builder, "CoeveryTextFieldSettings");
-                builder.WithSetting("CoeveryTextFieldSettings.MaxLength", model.MaxLength.ToString());
-                builder.WithSetting("CoeveryTextFieldSettings.PlaceHolderText", model.PlaceHolderText);
-            }
-
-            yield return DefinitionTemplate(model);
-        }
     }
 }

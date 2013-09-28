@@ -33,7 +33,7 @@ namespace Coevery.Entities.Handlers {
             ISettingsFormatter settingsFormatter,
             IEntityEvents entityEvents,
             ISchemaUpdateService schemaUpdateService,
-            IFieldEvents fieldEvents, 
+            IFieldEvents fieldEvents,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             _fieldMetadataRepository = fieldMetadataRepository;
             _contentManager = contentManager;
@@ -71,15 +71,15 @@ namespace Coevery.Entities.Handlers {
         }
 
         private void CreateEntity(EntityMetadataPart part) {
-            _contentDefinitionManager.AlterPartDefinition(part.Name, builder => {
-                foreach (var fieldMetadataRecord in part.FieldMetadataRecords) {
-                    AddField(builder, fieldMetadataRecord);
-                }
-            });
-
             _contentDefinitionManager.AlterTypeDefinition(part.Name, builder => {
                 builder.DisplayedAs(part.DisplayName);
                 builder.WithPart(part.Name).WithPart("CoeveryCommonPart");
+            });
+
+            _contentDefinitionManager.AlterPartDefinition(part.Name, builder => {
+                foreach (var fieldMetadataRecord in part.FieldMetadataRecords) {
+                    AddField(builder, fieldMetadataRecord, false);
+                }
             });
 
             _entityEvents.OnCreated(part.Name);
@@ -107,16 +107,10 @@ namespace Coevery.Entities.Handlers {
                 }
             }
 
-            var partDefinition = _contentDefinitionManager.GetPartDefinition(entity.Name);
-            var fields = partDefinition.Fields.ToList();
+            var needUpdateFields = new List<FieldMetadataRecord>();
             foreach (var fieldMetadataRecord in entity.FieldMetadataRecords) {
                 if (fieldMetadataRecord.OriginalId != 0) {
-                    var settings = _settingsFormatter.Map(Parse(fieldMetadataRecord.Settings));
-                    var field = fields.First(x => x.Name == fieldMetadataRecord.Name);
-                    field.Settings.Clear();
-                    foreach (var setting in settings) {
-                        field.Settings.Add(setting.Key, setting.Value);
-                    }
+                    needUpdateFields.Add(fieldMetadataRecord);
                 }
                 else {
                     var record = fieldMetadataRecord;
@@ -125,10 +119,18 @@ namespace Coevery.Entities.Handlers {
                 }
             }
 
-            _contentDefinitionManager.StorePartDefinition(partDefinition);
+            foreach (var fieldMetadataRecord in needUpdateFields) {
+                var record = fieldMetadataRecord;
+                var settings = _settingsFormatter.Map(Parse(record.Settings));
+                _contentDefinitionManager.AlterPartDefinition(entity.Name, builder =>
+                    builder.WithField(record.Name, fieldBuilder => {
+                        fieldBuilder.WithDisplayName(settings["DisplayName"]);
+                        _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
+                    }));
+            }
         }
 
-        private void AddField(ContentPartDefinitionBuilder partBuilder, FieldMetadataRecord record) {
+        private void AddField(ContentPartDefinitionBuilder partBuilder, FieldMetadataRecord record, bool needEvent = true) {
             var settings = _settingsFormatter.Map(Parse(record.Settings));
             string fieldTypeName = record.ContentFieldDefinitionRecord.Name;
 
@@ -137,7 +139,9 @@ namespace Coevery.Entities.Handlers {
 
                 _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
             });
-            _fieldEvents.OnCreated(partBuilder.Name, record.Name, bool.Parse(settings["AddInLayout"]));
+            if (needEvent) {
+                _fieldEvents.OnCreated(partBuilder.Name, record.Name, bool.Parse(settings["AddInLayout"]));
+            }
         }
 
         private XElement Parse(string settings) {
