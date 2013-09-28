@@ -18,7 +18,7 @@ define(['core/app/detourService'], function (detour) {
               var promise = $http({
                   url: form.attr('action'),
                   method: "POST",
-                  data: form.serialize() + '&submit.Save=Save',
+                  data: form.serialize(),
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }).then(function (response) {
                   logger.success('Save succeeded.');

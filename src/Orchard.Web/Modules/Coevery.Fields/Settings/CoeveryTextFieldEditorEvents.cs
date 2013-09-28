@@ -1,17 +1,27 @@
 ﻿using System.Collections.Generic;
 using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
     public class CoeveryTextFieldEditorEvents : FieldEditorEvents {
-
         public override IEnumerable<TemplateViewModel> FieldDescriptor() {
             var model = string.Empty;
             yield return DisplayTemplate(model, "CoeveryText", null);
+        }
+
+        public override void UpdateFieldSettings(string fieldType, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "CoeveryTextField") {
+                return;
+            }
+            var model = new CoeveryTextFieldSettings();
+            if (updateModel.TryUpdateModel(model, "CoeveryTextFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "CoeveryTextFieldSettings");
+                settingsDictionary["CoeveryTextFieldSettings.MaxLength"] = model.MaxLength.ToString();
+                settingsDictionary["CoeveryTextFieldSettings.PlaceHolderText"] = model.PlaceHolderText;
+            }
         }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {

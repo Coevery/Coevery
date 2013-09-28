@@ -134,6 +134,7 @@ namespace Coevery.Entities.Handlers {
                     fieldBuilder.WithSetting(setting.Key, setting.Value);
                 }
             });
+            //_fieldEvents.OnCreated(partBuilder.Name, record.Name, bool.Parse(settings["AddInLayout"]));
         }
 
         private XElement Parse(string settings) {
