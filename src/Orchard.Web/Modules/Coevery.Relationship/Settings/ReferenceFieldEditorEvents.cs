@@ -42,6 +42,21 @@ namespace Coevery.Relationship.Settings {
             yield return DisplayTemplate(model, "Reference", null);
         }
 
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "ReferenceField") {
+                return;
+            }
+            var model = new ReferenceFieldSettings();
+            if (updateModel.TryUpdateModel(model, "ReferenceFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "ReferenceFieldSettings");
+                settingsDictionary["ReferenceFieldSettings.ContentTypeName"] = model.ContentTypeName;
+                settingsDictionary["ReferenceFieldSettings.RelationshipName"] = model.RelationshipName;
+                settingsDictionary["ReferenceFieldSettings.DisplayAsLink"] = model.DisplayAsLink.ToString();
+                settingsDictionary["ReferenceFieldSettings.QueryId"] = model.QueryId.ToString("D");
+                settingsDictionary["ReferenceFieldSettings.RelationshipId"] = model.RelationshipId.ToString("D");
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "ReferenceField" ||
                 definition.FieldDefinition.Name == "ReferenceFieldCreate") {

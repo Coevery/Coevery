@@ -9,7 +9,8 @@ using Orchard.Events;
 namespace Coevery.Entities.Settings {
     public interface IContentDefinitionEditorEvents : IEventHandler {
         IEnumerable<TemplateViewModel> FieldDescriptor();
-        void UpdateFieldSettings(string fieldType, SettingsDictionary settingsDictionary, IUpdateModel updateModel);
+        void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel);
+        void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary);
 
         IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition);
         IEnumerable<TemplateViewModel> TypePartEditor(ContentTypePartDefinition definition);
@@ -27,8 +28,8 @@ namespace Coevery.Entities.Settings {
             return null;
         }
 
-        public virtual void UpdateFieldSettings(string fieldType, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {}
-
+        public virtual void UpdateFieldSettings(string fieldType,string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {}
+        public virtual void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {}
         public virtual IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition) {
             return Enumerable.Empty<TemplateViewModel>();
         }

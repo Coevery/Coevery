@@ -15,6 +15,19 @@ namespace Coevery.Fields.Settings {
             yield return DisplayTemplate(model, "Boolean", null);
         }
 
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "BooleanField") {
+                return;
+            }
+            var model = new BooleanFieldSettings();
+            if (updateModel.TryUpdateModel(model, "BooleanFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "BooleanFieldSettings");
+                settingsDictionary["BooleanFieldSettings.SelectionMode"] = model.SelectionMode.ToString();
+                settingsDictionary["BooleanFieldSettings.DependencyMode"] = model.DependencyMode.ToString();
+                settingsDictionary["BooleanFieldSettings.DefaultValue"] = model.DefaultValue.ToString();
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "BooleanField"
                 || definition.FieldDefinition.Name == "BooleanFieldCreate") {

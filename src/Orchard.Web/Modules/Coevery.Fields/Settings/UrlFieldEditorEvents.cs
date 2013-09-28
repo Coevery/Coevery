@@ -13,6 +13,17 @@ namespace Coevery.Fields.Settings {
             yield return DisplayTemplate(model, "Url", null);
         }
 
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "UrlField") {
+                return;
+            }
+            var model = new UrlFieldSettings();
+            if (updateModel.TryUpdateModel(model, "UrlFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "UrlFieldSettings");
+                settingsDictionary["UrlFieldSettings.DefaultValue"] = model.DefaultValue;
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "UrlField"
                 || definition.FieldDefinition.Name == "UrlFieldCreate") {

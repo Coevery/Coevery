@@ -13,6 +13,17 @@ namespace Coevery.Fields.Settings {
             yield return DisplayTemplate(model, "Phone", null);
         }
 
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "PhoneField") {
+                return;
+            }
+            var model = new PhoneFieldSettings();
+            if (updateModel.TryUpdateModel(model, "PhoneFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "PhoneFieldSettings");
+                settingsDictionary["PhoneFieldSettings.DefaultValue"] = model.DefaultValue;
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "PhoneField"
                 || definition.FieldDefinition.Name == "PhoneFieldCreate") {

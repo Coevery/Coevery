@@ -19,6 +19,7 @@ namespace Coevery.Entities.Settings {
             settingsDictionary[prefix + ".Required"] = model.Required.ToString();
             settingsDictionary[prefix + ".ReadOnly"] = model.ReadOnly.ToString();
             settingsDictionary[prefix + ".AlwaysInLayout"] = model.AlwaysInLayout.ToString();
+            settingsDictionary[prefix + ".IsSystemField"] = model.IsSystemField.ToString();
             settingsDictionary[prefix + ".IsAudit"] = model.IsAudit.ToString();
         }
     }

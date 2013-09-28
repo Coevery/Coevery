@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coevery.Entities.Settings;
 using Coevery.OptionSet.Models;
+using Coevery.OptionSet.Services;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
@@ -14,8 +15,12 @@ using Orchard.Localization;
 namespace Coevery.OptionSet.Settings {
     public class OptionSetFieldEditorEvents : FieldEditorEvents {
         private readonly IContentManager _contentManager;
+        private readonly IOptionSetService _optionSetService;
 
-        public OptionSetFieldEditorEvents(IContentManager contentManager) {
+        public OptionSetFieldEditorEvents(
+            IContentManager contentManager,
+            IOptionSetService optionSetService) {
+            _optionSetService = optionSetService;
             _contentManager = contentManager;
             T = NullLocalizer.Instance;
         }
@@ -25,6 +30,37 @@ namespace Coevery.OptionSet.Settings {
         public override IEnumerable<TemplateViewModel> FieldDescriptor() {
             var model = string.Empty;
             yield return DisplayTemplate(model, "OptionSet", null);
+        }
+
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "OptionSetField") {
+                return;
+            }
+            var model = new OptionSetFieldSettings();
+            if (updateModel.TryUpdateModel(model, "OptionSetFieldSettings", null, null)) {
+
+                UpdateSettings(model, settingsDictionary, "OptionSetFieldSettings");
+                if (model.OptionSetId == 0) {
+                    model.OptionSetId = CreateOptionSetPart(fieldName, model);
+                    if (model.OptionSetId == -1) {
+                        updateModel.AddModelError("OptionSet", T("No items inputted"));
+                        return;
+                    }
+                }
+                settingsDictionary["ReferenceFieldSettings.OptionSetId"] = model.OptionSetId.ToString("D");
+                settingsDictionary["ReferenceFieldSettings.ListMode"] = model.ListMode.ToString();
+            }
+        }
+
+        public override void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {
+            if (fieldType != "OptionSetField") {
+                return;
+            }
+            var optionSet = _optionSetService.GetOptionSet(int.Parse(settingsDictionary["ReferenceFieldSettings.OptionSetId"]));
+            if (optionSet == null) {
+                return;
+            }
+            _optionSetService.DeleteOptionSet(optionSet);
         }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
@@ -58,26 +94,11 @@ namespace Coevery.OptionSet.Settings {
                 UpdateSettings(model, builder, "OptionSetFieldSettings");
 
                 if (model.OptionSetId == 0) {
-                    string[] options = (!String.IsNullOrWhiteSpace(model.Options)) ?
-                        model.Options.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries) : null;
-
-                    if (options == null) {
+                    model.OptionSetId = CreateOptionSetPart(builder.Name, model);
+                    if (model.OptionSetId == -1) {
                         updateModel.AddModelError("OptionSet",T("No items inputted"));
                         yield break;
                     }
-
-                    var optionSetPart = _contentManager.New<OptionSetPart>("OptionSet");
-                    optionSetPart.As<TitlePart>().Title = builder.Name;
-
-                    _contentManager.Create(optionSetPart, VersionOptions.Published);
-
-                    foreach (var option in options) {
-                        var term = _contentManager.New<OptionItemPart>("OptionItem");
-                        term.OptionSetId = optionSetPart.Id;
-                        term.Name = option;
-                        _contentManager.Create(term, VersionOptions.Published);
-                    }
-                    model.OptionSetId = optionSetPart.Id;
                 }
 
                 builder
@@ -86,6 +107,28 @@ namespace Coevery.OptionSet.Settings {
             }
 
             yield return DefinitionTemplate(model);
+        }
+
+        private int CreateOptionSetPart(string name, OptionSetFieldSettings model) {
+            var options = (!String.IsNullOrWhiteSpace(model.Options)) ?
+                        model.Options.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) : null;
+
+            if (options == null) {
+                return -1;
+            }
+
+            var optionSetPart = _contentManager.New<OptionSetPart>("OptionSet");
+            optionSetPart.As<TitlePart>().Title = name;
+
+            _contentManager.Create(optionSetPart, VersionOptions.Published);
+
+            foreach (var option in options) {
+                var term = _contentManager.New<OptionItemPart>("OptionItem");
+                term.OptionSetId = optionSetPart.Id;
+                term.Name = option;
+                _contentManager.Create(term, VersionOptions.Published);
+            }
+            return optionSetPart.Id;
         }
     }
 }

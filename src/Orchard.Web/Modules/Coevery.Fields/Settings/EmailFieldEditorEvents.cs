@@ -13,6 +13,17 @@ namespace Coevery.Fields.Settings {
             yield return DisplayTemplate(model, "Email", null);
         }
 
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "EmailField") {
+                return;
+            }
+            var model = new EmailFieldSettings();
+            if (updateModel.TryUpdateModel(model, "EmailFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "EmailFieldSettings");
+                settingsDictionary["EmailFieldSettings.DefaultValue"] = model.DefaultValue;
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "EmailField"
                 || definition.FieldDefinition.Name == "EmailFieldCreate") {

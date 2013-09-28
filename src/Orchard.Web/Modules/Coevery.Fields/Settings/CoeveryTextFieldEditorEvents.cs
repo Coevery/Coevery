@@ -12,7 +12,7 @@ namespace Coevery.Fields.Settings {
             yield return DisplayTemplate(model, "CoeveryText", null);
         }
 
-        public override void UpdateFieldSettings(string fieldType, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
             if (fieldType != "CoeveryTextField") {
                 return;
             }

@@ -13,6 +13,17 @@ namespace Coevery.Fields.Settings {
             yield return DisplayTemplate(model, "Date", null);
         }
 
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "DateField") {
+                return;
+            }
+            var model = new DateFieldSettings();
+            if (updateModel.TryUpdateModel(model, "DateFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "DateFieldSettings");
+                settingsDictionary["DateFieldSettings.DefaultValue"] = model.DefaultValue.ToString();
+            }
+        }
+
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "DateField"
                 || definition.FieldDefinition.Name == "DateFieldCreate") {
