@@ -18,7 +18,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   formatoptions: { hasView: true }
               },
               { name: 'Id', label: 'Id', hidden: true, sorttype: 'int' },
-              { name: 'DisplayName', label: t('Display Name') }];
+              { name: 'DisplayName', label: t('Display Name') },
+              { name: 'Modified', label: t('Modification Not Published') },
+              { name: 'HasPublished', label: t('Has Ever Published') }
+          ];
 
           $scope.gridOptions = {
               url: "api/entities/entity",

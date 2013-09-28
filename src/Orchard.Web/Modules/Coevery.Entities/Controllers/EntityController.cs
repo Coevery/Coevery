@@ -35,7 +35,9 @@ namespace Coevery.Entities.Controllers {
                         select new {
                             Id = type.Id,
                             Name = type.Name, 
-                            DisplayName = type.DisplayName
+                            DisplayName = type.DisplayName,
+                            Modified = !type.IsPublished(),
+                            HasPublished = type.HasPublished()
                         };
 
             var totalRecords = query.Count();
