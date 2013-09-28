@@ -102,7 +102,7 @@
                 autowidth:true,
                 rowNum: 50,
                 rowList: [50, 100, 200],
-                loadui: "disable",
+                //loadui: "disable",
                 jsonReader: {
                     repeatitems: false,
                     id: "0" //Get Id from first column
