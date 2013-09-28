@@ -1,4 +1,4 @@
-﻿@model Coevery.Entities.ViewModels.EditTypeViewModel
+﻿@model Coevery.Entities.ViewModels.EntityDetailViewModel
 <header id="page-title">
     <h1 class="pull-left">Entity Detail <span>show entity detail information</span></h1>
 </header>
@@ -12,7 +12,11 @@
             <button type="button" class="btn btn-small" co-delete-button confirm-message="You really want to delete this entity?" delete-action="delete()">
                 <i class="icon-remove"></i>&nbsp;Delete
             </button>
-            <button type="button" class="btn btn-small" data-ng-click="formDesigner()">Form Designer</button>
+            <button type="button" data-ng-disabled="!isPublished"
+                    class="btn btn-small" data-ng-click="formDesigner()"
+                title="@Model.PublishTip">
+                Form Designer
+            </button>
         </btn-actions>
     </div>
 
@@ -41,9 +45,15 @@
             <div class="row-fluid">
                 <div class="mytabs">
                     <ul class="nav nav-tabs">
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Relationships')}"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Views')}"><a href="#/Entities/{{$stateParams.Id}}/Views">Views</a></li>
+                        <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}">
+                            <a data-ng-href="#/Entities/{{$stateParams.Id}}">Fields</a>
+                        </li>
+                        <li id="showRelationList" data-ng-class="{active: $detour.includes('EntityDetail.Relationships')}" title="@Model.PublishTip">
+                            <a data-ng-href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a>
+                        </li>
+                        <li id="showViewList" data-ng-class="{active: $detour.includes('EntityDetail.Views')}" title="@Model.PublishTip">
+                            <a data-ng-href="#/Entities/{{$stateParams.Id}}/Views">Views</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="tab-content">

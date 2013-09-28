@@ -40,10 +40,10 @@ namespace Coevery.Relationship.Controllers {
 
         public object Get(string entityName, int page, int rows) {
             var temp = _relationshipService.GetRelationships(entityName);
-            if (temp == null) {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The entity doesn't exist!");
-            }
-            if (temp.Length == 0) {
+            //if (temp == null) {
+            //    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The entity doesn't exist!");
+            //}
+            if (temp == null || temp.Length == 0) {
                 return new {
                     total = 0,
                     page = page,

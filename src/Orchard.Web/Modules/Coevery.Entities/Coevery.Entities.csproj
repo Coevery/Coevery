@@ -127,6 +127,7 @@
     <Compile Include="ViewModels\EditPartViewModel.cs" />
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
+    <Compile Include="ViewModels\EntityDetailViewModel.cs" />
     <Compile Include="ViewModels\FieldDependencyViewModel.cs" />
     <Content Include="Scripts\controllers\createchoosetypecontroller.js" />
     <Content Include="Scripts\controllers\createeditinfocontroller.js" />

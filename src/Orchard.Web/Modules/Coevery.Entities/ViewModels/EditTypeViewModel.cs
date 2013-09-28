@@ -13,7 +13,6 @@ namespace Coevery.Entities.ViewModels {
         }
 
         public EditTypeViewModel(ContentTypeDefinition contentTypeDefinition) {
-            Id = 0;
             Name = contentTypeDefinition.Name;
             DisplayName = contentTypeDefinition.DisplayName;
             Settings = contentTypeDefinition.Settings;
@@ -22,7 +21,6 @@ namespace Coevery.Entities.ViewModels {
             _Definition = contentTypeDefinition;
         }
 
-        public int Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public SettingsDictionary Settings { get; set; }

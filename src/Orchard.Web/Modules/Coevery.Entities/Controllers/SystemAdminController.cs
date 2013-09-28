@@ -162,10 +162,12 @@ namespace Coevery.Entities.Controllers {
                 return HttpNotFound();
             }
 
-            return View(new EditTypeViewModel {
+            return View(new EntityDetailViewModel {
                 Id = entity.Id,
                 Name = entity.Name,
-                DisplayName = entity.DisplayName
+                DisplayName = entity.DisplayName,
+                HasPublished = entity.ContentItem.VersionRecord.Published,
+                PublishTip = "Works when the entity has been published."
             });
         }
 

@@ -22,6 +22,7 @@ namespace Coevery.Entities.Services {
         EntityMetadataPart GetEntity(int id);
         EntityMetadataPart GetEntity(string name);
         bool CheckEntityCreationValid(string name, string displayName);
+        bool CheckEntityPublished(string name);
         string ConstructEntityName(string entityName);
         string TryDeleteEntity(int id);
 
@@ -64,6 +65,10 @@ namespace Coevery.Entities.Services {
                 .Query<EntityMetadataPart>(VersionOptions.Latest, "EntityMetadata").List()
                 .Any(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase)
                           || string.Equals(x.DisplayName, displayName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool CheckEntityPublished(string name) {
+            return GetEntity(name).ContentItem.VersionRecord.Published;
         }
 
         public EntityMetadataPart GetEntity(int id) {

@@ -3,13 +3,12 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
         'EntityDetailCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams','entityDataService',
+        ['$scope', 'logger', '$detour', '$stateParams', 'entityDataService',
             function ($scope, logger, $detour, $stateParams, entityDataService) {
-
-                $scope.exit = function() {
+                $scope.exit = function () {
                     $detour.transitionTo('EntityList');
                 };
-                
+
                 $scope.edit = function () {
                     $detour.transitionTo('EntityEdit', { Id: $stateParams.Id });
                 };
@@ -23,7 +22,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     });
                 };
 
-                $scope.formDesigner = function() {
+                $scope.formDesigner = function () {
                     $detour.transitionTo('FormDesigner', { EntityName: $stateParams.Id });
                 };
             }]
