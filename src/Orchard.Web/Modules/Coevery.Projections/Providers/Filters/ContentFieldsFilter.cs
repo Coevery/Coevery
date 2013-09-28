@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Coevery.Projections.FieldTypeEditors;
-using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using Orchard.Projections.Descriptors.Filter;
@@ -29,9 +26,6 @@ namespace Coevery.Projections.Providers.Filters {
             _contentFieldDrivers = contentFieldDrivers;
             _fieldTypeEditors = fieldTypeEditors;
             T = NullLocalizer.Instance;
-            foreach (var editor in _fieldTypeEditors) {
-                if (editor.Filter == null) editor.Filter = ApplyFilter;
-            }
         }
 
         public Localizer T { get; set; }
@@ -52,16 +46,17 @@ namespace Coevery.Projections.Providers.Filters {
                     var membersContext = new DescribeMembersContext(
                         (storageName, storageType, displayName, description) => {
                             // look for a compatible field type editor
-                            IConcreteFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name, storageType));
+                            IConcreteFieldTypeEditor concreteFieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name, storageType));
+                            IFieldTypeEditor fieldTypeEditor = concreteFieldTypeEditor;
 
-                            if(fieldTypeEditor == null) return;
+                            if (fieldTypeEditor == null) return;
 
                             descriptor.Element(
                                 type: localPart.Name + "." + localField.Name + "." + storageName,
                                 name: new LocalizedString(localField.DisplayName + (displayName != null ? ":" + displayName.Text : "")),
                                 description: description ?? T("{0} property for {1}", storageName, localField.DisplayName),
-                                filter: context => fieldTypeEditor.Filter(context, fieldTypeEditor, storageName, storageType, localPart, localField),
-                                display: context => ((IFieldTypeEditor)fieldTypeEditor).DisplayFilter(localPart.Name.CamelFriendly() + "." + localField.DisplayName, storageName, context.State),
+                                filter: context => concreteFieldTypeEditor.ApplyFilter(context, storageName, storageType, localPart, localField),
+                                display: context => fieldTypeEditor.DisplayFilter(localPart.Name.CamelFriendly() + "." + localField.DisplayName, storageName, context.State),
                                 form: fieldTypeEditor.FormName);
                         });
 
@@ -70,31 +65,6 @@ namespace Coevery.Projections.Providers.Filters {
                     }
                 }
             }
-        }
-
-        public void ApplyFilter(FilterContext context, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-
-            var propertyName = String.Join(".", part.Name, field.Name, storageName ?? "");
-
-            // use an alias with the join so that two filters on the same Field Type wont collide
-            var relationship = fieldTypeEditor.GetFilterRelationship(propertyName.ToSafeName());
-
-            // generate the predicate based on the editor which has been used
-            Action<IHqlExpressionFactory> predicate = fieldTypeEditor.GetFilterPredicate(context.State);
-
-            // combines the predicate with a filter on the specific property name of the storage, as implemented in FieldIndexService
-            Action<IHqlExpressionFactory> andPredicate = x => x.And(y => y.Eq("PropertyName", propertyName), predicate);
-
-            // apply where clause
-            context.Query = context.Query.Where(relationship, andPredicate);
-
-        }
-
-        public LocalizedString DisplayFilter(FilterContext context, ContentPartDefinition part, ContentPartFieldDefinition fieldDefinition) {
-            string op = context.State.Operator;
-            string value = context.State.Value;
-
-            return T("Field {0} {1} \"{2}\"", fieldDefinition.Name, op, value);
         }
     }
 }

@@ -6,23 +6,20 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Localization;
 using Orchard.Projections.Descriptors.Filter;
-using Orchard.Projections.FieldTypeEditors;
 
 namespace Coevery.Projections.FieldTypeEditors {
-    public class OptionSetFieldTypeEditor : IConcreteFieldTypeEditor {
+    public class OptionSetFieldTypeEditor : ConcreteFieldTypeEditorBase {
         public Localizer T { get; set; }
-        public Filter Filter { get; set; }
 
         public OptionSetFieldTypeEditor() {
             T = NullLocalizer.Instance;
-            Filter = ApplyFilter;
         }
 
-        public bool CanHandle(string fieldTypeName, Type storageType) {
+        public override bool CanHandle(string fieldTypeName, Type storageType) {
             return fieldTypeName == "OptionSetField";
         }
 
-        public void ApplyFilter(FilterContext context, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
+        public override void ApplyFilter(FilterContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
             var op = (OptionSetOperator) Enum.Parse(typeof (OptionSetOperator), (string) context.State.Operator);
             string value = context.State.Value;
             if (value == null) {
@@ -52,25 +49,28 @@ namespace Coevery.Projections.FieldTypeEditors {
             }
         }
 
-        public bool CanHandle(Type storageType) {
+        public override void ApplySortCriterion(Orchard.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
+            
+        }
+
+        public override bool CanHandle(Type storageType) {
             return false;
         }
 
-        public string FormName {
+        public override string FormName {
             get { return OptionSetFilterForm.FormName; }
         }
 
-        public Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState) {
+        public override Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState) {
             return null;
         }
 
-        public LocalizedString DisplayFilter(string fieldName, string storageName, dynamic formState) {
+        public override LocalizedString DisplayFilter(string fieldName, string storageName, dynamic formState) {
             return OptionSetFilterForm.DisplayFilter(fieldName + " " + storageName, formState, T);
         }
 
-        public Action<IAliasFactory> GetFilterRelationship(string aliasName) {
+        public override Action<IAliasFactory> GetFilterRelationship(string aliasName) {
             return null;
         }
-
     }
 }

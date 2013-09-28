@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Orchard.ContentManagement;
+using Orchard.Localization;
 using Orchard.Projections.FieldTypeEditors;
 
 namespace Coevery.Projections.FieldTypeEditors {
-    internal class FieldTypeEditorAdaptor: IConcreteFieldTypeEditor {
+    internal class FieldTypeEditorAdaptor : ConcreteFieldTypeEditorBase {
         private readonly IFieldTypeEditor _editor;
         public Filter Filter { get; set; }
 
@@ -14,27 +15,27 @@ namespace Coevery.Projections.FieldTypeEditors {
             _editor = editor;
         }
 
-        public bool CanHandle(string fieldTypeName, Type storageType) {
+        public override bool CanHandle(string fieldTypeName, Type storageType) {
             return _editor.CanHandle(storageType);
         }
 
-        public bool CanHandle(Type storageType) {
+        public override bool CanHandle(Type storageType) {
             return _editor.CanHandle(storageType);
         }
 
-        public string FormName {
+        public override string FormName {
             get { return _editor.FormName; }
         }
 
-        public Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState) {
+        public override Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState) {
             return _editor.GetFilterPredicate(formState);
         }
 
-        public Orchard.Localization.LocalizedString DisplayFilter(string fieldName, string storageName, dynamic formState) {
+        public override  LocalizedString DisplayFilter(string fieldName, string storageName, dynamic formState) {
             return _editor.DisplayFilter(fieldName,storageName,formState);
         }
 
-        public Action<Orchard.ContentManagement.IAliasFactory> GetFilterRelationship(string aliasName) {
+        public override Action<IAliasFactory> GetFilterRelationship(string aliasName) {
             return _editor.GetFilterRelationship(aliasName);
         }
     }

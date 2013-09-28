@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Orchard.ContentManagement;
+using Coevery.Projections.FieldTypeEditors;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
@@ -9,8 +8,6 @@ using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using Orchard.Projections.Descriptors.SortCriterion;
-using Orchard.Projections.FieldTypeEditors;
-using Orchard.Projections.Models;
 using Orchard.Projections.Providers.SortCriteria;
 using Orchard.Projections.Services;
 using Orchard.Utility.Extensions;
@@ -20,12 +17,12 @@ namespace Coevery.Projections.Providers.SortCriteria {
     public class ContentFieldsSortCriterion : ISortCriterionProvider {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
-        private readonly IEnumerable<IFieldTypeEditor> _fieldTypeEditors;
+        private readonly IEnumerable<IConcreteFieldTypeEditor> _fieldTypeEditors;
 
         public ContentFieldsSortCriterion(
             IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
-            IEnumerable<IFieldTypeEditor> fieldTypeEditors) {
+            IEnumerable<IConcreteFieldTypeEditor> fieldTypeEditors) {
             _contentDefinitionManager = contentDefinitionManager;
             _contentFieldDrivers = contentFieldDrivers;
             _fieldTypeEditors = fieldTypeEditors;
@@ -50,13 +47,15 @@ namespace Coevery.Projections.Providers.SortCriteria {
                     var membersContext = new DescribeMembersContext(
                         (storageName, storageType, displayName, description) => {
                             // look for a compatible field type editor
-                            IFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(storageType));
+                            IConcreteFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name, storageType));
+
+                            if (fieldTypeEditor == null) return;
 
                             descriptor.Element(
                                 type: localPart.Name + "." + localField.Name + "." + storageName ?? "",
                                 name: new LocalizedString(localField.DisplayName + (displayName != null ? ":" + displayName.Text : "")),
                                 description: description ?? T("{0} property for {1}", storageName, localField.DisplayName),
-                                sort: context => ApplySortCriterion(context, fieldTypeEditor, storageName, storageType, localPart, localField),
+                                sort: context => fieldTypeEditor.ApplySortCriterion(context, storageName, storageType, localPart, localField),
                                 display: context => DisplaySortCriterion(context, localPart, localField),
                                 form: SortCriterionFormProvider.FormName);
                         });
@@ -66,27 +65,6 @@ namespace Coevery.Projections.Providers.SortCriteria {
                     }
                 }
             }
-        }
-
-        public void ApplySortCriterion(SortCriterionContext context, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-            bool ascending = (bool)context.State.Sort;
-            var propertyName = String.Join(".", part.Name, field.Name, storageName ?? "");
-
-            // use an alias with the join so that two filters on the same Field Type wont collide
-            var relationship = fieldTypeEditor.GetFilterRelationship(propertyName.ToSafeName());
-
-            // generate the predicate based on the editor which has been used
-            Action<IHqlExpressionFactory> predicate = y => y.Eq("PropertyName", propertyName);
-
-            // combines the predicate with a filter on the specific property name of the storage, as implemented in FieldIndexService
-
-            // apply where clause
-            context.Query = context.Query.Where(relationship, predicate);
-            
-            // apply sort
-            context.Query = ascending 
-                ? context.Query.OrderBy(relationship, x => x.Asc("Value")) 
-                : context.Query.OrderBy(relationship, x => x.Desc("Value"));
         }
 
         public LocalizedString DisplaySortCriterion(SortCriterionContext context, ContentPartDefinition part, ContentPartFieldDefinition fieldDefinition) {
