@@ -86,7 +86,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                         logger.success("Delete the field successful.");
                         $scope.getAllField();
                     }, function (reason) {
-                        logger.error("Failed to delete the field:" + reason);
+                        logger.error("Failed to delete the field:" + reason.Message);
                     });
                 };
 

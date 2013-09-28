@@ -17,20 +17,11 @@ using Orchard.Utility.Extensions;
 
 namespace Coevery.Entities.Controllers {
     public class EntityController : ApiController {
-        private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly ISchemaUpdateService _schemaUpdateService;
-        private readonly IEntityEvents _entityEvents;
         private readonly IContentMetadataService _contentMetadataService;
 
         public EntityController(
-            IContentDefinitionService contentDefinitionService,
-            IContentMetadataService contentMetadataService,
-            ISchemaUpdateService schemaUpdateService,
-            IEntityEvents entityEvents) {
-            _contentDefinitionService = contentDefinitionService;
+            IContentMetadataService contentMetadataService) {
             _contentMetadataService = contentMetadataService;
-            _schemaUpdateService = schemaUpdateService;
-            _entityEvents = entityEvents;
             T = NullLocalizer.Instance;
         }
 
@@ -59,19 +50,11 @@ namespace Coevery.Entities.Controllers {
 
         // DELETE api/Entities/Entity/:entityName
         public virtual HttpResponseMessage Delete(int name) {
-            var entityName = _contentMetadataService.TryDeleteEntity(name);
-            if (entityName == null) {
+            var errormessage = _contentMetadataService.DeleteEntity(name);
+            if (string.IsNullOrWhiteSpace(errormessage)) {
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-            var typeViewModel = _contentDefinitionService.GetType(entityName);
-
-            if (typeViewModel == null) {
-                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
-            }
-            _entityEvents.OnDeleting(entityName);
-            _contentDefinitionService.RemoveType(entityName, true);
-            _schemaUpdateService.DropTable(entityName);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed,errormessage);
         }
     }
 }

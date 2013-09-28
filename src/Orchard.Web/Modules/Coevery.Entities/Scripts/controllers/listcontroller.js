@@ -41,7 +41,6 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   logger.error("Failed to delete the entity:" + reason);
               });
           };
-
           $scope.add = function () {
               $detour.transitionTo('EntityCreate', { Module: 'Entities' });
           };

@@ -171,7 +171,7 @@ namespace Coevery.Entities.Controllers {
                 Id = entity.Id,
                 Name = entity.Name,
                 DisplayName = entity.DisplayName,
-                HasPublished = entity.ContentItem.VersionRecord.Published,
+                HasPublished = entity.HasPublished(),
                 PublishTip = "Works when the entity has been published."
             });
         }

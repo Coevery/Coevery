@@ -13,23 +13,11 @@ using Orchard.Utility.Extensions;
 
 namespace Coevery.Entities.Controllers {
     public class FieldController : ApiController {
-        private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IFieldEvents _fieldEvents;
-        private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentMetadataService _contentMetadataService;
 
         public FieldController(
-            IContentDefinitionService contentDefinitionService,
-            IContentDefinitionManager contentDefinitionManager,
-            IFieldEvents fieldEvents,
-            ISchemaUpdateService schemaUpdateService,
             IContentMetadataService contentMetadataService) {
             _contentMetadataService = contentMetadataService;
-            _contentDefinitionService = contentDefinitionService;
-            _contentDefinitionManager = contentDefinitionManager;
-            _fieldEvents = fieldEvents;
-            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -63,12 +51,16 @@ namespace Coevery.Entities.Controllers {
 
         // DELETE api/metadata/field/name
         public virtual HttpResponseMessage Delete(int name) {
-            var deleteInfo = _contentMetadataService.TryDeleteField(name);
-            if (deleteInfo == null) {
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
+            return _contentMetadataService.DeleteField(name)
+                ?Request.CreateResponse(HttpStatusCode.OK)
+                : Request.CreateErrorResponse(HttpStatusCode.BadRequest,"Invalid id!");
+        }
+    }
+}
 
-            var fieldName = deleteInfo.FieldName;
+/*Abandoned Code
+var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
+       var fieldName = deleteInfo.FieldName;
             var entityName = deleteInfo.EntityName;
             var partDefinition = _contentDefinitionManager.GetPartDefinition(entityName);
             if (partDefinition == null) {
@@ -83,10 +75,4 @@ namespace Coevery.Entities.Controllers {
             _contentDefinitionService.RemoveFieldFromPart(fieldName, entityName);
             _schemaUpdateService.DropColumn(entityName, fieldName);
             return Request.CreateResponse(HttpStatusCode.OK);
-        }
-    }
-}
-
-/*Abandoned Code
-var metadataTypes = _contentDefinitionService.GetUserDefinedTypes().Where(c => c.Name == name);
  */

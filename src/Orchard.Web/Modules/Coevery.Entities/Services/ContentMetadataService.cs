@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Coevery.Core.Services;
+using Coevery.Entities.Events;
 using Coevery.Entities.Models;
 using Coevery.Entities.ViewModels;
 using Orchard;
@@ -23,14 +25,14 @@ namespace Coevery.Entities.Services {
         bool CheckEntityPublished(string name);
         bool CheckEntityDisplayValid(string name, string displayName);
         string ConstructEntityName(string entityName);
-        string TryDeleteEntity(int id);
+        string DeleteEntity(int id);
 
         IEnumerable<FieldMetadataRecord> GetFieldsList(int entityId);
         SettingsDictionary ParseSetting(string setting);
         string ConstructFieldName(string entityName, string displayName);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
         void CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
-        FieldWithEntityInfoModel TryDeleteField(int id);
+        bool DeleteField(int id);
         void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel);
     }
 
@@ -39,13 +41,22 @@ namespace Coevery.Entities.Services {
         private readonly IRepository<ContentFieldDefinitionRecord> _fieldDefinitionRepository;
         private readonly IRepository<FieldMetadataRecord> _fieldMetadataRepository;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+        private readonly IContentDefinitionService _contentDefinitionService;
+        private readonly ISchemaUpdateService _schemaUpdateService;
+        private readonly IEntityEvents _entityEvents;
 
         public ContentMetadataService(
             IOrchardServices services,
             ISettingsFormatter settingsFormatter,
+            IContentDefinitionService contentDefinitionService,
+            ISchemaUpdateService schemaUpdateService,
+            IEntityEvents entityEvents,
             IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
             IRepository<FieldMetadataRecord> fieldMetadataRepository,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
+            _contentDefinitionService = contentDefinitionService;
+            _schemaUpdateService = schemaUpdateService;
+            _entityEvents = entityEvents;
             _settingsFormatter = settingsFormatter;
             _fieldDefinitionRepository = fieldDefinitionRepository;
             _fieldMetadataRepository = fieldMetadataRepository;
@@ -70,7 +81,7 @@ namespace Coevery.Entities.Services {
         }
 
         public bool CheckEntityPublished(string name) {
-            return GetEntity(name).ContentItem.VersionRecord.Published;
+            return GetEntity(name).HasPublished();
         }
 
         public bool CheckEntityDisplayValid(string name, string displayName) {
@@ -130,22 +141,31 @@ namespace Coevery.Entities.Services {
             return true;
         }
 
-        public string TryDeleteEntity(int id) {
+        public string DeleteEntity(int id) {
             var entity = GetEntity(id);
             if (entity == null) {
-                throw new NullReferenceException("Invalid id");
+                return "Invalid id";
             }
             foreach (var field in entity.FieldMetadataRecords) {
                 if (field.ContentFieldDefinitionRecord.Name == "OptionSetField") {
                     _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
                 }
             }
-            entity.FieldMetadataRecords.Clear();
-            Services.ContentManager.Remove(entity.ContentItem);
-            if (!entity.ContentItem.VersionRecord.Published) {
+            if (!entity.HasPublished()) {
                 return null;
             }
-            return entity.Name;
+            entity.FieldMetadataRecords.Clear();
+            Services.ContentManager.Remove(entity.ContentItem);
+
+            var typeViewModel = _contentDefinitionService.GetType(entity.Name);
+
+            if (typeViewModel == null) {
+                return "Can't find entity of name: \"" + entity.Name +"\".";
+            }
+            _entityEvents.OnDeleting(entity.Name);
+            _contentDefinitionService.RemoveType(entity.Name, true);
+            _schemaUpdateService.DropTable(entity.Name);
+            return null;
         }
 
         #endregion
@@ -204,25 +224,17 @@ namespace Coevery.Entities.Services {
             record.Settings = CompileSetting(settingsDictionary);
         }
 
-        public FieldWithEntityInfoModel TryDeleteField(int id) {
+        public bool DeleteField(int id) {
             var field = _fieldMetadataRepository.Get(id);
-            var entity = Services.ContentManager.Get(field.EntityMetadataRecord.Id, VersionOptions.Latest).As<EntityMetadataPart>();
+            var entity = GetEntity(field.EntityMetadataRecord.ContentItemRecord.Id);
             if (entity == null) {
-                throw new NullReferenceException("Invalid id");
+                return false;
             }
             if (field.ContentFieldDefinitionRecord.Name == "OptionSetField") {
                 _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
             }
             entity.FieldMetadataRecords.Remove(field);
-            if (!entity.ContentItem.VersionRecord.Published) {
-                return null;
-            }
-            return new FieldWithEntityInfoModel {
-                EntityId = entity.Id,
-                EntityName = entity.Name,
-                FieldId = field.Id,
-                FieldName = field.Name
-            };
+            return true;
         }
 
         #region Field Private Methods

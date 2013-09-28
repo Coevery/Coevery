@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Mvc;
 using Coevery.Core.Admin;
+using Coevery.Entities.Services;
 using Coevery.FormDesigner.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
@@ -16,12 +17,15 @@ namespace Coevery.FormDesigner.Controllers {
     public class SystemAdminController : Controller {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentMetadataService _contentMetadataService;
 
         public SystemAdminController(
             IOrchardServices orchardServices,
+            IContentMetadataService contentMetadataService,
             IContentManager contentManager, IContentDefinitionManager contentDefinitionManager) {
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
+            _contentMetadataService = contentMetadataService;
             Services = orchardServices;
             T = NullLocalizer.Instance;
         }
@@ -34,7 +38,9 @@ namespace Coevery.FormDesigner.Controllers {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
-
+            if (!_contentMetadataService.CheckEntityPublished(id)) {
+                return Content(T("The \"{0}\" hasn't been published!", id).Text);
+            }
             var contentItem = _contentManager.New(id);
             dynamic model = _contentManager.BuildEditor(contentItem);
             var contentTypeDefinition = contentItem.TypeDefinition;

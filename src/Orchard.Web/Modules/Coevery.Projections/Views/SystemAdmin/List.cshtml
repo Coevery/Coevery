@@ -1,10 +1,10 @@
 ﻿<div class="btn-toolbar">
     <button class="btn btn-small btn-success" data-ng-click="add()"
-        data-ng-disabled="!isPublished" title='@Model["PublishTip"]'>
+        data-ng-disabled="isPublished=='False'" title='@Model["PublishTip"]'>
         <i class="icon-plus"></i>&nbsp;Add
     </button>
     <button class="btn btn-small" data-ng-click="getAll()" 
-        data-ng-disabled="!isPublished" title='@Model["PublishTip"]'>
+        data-ng-disabled="isPublished=='False'" title='@Model["PublishTip"]'>
         <i class="icon-refresh"></i>&nbsp;Refresh
     </button>
     <div class="btn-group" ng-show="selectedItems.length > 0">

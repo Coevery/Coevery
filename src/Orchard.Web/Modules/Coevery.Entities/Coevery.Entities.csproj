@@ -101,7 +101,6 @@
     <Compile Include="Models\EntityMetadataPart.cs" />
     <Compile Include="Models\FieldMetadataRecord.cs" />
     <Compile Include="Models\EntityMetadataRecord.cs" />
-    <Compile Include="Models\FieldWithEntityInfoModel.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
