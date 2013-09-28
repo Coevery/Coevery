@@ -29,12 +29,12 @@ namespace Coevery.Entities.Settings {
             return null;
         }
 
-        public virtual void UpdateFieldSettings(string fieldType,string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {}
-	
-	public virtual void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {}
+        public virtual void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {}
+
+        public virtual void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {}
 
         public virtual void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {}
-        
+
         public virtual IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition) {
             return Enumerable.Empty<TemplateViewModel>();
         }
