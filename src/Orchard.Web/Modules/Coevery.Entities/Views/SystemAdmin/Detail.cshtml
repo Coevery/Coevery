@@ -41,9 +41,9 @@
             <div class="row-fluid">
                 <div class="mytabs">
                     <ul class="nav nav-tabs">
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Relationships')}"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Views')}"><a href="#/Entities/{{$stateParams.Id}}/Views">Views</a></li>
+                        <li data-ng-class="{active: $state.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
+                        <li data-ng-class="{active: $state.includes('EntityDetail.Relationships')}"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
+                        <li data-ng-class="{active: $state.includes('EntityDetail.Views')}"><a href="#/Entities/{{$stateParams.Id}}/Views">Views</a></li>
                     </ul>
                 </div>
                 <div class="tab-content">

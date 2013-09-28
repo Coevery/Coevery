@@ -1,25 +1,11 @@
-﻿define(['angular-detour', 'core/app/formdesignerservice', 'core/directives/common'], function () {
+﻿define(['core/app/formdesignerservice', 'core/directives/common'], function () {
     'use strict';
 
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner', 'coevery.grid', 'SharedServices', 'ui.bootstrap', 'coevery.common']);
-    coevery.config(['$locationProvider', '$provide', '$detourProvider',
-        function ($locationProvider, $provide, $detourProvider) {
-            $detourProvider.loader = {
-                lazy: {
-                    enabled: true,
-                    routeUrl: 'api/CoeveryCore/Route',
-                    stateUrl: 'api/CoeveryCore/State',
-                    routeParameter: 'isFront=false&r'
-                },
-                crossDomain: true,
-                httpMethod: 'GET'
-            };
-        }]);
 
     coevery.value('$anchorScroll', angular.noop);
 
-    coevery.run(['$rootScope', '$detour', '$stateParams', '$templateCache',
-        function ($rootScope, $detour, $stateParams, $templateCache) {
+    coevery.run(['$rootScope', '$couchPotato', '$stateParams', '$templateCache',
+        function ($rootScope, $couchPotato, $stateParams, $templateCache) {
 
             //"cheating" so that detour is available in requirejs
             //define modules -- we want run-time registration of components
@@ -29,12 +15,12 @@
 
             //if not using any dependencies properties in detour states,
             //then this is not necessary
-            coevery.detour = $detour;
+            coevery.detour = $couchPotato;
 
             //the sample reads from the current $detour.state
             //and $stateParams in its templates
             //that it the only reason this is necessary
-            $rootScope.$detour = $detour;
+            $rootScope.$detour = $couchPotato;
             $rootScope.$stateParams = $stateParams;
             $rootScope.$on('$viewContentLoaded', function () {
                 $(window).scrollTop(0);

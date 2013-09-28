@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'EditOneToManyCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$http',
-            function ($scope, logger, $detour, $stateParams, $http) {
+        ['$scope', 'logger', '$state', '$stateParams', '$http',
+            function ($scope, logger, $state, $stateParams, $http) {
                 var validator = $("#onetomany-form").validate({
                     errorClass: "inputError"
                 });
@@ -29,7 +29,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
+                    $state.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
                 };
                 
                 $scope.saveAndBack = function () {

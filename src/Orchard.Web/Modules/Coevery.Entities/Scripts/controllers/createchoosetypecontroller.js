@@ -2,14 +2,14 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateChooseTypeCtrl',
-        ['$scope', 'logger', '$stateParams', '$detour',
-            function ($scope, logger, $stateParams, $detour) {
+        ['$scope', 'logger', '$stateParams', '$state',
+            function ($scope, logger, $stateParams, $state) {
                 var entityName = $stateParams.Id;
                 $scope.fieldType = $('#field-type-form input[type=radio]:checked').val();
                 $scope.radios = $('#field-type-form input[type=radio]');
 
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    $state.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
 
                 $scope.next = function () {
@@ -21,7 +21,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.$on('$destroy', function () {
-                    if ($detour.current.name != 'EntityDetail.Fields.CreateEditInfo' && $scope.$parent.dialog != null) {
+                    if ($state.current.name != 'EntityDetail.Fields.CreateEditInfo' && $scope.$parent.dialog != null) {
                         $scope.closeDialog();
                     }
                 });

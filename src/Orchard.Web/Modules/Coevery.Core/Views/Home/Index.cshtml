@@ -13,8 +13,7 @@
     Script.Require("angularResource");
 
     Script.Require("angular_UI_Router");
-    //Script.Require("angular_couchPotato");
-    Script.Require("angular_detour");
+    Script.Require("angular_couchPotato");
     Script.Require("ngGrid");
     Script.Require("ui_utils");
     Script.Require("i18next");
@@ -45,5 +44,13 @@
             require(['@Url.Content("~/Modules/Coevery.Core/scripts/app/main.js")']);
         }());
         //]]>
+
+
+        var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.couchPotato', 'ui.router.util', 'ui.router.router', 'ui.router.state', 'ui.router', 'ui.router.compat','coevery.layout', 'coevery.grid', 'SharedServices', 'angular-underscore', 'coevery.common', 'coevery.filter']);
+        coevery.config(['$stateProvider', '$urlRouterProvider',
+            function ($stateProvider, $urlRouterProvider) {
+                $urlRouterProvider.otherwise('/404');
+                @Html.Raw(ViewBag.stateScript)
+            }]);
     </script>
 }

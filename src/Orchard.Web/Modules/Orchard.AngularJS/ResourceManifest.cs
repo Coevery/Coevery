@@ -32,8 +32,6 @@ namespace Orchard.AngularJS
 
             manifest.DefineScript("i18next").SetUrl("i18next-1.6.3.min.js", "i18next-1.6.3.js").SetVersion("1.6.3");
 
-            manifest.DefineScript("angular_detour").SetUrl("angular-detour.amd.min.js", "angular-detour.amd.js").SetVersion("0.3.1").SetDependencies("angular", "require");
-
             manifest.DefineScript("ui_utils").SetUrl("ui-utils.min.js", "ui-utils.js").SetVersion("0.0.3").SetDependencies("angular");
 
             manifest.DefineScript("ui_bootstrap").SetUrl("ui-bootstrap-tpls-0.4.0.js", "ui-bootstrap-tpls-0.4.0.js").SetVersion("0.4.0").SetDependencies("angular");

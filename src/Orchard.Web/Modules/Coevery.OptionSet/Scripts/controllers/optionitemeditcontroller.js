@@ -3,8 +3,8 @@
 define(['core/app/detourService'], function(detour) {
     detour.registerController([
         'OptionItemsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams','optionItemDataService',
-            function ($rootScope, $scope, logger, $detour, $resource, $stateParams, optionItemDataService) {
+        ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams','optionItemDataService',
+            function ($rootScope, $scope, logger, $state, $resource, $stateParams, optionItemDataService) {
                 
                 var optionColumnDefs = [
                     { name: 'Id', label: 'Id', sorttype:'int', hidden: true },

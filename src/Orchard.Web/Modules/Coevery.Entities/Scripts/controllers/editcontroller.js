@@ -3,8 +3,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'EntityEditCtrl',
-      ['$timeout', '$scope', 'logger', '$detour', '$stateParams', '$resource','$http','$parse',
-      function ($timeout, $scope, logger, $detour, $stateParams, $resource, $http, $parse) {
+      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource','$http','$parse',
+      function ($timeout, $scope, logger, $state, $stateParams, $resource, $http, $parse) {
 
           var validator = $("#myForm").validate({
               errorClass: "inputError"
@@ -36,7 +36,7 @@ define(['core/app/detourService'], function (detour) {
                   var getter = $parse('entityName');
                   var entityName = getter(response.data);
                   if (entityName)
-                      $detour.transitionTo('EntityEdit', { Id: entityName });
+                      $state.transitionTo('EntityEdit', { Id: entityName });
               });
               return promise;
           };
@@ -51,9 +51,9 @@ define(['core/app/detourService'], function (detour) {
           
           $scope.exit = function () {
               if ($stateParams.Id) {
-                  $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.Id });
+                  $state.transitionTo('EntityDetail.Fields', { Id: $stateParams.Id });
               } else {
-                  $detour.transitionTo('EntityList');
+                  $state.transitionTo('EntityList');
               }
           };
       }]

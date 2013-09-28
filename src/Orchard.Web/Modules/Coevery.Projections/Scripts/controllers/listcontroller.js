@@ -4,8 +4,8 @@ define(['core/app/detourService',
         'Modules/Coevery.Projections/Scripts/services/projectiondataservice'], function (detour) {
             detour.registerController([
                 'ProjectionListCtrl',
-                ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'projectionDataService',
-                    function ($rootScope, $scope, logger, $detour, $resource, $stateParams, projectionDataService) {
+                ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'projectionDataService',
+                    function ($rootScope, $scope, logger, $state, $resource, $stateParams, projectionDataService) {
                         var t = function (str) {
                             var result = i18n.t(str);
                             return result;
@@ -27,7 +27,7 @@ define(['core/app/detourService',
                         angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                         $scope.exit = function () {
-                            $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.Id });
+                            $state.transitionTo('EntityDetail.Fields', { Id: $stateParams.Id });
                         };
 
                         $scope.delete = function (id) {
@@ -46,11 +46,11 @@ define(['core/app/detourService',
                         };
 
                         $scope.add = function () {
-                            $detour.transitionTo('ProjectionCreate', { EntityName: $stateParams.Id });
+                            $state.transitionTo('ProjectionCreate', { EntityName: $stateParams.Id });
                         };
 
                         $scope.edit = function (id) {
-                            $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.Id, Id: id });
+                            $state.transitionTo('ProjectionEdit', { EntityName: $stateParams.Id, Id: id });
                         };
 
                         $scope.setDefault = function (id) {

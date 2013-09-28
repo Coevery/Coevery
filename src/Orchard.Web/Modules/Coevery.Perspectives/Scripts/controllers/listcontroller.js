@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services/perspectivedataservice'], function (detour) {
     detour.registerController([
       'PerspectiveListCtrl',
-      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'perspectiveDataService',
-      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, perspectiveDataService) {
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'perspectiveDataService',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, perspectiveDataService) {
           $scope.mySelections = [];
           var t = function (str) {
               var result = i18n.t(str);
@@ -36,15 +36,15 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           };
 
           $scope.addPerspective = function () {
-              $detour.transitionTo('PerspectiveCreate', { Module: 'Perspectives' });
+              $state.transitionTo('PerspectiveCreate', { Module: 'Perspectives' });
           };
 
           $scope.edit = function (id) {
-              $detour.transitionTo('PerspectiveEdit', { Id: id });
+              $state.transitionTo('PerspectiveEdit', { Id: id });
           };
 
           $scope.view = function (id) {
-              $detour.transitionTo('PerspectiveDetail', { Id: id });
+              $state.transitionTo('PerspectiveDetail', { Id: id });
           };
 
           $scope.getAllPerspective = function () {

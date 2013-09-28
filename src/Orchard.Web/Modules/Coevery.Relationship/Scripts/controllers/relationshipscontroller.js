@@ -3,8 +3,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'RelationshipsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams',
-            function ($rootScope, $scope, logger, $detour, $resource, $stateParams) {
+        ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams',
+            function ($rootScope, $scope, logger, $state, $resource, $stateParams) {
                 var relationshipDataService = $resource('api/relationship/Relationship');
 
                 var relationshipColumnDefs = [
@@ -33,17 +33,17 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.createOneToMany = function () {
-                    $detour.transitionTo('CreateOneToMany', { EntityName: $stateParams.Id });
+                    $state.transitionTo('CreateOneToMany', { EntityName: $stateParams.Id });
                 };
                 $scope.createManyToMany = function () {
-                    $detour.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
+                    $state.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
                 };
                 $scope.edit = function (paramString) {
                     var params = JSON.parse(paramString);
                     if (params.Type == "OneToMany") {
-                        $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
+                        $state.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
                     } else if (params.Type == "ManyToMany") {
-                        $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
+                        $state.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
                     }
                 };
                 $scope.delete = function (contentId) {

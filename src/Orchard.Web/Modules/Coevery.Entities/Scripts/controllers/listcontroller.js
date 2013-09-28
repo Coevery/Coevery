@@ -3,8 +3,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
       'EntityListCtrl',
-      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'entityDataService',
-      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, entityDataService) {
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'entityDataService',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, entityDataService) {
           var t = function (str) {
               var result = i18n.t(str);
               return result;
@@ -41,15 +41,15 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           $scope.add = function () {
-              $detour.transitionTo('EntityCreate', { Module: 'Entities' });
+              $state.transitionTo('EntityCreate', { Module: 'Entities' });
           };
 
           $scope.view = function (entityName) {
-              $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+              $state.transitionTo('EntityDetail.Fields', { Id: entityName });
           };
 
           $scope.edit = function (entityName) {
-              $detour.transitionTo('EntityEdit', { Id: entityName });
+              $state.transitionTo('EntityEdit', { Id: entityName });
           };
 
           $scope.getAllMetadata = function () {

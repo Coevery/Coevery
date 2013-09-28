@@ -1,8 +1,8 @@
 ﻿define(['core/app/detourService', 'core/services/navigationdataservice'], function(detour) {
     detour.registerController([
         'NavigationCtrl',
-        ['$scope', '$detour', '$stateParams', 'navigationDataService', 'logger',
-            function($scope, $detour, $stateParams, navigationDataService, logger) {
+        ['$scope', '$state', '$stateParams', 'navigationDataService', 'logger',
+            function($scope, $state, $stateParams, navigationDataService, logger) {
                 var navigationId = $stateParams.NavigationId;
 
                 $scope.currentMenu = {};

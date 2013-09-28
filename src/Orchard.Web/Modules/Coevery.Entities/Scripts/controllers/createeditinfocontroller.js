@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldCreateEditInfoCtrl',
-        ['$scope', 'logger', '$stateParams', '$detour', '$http',
-            function ($scope, logger, $stateParams, $detour, $http) {
+        ['$scope', 'logger', '$stateParams', '$state', '$http',
+            function ($scope, logger, $stateParams, $state, $http) {
                 var entityName = $stateParams.Id;
                 var checkValid = function (form) {
                     var validator = form.validate();
@@ -22,7 +22,7 @@ define(['core/app/detourService'], function (detour) {
                 $(".step3").hide();
                 //Scope method
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    $state.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
                 $scope.prev = function () {
                     $scope.$emit('toStep1');
@@ -53,7 +53,7 @@ define(['core/app/detourService'], function (detour) {
                     //    success: function (result) {                           
                     //        logger.success('success');
                     //        $scope.$parent.getAllField();
-                    //        $detour.transitionTo('EntityDetail.Fields', { Id: entityName });                          
+                    //        $state.transitionTo('EntityDetail.Fields', { Id: entityName });                          
                     //        $scope.closeDialog();
                     //    },
                     //    error: function (result) {
@@ -69,7 +69,7 @@ define(['core/app/detourService'], function (detour) {
                     }).then(function () {
                         logger.success('success');
                         $scope.$parent.getAllField();
-                        $detour.transitionTo('EntityDetail.Fields', { Id: entityName });                          
+                        $state.transitionTo('EntityDetail.Fields', { Id: entityName });                          
                         $scope.closeDialog();
                     }, function (reason) {
                         logger.error('Failed:\n' + reason.responseText);
@@ -78,7 +78,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.$on('$destroy', function () {
-                    if ($detour.current.name != 'EntityDetail.Fields.Create' && $scope.$parent.dialog != null) {
+                    if ($state.current.name != 'EntityDetail.Fields.Create' && $scope.$parent.dialog != null) {
                         $scope.closeDialog();
                     }
                 });

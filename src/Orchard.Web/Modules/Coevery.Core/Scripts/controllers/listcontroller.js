@@ -1,8 +1,8 @@
 ﻿define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function (detour) {
     detour.registerController([
         'GeneralListCtrl',
-        ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$detour', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
-            function ($rootScope, $scope, $parse, $http, logger, $compile, $detour, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
+        ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$state', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
+            function ($rootScope, $scope, $parse, $http, logger, $compile, $state, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
                 var navigationId = $stateParams.NavigationId;
                 var moduleName = $stateParams.Module;
                 $scope.isInit = true;
@@ -130,21 +130,21 @@
                 };
 
                 $scope.add = function () {
-                    $detour.transitionTo('Create', { NavigationId: navigationId, Module: moduleName });
+                    $state.transitionTo('Create', { NavigationId: navigationId, Module: moduleName });
                 };
 
                 $scope.edit = function (id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = $scope.selectedItems[0];
                     }
-                    $detour.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
+                    $state.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
 
                 $scope.view = function (id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = $scope.selectedItems[0];
                     }
-                    $detour.transitionTo('View', { NavigationId: navigationId, Module: moduleName, Id: id });
+                    $state.transitionTo('View', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
 
                 // filters

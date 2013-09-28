@@ -1,8 +1,8 @@
 ﻿define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'SubViewCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams',
-            function ($rootScope, $scope, logger, $detour, $stateParams) {
+        ['$rootScope', '$scope', 'logger', '$state', '$stateParams',
+            function ($rootScope, $scope, logger, $state, $stateParams) {
                 var moduleName = $stateParams.Module;
 
                 $scope.moduleName = moduleName;
