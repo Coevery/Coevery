@@ -16,7 +16,7 @@ using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinit
 
 namespace Coevery.Entities.Services {
     public interface IContentMetadataService : IDependency {
-        bool CreateEntity(EditTypeViewModel sourceModel);
+        void CreateEntity(EditTypeViewModel sourceModel);
         IEnumerable<EntityMetadataPart> GetRawEntities();
         EntityMetadataPart GetEntity(int id);
         EntityMetadataPart GetEntity(string name);
@@ -121,7 +121,7 @@ namespace Coevery.Entities.Services {
             return resultName;
         }
 
-        public bool CreateEntity(EditTypeViewModel sourceModel) {
+        public void CreateEntity(EditTypeViewModel sourceModel) {
             var entityDraft = Services.ContentManager.New<EntityMetadataPart>("EntityMetadata");
             var baseFieldSetting = new SettingsDictionary {
                 {"DisplayName", sourceModel.FieldLabel},
@@ -136,7 +136,6 @@ namespace Coevery.Entities.Services {
             };
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
-            //entityDraft.Settings = sourceModel.Settings;
 
             entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                 Name = sourceModel.FieldName,
@@ -144,7 +143,6 @@ namespace Coevery.Entities.Services {
                 Settings = CompileSetting(baseFieldSetting)
             });
             Services.ContentManager.Create(entityDraft, VersionOptions.Draft);
-            return true;
         }
 
         public string DeleteEntity(int id) {
@@ -185,7 +183,8 @@ namespace Coevery.Entities.Services {
         }
 
         public SettingsDictionary ParseSetting(string setting) {
-            return string.IsNullOrWhiteSpace(setting) ? null
+            return string.IsNullOrWhiteSpace(setting) 
+                ? null
                 : _settingsFormatter.Map(XElement.Parse(setting));
         }
 

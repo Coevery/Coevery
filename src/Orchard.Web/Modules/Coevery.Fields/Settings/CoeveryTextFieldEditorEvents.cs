@@ -31,6 +31,7 @@ namespace Coevery.Fields.Settings {
             var model = settingsDictionary.TryGetModel<CoeveryTextFieldSettings>();
             if (model != null) {
                 UpdateSettings(model, builder, "CoeveryTextFieldSettings");
+                builder.WithSetting("CoeveryTextFieldSettings.IsDispalyField", model.IsDispalyField.ToString());
                 builder.WithSetting("CoeveryTextFieldSettings.MaxLength", model.MaxLength.ToString());
                 builder.WithSetting("CoeveryTextFieldSettings.PlaceHolderText", model.PlaceHolderText);
             }

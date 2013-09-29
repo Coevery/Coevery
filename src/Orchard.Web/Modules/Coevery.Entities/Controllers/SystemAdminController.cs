@@ -6,6 +6,7 @@ using System.Net;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
 using Coevery.Entities.Services;
+using Coevery.Entities.Settings;
 using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
