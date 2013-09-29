@@ -2,13 +2,16 @@
 using Orchard.ContentManagement.MetaData;
 using Orchard.Data;
 using Orchard.Data.Migration;
+using Orchard.Environment.Configuration;
 
 namespace Coevery.Projections {
     public class Migrations : DataMigrationImpl {
-
+        private readonly ShellSettings _shellSettings;
         private readonly Dialect _dialect;
 
-        public Migrations(ISessionFactoryHolder sessionFactoryHolder) {
+        public Migrations(ISessionFactoryHolder sessionFactoryHolder, 
+            ShellSettings shellSettings) {
+            _shellSettings = shellSettings;
             var configuration = sessionFactoryHolder.GetConfiguration();
             _dialect = Dialect.GetDialect(configuration.Properties);
         }
@@ -41,11 +44,11 @@ namespace Coevery.Projections {
             ContentDefinitionManager.DeleteTypeDefinition("LayoutProperty");
             ContentDefinitionManager.DeletePartDefinition("LayoutPropertyPart");
 
-            SchemaBuilder.ExecuteSql(@"INSERT INTO Coevery_Projections_ListViewPartRecord(Id,ItemContentType,VisableTo)
+            SchemaBuilder.ExecuteSql(string.Format(@"INSERT INTO {0}Coevery_Projections_ListViewPartRecord(Id,ItemContentType,VisableTo)
                                        SELECT Id = v.ProjectionPartRecord_id, ItemContentType = t.Name,VisableTo = 'All' 
-                                       FROM     Coevery_Core_ViewPartRecord v 
-                                                INNER JOIN Settings_ContentTypeDefinitionRecord t 
-                                                ON t.Id = v.ContentTypeDefinitionRecord_id");
+                                       FROM     {0}Coevery_Core_ViewPartRecord v 
+                                                INNER JOIN {0}Settings_ContentTypeDefinitionRecord t 
+                                                ON t.Id = v.ContentTypeDefinitionRecord_id", DataTablePrefix()));
 
             var dropViewPartRecordTable = _dialect.GetDropTableString("Coevery_Core_ViewPartRecord");
             SchemaBuilder.ExecuteSql(dropViewPartRecordTable);
@@ -60,26 +63,31 @@ namespace Coevery.Projections {
             return 2;
         }
 
+        private string DataTablePrefix() {
+            if (string.IsNullOrEmpty(_shellSettings.DataTablePrefix)) return string.Empty;
+            return _shellSettings.DataTablePrefix + "_";
+        }
+
         public int UpdateFrom2() {
 
             SchemaBuilder.AlterTable("ListViewPartRecord",
                 table => table
                     .AddColumn<bool>("IsDefault", column => column.WithDefault(false)));
 
-            SchemaBuilder.ExecuteSql(@" UPDATE Coevery_Projections_ListViewPartRecord
+            SchemaBuilder.ExecuteSql(string.Format(@" UPDATE {0}Coevery_Projections_ListViewPartRecord
                                         SET	IsDefault = 1
-                                        FROM	Coevery_Projections_ListViewPartRecord l
+                                        FROM	{0}Coevery_Projections_ListViewPartRecord l
                                         WHERE NOT EXISTS(   SELECT * 
-                                                            FROM Coevery_Projections_ListViewPartRecord lvp 
-                                                            WHERE lvp.ItemContentType = l.ItemContentType AND lvp.IsDefault = 1)");
+                                                            FROM {0}Coevery_Projections_ListViewPartRecord lvp 
+                                                            WHERE lvp.ItemContentType = l.ItemContentType AND lvp.IsDefault = 1)", DataTablePrefix()));
 
-            SchemaBuilder.ExecuteSql(@" UPDATE Orchard_Framework_ContentItemRecord
-                                        SET	ContentType_id	= (SELECT Id FROM Orchard_Framework_ContentTypeRecord WHERE Name = 'LayoutProperty')
-                                        FROM Coevery_Projections_ListViewPartRecord lvp INNER JOIN Orchard_Framework_ContentItemRecord i ON	i.Id = lvp.Id
+            SchemaBuilder.ExecuteSql(string.Format(@" UPDATE {0}Orchard_Framework_ContentItemRecord
+                                        SET	ContentType_id	= (SELECT Id FROM {0}Orchard_Framework_ContentTypeRecord WHERE Name = 'LayoutProperty')
+                                        FROM {0}Coevery_Projections_ListViewPartRecord lvp INNER JOIN {0}Orchard_Framework_ContentItemRecord i ON	i.Id = lvp.Id
 
-                                        UPDATE	Orchard_Framework_ContentTypeRecord
+                                        UPDATE	{0}Orchard_Framework_ContentTypeRecord
                                         SET		Name = 'ListViewPage'
-                                        WHERE	Name = 'LayoutPropert'");
+                                        WHERE	Name = 'LayoutProperty'", DataTablePrefix()));
 
             ContentDefinitionManager.AlterTypeDefinition("ListViewPage",
                 cfg => cfg
