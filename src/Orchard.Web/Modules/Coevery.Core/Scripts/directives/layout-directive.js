@@ -1,4 +1,4 @@
-angular.module('coevery.layout', [])
+angular.module('coevery.layout', ['ng'])
     .directive('fdSection', function () {
         return {
             template: function (element) {
@@ -18,7 +18,7 @@ angular.module('coevery.layout', [])
     .directive('fdRow', function () {
         return {
             template: '<div fd-row class="data-row clearfix" ng-transclude></div>',
-            replace: true,
+            //replace: true,
             restrict: 'E',
             transclude: true,
             link: function (scope, element, attrs) {

@@ -22,8 +22,7 @@
                     $grid = $element.find("table.gridz");
                     gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
                     gridOptions.gridComplete = function () {
-                        var linkFunc = $compile($("div.gridCellText"));
-                        linkFunc($scope);
+                        $compile($grid)($scope);
                         
                         var width;
                         width = $element.parent().width() - 1;
