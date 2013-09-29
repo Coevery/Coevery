@@ -9,7 +9,7 @@ namespace Coevery.OptionSet.Services {
         IEnumerable<OptionSetPart> GetOptionSets();
         OptionSetPart GetOptionSet(int id);
         OptionSetPart GetOptionSetByName(string name);
-        void DeleteTaxonomy(OptionSetPart taxonomy);
+        void DeleteOptionSet(OptionSetPart taxonomy);
 
         IEnumerable<OptionItemPart> GetOptionItems(int optionSetId);
         OptionItemPart GetOptionItem(int id);

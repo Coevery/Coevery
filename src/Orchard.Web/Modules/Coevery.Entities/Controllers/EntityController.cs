@@ -17,17 +17,11 @@ using Orchard.Utility.Extensions;
 
 namespace Coevery.Entities.Controllers {
     public class EntityController : ApiController {
-        private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly ISchemaUpdateService _schemaUpdateService;
-        private readonly IEntityEvents _entityEvents;
+        private readonly IContentMetadataService _contentMetadataService;
 
         public EntityController(
-            IContentDefinitionService contentDefinitionService,
-            ISchemaUpdateService schemaUpdateService,
-            IEntityEvents entityEvents) {
-            _contentDefinitionService = contentDefinitionService;
-            _schemaUpdateService = schemaUpdateService;
-            _entityEvents = entityEvents;
+            IContentMetadataService contentMetadataService) {
+            _contentMetadataService = contentMetadataService;
             T = NullLocalizer.Instance;
         }
 
@@ -35,17 +29,18 @@ namespace Coevery.Entities.Controllers {
 
         //GET api/Entities/Entity
         public object Get(int rows, int page) {
-            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+            var metadataTypes = _contentMetadataService.GetRawEntities();
 
             var query = from type in metadataTypes
-                        select new EntitiyListGridModel {
-                            Id = type.Name, 
-                            DisplayName = type.DisplayName
+                        select new {
+                            Id = type.Id,
+                            Name = type.Name, 
+                            DisplayName = type.DisplayName,
+                            Modified = !type.IsPublished(),
+                            HasPublished = type.HasPublished()
                         };
 
             var totalRecords = query.Count();
-            //var postsortPage = _gridService.GetSortedRows(sidx, sord, query);
-            //_gridService.GetPagedRows(page, rows, postsortPage)
 
             return new {
                 total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
@@ -56,16 +51,12 @@ namespace Coevery.Entities.Controllers {
         }
 
         // DELETE api/Entities/Entity/:entityName
-        public virtual HttpResponseMessage Delete(string name) {
-            var typeViewModel = _contentDefinitionService.GetType(name);
-
-            if (typeViewModel == null) {
-                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+        public virtual HttpResponseMessage Delete(int name) {
+            var errormessage = _contentMetadataService.DeleteEntity(name);
+            if (string.IsNullOrWhiteSpace(errormessage)) {
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
-            _entityEvents.OnDeleting(name);
-            _contentDefinitionService.RemoveType(name, true);
-            _schemaUpdateService.DropTable(name);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed,errormessage);
         }
     }
 }

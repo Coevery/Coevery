@@ -1,9 +1,8 @@
-﻿using Coevery.Entities.Settings;
-using Orchard.ContentManagement.MetaData.Builders;
+﻿using Orchard.ContentManagement.MetaData.Builders;
+using Orchard.ContentManagement.MetaData.Models;
 
 namespace Coevery.Entities.Settings {
     public class FieldEditorEvents : ContentDefinitionEditorEventsBase {
-
         protected void UpdateSettings(FieldSettings model, ContentPartFieldDefinitionBuilder builder, string prefix) {
             model.HelpText = model.HelpText ?? string.Empty;
             builder.WithSetting(prefix + ".HelpText", model.HelpText);
@@ -12,12 +11,16 @@ namespace Coevery.Entities.Settings {
             builder.WithSetting(prefix + ".AlwaysInLayout", model.AlwaysInLayout.ToString());
             builder.WithSetting(prefix + ".IsSystemField", model.IsSystemField.ToString());
             builder.WithSetting(prefix + ".IsAudit", model.IsAudit.ToString());
-            //var prefix = viewModel.FieldTypeName + "Settings";
-            //var clientSettings = new FieldSettings();
-            //updateModel.TryUpdateModel(clientSettings, prefix, null, null);
-            //if (clientSettings.IsSystemField) {
-            //    updateModel.AddModelError("IsSystemField", T("Can't modify the IsSystemField field."));
-            //}
+        }
+
+        protected void UpdateSettings(FieldSettings model, SettingsDictionary settingsDictionary, string prefix) {
+            model.HelpText = model.HelpText ?? string.Empty;
+            settingsDictionary[prefix + ".HelpText"] = model.HelpText;
+            settingsDictionary[prefix + ".Required"] = model.Required.ToString();
+            settingsDictionary[prefix + ".ReadOnly"] = model.ReadOnly.ToString();
+            settingsDictionary[prefix + ".AlwaysInLayout"] = model.AlwaysInLayout.ToString();
+            settingsDictionary[prefix + ".IsSystemField"] = model.IsSystemField.ToString();
+            settingsDictionary[prefix + ".IsAudit"] = model.IsAudit.ToString();
         }
     }
 }

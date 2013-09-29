@@ -69,7 +69,7 @@ namespace Coevery.OptionSet.Services {
         }
 
         
-        public void DeleteTaxonomy(OptionSetPart taxonomy) {
+        public void DeleteOptionSet(OptionSetPart taxonomy) {
             _contentManager.Remove(taxonomy.ContentItem);
 
             // Removing terms

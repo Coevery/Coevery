@@ -31,8 +31,14 @@
                     };
 
                     gridOptions.onSelectRow = function() {
-                        $scope.$apply(function() {
+                      $scope.$apply(function () {
+                          $scope.selectedRow = null;
                             $scope.selectedItems = gridCtrl.getSelectedRowIds();
+                          if ($scope.selectedItems.length === 1 && $scope.idAttr) {
+                              $scope.selectedRow = gridCtrl.getParam("data").filter(function(element) {
+                                  return element[$scope.idAttr] === $scope.selectedItems[0];
+                              });
+                          }
                         });
                     };
 

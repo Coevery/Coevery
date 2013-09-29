@@ -92,10 +92,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Drivers\EntityMetadataPartDriver.cs" />
     <Compile Include="Events\IEntityEvents.cs" />
     <Compile Include="Events\IFieldEvents.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Models\EntitiyListGridModel.cs" />
+    <Compile Include="Handlers\EntityMetadataPartHandler.cs" />
+    <Compile Include="Migrations.cs" />
+    <Compile Include="Models\EntityMetadataPart.cs" />
+    <Compile Include="Models\FieldMetadataRecord.cs" />
+    <Compile Include="Models\EntityMetadataRecord.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
@@ -103,6 +108,7 @@
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Services\IContentFieldValueProvider.cs" />
     <Compile Include="Services\ContentFieldValueProvider.cs" />
+    <Compile Include="Services\ContentMetadataService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
     <Compile Include="Settings\FieldEditorEvents.cs" />
@@ -120,6 +126,7 @@
     <Compile Include="ViewModels\EditPartViewModel.cs" />
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
+    <Compile Include="ViewModels\EntityDetailViewModel.cs" />
     <Compile Include="ViewModels\FieldDependencyViewModel.cs" />
     <Content Include="Scripts\controllers\createchoosetypecontroller.js" />
     <Content Include="Scripts\controllers\createeditinfocontroller.js" />
@@ -166,12 +173,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Drivers\" />
-    <Folder Include="Handlers\" />
-    <Folder Include="Records\" />
-    <Folder Include="Views\DefinitionTemplates\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\SystemAdmin\List.cshtml" />
   </ItemGroup>

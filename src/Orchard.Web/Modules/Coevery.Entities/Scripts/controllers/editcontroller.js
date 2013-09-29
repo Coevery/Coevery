@@ -18,11 +18,10 @@ define(['core/app/detourService'], function (detour) {
               var promise = $http({
                   url: form.attr('action'),
                   method: "POST",
-                  data: form.serialize() + '&submit.Save=Save',
+                  data: form.serialize(),
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }).then(function (response) {
                   logger.success('Save succeeded.');
-                  window.location.reload();
                   return response;
               }, function (reason) {
                   logger.error('Save Failed： ' + reason.data);
@@ -32,7 +31,7 @@ define(['core/app/detourService'], function (detour) {
 
           $scope.saveAndView = function () {
               var promise = $scope.save();
-              promise.then(function (response) {
+              promise.done(function (response) {
                   var getter = $parse('entityName');
                   var entityName = getter(response.data);
                   if (entityName)

@@ -8,8 +8,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.selectedItems = [];
                 var entityName = $stateParams.Id;
+                $scope.idAttr = "Name"; //The attribute represent the id of a row
                 var fieldColumnDefs = [
                     { name: 'Name', label: 'Field Name', formatter: $rootScope.cellLinkTemplate },
+                    { name: 'Id', label: 'Id', hidden: true },
                     {
                         name: 'DisplayName', label: 'Field Label'
                     },
@@ -31,7 +33,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.gridOptions = {
-                    url: "api/entities/field?name=" + entityName,
+                    url: "api/entities/field?name=" + $scope.metaId,
                     colModel: fieldColumnDefs
                 };
 
@@ -76,14 +78,15 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     $state.transitionTo('EntityDetail.Fields.Create', { Id: entityName });
                 };
 
-                $scope.delete = function(field) {
-                    var deleteField = field || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                $scope.delete = function () {
+                    var deleteField = $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!deleteField) return;
-                    fieldDataService.delete({ name: deleteField, parentname: entityName }, function() {
+                    fieldDataService.delete({ name: deleteField, entityName: entityName }, function () {
+                        $scope.selectedItems = [];
                         logger.success("Delete the field successful.");
                         $scope.getAllField();
-                    }, function(reason) {
-                        logger.error("Failed to delete the field:" + reason);
+                    }, function (reason) {
+                        logger.error("Failed to delete the field:" + reason.Message);
                     });
                 };
 
