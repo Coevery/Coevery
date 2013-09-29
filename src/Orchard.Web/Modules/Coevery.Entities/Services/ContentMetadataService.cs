@@ -219,6 +219,7 @@ namespace Coevery.Entities.Services {
             var settingsDictionary = new SettingsDictionary();
             settingsDictionary["DisplayName"] = viewModel.DisplayName;
             settingsDictionary["AddInLayout"] = viewModel.AddInLayout.ToString();
+            settingsDictionary["EntityName"] = entity.Name;
             _contentDefinitionEditorEvents.UpdateFieldSettings(viewModel.FieldTypeName, viewModel.Name, settingsDictionary, updateModel);
             entity.FieldMetadataRecords.Add(new FieldMetadataRecord {
                 ContentFieldDefinitionRecord = FetchFieldDefinition(viewModel.FieldTypeName),

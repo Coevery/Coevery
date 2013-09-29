@@ -8,7 +8,6 @@ using Coevery.Entities.Models;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Services;
 using Orchard.Data;
 using Orchard.Logging;
@@ -76,11 +75,9 @@ namespace Coevery.Entities.Handlers {
                 builder.WithPart(part.Name).WithPart("CoeveryCommonPart");
             });
 
-            _contentDefinitionManager.AlterPartDefinition(part.Name, builder => {
-                foreach (var fieldMetadataRecord in part.FieldMetadataRecords) {
-                    AddField(builder, fieldMetadataRecord, false);
-                }
-            });
+            foreach (var record in part.FieldMetadataRecords) {
+                AddField(part.Name, record, false);
+            }
 
             _entityEvents.OnCreated(part.Name);
 
@@ -113,9 +110,8 @@ namespace Coevery.Entities.Handlers {
                     needUpdateFields.Add(fieldMetadataRecord);
                 }
                 else {
-                    var record = fieldMetadataRecord;
-                    _contentDefinitionManager.AlterPartDefinition(entity.Name, builder => AddField(builder, record));
-                    _schemaUpdateService.CreateColumn(entity.Name, record.Name, record.ContentFieldDefinitionRecord.Name);
+                    AddField(entity.Name, fieldMetadataRecord);
+                    _schemaUpdateService.CreateColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
                 }
             }
 
@@ -130,17 +126,24 @@ namespace Coevery.Entities.Handlers {
             }
         }
 
-        private void AddField(ContentPartDefinitionBuilder partBuilder, FieldMetadataRecord record, bool needEvent = true) {
-            var settings = _settingsFormatter.Map(Parse(record.Settings));
-            string fieldTypeName = record.ContentFieldDefinitionRecord.Name;
+        private void AddField(string entityName, FieldMetadataRecord field, bool needEvent = true) {
+            var settings = _settingsFormatter.Map(Parse(field.Settings));
 
-            partBuilder.WithField(record.Name, fieldBuilder => {
-                fieldBuilder.OfType(fieldTypeName).WithSetting("Storage", "Part");
-
-                _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
+            // add field to part
+            _contentDefinitionManager.AlterPartDefinition(entityName, builder => {
+                string fieldTypeName = field.ContentFieldDefinitionRecord.Name;
+                builder.WithField(field.Name, fieldBuilder =>
+                    fieldBuilder.OfType(fieldTypeName).WithSetting("Storage", "Part"));
             });
+
+            // update field settings
+            _contentDefinitionManager.AlterPartDefinition(entityName, builder =>
+                builder.WithField(field.Name, fieldBuilder =>
+                    _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings))
+                );
+
             if (needEvent) {
-                _fieldEvents.OnCreated(partBuilder.Name, record.Name, bool.Parse(settings["AddInLayout"]));
+                _fieldEvents.OnCreated(entityName, field.Name, bool.Parse(settings["AddInLayout"]));
             }
         }
 

@@ -9,7 +9,6 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
-using Orchard.Mvc;
 using Orchard.Projections.Models;
 using Orchard.Localization;
 
@@ -18,17 +17,15 @@ namespace Coevery.Relationship.Settings {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentManager _contentManager;
         private readonly IRelationshipService _relationshipService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         public Localizer T { get; set; }
 
         public ReferenceFieldEditorEvents(
             IContentDefinitionService contentDefinitionService,
             IContentManager contentManager,
-            IRelationshipService relationshipService, IHttpContextAccessor httpContextAccessor) {
+            IRelationshipService relationshipService) {
             _contentDefinitionService = contentDefinitionService;
             _contentManager = contentManager;
             _relationshipService = relationshipService;
-            _httpContextAccessor = httpContextAccessor;
             T = NullLocalizer.Instance;
         }
 
@@ -64,9 +61,7 @@ namespace Coevery.Relationship.Settings {
                 }
 
                 if (model.RelationshipId <= 0) {
-                    var httpContext = _httpContextAccessor.Current();
-                    var routeValues = httpContext.Request.RequestContext.RouteData.Values;
-                    var entityName = routeValues["id"].ToString();
+                    var entityName = settingsDictionary["EntityName"];
                     model.RelationshipId = _relationshipService.CreateOneToManyRelationship(builder.Name, model.RelationshipName, model.ContentTypeName, entityName);
                 }
 
@@ -108,7 +103,7 @@ namespace Coevery.Relationship.Settings {
             return queryPart.Id;
         }
 
-        private string GetContentTypeFilterState(string entityType) {
+        private static string GetContentTypeFilterState(string entityType) {
             const string format = @"<Form><Description></Description><ContentTypes>{0}</ContentTypes></Form>";
             return string.Format(format, entityType);
         }
