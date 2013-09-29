@@ -1,7 +1,7 @@
 require.config({
     paths: {
-        core: 'Scripts',
-        app: 'Scripts/app/' + appPrefix() + 'app'
+        core: 'Modules/Coevery.Core/Scripts',
+        app: 'Modules/Coevery.Core/Scripts/app/' + appPrefix() + 'app'
     }
 });
 
