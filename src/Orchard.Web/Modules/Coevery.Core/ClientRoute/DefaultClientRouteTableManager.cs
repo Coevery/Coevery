@@ -30,14 +30,14 @@ namespace Coevery.Core.ClientRoute {
 
         public ILogger Logger { get; set; }
 
-        public object GetRouteTable(bool isFrontEnd) {
-                Logger.Information("Start building shape table");
+        public IEnumerable<ClientRouteDescriptor> GetRouteTable(bool isFrontEnd) {
+            Logger.Information("Start building shape table");
 
             var alterationSets = _parallelCacheContext.RunInParallel(
                 _clientRouteProviders.Where(provider => provider.Value.IsFrontEnd == isFrontEnd), provider => {
                     var feature = provider.Metadata.ContainsKey("Feature") ?
-                                      (Feature) provider.Metadata["Feature"] :
-                                      null;
+                        (Feature) provider.Metadata["Feature"] :
+                        null;
 
                     var builder = new ClientRouteTableBuilder(feature);
                     provider.Value.Discover(builder);
@@ -48,108 +48,26 @@ namespace Coevery.Core.ClientRoute {
                 .SelectMany(shapeAlterations => shapeAlterations)
                 .ToList();
             var distinctRouteNames = alterations.GroupBy(item => item.RouteName, StringComparer.OrdinalIgnoreCase)
-                .Select(item=>item.Key).ToList();
+                .Select(item => item.Key).ToList();
 
             var routes = GenerateRoutes(distinctRouteNames, alterations);
             Logger.Information("Done building shape table");
             return routes;
         }
 
-        private List<ClientRouteDescriptor> GenerateRoutes(List<string> distinctRouteNames, List<ClientRouteAlteration> alterations)
-        {
+        private IEnumerable<ClientRouteDescriptor> GenerateRoutes(List<string> distinctRouteNames, List<ClientRouteAlteration> alterations) {
             var routes = new List<ClientRouteDescriptor>();
-            foreach (var routeName in distinctRouteNames)
-            {
-                var descriptor = new ClientRouteDescriptor { RouteName = routeName };
-                foreach (var alteration in alterations.Where(item => item.RouteName == routeName))
-                {
+            foreach (var routeName in distinctRouteNames) {
+                var descriptor = new ClientRouteDescriptor {RouteName = routeName};
+                foreach (var alteration in alterations.Where(item => item.RouteName == routeName)) {
                     alteration.Alter(descriptor);
                 }
                 routes.Add(descriptor);
             }
-            
-            routes = routes.OrderBy(item =>new Regex(@"\.").Matches(item.RouteName).Count).ToList();
+
+            routes = routes.OrderBy(item => new Regex(@"\.").Matches(item.RouteName).Count).ToList();
             return routes;
         }
 
-        private IDictionary<string, object> GenerateRoutes(IEnumerable<ClientRouteNode> rootNodes, List<ClientRouteAlteration> alterations) {
-            IDictionary<string, object> routes = new ExpandoObject();
-            foreach (var node in rootNodes) {
-                var descriptor = new ClientRouteDescriptor {RouteName = node.Name};
-                foreach (var alteration in alterations.Where(a => a.RouteName == node.FullName).ToList()) {
-                    var feature = alteration.Feature;
-                    alteration.Alter(descriptor);
-                }
-
-                dynamic route = new ExpandoObject();
-                route.definition = ConvertRouteDescriptor(descriptor);
-                if (node.Children != null && node.Children.Any())
-                    route.children = GenerateRoutes(node.Children, alterations);
-                routes[descriptor.RouteName] = route;
-            }
-            return routes;
-        }
-
-        private dynamic ConvertRouteDescriptor(ClientRouteDescriptor descriptor) {
-            dynamic definition = new ExpandoObject();
-            definition.url = descriptor.Url ?? string.Empty;
-            if (descriptor.Abstract != null) {
-                definition.@abstract = descriptor.Abstract;
-            }
-
-            IDictionary<string, object> views = new ExpandoObject();
-            foreach (var viewDescriptor in descriptor.Views) {
-                dynamic view = new ExpandoObject();
-                if (viewDescriptor.TemplateUrl != null) {
-                    view.templateUrl = new JRaw(viewDescriptor.TemplateUrl);
-                }
-                if (viewDescriptor.TemplateProvider != null) {
-                    view.templateProvider = new JRaw(viewDescriptor.TemplateProvider);
-                }
-                if (viewDescriptor.Controller != null) {
-                    view.controller = viewDescriptor.Controller;
-                }
-                views[viewDescriptor.Name ?? string.Empty] = view;
-            }
-            definition.views = views;
-
-
-            if (descriptor.Dependencies != null) {
-                definition.dependencies = descriptor.Dependencies;
-            }
-            return definition;
-        }
-
-        private string[] ToClientUrl(string baseUrl, IEnumerable<string> scripts) {
-            if (scripts == null) return null;
-            var results = scripts.Select(scriptPath => VirtualPathUtility.Combine(VirtualPathUtility.Combine(baseUrl, "Scripts/"), scriptPath + ".js"))
-                .Select(VirtualPathUtility.ToAbsolute).ToArray();
-            return results;
-        }
-
-        private static void PopulateChildren(List<ClientRouteNode> routeNodes) {
-            foreach (var node in routeNodes) {
-                var parent = node;
-                var children = routeNodes.Where(n => n.FullName == parent.FullName + "." + n.Name).ToList();
-                if (children.Any()) {
-                    parent.Children = children;
-                    PopulateChildren(parent.Children);
-                }
-            }
-        }
-
-        private string GetRouteName(string routeName) {
-            int lastSegmentIndex = routeName.LastIndexOf('.');
-            if (lastSegmentIndex > -1)
-                return routeName.Substring(lastSegmentIndex + 1);
-            return routeName;
-        }
-
-        private class ClientRouteNode {
-            public string Name { get; set; }
-            public string FullName { get; set; }
-            public List<ClientRouteNode> Children { get; set; }
-        }
     }
-
 }

@@ -1,7 +1,6 @@
 ﻿@{
     Style.Require("pnotify");
     Style.Require("Module");
-    Style.Require("ngGrid");
 
     Script.Require("jQuery");
     Script.Require("jQueryUI");
@@ -10,7 +9,6 @@
     Script.Require("angularResource");
     Script.Require("angularRoute");
     
-    Script.Require("ngGrid");
     Script.Require("ui_utils");
     Script.Require("require");
     Script.Require("angular_UI_Router");
@@ -25,32 +23,9 @@
 }
 
 <div id="loading">Loading...</div>
-<section  class="ng-cloak"  ui-view>
+<section  class="ng-cloak" ui-view>
 </section>
+
 @using (Script.Foot()) {
-    <script type="text/javascript">
-        //<![CDATA[
-        function appPrefix() { return 'admin'; }
-        (function() {
-            var load = requirejs.load;
-            requirejs.load = function(context, moduleId, url) {
-                //modify url here, then call original load
-                return load(context, moduleId, url);
-            };
-
-            require.config({
-                baseUrl: '@Url.Content("~/Modules/Coevery.Core")'
-            });
-
-            //Now load code.
-            require(['@Url.Content("~/Modules/Coevery.Core/scripts/app/main.js")']);
-        }());
-        //]]>
-        var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.couchPotato', 'ui.router', 'ui.utils', 'coevery.formdesigner', 'coevery.grid', 'SharedServices', 'ui.bootstrap', 'coevery.common']);
-        coevery.config(['$stateProvider', '$urlRouterProvider',
-            function ($stateProvider, $urlRouterProvider) {
-                $urlRouterProvider.otherwise('/404');
-                @Html.Action("RegisterRouter",new {Controller = "ViewTemplate", Area = "Coevery.Core",id=false})
-            }]);
-    </script>
+    @Display.ClientRoute(IsFrontEnd: false)
 }

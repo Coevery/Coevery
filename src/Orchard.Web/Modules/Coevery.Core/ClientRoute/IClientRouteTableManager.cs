@@ -1,8 +1,9 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Web;
 using Orchard;
 
 namespace Coevery.Core.ClientRoute {
     public interface IClientRouteTableManager : IDependency {
-        object GetRouteTable(bool isFrontEnd);
+        IEnumerable<ClientRouteDescriptor> GetRouteTable(bool isFrontEnd);
     }
 }
