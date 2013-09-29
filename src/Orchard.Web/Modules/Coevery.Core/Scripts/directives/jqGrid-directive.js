@@ -35,7 +35,7 @@
                             $scope.selectedItems = gridCtrl.getSelectedRowIds();
                           if ($scope.selectedItems.length === 1 && $scope.idAttr) {
                               $scope.selectedRow = gridCtrl.getParam("data").filter(function(element) {
-                                  return element[$scope.idAttr] === $scope.selectedItems[0];
+                                  return element[$scope.idAttr].toString() === $scope.selectedItems[0];
                               });
                           }
                         });
@@ -48,39 +48,6 @@
                     };
 
                     $grid.jqGrid(gridOptions);
-
-                    $grid.on("click.view-action", ".view-action", function(event) {
-                        event.preventDefault();
-                        var id;
-                        id = $(this).attr("data-id");
-                        $scope.$on("ViewAction", function(subevent, args) {
-                            subevent.preventDefault();
-                            $scope.view(args);
-                        });
-                        $rootScope.$broadcast("ViewAction", id);
-                    });
-
-                    $grid.on("click.edit-action", ".edit-action", function(event) {
-                        event.preventDefault();
-                        var id;
-                        id = $(this).attr("data-id");
-                        $scope.$on("EditAction", function(subevent, args) {
-                            subevent.preventDefault();
-                            $scope.edit(args);
-                        });
-                        $rootScope.$broadcast("EditAction", id);
-                    });
-
-                    $grid.on("click.default-action", ".default-action", function(event) {
-                        event.preventDefault();
-                        var id;
-                        id = $(this).attr("data-id");
-                        $scope.$on("DefaultAction", function(subevent, args) {
-                            subevent.preventDefault();
-                            $scope.setDefault(args);
-                        });
-                        $rootScope.$broadcast("DefaultAction", id);
-                    });
 
                     /*
                     adds listener to resize grid to parent container when window is resized.
@@ -101,17 +68,6 @@
                     }
 
                     responsiveResize();
-
-                    $grid.on("click.delete-action", ".delete-action", function(event) {
-                        event.preventDefault();
-                        var id;
-                        id = $(this).attr("data-id");
-                        $scope.$on("DeleteAction", function(subevent, args) {
-                            //subevent.preventDefault();
-                            $scope.delete(args);
-                        });
-                        $rootScope.$broadcast("DeleteAction", id);
-                    });
                 };
 
                 return $scope.$watch(attrs.agGrid, initializeGrid);
@@ -167,3 +123,16 @@
     });
 
 })();
+
+/*Abandoned Code
+            $grid.on("click.view-action", ".view-action", function(event) {
+                event.preventDefault();
+                var id;
+                id = $(this).attr("data-id");
+                $scope.$on("ViewAction", function(subevent, args) {
+                    subevent.preventDefault();
+                    $scope.view(args);
+                });
+                $rootScope.$broadcast("ViewAction", id);
+            });
+*/

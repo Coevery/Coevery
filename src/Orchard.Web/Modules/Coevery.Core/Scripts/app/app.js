@@ -39,27 +39,19 @@
             $rootScope.cellLinkTemplate = function (cellvalue, options, rowObject) {
                 var template = '<div class="gridCellText">' +
                     '<section class="row-actions hide">' +
-                    '<span class="icon-edit edit-action" data-id={0} title="Edit"></span>' +
+                    '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
                     '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
-                    'delete-action="delete({1})" data-id= {1} title="Delete"></span></section>' +
-                    '<span class=\"{3}\" data-id= {1} > {2} </span> </div>';
+                    'delete-action="delete(\'{0}\')" title="Delete"></span></section>' +
+                    '{1} </div>';
+                var viewStyle = '<span>' + cellvalue + '</span>';
                 if (!options.colModel.formatoptions) {
-                    return template.format(options.rowId, options.rowId, cellvalue, '');
-                }
-
-                var editParams, viewStyle;
-                if (options.colModel.formatoptions.editRow) {
-                    editParams = JSON.stringify(rowObject);
-                } else {
-                    editParams = options.rowId;
+                    return template.format(options.rowId, viewStyle);
                 }
                 if (options.colModel.formatoptions.hasView) {
-                    viewStyle = 'btn-link view-action';
-                } else {
-                    viewStyle = '';
+                    viewStyle = '<span class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
+                        cellvalue + '</span>';
                 }
-
-                return template.format(editParams, options.rowId, cellvalue, viewStyle);
+                return template.format(options.rowId, viewStyle);
             };
 
             $rootScope.defaultGridOptions = {

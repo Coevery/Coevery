@@ -3,10 +3,17 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'RelationshipsCtrl',
-        ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams',
-            function ($rootScope, $scope, logger, $state, $resource, $stateParams) {
+        ['$rootScope', '$scope', 'logger', '$state', '$q', '$resource', '$stateParams',
+            function ($rootScope, $scope, logger, $state, $q, $resource, $stateParams) {
                 var relationshipDataService = $resource('api/relationship/Relationship');
+                var defer = $q.defer();
+                $scope.$watch("selectedRow", function(newValue) {
+                    if (newValue) {
+                        defer.resolve();
+                    }
+                });
 
+                $scope.idAttr = 'ContentId';
                 var relationshipColumnDefs = [
                     { name: 'ContentId', label: 'Content Id', hidden: true },
                     {
@@ -38,13 +45,18 @@ define(['core/app/detourService'], function (detour) {
                 $scope.createManyToMany = function () {
                     $state.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
                 };
-                $scope.edit = function (paramString) {
-                    var params = JSON.parse(paramString);
-                    if (params.Type == "OneToMany") {
-                        $state.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
-                    } else if (params.Type == "ManyToMany") {
-                        $state.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
-                    }
+                $scope.edit = function () {
+                    defer.promise.then(function () {
+                        var params = $scope.selectedRow[0];
+                        if (!params) {
+                            logger.error("No relation selected!");
+                        }
+                        if (params.Type == "OneToMany") {
+                            $state.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
+                        } else if (params.Type == "ManyToMany") {
+                            $state.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
+                        }
+                    });
                 };
                 $scope.delete = function (contentId) {
                     var deleteRelationship = contentId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
