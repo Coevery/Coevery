@@ -162,10 +162,9 @@
                     if (!passValidate) {
                         return;
                     }
-                    var needSave = !!$('#filter-save-box:checked').length;
                     currentFilterGroupId = 0;
                     $scope.getPagedDataAsync();
-                    if (needSave) {
+                    if ($scope.needSaveFilter) {
                         var filter = {
                             Id: $scope.currentFilter.Id,
                             FilterGroupId: $scope.currentFilter.FilterGroupId,
@@ -179,6 +178,7 @@
                         }, function () {
                             logger.error("Save filter failed.");
                         });
+                        $scope.needSaveFilter = false;
                     }
                 };
 
