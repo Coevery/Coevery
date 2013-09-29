@@ -1,17 +1,18 @@
 using Orchard.UI.Resources;
 
-namespace Orchard.AngularJS
-{
-    public class ResourceManifest : IResourceManifestProvider
-    {
+namespace Orchard.AngularJS {
+    public class ResourceManifest : IResourceManifestProvider {
         public void BuildManifests(ResourceManifestBuilder builder) {
             var manifest = builder.Add();
 
-            manifest.DefineScript("angular").SetUrl("angular.min.js", "angular.js").SetVersion("1.0.5")
-                    .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.js", true);
+            manifest.DefineScript("angular").SetUrl("angular.min.js", "angular.js").SetVersion("1.2.0-rc.2")
+                .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js", true);
 
-            manifest.DefineScript("angularResource").SetUrl("angular-resource.min.js", "angular-resource.js").SetVersion("1.0.5")
-                    .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.js", true);
+            manifest.DefineScript("angularResource").SetUrl("angular-resource.min.js", "angular-resource.js").SetVersion("1.2.0-rc.2")
+                .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.js", true);
+
+            manifest.DefineScript("angularRoute").SetUrl("angular-route.min.js", "angular-route.js").SetVersion("1.2.0-rc.2")
+                .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.js", true);
 
             manifest.DefineScript("ng_grid_row_selection").SetUrl("ng-grid-row-selection.js", "ng-grid-row-selection.js");
 
@@ -37,7 +38,7 @@ namespace Orchard.AngularJS
             manifest.DefineScript("ui_bootstrap").SetUrl("ui-bootstrap-tpls-0.4.0.js", "ui-bootstrap-tpls-0.4.0.js").SetVersion("0.4.0").SetDependencies("angular");
             manifest.DefineScript("underscore").SetUrl("underscore-min.js", "underscore.js").SetVersion("1.5.1");
             manifest.DefineScript("angularunderscore").SetUrl("angular-underscore.js", "angular-underscore.js").SetVersion("1.0.0").SetDependencies("angular");
-            
+
         }
     }
 }
