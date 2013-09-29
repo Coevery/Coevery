@@ -5,7 +5,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
         'FieldsCtrl',
         ['$rootScope', '$scope', 'logger', '$state', '$stateParams', '$dialog', 'fieldDataService',
             function ($rootScope, $scope, logger, $state, $stateParams, $dialog, fieldDataService) {
-
+                $scope.$parent.showField = true;
                 $scope.selectedItems = [];
                 var entityName = $stateParams.Id;
                 $scope.idAttr = "Name"; //The attribute represent the id of a row
@@ -102,6 +102,8 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                         datatype: "json"
                     }).trigger('reloadGrid');
                 };
+
+                $scope.refreshTab();
             }]
     ]);
 });

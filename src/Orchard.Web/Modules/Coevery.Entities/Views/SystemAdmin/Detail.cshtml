@@ -45,13 +45,13 @@
             <div class="row-fluid">
                 <div class="mytabs">
                     <ul class="nav nav-tabs">
-                        <li data-ng-class="{active: $state.includes('EntityDetail.Fields')}">
+                        <li data-ng-class="{active: showField}">
                             <a data-ng-href="#/Entities/{{$stateParams.Id}}">Fields</a>
                         </li>
-                        <li data-ng-class="{active: $state.includes('EntityDetail.Relationships')}" title="@Model.PublishTip">
+                        <li data-ng-class="{active: showRelation}" title="@Model.PublishTip">
                             <a data-ng-href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a>
                         </li>
-                        <li data-ng-class="{active: $state.includes('EntityDetail.Views')}" title="@Model.PublishTip">
+                        <li data-ng-class="{active: showView}" title="@Model.PublishTip">
                             <a data-ng-href="#/Entities/{{$stateParams.Id}}/Views">Views</a>
                         </li>
                     </ul>

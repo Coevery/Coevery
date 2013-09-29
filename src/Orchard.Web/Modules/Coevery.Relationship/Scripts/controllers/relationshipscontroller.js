@@ -57,6 +57,7 @@ define(['core/app/detourService'], function (detour) {
                         logger.error("Failed to delete the relationship:" + reason);
                     });
                 };
+                $scope.refreshTab();
             }]
     ]);
 });

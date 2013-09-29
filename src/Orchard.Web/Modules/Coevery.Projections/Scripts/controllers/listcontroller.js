@@ -69,6 +69,7 @@ define(['core/app/detourService',
                                 datatype: "json"
                             }).trigger('reloadGrid');
                         };
+                        $scope.refreshTab();
                     }]
             ]);
         });

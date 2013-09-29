@@ -9,7 +9,7 @@ namespace Coevery.Relationship.Services {
                     descriptor.Url = "/Relationships";
                 })
                 .View(view => {
-                    view.TemplateUrl = "'" + ModuleBasePath + @"/Relationships'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"Relationships'";
                     view.Controller = "RelationshipsCtrl";
                     view.AddDependencies(ToAbsoluteScriptUrl, new[] {"controllers/relationshipscontroller"});
                 });

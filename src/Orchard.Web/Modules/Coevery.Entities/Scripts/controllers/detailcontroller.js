@@ -5,6 +5,12 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
         'EntityDetailCtrl',
         ['$scope', 'logger', '$state', '$stateParams', 'entityDataService',
             function ($scope, logger, $state, $stateParams, entityDataService) {
+                $scope.refreshTab = function() {
+                    $scope.showField = $state.includes('EntityDetail.Fields');
+                    $scope.showRelation = $state.includes('EntityDetail.Relationships');
+                    $scope.showView = $state.includes('EntityDetail.Views');
+                };
+                
                 $scope.exit = function () {
                     $state.transitionTo('EntityList');
                 };
