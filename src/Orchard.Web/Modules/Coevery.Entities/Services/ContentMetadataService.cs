@@ -33,7 +33,7 @@ namespace Coevery.Entities.Services {
         string ConstructFieldName(string entityName, string displayName);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
         void CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
-        bool DeleteField(int id);
+        bool DeleteField(string filedName,string entityName);
         void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel);
     }
 
@@ -157,11 +157,15 @@ namespace Coevery.Entities.Services {
                     _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
                 }
             }
-            if (!entity.HasPublished()) {
-                return null;
-            }
+            var hasPublished = entity.HasPublished();
+
+
             entity.FieldMetadataRecords.Clear();
             Services.ContentManager.Remove(entity.ContentItem);
+            //entity.ContentItem.ContentManager.Clear();
+            if (!hasPublished) {
+                return null;
+            }
 
             var typeViewModel = _contentDefinitionService.GetType(entity.Name);
 
@@ -230,10 +234,13 @@ namespace Coevery.Entities.Services {
             record.Settings = CompileSetting(settingsDictionary);
         }
 
-        public bool DeleteField(int id) {
-            var field = _fieldMetadataRepository.Get(id);
-            var entity = GetDraftEntity(field.EntityMetadataRecord.ContentItemRecord.Id);
+        public bool DeleteField(string fieldName,string entityName) {
+            var entity = GetDraftEntity(entityName);
             if (entity == null) {
+                return false;
+            }
+            var field = entity.FieldMetadataRecords.FirstOrDefault(record => record.Name == fieldName);
+            if (field == null) {
                 return false;
             }
             if (field.ContentFieldDefinitionRecord.Name == "OptionSetField") {

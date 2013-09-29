@@ -41,13 +41,13 @@ namespace Coevery.OptionSet.Settings {
                 UpdateSettings(model, settingsDictionary, "OptionSetFieldSettings");
                 if (model.OptionSetId == 0) {
                     model.OptionSetId = CreateOptionSetPart(fieldName, model);
-                    if (model.OptionSetId == -1) {
+                    if (model.OptionSetId <= 0) {
                         updateModel.AddModelError("OptionSet", T("No items inputted"));
                         return;
                     }
                 }
-                settingsDictionary["ReferenceFieldSettings.OptionSetId"] = model.OptionSetId.ToString("D");
-                settingsDictionary["ReferenceFieldSettings.ListMode"] = model.ListMode.ToString();
+                settingsDictionary["OptionSetFieldSettings.OptionSetId"] = model.OptionSetId.ToString("D");
+                settingsDictionary["OptionSetFieldSettings.ListMode"] = model.ListMode.ToString();
             }
         }
 

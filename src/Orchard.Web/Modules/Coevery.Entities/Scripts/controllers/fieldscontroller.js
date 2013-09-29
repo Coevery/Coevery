@@ -79,9 +79,9 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
 
                 $scope.delete = function () {
-                    var deleteField = $scope.selectedItems.length > 0 ? $scope.selectedRow[0].Id : null;
+                    var deleteField = $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!deleteField) return;
-                    fieldDataService.delete({ name: deleteField }, function () {
+                    fieldDataService.delete({ name: deleteField, entityName: entityName }, function () {
                         $scope.selectedItems = [];
                         logger.success("Delete the field successful.");
                         $scope.getAllField();

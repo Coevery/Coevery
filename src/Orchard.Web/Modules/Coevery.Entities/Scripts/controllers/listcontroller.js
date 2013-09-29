@@ -19,7 +19,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               },
               { name: 'Id', label: 'Id', hidden: true, sorttype: 'int' },
               { name: 'DisplayName', label: t('Display Name') },
-              { name: 'Modified', label: t('Modification Not Published') },
+              { name: 'Modified', label: t('Has Unpublished Modification') },
               { name: 'HasPublished', label: t('Has Ever Published') }
           ];
 
@@ -63,7 +63,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           };
 
           $scope.publish = function() {
-              $http.get('Entities/SystemAdmin/Publish/' + $scope.selectedRow[0].Id);
+              $http.get('Entities/SystemAdmin/Publish/' + $scope.selectedRow[0].Id).then(function() {
+                  $scope.getAllMetadata();
+              });
+              
           };
       }]
     ]);

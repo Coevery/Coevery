@@ -47,8 +47,8 @@ namespace Coevery.Entities.Controllers {
         }
 
         // DELETE api/metadata/field/name
-        public virtual HttpResponseMessage Delete(int name) {
-            return _contentMetadataService.DeleteField(name)
+        public virtual HttpResponseMessage Delete(string name,string entityName) {
+            return _contentMetadataService.DeleteField(name,entityName)
                 ? Request.CreateResponse(HttpStatusCode.OK)
                 : Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid id!");
         }

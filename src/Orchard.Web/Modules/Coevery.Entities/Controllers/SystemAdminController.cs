@@ -64,9 +64,10 @@ namespace Coevery.Entities.Controllers {
             });
         }
 
-        public void Publish(int id) {
+        public ActionResult Publish(int id) {
             var t = Services.ContentManager.Get(id, VersionOptions.Latest);
             Services.ContentManager.Publish(t);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         [HttpPost, ActionName("Create")]
