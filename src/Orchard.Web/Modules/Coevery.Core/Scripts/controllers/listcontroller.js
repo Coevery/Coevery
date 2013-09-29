@@ -60,7 +60,9 @@
                                 loadComplete: function (data) {
                                     currentPage = data.page;
                                     pageSize = data.records;
-                                    $scope.filterDescription = data.filterDescription;
+                                    if (currentFilterGroupId == 0) {
+                                        $scope.filterDescription = data.filterDescription;
+                                    }
                                     $scope.$apply();
                                 },
                                 loadError: function (xhr, status, error) {
@@ -162,12 +164,11 @@
                     if (!passValidate) {
                         return;
                     }
+                    
                     currentFilterGroupId = 0;
                     $scope.getPagedDataAsync();
                     if ($scope.needSaveFilter) {
                         var filter = {
-                            Id: $scope.currentFilter.Id,
-                            FilterGroupId: $scope.currentFilter.FilterGroupId,
                             Title: $scope.currentFilter.Title,
                             Filters: getFilters()
                         };
@@ -183,7 +184,7 @@
                 };
 
                 $scope.expendCollapse = function () {
-                    if ($('#collapseBtn').hasClass('icon-collapse-hide')) {
+                    if (!$scope.showFilterEditorZone) {
                         showFilterEditorZone();
                     } else {
                         hideFilterEditorZone();
@@ -191,31 +192,30 @@
                 };
                 hideFilterEditorZone();
 
-                $scope.closeFilterCollapse = function () {
-                    $('#filterCollapse').hide();
+                $scope.clearFilter = function () {
+                    $scope.showFilter = false;
                     currentFilterGroupId = 0;
+                    $scope.needSaveFilter = false;
                     $scope.currentFilter = {};
                     $('.filterCreatorWrap').empty();
                     $scope.getPagedDataAsync();
                 };
 
                 $scope.loadFilter = function (filter) {
-                    $scope.filterTitle = filter.Title;
-                    $scope.filterDescription = '';
+                    $scope.filterDescription = filter.Title;
                     $scope.currentFilter = filter;
                     currentFilterGroupId = filter.FilterGroupId;
                     needNewFilterEditor = true;
-                    $('#filterCollapse').show();
+                    $scope.showFilter = true;
                     hideFilterEditorZone();
                     $scope.getPagedDataAsync();
                 };
 
                 $scope.createFilter = function () {
                     $scope.currentFilter = {};
-                    $scope.filterTitle = '';
                     $scope.filterDescription = '';
                     needNewFilterEditor = true;
-                    $('#filterCollapse').show();
+                    $scope.showFilter = true;
                     showFilterEditorZone();
                 };
 
@@ -287,17 +287,11 @@
 
                 function showFilterEditorZone() {
                     displayFilterEditors();
-                    $('#collapseBtn').addClass('icon-collapse-show');
-                    $('#collapseBtn').removeClass('icon-collapse-hide');
-                    $('#closeFilterLink').hide();
-                    $('#collapseZone').show();
+                    $scope.showFilterEditorZone = true;
                 }
 
                 function hideFilterEditorZone() {
-                    $('#collapseBtn').removeClass('icon-collapse-show');
-                    $('#collapseBtn').addClass('icon-collapse-hide');
-                    $('#closeFilterLink').show();
-                    $('#collapseZone').hide();
+                    $scope.showFilterEditorZone = false;
                 }
 
                 function addNewEditor(args) {

@@ -301,11 +301,6 @@
 
 
     /*filter page css*/
-    .field-selector {
-        /*float: left;*/
-        /*padding-top:1px;*/
-    }
-
     .field-editor {
         display: inline-block;
         margin-left:5px;
@@ -333,7 +328,6 @@
     .filter-collapse
     {
         font-size:13px;
-        display:none;
     }
 
     .filter-collapse .collapseHeader
@@ -436,17 +430,9 @@
     {
         height: 16px;
         line-height: 16px;
-        margin-left: 0px;
-        display: block;
-        margin-bottom: 10px;
+        margin-left: 5px;
+        display: inline-block;
     }
-
-        .filterForm .filterAppWrap .title-label {
-            float: left;
-            padding-top: 2px;
-            margin-right: 5px;
-            margin-left: 2px;
-        }
 
     .icon-collapse-hide
     {

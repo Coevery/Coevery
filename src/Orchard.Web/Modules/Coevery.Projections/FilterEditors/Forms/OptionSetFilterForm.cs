@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Orchard.ContentManagement;
 using Orchard.DisplayManagement;
@@ -39,16 +40,18 @@ namespace Coevery.Projections.FilterEditors.Forms {
 
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
             var op = (OptionSetOperator) Enum.Parse(typeof (OptionSetOperator), Convert.ToString(formState.Operator));
+            string value = formState.Value;
+            var items = value.Split('&').Select(int.Parse).ToArray();
+            fieldName = fieldName.Split('.')[1];
             switch (op) {
                 case OptionSetOperator.MatchesAny:
-                    return T("{0} matches any to '{1}'", fieldName, "");
+                    return T("{0} matches any in the {1} selected items", fieldName, items.Length);
                 case OptionSetOperator.MatchesAll:
-                    return T("{0} is matches all '{1}'", fieldName, "");
+                    return T("{0} matches all the {1} selected items", fieldName, items.Length);
                 case OptionSetOperator.NotMatchesAny:
-                    return T("{0} not matches any '{1}'", fieldName, "");
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    return T("{0} not matches any in the {1} selected items", fieldName, items.Length);
             }
+            return new LocalizedString(fieldName);
         }
     }
 

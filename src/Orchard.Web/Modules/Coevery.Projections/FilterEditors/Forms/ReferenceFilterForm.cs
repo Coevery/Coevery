@@ -37,8 +37,13 @@ namespace Coevery.Projections.FilterEditors.Forms {
             string value = formState.Value;
             var items = value.Split('&').Select(int.Parse).ToArray();
             fieldName = fieldName.Split('.')[1];
-
-            return T("");
+            switch (op) {
+                case ReferenceOperator.MatchesAny:
+                    return T("{0} matches any in the {1} selected items", fieldName, items.Length);
+                case ReferenceOperator.NotMatchesAny:
+                    return T("{0} not matches any in the {1} selected items", fieldName, items.Length);
+            }
+            return new LocalizedString(fieldName);
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {

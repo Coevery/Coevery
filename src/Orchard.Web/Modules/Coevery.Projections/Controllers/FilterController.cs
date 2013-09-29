@@ -52,22 +52,14 @@ namespace Coevery.Projections.Controllers {
             if (pluralService.IsPlural(id)) {
                 id = pluralService.Singularize(id);
             }
-            FilterGroupRecord groupRecord;
-            var entityFilterRecord = _entityFilterRepository.Get(model.Id);
-            if (entityFilterRecord == null) {
-                groupRecord = new FilterGroupRecord();
+
+            var groupRecord = new FilterGroupRecord();
                 _filterGroupRepository.Create(groupRecord);
                 _entityFilterRepository.Create(new EntityFilterRecord {
                     EntityName = id,
                     FilterGroupRecord = groupRecord,
                     Title = model.Title
                 });
-            }
-            else {
-                entityFilterRecord.Title = model.Title;
-                groupRecord = entityFilterRecord.FilterGroupRecord;
-                groupRecord.Filters.Clear();
-            }
 
             foreach (var filter in model.Filters) {
                 if (filter.FormData.Length == 0) {
