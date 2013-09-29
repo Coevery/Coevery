@@ -159,10 +159,8 @@ namespace Coevery.Entities.Services {
             }
             var hasPublished = entity.HasPublished();
 
-
-            entity.FieldMetadataRecords.Clear();
+            //entity.FieldMetadataRecords.Clear();
             Services.ContentManager.Remove(entity.ContentItem);
-            //entity.ContentItem.ContentManager.Clear();
             if (!hasPublished) {
                 return null;
             }

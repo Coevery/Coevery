@@ -15,7 +15,7 @@ using Orchard.Logging;
 using Orchard.Utility.Extensions;
 using Orchard.UI.Notify;
 using EditTypeViewModel = Coevery.Entities.ViewModels.EditTypeViewModel;
-using IContentDefinitionEditorEvents = Orchard.ContentManagement.MetaData.IContentDefinitionEditorEvents;
+using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinitionEditorEvents;
 using IContentDefinitionService = Coevery.Entities.Services.IContentDefinitionService;
 
 namespace Coevery.Entities.Controllers {
@@ -294,7 +294,7 @@ namespace Coevery.Entities.Controllers {
                 DisplayName = settings["DisplayName"],
                 Settings = settings,
                 FieldDefinition = new EditFieldViewModel(fieldDefinition),
-                Templates = _contentDefinitionEditorEvents.PartFieldEditor(new ContentPartFieldDefinition(fieldDefinition, fieldDefinition.Name, settings))
+                Templates = _contentDefinitionEditorEvents.PartFieldEditor(new ContentPartFieldDefinition(fieldDefinition, field.Name, settings))
             };
             return View(viewModel);
         }
