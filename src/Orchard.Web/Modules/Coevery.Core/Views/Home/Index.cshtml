@@ -40,6 +40,9 @@
                 return load(context, moduleId, url);
             };
 
+            require.config({
+                baseUrl: '@Url.Content("~/Modules/Coevery.Core")'
+            });
 
             //Now load code.
             require(['@Url.Content("~/Modules/Coevery.Core/scripts/app/main.js")']);

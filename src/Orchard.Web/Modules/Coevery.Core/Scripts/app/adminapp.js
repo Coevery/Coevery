@@ -1,7 +1,6 @@
 ﻿define(['core/app/formdesignerservice', 'core/directives/common'], function () {
     'use strict';
-
-
+    
     coevery.value('$anchorScroll', angular.noop);
 
     coevery.run(['$rootScope', '$couchPotato', '$stateParams', '$templateCache',

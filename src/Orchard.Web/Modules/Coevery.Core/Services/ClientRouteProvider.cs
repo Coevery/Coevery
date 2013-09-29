@@ -20,7 +20,7 @@ namespace Coevery.Core.Services {
 
             builder.Describe("Root")
                 .Configure(descriptor => {
-                    descriptor.Url = "";
+                    descriptor.Url = "/";
                     descriptor.Views.Add(navigationView);
                 });
 
