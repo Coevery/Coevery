@@ -9,7 +9,6 @@ using Newtonsoft.Json.Linq;
 using Orchard.Data;
 using Orchard.Forms.Services;
 using Orchard.Projections.Models;
-using Orchard.Projections.Services;
 
 namespace Coevery.Projections.Controllers {
     public class FilterController : ApiController {
@@ -54,7 +53,8 @@ namespace Coevery.Projections.Controllers {
                 id = pluralService.Singularize(id);
             }
             FilterGroupRecord groupRecord;
-            if (model.Id == 0) {
+            var entityFilterRecord = _entityFilterRepository.Get(model.Id);
+            if (entityFilterRecord == null) {
                 groupRecord = new FilterGroupRecord();
                 _filterGroupRepository.Create(groupRecord);
                 _entityFilterRepository.Create(new EntityFilterRecord {
@@ -64,7 +64,6 @@ namespace Coevery.Projections.Controllers {
                 });
             }
             else {
-                var entityFilterRecord = _entityFilterRepository.Get(model.Id);
                 entityFilterRecord.Title = model.Title;
                 groupRecord = entityFilterRecord.FilterGroupRecord;
                 groupRecord.Filters.Clear();
