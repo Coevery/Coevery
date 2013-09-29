@@ -19,9 +19,9 @@ namespace Coevery.Projections.Services
                     descriptor.Url = "/Views";
                 })
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/Projections/List'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"List'";
                     view.Controller = "ProjectionListCtrl";
-                    view.AddDependencies(ToClientUrl, new[] { "controllers/listcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/listcontroller" });
                 });
 
             builder.Describe("ProjectionCreate")
@@ -29,9 +29,9 @@ namespace Coevery.Projections.Services
                     descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/Create";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Projections/Create/' + params.EntityName;}";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"Create/' + params.EntityName;}";
                     view.Controller = "ProjectionDetailCtrl";
-                    view.AddDependencies(ToClientUrl, new[] { "controllers/detailcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/detailcontroller" });
                 });
 
             builder.Describe("ProjectionEdit")
@@ -40,11 +40,11 @@ namespace Coevery.Projections.Services
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Projections/Edit/' + $stateParams.Id; 
+                                                var url = '" + ModuleBasePath + @"Edit/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "ProjectionDetailCtrl";
-                    view.AddDependencies(ToClientUrl, new[] { "controllers/detailcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/detailcontroller" });
                 });
         }
     }

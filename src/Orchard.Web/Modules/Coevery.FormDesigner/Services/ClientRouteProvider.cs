@@ -11,11 +11,11 @@ namespace Coevery.FormDesigner.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/FormDesigner/Index/' + $stateParams.EntityName; 
+                                                var url = '" + ModuleBasePath + @"Index/' + $stateParams.EntityName; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "FormDesignerCtrl";
-                    view.AddDependencies(ToClientUrl, new[] { "controllers/formdesignercontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/formdesignercontroller" });
                 });
         }
     }

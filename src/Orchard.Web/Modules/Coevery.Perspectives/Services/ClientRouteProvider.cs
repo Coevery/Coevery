@@ -9,9 +9,9 @@ namespace Coevery.Perspectives.Services
                     descriptor.Url = "/Perspectives";
                 })
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/Perspectives/List'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"List'";
                     view.Controller = "PerspectiveListCtrl";
-                    view.AddDependencies(ToClientUrl, new string[] { "controllers/listcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/listcontroller" });
                 });
 
             builder.Describe("PerspectiveCreate")
@@ -19,9 +19,9 @@ namespace Coevery.Perspectives.Services
                     descriptor.Url = "/Perspectives/Create";
                 })
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/Perspectives/Create'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"Create'";
                     view.Controller = "PerspectiveEditCtrl";
-                    view.AddDependencies(ToClientUrl, new string[] { "controllers/editcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/editcontroller" });
                 });
 
             builder.Describe("PerspectiveEdit")
@@ -30,11 +30,11 @@ namespace Coevery.Perspectives.Services
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Perspectives/Edit/' + $stateParams.Id; 
+                                                var url = '" + ModuleBasePath + @"Edit/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "PerspectiveEditCtrl";
-                    view.AddDependencies(ToClientUrl, new string[] { "controllers/editcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/editcontroller" });
                 });
 
             builder.Describe("PerspectiveDetail")
@@ -43,11 +43,11 @@ namespace Coevery.Perspectives.Services
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Perspectives/Detail/' + $stateParams.Id; 
+                                                var url = '" + ModuleBasePath + @"Detail/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "PerspectiveDetailCtrl";
-                    view.AddDependencies(ToClientUrl, new string[] { "controllers/detailcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/detailcontroller" });
                 });
 
             builder.Describe("CreateNavigationItem")
@@ -55,9 +55,9 @@ namespace Coevery.Perspectives.Services
                     descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Perspectives/CreateNavigationItem/' + params.Id;}";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateNavigationItem/' + params.Id;}";
                     view.Controller = "NavigationItemEditCtrl";
-                    view.AddDependencies(ToClientUrl, new string[] { "controllers/navigationitemeditcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/navigationitemeditcontroller" });
                 });
 
             builder.Describe("EditNavigationItem")
@@ -66,11 +66,11 @@ namespace Coevery.Perspectives.Services
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Perspectives/EditNavigationItem/' + $stateParams.NId; 
+                                                var url = '" + ModuleBasePath + @"EditNavigationItem/' + $stateParams.NId; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "NavigationItemEditCtrl";
-                    view.AddDependencies(ToClientUrl, new string[] { "controllers/navigationitemeditcontroller" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/navigationitemeditcontroller" });
                 });
         }
     }

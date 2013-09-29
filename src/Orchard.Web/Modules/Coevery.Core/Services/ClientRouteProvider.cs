@@ -11,12 +11,12 @@ namespace Coevery.Core.Services {
             var navigationView = new ClientViewDescriptor() {
                 Name = "menulist",
                 TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = 'Coevery/CoeveryCore/ViewTemplate/MenuList';
+                        var url = '" + ModuleBasePath + @"ViewTemplate/MenuList';
                         return $http.get(url).then(function (response) { return response.data; });
                     }]",
                 Controller = "NavigationCtrl"
             };
-            navigationView.AddDependencies(ToClientUrl, "controllers/navigationcontroller");
+            navigationView.AddDependencies(ToAbsoluteScriptUrl, "controllers/navigationcontroller");
 
             builder.Describe("Root")
                 .Configure(descriptor => {
@@ -37,11 +37,11 @@ namespace Coevery.Core.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/List/' + $stateParams.Module;
+                        var url = '" + BasePath + @"' + $stateParams.Module + '/ViewTemplate/List/' + $stateParams.Module;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralListCtrl";
-                    view.AddDependencies(ToClientUrl, new[] {"controllers/listcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/listcontroller" });
                 });
 
             builder.Describe("Create")
@@ -51,11 +51,11 @@ namespace Coevery.Core.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/Create/' + $stateParams.Module;
+                        var url = '" + BasePath + @"' + $stateParams.Module + '/ViewTemplate/Create/' + $stateParams.Module;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralDetailCtrl";
-                    view.AddDependencies(ToClientUrl, new[] {"controllers/detailcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/detailcontroller" });
                 });
 
             builder.Describe("Detail")
@@ -65,11 +65,11 @@ namespace Coevery.Core.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/Edit/' + $stateParams.Id;
+                        var url = '" + BasePath + @"'+ $stateParams.Module + '/ViewTemplate/Edit/' + $stateParams.Id;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralDetailCtrl";
-                    view.AddDependencies(ToClientUrl, new[] {"controllers/detailcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/detailcontroller" });
                 });
 
             builder.Describe("View")
@@ -79,11 +79,11 @@ namespace Coevery.Core.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = 'Coevery/' + $stateParams.Module + '/ViewTemplate/View/' + $stateParams.Id;
+                        var url = '" + BasePath + @"' + $stateParams.Module + '/ViewTemplate/View/' + $stateParams.Id;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralViewCtrl";
-                    view.AddDependencies(ToClientUrl, "controllers/viewcontroller");
+                    view.AddDependencies(ToAbsoluteScriptUrl, "controllers/viewcontroller");
                 });
         }
     }
