@@ -178,3 +178,33 @@ td [class^="icon-"],
 td [class*=" icon-"] {
     padding: 0 3px;
 }
+
+
+.ui-widget-content a.btn-link,
+.ui-widget-content a.btn-link:active,
+.ui-widget-content a.btn-link[disabled] {
+  background-color: transparent;
+  background-image: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.ui-widget-content a.btn-link {
+  border-color: transparent;
+  cursor: pointer;
+  color: #0088cc;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.ui-widget-content a.btn-link:hover,
+.ui-widget-content a.btn-link:focus {
+  color: #005580;
+  text-decoration: underline;
+  background-color: transparent;
+}
+.ui-widget-content a.btn-link[disabled]:hover,
+.ui-widget-content a.btn-link[disabled]:focus {
+  color: #333333;
+  text-decoration: none;
+}

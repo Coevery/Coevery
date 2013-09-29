@@ -28,6 +28,7 @@ namespace Coevery.Relationship.Projections {
             string pluralContentTypeName = pluralService.Pluralize(referenceContentItem.ContentType);
 
             var linkTag = new TagBuilder("a");
+            linkTag.AddCssClass("btn-link");
             linkTag.Attributes.Add("ui-sref", "View({NavigationId: $stateParams.NavigationId, Module: '" + pluralContentTypeName + "', Id: " + value + "})");
             linkTag.InnerHtml = contentItemMetadata.DisplayText;
             return linkTag.ToString();
