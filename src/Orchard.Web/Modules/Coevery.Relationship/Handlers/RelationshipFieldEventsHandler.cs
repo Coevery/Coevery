@@ -20,10 +20,10 @@ namespace Coevery.Relationship.Handlers {
             _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public void OnCreated(string etityName, string fieldName, bool isInLayout) {}
+        public void OnCreated(string entityName, string fieldName, bool isInLayout) { }
 
-        public void OnDeleting(string etityName, string fieldName) {
-            var partDefinition = _contentDefinitionManager.GetPartDefinition(etityName);
+        public void OnDeleting(string entityName, string fieldName) {
+            var partDefinition = _contentDefinitionManager.GetPartDefinition(entityName);
             if (partDefinition == null) {
                 return;
             }
@@ -34,7 +34,7 @@ namespace Coevery.Relationship.Handlers {
             }
 
             var oneToManyRecord = _oneToManyRepository
-                .Get(x => x.Relationship.RelatedEntity.Name == etityName
+                .Get(x => x.Relationship.RelatedEntity.Name == entityName
                           && x.LookupField.Name == fieldName);
             if (oneToManyRecord != null) {
                 _relationshipService.DeleteRelationship(oneToManyRecord.Relationship);

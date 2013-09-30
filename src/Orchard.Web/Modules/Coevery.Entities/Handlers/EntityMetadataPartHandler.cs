@@ -94,13 +94,13 @@ namespace Coevery.Entities.Handlers {
                 builder.DisplayedAs(entity.DisplayName));
 
             foreach (var fieldMetadataRecord in previousEntity.FieldMetadataRecords) {
-                bool exist = entity.FieldMetadataRecords.Any(x => x.OriginalId == fieldMetadataRecord.Id);
+                var exist = entity.FieldMetadataRecords.Any(x => x.OriginalId == fieldMetadataRecord.Id);
                 if (!exist) {
-                    _fieldEvents.OnDeleting(entity.Name, fieldMetadataRecord.Name);
                     var record = fieldMetadataRecord;
                     _contentDefinitionManager.AlterPartDefinition(entity.Name,
                         typeBuilder => typeBuilder.RemoveField(record.Name));
                     _schemaUpdateService.DropColumn(entity.Name, fieldMetadataRecord.Name);
+                    _fieldEvents.OnDeleting(entity.Name, fieldMetadataRecord.Name);
                 }
             }
 
@@ -125,6 +125,7 @@ namespace Coevery.Entities.Handlers {
                     }));
                 record.Settings = _settingsFormatter.Map(settings).ToString();
             }
+            _entityEvents.OnUpdating(entity.Name);
         }
 
         private void AddField(string entityName, FieldMetadataRecord field, bool needEvent = true) {

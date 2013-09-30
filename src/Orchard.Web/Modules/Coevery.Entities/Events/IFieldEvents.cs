@@ -2,7 +2,7 @@
 
 namespace Coevery.Entities.Events {
     public interface IFieldEvents : IEventHandler {
-        void OnCreated(string etityName, string fieldName, bool isInLayout);
-        void OnDeleting(string etityName, string fieldName);
+        void OnCreated(string entityName, string fieldName, bool isInLayout);
+        void OnDeleting(string entityName, string fieldName);
     }
 }

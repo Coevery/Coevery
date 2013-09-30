@@ -4,7 +4,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
       'PerspectiveListCtrl',
       ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'perspectiveDataService',
       function ($rootScope, $scope, logger, $state, $resource, $stateParams, perspectiveDataService) {
-          $scope.mySelections = [];
+
           var t = function (str) {
               var result = i18n.t(str);
               return result;

@@ -3,8 +3,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
         'EntityDetailCtrl',
-        ['$scope', 'logger', '$state', '$stateParams', 'entityDataService',
-            function ($scope, logger, $state, $stateParams, entityDataService) {
+        ['$scope', 'logger', '$state', '$stateParams', 'entityDataService', '$http',
+            function ($scope, logger, $state, $stateParams, entityDataService, $http) {
                 $scope.refreshTab = function() {
                     $scope.showField = $state.includes('EntityDetail.Fields');
                     $scope.showRelation = $state.includes('EntityDetail.Relationships');
@@ -30,6 +30,12 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.formDesigner = function () {
                     $state.transitionTo('FormDesigner', { EntityName: $stateParams.Id });
+                };
+                
+                $scope.publish = function () {
+                    $http.get('Entities/SystemAdmin/Publish/' + $stateParams.Id).then(function () {
+                        logger.success("Publish the entity successful.");
+                    });
                 };
             }]
     ]);

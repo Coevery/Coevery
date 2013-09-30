@@ -21,10 +21,6 @@ namespace Coevery.Projections.FieldTypeEditors {
             return fieldTypeName == "DateField";
         }
 
-        public override bool CanHandle(Type storageType) {
-            return false;
-        }
-
         public override string FormName {
             get { return DateFilterForm.FormName; }
         }

@@ -7263,7 +7263,7 @@ function LocationHashbangUrl(appBase, hashPrefix) {
         ? beginsWith(hashPrefix, withoutBaseUrl)
         : (this.$$html5)
           ? withoutBaseUrl
-          : '';
+          : '/';
 
     if (!isString(withoutHashUrl)) {
       throw $locationMinErr('ihshprfx', 'Invalid url "{0}", missing hash prefix "{1}".', url, hashPrefix);

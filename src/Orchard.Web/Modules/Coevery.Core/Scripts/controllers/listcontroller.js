@@ -37,6 +37,7 @@
                 $scope.FetchViewColumns = function (viewId) {
                     if (viewId <= 0) return;
                     if (viewId == $scope.currentViewId) return;
+                    var needGridReloading = true;
                     $scope.currentViewId = viewId;
                     $location.search("ViewId", viewId);
                     var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function () {
@@ -46,7 +47,7 @@
                             }
                         });
                         $scope.columnDefs = gridColumns;
-                        if (!$scope.isInit) {
+                        if (!$scope.isInit && !needGridReloading) {
                             $scope.getPagedDataAsync();
                         } else {
                             $scope.gridOptions = {
@@ -55,6 +56,7 @@
                                 postData: getPostData(),
                                 rowNum: pageSize,
                                 rowList: pageSizes,
+                                needReloading: needGridReloading && !$scope.isInit,
                                 page: currentPage,
                                 colModel: $scope.columnDefs,
                                 loadComplete: function (data) {
@@ -70,6 +72,7 @@
                                 }
                             };
                             angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+                            $scope.isInit = false;
                         }
                     }, function (response) {
                         logger.error("Failed to fetched columns");
@@ -168,8 +171,10 @@
                     currentFilterGroupId = 0;
                     $scope.getPagedDataAsync();
                     if ($scope.needSaveFilter) {
+                        var title = $scope.currentFilter.Title || 'Filter';
+                        title = title.trim() || 'Filter';
                         var filter = {
-                            Title: $scope.currentFilter.Title,
+                            Title: title,
                             Filters: getFilters()
                         };
 
@@ -179,6 +184,7 @@
                         }, function () {
                             logger.error("Save filter failed.");
                         });
+                        $scope.currentFilter.Title = null;
                         $scope.needSaveFilter = false;
                     }
                 };

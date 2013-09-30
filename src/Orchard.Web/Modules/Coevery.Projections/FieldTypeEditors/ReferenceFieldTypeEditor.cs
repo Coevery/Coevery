@@ -16,10 +16,6 @@ namespace Coevery.Projections.FieldTypeEditors {
             return fieldTypeName == "ReferenceField";
         }
 
-        public override bool CanHandle(Type storageType) {
-            return false;
-        }
-
         public override string FormName {
             get { return ReferenceFilterForm.FormName; }
         }

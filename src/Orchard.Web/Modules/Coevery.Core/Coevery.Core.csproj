@@ -187,8 +187,8 @@
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
-    <None Include="Scripts\i18n\resources-locale_en-us.json" />
-    <None Include="Scripts\i18n\resources-locale_zh-cn.json" />
+    <Content Include="Scripts\i18n\resources-locale_en-us.json" />
+    <Content Include="Scripts\i18n\resources-locale_zh-cn.json" />
     <Content Include="Scripts\directives\common.js" />
     <Content Include="Scripts\directives\filter-directive.js" />
     <Content Include="Scripts\directives\jqGrid-directive.js" />
