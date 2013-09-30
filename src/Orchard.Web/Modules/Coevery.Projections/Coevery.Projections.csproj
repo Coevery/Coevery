@@ -130,6 +130,7 @@
     <Compile Include="FilterEditors\Forms\StringFilterForm.cs" />
     <Compile Include="Handlers\ProjectionEntityEventsHandler.cs" />
     <Compile Include="Handlers\ListViewPartHandler.cs" />
+    <Compile Include="Handlers\FilterFieldEventsHandler.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ListViewPart.cs" />
