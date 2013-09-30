@@ -171,8 +171,10 @@
                     currentFilterGroupId = 0;
                     $scope.getPagedDataAsync();
                     if ($scope.needSaveFilter) {
+                        var title = $scope.currentFilter.Title || 'Filter';
+                        title = title.trim() || 'Filter';
                         var filter = {
-                            Title: $scope.currentFilter.Title,
+                            Title: title,
                             Filters: getFilters()
                         };
 
@@ -182,6 +184,7 @@
                         }, function () {
                             logger.error("Save filter failed.");
                         });
+                        $scope.currentFilter.Title = null;
                         $scope.needSaveFilter = false;
                     }
                 };
