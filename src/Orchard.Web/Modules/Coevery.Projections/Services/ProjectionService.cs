@@ -75,13 +75,23 @@ namespace Coevery.Projections.Services {
         }
 
         public string UpdateViewOnEntityAltering(string entityName) {
-            var entity = _contentDefinitionManager.GetPartDefinition(entityName);
+            var entityType = _contentDefinitionManager.GetTypeDefinition(entityName);
             var listViewParts = _contentManager.Query<ListViewPart, ListViewPartRecord>()
                 .Where(record => record.ItemContentType == entityName).List();
-            if (entity == null || listViewParts == null || !listViewParts.Any()) {
-                return null;
+            if (entityType == null || listViewParts == null || !listViewParts.Any()) {
+                return "Invalid entity name!";
             }
-            //listViewParts
+            var category = entityName + "ContentFields";
+            const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
+            foreach (var view in listViewParts) {
+                var projection = view.As<ProjectionPart>().Record;
+                var layout = projection.LayoutRecord;
+                var pickedFileds = (from field in layout.Properties
+                                    select field.Type).ToArray();
+                layout.Properties.Clear();
+                UpdateLayoutProperties(entityName,ref layout,category,settingName,pickedFileds);
+                layout.State = GetLayoutState(projection.QueryPartRecord.Id, layout.Properties.Count, layout.Description);
+            }
             return null;
         }
 
@@ -140,28 +150,10 @@ namespace Coevery.Projections.Services {
             var layoutRecord = projectionPart.Record.LayoutRecord;
             layoutRecord.Properties.Clear();
 
-            string category = viewModel.ItemContentType + "ContentFields";
+            var category = viewModel.ItemContentType + "ContentFields";
             const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
-            var allFields = _contentDefinitionManager.GetPartDefinition(viewModel.ItemContentType).Fields.ToList();
-            foreach (var property in pickedFileds) {
-                var fieldTypeFormat = "{0}.{1}.";
-                var field = allFields.FirstOrDefault(c => string.Format(fieldTypeFormat, viewModel.ItemContentType, c.Name) == property);
-                if (field == null) {
-                    continue;
-                }
-
-                var propertyRecord = new PropertyRecord {
-                    Category = category,
-                    Type = property,
-                    Description = field.DisplayName,
-                    Position = layoutRecord.Properties.Count,
-                    State = GetPropertyState(property),
-                    LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
-                };
-                layoutRecord.Properties.Add(propertyRecord);
-            }
+            UpdateLayoutProperties(viewModel.ItemContentType, ref layoutRecord, category, settingName, pickedFileds);
             layoutRecord.State = GetLayoutState(queryPart.Id, layoutRecord.Properties.Count, layoutRecord.Description);
-
             // sort
             queryPart.SortCriteria.Clear();
             if (!string.IsNullOrEmpty(viewModel.SortedBy)) {
@@ -175,6 +167,27 @@ namespace Coevery.Projections.Services {
                 queryPart.SortCriteria.Add(sortCriterionRecord);
             }
             return listViewPart.Id;
+        }
+
+        private void UpdateLayoutProperties(string entityName, ref LayoutRecord layout, string category, string settingName, IEnumerable<string> pickedFileds) {
+            var allFields = _contentDefinitionManager.GetPartDefinition(entityName).Fields.ToList();
+            const string fieldTypeFormat = "{0}.{1}.";
+            foreach (var property in pickedFileds) {               
+                var field = allFields.FirstOrDefault(c => string.Format(fieldTypeFormat, entityName, c.Name) == property);
+                if (field == null) {
+                    continue;
+                }
+
+                var propertyRecord = new PropertyRecord {
+                    Category = category,
+                    Type = property,
+                    Description = field.DisplayName,
+                    Position = layout.Properties.Count,
+                    State = GetPropertyState(property),
+                    LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
+                };
+                layout.Properties.Add(propertyRecord);
+            }
         }
 
         private static string GetContentTypeFilterState(string entityType) {
