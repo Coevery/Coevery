@@ -160,6 +160,8 @@
     <Compile Include="Services\TemplateViewService.cs" />
     <Compile Include="ListViewShape.cs" />
     <Compile Include="DefaultRoute.cs" />
+    <Compile Include="SiteReset\SiteResetTask.cs" />
+    <Compile Include="SiteReset\SiteResetTaskExecutor.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
     <Compile Include="ViewModels\Data.cs" />
     <Compile Include="ViewModels\FieldFilterViewModel.cs" />
@@ -198,6 +200,7 @@
     <Content Include="Scripts\services\navigationdataservice.js" />
     <Content Include="Scripts\services\viewdefinitionservice.js" />
     <Content Include="Scripts\services\loadingservice.js" />
+    <Content Include="Sql\create.sql" />
     <Content Include="Styles\module.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -236,6 +239,10 @@
     <ProjectReference Include="..\Orchard.Roles\Orchard.Roles.csproj">
       <Project>{d10ad48f-407d-4db5-a328-173ec7cb010f}</Project>
       <Name>Orchard.Roles</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Themes\Orchard.Themes.csproj">
+      <Project>{cde24a24-01d3-403c-84b9-37722e18dfb7}</Project>
+      <Name>Orchard.Themes</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
       <Project>{6F759635-13D7-4E94-BCC9-80445D63F117}</Project>
