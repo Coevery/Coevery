@@ -24,7 +24,7 @@
     var coevery = angular.module('coevery', ['ng', 'ngResource', 'agt.couchPotato', 'ui.router', 'ui.utils', '@layoutDirectiveName', 'coevery.grid', 'SharedServices', 'angular-underscore', 'ui.bootstrap', 'coevery.common'@if(Model.IsFrontEnd){<text>,'coevery.filter'</text>}]);
         coevery.config(['$stateProvider', '$urlRouterProvider',
             function ($stateProvider, $urlRouterProvider) {
-                $urlRouterProvider.otherwise('/404');
+                $urlRouterProvider.otherwise('/');
                 $stateProvider
                 @WriteStates();
             }]);

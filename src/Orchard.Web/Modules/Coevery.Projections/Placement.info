@@ -5,4 +5,7 @@
   <Place Parts_ListView_Filters="Sidebar:2"/>
   <Place Parts_ListView_Views="Sidebar:3"/>
   <Place Parts_ListView_Search="Sidebar:4"/>
+  <Match DisplayType="Detail" ContentType="ListViewPage">
+    <Place Parts_ProjectionPart_List="-" />
+  </Match>
 </Placement>
