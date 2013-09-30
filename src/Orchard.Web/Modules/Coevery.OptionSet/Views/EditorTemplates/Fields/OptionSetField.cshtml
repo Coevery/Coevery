@@ -65,7 +65,7 @@
                                 } 
                                 name="@Html.FieldNameFor(m => m.SingleTermId)" 
                                 id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()" 
-                                @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text=@settings.HelpText</text> } 
+                                @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text='@settings.HelpText'</text> } 
                                 />
                 }
                 else
@@ -80,7 +80,7 @@
                                 } 
                                      name="@Html.FieldNameFor(m => m.OptionItems[ti].IsChecked)" 
                                      id="@Html.FieldIdFor(m => m.OptionItems[ti].IsChecked)" data-term="@entry.Name.ToLower()" 
-                                @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text=@settings.HelpText</text> } 
+                                @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text='@settings.HelpText'</text> } 
                                 />
                 }
                     }

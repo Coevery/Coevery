@@ -18,7 +18,7 @@
            data-format="MM/dd/yyyy HH:mm PP" 
         @if (required != null)
         {<text> required data-msg-required="Please fill this field!"</text> } 
-        @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text=@settings.HelpText</text> }
+        @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text='@settings.HelpText'</text> }
         />
     @Html.ValidationMessageFor(m => m.Value)
 </div>

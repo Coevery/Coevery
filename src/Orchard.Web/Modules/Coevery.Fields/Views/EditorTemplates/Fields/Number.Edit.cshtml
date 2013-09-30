@@ -17,7 +17,7 @@
         @if (settings.Length > 1) {<text> maxlength="@settings.Length.ToString()"</text>} 
         @if (settings.DecimalPlaces > 0) {<text> decimalplaces = "@settings.DecimalPlaces" </text>}
            class="textMedium span12 number @decimalplacesclass" 
-        @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text=@settings.HelpText</text> } 
+        @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text='@settings.HelpText'</text> } 
         />
     @Html.ValidationMessageFor(m => m.Value)
 </div>
