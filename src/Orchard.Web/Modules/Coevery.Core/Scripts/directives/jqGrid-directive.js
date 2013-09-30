@@ -13,13 +13,21 @@
                 if (alias != null) {
                     $scope[alias] = gridCtrl;
                 }
-                initializeGrid = function(gridOptions) {
+                initializeGrid = function(gridOptions, oldOptions) {
                     var $grid;
-                    if (gridOptions == null) {
+                    if (gridOptions == null || gridOptions == oldOptions) {
                         return;
                     }
                     //logger.info("Initializing the grid");
                     $grid = $element.find("table.gridz");
+                    if (gridOptions.needReloading === true) {
+                        gridOptions.needReloading = false;
+                        
+                        $grid.GridDestroy($grid.attr("id"));
+                        $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
+                        $compile($element)($scope);
+                        return;
+                    }
                     gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
                     gridOptions.gridComplete = function () {
                         $compile($grid)($scope);
@@ -52,7 +60,7 @@
                     /*
                     adds listener to resize grid to parent container when window is resized.
                     This will work for reponsive and fluid layouts
-                  */
+                    */
 
                     function responsiveResize() {
                         var gboxId = "#gbox_" + ($grid.attr("id"));
