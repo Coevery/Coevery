@@ -22,10 +22,9 @@ namespace Coevery.Projections.FieldTypeEditors {
         public override void ApplyFilter(FilterContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
             var op = (OptionSetOperator) Enum.Parse(typeof (OptionSetOperator), (string) context.State.Operator);
             string value = context.State.Value;
-            if (value == null) {
-                return;
-            }
-            var valueArr = value.Split(new[] {"&"}, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            var valueArr = value != null
+                ? value.Split('&').Select(int.Parse).ToArray()
+                : new[] {0};
             switch (op) {
                 case OptionSetOperator.MatchesAny:
                     Action<IAliasFactory> selectorAny = alias => alias.ContentPartRecord<OptionItemContainerPartRecord>().Property("OptionItems", "opits").Property("OptionItemRecord", "opcpr");
@@ -49,9 +48,7 @@ namespace Coevery.Projections.FieldTypeEditors {
             }
         }
 
-        public override void ApplySortCriterion(Orchard.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-            
-        }
+        public override void ApplySortCriterion(Orchard.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {}
 
         public override string FormName {
             get { return OptionSetFilterForm.FormName; }
