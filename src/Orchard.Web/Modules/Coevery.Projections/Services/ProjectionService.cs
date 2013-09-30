@@ -172,8 +172,11 @@ namespace Coevery.Projections.Services {
         private void UpdateLayoutProperties(string entityName, ref LayoutRecord layout, string category, string settingName, IEnumerable<string> pickedFileds) {
             var allFields = _contentDefinitionManager.GetPartDefinition(entityName).Fields.ToList();
             const string fieldTypeFormat = "{0}.{1}.";
-            foreach (var property in pickedFileds) {               
-                var field = allFields.FirstOrDefault(c => string.Format(fieldTypeFormat, entityName, c.Name) == property);
+            foreach (var property in pickedFileds) {
+                var names = property.Split('.');
+                var propertyMatch = string.Format(fieldTypeFormat, names[0], names[1]);
+                var field = allFields.FirstOrDefault(c =>
+                    string.Format(fieldTypeFormat, entityName, c.Name) == propertyMatch);
                 if (field == null) {
                     continue;
                 }
