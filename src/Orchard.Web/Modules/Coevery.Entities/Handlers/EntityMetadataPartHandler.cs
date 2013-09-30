@@ -123,6 +123,7 @@ namespace Coevery.Entities.Handlers {
                         fieldBuilder.WithDisplayName(settings["DisplayName"]);
                         _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
                     }));
+                record.Settings = _settingsFormatter.Map(settings).ToString();
             }
         }
 
@@ -141,6 +142,8 @@ namespace Coevery.Entities.Handlers {
                 builder.WithField(field.Name, fieldBuilder =>
                     _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings))
                 );
+
+            field.Settings = _settingsFormatter.Map(settings).ToString();
 
             if (needEvent) {
                 _fieldEvents.OnCreated(entityName, field.Name, bool.Parse(settings["AddInLayout"]));

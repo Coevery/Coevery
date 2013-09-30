@@ -57,12 +57,14 @@ namespace Coevery.Relationship.Settings {
             var model = settingsDictionary.TryGetModel<ReferenceFieldSettings>();
             if (model != null) {
                 if (model.QueryId <= 0) {
-                    model.QueryId = CreateQuery(model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
+                    model.QueryId = CreateQuery(model.ContentTypeName);
+                    settingsDictionary["ReferenceFieldSettings.QueryId"] = model.QueryId.ToString(CultureInfo.InvariantCulture);
                 }
 
                 if (model.RelationshipId <= 0) {
                     var entityName = settingsDictionary["EntityName"];
                     model.RelationshipId = _relationshipService.CreateOneToManyRelationship(builder.Name, model.RelationshipName, model.ContentTypeName, entityName);
+                    settingsDictionary["ReferenceFieldSettings.RelationshipId"] = model.RelationshipId.ToString(CultureInfo.InvariantCulture);
                 }
 
                 UpdateSettings(model, builder, "ReferenceFieldSettings");
