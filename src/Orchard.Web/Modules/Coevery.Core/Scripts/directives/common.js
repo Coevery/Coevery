@@ -27,6 +27,9 @@ angular.module('coevery.common', [])
                     $(modal).modal({
                         backdrop: 'static',
                         keyboard: true
+                    }).css({
+                        "position": "fixed",
+                        "top": "50% !important"
                     });
                 }
 
