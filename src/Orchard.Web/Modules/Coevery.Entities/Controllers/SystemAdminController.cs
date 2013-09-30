@@ -64,9 +64,9 @@ namespace Coevery.Entities.Controllers {
             });
         }
 
-        public ActionResult Publish(int id) {
-            var t = Services.ContentManager.Get(id, VersionOptions.Latest);
-            Services.ContentManager.Publish(t);
+        public ActionResult Publish(string id) {
+            var entity = _contentMetadataService.GetEntity(id);
+            Services.ContentManager.Publish(entity.ContentItem);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
