@@ -61,7 +61,9 @@ namespace Coevery.Projections.FieldTypeEditors {
                 : context.Query.OrderBy(relationship, x => x.Desc("Value"));
         }
 
-        public abstract bool CanHandle(Type storageType);
+        public virtual bool CanHandle(Type storageType) {
+            return false;
+        }
 
         public virtual string FormName {
             get { return null; }

@@ -16,7 +16,7 @@ namespace Coevery.Projections.FieldTypeEditors {
         }
 
         public override bool CanHandle(string fieldTypeName, Type storageType) {
-            return _editor.CanHandle(storageType);
+            return false;
         }
 
         public override bool CanHandle(Type storageType) {

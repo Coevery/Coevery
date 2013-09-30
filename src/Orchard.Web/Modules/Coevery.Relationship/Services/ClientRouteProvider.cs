@@ -70,4 +70,16 @@ namespace Coevery.Relationship.Services {
                 .View(view => view.AddDependencies(ToAbsoluteScriptUrl, "controllers/relatedentitylistcontroller"));
         }
     }
+
+    public class ClientFrontEndRouteProvider : ClientRouteProviderBase {
+
+        public ClientFrontEndRouteProvider() {
+            IsFrontEnd = true;
+        }
+
+        public override void Discover(ClientRouteTableBuilder builder) {
+            builder.Describe("View")
+                .View(view => view.AddDependencies(ToAbsoluteScriptUrl, "controllers/relatedentitylistcontroller"));
+        }
+    }
 }

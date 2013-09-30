@@ -25,7 +25,7 @@ namespace Coevery.Relationship.Drivers {
                 var relationships = GetRelationships(contentType).ToList();
                 if (relationships.Any())
                     return ContentShape("RelatedEntityList",
-                        () => shapeHelper.Relationships_Display(Relationships: relationships));
+                        () => shapeHelper.RelatedEntityList(Relationships: relationships));
             }
 
             return null;

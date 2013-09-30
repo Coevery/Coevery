@@ -46,7 +46,8 @@ namespace Coevery.Projections.Providers.Filters {
                     var membersContext = new DescribeMembersContext(
                         (storageName, storageType, displayName, description) => {
                             // look for a compatible field type editor
-                            IConcreteFieldTypeEditor concreteFieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name, storageType));
+                            IConcreteFieldTypeEditor concreteFieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name, storageType))
+                                                                               ?? _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(storageType));
                             IFieldTypeEditor fieldTypeEditor = concreteFieldTypeEditor;
 
                             if (fieldTypeEditor == null) return;

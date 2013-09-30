@@ -53,10 +53,6 @@ namespace Coevery.Projections.FieldTypeEditors {
             
         }
 
-        public override bool CanHandle(Type storageType) {
-            return false;
-        }
-
         public override string FormName {
             get { return OptionSetFilterForm.FormName; }
         }
