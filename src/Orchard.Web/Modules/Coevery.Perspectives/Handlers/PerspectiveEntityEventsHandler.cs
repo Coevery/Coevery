@@ -17,6 +17,8 @@ namespace Coevery.Perspectives.Handlers {
         }
 
         public void OnCreated(string entityName) {}
+        public void OnUpdating(string entityName) {
+        }
 
         public void OnDeleting(string entityName) {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));

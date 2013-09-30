@@ -28,6 +28,10 @@ namespace Coevery.Projections.Handlers {
             _projectionService.EditPost(0, viewModel, fields);
         }
 
+        public void OnUpdating(string entityName) {
+            _projectionService.UpdateViewOnEntityAltering(entityName);
+        }
+
         public void OnDeleting(string entityName) {
             var projections = _contentManager.Query<ListViewPart, ListViewPartRecord>().Where(x => x.ItemContentType == entityName).List();
             foreach (var projection in projections) {

@@ -30,6 +30,7 @@ namespace Coevery.Relationship.Handlers {
         }
 
         public void OnCreated(string entityName) {}
+        public void OnUpdating(string entityName) {}
 
         public void OnDeleting(string entityName) {
             var relationships = _relationshipService.GetRelationships(entityName);

@@ -13,9 +13,9 @@
                 if (alias != null) {
                     $scope[alias] = gridCtrl;
                 }
-                initializeGrid = function(gridOptions, oldOptions) {
+                initializeGrid = function(gridOptions) {
                     var $grid;
-                    if (gridOptions == null || gridOptions == oldOptions) {
+                    if (gridOptions == null) {
                         return;
                     }
                     //logger.info("Initializing the grid");

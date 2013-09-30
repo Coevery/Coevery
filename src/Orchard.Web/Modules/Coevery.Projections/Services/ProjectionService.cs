@@ -74,6 +74,17 @@ namespace Coevery.Projections.Services {
             return viewModel;
         }
 
+        public string UpdateViewOnEntityAltering(string entityName) {
+            var entity = _contentDefinitionManager.GetPartDefinition(entityName);
+            var listViewParts = _contentManager.Query<ListViewPart, ListViewPartRecord>()
+                .Where(record => record.ItemContentType == entityName).List();
+            if (entity == null || listViewParts == null || !listViewParts.Any()) {
+                return null;
+            }
+            //listViewParts
+            return null;
+        }
+
         public int EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds) {
             ListViewPart listViewPart;
             ProjectionPart projectionPart;
