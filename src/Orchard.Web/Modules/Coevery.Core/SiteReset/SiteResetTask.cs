@@ -37,7 +37,7 @@ namespace Coevery.Core.SiteReset
             var peddingTaskCount = _repository.Count(x => x.ScheduledUtc > _clock.UtcNow && x.TaskType == "ResetSite");
 
             if (peddingTaskCount == 0){
-                _scheduledTaskManager.CreateTask("ResetSite", _clock.UtcNow.AddSeconds(30), null);
+                _scheduledTaskManager.CreateTask("ResetSite", _clock.UtcNow.AddMinutes(30), null);
                 _themeService.EnableThemeFeatures("Offline");
                 _siteThemeService.SetSiteTheme("Offline");
             }
