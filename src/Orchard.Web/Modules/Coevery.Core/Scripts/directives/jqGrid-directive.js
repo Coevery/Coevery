@@ -1,12 +1,36 @@
 ﻿(function () {
-    function getIdValue(baseValue) {
-        var tempValue = '#'+baseValue, index=0;
-        while ($(tempValue).length !== 0) {
-            tempValue = tempValue + index.toString(10);
+    function setIdValue(element, baseValue) {
+        var alias, index = 0;
+        alias = baseValue || "gridz";
+        while ($('#' + alias).length !== 0) {
+            alias = alias + index.toString(10);
             index++;
         }
-        return tempValue;
+        element.find("table.gridz").attr("id", alias);
+        element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
     }
+    function optionsEqual(newVaue, oldValue) {
+        if (!oldValue) {
+            return false;
+        }
+        var result = true;
+        for (var originality in oldValue) {
+            if (newVaue[originality] !== oldValue[originality]) {
+                result = false;
+                break;
+            }
+        }
+        if (result === true) {
+            for (var property in newVaue) {
+                if (newVaue[property] !== oldValue[property]) {
+                    result = false;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+    
     var gridz;
 
     gridz = angular.module("coevery.grid", []);
@@ -15,7 +39,7 @@
         "$rootScope", "$compile", "logger", function($rootScope, $compile, logger) {
             var link;
             link = function($scope, $element, attrs, gridCtrl) {
-                var alias, initializeGrid;
+                var alias, initializeGrid, loadGrid;
                 gridCtrl.registerGridElement($element.find("table.gridz"));
                 alias = attrs.agGridName;
                 if (alias != null) {
@@ -23,19 +47,8 @@
                 }
                 initializeGrid = function(gridOptions) {
                     var $grid;
-                    if (gridOptions == null) {
-                        return;
-                    }
                     //logger.info("Initializing the grid");
                     $grid = $element.find("table.gridz");
-                    if (gridOptions.needReloading === true) {
-                        gridOptions.needReloading = false;
-                        
-                        $grid.GridDestroy($grid.attr("id"));
-                        $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
-                        $compile($element)($scope);
-                        return;
-                    }
                     gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
                     gridOptions.gridComplete = function () {
                         $compile($grid)($scope);
@@ -86,17 +99,28 @@
                     responsiveResize();
                 };
 
-                return $scope.$watch(attrs.agGrid, initializeGrid);
+                loadGrid = function (gridOptions) {
+                    if (gridOptions == null) {
+                        return;
+                    }
+                    var $grid;
+                    $grid = $element.find("table.gridz");
+                    if (gridOptions.needReloading === true) {
+                        gridOptions.needReloading = false;
+
+                        $grid.GridDestroy($grid.attr("id"));
+                        $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
+                        setIdValue($element, attrs.agGridName);
+                    }
+                    initializeGrid(gridOptions);
+                };
+                return $scope.$watch(attrs.agGrid, loadGrid);
             };
             return {
                 restrict: "A",
                 template: "<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>",
-                compile: function(element, attrs) {
-                    var alias;
-                    alias = attrs.agGridName || "gridz";
-                    alias = getIdValue(alias);
-                    element.find("table.gridz").attr("id", alias);
-                    element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
+                compile: function (element, attrs) {
+                    setIdValue(element,attrs.agGridName);
                     return {
                         post: link
                     };

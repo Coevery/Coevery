@@ -65,7 +65,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           $scope.publish = function() {
               $http.get('Entities/SystemAdmin/Publish/' + $scope.selectedItems[0]).then(function () {
                   $scope.getAllMetadata();
-                  $scope.selectedItems.pop();
+                  $scope.selectedItems = [];
               });
           };
       }]
