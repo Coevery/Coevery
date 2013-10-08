@@ -9,69 +9,80 @@
         element.find("table.gridz").attr("id", alias);
         element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
     }
-    function optionsEqual(newVaue, oldValue) {
-        if (!oldValue) {
-            return false;
-        }
-        var result = true;
-        for (var originality in oldValue) {
-            if (newVaue[originality] !== oldValue[originality]) {
-                result = false;
-                break;
-            }
-        }
-        if (result === true) {
-            for (var property in newVaue) {
-                if (newVaue[property] !== oldValue[property]) {
-                    result = false;
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-    
+
     var gridz;
 
     gridz = angular.module("coevery.grid", []);
 
     gridz.directive("agGrid", [
-        "$rootScope", "$compile", "logger", function($rootScope, $compile, logger) {
+        "$rootScope", "$compile", "logger", function ($rootScope, $compile, logger) {
             var link;
-            link = function($scope, $element, attrs, gridCtrl) {
+            link = function ($scope, $element, attrs, gridCtrl) {
                 var alias, initializeGrid, loadGrid;
                 gridCtrl.registerGridElement($element.find("table.gridz"));
                 alias = attrs.agGridName;
                 if (alias != null) {
                     $scope[alias] = gridCtrl;
                 }
-                initializeGrid = function(gridOptions) {
+                initializeGrid = function (gridOptions) {
                     var $grid;
                     //logger.info("Initializing the grid");
                     $grid = $element.find("table.gridz");
                     gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
                     gridOptions.gridComplete = function () {
                         $compile($grid)($scope);
-                        
-                        var width;
+
+                        var width, pager;
                         width = $element.parent().width() - 1;
+                        pager = $(gridOptions.pager + '_center');
+                        if (pager.find(".custom-pager").length === 0) {
+                            var pagerOption = {
+                                items: $grid.getGridParam("records"),
+                                itemsOnPage: $grid.getGridParam("rowNum"),
+                                currentPage: $grid.getGridParam("page"),
+                                onPageClick: function(pageNumber, event) {
+                                    if (!event) {
+                                        return;
+                                    }
+                                    event.preventDefault();
+                                    $grid.setGridParam({
+                                        page: pageNumber
+                                    });
+                                    $grid.trigger("reloadGrid");
+                                },
+                                cssStyle: 'compact-theme'
+                            };
+                            if (width < 560) {
+                                pagerOption.displayedPages = 3;
+                            }
+                            pager.append("<section class='custom-pager'></section>");
+                            pager.find("section").pagination(pagerOption);
+                        }
+
                         return $grid.setGridWidth(width);
                     };
 
-                    gridOptions.onSelectRow = function() {
-                      $scope.$apply(function () {
-                          $scope.selectedRow = null;
+                    gridOptions.onPaging = function (pageOption) {
+                        if (pageOption === "records") {
+                            $(gridOptions.pager).find(".custom-pager")
+                                .pagination('updateItemsOnPage', $(".ui-pg-selbox :selected").val());
+                        }
+                    };
+
+                    gridOptions.onSelectRow = function () {
+                        $scope.$apply(function () {
+                            $scope.selectedRow = null;
                             $scope.selectedItems = gridCtrl.getSelectedRowIds();
-                          if ($scope.selectedItems.length === 1 && $scope.idAttr) {
-                              $scope.selectedRow = gridCtrl.getParam("data").filter(function(element) {
-                                  return element[$scope.idAttr].toString() === $scope.selectedItems[0];
-                              });
-                          }
+                            if ($scope.selectedItems.length === 1 && $scope.idAttr) {
+                                $scope.selectedRow = gridCtrl.getParam("data").filter(function (element) {
+                                    return element[$scope.idAttr].toString() === $scope.selectedItems[0];
+                                });
+                            }
                         });
                     };
 
-                    gridOptions.onSelectAll = function() {
-                        $scope.$apply(function() {
+                    gridOptions.onSelectAll = function () {
+                        $scope.$apply(function () {
                             $scope.selectedItems = gridCtrl.getSelectedRowIds();
                         });
                     };
@@ -84,13 +95,20 @@
                     */
 
                     function responsiveResize() {
+                        var changePagerButton = function(width) {
+                            if (width < 560) {
+                                var pager = $(gridOptions.pager + '_center');
+                                pager.pagination('destroy');
+                            }
+                        };
                         var gboxId = "#gbox_" + ($grid.attr("id"));
-                        return $(window).on("resize", function(event, ui) {
+                        return $(window).on("resize", function (event, ui) {
                             var curWidth, parWidth, w;
                             parWidth = $(gboxId).parent().width();
                             curWidth = $(gboxId).width();
                             w = parWidth - 1;
                             if (Math.abs(w - curWidth) > 2) {
+
                                 $grid.setGridWidth(w);
                             }
                         });
@@ -120,7 +138,7 @@
                 restrict: "A",
                 template: "<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>",
                 compile: function (element, attrs) {
-                    setIdValue(element,attrs.agGridName);
+                    setIdValue(element, attrs.agGridName);
                     return {
                         post: link
                     };
@@ -131,7 +149,7 @@
         }
     ]);
 
-    gridz.value("flatten", function(target, opts) {
+    gridz.value("flatten", function (target, opts) {
         var delimiter, getKey, output, step;
         if (opts == null) {
             opts = {
@@ -139,15 +157,15 @@
             };
         }
         delimiter = opts.delimiter;
-        getKey = function(key, prev) {
+        getKey = function (key, prev) {
             if (prev) {
                 return prev + delimiter + key;
             } else {
                 return key;
             }
         };
-        step = function(object, prev) {
-            return angular.forEach(Object.keys(object), function(key) {
+        step = function (object, prev) {
+            return angular.forEach(Object.keys(object), function (key) {
                 var isArray, isObject, type;
                 isArray = opts.safe && object[key] instanceof Array;
                 type = Object.prototype.toString.call(object[key]);

@@ -64,6 +64,8 @@
                 multiselect: true,
                 multiboxonly: true,
                 autowidth: true,
+                pginput: false,
+                pgbuttons: false,
                 loadui: "disable",
                 jsonReader: {
                     page: "page",

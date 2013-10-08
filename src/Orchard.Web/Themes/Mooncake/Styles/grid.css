@@ -110,16 +110,25 @@ div.ui-jqgrid-pager.ui-corner-bottom {
     background-image: none;
     background-color: white;
     border-radius: 0;
-    height: 50px;
+    height: 60px;
+}
+
+.ui-jqgrid-pager .custom-pager {
+    padding-top: 5px;
+    float: right;
+}
+
+.ui-jqgrid div > .ui-pg-table tr td:last-child {
+    padding-right: 2px;
+}
+
+div > .ui-pg-table td:last-child .ui-pg-table{
+    height: 100%;
 }
 
 @media (max-width: 480px) {
-    .ui-pg-table .ui-pg-table td:nth-child(4),
-    .ui-pg-table .ui-pg-table td:last-child {
+    div > .ui-pg-table td:last-child {
         display: none;
-    }
-    td > .ui-pg-table {
-        left: -30px
     }
 }
 
@@ -133,19 +142,20 @@ div.ui-jqgrid-pager.ui-corner-bottom {
 }
 
 .ui-jqgrid td select.ui-pg-selbox {
+    padding-right: 2px;
     padding-top: 2px;
     padding-bottom: 2px;
-    height: 24px;
-}
-
-input.ui-pg-input {
-    width: 40px;
-}
-
-select.ui-pg-selbox {
+    height: 26px;
+    line-height: 24px;
+    font-size: 0.9em;
     width: 70px;
+    box-shadow: 2px 2px 2px rgb(80%, 80%, 80%);
 }
 
+.custom-pager.compact-theme span,
+.custom-pager.compact-theme a {
+    border-color: #D2D2D2;
+}
 /*Inner cell action
 ------------------------------------------*/
 div.gridCellText {
