@@ -68,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sql\create.sql" />
-    <Content Include="Sql\EnableModule.sql" />
     <Content Include="Web.config" />
     <Content Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />

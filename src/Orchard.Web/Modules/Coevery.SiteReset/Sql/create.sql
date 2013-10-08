@@ -8125,3 +8125,7 @@ INSERT [Title_TitlePartRecord] ([Id],[ContentItemRecord_id],[Title]) VALUES ( 43
 INSERT [Title_TitlePartRecord] ([Id],[ContentItemRecord_id]) VALUES ( 441,430)
 INSERT [Title_TitlePartRecord] ([Id],[ContentItemRecord_id]) VALUES ( 442,431)
 INSERT [Title_TitlePartRecord] ([Id],[ContentItemRecord_id]) VALUES ( 443,432)
+
+INSERT [Settings_ShellFeatureRecord] ([Name],[ShellDescriptorRecord_id]) VALUES (N'Coevery.SiteReset',1)
+INSERT [Settings_ShellFeatureStateRecord] ([Name],[InstallState],[EnableState],[ShellStateRecord_Id]) VALUES (N'Coevery.SiteReset',N'Up',N'Up',1)
+UPDATE [Settings_ShellDescriptorRecord] SET [SerialNumber]=[SerialNumber]+1

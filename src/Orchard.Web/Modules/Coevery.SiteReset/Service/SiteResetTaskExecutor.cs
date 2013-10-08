@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.IO;
-using System.Linq;
-using Coevery.Core.DynamicTypeGeneration;
 using NHibernate.Dialect;
 using Orchard.Data;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
 using Orchard.Environment.Configuration;
-using Orchard.Environment.Features;
 using Orchard.FileSystems.VirtualPath;
 using Orchard.Logging;
 using Orchard.Reports.Services;
@@ -26,19 +23,15 @@ namespace Coevery.SiteReset.Service
         private readonly IVirtualPathProvider _virtualPathProvider;
         private readonly ISessionFactoryHolder _sessionFactoryHolder;
         private readonly SchemaBuilder _schemaBuilder;
-        private readonly IFeatureManager _featureManager;
         public SiteResetTaskExecutor(
             IThemeService themeService, 
             ISiteThemeService siteThemeService,
             ISessionFactoryHolder sessionFactoryHolder,
-            ITransactionManager transactionManager,
             IVirtualPathProvider virtualPathProvider,
             ShellSettings shellSettings,
             ISessionLocator sessionLocator,
             IEnumerable<ICommandInterpreter> commandInterpreters,
-            IReportsCoordinator reportsCoordinator,
-            IFeatureManager featureManager,
-            IDynamicAssemblyBuilder dynamicAssemblyBuilder)
+            IReportsCoordinator reportsCoordinator)
         {
             _themeService = themeService;
             _siteThemeService = siteThemeService;
@@ -46,7 +39,6 @@ namespace Coevery.SiteReset.Service
             _sessionFactoryHolder = sessionFactoryHolder;
             var interpreter = new Coevery.Core.Services.DefaultDataMigrationInterpreter(shellSettings, sessionLocator, commandInterpreters, sessionFactoryHolder, reportsCoordinator);
             _schemaBuilder = new SchemaBuilder(interpreter, "", s => s.Replace(".", "_"));
-            _featureManager = featureManager;
             Logger=NullLogger.Instance;
         }
 
@@ -58,7 +50,6 @@ namespace Coevery.SiteReset.Service
                 _siteThemeService.SetSiteTheme("Offline");
             }
             else if (context.Task.TaskType == "ResetSite"){
-                var isEnable = _featureManager.GetEnabledFeatures().Any(feature => feature.Name == "Coevery.SiteReset");
                 Logger.Information("start reseting site data at {2} utc", context.Task.ScheduledUtc);
                 var factory = _sessionFactoryHolder.GetSessionFactory();
                 using (var session = factory.OpenSession()){
@@ -71,8 +62,6 @@ namespace Coevery.SiteReset.Service
                             _schemaBuilder.DropTable(dr["TABLE_NAME"].ToString());
                         }
                         ExecuteOutSql("~/Modules/Coevery.SiteReset/Sql/create.sql");
-                        if (isEnable)
-                            ExecuteOutSql("~/Modules/Coevery.SiteReset/Sql/EnableModule.sql");
                     }
                     catch (Exception ex){
                         Logger.Warning(ex, "reset site error");
