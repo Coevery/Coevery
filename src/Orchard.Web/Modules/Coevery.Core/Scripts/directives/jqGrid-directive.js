@@ -1,4 +1,12 @@
-﻿(function() {
+﻿(function () {
+    function getIdValue(baseValue) {
+        var tempValue = '#'+baseValue, index=0;
+        while ($(tempValue).length !== 0) {
+            tempValue = tempValue + index.toString(10);
+            index++;
+        }
+        return tempValue;
+    }
     var gridz;
 
     gridz = angular.module("coevery.grid", []);
@@ -86,6 +94,7 @@
                 compile: function(element, attrs) {
                     var alias;
                     alias = attrs.agGridName || "gridz";
+                    alias = getIdValue(alias);
                     element.find("table.gridz").attr("id", alias);
                     element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
                     return {
