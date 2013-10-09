@@ -5,8 +5,14 @@
 }
 @{
 
-    <li data-ng-class="{active: $uiRoute}" data-ui-route="@Model.Href/?.*">
-        @if (items.Any()) {
+    if (Model.Href == "/") {
+        @:<li data-ng-class="{active: $uiRoute}" data-ui-route="/?.">
+    }
+    else {
+        @:<li data-ng-class="{active: $uiRoute}" data-ui-route="@Model.Href/?.*">
+    }
+
+    if (items.Any()) {
             <span title="@Model.Text">
                 <i class="@string.Join(" ", classes.ToArray())"></i>
                 <span class="nav-title">@Model.Text</span>
@@ -27,5 +33,5 @@
             }
             
         }
-    </li>
+    @:</li>
 }
