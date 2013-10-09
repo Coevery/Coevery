@@ -7,10 +7,10 @@ using Orchard.ContentManagement;
 
 namespace Coevery.Relationship.Projections {
 
-    public class ReferenceFieldValeProvider : ContentFieldValueProvider<ReferenceField> {
+    public class ReferenceFieldValueProvider : ContentFieldValueProvider<ReferenceField> {
         private readonly IContentManager _contentManager;
 
-        public ReferenceFieldValeProvider(IContentManager contentManager) {
+        public ReferenceFieldValueProvider(IContentManager contentManager) {
             _contentManager = contentManager;
         }
 

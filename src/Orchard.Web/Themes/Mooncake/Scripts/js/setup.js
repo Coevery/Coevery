@@ -68,7 +68,13 @@
         }, "Please enter a valid phone.");
         $.validator.classRuleSettings.phonenumber = { phonenumber: true };
 
-
+        $.validator.addMethod("decimalFormat", function (value, element, params) {
+            var paramArray = params.split(',');
+            var tempInt = parseInt(value);
+            return !value || !isNaN(tempInt) && tempInt.toString().length <= paramArray[0] &&
+                RegExp("^(\\d{0," + paramArray[0] + "})(\.\\d{0," + paramArray[1] + "})?$").test(value);
+        }, "Wrong decimal format!");
+        $.validator.classRuleSettings.decimalFormat = { decimalFormat: true };
 
         $.validator.addMethod("decimalplaces", function (value, em) {
             if (value) {
@@ -83,6 +89,11 @@
                 return $(em).attr("decimalplaces");
             }
         };
+        
+        $.validator.addMethod("dateForShort", function (value) {
+            return /^\d\d?\/\d\d?\/\d{4}$/.test(value) || !value;
+        }, "Wrong date format,should be mm/dd/yyyy");
+        $.validator.classRuleSettings.dateForShort = { dateForShort: true };
     });
 
 }) (jQuery, window, document);

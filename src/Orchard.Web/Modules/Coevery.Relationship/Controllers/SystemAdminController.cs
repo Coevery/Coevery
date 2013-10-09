@@ -93,9 +93,11 @@ namespace Coevery.Relationship.Controllers {
             if (oneToMany == null || oneToMany.Id == 0) {
                 return ResponseError("Relationship not found");
             }
-            var fields = _contentDefinitionManager
-                .GetPartDefinition(oneToMany.Relationship.RelatedEntity.Name).Fields
-                .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
+            var part = _contentDefinitionManager.GetPartDefinition(oneToMany.Relationship.RelatedEntity.Name);
+            var fields = part == null
+                ? new List<SelectListItem>()
+                : part.Fields.Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
+
             return View("CreateOneToMany", new OneToManyRelationshipModel {
                 IsCreate = false,
                 Name = oneToMany.Relationship.Name,

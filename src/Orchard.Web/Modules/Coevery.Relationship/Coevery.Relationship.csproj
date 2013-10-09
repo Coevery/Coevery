@@ -82,8 +82,8 @@
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\DynamicRelatedPartDriver.cs" />
     <Compile Include="Drivers\RelatedEntityListDriver.cs" />
+    <Compile Include="Handlers\EntityMetadataPartHandler.cs" />
     <Compile Include="Handlers\RelationshipEntityEventsHandler.cs" />
-    <Compile Include="Handlers\RelationshipFieldEventsHandler.cs" />
     <Compile Include="Handlers\RelationshipDynamicTypeGenerationEventsHandler.cs" />
     <Compile Include="Fields\ReferenceField.cs" />
     <Compile Include="Handlers\ReferenceHandler.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="Models\OneToManyRelationshipModel.cs" />
     <Compile Include="Models\ReferenceFieldViewModel.cs" />
     <Compile Include="Models\RelationshipModel.cs" />
-    <Compile Include="Projections\ReferenceFieldValeProvider.cs" />
+    <Compile Include="Projections\ReferenceFieldValueProvider.cs" />
     <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Records\OneToManyRelationshipRecord.cs" />
     <Compile Include="Records\RelationshipRecord.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Coevery.Entities.Services;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
 using Orchard;
@@ -13,11 +14,13 @@ using Orchard.Localization;
 using Orchard.Projections.Models;
 using Orchard.Projections.Services;
 using Orchard.Projections.Descriptors.Property;
+using Orchard.UI.Notify;
 
 namespace Coevery.Projections.Services {
     public class ProjectionService : IProjectionService {
         private readonly IProjectionManager _projectionManager;
         private readonly IContentManager _contentManager;
+        private readonly IEnumerable<IFieldToPropertyStateProvider> _fieldToPropertyStateProviders;
         private readonly IFormManager _formManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
@@ -26,10 +29,12 @@ namespace Coevery.Projections.Services {
             IProjectionManager projectionManager,
             IContentManager contentManager,
             IFormManager formManager,
+            IEnumerable<IFieldToPropertyStateProvider> fieldToPropertyStateProviders,
             IContentDefinitionManager contentDefinitionManager) {
             _projectionManager = projectionManager;
             _contentManager = contentManager;
             _formManager = formManager;
+            _fieldToPropertyStateProviders = fieldToPropertyStateProviders;
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
@@ -152,7 +157,12 @@ namespace Coevery.Projections.Services {
 
             var category = viewModel.ItemContentType + "ContentFields";
             const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
-            UpdateLayoutProperties(viewModel.ItemContentType, ref layoutRecord, category, settingName, pickedFileds);
+            try {
+                UpdateLayoutProperties(viewModel.ItemContentType, ref layoutRecord, category, settingName, pickedFileds);
+            }
+            catch (Exception exception) {
+                Services.Notifier.Add(NotifyType.Error,T(exception.Message));
+            }
             layoutRecord.State = GetLayoutState(queryPart.Id, layoutRecord.Properties.Count, layoutRecord.Description);
             // sort
             queryPart.SortCriteria.Clear();
@@ -180,13 +190,16 @@ namespace Coevery.Projections.Services {
                 if (field == null) {
                     continue;
                 }
-
+                var fieldStateProvider = _fieldToPropertyStateProviders.FirstOrDefault(provider=>provider.CanHandle(field.FieldDefinition.Name));
+                if (fieldStateProvider == null) {
+                    throw new NotSupportedException("The field type \""+ field.FieldDefinition.Name + "\" is not supported!");
+                }
                 var propertyRecord = new PropertyRecord {
                     Category = category,
                     Type = property,
                     Description = field.DisplayName,
                     Position = layout.Properties.Count,
-                    State = GetPropertyState(property),
+                    State = fieldStateProvider.GetPropertyState(field.FieldDefinition.Name, property, field.Settings),
                     LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
                 };
                 layout.Properties.Add(propertyRecord);
@@ -201,38 +214,6 @@ namespace Coevery.Projections.Services {
         private static string GetSortState(string description, string sortMode) {
             const string format = @"<Form><Description>{0}</Description><Sort>{1}</Sort></Form>";
             return string.Format(format, description, sortMode == "Desc" ? "true" : "false");
-        }
-
-        private static string GetPropertyState(string filedName) {
-            const string format = @"<Form>
-                  <Description>{0}</Description>
-                  <LinkToContent>true</LinkToContent>
-                  <ExcludeFromDisplay>false</ExcludeFromDisplay>
-                  <CreateLabel>false</CreateLabel>
-                  <Label></Label>
-                  <CustomizePropertyHtml>false</CustomizePropertyHtml>
-                  <CustomPropertyTag></CustomPropertyTag>
-                  <CustomPropertyCss></CustomPropertyCss>
-                  <CustomizeLabelHtml>false</CustomizeLabelHtml>
-                  <CustomLabelTag></CustomLabelTag>
-                  <CustomLabelCss></CustomLabelCss>
-                  <CustomizeWrapperHtml>false</CustomizeWrapperHtml>
-                  <CustomWrapperTag></CustomWrapperTag>
-                  <CustomWrapperCss></CustomWrapperCss>
-                  <NoResultText></NoResultText>
-                  <ZeroIsEmpty>false</ZeroIsEmpty>
-                  <HideEmpty>false</HideEmpty>
-                  <RewriteOutput>false</RewriteOutput>
-                  <RewriteText></RewriteText>
-                  <TrimLength>false</TrimLength>
-                  <MaxLength>0</MaxLength>
-                  <TrimOnWordBoundary>false</TrimOnWordBoundary>
-                  <AddEllipsis>false</AddEllipsis>
-                  <StripHtmlTags>false</StripHtmlTags>
-                  <TrimWhiteSpace>false</TrimWhiteSpace>
-                  <PreserveLines>false</PreserveLines>
-                    </Form>";
-            return string.Format(format, filedName);
         }
 
         private static string GetLayoutState(int queryId, int columnCount, string desc) {

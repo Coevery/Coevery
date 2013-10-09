@@ -5,8 +5,19 @@ using Orchard.ContentManagement.FieldStorage;
 namespace Coevery.Fields.Fields {
     public class DatetimeField : ContentField {
         public DateTime? Value {
-            get { return Storage.Get<DateTime?>(Name); }
-            set { Storage.Set(value); }
+            get {
+                var temp = Storage.Get<DateTime?>(Name);
+                if (!temp.HasValue) {
+                    return null;
+                }
+                return temp.Value.ToLocalTime();
+            }
+            set {
+                if (value.HasValue) {
+                    value = value.Value.ToUniversalTime();
+                }
+                Storage.Set(value);
+            }
         }
     }
 }

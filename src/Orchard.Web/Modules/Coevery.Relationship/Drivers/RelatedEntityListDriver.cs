@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
 using Coevery.Relationship.ViewModels;

@@ -79,7 +79,7 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(decimal), null, T("The decimal value of the field."));
+            context.Member(null, typeof(decimal?), null, T("The decimal value of the field."));
         }
     }
 }

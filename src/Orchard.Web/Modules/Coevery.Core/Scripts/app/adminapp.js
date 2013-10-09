@@ -49,14 +49,14 @@
                     '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
                     '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
                     'delete-action="delete(\'{0}\')" title="Delete"></span>{2}</section>' +
-                    '{1} </div>';
-                var viewStyle = '<span>' + cellvalue + '</span>', defaultStyle='';
+                    '<div>{1}</div> </div>';
+                var viewStyle = cellvalue, defaultStyle='';
                 if (!options.colModel.formatoptions) {
                     return template.format(options.rowId, viewStyle, '');
                 }
                 if (options.colModel.formatoptions.hasView) {
-                    viewStyle = '<span class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
-                        cellvalue + '</span>';
+                    viewStyle = '<a class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
+                        cellvalue + '</a>';
                 } 
                 if (options.colModel.formatoptions.hasDefault) {
                     defaultStyle = '<span class="icon-tags" data-ng-click="setDefault(\'' + options.rowId + '\')" title="Set Default"></span>';
