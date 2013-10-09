@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Orchard;
 
-namespace Coevery.Projections.Services {
+namespace Coevery.Entities.Services {
     public interface IFieldToPropertyStateProvider:IDependency {
-        string GetPropertyState(string fieldType, string filedName, object displaySettings);
+        string GetPropertyState(string fieldType, string filedName, IDictionary<string,string> customSettings);
+        bool CanHandle(string fieldType);
     }
-    public class FieldToPropertyStateProvider : IFieldToPropertyStateProvider {
-        public virtual string GetPropertyState(string fieldType, string filedName, object displaySettings) {
-            const string format = @"<Form>
+    public abstract class FieldToPropertyStateProvider : IFieldToPropertyStateProvider {
+        protected IEnumerable<string> FieldTypeSet { get; set; }
+        protected const string Format = @"<Form>
                   <Description>{0}</Description>
                   <LinkToContent>true</LinkToContent>
                   <ExcludeFromDisplay>false</ExcludeFromDisplay>
@@ -25,17 +25,10 @@ namespace Coevery.Projections.Services {
                   <HideEmpty>false</HideEmpty>
                   <TrimLength>false</TrimLength>
                   <MaxLength>0</MaxLength>
-                    </Form>";
-            string formatOption = null;
-            switch (fieldType) {
-                case "DateField":
-                    formatOption = "d";
-                    break;
-                case "DatetimeField":
-                    formatOption = "g";
-                    break;
-            }
-            return string.Format(format, filedName, formatOption);
+                  </Form>";
+        public abstract string GetPropertyState(string fieldType, string filedName, IDictionary<string, string> customSettings);
+        public virtual bool CanHandle(string fieldType) {
+            return FieldTypeSet.Any(type => type == fieldType);
         }
     }
 }

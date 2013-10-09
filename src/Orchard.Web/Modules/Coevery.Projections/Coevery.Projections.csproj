@@ -136,11 +136,11 @@
     <Compile Include="Models\ListViewPart.cs" />
     <Compile Include="Models\EntityFilterRecord.cs" />
     <Compile Include="Models\ListViewPartRecord.cs" />
+    <Compile Include="Providers\PropertyEditors\CoeveryNumericPropertyEditor.cs" />
     <Compile Include="Providers\SortCriteria\ContentFieldsSortCriteria.cs" />
     <Compile Include="Providers\Filters\ContentFieldsFilter.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentFieldProperties.cs" />
-    <Compile Include="Services\FieldToPropertyStateProvider.cs" />
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="ViewModels\FilterViewModel.cs" />

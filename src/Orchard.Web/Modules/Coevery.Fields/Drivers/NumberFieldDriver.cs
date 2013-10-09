@@ -74,7 +74,7 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(double), null, T("The double value of the field."));
+            context.Member(null, typeof(double?), null, T("The double value of the field."));
         }
     }
 }
