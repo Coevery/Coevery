@@ -42,14 +42,14 @@
                     '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
                     '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
                     'delete-action="delete(\'{0}\')" title="Delete"></span></section>' +
-                    '{1} </div>';
-                var viewStyle = '<span>' + cellvalue + '</span>';
+                    '<div>{1}</div> </div>';
+                var viewStyle = cellvalue;
                 if (!options.colModel.formatoptions) {
                     return template.format(options.rowId, viewStyle);
                 }
                 if (options.colModel.formatoptions.hasView) {
-                    viewStyle = '<span class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
-                        cellvalue + '</span>';
+                    viewStyle = '<a class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
+                        cellvalue + '</a>';
                 }
                 return template.format(options.rowId, viewStyle);
             };

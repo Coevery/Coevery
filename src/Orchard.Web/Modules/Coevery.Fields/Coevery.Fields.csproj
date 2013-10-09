@@ -74,6 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldDependencyController.cs" />
+    <Compile Include="Projections\DatetimeFieldValueProvider.cs" />
+    <Compile Include="Projections\DateFieldValueProvider.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="Services\DependencyExtension.cs" />
     <Compile Include="Services\IFieldDependencyService.cs" />

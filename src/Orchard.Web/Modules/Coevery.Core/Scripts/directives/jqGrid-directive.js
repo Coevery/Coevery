@@ -95,12 +95,6 @@
                     */
 
                     function responsiveResize() {
-                        var changePagerButton = function(width) {
-                            if (width < 560) {
-                                var pager = $(gridOptions.pager + '_center');
-                                pager.pagination('destroy');
-                            }
-                        };
                         var gboxId = "#gbox_" + ($grid.attr("id"));
                         return $(window).on("resize", function (event, ui) {
                             var curWidth, parWidth, w;
@@ -108,7 +102,6 @@
                             curWidth = $(gboxId).width();
                             w = parWidth - 1;
                             if (Math.abs(w - curWidth) > 2) {
-
                                 $grid.setGridWidth(w);
                             }
                         });

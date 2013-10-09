@@ -167,11 +167,9 @@ tr:hover div.gridCellText {
     padding-right: 26px;
 }
 
-div.gridCellText > span {
-    display: block;
+div.gridCellText > div {
     line-height: 30px;
     overflow-x: hidden;
-    white-space: nowrap;
     -ms-text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;

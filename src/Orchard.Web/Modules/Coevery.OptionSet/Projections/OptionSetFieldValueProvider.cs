@@ -6,10 +6,10 @@ using Orchard.ContentManagement;
 
 namespace Coevery.OptionSet.Projections {
 
-    public class OptionSetFieldValeProvider : ContentFieldValueProvider<OptionSetField> {
+    public class OptionSetFieldValueProvider : ContentFieldValueProvider<OptionSetField> {
         private readonly IOptionSetService _optionSetService;
 
-        public OptionSetFieldValeProvider(IOptionSetService optionSetService) {
+        public OptionSetFieldValueProvider(IOptionSetService optionSetService) {
             _optionSetService = optionSetService;
         }
 

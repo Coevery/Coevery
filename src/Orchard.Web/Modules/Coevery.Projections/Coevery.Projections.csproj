@@ -140,6 +140,7 @@
     <Compile Include="Providers\Filters\ContentFieldsFilter.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentFieldProperties.cs" />
+    <Compile Include="Services\FieldToPropertyStateProvider.cs" />
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\ProjectionService.cs" />
     <Compile Include="ViewModels\FilterViewModel.cs" />
