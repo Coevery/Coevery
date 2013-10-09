@@ -28,9 +28,8 @@ namespace Coevery.Relationship.Handlers {
 
         private void CopyRelationshipRecords<T>(IRepository<T> repository, EntityMetadataRecord existing, EntityMetadataRecord building) where T : IRelationshipRecord, new() {
             var records = repository.Table
-                .Where(x => x.Relationship.PrimaryEntity.ContentItemVersionRecord.Latest
-                            && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest
-                            && (x.Relationship.PrimaryEntity == existing || x.Relationship.RelatedEntity == existing))
+                .Where(x => (x.Relationship.PrimaryEntity == existing && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest)
+                            || (x.Relationship.RelatedEntity == existing && x.Relationship.PrimaryEntity.ContentItemVersionRecord.Latest))
                 .ToList();
 
             foreach (var record in records) {
