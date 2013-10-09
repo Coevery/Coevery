@@ -172,20 +172,20 @@ span.fieldtoadd {
     overflow-y: auto;
 }
 
-.viewfields-widget #sortable li {
-    background: url("images/cache.gif") no-repeat 5px;
-    padding-left: 18px;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    border: 1px solid #ccc;
-    cursor: move;
-    zoom: 1;
-    margin-top: 5px;
-}
-
-    .viewfields-widget #sortable li:before {
-        content: none;
+    .viewfields-widget #sortable li {
+        background: url("images/cache.gif") no-repeat 5px;
+        padding-left: 18px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        border: 1px solid #ccc;
+        cursor: move;
+        zoom: 1;
+        margin-top: 5px;
     }
+
+        .viewfields-widget #sortable li:before {
+            content: none;
+        }
 /* sorted by span*/
 .sortedbyspan {
     margin: 20px 0;
@@ -282,10 +282,15 @@ ul.nav.nav-tabs {
 
 /*Icons*/
 .iconrow {
-    width: 550px;
+    max-width: 550px;
 }
 
 .iconspan {
+    white-space: nowrap;
+    overflow-x: hidden;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
     cursor: pointer;
 }
 
@@ -297,3 +302,4 @@ ul.nav.nav-tabs {
     #showIconClass {
         font-size: 20px;
     }
+

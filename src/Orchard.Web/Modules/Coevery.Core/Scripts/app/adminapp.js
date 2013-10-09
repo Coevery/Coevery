@@ -71,6 +71,7 @@
                 recordpos: "left",
                 sortable: true,
                 height: "100%",
+                headertitles: true,
                 viewrecords: true,
                 multiselect: true,
                 multiboxonly: true,
