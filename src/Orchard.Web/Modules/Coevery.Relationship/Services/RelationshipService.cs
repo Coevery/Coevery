@@ -5,6 +5,7 @@ using Coevery.Core.DynamicTypeGeneration;
 using Coevery.Core.Services;
 using Coevery.Entities.Events;
 using Coevery.Entities.Services;
+using Coevery.Entities.ViewModels;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Models;
 using Coevery.Relationship.Settings;
@@ -30,6 +31,7 @@ namespace Coevery.Relationship.Services {
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentManager _contentManager;
         private readonly IFieldEvents _fieldEvents;
+        private readonly IContentMetadataService _contentMetadataService;
 
         public RelationshipService(
             IRepository<RelationshipRecord> relationshipRepository,
@@ -41,7 +43,8 @@ namespace Coevery.Relationship.Services {
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
             ISchemaUpdateService schemaUpdateService,
             IContentManager contentManager,
-            IFieldEvents fieldEvents) {
+            IFieldEvents fieldEvents,
+            IContentMetadataService contentMetadataService) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
             _manyToManyRepository = manyToManyRepository;
@@ -52,6 +55,7 @@ namespace Coevery.Relationship.Services {
             _schemaUpdateService = schemaUpdateService;
             _contentManager = contentManager;
             _fieldEvents = fieldEvents;
+            _contentMetadataService = contentMetadataService;
         }
 
         #endregion
@@ -62,7 +66,7 @@ namespace Coevery.Relationship.Services {
             return _contentDefinitionManager
                 .GetPartDefinition(entityName)
                 .Fields.Where(field => field.FieldDefinition.Name == "ReferenceField"
-                && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipId == oneToManyId)
+                                       && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipId == oneToManyId)
                 .Select(field => field.Name).SingleOrDefault();
         }
 
@@ -71,11 +75,11 @@ namespace Coevery.Relationship.Services {
             return entity == null
                 ? null
                 : (from field in entity.Fields
-                   select new SelectListItem {
-                       Value = field.Name,
-                       Text = field.DisplayName,
-                       Selected = false
-                   }).ToArray();
+                    select new SelectListItem {
+                        Value = field.Name,
+                        Text = field.DisplayName,
+                        Selected = false
+                    }).ToArray();
         }
 
         public SelectListItem[] GetEntityNames(string excludeEntity) {
@@ -83,12 +87,12 @@ namespace Coevery.Relationship.Services {
             return entities == null
                 ? null
                 : (from entity in entities
-                   where entity.Name != excludeEntity
-                   select new SelectListItem {
-                       Value = entity.Name,
-                       Text = entity.DisplayName,
-                       Selected = false
-                   }).ToArray();
+                    where entity.Name != excludeEntity
+                    select new SelectListItem {
+                        Value = entity.Name,
+                        Text = entity.DisplayName,
+                        Selected = false
+                    }).ToArray();
         }
 
         public OneToManyRelationshipRecord GetOneToMany(int id) {
@@ -100,13 +104,15 @@ namespace Coevery.Relationship.Services {
         }
 
         public RelationshipRecord[] GetRelationships(string entityName) {
-            var entity = _contentPartRepository.Table.FirstOrDefault(part => part.Name == entityName);
+            var entity = _contentMetadataService.GetEntity(entityName);
             if (entity == null) {
                 return null;
             }
             return (from record in _relationshipRepository.Table
-                    where record.PrimaryEntity == entity || record.RelatedEntity == entity
-                    select record).ToArray();
+                where record.PrimaryEntity.ContentItemVersionRecord.Latest
+                      && record.RelatedEntity.ContentItemVersionRecord.Latest
+                      && (record.PrimaryEntity == entity.Record || record.RelatedEntity == entity.Record)
+                select record).ToArray();
         }
 
         #endregion
@@ -114,24 +120,24 @@ namespace Coevery.Relationship.Services {
         #region CreateMethods
 
         public int CreateOneToManyRelationship(string fieldName, string relationName, string primaryEntityName, string relatedEntityName) {
-            var primaryEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == primaryEntityName);
-            var relatedEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == relatedEntityName);
+            var primaryEntity = _contentMetadataService.GetEntity(primaryEntityName);
+            var relatedEntity = _contentMetadataService.GetEntity(relatedEntityName);
 
-            var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.FirstOrDefault(field => field.Name == fieldName);
-            if (fieldRecord == null || fieldRecord.Id == 0) {
+            var fieldRecord = relatedEntity.FieldMetadataRecords.FirstOrDefault(field => field.Name == fieldName);
+            if (fieldRecord == null) {
                 return -1;
             }
             var relationship = CreateRelation(new RelationshipRecord {
                 Name = relationName,
-                PrimaryEntity = primaryEntity,
-                RelatedEntity = relatedEntity,
-                Type = (byte)RelationshipType.OneToMany
+                PrimaryEntity = primaryEntity.Record,
+                RelatedEntity = relatedEntity.Record,
+                Type = (byte) RelationshipType.OneToMany
             });
 
             var projectionPart = CreateProjection(relatedEntityName, null);
 
             var oneToMany = new OneToManyRelationshipRecord {
-                DeleteOption = (byte)OneToManyDeleteOption.CascadingDelete,
+                DeleteOption = (byte) OneToManyDeleteOption.CascadingDelete,
                 LookupField = fieldRecord,
                 RelatedListProjection = projectionPart.Record,
                 RelatedListLabel = relatedEntityName,
@@ -142,17 +148,14 @@ namespace Coevery.Relationship.Services {
             return oneToMany.Id;
         }
 
-        ///<summary> 
-        /// Lookup field not implemented
-        ///</summary>
         public string CreateRelationship(OneToManyRelationshipModel oneToMany) {
             if (oneToMany == null) {
                 return "Invalid model.";
             }
-            var primaryEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == oneToMany.PrimaryEntity);
-            var relatedEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == oneToMany.RelatedEntity);
+            var primaryEntity = _contentMetadataService.GetEntity(oneToMany.PrimaryEntity);
+            var relatedEntity = _contentMetadataService.GetDraftEntity(oneToMany.RelatedEntity);
             if (primaryEntity == null || relatedEntity == null
-                || primaryEntity.Id == relatedEntity.Id) {
+                || !primaryEntity.HasPublished()) {
                 return "Invalid entity";
             }
             if (RelationshipExists(oneToMany.Name)) {
@@ -161,9 +164,9 @@ namespace Coevery.Relationship.Services {
 
             var relationship = CreateRelation(new RelationshipRecord {
                 Name = oneToMany.Name,
-                PrimaryEntity = primaryEntity,
-                RelatedEntity = relatedEntity,
-                Type = (byte)RelationshipType.OneToMany
+                PrimaryEntity = primaryEntity.Record,
+                RelatedEntity = relatedEntity.Record,
+                Type = (byte) RelationshipType.OneToMany
             });
 
             var updateModel = new ReferenceUpdateModel(new ReferenceFieldSettings {
@@ -172,22 +175,23 @@ namespace Coevery.Relationship.Services {
                 DisplayAsLink = oneToMany.DisplayAsLink,
                 HelpText = oneToMany.HelpText,
                 IsAudit = oneToMany.IsAudit,
-                IsSystemField = false,
-                ReadOnly = false,
                 Required = oneToMany.Required,
                 RelationshipId = relationship.Id,
                 RelationshipName = relationship.Name
             });
-            _contentDefinitionService.AddFieldToPart(oneToMany.FieldName, oneToMany.FieldLabel, "ReferenceField", relatedEntity.Name);
-            _contentDefinitionService.AlterField(relatedEntity.Name, oneToMany.FieldName, updateModel);
+            var fieldViewModel = new AddFieldViewModel {
+                AddInLayout = true,
+                Name = oneToMany.FieldName,
+                DisplayName = oneToMany.FieldLabel,
+                FieldTypeName = "ReferenceField"
+            };
+            _contentMetadataService.CreateField(relatedEntity, fieldViewModel, updateModel);
 
-            _fieldEvents.OnCreated(relatedEntity.Name, oneToMany.FieldName, oneToMany.AlwaysInLayout);
-
-            var fieldRecord = relatedEntity.ContentPartFieldDefinitionRecords.FirstOrDefault(field => field.Name == oneToMany.FieldName);
+            var fieldRecord = relatedEntity.FieldMetadataRecords.FirstOrDefault(field => field.Name == oneToMany.FieldName);
             var projectionPart = CreateProjection(oneToMany.RelatedEntity, oneToMany.ColumnFieldList);
 
             _oneToManyRepository.Create(new OneToManyRelationshipRecord {
-                DeleteOption = (byte)oneToMany.DeleteOption,
+                DeleteOption = (byte) oneToMany.DeleteOption,
                 LookupField = fieldRecord,
                 RelatedListProjection = projectionPart.Record,
                 RelatedListLabel = oneToMany.RelatedListLabel,
@@ -195,7 +199,6 @@ namespace Coevery.Relationship.Services {
                 ShowRelatedList = oneToMany.ShowRelatedList
             });
 
-            _schemaUpdateService.CreateColumn(relatedEntity.Name, oneToMany.FieldName, "ReferenceField");
             return relationship.Id.ToString();
         }
 
@@ -203,9 +206,10 @@ namespace Coevery.Relationship.Services {
             if (manyToMany == null) {
                 return "Invalid model.";
             }
-            var primaryEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == manyToMany.PrimaryEntity);
-            var relatedEntity = _contentPartRepository.Table.FirstOrDefault(entity => entity.Name == manyToMany.RelatedEntity);
-            if (primaryEntity == null || relatedEntity == null || primaryEntity.Id == relatedEntity.Id) {
+            var primaryEntity = _contentMetadataService.GetEntity(manyToMany.PrimaryEntity);
+            var relatedEntity = _contentMetadataService.GetEntity(manyToMany.RelatedEntity);
+            if (primaryEntity == null || relatedEntity == null
+                || !primaryEntity.HasPublished() || !relatedEntity.HasPublished()) {
                 return "Invalid entity";
             }
             if (RelationshipExists(manyToMany.Name)) {
@@ -214,9 +218,9 @@ namespace Coevery.Relationship.Services {
 
             var relationship = CreateRelation(new RelationshipRecord {
                 Name = manyToMany.Name,
-                PrimaryEntity = primaryEntity,
-                RelatedEntity = relatedEntity,
-                Type = (byte)RelationshipType.ManyToMany
+                PrimaryEntity = primaryEntity.Record,
+                RelatedEntity = relatedEntity.Record,
+                Type = (byte) RelationshipType.ManyToMany
             });
 
             var primaryProjectionPart = CreateProjection(manyToMany.PrimaryEntity, manyToMany.PrimaryColumnList);
@@ -244,16 +248,21 @@ namespace Coevery.Relationship.Services {
             if (relationship == null) {
                 return;
             }
-            if (relationship.Type == (byte)RelationshipType.OneToMany) {
+
+            if (relationship.Type == (byte) RelationshipType.OneToMany) {
+                var entity = _contentMetadataService.GetDraftEntity(relationship.RelatedEntity.Name);
                 var record = _oneToManyRepository.Get(x => x.Relationship == relationship);
+                var field = entity.FieldMetadataRecords.First(x => x.Name == record.LookupField.Name);
+                entity.FieldMetadataRecords.Remove(field);
                 DeleteRelationship(record);
-            } else if (relationship.Type == (byte)RelationshipType.ManyToMany) {
+            }
+            else if (relationship.Type == (byte) RelationshipType.ManyToMany) {
                 var record = _manyToManyRepository.Get(x => x.Relationship == relationship);
                 DeleteRelationship(record);
             }
         }
 
-        private void DeleteRelationship(OneToManyRelationshipRecord record) {
+        public void DeleteRelationship(OneToManyRelationshipRecord record) {
             if (record == null) {
                 return;
             }
@@ -376,7 +385,7 @@ namespace Coevery.Relationship.Services {
             projectionPart.Record.QueryPartRecord = queryPart.Record;
             _contentManager.Create(projectionItem);
 
-            var layoutRecord = new LayoutRecord { Category = "Html", Type = "ngGrid" };
+            var layoutRecord = new LayoutRecord {Category = "Html", Type = "ngGrid"};
             queryPart.Record.Layouts.Add(layoutRecord);
             projectionPart.Record.LayoutRecord = layoutRecord;
 
@@ -437,8 +446,7 @@ namespace Coevery.Relationship.Services {
         }
 
         private bool RelationshipExists(string name) {
-            var relation = _relationshipRepository.Table.FirstOrDefault(record => record.Name == name);
-            return relation != null;
+            return _relationshipRepository.Table.Any(record => record.Name == name);
         }
 
         #endregion

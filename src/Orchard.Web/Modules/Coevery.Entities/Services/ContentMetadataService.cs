@@ -108,9 +108,9 @@ namespace Coevery.Entities.Services {
 
         public EntityMetadataPart GetDraftEntity(string name) {
             var entity = GetEntity(name);
-            return entity == null ?
-                null :
-                Services.ContentManager.Get<EntityMetadataPart>(entity.Id, VersionOptions.DraftRequired);
+            return entity == null
+                ? null
+                : Services.ContentManager.Get<EntityMetadataPart>(entity.Id, VersionOptions.DraftRequired);
         }
 
         public string ConstructEntityName(string entityName) {
@@ -151,9 +151,7 @@ namespace Coevery.Entities.Services {
                 return "Invalid id";
             }
             foreach (var field in entity.FieldMetadataRecords) {
-                if (field.ContentFieldDefinitionRecord.Name == "OptionSetField") {
-                    _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
-                }
+                _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
             }
             var hasPublished = entity.HasPublished();
 
@@ -217,12 +215,14 @@ namespace Coevery.Entities.Services {
             settingsDictionary["DisplayName"] = viewModel.DisplayName;
             settingsDictionary["AddInLayout"] = viewModel.AddInLayout.ToString();
             settingsDictionary["EntityName"] = entity.Name;
-            _contentDefinitionEditorEvents.UpdateFieldSettings(viewModel.FieldTypeName, viewModel.Name, settingsDictionary, updateModel);
-            entity.FieldMetadataRecords.Add(new FieldMetadataRecord {
+            var field = new FieldMetadataRecord {
                 ContentFieldDefinitionRecord = FetchFieldDefinition(viewModel.FieldTypeName),
-                Name = viewModel.Name,
-                Settings = CompileSetting(settingsDictionary)
-            });
+                Name = viewModel.Name
+            };
+            entity.FieldMetadataRecords.Add(field);
+            _contentDefinitionEditorEvents.UpdateFieldSettings(viewModel.FieldTypeName, viewModel.Name, settingsDictionary, updateModel);
+            field.Settings = CompileSetting(settingsDictionary);
+            field.EntityMetadataRecord = entity.Record;
         }
 
         public void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel) {
@@ -241,9 +241,8 @@ namespace Coevery.Entities.Services {
             if (field == null) {
                 return false;
             }
-            if (field.ContentFieldDefinitionRecord.Name == "OptionSetField") {
-                _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
-            }
+
+            _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
             entity.FieldMetadataRecords.Remove(field);
             return true;
         }

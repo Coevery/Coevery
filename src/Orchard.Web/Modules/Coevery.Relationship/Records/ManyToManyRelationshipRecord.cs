@@ -1,7 +1,7 @@
 ﻿using Orchard.Projections.Models;
 
 namespace Coevery.Relationship.Records {
-    public class ManyToManyRelationshipRecord {
+    public class ManyToManyRelationshipRecord : IRelationshipRecord {
         public virtual int Id { get; set; }
         public virtual RelationshipRecord Relationship { get; set; }
         public virtual ProjectionPartRecord RelatedListProjection { get; set; }

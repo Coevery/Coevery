@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Coevery.Core.Services;
-using Coevery.Entities.Events;
-using Coevery.Entities.Services;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -15,26 +12,14 @@ namespace Coevery.Relationship.Controllers {
     public class RelationshipController : ApiController {
         private readonly IRelationshipService _relationshipService;
         private readonly IRepository<RelationshipRecord> _relationshipRepository;
-        private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRelationshipRepository;
-        private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly IFieldEvents _fieldEvents;
-        private readonly ISchemaUpdateService _schemaUpdateService;
 
         public Localizer T { get; set; }
 
         public RelationshipController(
             IRelationshipService relationshipService,
-            IRepository<RelationshipRecord> relationshipRepository,
-            IRepository<OneToManyRelationshipRecord> oneToManyRelationshipRepository,
-            IContentDefinitionService contentDefinitionService,
-            IFieldEvents fieldEvents,
-            ISchemaUpdateService schemaUpdateService) {
+            IRepository<RelationshipRecord> relationshipRepository) {
             _relationshipService = relationshipService;
             _relationshipRepository = relationshipRepository;
-            _oneToManyRelationshipRepository = oneToManyRelationshipRepository;
-            _contentDefinitionService = contentDefinitionService;
-            _fieldEvents = fieldEvents;
-            _schemaUpdateService = schemaUpdateService;
             T = NullLocalizer.Instance;
         }
 
@@ -52,16 +37,16 @@ namespace Coevery.Relationship.Controllers {
                 };
             }
             var query = from record in temp
-                        select new {
-                            ContentId = record.Id,
-                            Name = record.Name,
-                            PrimaryEntity = record.PrimaryEntity.Name,
-                            RelatedEntity = record.RelatedEntity.Name,
-                            Type = ((RelationshipType) record.Type).ToString()
-                        };
+                select new {
+                    ContentId = record.Id,
+                    Name = record.Name,
+                    PrimaryEntity = record.PrimaryEntity.Name,
+                    RelatedEntity = record.RelatedEntity.Name,
+                    Type = ((RelationshipType) record.Type).ToString()
+                };
             var totalRecords = query.Count();
             return new {
-                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                total = Convert.ToInt32(Math.Ceiling((double) totalRecords / rows)),
                 page = page,
                 records = totalRecords,
                 rows = query
@@ -74,16 +59,7 @@ namespace Coevery.Relationship.Controllers {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid relationship.");
             }
 
-            if (relationship.Type == (byte)RelationshipType.OneToMany) {
-                var record = _oneToManyRelationshipRepository.Get(x => x.Relationship == relationship);
-                string entityName = relationship.RelatedEntity.Name;
-                string fieldName = record.LookupField.Name;
-                _fieldEvents.OnDeleting(entityName, fieldName);
-                _contentDefinitionService.RemoveFieldFromPart(fieldName, entityName);
-                _schemaUpdateService.DropColumn(entityName, fieldName);
-            } else if (relationship.Type == (byte)RelationshipType.ManyToMany) {
-                _relationshipService.DeleteRelationship(relationship);
-            }
+            _relationshipService.DeleteRelationship(relationship);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
