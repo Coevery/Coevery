@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -9,8 +9,8 @@ using System.Security;
 [assembly: AssemblyTitle("Coevery.CRM.Convertor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Orchard")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyProduct("Coevery")]
+[assembly: AssemblyCopyright("Copyright © Nova Software 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
