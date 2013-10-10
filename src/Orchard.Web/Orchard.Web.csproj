@@ -14,12 +14,6 @@
     <AssemblyName>Orchard.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>4.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkProfile />
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -35,8 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\OrchardBasicCorrectness.ruleset</CodeAnalysisRuleSet>
-    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
     <PackageAsSingleFile>false</PackageAsSingleFile>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +41,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=2.6.3.862, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -128,12 +125,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Content Include="Config\log4net.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Config\HostComponents.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,7 +145,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Tools\Orchard\Orchard.csproj">
       <Project>{33B1BC8D-E292-4972-A363-22056B207156}</Project>
-      <Name>Orchard %28Tools\Orchard%29</Name>
+      <Name>Orchard</Name>
     </ProjectReference>
     <ProjectReference Include="Core\Orchard.Core.csproj">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
@@ -165,7 +156,12 @@
     <Content Include="Config\Host.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -174,81 +170,49 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target> -->
-  <PropertyGroup>
-    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
-      CustomCollectFiles;
-      $(CopyAllFilesToSingleFolderForMsdeployDependsOn);
-		</CopyAllFilesToSingleFolderForMsdeployDependsOn>
-  </PropertyGroup>
-  <Target Name="CustomCollectFiles">
-    <ItemGroup>
-      <Orchard-Web-Bins Include="bin\*" />
-      <SqlCeBinariesx86 Include="..\..\lib\sqlce\x86\**\*" />
-      <SqlCeBinariesx64 Include="..\..\lib\sqlce\amd64\**\*" />
-      <_CustomFiles Include="Media\**\*;App_Data\**\*;Modules\**\*;Themes\**\*;Core\**\*;Config\**\*" Exclude="**\obj\**;**\bin\*.xml;**\*.cs;**\*.csproj;Modules\**\Tests\**;App_Data\**\mappings.bin;App_Data\**\cache.dat;App_Data\**\hrestart.txt;**\.hgignore;**\.hgtags;**\.hg\**;@(Orchard-Web-Bins -> '**\%(Filename)%(Extension)');**\*.csproj.user;App_Data\Dependencies\*;App_Data\RecipeQueue\*;App_Data\Logs\*" />
-      <FilesForPackagingFromProject Include="%(_CustomFiles.Identity)">
-        <DestinationRelativePath>%(RelativeDir)%(Filename)%(Extension)</DestinationRelativePath>
-      </FilesForPackagingFromProject>
-      <_SqlCeBinariesx86Files Include="@(SqlCeBinariesx86);" />
-      <FilesForPackagingFromProject Include="%(_SqlCeBinariesx86Files.Identity)">
-        <DestinationRelativePath>bin\x86\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
-      </FilesForPackagingFromProject>
-      <_SqlCeBinariesx64Files Include="@(SqlCeBinariesx64);" />
-      <FilesForPackagingFromProject Include="%(_SqlCeBinariesx64Files.Identity)">
-        <DestinationRelativePath>bin\amd64\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
-      </FilesForPackagingFromProject>
-    </ItemGroup>
-  </Target>
-  <Target Name="CopySqlCeBinaries">
-    <ItemGroup>
-      <SqlCeBinariesx86 Include="$(ProjectDir)..\..\lib\sqlce\x86\**\*" />
-      <SqlCeBinariesx64 Include="$(ProjectDir)..\..\lib\sqlce\amd64\**\*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(SqlCeBinariesx86)" DestinationFolder="$(OutputPath)\x86\%(RecursiveDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(SqlCeBinariesx86)" DestinationFolder="$(OutputPath)\x86\%(RecursiveDir)" SkipUnchangedFiles="true" />
-  </Target>
-  <Import Project="$(ProjectDir)..\..\lib\msbuild\MSBuild.Community.Tasks.Targets" />
-  <UsingTask AssemblyFile="$(ProjectDir)\..\Tools\MSBuild.Orchard.Tasks\bin\Release\MSBuild.Orchard.Tasks.dll" TaskName="MSBuild.Orchard.Tasks.XmlDelete" />
-  <Target Name="ProcessConfigurationFiles" AfterTargets="CopyAllFilesToSingleFolderForMsdeploy">
-    <PropertyGroup>
-      <PackageTmp>$(ProjectDir)obj\Release\Package\PackageTmp</PackageTmp>
-    </PropertyGroup>
-    <!-- extra processing of the staged config files -->
-    <XmlUpdate XmlFileName="$(PackageTmp)\web.config" XPath="/configuration/system.web/compilation/@debug" Value="false" />
-    <XmlDelete XmlFileName="$(PackageTmp)\web.config" XPath="/configuration/system.web/trust" />
-    <XmlUpdate XmlFileName="$(PackageTmp)\web.config" XPath="/configuration/system.web/machineKey/@validationKey" Value="AutoGenerate" />
-    <XmlUpdate XmlFileName="$(PackageTmp)\web.config" XPath="/configuration/system.web/machineKey/@decryptionKey" Value="AutoGenerate" />
-    <XmlUpdate XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/appender/immediateFlush/@value" Value="false" />
-    <XmlUpdate XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/logger/priority/@value" Value="ERROR" />
-    <XmlUpdate XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/root/priority/@value" Value="ERROR" />
-    <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/appender[@name='debug-file']" />
-    <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/appender[@name='debugger']" />
-    <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/appender[@name='error-file']/filter" />
-    <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/logger[@name='Orchard.Localization']" />
-    <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/logger[@name='Orchard']" />
-    <XmlDelete XmlFileName="$(PackageTmp)\Config\log4net.config" XPath="/log4net/root/appender-ref[@ref='debug-file']" />
-    <!-- disable all file monitoring but ExtensionMonitoringCorrdinator to detect new modules/themes -->
-    <XmlUpdate XmlFileName="$(PackageTmp)\Config\HostComponents.config" XPath="/HostComponents/Components/Component/Properties/Property[@Name='DisableMonitoring']/@Value" Value="true" />
-  </Target>
-  <Target Name="AfterBuild" DependsOnTargets="AfterBuildCompiler">
-    <PropertyGroup>
-      <AreasManifestDir>$(ProjectDir)\..\Manifests</AreasManifestDir>
-    </PropertyGroup>
-    <CallTarget Targets="CopySqlCeBinaries" />
-    <!-- If this is an area child project, uncomment the following line:
-    <CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Child" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
-    -->
-    <!-- If this is an area parent project, uncomment the following lines:
-    <CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Parent" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
-    <CopyAreaManifests ManifestPath="$(AreasManifestDir)" CrossCopy="false" RenameViews="true" />
-    -->
-  </Target>
-  <Target Name="AfterBuildCompiler" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)\..\$(ProjectName)" />
+  <ItemGroup>
+    <WebConfigsToTransform Include="Config\log4net.config">
+      <DestinationRelativePath>Config\log4net.config</DestinationRelativePath>
+      <Exclude>False</Exclude>
+      <TransformFileFolder>$(TransformWebConfigIntermediateLocation)\original</TransformFileFolder>
+      <TransformFile>Config\log4net.$(Configuration).config</TransformFile>
+      <TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+      <TransformOriginalFile>$(TransformWebConfigIntermediateLocation)\original\%(DestinationRelativePath)</TransformOriginalFile>
+      <TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
+      <TransformScope>$(_PackageTempDir)\%(DestinationRelativePath)</TransformScope>
+      <SubType>Designer</SubType>
+    </WebConfigsToTransform>
+    <None Include="Config\log4net.Debug.config">
+      <DependentUpon>log4net.config</DependentUpon>
+    </None>
+    <None Include="Config\log4net.Release.config">
+      <DependentUpon>log4net.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WebConfigsToTransform Include="Config\HostComponents.config">
+      <DestinationRelativePath>Config\HostComponents.config</DestinationRelativePath>
+      <Exclude>False</Exclude>
+      <TransformFileFolder>$(TransformWebConfigIntermediateLocation)\original</TransformFileFolder>
+      <TransformFile>Config\HostComponents.$(Configuration).config</TransformFile>
+      <TransformOriginalFolder>$(TransformWebConfigIntermediateLocation)\original</TransformOriginalFolder>
+      <TransformOriginalFile>$(TransformWebConfigIntermediateLocation)\original\%(DestinationRelativePath)</TransformOriginalFile>
+      <TransformOutputFile>$(TransformWebConfigIntermediateLocation)\transformed\%(DestinationRelativePath)</TransformOutputFile>
+      <TransformScope>$(_PackageTempDir)\%(DestinationRelativePath)</TransformScope>
+      <SubType>Designer</SubType>
+    </WebConfigsToTransform>
+    <None Include="Config\HostComponents.Debug.config">
+      <DependentUpon>HostComponents.config</DependentUpon>
+    </None>
+    <None Include="Config\HostComponents.Release.config">
+      <DependentUpon>HostComponents.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>
@@ -256,9 +220,9 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>30320</DevelopmentServerPort>
+          <DevelopmentServerPort>30321</DevelopmentServerPort>
           <DevelopmentServerVPath>/OrchardLocal</DevelopmentServerVPath>
-          <IISUrl>http://localhost:30320/OrchardLocal</IISUrl>
+          <IISUrl>http://localhost:30321/OrchardLocal</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -268,4 +232,45 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+		 Other similar extension points exist, see Microsoft.Common.targets.
+	<Target Name="BeforeBuild">
+	</Target> -->
+  <Target Name="ExcludeRootBinariesDeployment">
+    <ItemGroup>
+      <RootBinFiles Include="bin\*">
+        <InProject>false</InProject>
+      </RootBinFiles>
+    </ItemGroup>
+    <PropertyGroup>
+      <ExcludeFilesFromDeployment>@(RootBinFiles->'Modules\**\bin\%(Filename)%(Extension)');@(RootBinFiles->'Themes\**\%(Filename)%(Extension)');@(RootBinFiles->'Core\**\bin\%(Filename)%(Extension)');**\*.Debug.config;**\*.Release.config;**\obj\**;**\bin\*.xml;**\*.cs;**\*.csproj;Modules\**\Tests\**;Modules\**\Specs\**;Themes\bin\**;**\.hgignore;**\.hgtags;**\.hg\**;**\*.csproj.user;Properties\**\*;App_Data\Dependencies\*;App_Data\RecipeQueue\*;App_Data\Logs\*;App_Data\**\mappings.bin;App_Data\**\cache.dat;App_Data\**\hrestart.txt</ExcludeFilesFromDeployment>
+    </PropertyGroup>
+  </Target>
+  <Target Name="ExcludeRootBinariesPackage" DependsOnTargets="ExcludeRootBinariesDeployment" BeforeTargets="ExcludeFilesFromPackage">
+    <ItemGroup>
+      <ExcludeFromPackageFiles Include="$(ExcludeFilesFromDeployment)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="CopySqlCeBinaries">
+    <ItemGroup>
+      <SqlCeBinariesx86 Include="$(ProjectDir)..\..\lib\sqlce\x86\**\*" />
+      <SqlCeBinariesx64 Include="$(ProjectDir)..\..\lib\sqlce\amd64\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SqlCeBinariesx86)" DestinationFolder="$(OutputPath)\x86\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(SqlCeBinariesx64)" DestinationFolder="$(OutputPath)\amd64\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="AfterBuild" DependsOnTargets="MvcBuildViews">
+    <PropertyGroup>
+      <AreasManifestDir>$(ProjectDir)\..\Manifests</AreasManifestDir>
+    </PropertyGroup>
+    <CallTarget Targets="ExcludeRootBinariesDeployment" />
+    <CallTarget Targets="CopySqlCeBinaries" />
+    <!-- If this is an area child project, uncomment the following line:
+		<CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Child" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
+		-->
+    <!-- If this is an area parent project, uncomment the following lines:
+		<CreateAreaManifest AreaName="$(AssemblyName)" AreaType="Parent" AreaPath="$(ProjectDir)" ManifestPath="$(AreasManifestDir)" ContentFiles="@(Content)" />
+		<CopyAreaManifests ManifestPath="$(AreasManifestDir)" CrossCopy="false" RenameViews="true" />
+		-->
+  </Target>
 </Project>

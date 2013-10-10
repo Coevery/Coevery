@@ -1,0 +1,25 @@
+﻿<div id="nav-selector">
+    <div class="dropdown">
+        <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+            <span data-label-placement title="{{currentMenu.Text.Text}}">{{currentMenu.Text.Text}}</span><b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
+            <li data-ng-repeat="menu in menus" data-ng-class="{active: $uiRoute}" data-ui-route="{{menu.Href}}/?.*">
+                <a href="{{menu.Href}}" title="{{menu.Text.Text}}">
+                    <label><strong>{{menu.Text.Text}}</strong></label>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<nav id="navigation">
+    <ul class="collapse in">
+        <li  data-ng-repeat="menu in currentMenu.Items" data-ng-class="{active: $uiRoute}" data-ui-route="{{menu.Href}}/?.*">
+            <a href="{{menu.Href}}" title="{{menu.Text.Text}}">
+                <i class="{{menu.class}} vertical-middle"></i>
+                <span class="nav-title vertical-middle">{{menu.Text.Text}}</span>
+            </a>
+        </li>
+    </ul>
+</nav>

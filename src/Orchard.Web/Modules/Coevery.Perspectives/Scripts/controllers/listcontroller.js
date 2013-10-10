@@ -2,46 +2,32 @@
 define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services/perspectivedataservice'], function (detour) {
     detour.registerController([
       'PerspectiveListCtrl',
-      ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams', 'perspectiveDataService',
-      function ($rootScope, $scope, logger, $detour, $resource, $stateParams, perspectiveDataService) {
-          var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-              '<ul class="row-actions pull-right hide">' +
-              '<li class="icon-edit" ng-click="edit(row.entity.Id)" title="Edit"></li>' +
-              '<li class="icon-remove" ng-click="delete(row.entity.Id)" title="Delete"></li>' +
-              '</ul>' +
-              '<span class="btn-link" ng-click="view(row.entity.Id)">{{COL_FIELD}}</span>' +
-              '</div>';
-          $scope.mySelections = [];
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'perspectiveDataService',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, perspectiveDataService) {
+
           var t = function (str) {
               var result = i18n.t(str);
               return result;
           };
 
           var perspectiveColumnDefs = [
-              { field: 'DisplayName', displayName: t('DisplayName'), cellTemplate: cellTemplateString }];
+              { name: 'Id', label: t('Id'), hidden: true },
+              {
+                  name: 'DisplayName', label: t('DisplayName'), 
+                  formatter: $rootScope.cellLinkTemplate,
+                  formatoptions: { hasView: true }
+              }];
 
           $scope.gridOptions = {
-              data: 'myData',
-              multiSelect: true,
-              enableRowSelection: true,
-              showSelectionCheckbox: true,
-              selectedItems: $scope.mySelections,
-              columnDefs: perspectiveColumnDefs,
+              url: "api/perspectives/Perspective",
+              colModel: perspectiveColumnDefs
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
           $scope.delete = function (id) {
-              $scope.perspectiveId = id;
-              $('#myModalPerspective').modal({
-                  backdrop: 'static',
-                  keyboard: true
-              });
-          };
-
-          $scope.deletePerspective = function () {
-              $('#myModalPerspective').modal('hide');
-              perspectiveDataService.delete({ id: $scope.perspectiveId }, function () {
+              //$scope.perspectiveId = id;
+              perspectiveDataService.delete({ id: id }, function () {
                   $scope.getAllPerspective();
                   logger.success('Delete the perspective successful.');
               }, function (result) {
@@ -50,25 +36,22 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           };
 
           $scope.addPerspective = function () {
-              $detour.transitionTo('PerspectiveCreate', { Module: 'Perspectives' });
+              $state.transitionTo('PerspectiveCreate', { Module: 'Perspectives' });
           };
 
           $scope.edit = function (id) {
-              $detour.transitionTo('PerspectiveEdit', { Id: id });
+              $state.transitionTo('PerspectiveEdit', { Id: id });
           };
 
           $scope.view = function (id) {
-              $detour.transitionTo('PerspectiveDetail', { Id: id });
+              $state.transitionTo('PerspectiveDetail', { Id: id });
           };
 
           $scope.getAllPerspective = function () {
-              var perspectives = perspectiveDataService.query(function () {
-                  $scope.myData = perspectives;
-              }, function () {
-                  logger.error("Failed to fetched Metadata.");
-              });
+              $("#perspectiveList").jqGrid('setGridParam', {
+                  datatype: "json"
+              }).trigger('reloadGrid');
           };
-          $scope.getAllPerspective();
       }]
     ]);
 });

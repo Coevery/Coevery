@@ -3,78 +3,73 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'RelationshipsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams',
-            function ($rootScope, $scope, logger, $detour, $resource, $stateParams) {
+        ['$rootScope', '$scope', 'logger', '$state', '$q', '$resource', '$stateParams',
+            function ($rootScope, $scope, logger, $state, $q, $resource, $stateParams) {
                 var relationshipDataService = $resource('api/relationship/Relationship');
+                var defer = $q.defer();
+                $scope.$watch("selectedRow", function(newValue) {
+                    if (newValue) {
+                        defer.resolve();
+                    }
+                });
 
-                var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
-                    '<ul class="row-actions pull-right hide">' +
-                    '<li class="icon-edit" ng-click="edit(row.entity.ContentId, row.entity.Type)" title="Edit"></li>' +
-                    '<li class="icon-remove" ng-click="delete(row.entity.ContentId)" title="Delete"></li>' +
-                    '</ul>' +
-                    '<span class="btn-link" ng-click="edit(row.entity.ContentId, row.entity.Type)">{{COL_FIELD}}</span>' +
-                    '</div>';
-
+                $scope.idAttr = 'ContentId';
                 var relationshipColumnDefs = [
-                    { field: 'Name', displayName: 'Relationship Name', cellTemplate: cellTemplateString },
-                    { field: 'PrimaryEntity', displayName: 'Primary Entity' },
-                    { field: 'RelatedEntity', displayName: 'Related Entity' },
-                    { field: 'Type', displayName: 'Type' }
+                    { name: 'ContentId', label: 'Content Id', hidden: true },
+                    {
+                        name: 'Name', label: 'Relationship Name',
+                        formatter: $rootScope.cellLinkTemplate,
+                        formatoptions: { editRow: true }
+                    },
+                    { name: 'PrimaryEntity', label: 'Primary Entity' },
+                    { name: 'RelatedEntity', label: 'Related Entity' },
+                    { name: 'Type', label: 'Type' }
                 ];
 
-                $scope.selectedItems = [];
-                $scope.relationshipGridOptions = {
-                    data: 'relationships',
-                    selectedItems: $scope.selectedItems,
-                    columnDefs: relationshipColumnDefs,
-                    multiSelect: true,
-                    enableRowSelection: true,
-                    showSelectionCheckbox: true,
+                $scope.gridOptions = {
+                    url: "api/relationship/Relationship?entityName=" + $stateParams.Id,
+                    colModel: relationshipColumnDefs
                 };
 
-                angular.extend($scope.relationshipGridOptions, $rootScope.defaultGridOptions);
+                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+                
                 $scope.getAllRelationship = function () {
-                    var items = relationshipDataService.query({ EntityName: $stateParams.Id }, function () {
-                        if (items == null || items.toLowerCase == "null") {
-                            return;
-                        }
-                        $scope.totalServerItems = items.length;
-                        $scope.relationships = items;
-                    }, function () {
-                        logger.error('Get relationships failed');
-                    });
+                    $("#relationList").jqGrid('setGridParam', {
+                        datatype: "json"
+                    }).trigger('reloadGrid');
                 };
 
                 $scope.createOneToMany = function () {
-                    $detour.transitionTo('CreateOneToMany', { EntityName: $stateParams.Id });
+                    $state.transitionTo('CreateOneToMany', { EntityName: $stateParams.Id });
                 };
                 $scope.createManyToMany = function () {
-                    $detour.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
+                    $state.transitionTo('CreateManyToMany', { EntityName: $stateParams.Id });
                 };
-                $scope.edit = function (contentId, type) {
-                    if (type == "OneToMany") {
-                        $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: contentId });
-                    } else if(type == "ManyToMany") {
-                        $detour.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: contentId });
-                    }
-                };
-                $scope.delete = function (contentId) {
-                    $scope.relationshipId = contentId;
-                    $('#myModalRelationship').modal({
-                        backdrop: 'static',
-                        keyboard: true
+                $scope.edit = function () {
+                    defer.promise.then(function () {
+                        var params = $scope.selectedRow[0];
+                        if (!params) {
+                            logger.error("No relation selected!");
+                        }
+                        if (params.Type == "OneToMany") {
+                            $state.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
+                        } else if (params.Type == "ManyToMany") {
+                            $state.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
+                        }
                     });
                 };
-
-                $scope.deleteRelationship = function () {
-                    $('#myModalRelationship').modal('hide');
-                    relationshipDataService.delete({ RelationshipId: $scope.relationshipId }, function () {
+                $scope.delete = function (contentId) {
+                    var deleteRelationship = contentId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                    if (!deleteRelationship) return;
+                    
+                    relationshipDataService.delete({ RelationshipId: deleteRelationship }, function () {
                         $scope.getAllRelationship();
                         logger.success("Delete the relationship successful.");
                     }, function (reason) {
                         logger.error("Failed to delete the relationship:" + reason);
                     });
                 };
+                $scope.refreshTab();
             }]
     ]);
 });

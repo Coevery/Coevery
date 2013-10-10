@@ -9,10 +9,8 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
        'columnDefinitionService',
        ['$rootScope', '$resource', function ($rootScope, $resource) {
-           return $resource('api/CoeveryCore/ColumnDefinition/:contentType:contentId:ViewId',
+           return $resource('api/Projections/Property/:contentType',
                { contentType: '@contentType' },
-               { contentId: '@ContentId' },
-               { viewId: '@ViewId' },
                { update: { method: 'PUT' } });
        }]
     ]);

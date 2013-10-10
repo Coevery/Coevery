@@ -2,10 +2,10 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FormDesignerCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams','$http',
-            function ($scope, logger, $detour, $stateParams, $http) {
+        ['$scope', 'logger', '$state', '$stateParams','$http',
+            function ($scope, logger, $state, $stateParams, $http) {
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Fields', { Id: $stateParams.EntityName });
+                    $state.transitionTo('EntityDetail.Fields', { Id: $stateParams.EntityName });
                 };
 
                 $scope.save = function() {

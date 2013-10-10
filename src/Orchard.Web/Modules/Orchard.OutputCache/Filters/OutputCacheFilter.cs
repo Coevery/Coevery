@@ -9,7 +9,6 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Orchard.Core.Feeds.Rss;
 using Orchard.OutputCache.Models;
 using Orchard.OutputCache.Services;
 using Orchard.Caching;
@@ -35,6 +34,7 @@ namespace Orchard.OutputCache.Filters {
         private readonly ICacheService _cacheService;
         private readonly ISignals _signals;
         private readonly ShellSettings _shellSettings;
+        private static readonly string[] AuthorizedContentTypes = new [] { "text/html", "text/xml", "text/json" };
 
         private const string RefreshKey = "__r";
 
@@ -73,6 +73,7 @@ namespace Orchard.OutputCache.Filters {
         private string _actionName;
         private DateTime _now;
         private string[] _varyQueryStringParameters;
+        private ISet<string> _varyRequestHeaders;
 
 
         private WorkContext _workContext;
@@ -87,7 +88,9 @@ namespace Orchard.OutputCache.Filters {
             _actionName = filterContext.ActionDescriptor.ActionName;
 
             // apply OutputCacheAttribute logic if defined
-            var outputCacheAttribute = filterContext.ActionDescriptor.GetCustomAttributes(typeof(OutputCacheAttribute), true).Cast<OutputCacheAttribute>().FirstOrDefault();
+            var actionAttributes = filterContext.ActionDescriptor.GetCustomAttributes(typeof(OutputCacheAttribute), true);
+            var controllerAttributes = filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(typeof(OutputCacheAttribute), true);
+            var outputCacheAttribute = actionAttributes.Concat(controllerAttributes).Cast<OutputCacheAttribute>().FirstOrDefault();
 
             if (outputCacheAttribute != null) {
                 if (outputCacheAttribute.Duration <= 0 || outputCacheAttribute.NoStore) {
@@ -157,6 +160,27 @@ namespace Orchard.OutputCache.Filters {
                 }
             );
 
+            var varyRequestHeadersFromSettings = _cacheManager.Get("CacheSettingsPart.VaryRequestHeaders",
+                context => {
+                    context.Monitor(_signals.When(CacheSettingsPart.CacheKey));
+                    var varyRequestHeaders = _workContext.CurrentSite.As<CacheSettingsPart>().VaryRequestHeaders;
+
+                    return string.IsNullOrWhiteSpace(varyRequestHeaders) ? null
+                        : varyRequestHeaders.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+                }
+            );
+
+            _varyRequestHeaders = (varyRequestHeadersFromSettings == null) ? new HashSet<string>() : new HashSet<string>(varyRequestHeadersFromSettings);
+
+            // different tenants with the same urls have different entries
+            _varyRequestHeaders.Add("HOST");
+
+            // Set the Vary: Accept-Encoding response header. 
+            // This instructs the proxies to cache two versions of the resource: one compressed, and one uncompressed. 
+            // The correct version of the resource is delivered based on the client request header. 
+            // This is a good choice for applications that are singly homed and depend on public proxies for user locality.
+            _varyRequestHeaders.Add("Accept-Encoding");
+
             // caches the ignored urls to prevent a query to the settings
             _ignoredUrls = _cacheManager.Get("CacheSettingsPart.IgnoredUrls",
                 context => {
@@ -187,12 +211,19 @@ namespace Orchard.OutputCache.Filters {
             }
 
             var queryString = filterContext.RequestContext.HttpContext.Request.QueryString;
+            var requestHeaders = filterContext.RequestContext.HttpContext.Request.Headers;
             var parameters = new Dictionary<string, object>(filterContext.ActionParameters);
 
             foreach (var key in queryString.AllKeys) {
                 if (key == null) continue;
 
                 parameters[key] = queryString[key];
+            }
+
+            foreach (var varyByRequestHeader in _varyRequestHeaders) {
+                if (requestHeaders.AllKeys.Contains(varyByRequestHeader)) {
+                    parameters["HEADER:" + varyByRequestHeader] = requestHeaders[varyByRequestHeader];
+                }
             }
 
             // compute the cache key
@@ -256,7 +287,7 @@ namespace Orchard.OutputCache.Filters {
         public void OnActionExecuted(ActionExecutedContext filterContext) {
 
             // only cache view results, but don't return already as we still need to process redirections
-            if (!(filterContext.Result is ViewResultBase) && !(filterContext.Result is RssResult)) {
+            if (!(filterContext.Result is ViewResultBase) && !( AuthorizedContentTypes.Contains(filterContext.HttpContext.Response.ContentType))) {
                 _filter = null;
             }
 
@@ -422,8 +453,10 @@ namespace Orchard.OutputCache.Filters {
 
             // an ETag is a string that uniquely identifies a specific version of a component.
             // we use the cache item to detect if it's a new one
-            if (response.Headers.Get("ETag") == null) {
-                response.Cache.SetETag(cacheItem.GetHashCode().ToString(CultureInfo.InvariantCulture));
+            if (HttpRuntime.UsingIntegratedPipeline) {
+                if (response.Headers.Get("ETag") == null) {
+                    response.Cache.SetETag(cacheItem.GetHashCode().ToString(CultureInfo.InvariantCulture));
+                }
             }
 
             response.Cache.SetOmitVaryStar(true);
@@ -434,14 +467,9 @@ namespace Orchard.OutputCache.Filters {
                 }
             }
 
-            // different tenants with the same urls have different entries
-            response.Cache.VaryByHeaders["HOST"] = true;
-
-            // Set the Vary: Accept-Encoding response header. 
-            // This instructs the proxies to cache two versions of the resource: one compressed, and one uncompressed. 
-            // The correct version of the resource is delivered based on the client request header. 
-            // This is a good choice for applications that are singly homed and depend on public proxies for user locality.
-            response.Cache.VaryByHeaders["Accept-Encoding"] = true;
+            foreach (var varyRequestHeader in _varyRequestHeaders) {
+                response.Cache.VaryByHeaders[varyRequestHeader] = true;
+            }
 
             // create a unique cache per browser, in case a Theme is rendered differently (e.g., mobile)
             // c.f. http://msdn.microsoft.com/en-us/library/aa478965.aspx

@@ -9,9 +9,9 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Entities";
                 })
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/Entities/List'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"List'";
                     view.Controller = "EntityListCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/listcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, "controllers/listcontroller");
                 });
 
             builder.Describe("EntityCreate")
@@ -19,9 +19,9 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Entities/Create";
                 })
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/Entities/Create'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"Create'";
                     view.Controller = "EntityEditCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/editcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, "controllers/editcontroller");
                 });
 
             builder.Describe("EntityEdit")
@@ -30,11 +30,11 @@ namespace Coevery.Entities.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Entities/Edit/' + $stateParams.Id; 
+                                                var url = '" + ModuleBasePath + @"Edit/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EntityEditCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/editcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/editcontroller" });
                 });
 
             builder.Describe("EntityDetail")
@@ -44,18 +44,18 @@ namespace Coevery.Entities.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Entities/Detail/' + $stateParams.Id; 
+                                                var url = '" + ModuleBasePath + @"Detail/' + $stateParams.Id; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EntityDetailCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/detailcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/detailcontroller" });
                 });
 
             builder.Describe("EntityDetail.Fields")
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/Entities/Fields'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"Fields'";
                     view.Controller = "FieldsCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/fieldscontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/fieldscontroller" });
                 });
 
             #region Operate fields
@@ -65,9 +65,9 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Create";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/CreateChooseType/' + params.Id; }";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateChooseType/' + params.Id; }";
                     view.Controller = "FieldCreateChooseTypeCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/createchoosetypecontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/createchoosetypecontroller" });
                 });
 
             builder.Describe("EntityDetail.Fields.CreateEditInfo")
@@ -75,9 +75,9 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Create/{FieldTypeName:[0-9a-zA-Z]+}";
                     })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/CreateEditInfo/' + params.Id + '?FieldTypeName=' + params.FieldTypeName; }";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateEditInfo/' + params.Id + '?FieldTypeName=' + params.FieldTypeName; }";
                     view.Controller = "FieldCreateEditInfoCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/createeditinfocontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/createeditinfocontroller" });
                 });
 
             builder.Describe("FieldEdit")
@@ -86,11 +86,11 @@ namespace Coevery.Entities.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Entities/EditFields/' + $stateParams.EntityName + '?FieldName=' + $stateParams.FieldName;
+                                                var url = '" + ModuleBasePath + @"EditFields/' + $stateParams.EntityName + '?FieldName=' + $stateParams.FieldName;
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "FieldEditCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/editfieldscontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/editfieldscontroller" });
                 });
 
             builder.Describe("FieldDependencyList")
@@ -98,9 +98,9 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/DependencyList/' + params.EntityName; }";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"DependencyList/' + params.EntityName; }";
                     view.Controller = "FieldDependencyListCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/dependencylistcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/dependencylistcontroller" });
                 });
 
             builder.Describe("FieldDependencyCreate")
@@ -108,9 +108,9 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/Create";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/CreateDependency/' + params.EntityName; }";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateDependency/' + params.EntityName; }";
                     view.Controller = "FieldDependencyCreateCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/dependencycreatecontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/dependencycreatecontroller" });
                 });
 
             builder.Describe("FieldDependencyEdit")
@@ -118,9 +118,9 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Fields/{EntityName:[0-9a-zA-Z]+}/Dependencies/{DependencyID:[0-9]+}";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return 'SystemAdmin/Entities/EditDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"EditDependency/' + params.EntityName + '?DependencyID=' + params.DependencyID; }";
                     view.Controller = "FieldDependencyEditCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/dependencyeditcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/dependencyeditcontroller" });
                 });
 
             #endregion

@@ -23,7 +23,14 @@ namespace Coevery.Core.ClientRoute {
             Configure(descriptor => {
                 var viewDescriptor = new ClientViewDescriptor();
                 action(viewDescriptor);
-                descriptor.Views.Add(viewDescriptor);
+                var existedView = descriptor.Views.FirstOrDefault(
+                    view => string.Equals(view.Name,viewDescriptor.Name,StringComparison.OrdinalIgnoreCase));
+                if (existedView == null) {
+                    descriptor.Views.Add(viewDescriptor);
+                }
+                else {
+                    action(existedView);
+                }
             });
             return this;
         }

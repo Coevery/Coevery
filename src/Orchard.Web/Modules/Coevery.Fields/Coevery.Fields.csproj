@@ -74,6 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldDependencyController.cs" />
+    <Compile Include="Projections\NumericTypeStateProvider.cs" />
+    <Compile Include="Projections\DefaultFieldStateProvider.cs" />
+    <Compile Include="Projections\DatetimeTypeStateProvider.cs" />
+    <Compile Include="Projections\DatetimeTypeValueProvider.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="Services\DependencyExtension.cs" />
     <Compile Include="Services\IFieldDependencyService.cs" />
@@ -250,6 +254,33 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\DatetimeFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Boolean.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\CoeveryText.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Currency.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Date.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Datetime.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Email.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Number.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Phone.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Url.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

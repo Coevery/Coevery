@@ -1,18 +1,25 @@
-﻿@model Coevery.Entities.ViewModels.EditTypeViewModel
+﻿@model Coevery.Entities.ViewModels.EntityDetailViewModel
 <header id="page-title">
     <h1 class="pull-left">Entity Detail <span>show entity detail information</span></h1>
 </header>
-<section id="main-content">
+<section id="main-content" data-ng-init="metaId='@Model.Id';isPublished='@Model.HasPublished'">
     <div id="page-actions" class="clearfix">
         <btn-actions>
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
             <button type="button" class="btn btn-small" data-ng-click="edit()">
                 <i class="icon-edit"></i>&nbsp;Edit
             </button>
-            <button type="button" class="btn btn-small" data-ng-click="delete()">
+            <button class="btn btn-small" data-ng-click="publish()">
+                Publish
+            </button>
+            <button type="button" class="btn btn-small" co-delete-button confirm-message="You really want to delete this entity?" delete-action="delete(@Model.Id)">
                 <i class="icon-remove"></i>&nbsp;Delete
             </button>
-            <button type="button" class="btn btn-small" data-ng-click="formDesigner()">Form Designer</button>
+            <button type="button" data-ng-disabled="isPublished=='False'"
+                    class="btn btn-small" data-ng-click="formDesigner()"
+                title="@Model.PublishTip">
+                Form Designer
+            </button>
         </btn-actions>
     </div>
 
@@ -35,21 +42,21 @@
                             <span class="control-text">@Model.DisplayName</span>
                         </div>
                     </div>
-                    <div class="data-row clearfix">
-                        <span class="title control-label">Setting</span>
-                        <div class="controls">
-                            <span class="control-text">@{Html.RenderTemplates(Model.Templates); }</span>
-                        </div>
-                    </div>
                 </section>
             </div>
 
             <div class="row-fluid">
                 <div class="mytabs">
                     <ul class="nav nav-tabs">
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Fields')}"><a href="#/Entities/{{$stateParams.Id}}">Fields</a></li>
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Relationships')}"><a href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a></li>
-                        <li data-ng-class="{active: $detour.includes('EntityDetail.Views')}"><a href="#/Entities/{{$stateParams.Id}}/Views">Views</a></li>
+                        <li data-ng-class="{active: showField}">
+                            <a data-ng-href="#/Entities/{{$stateParams.Id}}">Fields</a>
+                        </li>
+                        <li data-ng-class="{active: showRelation}" title="@Model.PublishTip">
+                            <a data-ng-href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a>
+                        </li>
+                        <li data-ng-class="{active: showView}" title="@Model.PublishTip">
+                            <a data-ng-href="#/Entities/{{$stateParams.Id}}/Views">Views</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="tab-content">
@@ -62,7 +69,7 @@
         </div>
     </div>
 </section>
-<data-del:Confirm del:Id="myModalEntity" confirm:msg="You really want to delete this entity?" del:Fuc="deleteEntity()"></data-del:Confirm>
+
 <script type="text/javascript">
     $(function () {
         $("#main-content").css("margin-top", $("#page-title").outerHeight(true));

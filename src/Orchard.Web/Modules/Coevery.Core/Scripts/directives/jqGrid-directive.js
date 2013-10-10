@@ -1,122 +1,145 @@
 ﻿(function () {
+    function setIdValue(element, baseValue) {
+        var alias, index = 0;
+        alias = baseValue || "gridz";
+        while ($('#' + alias).length !== 0) {
+            alias = alias + index.toString(10);
+            index++;
+        }
+        element.find("table.gridz").attr("id", alias);
+        element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
+    }
+
     var gridz;
 
     gridz = angular.module("coevery.grid", []);
 
     gridz.directive("agGrid", [
-      "logger", function (logger) {
-          var link;
-          link = function ($scope, $element, attrs, gridCtrl) {
-              var alias, initializeGrid;
-              gridCtrl.registerGridElement($element.find("table.gridz"));
-              alias = attrs.agGridName;
-              if (alias != null) {
-                  $scope[alias] = gridCtrl;
-              }
-              initializeGrid = function (gridOptions) {
-                  var $grid, editItem, showItem;
-                  if (gridOptions == null) {
-                      return null;
-                  }
-                  //logger.info("Initializing the grid");
-                  $grid = $element.find("table.gridz");
-                  gridOptions.pager = '#'+ ($element.find(".gridz-pager").attr("id") || "gridz-pager");
-                  gridOptions.gridComplete = function () {
-                      var width;
-                      width = $element.parent().width() - 1;
-                      return $grid.setGridWidth(width);
-                  };
-                  gridOptions.onSelectRow = function () {
-                      $scope.$apply(function() {
-                          $scope.selectedItems = gridCtrl.getSelectedRowIds();
-                      });
-                  };
-                  gridOptions.onSelectAll = function () {
-                      $scope.$apply(function() {
-                          $scope.selectedItems = gridCtrl.getSelectedRowIds();
-                      });
-                  };
-                  $grid.jqGrid(gridOptions);
-                  showItem = function (id) {
-                      return $scope.$apply(function () {
-                          if ($scope.showItem != null) {
-                              return $scope.showItem(id);
-                          } else {
-                              return logger.error("`$scope.showItem` is not defined");
-                          }
-                      });
-                  };
-                  editItem = function (id) {
-                      return $scope.$apply(function () {
-                          if ($scope.editItem != null) {
-                              return $scope.editItem(id);
-                          } else {
-                              return logger.error("`$scope.editItem` is not defined");
-                          }
-                      });
-                  };
-                  $grid.on("showAction", function (event, id) {
-                      event.preventDefault();
-                      return showItem(id);
-                  });
-                  $grid.on("editAction", function (event, id) {
-                      event.preventDefault();
-                      return editItem(id);
-                  });
-                  $grid.on("click", "a.editActionLink", function (event) {
-                      var id;
-                      event.preventDefault();
-                      id = $(this).parents("tr:first").attr("id");
-                      return editItem(id);
-                  });
-                  $grid.on("click.view-action", ".view-action", function (event) {
-                      var id;
-                      event.preventDefault();
-                      id = $(this).attr("data-id");
-                      return $scope.view(id);
-                  });
-                  $grid.on("click.edit-action", ".edit-action", function (event) {
-                      var id;
-                      event.preventDefault();
-                      id = $(this).attr("data-id");
-                      return $scope.edit(id);
-                  });
-                  $grid.on("click.delete-action", ".delete-action", function (event) {
-                      var id;
-                      event.preventDefault();
-                      id = $(this).attr("data-id");
-                      return $scope.delete(id);
-                  });
-                  $(window).bind('resize', function () {
-                      $grid.setGridWidth($('#page-actions').width(), false); //Resized to new width as buttons
-                  }).trigger('resize');
+        "$rootScope", "$compile", "logger", function ($rootScope, $compile, logger) {
+            var link;
+            link = function ($scope, $element, attrs, gridCtrl) {
+                var alias, initializeGrid, loadGrid;
+                gridCtrl.registerGridElement($element.find("table.gridz"));
+                alias = attrs.agGridName;
+                if (alias != null) {
+                    $scope[alias] = gridCtrl;
+                }
+                initializeGrid = function (gridOptions) {
+                    var $grid;
+                    //logger.info("Initializing the grid");
+                    $grid = $element.find("table.gridz");
+                    gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+                    gridOptions.gridComplete = function () {
+                        $compile($grid)($scope);
 
-                  return $grid.on("deleteAction", function (event, id) {
-                      event.preventDefault();
-                      return $scope.$apply(function () {
-                          return $scope.deleteItem(id);
-                      });
-                  });
-              };
+                        var width, pager;
+                        width = $element.parent().width() - 1;
+                        pager = $(gridOptions.pager + '_center');
+                        if (pager.find(".custom-pager").length === 0) {
+                            var pagerOption = {
+                                items: $grid.getGridParam("records"),
+                                itemsOnPage: $grid.getGridParam("rowNum"),
+                                currentPage: $grid.getGridParam("page"),
+                                onPageClick: function(pageNumber, event) {
+                                    if (!event) {
+                                        return;
+                                    }
+                                    event.preventDefault();
+                                    $grid.setGridParam({
+                                        page: pageNumber
+                                    });
+                                    $grid.trigger("reloadGrid");
+                                },
+                                cssStyle: 'compact-theme'
+                            };
+                            if (width < 560) {
+                                pagerOption.displayedPages = 3;
+                            }
+                            pager.append("<section class='custom-pager'></section>");
+                            pager.find("section").pagination(pagerOption);
+                        }
 
-              return $scope.$watch(attrs.agGrid, initializeGrid);
-          };
-          return {
-              restrict: "A",
-              template: "<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>",   
-              compile: function (element, attrs) {
-                  var alias;
-                  alias = attrs.agGridName || "gridz";
-                  element.find("table.gridz").attr("id", alias);
-                  element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
-                  return {
-                      post: link
-                  };
-              },
-              require: "agGrid",
-              controller: "AgGridCtrl"
-          };
-      }
+                        return $grid.setGridWidth(width);
+                    };
+
+                    gridOptions.onPaging = function (pageOption) {
+                        if (pageOption === "records") {
+                            $(gridOptions.pager).find(".custom-pager")
+                                .pagination('updateItemsOnPage', $(".ui-pg-selbox :selected").val());
+                        }
+                    };
+
+                    gridOptions.onSelectRow = function () {
+                        $scope.$apply(function () {
+                            $scope.selectedRow = null;
+                            $scope.selectedItems = gridCtrl.getSelectedRowIds();
+                            if ($scope.selectedItems.length === 1 && $scope.idAttr) {
+                                $scope.selectedRow = gridCtrl.getParam("data").filter(function (element) {
+                                    return element[$scope.idAttr].toString() === $scope.selectedItems[0];
+                                });
+                            }
+                        });
+                    };
+
+                    gridOptions.onSelectAll = function () {
+                        $scope.$apply(function () {
+                            $scope.selectedItems = gridCtrl.getSelectedRowIds();
+                        });
+                    };
+
+                    $grid.jqGrid(gridOptions);
+
+                    /*
+                    adds listener to resize grid to parent container when window is resized.
+                    This will work for reponsive and fluid layouts
+                    */
+
+                    function responsiveResize() {
+                        var gboxId = "#gbox_" + ($grid.attr("id"));
+                        return $(window).on("resize", function (event, ui) {
+                            var curWidth, parWidth, w;
+                            parWidth = $(gboxId).parent().width();
+                            curWidth = $(gboxId).width();
+                            w = parWidth - 1;
+                            if (Math.abs(w - curWidth) > 2) {
+                                $grid.setGridWidth(w);
+                            }
+                        });
+                    }
+
+                    responsiveResize();
+                };
+
+                loadGrid = function (gridOptions) {
+                    if (gridOptions == null) {
+                        return;
+                    }
+                    var $grid;
+                    $grid = $element.find("table.gridz");
+                    if (gridOptions.needReloading === true) {
+                        gridOptions.needReloading = false;
+
+                        $grid.GridDestroy($grid.attr("id"));
+                        $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
+                        setIdValue($element, attrs.agGridName);
+                    }
+                    initializeGrid(gridOptions);
+                };
+                return $scope.$watch(attrs.agGrid, loadGrid);
+            };
+            return {
+                restrict: "A",
+                template: "<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>",
+                compile: function (element, attrs) {
+                    setIdValue(element, attrs.agGridName);
+                    return {
+                        post: link
+                    };
+                },
+                require: "agGrid",
+                controller: "AgGridCtrl"
+            };
+        }
     ]);
 
     gridz.value("flatten", function (target, opts) {
@@ -151,4 +174,17 @@
         return output;
     });
 
-}).call(this);
+})();
+
+/*Abandoned Code
+            $grid.on("click.view-action", ".view-action", function(event) {
+                event.preventDefault();
+                var id;
+                id = $(this).attr("data-id");
+                $scope.$on("ViewAction", function(subevent, args) {
+                    subevent.preventDefault();
+                    $scope.view(args);
+                });
+                $rootScope.$broadcast("ViewAction", id);
+            });
+*/

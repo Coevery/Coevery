@@ -29,8 +29,6 @@ namespace Coevery.OptionSet.Drivers {
             _optionSetService = optionSetService;
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Option Set";
-            Description = "Allows users to select a value from a list you define.";
         }
 
         public Localizer T { get; set; }
@@ -154,7 +152,7 @@ namespace Coevery.OptionSet.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context
-                .Member(null, typeof(string), T("Value"), T("The option value of the field."));
+                .Member(null, typeof(string), null, T("The option value of the field."));
         }
 
     }

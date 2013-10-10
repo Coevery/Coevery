@@ -16,8 +16,6 @@ namespace Coevery.Fields.Drivers {
         public UrlFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Url";
-            Description = "Allows users to enter Url address.";
         }
 
         public Localizer T { get; set; }
@@ -71,7 +69,7 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(string), T("Value"), T("The value of the field."));
+            context.Member(null, typeof(string), null, T("The value of the field."));
         }
     }
 }

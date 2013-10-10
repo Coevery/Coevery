@@ -3,8 +3,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'FieldEditCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$http',
-            function ($scope, logger, $detour, $stateParams, $http) {
+        ['$scope', 'logger', '$state', '$stateParams', '$http',
+            function ($scope, logger, $state, $stateParams, $http) {
                 var entityName = $stateParams.EntityName;
                 
                 var validator = $("form[name=myForm]").validate({
@@ -12,7 +12,7 @@ define(['core/app/detourService'], function (detour) {
                 });
 
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    $state.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
 
                 $scope.save = function () {

@@ -17,7 +17,7 @@ using Orchard.Logging;
 using Orchard.Reports.Services;
 
 namespace Coevery.Core.Services {
-    class DefaultDataMigrationInterpreter : AbstractDataMigrationInterpreter, IDataMigrationInterpreter {
+    public class DefaultDataMigrationInterpreter : AbstractDataMigrationInterpreter, IDataMigrationInterpreter {
         private readonly ShellSettings _shellSettings;
         private readonly ISessionLocator _sessionLocator;
         private readonly IEnumerable<ICommandInterpreter> _commandInterpreters;

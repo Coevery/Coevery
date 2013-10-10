@@ -34,12 +34,6 @@
                                 <span class="help-block">@T("Technical name of the type.")</span>
                             </div>
                         </section>
-                        <section class="data-row control-group">
-                            <label class="control-label">Setting</label>
-                            <div class="controls">
-                                @{Html.RenderTemplates(Model.Templates); }
-                            </div>
-                        </section>
                     </fieldset>
                     <fieldset>
                         <legend>Enter Record Name and Label</legend>
@@ -63,7 +57,6 @@
                             </div>
                         </section>
                     </fieldset>
-                    //@Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
                 }
             </div>
         </div>

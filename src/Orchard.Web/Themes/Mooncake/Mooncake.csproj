@@ -47,8 +47,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Coevery\lib\aspnetwebapi\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,6 +85,7 @@
     <Content Include="Scripts\js\demo\wysiwyg.js" />
     <Content Include="Scripts\js\docs.js" />
     <Content Include="Scripts\js\dropdown.js" />
+    <Content Include="Scripts\js\jquery.simplePagination.js" />
     <Content Include="Scripts\js\libs\bootstrap.js" />
     <Content Include="Scripts\js\libs\bootstrap.min.js" />
     <Content Include="Scripts\js\libs\excanvas.js" />
@@ -575,6 +576,8 @@
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-vi.js" />
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-CN.js" />
     <Content Include="Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
+    <Content Include="Scripts\plugins\bootstrap-select\bootstrap-select.js" />
+    <Content Include="Scripts\plugins\bootstrap-select\bootstrap-select.min.js" />
     <Content Include="Scripts\plugins\i18n\grid.locale-en.js" />
     <Content Include="Scripts\plugins\jquery.jqGrid.min.js" />
     <Content Include="Scripts\plugins\jquery.jqGrid.src.js" />
@@ -1940,6 +1943,8 @@
     <Content Include="Styles\mooncake.min.css" />
     <Content Include="Styles\perfect-scrollbar.css" />
     <Content Include="Styles\picklist.css" />
+    <Content Include="Styles\plugins\bootstrap-select\bootstrap-select.css" />
+    <Content Include="Styles\plugins\bootstrap-select\bootstrap-select.min.css" />
     <Content Include="Styles\plugins\elfinder.css" />
     <Content Include="Styles\plugins\fullcalendar.css" />
     <Content Include="Styles\plugins\plugins.min.css" />
@@ -1948,6 +1953,7 @@
     <Content Include="Styles\plugins\select2\select2x2.png" />
     <Content Include="Styles\plugins\select2\spinner.gif" />
     <Content Include="Styles\plugins\ui.jqgrid.css" />
+    <Content Include="Styles\simplePagination.css" />
     <Content Include="Styles\site-SystemAdmin.css" />
     <Content Include="Styles\site.css" />
     <Content Include="Styles\table.css" />
@@ -1993,9 +1999,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\EditorTemplates\Fields.Common.Text.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -2035,17 +2038,10 @@
     <Content Include="Views\LogOn.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Views\InputWrapper.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -15,5 +15,8 @@ namespace Coevery.FormDesigner.Handlers {
 
         public void OnDeleting(string entityName) {
         }
+
+        public void OnUpdating(string entityName) {
+        }
     }
 }

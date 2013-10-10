@@ -2,8 +2,8 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'CreateOneToManyCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$http','$parse',
-            function ($scope, logger, $detour, $stateParams, $http, $parse) {
+        ['$scope', 'logger', '$state', '$stateParams', '$http','$parse',
+            function ($scope, logger, $state, $stateParams, $http, $parse) {
 
                 $scope.recordDeleteBehavior = 'CascadingDelete';
                 
@@ -40,7 +40,7 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.exit = function () {
-                    $detour.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
+                    $state.transitionTo('EntityDetail.Relationships', { Id: $stateParams.EntityName });
                 };
 
 
@@ -50,7 +50,7 @@ define(['core/app/detourService'], function (detour) {
                         var getter = $parse('relationId');
                         var relationId = getter(response.data);
                         if (relationId)
-                            $detour.transitionTo('EditOneToMany', { EntityName: $stateParams.EntityName, RelationId: relationId });
+                            $state.transitionTo('EditOneToMany', { EntityName: $stateParams.EntityName, RelationId: relationId });
                     });
                     return promise;
                 };

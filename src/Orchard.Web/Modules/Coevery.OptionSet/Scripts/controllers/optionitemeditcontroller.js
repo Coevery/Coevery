@@ -3,28 +3,23 @@
 define(['core/app/detourService'], function(detour) {
     detour.registerController([
         'OptionItemsCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$resource', '$stateParams','optionItemDataService',
-            function ($rootScope, $scope, logger, $detour, $resource, $stateParams, optionItemDataService) {
+        ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams','optionItemDataService',
+            function ($rootScope, $scope, logger, $state, $resource, $stateParams, optionItemDataService) {
                 
                 var optionColumnDefs = [
-                    { field: 'Id', displayName: 'Actions', width: 100, cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-click="edit(row.entity)">Edit</a>&nbsp;<a ng-click="delete(row.getProperty(col.field))">Delete</a></div>' },
-                    { field: 'Name', displayName: 'Value' },
-                    { field: 'Selectable', displayName: 'Selectable' },
-                    { field: 'Weight', displayName: 'Weight' }
+                    { name: 'Id', label: 'Id', sorttype:'int', hidden: true },
+                    {
+                        name: 'Name', label: 'Value', 
+                        formatter: $rootScope.cellLinkTemplate,
+                        formatoptions: { editRow: true }
+                    },
+                    { name: 'Selectable', label: 'Selectable',},
+                    { name: 'Weight', label: 'Weight', sorttype: 'int' }
                 ];
 
-                $scope.pagingOptions = {
-                    pageSizes: [50, 100, 200],
-                    pageSize: 50,
-                    currentPage: 1
-                };
-                $scope.totalServerItems = 2;
                 $scope.gridOptions = {
-                    data: 'myData',
-                    multiSelect: false,
-                    enableRowSelection: false,
-                    columnDefs: optionColumnDefs,
-                    pagingOptions: $scope.pagingOptions
+                    url: "api/OptionSet/OptionItem/?optionSetId=" + $scope.optionSetId,
+                    colModel: optionColumnDefs
                 };
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
@@ -38,7 +33,8 @@ define(['core/app/detourService'], function(detour) {
                     });
                 };
 
-                $scope.edit = function(item) {
+                $scope.edit = function (paramString) {
+                    var item = JSON.parse(paramString);
                     $scope.itemId = item.Id;
                     $scope.itemValue = item.Name;
                     $scope.itemSelectable = item.Selectable;
@@ -59,8 +55,8 @@ define(['core/app/detourService'], function(detour) {
                             weight: $scope.itemWeight
                         }, function() {
                             $scope.getOptionItems();
-                        }, function() {
-                            logger.error("Failed to add the item.");
+                        }, function(response) {
+                            logger.error("Failed to add:\n" + response.data.Text);
                         });
                 }
 
@@ -79,33 +75,22 @@ define(['core/app/detourService'], function(detour) {
                         });
                 }
 
-                $scope.delete = function(itemId) {
-                    $scope.itemId = itemId;
-                    $('#deleteModal').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    });
-                };
-                $scope.deleteItem = function() {
-                    $('#deleteModal').modal('hide');
-                    optionItemDataService.delete({ Id: $scope.itemId }, function () {
+                $scope.delete = function (itemId) {
+                    var deleteItem = itemId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                    if (!deleteItem) return;
+                    optionItemDataService.delete({ Id: deleteItem }, function () {
                         $scope.getOptionItems();
                         logger.success("Delete the item successful.");
-                    }, function() {
+                    }, function () {
                         logger.error("Failed to delete the item.");
                     });
                 };
 
                 $scope.getOptionItems = function () {
-                    var items = optionItemDataService.query({ optionSetId: $scope.optionSetId }, function () {
-                        $scope.totalServerItems = items.length;
-                        $scope.myData = items;
-                    }, function() {
-                        logger.error("Get items failed.");
-                    });
+                    $("#itemList").jqGrid('setGridParam', {
+                        datatype: "json"
+                    }).trigger('reloadGrid');
                 };
-
-                $scope.getOptionItems();
             }
         ]
     ]);

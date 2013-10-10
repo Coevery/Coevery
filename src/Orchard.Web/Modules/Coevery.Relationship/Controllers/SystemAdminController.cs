@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using System.Web.Mvc;
 using Coevery.Core;
+using Coevery.Entities.Services;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
 using Coevery.Relationship.Models;
@@ -18,13 +19,16 @@ namespace Coevery.Relationship.Controllers {
     public class SystemAdminController : Controller, IUpdateModel {
         private readonly IRelationshipService _relationshipService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentMetadataService _contentMetadataService;
 
         public SystemAdminController(
             IOrchardServices orchardServices,
             IRelationshipService relationshipService,
+            IContentMetadataService contentMetadataService,
             IContentDefinitionManager contentDefinitionManager) {
             Services = orchardServices;
             _relationshipService = relationshipService;
+            _contentMetadataService = contentMetadataService;
             _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
         }
@@ -57,7 +61,7 @@ namespace Coevery.Relationship.Controllers {
         }
 
         public ActionResult Relationships() {
-            return View();
+            return View(new Dictionary<string,string>{ {"PublishTip",T("Works when the entity has been published.").Text} });
         }
 
         #region OneToMany
@@ -65,6 +69,10 @@ namespace Coevery.Relationship.Controllers {
         public ActionResult CreateOneToMany(string id) {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
+            }
+
+            if (!_contentMetadataService.CheckEntityPublished(id)) {
+                return Content(T("The \"{0}\" hasn't been published!", id).Text);
             }
 
             return View(new OneToManyRelationshipModel {
@@ -85,9 +93,11 @@ namespace Coevery.Relationship.Controllers {
             if (oneToMany == null || oneToMany.Id == 0) {
                 return ResponseError("Relationship not found");
             }
-            var fields = _contentDefinitionManager
-                .GetPartDefinition(oneToMany.Relationship.RelatedEntity.Name).Fields
-                .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
+            var part = _contentDefinitionManager.GetPartDefinition(oneToMany.Relationship.RelatedEntity.Name);
+            var fields = part == null
+                ? new List<SelectListItem>()
+                : part.Fields.Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
+
             return View("CreateOneToMany", new OneToManyRelationshipModel {
                 IsCreate = false,
                 Name = oneToMany.Relationship.Name,
@@ -144,6 +154,10 @@ namespace Coevery.Relationship.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
             }
+            if (!_contentMetadataService.CheckEntityPublished(id)) {
+                return Content(T("The \"{0}\" hasn't been published!", id).Text);
+            }
+
             var primaryFields = _contentDefinitionManager
                 .GetPartDefinition(id).Fields
                 .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});

@@ -16,8 +16,6 @@ namespace Coevery.Fields.Drivers {
         public DatetimeFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Datetime";
-            Description = "Allows users to enter date and time.";
         }
 
         public Localizer T { get; set; }
@@ -66,7 +64,7 @@ namespace Coevery.Fields.Drivers {
         }
 
         protected override void Describe(DescribeMembersContext context) {
-            context.Member(null, typeof(DateTime?), T("Value"), T("The datetime value of the field."));
+            context.Member(null, typeof(DateTime?), null, T("The datetime value of the field."));
         }
     }
 }

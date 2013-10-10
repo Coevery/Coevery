@@ -8,8 +8,19 @@ namespace Orchard.MediaLibrary.Drivers {
                 ContentShape("Parts_Video_Metadata", () => shapeHelper.Parts_Video_Metadata()),
                 ContentShape("Parts_Video_SummaryAdmin", () => shapeHelper.Parts_Video_SummaryAdmin()),
                 ContentShape("Parts_Video_Summary", () => shapeHelper.Parts_Video_Summary()),
-                ContentShape("Parts_Video", () => shapeHelper.Parts_Video)
+                ContentShape("Parts_Video", () => shapeHelper.Parts_Video())
                 );
+        }
+
+        protected override void Exporting(VideoPart part, ContentManagement.Handlers.ExportContentContext context) {
+            context.Element(part.PartDefinition.Name).SetAttributeValue("Length", part.Length);
+        }
+
+        protected override void Importing(VideoPart part, ContentManagement.Handlers.ImportContentContext context) {
+            var length = context.Attribute(part.PartDefinition.Name, "Length");
+            if (length != null) {
+                part.Length = int.Parse(length);
+            }
         }
     }
 }

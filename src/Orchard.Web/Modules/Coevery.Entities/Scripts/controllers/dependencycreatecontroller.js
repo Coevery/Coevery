@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/fielddependencydataservice', 'Modules/Coevery.Fields/Scripts/services/optionitemsdataservice'], function (detour) {
     detour.registerController([
         'FieldDependencyCreateCtrl',
-        ['$scope', 'logger', '$detour', '$stateParams', '$resource', 'fieldDependencyDataService', 'optionItemsDataService',
-            function ($scope, logger, $detour, $stateParams, $resource, fieldDependencyDataService, optionItemsDataService) {
+        ['$scope', 'logger', '$state', '$stateParams', '$resource', 'fieldDependencyDataService', 'optionItemsDataService',
+            function ($scope, logger, $state, $stateParams, $resource, fieldDependencyDataService, optionItemsDataService) {
                 var entityName = $stateParams.EntityName;
 
                 $('.step2').hide();
@@ -37,7 +37,7 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                     $('.step2').hide();
                 };
                 $scope.exit = function () {
-                    $detour.transitionTo('FieldDependencyList', { EntityName: entityName });
+                    $state.transitionTo('FieldDependencyList', { EntityName: entityName });
                 };
                 $scope.save = function () {
                     var value = "[";

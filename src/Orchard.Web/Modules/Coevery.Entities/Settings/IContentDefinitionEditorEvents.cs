@@ -8,6 +8,11 @@ using Orchard.Events;
 
 namespace Coevery.Entities.Settings {
     public interface IContentDefinitionEditorEvents : IEventHandler {
+        IEnumerable<TemplateViewModel> FieldDescriptor();
+        void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel);
+        void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary);
+        void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary);
+
         IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition);
         IEnumerable<TemplateViewModel> TypePartEditor(ContentTypePartDefinition definition);
         IEnumerable<TemplateViewModel> PartEditor(ContentPartDefinition definition);
@@ -20,6 +25,16 @@ namespace Coevery.Entities.Settings {
     }
 
     public abstract class ContentDefinitionEditorEventsBase : IContentDefinitionEditorEvents {
+        public virtual IEnumerable<TemplateViewModel> FieldDescriptor() {
+            return null;
+        }
+
+        public virtual void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {}
+
+        public virtual void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {}
+
+        public virtual void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {}
+
         public virtual IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition) {
             return Enumerable.Empty<TemplateViewModel>();
         }
@@ -53,7 +68,13 @@ namespace Coevery.Entities.Settings {
         }
 
         protected static TemplateViewModel DefinitionTemplate<TModel>(TModel model) {
-            return DefinitionTemplate(model, typeof(TModel).Name, typeof(TModel).Name);
+            return DefinitionTemplate(model, typeof (TModel).Name, typeof (TModel).Name);
+        }
+
+        protected static TemplateViewModel DisplayTemplate<TModel>(TModel model, string templateName, string prefix) {
+            return new TemplateViewModel(model, prefix) {
+                TemplateName = "DisplayTemplates/" + templateName
+            };
         }
 
         protected static TemplateViewModel DefinitionTemplate<TModel>(TModel model, string templateName, string prefix) {

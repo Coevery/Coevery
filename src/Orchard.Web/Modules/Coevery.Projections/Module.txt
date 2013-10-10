@@ -7,3 +7,4 @@ OrchardVersion: 1.6
 Description: Projecttions for Coevery CRM
 Dependencies: Coevery.Core
 Category: Coevery
+Priority: 10

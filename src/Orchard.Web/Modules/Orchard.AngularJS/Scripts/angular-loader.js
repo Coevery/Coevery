@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.1.5
+ * @license AngularJS v1.2.0-rc.2
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -29,15 +29,18 @@ function setupModuleLoader(window) {
      * @name angular.module
      * @description
      *
-     * The `angular.module` is a global place for creating and registering Angular modules. All
-     * modules (angular core or 3rd party) that should be available to an application must be
+     * The `angular.module` is a global place for creating, registering and retrieving Angular modules.
+     * All modules (angular core or 3rd party) that should be available to an application must be
      * registered using this mechanism.
+     *
+     * When passed two or more arguments, a new module is created.  If passed only one argument, an
+     * existing module (the name passed as the first argument to `module`) is retrieved.
      *
      *
      * # Module
      *
-     * A module is a collocation of services, directives, filters, and configuration information. Module
-     * is used to configure the {@link AUTO.$injector $injector}.
+     * A module is a collection of services, directives, filters, and configuration information.
+     * `angular.module` is used to configure the {@link AUTO.$injector $injector}.
      *
      * <pre>
      * // Create a new module
@@ -47,8 +50,7 @@ function setupModuleLoader(window) {
      * myModule.value('appName', 'MyCoolApp');
      *
      * // configure existing services inside initialization blocks.
-     * myModule.config(function($locationProvider) {
-'use strict';
+     * myModule.config(function($locationProvider) {'use strict';
      *   // Configure existing providers
      *   $locationProvider.hashPrefix('!');
      * });
@@ -77,7 +79,9 @@ function setupModuleLoader(window) {
       }
       return ensure(modules, name, function() {
         if (!requires) {
-          throw Error('No module: ' + name);
+          throw minErr('$injector')('nomod', "Module '{0}' is not available! You either misspelled the module name " +
+              "or forgot to load it. If registering a module ensure that you specify the dependencies as the second " +
+              "argument.", name);
         }
 
         /** @type {!Array.<Array.<*>>} */
@@ -178,24 +182,30 @@ function setupModuleLoader(window) {
            * @param {Function} animationFactory Factory function for creating new instance of an animation.
            * @description
            *
-           * Defines an animation hook that can be later used with {@link ng.directive:ngAnimate ngAnimate}
-           * alongside {@link ng.directive:ngAnimate#Description common ng directives} as well as custom directives.
-           * <pre>
-           * module.animation('animation-name', function($inject1, $inject2) {
-           *   return {
-           *     //this gets called in preparation to setup an animation
-           *     setup : function(element) { ... },
+           * **NOTE**: animations are take effect only if the **ngAnimate** module is loaded.
            *
-           *     //this gets called once the animation is run
-           *     start : function(element, done, memo) { ... }
+           *
+           * Defines an animation hook that can be later used with {@link ngAnimate.$animate $animate} service and
+           * directives that use this service.
+           *
+           * <pre>
+           * module.animation('.animation-name', function($inject1, $inject2) {
+           *   return {
+           *     eventName : function(element, done) {
+           *       //code to run the animation
+           *       //once complete, then run done()
+           *       return function cancellationFunction(element) {
+           *         //code to cancel the animation
+           *       }
+           *     }
            *   }
            * })
            * </pre>
            *
-           * See {@link ng.$animationProvider#register $animationProvider.register()} and
-           * {@link ng.directive:ngAnimate ngAnimate} for more information.
+           * See {@link ngAnimate.$animateProvider#register $animateProvider.register()} and
+           * {@link ngAnimate ngAnimate module} for more information.
            */
-          animation: invokeLater('$animationProvider', 'register'),
+          animation: invokeLater('$animateProvider', 'register'),
 
           /**
            * @ngdoc method

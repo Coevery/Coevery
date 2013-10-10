@@ -1,25 +1,10 @@
-﻿define(['angular-detour', 'core/app/formdesignerservice', 'core/directives/common'], function () {
+﻿define(['core/app/formdesignerservice', 'core/directives/common'], function () {
     'use strict';
-
-    var coevery = angular.module('coevery', ['ng', 'ngGrid', 'ngResource', 'agt.detour', 'ui.utils', 'coevery.formdesigner', 'coevery.grid', 'SharedServices', 'ui.bootstrap', 'coevery.common']);
-    coevery.config(['$locationProvider', '$provide', '$detourProvider',
-        function ($locationProvider, $provide, $detourProvider) {
-            $detourProvider.loader = {
-                lazy: {
-                    enabled: true,
-                    routeUrl: 'api/CoeveryCore/Route',
-                    stateUrl: 'api/CoeveryCore/State',
-                    routeParameter: 'isFront=false&r'
-                },
-                crossDomain: true,
-                httpMethod: 'GET'
-            };
-        }]);
-
+    
     coevery.value('$anchorScroll', angular.noop);
 
-    coevery.run(['$rootScope', '$detour', '$stateParams', '$templateCache',
-        function ($rootScope, $detour, $stateParams, $templateCache) {
+    coevery.run(['$rootScope', '$couchPotato', '$stateParams', '$templateCache',
+        function ($rootScope, $couchPotato, $stateParams, $templateCache) {
 
             //"cheating" so that detour is available in requirejs
             //define modules -- we want run-time registration of components
@@ -29,12 +14,12 @@
 
             //if not using any dependencies properties in detour states,
             //then this is not necessary
-            coevery.detour = $detour;
+            coevery.detour = $couchPotato;
 
             //the sample reads from the current $detour.state
             //and $stateParams in its templates
             //that it the only reason this is necessary
-            $rootScope.$detour = $detour;
+            $rootScope.$detour = $couchPotato;
             $rootScope.$stateParams = $stateParams;
             $rootScope.$on('$viewContentLoaded', function () {
                 $(window).scrollTop(0);
@@ -45,63 +30,61 @@
                 lowerCaseLng: true,
                 ns: 'resources-locale'
             };
-
-            function getGridMinHeight(currentGrid) {
-                var findGrids = $(".gridStyle.ng-scope.ngGrid");
-                var availHeight = window.innerHeight -
-                    $("#header").outerHeight(true) -
-                    $("#footer").outerHeight(true);
-                var currentGridNumber = 0;
-                if (isNaN(availHeight)) {
-                    alert("Wrong variable used!");
-                }
-
-                for (var index = 0; index < findGrids.length; index++) {
-                    var tempGrid = findGrids.eq(-index - 1);
-                    availHeight -= tempGrid.height();
-                    if (tempGrid.find(currentGrid) != 0) {
-                        currentGridNumber = index + 1;
-                    }
-                }
-
-                //Decide whether current grid can use auto minHight;
-                if (availHeight < 0 || currentGridNumber > Math.ceil((availHeight - findGrids.last().offset().top) % 100)) {
-                    return 150;
-                }
-                var minHeight = availHeight - currentGrid.offset().top + currentGrid.parent().height();
-                if (minHeight < 200) {
-                    minHeight = 200;
-                }
-                return minHeight;
+            
+            if (!String.prototype.format) {
+                String.prototype.format = function () {
+                    var args = arguments;
+                    return this.replace(/{(\d+)}/g, function (match, number) {
+                        return typeof args[number] != 'undefined'
+                          ? args[number]
+                          : match
+                        ;
+                    });
+                };
             }
 
-            //$rootScope.defaultGridOptions = {
-            //    plugins: [new ngGridFlexibleHeightPlugin({ minHeight: 0 }), new ngGridRowSelectionPlugin()],
-            //    //multiSelect: false,
-            //    //enableRowSelection: true,
-            //    enableColumnResize: true,
-            //    enableColumnReordering: true,
-            //    enablePaging: true,
-            //    showFooter: true,
-            //    totalServerItems: "totalServerItems",
-            //    footerTemplate: 'Coevery/CoeveryCore/GridTemplate/DefaultFooterTemplate'
-            //};
-            
+            $rootScope.cellLinkTemplate = function (cellvalue, options, rowObject) {
+                var template = '<div class="gridCellText">' +
+                    '<section class="row-actions hide">' +
+                    '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
+                    '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
+                    'delete-action="delete(\'{0}\')" title="Delete"></span>{2}</section>' +
+                    '<div>{1}</div> </div>';
+                var viewStyle = cellvalue, defaultStyle='';
+                if (!options.colModel.formatoptions) {
+                    return template.format(options.rowId, viewStyle, '');
+                }
+                if (options.colModel.formatoptions.hasView) {
+                    viewStyle = '<a class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
+                        cellvalue + '</a>';
+                } 
+                if (options.colModel.formatoptions.hasDefault) {
+                    defaultStyle = '<span class="icon-tags" data-ng-click="setDefault(\'' + options.rowId + '\')" title="Set Default"></span>';
+                }
+                return template.format(options.rowId, viewStyle, defaultStyle);
+            };
+
             $rootScope.defaultGridOptions = {
+                datatype: "json",
+                loadonce: true,
                 pagerpos: "right",
                 recordpos: "left",
-                //autowidth: true,
                 sortable: true,
                 height: "100%",
+                headertitles: true,
                 viewrecords: true,
                 multiselect: true,
                 multiboxonly: true,
-                shrinkToFit: false,
-                loadui: "disable",
+                autowidth: true,
+                pginput: false,
+                pgbuttons: false,
+                rowNum: 50,
+                rowList: [50, 100, 200],
+                //loadui: "disable",
                 jsonReader: {
                     repeatitems: false,
-                    id: "0"
-                }
+                    id: "0" //Get Id from first column
+                },
             };
         }
     ]);

@@ -9,7 +9,7 @@ namespace Coevery.OptionSet.Services {
         IEnumerable<OptionSetPart> GetOptionSets();
         OptionSetPart GetOptionSet(int id);
         OptionSetPart GetOptionSetByName(string name);
-        void DeleteTaxonomy(OptionSetPart taxonomy);
+        void DeleteOptionSet(OptionSetPart taxonomy);
 
         IEnumerable<OptionItemPart> GetOptionItems(int optionSetId);
         OptionItemPart GetOptionItem(int id);
@@ -18,7 +18,7 @@ namespace Coevery.OptionSet.Services {
 
         string GenerateTermTypeName(string taxonomyName);
         OptionItemPart NewTerm(OptionSetPart taxonomy);
-        void CreateTerm(OptionItemPart termPart);
+        bool CreateTerm(OptionItemPart termPart);
         bool EditOptionItem(OptionItemEntry newItem);
         IEnumerable<OptionItemPart> GetOptionItemsForContentItem(int contentItemId, string field = null);
         void UpdateTerms(ContentItem contentItem, IEnumerable<OptionItemPart> optionItems, string field);

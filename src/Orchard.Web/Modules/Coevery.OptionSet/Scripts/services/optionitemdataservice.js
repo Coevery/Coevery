@@ -5,7 +5,7 @@ define(['core/app/detourService'], function (detour) {
         'optionItemDataService',
         ['$rootScope', '$resource', function ($rootScope, $resource) {
             return $resource('api/OptionSet/OptionItem/:OptionSetId',
-                { OptionSetId1: '@optionSetId1' },
+                { OptionSetId: '@OptionSetId' },
                 { update: { method: 'PUT' } });
         }]
     ]);

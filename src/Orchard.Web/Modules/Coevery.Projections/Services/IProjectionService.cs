@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using Coevery.Projections.ViewModels;
 using Orchard;
-using Orchard.Projections.Models;
-using Orchard.Projections.ViewModels;
+using Orchard.Projections.Descriptors.Property;
 
 namespace Coevery.Projections.Services {
     public interface IProjectionService : IDependency {
-        int CreateProjection(string entityType);
-        ProjectionEditViewModel GetTempProjection(string entityType);
-        AdminEditViewModel GetQueryViewModel(QueryPart query);
+        IEnumerable<PropertyDescriptor> GetFieldDescriptors(string entityType);
         ProjectionEditViewModel GetProjectionViewModel(int id);
-        void EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
+        string UpdateViewOnEntityAltering(string entityName);
+        int EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
     }
 }

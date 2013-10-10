@@ -9,9 +9,9 @@ namespace Coevery.Relationship.Services {
                     descriptor.Url = "/Relationships";
                 })
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/Relationship/Relationships'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"Relationships'";
                     view.Controller = "RelationshipsCtrl";
-                    view.Dependencies = ToClientUrl(new[] {"controllers/relationshipscontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] {"controllers/relationshipscontroller"});
                 });
 
             builder.Describe("CreateOneToMany")
@@ -20,11 +20,11 @@ namespace Coevery.Relationship.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Relationship/CreateOneToMany/' + $stateParams.EntityName;
+                                                var url = '" + ModuleBasePath + @"CreateOneToMany/' + $stateParams.EntityName;
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "CreateOneToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/onetomanydetailcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new [] {"controllers/onetomanydetailcontroller"});
                 });
 
             builder.Describe("EditOneToMany")
@@ -33,11 +33,11 @@ namespace Coevery.Relationship.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Relationship/EditOneToMany/' + $stateParams.EntityName+ '?RelationId=' + $stateParams.RelationId;
+                                                var url = '" + ModuleBasePath + @"EditOneToMany/' + $stateParams.EntityName+ '?RelationId=' + $stateParams.RelationId;
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EditOneToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/editonetomanycontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new string[] {"controllers/editonetomanycontroller"});
                 });
 
             builder.Describe("CreateManyToMany")
@@ -46,11 +46,11 @@ namespace Coevery.Relationship.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Relationship/CreateManyToMany/' + $stateParams.EntityName;
+                                                var url = '" + ModuleBasePath + @"CreateManyToMany/' + $stateParams.EntityName;
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "CreateManyToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/manytomanydetailcontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new [] {"controllers/manytomanydetailcontroller"});
                 });
 
             builder.Describe("EditManyToMany")
@@ -59,12 +59,27 @@ namespace Coevery.Relationship.Services {
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = 'SystemAdmin/Relationship/EditManyToMany/' + $stateParams.EntityName+ '?RelationId=' + $stateParams.RelationId;
+                                                var url = '" + ModuleBasePath + @"EditManyToMany/' + $stateParams.EntityName+ '?RelationId=' + $stateParams.RelationId;
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "EditManyToManyCtrl";
-                    view.Dependencies = ToClientUrl(new string[] {"controllers/editmanytomanycontroller"});
+                    view.AddDependencies(ToAbsoluteScriptUrl, new [] {"controllers/editmanytomanycontroller"});
                 });
+
+            builder.Describe("View")
+                .View(view => view.AddDependencies(ToAbsoluteScriptUrl, "controllers/relatedentitylistcontroller"));
+        }
+    }
+
+    public class ClientFrontEndRouteProvider : ClientRouteProviderBase {
+
+        public ClientFrontEndRouteProvider() {
+            IsFrontEnd = true;
+        }
+
+        public override void Discover(ClientRouteTableBuilder builder) {
+            builder.Describe("View")
+                .View(view => view.AddDependencies(ToAbsoluteScriptUrl, "controllers/relatedentitylistcontroller"));
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Coevery.OptionSet.Services {
                 });
             builder.Describe("FieldEdit.Items")
                 .View(view => {
-                    view.TemplateUrl = "'SystemAdmin/OptionSet/List'";
+                    view.TemplateUrl = "'" + ModuleBasePath + @"List'";
                     view.Controller = "OptionItemsCtrl";
-                    view.Dependencies = ToClientUrl(new[] { "controllers/optionitemeditcontroller", "services/optionitemdataservice" });
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/optionitemeditcontroller", "services/optionitemdataservice" });
                 });
         }
     }

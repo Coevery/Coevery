@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/fielddependencydataservice'], function (detour) {
     detour.registerController([
         'FieldDependencyListCtrl',
-        ['$rootScope', '$scope', 'logger', '$detour', '$stateParams', '$resource', 'fieldDependencyDataService',
-            function ($rootScope, $scope, logger, $detour, $stateParams, $resource, fieldDependencyDataService) {
+        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', '$resource', 'fieldDependencyDataService',
+            function ($rootScope, $scope, logger, $state, $stateParams, $resource, fieldDependencyDataService) {
 
                 var cellTemplateString = '<div class="ngCellText" ng-class="col.colIndex()" title="{{COL_FIELD}}">' +
                     '<ul class="row-actions pull-right hide">' +
@@ -37,13 +37,13 @@ define(['core/app/detourService', 'Modules/Coevery.Fields/Scripts/services/field
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
 
                 $scope.add = function () {
-                    $detour.transitionTo('FieldDependencyCreate', { EntityName: entityName });
+                    $state.transitionTo('FieldDependencyCreate', { EntityName: entityName });
                 };
                 $scope.back = function () {
-                    $detour.transitionTo('EntityDetail.Fields', { Id: entityName });
+                    $state.transitionTo('EntityDetail.Fields', { Id: entityName });
                 };
                 $scope.edit = function (itemId) {
-                    $detour.transitionTo('FieldDependencyEdit', { EntityName: entityName, DependencyID: itemId });
+                    $state.transitionTo('FieldDependencyEdit', { EntityName: entityName, DependencyID: itemId });
                 };
                 $scope.delete = function (itemId) {
                     fieldDependencyDataService.delete({ Id: itemId }, function () {

@@ -1,0 +1,21 @@
+﻿<div class="btn-group">
+    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+        <i class="icon-filter"></i>&nbsp;Filter
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li ng-repeat="filter in definitionFilters" style="cursor: pointer; position: relative">
+                <div style="position: absolute; right: 0; text-decoration: underline;" ng-click="deleteFilter(filter)">Delete</div>
+                <a ng-click="loadFilter({{filter}})">
+                    <i ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
+                    {{filter.Title}}
+                </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="" ng-click="createFilter()">
+                <i class="viewUSelected"></i>Create filter
+            </a>
+        </li>
+    </ul>
+</div>

@@ -53,9 +53,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\jquery.mousewheel.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Styles\colorbox.css" />
     <Content Include="Styles\images\colorbox\border.png" />
     <Content Include="Styles\images\colorbox\controls.png" />
@@ -203,9 +200,7 @@
     <Content Include="Views\TimePickerLocalization.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\jquery.validate.min.js.map">
-      <DependentUpon>jquery.validate.js</DependentUpon>
-    </Content>
+    <Content Include="Scripts\jquery.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

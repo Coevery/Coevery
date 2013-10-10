@@ -1,5 +1,4 @@
-﻿using Orchard.ContentManagement.MetaData;
-using Orchard.Data.Migration;
+﻿using Orchard.Data.Migration;
 
 namespace Coevery.Relationship {
     public class Migrations : DataMigrationImpl {
@@ -7,7 +6,7 @@ namespace Coevery.Relationship {
             SchemaBuilder.CreateTable("RelationshipRecord",
                 table => table
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
-                    .Column<string>("Name", column => column.Unique())
+                    .Column<string>("Name")
                     .Column<byte>("Type", column => column.NotNull())
                     .Column<int>("PrimaryEntity_Id", column => column.NotNull())
                     .Column<int>("RelatedEntity_Id", column => column.NotNull())

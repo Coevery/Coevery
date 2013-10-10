@@ -1,0 +1,19 @@
+﻿@Html.DropDownList("Operator", (IEnumerable<SelectListItem>) Model.Operators, new {@class = "selectpicker", filter_date_operator = "datetime", data_style = "btn-small"})
+<div class="input-prepend errortips">
+    <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+    </span>
+    <input type="text" name="Value" data-format="MM/dd/yyyy HH:mm PP"/>
+</div>
+<div class="input-prepend errortips">
+    <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+    </span>
+    <input type="text" name="Min" data-format="MM/dd/yyyy HH:mm PP"/>
+</div>
+<div class="input-prepend errortips">
+    <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+    </span>
+    <input type="text" name="Max" data-format="MM/dd/yyyy HH:mm PP"/>
+</div>

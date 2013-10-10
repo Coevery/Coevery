@@ -1,0 +1,24 @@
+﻿<button class="btn btn-small btn-success" data-ng-click="add()">
+    <i class="icon-plus"></i>&nbsp;Add
+</button>
+<button class="btn btn-small" data-ng-click="Refresh()">
+    <i class="icon-refresh"></i>&nbsp;Refresh
+</button>
+<div class="btn-group" data-ng-show="selectedItems.length > 0">
+    <button class="btn btn-small" data-ng-click="edit(selectedItems[0])" data-ng-disabled="selectedItems.length > 1">
+        <i class="icon-edit"></i>&nbsp;Edit
+    </button>
+    <button class="btn btn-small" co-delete-button confirm-message="You really want to delete this entity?" delete-action="delete()">
+        <i class="icon-remove"></i>&nbsp;Delete
+    </button>
+</div>
+<div class="btn-group">
+    <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+        More
+                        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a href="#">Convert</a></li>
+        <li><a href="#">Disabled</a></li>
+    </ul>
+</div>

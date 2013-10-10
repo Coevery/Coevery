@@ -1,4 +1,4 @@
-﻿using Orchard.Core.Settings.Metadata.Records;
+﻿using Coevery.Entities.Models;
 
 namespace Coevery.Relationship.Records {
     public enum RelationshipType {
@@ -10,7 +10,11 @@ namespace Coevery.Relationship.Records {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual byte Type { get; set; }
-        public virtual ContentPartDefinitionRecord PrimaryEntity { get; set; }
-        public virtual ContentPartDefinitionRecord RelatedEntity { get; set; }
+        public virtual EntityMetadataRecord PrimaryEntity { get; set; }
+        public virtual EntityMetadataRecord RelatedEntity { get; set; }
+    }
+
+    public interface IRelationshipRecord {
+        RelationshipRecord Relationship { get; set; }
     }
 }

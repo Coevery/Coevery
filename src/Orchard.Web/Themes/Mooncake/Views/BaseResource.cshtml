@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Style.Include("bootstrap/bootstrap.min.css");
     Style.Include("bootstrap/bootstrap-responsive.min.css");
     Style.Require("jQueryUI_Orchard");
@@ -12,9 +11,12 @@
     Style.Include("common.css");
     Style.Include("picklist.css");
     Style.Include("plugins/select2/select2.css");
-    //jqGrid css files
+    Style.Include("plugins/bootstrap-select/bootstrap-select.min.css");
+    /*jqGrid css files
+    ------------------------------*/
     Style.Include("plugins/ui.jqgrid.css");
     Style.Include("grid.css");
+    Style.Include("simplePagination.css");
 
     Script.Require("require");
     Script.Require("jQuery");
@@ -22,16 +24,20 @@
     Script.Require("jQueryMousewheel");
     Script.Include("uniform/jquery.uniform.js");
     Script.Include("js/libs/bootstrap.js");
+
     Script.Include("js/perfect-scrollbar.js");
     Script.Include("js/template.js");
     Script.Include("js/dropdown.js");
     Script.Include("js/demo/picklist.js");
     Script.Include("plugins/select2/select2.min.js");
-    //jqGrid js files
+    Script.Include("plugins/bootstrap-select/bootstrap-select.min.js");
+    /*jqGrid js files
+    ------------------------------*/
     Script.Include("plugins/jquery.jqGrid.min.js");
     Script.Include("plugins/jquery.jqGrid.src.js");
     Script.Include("plugins/i18n/grid.locale-en.js");
-    
+    Script.Include("js/jquery.simplePagination.js");
+
     Script.Require("jQueryValidate");
     Script.Require("underscore");
     Script.Require("angularunderscore");

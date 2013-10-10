@@ -1,8 +1,9 @@
-﻿define(['core/app/detourService', 'core/services/commondataservice'], function (detour) {
+﻿define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'GeneralDetailCtrl',
-      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$detour', '$http','$parse',
-      function ($timeout, $rootScope, $scope, $q, logger, $detour, $http, $parse) {
+      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http','$parse',
+      function ($timeout, $rootScope, $scope, $q, logger, $state, $http, $parse) {
+          var navigationId = $rootScope.$stateParams.NavigationId;
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
           var validator = $("form[name=myForm]").validate({
@@ -35,7 +36,7 @@
                   var getter = $parse('Id');
                   var Id = getter(response.data);
                   if (Id)
-                      $detour.transitionTo('Detail', { Module: moduleName, Id: Id });
+                      $state.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: Id });
               });
               return promise;
           };
@@ -54,14 +55,14 @@
 
           $scope.edit = function () {
               var id = $rootScope.$stateParams.Id;
-              $detour.transitionTo('Detail', { Module: moduleName, Id: id });
+              $state.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
           };
 
           $scope.exit = function () {
               //if(window.history.length>1)
               //    window.history.back();
               //else
-                $detour.transitionTo('List', { Module: moduleName });
+              $state.transitionTo('List', { NavigationId: navigationId, Module: moduleName });
           };
 
 

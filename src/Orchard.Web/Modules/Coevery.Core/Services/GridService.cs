@@ -2,41 +2,75 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json.Linq;
+using Orchard.Forms.Services;
 using Orchard.Localization;
 using Orchard.Logging;
+using Orchard.Projections.Models;
+using Orchard.Projections.Services;
 
 namespace Coevery.Core.Services {
     public class GridService : IGridService {
+        private readonly IQueryService _queryService;
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
-        public GridService() {
+        public GridService(
+            IQueryService queryService) {
+            _queryService = queryService;
             T = NullLocalizer.Instance;
             Logger = NullLogger.Instance;
         }
 
-        public IEnumerable<TRow> GetPagedRows<TRow>(int page, int rows, IEnumerable<TRow> totalRecords) {
-            return totalRecords.Skip((page - 1) * rows).Take(rows);
-        }
-
-        public IEnumerable<TRow> GetSortedRows<TRow>(string sidx, string sord, IEnumerable<TRow> rawRecords) {
-            if (string.IsNullOrWhiteSpace(sidx)) {
-                return rawRecords;
+        public bool GenerateSortCriteria(string entityName, string sortColumns, string lastOrder, int queryId) {
+            if (string.IsNullOrWhiteSpace(entityName)) {
+                return false;
             }
-            try {
-                if (sord == "asc") {
-                    return rawRecords.OrderBy(row => row.GetType().GetProperty(sidx).GetValue(row, null));
-                } else if (sord == "desc") {
-                    return rawRecords.OrderByDescending(row => row.GetType().GetProperty(sidx).GetValue(row, null));
+            if (string.IsNullOrWhiteSpace(sortColumns)) {
+                return true;
+            }
+            var query = _queryService.GetQuery(queryId);
+            query.SortCriteria.Clear();
+            var index = 0;
+            foreach (var sortColumn in (sortColumns + " " + lastOrder).Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)) {
+                var sortInfo = sortColumn.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                query.SortCriteria.Add(new SortCriterionRecord {
+                    Category = entityName + "ContentFields",
+                    Type = entityName + "." + sortInfo.First() + ".",
+                    State = FormParametersHelper.ToString(new Dictionary<string,bool> {
+                        { "Sort", sortInfo.Last() == "asc"}
+                    }),
+                    Description = sortInfo.First(),
+                    Position = ++index
+                });
+            }
+            return true;
+        }
+    }
+}
+
+/*Abandoned code
+try {
+                if (typeof (JObject) == typeof (TRow)) {
+                    if (orderColumns == "asc") {
+                        return rawRecords.OrderBy(row => (row as JObject)[sortColumns]);
+                    } else if (orderColumns == "desc") {
+                        return rawRecords.OrderByDescending(row => (row as JObject)[sortColumns]);
+                    }
+                    return null;
+                }
+
+                if (orderColumns == "asc") {
+                    return rawRecords.OrderBy(row => row.GetType().GetProperty(sortColumns).GetValue(row, null));
+                } else if (orderColumns == "desc") {
+                    return rawRecords.OrderByDescending(row => row.GetType().GetProperty(sortColumns).GetValue(row, null));
                 }
             }
             catch (Exception ex) {
                 Logger.Log(LogLevel.Error, ex, "The column name is invalid property for the row model.");
             }
             finally {
-                if (string.IsNullOrWhiteSpace(sidx) || string.IsNullOrWhiteSpace(sord))
+                if (string.IsNullOrWhiteSpace(sortColumns) || string.IsNullOrWhiteSpace(orderColumns))
                     Logger.Log(LogLevel.Error, null, "Sort rows for grid failed!");
             }
             return null;
-        }
-    }
-}
+ */

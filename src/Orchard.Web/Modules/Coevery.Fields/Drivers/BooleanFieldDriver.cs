@@ -15,8 +15,6 @@ namespace Coevery.Fields.Drivers {
         public BooleanFieldDriver(IOrchardServices services) {
             Services = services;
             T = NullLocalizer.Instance;
-            DisplayName = "Boolean";
-            Description = "Allows users to enter any combination of letters and numbers.";
         }
 
         public Localizer T { get; set; }
@@ -68,7 +66,7 @@ namespace Coevery.Fields.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context
-                .Member(null, typeof(bool), T("Value"), T("The boolean value of the field."));
+                .Member(null, typeof(bool), null, T("The boolean value of the field."));
         }
     }
 }

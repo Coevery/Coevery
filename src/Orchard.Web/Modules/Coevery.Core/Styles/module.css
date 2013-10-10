@@ -301,10 +301,33 @@
 
 
     /*filter page css*/
+    .field-editor {
+        display: inline-block;
+        margin-left:5px;
+    }
+
+    .field-editor > select
+    {
+        margin-right: 1px;
+    }
+
+    .field-editor .input-prepend{
+        padding-right:0px;
+    }
+
+    .field-editor .input-prepend span.add-on{
+        height: 16px;
+        line-height: 16px;
+    }
+
+    .field-editor .input-prepend span.add-on + input{
+        height: 16px;
+        line-height: 16px;
+    }
+
     .filter-collapse
     {
         font-size:13px;
-        display:none;
     }
 
     .filter-collapse .collapseHeader
@@ -319,6 +342,21 @@
         font-weight:bold;
     }
 
+    .filter-collapse .collapseHeader .filterTitle
+    {
+        color: #999;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .filter-collapse .collapseHeader .deleteBtn
+    {
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+        float: none;
+    }
+
     .filter-collapse .collapseZone
     {
         padding: 0px;
@@ -328,64 +366,75 @@
     .filter-collapse .collapseZone .filterForm
     {
         margin:0px;
+        padding:10px;
     }
 
-    .filterForm .filterCreatorWrap
+    .filterForm .filterCreatorWrap.control-group
     {
-       padding: 2px; 
-       margin: 0px;
+       padding: 0px; 
+       margin-bottom: 0px;
     }
 
     .filterForm .filterCreatorWrap .filterCreatorContent
     {
         float: left; 
-        padding: 5px;
+        padding: 0px;
+        margin:0px 0px 5px 0px;
     }
 
     .filterForm .filterCreatorWrap .filterInput
     {
         height: 16px;
         line-height: 16px; 
-        margin-left:4px;
     }
 
-    .filterForm .filterCreatorWrap .deleteBtn
+    .filterForm .filterCreatorWrap .deleteBtn.close
     {
-        line-height:30px;
-        float:left;
-        margin-top:3px;
+        float:none;
+        display:inline-block;
+        margin:0px 25px;
+        font-size:16px;
     }
 
     .filterForm .filterAddNewWrap
     {
-        padding: 10px 0px 10px 5px;
+        padding: 10px 0px 10px 0px;
     }
 
 
     .filterForm .filterAppWrap
     {
-        padding: 5px;
+        padding: 0px;
     }
 
     .filterForm .filterAppWrap .filterOkCancelWrap
     {
-        float:left;
+        display: inline-block;
     }
+
+    .filterForm .filterAppWrap .filterOkCancelWrap .btn-small
+    {
+        margin-left:2px;
+    }
+    
 
     .filterForm .filterAppWrap .checkInput
     {
-        display: inline-block;margin-left: 5px;float: left;padding-top: 3px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+        padding-top: 3px;
     }
 
     .filterForm .filterAppWrap .filterInput
     {
-        height: 16px;line-height: 16px;margin-left: 5px;
+        height: 16px;
+        line-height: 16px;
+        margin-left: 5px;
+        display: inline-block;
     }
 
- 
-    
-
-    .icon-collapse-show
+    .icon-collapse-hide
     {
         margin-left: 4px; 
         margin-bottom: 4px;
@@ -399,7 +448,7 @@
         
     }
 
-    .icon-collapse-hide
+    .icon-collapse-show
     {
         margin-left: 4px; 
         margin-bottom: 4px;

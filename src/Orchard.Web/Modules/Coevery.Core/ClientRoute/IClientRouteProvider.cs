@@ -20,13 +20,27 @@ namespace Coevery.Core.ClientRoute {
 
         public abstract void Discover(ClientRouteTableBuilder builder);
 
-        protected string[] ToClientUrl(IEnumerable<string> scripts) {
+        protected string ToAbsoluteScriptUrl(string url) {
             var basePath = VirtualPathUtility.AppendTrailingSlash(Feature.Descriptor.Extension.Location + "/" + Feature.Descriptor.Extension.Id);
-            if (scripts == null) return null;
-            var results = scripts.Select(scriptPath =>
-                VirtualPathUtility.Combine(VirtualPathUtility.Combine(basePath, "Scripts/"), scriptPath + ".js"))
-                .Select(VirtualPathUtility.ToAbsolute).ToArray();
-            return results;
+            if (url == null) return null;
+            var virtualPath = VirtualPathUtility.Combine(VirtualPathUtility.Combine(basePath, "Scripts/"), url + ".js");
+            return VirtualPathUtility.ToAbsolute(virtualPath);
+        }
+
+        protected string BasePath {
+            get {
+                var basePath = "~/Coevery/";
+                if (!IsFrontEnd) basePath = "~/SystemAdmin/";
+                var absolutePath = VirtualPathUtility.ToAbsolute(basePath);
+                return absolutePath;
+            }
+
+        }
+
+        protected string ModuleBasePath {
+            get {
+                return BasePath + Feature.Descriptor.Extension.Path + "/";
+            }
         }
     }
 }

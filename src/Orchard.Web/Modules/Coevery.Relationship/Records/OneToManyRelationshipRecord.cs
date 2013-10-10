@@ -1,4 +1,4 @@
-﻿using Orchard.Core.Settings.Metadata.Records;
+﻿using Coevery.Entities.Models;
 using Orchard.Projections.Models;
 
 namespace Coevery.Relationship.Records {
@@ -8,10 +8,10 @@ namespace Coevery.Relationship.Records {
         CascadingDelete = 2
     }
 
-    public class OneToManyRelationshipRecord {
+    public class OneToManyRelationshipRecord : IRelationshipRecord {
         public virtual int Id { get; set; }
         public virtual RelationshipRecord Relationship { get; set; }
-        public virtual ContentPartFieldDefinitionRecord LookupField { get; set; }
+        public virtual FieldMetadataRecord LookupField { get; set; }
         public virtual ProjectionPartRecord RelatedListProjection { get; set; }
         public virtual string RelatedListLabel { get; set; }
         public virtual bool ShowRelatedList { get; set; }

@@ -1,0 +1,72 @@
+﻿@using Coevery.Core.ClientRoute
+ @{
+     var appName = ((bool) Model.IsFrontEnd) ? "" : "admin";
+     var layoutDirectiveName = ((bool) Model.IsFrontEnd) ? "coevery.layout" : "coevery.formdesigner";
+ }
+<script type="text/javascript">
+    //<![CDATA[
+    function appPrefix() { return '@appName'; }
+    (function () {
+        var load = requirejs.load;
+        requirejs.load = function (context, moduleId, url) {
+            //modify url here, then call original load
+            return load(context, moduleId, url);
+        };
+
+        require.config({
+            baseUrl: '@Url.Content("~/")'
+            });
+
+            //Now load code.
+            require(['@Url.Content("~/Modules/Coevery.Core/scripts/app/main.js")']);
+        }());
+        //]]>
+    var coevery = angular.module('coevery', ['ng', 'ngResource', 'agt.couchPotato', 'ui.router', 'ui.utils', '@layoutDirectiveName', 'coevery.grid', 'SharedServices', 'angular-underscore', 'ui.bootstrap', 'coevery.common'@if(Model.IsFrontEnd){<text>,'coevery.filter'</text>}]);
+        coevery.config(['$stateProvider', '$urlRouterProvider',
+            function ($stateProvider, $urlRouterProvider) {
+                $urlRouterProvider.otherwise('/');
+                $stateProvider
+                @WriteStates();
+            }]);
+</script>
+
+
+@helper WriteStates() {
+    var routes = (IEnumerable<ClientRouteDescriptor>)Model.Routes;
+
+    foreach (var route in routes) {
+        <text>.state('@route.RouteName',{</text>
+        if (route.Abstract == true) {
+            <text>abstract: true,</text>
+        }
+        <text>url: '@route.Url',</text>
+        <text>views:{</text>
+        foreach (var view in route.Views) {
+            <text>'@view.Name':{</text>
+            if (!string.IsNullOrWhiteSpace(view.TemplateUrl)) {
+                <text>templateUrl:@Html.Raw(view.TemplateUrl),</text>
+            }
+            if (!string.IsNullOrWhiteSpace(view.TemplateProvider)) {
+                <text>templateProvider:@Html.Raw(view.TemplateProvider),</text>
+            }
+            <text>controller:'@view.Controller',</text>
+            <text>},</text>
+        }
+        <text>},</text>
+        <text>resolve:{</text>
+        var count = 0;
+        foreach (var dependency in route.Dependencies) {
+            count++;
+            <text>resolveVal_@count:function($q, $rootScope){</text>
+            <text>var defer = $q.defer();</text>
+            <text>require(['@dependency'], function(){</text>
+            <text>defer.resolve();</text>
+            <text>$rootScope.$apply();</text>
+            <text>});</text>
+            <text>return defer.promise;</text>
+            <text>},</text>
+        }
+        <text>},</text>
+        <text>})</text>
+    }
+}

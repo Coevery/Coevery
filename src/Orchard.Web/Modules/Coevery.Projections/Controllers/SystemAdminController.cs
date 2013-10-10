@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Coevery.Entities.Services;
 using Coevery.Projections.Services;
 using Coevery.Projections.ViewModels;
 using Orchard;
@@ -13,10 +15,13 @@ using Orchard.Security;
 namespace Coevery.Projections.Controllers {
     public class SystemAdminController : Controller {
         private readonly IProjectionService _projectionService;
+        private readonly IContentMetadataService _contentMetadataService;
 
         public SystemAdminController(
             IOrchardServices services,
+            IContentMetadataService contentMetadataService,
             IProjectionService projectionService) {
+            _contentMetadataService = contentMetadataService;
             _projectionService = projectionService;
             Services = services;
             T = NullLocalizer.Instance;
@@ -26,15 +31,23 @@ namespace Coevery.Projections.Controllers {
         public Localizer T { get; set; }
 
         public ActionResult List(string id) {
-            return View();
+            return View(new Dictionary<string, string> { { "PublishTip", T("Works when the entity has been published.").Text } });
         }
 
-        public ActionResult Create(string id) {
+        public ActionResult Create(string id) {   
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             if (pluralService.IsPlural(id)) {
                 id = pluralService.Singularize(id);
             }
-            var viewModel = _projectionService.GetTempProjection(id);
+            if (!_contentMetadataService.CheckEntityPublished(id)) {
+                return Content(T("The \"{0}\" hasn't been published!", id).Text);
+            }
+
+            var viewModel = new ProjectionEditViewModel {
+                ItemContentType = id,
+                DisplayName = string.Empty,
+                Fields = _projectionService.GetFieldDescriptors(id)
+            };
             return View("Edit", viewModel);
         }
 
@@ -50,9 +63,6 @@ namespace Coevery.Projections.Controllers {
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
         public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
-            if (id == 0) {
-                id = _projectionService.CreateProjection(viewModel.Name);
-            }
             var pickArray = picklist.Split(new[] {'$'}, StringSplitOptions.RemoveEmptyEntries);
             _projectionService.EditPost(id, viewModel, pickArray);
             return Json(new { id = id});

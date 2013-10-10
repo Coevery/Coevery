@@ -4,6 +4,7 @@ using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
+using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Entities.Services {
     public interface IContentDefinitionService : IDependency {
@@ -24,7 +25,7 @@ namespace Coevery.Entities.Services {
         void AlterPart(EditPartViewModel partViewModel, IUpdateModel updater);
         void RemovePart(string name);
 
-        IEnumerable<ContentFieldInfo> GetFields();
+        IEnumerable<TemplateViewModel> GetFields();
         void AddFieldToPart(string fieldName, string fieldTypeName, string partName);
         void AddFieldToPart(string fieldName, string displayName, string fieldTypeName, string partName);
         void RemoveFieldFromPart(string fieldName, string partName);

@@ -1,43 +1,49 @@
 ﻿'use strict';
-define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/viewmodeldataservice'], function(detour) {
+define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/propertydataservice'], function (detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$rootScope', '$scope', '$timeout', 'logger', '$detour', '$stateParams', '$resource','$http', 'projectionDataService', 'viewmodelDataService','$parse',
-            function ($rootScope, $scope, $timeout, logger, $detour, $stateParams, $resource, $http, projectionDataService, viewmodelDataService, $parse) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$state', '$stateParams', '$resource', '$http', 'projectionDataService', 'propertyDataService', '$parse', '$q',
+            function ($rootScope, $scope, $timeout, logger, $state, $stateParams, $resource, $http, projectionDataService, propertyDataService, $parse, $q) {
                 var name = $stateParams.Id;
-                $scope.mySelections = [];
+                var deferred = $q.defer();
+                var isInit = true;
                 $scope.fieldCoumns = [];
                 $scope.SelectedColumns = [];
 
-                $scope.gridOptions = {
-                    data: 'myData',
-                    selectedItems: $scope.mySelections,
-                    multiSelect: false,
-                    enableRowSelection: false,
-                    columnDefs: 'fieldCoumns'
-                };
-                
-                angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
-
-                $scope.preview = function() {
+                $scope.preview = function () {
                     $scope.fieldCoumns = [];
                     $scope.myData = [];
-                    var jasondata = { };
+                    var jasondata = {};
                     for (var i = 0; i < $scope.SelectedColumns.length; i++) {
-                        var fieldName = $scope.SelectedColumns[i].FieldName;
-                        $scope.fieldCoumns[i] = { field: fieldName, displayName: fieldName };
-                        jasondata[fieldName] = "data_" + fieldName;
+                        var fieldNames = $scope.SelectedColumns[i].FieldName.split(".");
+                        $scope.fieldCoumns[i] = { name: fieldNames[1], label: fieldNames[1] };
+                        jasondata[fieldNames[1]] = "data_" + fieldNames[1];
                     }
                     if (i > 0) {
-                    for (var j = 0; j < 5; j++) {
-                        var newjason = { };
-                        for (var filed in jasondata) {
-                            newjason[filed] = jasondata[filed] + "_" + (j + 1);
+                        for (var j = 0; j < 5; j++) {
+                            var newjason = {};
+                            for (var filed in jasondata) {
+                                newjason[filed] = jasondata[filed] + "_" + (j + 1);
+                            }
+                            $scope.myData.push(newjason);
                         }
-                        $scope.myData.push(newjason);
                     }
-                }
-            };
+                    deferred.resolve();
+                    $scope.changePreview();
+                };
+
+                $scope.changePreview = function () {
+                    deferred.promise.then(function () {
+                        $scope.gridOptions = {
+                            colModel: $scope.fieldCoumns,
+                            needReloading: !isInit
+                        };
+                        isInit = false;
+                        angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+                        $scope.gridOptions.datatype = "local";
+                        $scope.gridOptions.data = $scope.myData;
+                    });
+                };
 
                 var validator = $("form[name=myForm]").validate({
                     errorClass: "inputError"
@@ -54,7 +60,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         pickListValue += fieldName + '$';
                     }
                     $('#picklist')[0].value = pickListValue;
-                    
+
                     var promise = $http({
                         url: form.attr('action'),
                         method: "POST",
@@ -75,7 +81,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         var getter = $parse('id');
                         var id = getter(response.data);
                         if (id)
-                            $detour.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
+                            $state.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
                     });
                     return promise;
                 };
@@ -88,70 +94,70 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                     });
                     return promise;
                 };
-                
-                $scope.change = function() {
 
+                $scope.exit = function () {
+                    $state.transitionTo('EntityDetail.Views', { Id: $stateParams.EntityName });
                 };
 
-                $scope.exit = function() {
-                    $detour.transitionTo('EntityDetail.Views', { Id: $stateParams.EntityName });
-                };
-
-                $scope.addfield = function(fieldName) {
-                    var selectedField = { FieldName: fieldName };
+                $scope.addfield = function (fieldName, displayName) {
+                    var selectedField = { FieldName: fieldName, DisplayName: displayName };
                     $scope.SelectedColumns.splice($scope.SelectedColumns.length, 0, selectedField);
-
                 };
 
-                $scope.removefield = function(index) {
+                $scope.removefield = function (index) {
                     $scope.SelectedColumns.splice(index, 1);
                 };
 
-                $scope.AddAll = function() {
-                    $.each($('td[name = "unselectedField"]'), function (i, v) {
-                        var fieldName = $(v).text();
+                $scope.AddAll = function () {
+                    $.each($('td.unselectedField'), function (i, v) {
+                        var displayName = $(v).text();
+                        var filedName = $(v).attr('filed-type');
                         var exsitsItem = $($scope.SelectedColumns).filter(function () {
                             return this.FieldName == fieldName;
-                        }).first();
+                        });
                         if (exsitsItem.length <= 0) {
-                            $scope.addfield(fieldName);
+                            $scope.addfield(filedName, displayName);
                         }
                     });
                 };
 
-                $scope.LabelClass = function(fieldName) {
+                $scope.LabelClass = function (fieldName) {
                     for (var i = 0; i < $scope.SelectedColumns.length; i++) {
                         if ($scope.SelectedColumns[i].FieldName == fieldName) return 'label';
                     }
                     return 'label hide';
                 };
 
-                $scope.ButtonStyle = function(fieldName) {
-                    for (var i = 0; i < $scope.SelectedColumns.length; i++) {
-                        if ($scope.SelectedColumns[i].FieldName == fieldName)
-                            return { 'display': 'none' };
+                $scope.ButtonStyle = function (fieldName) {
+                    var selected = $.grep($scope.SelectedColumns, function (n, i) {
+                        return n.FieldName == fieldName;
+                    });
+                    if (selected.length > 0) {
+                        return { 'display': 'none' };
                     }
                     return { 'display': 'block' };
                 };
 
 
-                $scope.InitSeletedFieldData = function() {
-                    var viewModel = viewmodelDataService.query({ id: $stateParams.Id }, function() {
-                        for (var i = 0; i < viewModel.length; i++) {
-                            $scope.addfield(viewModel[i].FieldName);
-                        }
-                    }, function() {
+                $scope.InitSeletedFieldData = function () {
+                    var id = $stateParams.Id || -1;
+                    var properties = propertyDataService.query({ id: id }, function () {
+                        properties = properties || [];
+                        $.each(properties, function (index, value) {
+                            $scope.addfield(value.FieldName, value.DisplayName);
+                        });
+                    }, function () {
 
                     });
                 };
-                
+
                 $scope.InitSeletedFieldData();
 
-                $scope.dragStart = function(e, ui) {
+                $scope.dragStart = function (e, ui) {
                     ui.item.data('start', ui.item.index());
                 };
 
-                $scope.dragEnd = function(e, ui) {
+                $scope.dragEnd = function (e, ui) {
                     var start = ui.item.data('start'),
                         end = ui.item.index();
 
@@ -160,7 +166,7 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
 
                     $scope.$apply();
                 };
-                
+
                 $('.sortable-list ul').sortable({
                     placeholder: 'placeholder',
                     forcePlaceholderSize: true,

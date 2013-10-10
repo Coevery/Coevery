@@ -1,17 +1,18 @@
 ﻿@{
     Style.Require("pnotify");
     Style.Require("Module");
-    Style.Require("ngGrid");
 
     Script.Require("jQuery");
     Script.Require("jQueryUI");
     Script.Require("pnotify");
     Script.Require("angular");
     Script.Require("angularResource");
-    Script.Require("ngGrid");
+    Script.Require("angularRoute");
+    
     Script.Require("ui_utils");
     Script.Require("require");
-    Script.Require("angular_detour");
+    Script.Require("angular_UI_Router");
+    Script.Require("angular_couchPotato");
     
     Script.Require("i18next");
     Script.Include("directives/angularjs-i18next-directive.js");
@@ -22,23 +23,9 @@
 }
 
 <div id="loading">Loading...</div>
-<section  class="ng-cloak"  ui-view>
+<section  class="ng-cloak" ui-view>
 </section>
+
 @using (Script.Foot()) {
-    <script type="text/javascript">
-        //<![CDATA[
-        function appPrefix() { return 'admin'; }
-        (function() {
-            var load = requirejs.load;
-            requirejs.load = function(context, moduleId, url) {
-                //modify url here, then call original load
-                return load(context, moduleId, url);
-            };
-
-
-            //Now load code.
-            require(['@Url.Content("~/Modules/Coevery.Core/scripts/app/main.js")']);
-        }());
-    //]]>
-    </script>
+    @Display.ClientRoute(IsFrontEnd: false)
 }

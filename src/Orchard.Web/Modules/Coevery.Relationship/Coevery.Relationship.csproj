@@ -65,9 +65,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -84,9 +81,9 @@
     <Compile Include="Drivers\DynamicPrimaryPartDriver.cs" />
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\DynamicRelatedPartDriver.cs" />
-    <Compile Include="Drivers\RelatedListDriver.cs" />
+    <Compile Include="Drivers\RelatedEntityListDriver.cs" />
+    <Compile Include="Handlers\EntityMetadataPartHandler.cs" />
     <Compile Include="Handlers\RelationshipEntityEventsHandler.cs" />
-    <Compile Include="Handlers\RelationshipFieldEventsHandler.cs" />
     <Compile Include="Handlers\RelationshipDynamicTypeGenerationEventsHandler.cs" />
     <Compile Include="Fields\ReferenceField.cs" />
     <Compile Include="Handlers\ReferenceHandler.cs" />
@@ -96,7 +93,7 @@
     <Compile Include="Models\OneToManyRelationshipModel.cs" />
     <Compile Include="Models\ReferenceFieldViewModel.cs" />
     <Compile Include="Models\RelationshipModel.cs" />
-    <Compile Include="Projections\ReferenceFieldValeProvider.cs" />
+    <Compile Include="Projections\ReferenceFieldValueProvider.cs" />
     <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Records\OneToManyRelationshipRecord.cs" />
     <Compile Include="Records\RelationshipRecord.cs" />
@@ -118,6 +115,7 @@
     <Content Include="Scripts\controllers\editonetomanycontroller.js" />
     <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
     <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
+    <Content Include="Scripts\controllers\relatedentitylistcontroller.js" />
     <Content Include="Scripts\controllers\relationshipscontroller.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -183,7 +181,10 @@
     <Content Include="Views\EditorTemplates\Parts\Relationship.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Relationships_Display.cshtml" />
+    <Content Include="Views\RelatedEntityList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Reference.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

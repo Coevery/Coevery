@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Orchard;
@@ -32,11 +33,17 @@ namespace Coevery.Perspectives.Controllers {
         public IOrchardServices Services { get; private set; }
 
         // GET api/perspective/perspective
-        public IEnumerable<object> Get() {
+        public object Get(int page, int rows) {
             IEnumerable<TitlePart> menus = Services.ContentManager.Query<TitlePart, TitlePartRecord>().OrderBy(x => x.Title).ForType("Menu").List();
             var query = from menu in menus
                 select new {Id = menu.Id, DisplayName = menu.Title};
-            return query;
+            var totalRecords = query.Count();
+            return new {
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                page = page,
+                records = totalRecords,
+                rows = query
+            };
         }
 
         private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart) {

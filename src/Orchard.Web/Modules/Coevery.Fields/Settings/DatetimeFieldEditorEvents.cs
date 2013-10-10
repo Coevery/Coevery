@@ -1,13 +1,39 @@
 ﻿using System.Collections.Generic;
 using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
     public class DatetimeFieldEditorEvents : FieldEditorEvents {
+        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+            var model = string.Empty;
+            yield return DisplayTemplate(model, "Datetime", null);
+        }
+
+        public override void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {
+            if (fieldType != "DatetimeField") {
+                return;
+            }
+            var model = new DatetimeFieldSettings();
+            if (updateModel.TryUpdateModel(model, "DatetimeFieldSettings", null, null)) {
+                UpdateSettings(model, settingsDictionary, "DatetimeFieldSettings");
+                settingsDictionary["DatetimeFieldSettings.DefaultValue"] = model.DefaultValue.ToString();
+            }
+        }
+
+        public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
+            if (builder.FieldType != "DatetimeField") {
+                return;
+            }
+
+            var model = settingsDictionary.TryGetModel<DatetimeFieldSettings>();
+            if (model != null) {
+                UpdateSettings(model, builder, "DatetimeFieldSettings");
+                builder.WithSetting("DatetimeFieldSettings.DefaultValue", model.DefaultValue.ToString());
+            }
+        }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
             if (definition.FieldDefinition.Name == "DatetimeField"
@@ -15,20 +41,6 @@ namespace Coevery.Fields.Settings {
                 var model = definition.Settings.GetModel<DatetimeFieldSettings>();
                 yield return DefinitionTemplate(model);
             }
-        }
-
-        public override IEnumerable<TemplateViewModel> PartFieldEditorUpdate(ContentPartFieldDefinitionBuilder builder, IUpdateModel updateModel) {
-            if (builder.FieldType != "DatetimeField") {
-                yield break;
-            }
-
-            var model = new DatetimeFieldSettings();
-            if (updateModel.TryUpdateModel(model, "DatetimeFieldSettings", null, null)) {
-                UpdateSettings(model, builder, "DatetimeFieldSettings");
-                builder.WithSetting("DatetimeFieldSettings.DefaultValue", model.DefaultValue.ToString());
-            }
-
-            yield return DefinitionTemplate(model);
         }
     }
 }
