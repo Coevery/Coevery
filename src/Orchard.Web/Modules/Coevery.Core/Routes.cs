@@ -30,6 +30,22 @@ namespace Coevery.Core
                 x => x.Feature.Descriptor.Extension);
 
             yield return new RouteDescriptor {
+                Priority = 100,
+                Route = new Route(
+                    "",
+                    new RouteValueDictionary {
+                        {"area", "Coevery.Core"},
+                        {"controller", "Home"},
+                        {"action", "Index"}
+                    },
+                    new RouteValueDictionary(),
+                    new RouteValueDictionary {
+                        {"area", "Coevery.Core"}
+                    },
+                    new MvcRouteHandler())
+            };
+
+            yield return new RouteDescriptor {
                 Route = new Route(
                     "Coevery",
                     new RouteValueDictionary {
@@ -43,6 +59,8 @@ namespace Coevery.Core
                     },
                     new MvcRouteHandler())
             };
+
+
             yield return new RouteDescriptor
             {
                 Route = new Route(
