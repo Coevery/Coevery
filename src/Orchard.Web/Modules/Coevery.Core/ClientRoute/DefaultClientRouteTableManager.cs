@@ -68,6 +68,5 @@ namespace Coevery.Core.ClientRoute {
             routes = routes.OrderBy(item => new Regex(@"\.").Matches(item.RouteName).Count).ToList();
             return routes;
         }
-
     }
 }
