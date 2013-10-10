@@ -11,7 +11,7 @@
     }
 }
 <section class="control-group data-row">
-    <label class="control-label" for="@Html.FieldIdFor(m => m.ContentTypeName)"> Selectable Entity </label>
+    <label class="control-label" for="@Html.FieldIdFor(m => m.ContentTypeName)"> Primary Entity </label>
     <div class="controls">
         <select id="@Html.FieldIdFor(m => m.ContentTypeName)" @disabled name="@Html.FieldNameFor(m => m.ContentTypeName)" class="span12">
             @foreach (var item in Model.ContentTypeList) {

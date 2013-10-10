@@ -10,7 +10,7 @@ namespace Coevery.Relationship.Services {
         RelationshipRecord[] GetRelationships(string entityName);
         OneToManyRelationshipRecord GetOneToMany(int id);
         ManyToManyRelationshipRecord GetManyToMany(int id);
-        string GetReferenceField(string entityName, int oneToManyId);
+        string GetReferenceField(string entityName, string relationName);
 
         int CreateOneToManyRelationship(string fieldName, string relationName, string primaryEntityName, string relatedEntityName);
         string CreateRelationship(OneToManyRelationshipModel oneToMany);

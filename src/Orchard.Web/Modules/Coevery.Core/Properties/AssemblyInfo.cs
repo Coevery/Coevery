@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Coevery.Core")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyProduct("Coevery")]
+[assembly: AssemblyCopyright("Copyright © Nova Software 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.0-alpha")]
-[assembly: AssemblyFileVersion("1.0.0-alpha")]
+[assembly: AssemblyVersion("1.0.1")]
+[assembly: AssemblyFileVersion("1.0.1")]
+[assembly: AssemblyInformationalVersion("1.0.1-alpha")]
