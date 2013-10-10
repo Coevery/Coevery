@@ -62,12 +62,12 @@ namespace Coevery.Relationship.Services {
 
         #region GetMethods
 
-        public string GetReferenceField(string entityName, int oneToManyId) {
-            return _contentDefinitionManager
+        public string GetReferenceField(string entityName, string relationName) {
+             var reference = _contentDefinitionManager
                 .GetPartDefinition(entityName)
-                .Fields.Where(field => field.FieldDefinition.Name == "ReferenceField"
-                                       && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipId == oneToManyId)
-                .Select(field => field.Name).SingleOrDefault();
+                .Fields.FirstOrDefault(field => field.FieldDefinition.Name == "ReferenceField"
+                                                && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipName == relationName);
+            return reference==null ? null : reference.Name;
         }
 
         public SelectListItem[] GetFieldNames(string entityName) {

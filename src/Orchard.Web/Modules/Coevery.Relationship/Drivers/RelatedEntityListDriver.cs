@@ -42,7 +42,7 @@ namespace Coevery.Relationship.Drivers {
                     var oneToMany = _relationshipService.GetOneToMany(record.Id);
                     if (oneToMany.ShowRelatedList) {
                         yield return new RelatedEntityViewModel {
-                            RelationId = _relationshipService.GetReferenceField(record.RelatedEntity.Name, oneToMany.Id),
+                            RelationId = _relationshipService.GetReferenceField(record.RelatedEntity.Name, record.Name),
                             RelationType = "OneToMany",
                             Label = oneToMany.RelatedListLabel,
                             RelatedEntityName = pluralService.Pluralize(record.RelatedEntity.Name),
@@ -58,7 +58,7 @@ namespace Coevery.Relationship.Drivers {
                     var showList = record.PrimaryEntity.Name == contentType ? manyToMany.ShowRelatedList : manyToMany.ShowPrimaryList;
                     if (showList) {
                         yield return new RelatedEntityViewModel {
-                            RelationId = manyToMany.Id.ToString("D"),
+                            RelationId = record.Name,
                             RelationType = "ManyToMany",
                             Label = label,
                             RelatedEntityName = pluralService.Pluralize(relatedEntityName),

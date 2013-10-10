@@ -67,5 +67,6 @@
     theme activate "Mooncake"
 
     page create /Slug:"welcome-to-Coevery" /Title:"Welcome to Coevery!" /Path:"welcome-to-coevery" /Homepage:true /Publish:true /Text:"Welcome To Coevery!"
+    set route
   </Command>
 </Orchard>
