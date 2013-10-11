@@ -1,9 +1,4 @@
-﻿
-@using System.Web.Routing;
-@using Orchard.Mvc.Html
-@using Orchard.Utility.Extensions;
-
-@{
+﻿@{
     // odd formatting in this file is to cause more attractive results in the output.
     var items = Enumerable.Cast<dynamic>((System.Collections.IEnumerable)Model);
 }
@@ -22,8 +17,6 @@
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
-            var entityAll = $("ul.inner-nav>li:first");
-            entityAll.attr("data-ui-route", entityAll.attr("data-ui-route").replace("/?.*", ""));
             
             $(".menu>li:nth-child(2)").addClass("active");
             $(".menu>li:not(:last):has(ul)").click(function () {
