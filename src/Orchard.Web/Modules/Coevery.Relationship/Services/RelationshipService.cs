@@ -63,11 +63,11 @@ namespace Coevery.Relationship.Services {
         #region GetMethods
 
         public string GetReferenceField(string entityName, string relationName) {
-             var reference = _contentDefinitionManager
+            var reference = _contentDefinitionManager
                 .GetPartDefinition(entityName)
                 .Fields.FirstOrDefault(field => field.FieldDefinition.Name == "ReferenceField"
-                                                && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipName == relationName);
-            return reference==null ? null : reference.Name;
+                    && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipName == relationName);
+            return reference == null ? null : reference.Name;
         }
 
         public SelectListItem[] GetFieldNames(string entityName) {
@@ -110,8 +110,8 @@ namespace Coevery.Relationship.Services {
             }
             return (from record in _relationshipRepository.Table
                 where record.PrimaryEntity.ContentItemVersionRecord.Latest
-                      && record.RelatedEntity.ContentItemVersionRecord.Latest
-                      && (record.PrimaryEntity == entity.Record || record.RelatedEntity == entity.Record)
+                    && record.RelatedEntity.ContentItemVersionRecord.Latest
+                    && (record.PrimaryEntity == entity.Record || record.RelatedEntity == entity.Record)
                 select record).ToArray();
         }
 
@@ -251,7 +251,8 @@ namespace Coevery.Relationship.Services {
 
             if (relationship.Type == (byte) RelationshipType.OneToMany) {
                 var entity = _contentMetadataService.GetDraftEntity(relationship.RelatedEntity.Name);
-                var record = _oneToManyRepository.Get(x => x.Relationship == relationship);
+                var record = _oneToManyRepository.Get(x => x.Relationship.Name == relationship.Name
+                    && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
                 var field = entity.FieldMetadataRecords.First(x => x.Name == record.LookupField.Name);
                 entity.FieldMetadataRecords.Remove(field);
                 DeleteRelationship(record);
