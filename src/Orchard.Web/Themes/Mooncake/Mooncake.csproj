@@ -1953,7 +1953,6 @@
     <Content Include="Styles\plugins\select2\select2x2.png" />
     <Content Include="Styles\plugins\select2\spinner.gif" />
     <Content Include="Styles\plugins\ui.jqgrid.css" />
-    <Content Include="Styles\simplePagination.css" />
     <Content Include="Styles\site-SystemAdmin.css" />
     <Content Include="Styles\site.css" />
     <Content Include="Styles\table.css" />

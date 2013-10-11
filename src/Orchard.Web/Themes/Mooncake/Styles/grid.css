@@ -113,9 +113,15 @@ div.ui-jqgrid-pager.ui-corner-bottom {
     height: 60px;
 }
 
-.ui-jqgrid-pager .custom-pager {
-    padding-top: 5px;
+.ui-jqgrid-pager .custom-pager.pagination {
+    margin: 0;
     float: right;
+}
+
+.ui-jqgrid-pager .ui-paging-info,
+.ui-jqgrid-pager .custom-pager.pagination,
+.ui-jqgrid td select.ui-pg-selbox {
+    height: 30px;
 }
 
 .ui-jqgrid div > .ui-pg-table tr td:last-child {
@@ -132,10 +138,6 @@ div > .ui-pg-table td:last-child .ui-pg-table{
     }
 }
 
-.ui-jqgrid .ui-pg-table tr td {
-    padding: 0;
-}
-
 .ui-pg-table .ui-state-hover,
 .ui-pg-table .ui-state-focus {
     border: 0 none transparent;
@@ -143,19 +145,11 @@ div > .ui-pg-table td:last-child .ui-pg-table{
 
 .ui-jqgrid td select.ui-pg-selbox {
     padding-right: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    height: 26px;
-    line-height: 24px;
+    line-height: 28px;
     font-size: 0.9em;
     width: 70px;
-    box-shadow: 2px 2px 2px rgb(80%, 80%, 80%);
 }
 
-.custom-pager.compact-theme span,
-.custom-pager.compact-theme a {
-    border-color: #D2D2D2;
-}
 /*Inner cell action
 ------------------------------------------*/
 div.gridCellText {
