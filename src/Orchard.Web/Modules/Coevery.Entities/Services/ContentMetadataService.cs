@@ -155,20 +155,16 @@ namespace Coevery.Entities.Services {
             }
             var hasPublished = entity.HasPublished();
 
-            //entity.FieldMetadataRecords.Clear();
-            Services.ContentManager.Remove(entity.ContentItem);
             if (!hasPublished) {
-                return null;
+                Services.ContentManager.Remove(entity.ContentItem);
             }
-
-            var typeViewModel = _contentDefinitionService.GetType(entity.Name);
-
-            if (typeViewModel == null) {
-                return "Can't find entity of name: \"" + entity.Name +"\".";
+            else {
+                _entityEvents.OnDeleting(entity.Name);
+                _contentDefinitionService.RemoveType(entity.Name, true);
+                _schemaUpdateService.DropTable(entity.Name);
             }
-            _entityEvents.OnDeleting(entity.Name);
-            _contentDefinitionService.RemoveType(entity.Name, true);
-            _schemaUpdateService.DropTable(entity.Name);
+            Services.ContentManager.Remove(entity.ContentItem);
+
             return null;
         }
 
