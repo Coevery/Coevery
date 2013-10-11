@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Coevery.Core.DynamicTypeGeneration;
 using Coevery.Core.Services;
-using Coevery.Entities.Events;
 using Coevery.Entities.Services;
 using Coevery.Entities.ViewModels;
 using Coevery.Relationship.Records;
@@ -12,7 +11,6 @@ using Coevery.Relationship.Settings;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Extensions;
-using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 using Orchard.Projections.Models;
 
@@ -24,37 +22,28 @@ namespace Coevery.Relationship.Services {
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRepository;
 
-        private readonly IRepository<ContentPartDefinitionRecord> _contentPartRepository;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentManager _contentManager;
-        private readonly IFieldEvents _fieldEvents;
         private readonly IContentMetadataService _contentMetadataService;
 
         public RelationshipService(
             IRepository<RelationshipRecord> relationshipRepository,
             IRepository<OneToManyRelationshipRecord> oneToManyRepository,
             IRepository<ManyToManyRelationshipRecord> manyToManyRepository,
-            IRepository<ContentPartDefinitionRecord> contentPartRepository,
             IContentDefinitionManager contentDefinitionManager,
-            IContentDefinitionService contentDefinitionService,
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
             ISchemaUpdateService schemaUpdateService,
             IContentManager contentManager,
-            IFieldEvents fieldEvents,
             IContentMetadataService contentMetadataService) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
             _manyToManyRepository = manyToManyRepository;
-            _contentPartRepository = contentPartRepository;
             _contentDefinitionManager = contentDefinitionManager;
-            _contentDefinitionService = contentDefinitionService;
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             _schemaUpdateService = schemaUpdateService;
             _contentManager = contentManager;
-            _fieldEvents = fieldEvents;
             _contentMetadataService = contentMetadataService;
         }
 
@@ -447,7 +436,10 @@ namespace Coevery.Relationship.Services {
         }
 
         private bool RelationshipExists(string name) {
-            return _relationshipRepository.Table.Any(record => record.Name == name);
+            return _relationshipRepository.Table
+                .Where(x => x.PrimaryEntity.ContentItemVersionRecord.Latest
+                            && x.RelatedEntity.ContentItemVersionRecord.Latest)
+                .Any(record => record.Name == name);
         }
 
         #endregion

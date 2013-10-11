@@ -72,9 +72,9 @@ namespace Coevery.Relationship.Settings {
             var model = settingsDictionary.TryGetModel<ReferenceFieldSettings>();
             if (model != null) {
                 UpdateSettings(model, builder, "ReferenceFieldSettings");
-                builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString());
+                builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName);
+                builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName);
                 builder.WithSetting("ReferenceFieldSettings.RelationshipId", model.RelationshipId.ToString(CultureInfo.InvariantCulture));
                 builder.WithSetting("ReferenceFieldSettings.QueryId", model.QueryId.ToString(CultureInfo.InvariantCulture));
             }

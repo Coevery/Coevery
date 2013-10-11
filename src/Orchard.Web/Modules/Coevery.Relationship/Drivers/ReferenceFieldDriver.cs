@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using Coevery.Entities.Services;
 using Coevery.Relationship.Fields;
 using Coevery.Relationship.Settings;
 using Coevery.Relationship.Models;
@@ -12,10 +10,7 @@ using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
-using Orchard.Environment.Extensions;
-using Orchard.Forms.Services;
 using Orchard.Localization;
-using Orchard.Projections.Descriptors.Property;
 using Orchard.Projections.Services;
 
 namespace Coevery.Relationship.Drivers {

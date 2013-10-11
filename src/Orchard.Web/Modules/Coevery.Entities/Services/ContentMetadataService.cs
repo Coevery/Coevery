@@ -40,7 +40,6 @@ namespace Coevery.Entities.Services {
     public class ContentMetadataService : IContentMetadataService {
         private readonly ISettingsFormatter _settingsFormatter;
         private readonly IRepository<ContentFieldDefinitionRecord> _fieldDefinitionRepository;
-        private readonly IRepository<FieldMetadataRecord> _fieldMetadataRepository;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
@@ -53,14 +52,12 @@ namespace Coevery.Entities.Services {
             ISchemaUpdateService schemaUpdateService,
             IEntityEvents entityEvents,
             IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
-            IRepository<FieldMetadataRecord> fieldMetadataRepository,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             _entityEvents = entityEvents;
             _settingsFormatter = settingsFormatter;
             _fieldDefinitionRepository = fieldDefinitionRepository;
-            _fieldMetadataRepository = fieldMetadataRepository;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             Services = services;
         }
