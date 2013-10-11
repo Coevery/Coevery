@@ -1,6 +1,11 @@
 Coevery
 =======
 
+## Demo
+Demo site url: http://demo.coevery.com:7575   
+User Name: admin  
+Password: 123456789
+
 ## License
 ### The Coevery Public License Version 3.0 ("CPL")
 Coevery open source edition is licensed under coevery Public License. It's basically a GPLv3 License plus the "powered by coevery" text requirement on every single page. The coevery Public License Version 3.0 ("CPL") consists of the GPL3 License with the Additional Terms below. The original GPLv3 License can be found at: http://opensource.org/licenses/GPL-3.0
