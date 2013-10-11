@@ -282,7 +282,7 @@
     <Content Include="Views\ViewTemplate\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Content.Edit-Default1.cshtml">
+    <Content Include="Views\Content.Edit-Default.cshtml">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>
