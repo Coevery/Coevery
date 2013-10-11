@@ -13,6 +13,7 @@ using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Data;
 using Orchard.Projections.Models;
+using Orchard.Utility.Extensions;
 
 namespace Coevery.Relationship.Services {
     public class RelationshipService : IRelationshipService {
@@ -50,6 +51,17 @@ namespace Coevery.Relationship.Services {
         #endregion
 
         #region GetMethods
+
+        public string CheckRelationName(string name) {
+            string errorMessage = null;
+            if (!string.Equals(name, name.ToSafeName())) {
+                errorMessage += "The name:\""+ name +"\" is not legal!\n";
+            }
+            if (_relationshipRepository.Fetch(relation => relation.Name == name).FirstOrDefault() != null) {
+                errorMessage += "The name:\"" + name + "\" already exists!\n";
+            }
+            return errorMessage;
+        }
 
         public string GetReferenceField(string entityName, string relationName) {
             var reference = _contentDefinitionManager

@@ -5,6 +5,7 @@ using Orchard;
 
 namespace Coevery.Relationship.Services {
     public interface IRelationshipService : IDependency {
+        string CheckRelationName(string name);
         SelectListItem[] GetEntityNames(string excludeEntity);
         SelectListItem[] GetFieldNames(string entityName);
         RelationshipRecord[] GetRelationships(string entityName);

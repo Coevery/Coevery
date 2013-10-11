@@ -29,7 +29,7 @@ define(['core/app/detourService'], function (detour) {
                         logger.success('success');
                         $("input.primary-entity").prop('disabled', true);
                     }, function (result) {
-                        logger.error('Failed:\n' + result.responseText);
+                        logger.error('Failed:\n' + result);
                         $("input.primary-entity").prop('disabled', true);
                     });
                     return promise;

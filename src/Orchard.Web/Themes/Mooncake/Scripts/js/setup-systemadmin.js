@@ -78,9 +78,9 @@
 
 		// Bootstrap Dropdown Workaround for touch devices
 		$(document).on('touchstart.dropdown.data-api', '.dropdown-menu', function (e) { e.stopPropagation(); });
-				
+		
 		// Extend jQuery Validate Defaults.
-		// You mav remove this if you use an another validation library
+	    // You mav remove this if you use an another validation library
 		//if( $.validator ) {
 		//	$.extend( $.validator.defaults, {
 		//		errorClass: "error",
