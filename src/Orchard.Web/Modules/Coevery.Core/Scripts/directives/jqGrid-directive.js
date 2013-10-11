@@ -50,12 +50,12 @@
                                     });
                                     $grid.trigger("reloadGrid");
                                 },
-                                cssStyle: 'compact-theme'
+                                //cssStyle: 'compact-theme'
                             };
                             if (width < 560) {
                                 pagerOption.displayedPages = 3;
                             }
-                            pager.append("<section class='custom-pager'></section>");
+                            pager.append("<section class='custom-pager pagination'></section>");
                             pager.find("section").pagination(pagerOption);
                         }
 

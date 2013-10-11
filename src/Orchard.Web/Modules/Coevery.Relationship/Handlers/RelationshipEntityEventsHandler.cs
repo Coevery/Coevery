@@ -1,5 +1,4 @@
 ﻿using Coevery.Entities.Events;
-using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
 
 namespace Coevery.Relationship.Handlers {
@@ -15,6 +14,9 @@ namespace Coevery.Relationship.Handlers {
 
         public void OnDeleting(string entityName) {
             var relationships = _relationshipService.GetRelationships(entityName);
+            if (relationships == null) {
+                return;
+            }
             foreach (var relationship in relationships) {
                 _relationshipService.DeleteRelationship(relationship);
             }

@@ -116,8 +116,13 @@ namespace Coevery.Relationship.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
             }
-
+            
             if (oneToMany.IsCreate) {
+                var checkNameMessage = _relationshipService.CheckRelationName(oneToMany.Name);
+                if (!string.IsNullOrWhiteSpace(checkNameMessage)) {
+                    ModelState.AddModelError("OneToManyRelation", T(checkNameMessage).ToString());
+                    return ResponseError("");
+                }
                 var backMessage = _relationshipService.CreateRelationship(oneToMany);
                 int relationId;
                 if (int.TryParse(backMessage.ToString(),out relationId))
@@ -208,6 +213,11 @@ namespace Coevery.Relationship.Controllers {
             }
 
             if (manyToMany.IsCreate) {
+                var checkNameMessage = _relationshipService.CheckRelationName(manyToMany.Name);
+                if (!string.IsNullOrWhiteSpace(checkNameMessage)) {
+                    ModelState.AddModelError("ManyToManyRelation", T(checkNameMessage).ToString());
+                    return ResponseError("");
+                }
                 var backMessage = _relationshipService.CreateRelationship(manyToMany);
                 int relationId;
                 if (int.TryParse(backMessage.ToString(), out relationId))
@@ -253,7 +263,11 @@ namespace Coevery.Relationship.Controllers {
             var temp = (from values in ModelState
                 from error in values.Value.Errors
                 select error.ErrorMessage).ToArray();
-            return Content(string.Join("\n", temp) + ";\n" + errorMessage);
+            var result = string.Join("\n", temp);
+            if (!string.IsNullOrWhiteSpace(errorMessage)) {
+                result += "\n" + errorMessage;
+            }
+            return Content(result);
         }
     }
 }

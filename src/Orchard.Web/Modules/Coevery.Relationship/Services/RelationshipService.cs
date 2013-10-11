@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Coevery.Core.DynamicTypeGeneration;
 using Coevery.Core.Services;
-using Coevery.Entities.Events;
 using Coevery.Entities.Services;
 using Coevery.Entities.ViewModels;
 using Coevery.Relationship.Records;
@@ -12,9 +11,9 @@ using Coevery.Relationship.Settings;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Extensions;
-using Orchard.Core.Settings.Metadata.Records;
 using Orchard.Data;
 using Orchard.Projections.Models;
+using Orchard.Utility.Extensions;
 
 namespace Coevery.Relationship.Services {
     public class RelationshipService : IRelationshipService {
@@ -24,37 +23,28 @@ namespace Coevery.Relationship.Services {
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRepository;
 
-        private readonly IRepository<ContentPartDefinitionRecord> _contentPartRepository;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IContentManager _contentManager;
-        private readonly IFieldEvents _fieldEvents;
         private readonly IContentMetadataService _contentMetadataService;
 
         public RelationshipService(
             IRepository<RelationshipRecord> relationshipRepository,
             IRepository<OneToManyRelationshipRecord> oneToManyRepository,
             IRepository<ManyToManyRelationshipRecord> manyToManyRepository,
-            IRepository<ContentPartDefinitionRecord> contentPartRepository,
             IContentDefinitionManager contentDefinitionManager,
-            IContentDefinitionService contentDefinitionService,
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
             ISchemaUpdateService schemaUpdateService,
             IContentManager contentManager,
-            IFieldEvents fieldEvents,
             IContentMetadataService contentMetadataService) {
             _relationshipRepository = relationshipRepository;
             _oneToManyRepository = oneToManyRepository;
             _manyToManyRepository = manyToManyRepository;
-            _contentPartRepository = contentPartRepository;
             _contentDefinitionManager = contentDefinitionManager;
-            _contentDefinitionService = contentDefinitionService;
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             _schemaUpdateService = schemaUpdateService;
             _contentManager = contentManager;
-            _fieldEvents = fieldEvents;
             _contentMetadataService = contentMetadataService;
         }
 
@@ -62,12 +52,23 @@ namespace Coevery.Relationship.Services {
 
         #region GetMethods
 
+        public string CheckRelationName(string name) {
+            string errorMessage = null;
+            if (!string.Equals(name, name.ToSafeName())) {
+                errorMessage += "The name:\""+ name +"\" is not legal!\n";
+            }
+            if (_relationshipRepository.Fetch(relation => relation.Name == name).FirstOrDefault() != null) {
+                errorMessage += "The name:\"" + name + "\" already exists!\n";
+            }
+            return errorMessage;
+        }
+
         public string GetReferenceField(string entityName, string relationName) {
-             var reference = _contentDefinitionManager
+            var reference = _contentDefinitionManager
                 .GetPartDefinition(entityName)
                 .Fields.FirstOrDefault(field => field.FieldDefinition.Name == "ReferenceField"
-                                                && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipName == relationName);
-            return reference==null ? null : reference.Name;
+                    && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipName == relationName);
+            return reference == null ? null : reference.Name;
         }
 
         public SelectListItem[] GetFieldNames(string entityName) {
@@ -110,8 +111,8 @@ namespace Coevery.Relationship.Services {
             }
             return (from record in _relationshipRepository.Table
                 where record.PrimaryEntity.ContentItemVersionRecord.Latest
-                      && record.RelatedEntity.ContentItemVersionRecord.Latest
-                      && (record.PrimaryEntity == entity.Record || record.RelatedEntity == entity.Record)
+                    && record.RelatedEntity.ContentItemVersionRecord.Latest
+                    && (record.PrimaryEntity == entity.Record || record.RelatedEntity == entity.Record)
                 select record).ToArray();
         }
 
@@ -251,7 +252,8 @@ namespace Coevery.Relationship.Services {
 
             if (relationship.Type == (byte) RelationshipType.OneToMany) {
                 var entity = _contentMetadataService.GetDraftEntity(relationship.RelatedEntity.Name);
-                var record = _oneToManyRepository.Get(x => x.Relationship == relationship);
+                var record = _oneToManyRepository.Get(x => x.Relationship.Name == relationship.Name
+                    && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
                 var field = entity.FieldMetadataRecords.First(x => x.Name == record.LookupField.Name);
                 entity.FieldMetadataRecords.Remove(field);
                 DeleteRelationship(record);
@@ -446,7 +448,10 @@ namespace Coevery.Relationship.Services {
         }
 
         private bool RelationshipExists(string name) {
-            return _relationshipRepository.Table.Any(record => record.Name == name);
+            return _relationshipRepository.Table
+                .Where(x => x.PrimaryEntity.ContentItemVersionRecord.Latest
+                            && x.RelatedEntity.ContentItemVersionRecord.Latest)
+                .Any(record => record.Name == name);
         }
 
         #endregion

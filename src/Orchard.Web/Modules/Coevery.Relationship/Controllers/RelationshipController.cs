@@ -23,6 +23,10 @@ namespace Coevery.Relationship.Controllers {
             T = NullLocalizer.Instance;
         }
 
+        public object GetRelationNameValidation(string relationName) {
+            return new { ErrorMessage = _relationshipService.CheckRelationName(relationName)};
+        }
+
         public object Get(string entityName, int page, int rows) {
             var temp = _relationshipService.GetRelationships(entityName);
             //if (temp == null) {

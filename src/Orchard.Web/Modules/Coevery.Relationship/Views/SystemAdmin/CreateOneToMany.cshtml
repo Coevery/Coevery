@@ -67,7 +67,7 @@
                 <legend>General Information</legend>
                                        
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new { @class = "span12", id = "relation-name", required="" })
+                              , Html.TextBoxFor(model => model.Name, new { @class = "span12 checkNameValid", id = "relation-name", required="" })
                               ,"required")
                     
                 @DisplayInput("Primary Entity"
@@ -186,6 +186,18 @@
     $(document).ready(
         function () {
             customPicklist($("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));
+
+            $.validator.addMethod("checkNameValid", function (value, element, params) {
+                var temp;
+                $.get("api/relationship/relationship?relationName="+value,
+                    function (data) {
+                        temp = data.ErrorMessage;
+                    },
+                    "json"
+                );
+                return !temp;
+            }, "Wrong decimal format!");
+            $.validator.classRuleSettings.checkNameValid = { checkNameValid: true };
 
             var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
             var version = 0;

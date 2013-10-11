@@ -100,14 +100,14 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
           };
 
           $scope.add = function () {
-              $state.transitionTo('Create', { NavigationId: null , Module: $scope.entityTypeName });
+              $state.transitionTo('Create', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName });
           };
 
           $scope.edit = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = $scope.selectedItems[0];
               }
-              $state.transitionTo('Detail', { NavigationId: null, Module: $scope.entityTypeName, Id: id });
+              $state.transitionTo('Detail', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
           };
           
           $scope.view = function (id) {

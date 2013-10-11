@@ -2,7 +2,6 @@
 using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 

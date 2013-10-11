@@ -1,8 +1,5 @@
-﻿using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Coevery.Relationship.Services;
-using Orchard.Data;
-using Orchard.Data.Providers;
 using Module = Autofac.Module;
 
 namespace Coevery.Relationship.Data {

@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Coevery.Core.Services;
-using Coevery.Core.Models;
-using Coevery.Entities.Events;
-using Coevery.Entities.Models;
 using Coevery.Entities.Services;
-using Coevery.Entities.Settings;
 using Orchard.ContentManagement;
 using Orchard.Localization;
-using Orchard.Utility.Extensions;
 
 namespace Coevery.Entities.Controllers {
     public class EntityController : ApiController {

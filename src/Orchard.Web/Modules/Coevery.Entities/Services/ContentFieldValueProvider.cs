@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
+﻿using Orchard.ContentManagement;
 
 namespace Coevery.Entities.Services {
     public abstract class ContentFieldValueProvider<TContentField> : IContentFieldValueProvider where TContentField : ContentField, new() {

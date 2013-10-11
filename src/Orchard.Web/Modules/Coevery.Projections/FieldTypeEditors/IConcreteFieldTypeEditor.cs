@@ -41,7 +41,7 @@ namespace Coevery.Projections.FieldTypeEditors {
         }
 
         public virtual void ApplySortCriterion(SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-            bool ascending = (bool)context.State.Sort;
+            var ascending = (bool)context.State.Sort;
             var propertyName = String.Join(".", part.Name, field.Name, storageName ?? "");
 
             // use an alias with the join so that two filters on the same Field Type wont collide

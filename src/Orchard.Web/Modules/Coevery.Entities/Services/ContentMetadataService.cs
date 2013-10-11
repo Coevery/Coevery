@@ -40,7 +40,6 @@ namespace Coevery.Entities.Services {
     public class ContentMetadataService : IContentMetadataService {
         private readonly ISettingsFormatter _settingsFormatter;
         private readonly IRepository<ContentFieldDefinitionRecord> _fieldDefinitionRepository;
-        private readonly IRepository<FieldMetadataRecord> _fieldMetadataRepository;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly ISchemaUpdateService _schemaUpdateService;
@@ -53,14 +52,12 @@ namespace Coevery.Entities.Services {
             ISchemaUpdateService schemaUpdateService,
             IEntityEvents entityEvents,
             IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
-            IRepository<FieldMetadataRecord> fieldMetadataRepository,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             _entityEvents = entityEvents;
             _settingsFormatter = settingsFormatter;
             _fieldDefinitionRepository = fieldDefinitionRepository;
-            _fieldMetadataRepository = fieldMetadataRepository;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             Services = services;
         }
@@ -155,20 +152,16 @@ namespace Coevery.Entities.Services {
             }
             var hasPublished = entity.HasPublished();
 
-            //entity.FieldMetadataRecords.Clear();
-            Services.ContentManager.Remove(entity.ContentItem);
             if (!hasPublished) {
-                return null;
+                Services.ContentManager.Remove(entity.ContentItem);
             }
-
-            var typeViewModel = _contentDefinitionService.GetType(entity.Name);
-
-            if (typeViewModel == null) {
-                return "Can't find entity of name: \"" + entity.Name +"\".";
+            else {
+                _entityEvents.OnDeleting(entity.Name);
+                _contentDefinitionService.RemoveType(entity.Name, true);
+                _schemaUpdateService.DropTable(entity.Name);
             }
-            _entityEvents.OnDeleting(entity.Name);
-            _contentDefinitionService.RemoveType(entity.Name, true);
-            _schemaUpdateService.DropTable(entity.Name);
+            Services.ContentManager.Remove(entity.ContentItem);
+
             return null;
         }
 
