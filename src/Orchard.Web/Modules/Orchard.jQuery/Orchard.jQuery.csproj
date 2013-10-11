@@ -53,6 +53,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\jquery.mousewheel.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Styles\colorbox.css" />
     <Content Include="Styles\images\colorbox\border.png" />
     <Content Include="Styles\images\colorbox\controls.png" />
@@ -201,6 +204,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery.validate.min.js.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
