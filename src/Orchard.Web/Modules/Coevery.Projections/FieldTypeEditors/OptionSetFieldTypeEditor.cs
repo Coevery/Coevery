@@ -6,6 +6,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Localization;
 using Orchard.Projections.Descriptors.Filter;
+using Orchard.Projections.Models;
 
 namespace Coevery.Projections.FieldTypeEditors {
     public class OptionSetFieldTypeEditor : ConcreteFieldTypeEditorBase {
@@ -63,7 +64,7 @@ namespace Coevery.Projections.FieldTypeEditors {
         }
 
         public override Action<IAliasFactory> GetFilterRelationship(string aliasName) {
-            return null;
+            return x => x.ContentPartRecord<FieldIndexPartRecord>().Property("StringFieldIndexRecords", aliasName);;
         }
     }
 }

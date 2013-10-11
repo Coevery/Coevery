@@ -18,7 +18,7 @@ namespace Coevery.Projections.FieldTypeEditors {
 
         public bool CanHandle(Type storageType) {
             return new[] {
-                typeof(decimal), 
+                typeof(decimal?)
             }.Contains(storageType);
         }
 

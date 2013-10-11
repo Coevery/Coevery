@@ -32,7 +32,7 @@ namespace Coevery.Projections.Providers.SortCriteria {
         public Localizer T { get; set; }
 
         public void Describe(DescribeSortCriterionContext describe) {
-            foreach(var part in _contentDefinitionManager.ListPartDefinitions()) {
+            foreach(var part in _contentDefinitionManager.ListUserDefinedPartDefinitions()) {
                 if(!part.Fields.Any()) {
                     continue;
                 }
@@ -47,7 +47,8 @@ namespace Coevery.Projections.Providers.SortCriteria {
                     var membersContext = new DescribeMembersContext(
                         (storageName, storageType, displayName, description) => {
                             // look for a compatible field type editor
-                            IConcreteFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name, storageType));
+                            IConcreteFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(localField.FieldDefinition.Name, storageType))
+                                                                       ?? _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(storageType));
 
                             if (fieldTypeEditor == null) return;
 

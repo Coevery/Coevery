@@ -18,8 +18,8 @@ namespace Coevery.Projections.FieldTypeEditors {
 
         public bool CanHandle(Type storageType) {
             return new[] {
-                typeof(float), 
-                typeof(double), 
+                typeof(float?), 
+                typeof(double?)
             }.Contains(storageType);
         }
 

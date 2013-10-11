@@ -64,8 +64,8 @@ namespace Coevery.Projections.Controllers {
             string filterDescription = null;
             
             return GetFilteredRecords(id, part, out filterDescription, model, p => {
+                _gridService.GenerateSortCriteria(id, model.Sidx, model.Sord, p.Record.QueryPartRecord.Id);
                 var totalRecords = _projectionManager.GetCount(p.Record.QueryPartRecord.Id);
-                _gridService.GenerateSortCriteria(id,model.Sidx, model.Sord, p.Record.QueryPartRecord.Id);
                 var pageSize = model.Rows;
                 var totalPages = (int) Math.Ceiling((float) totalRecords/(float) pageSize);
                 var pager = new Pager(Services.WorkContext.CurrentSite, model.Page, pageSize);
@@ -202,7 +202,7 @@ namespace Coevery.Projections.Controllers {
                                 Tokens = tokens
                             };
                             var shape = d.Descriptor.Property(fieldContext, contentItem);
-                            var text = shape == null ? string.Empty : shape.ToString();
+                            string text = (shape == null) ? string.Empty : shape.ToString();
                             var filedName = d.Property.GetFiledName();
                             result[filedName] = text;
                         });
