@@ -1,5 +1,4 @@
-﻿using Orchard.ContentManagement.MetaData;
-using Orchard.Localization;
+﻿using Orchard.Localization;
 using Orchard.UI.Navigation;
 
 namespace Coevery.Entities.Services

@@ -3,6 +3,7 @@ using Coevery.Projections.FilterEditors.Forms;
 using Orchard.ContentManagement;
 using Orchard.Localization;
 using Orchard.Projections.Models;
+using Orchard.Utility.Extensions;
 
 namespace Coevery.Projections.FieldTypeEditors {
     public class ReferenceFieldTypeEditor : ConcreteFieldTypeEditorBase {
@@ -32,8 +33,7 @@ namespace Coevery.Projections.FieldTypeEditors {
             return x => x.ContentPartRecord<FieldIndexPartRecord>().Property("IntegerFieldIndexRecords", aliasName);
         }
 
-        public override void ApplySortCriterion(Orchard.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, Orchard.ContentManagement.MetaData.Models.ContentPartDefinition part, Orchard.ContentManagement.MetaData.Models.ContentPartFieldDefinition field) {
-            
-        }
+        //public override void ApplySortCriterion(Orchard.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, Orchard.ContentManagement.MetaData.Models.ContentPartDefinition part, Orchard.ContentManagement.MetaData.Models.ContentPartFieldDefinition field) {
+        //}
     }
 }

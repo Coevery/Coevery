@@ -72,7 +72,9 @@
     <Content Include="Scripts\angular-touch.js" />
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular-ui-router.js" />
-    <Content Include="Scripts\angular-ui-router.min.js" />
+    <Content Include="Scripts\angular-ui-router.min.js">
+      <DependentUpon>angular-ui-router.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\angular-underscore.js" />
     <Content Include="Scripts\i18next-1.6.3.js" />
     <Content Include="Scripts\i18next-1.6.3.min.js" />
@@ -88,8 +90,10 @@
     <Content Include="Scripts\ui-utils-ieshiv.min.js" />
     <Content Include="Scripts\ui-utils.js" />
     <Content Include="Scripts\ui-utils.min.js" />
-    <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\underscore.js" />
+    <Content Include="Scripts\underscore.min.js">
+      <DependentUpon>underscore.js</DependentUpon>
+    </Content>
     <Content Include="Styles\images\glyphicons-halflings-white.png" />
     <Content Include="Styles\images\glyphicons-halflings.png" />
     <Content Include="Styles\jquery.pnotify.css" />
@@ -308,6 +312,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\angular-touch.min.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\angular-ui-router.min.js.map">
+      <DependentUpon>angular-ui-router.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\underscore.min.js.map">
+      <DependentUpon>underscore.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

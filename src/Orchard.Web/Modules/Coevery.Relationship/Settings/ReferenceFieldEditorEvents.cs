@@ -72,9 +72,9 @@ namespace Coevery.Relationship.Settings {
             var model = settingsDictionary.TryGetModel<ReferenceFieldSettings>();
             if (model != null) {
                 UpdateSettings(model, builder, "ReferenceFieldSettings");
-                builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName.ToString(CultureInfo.InvariantCulture));
-                builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString());
+                builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName);
+                builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName);
                 builder.WithSetting("ReferenceFieldSettings.RelationshipId", model.RelationshipId.ToString(CultureInfo.InvariantCulture));
                 builder.WithSetting("ReferenceFieldSettings.QueryId", model.QueryId.ToString(CultureInfo.InvariantCulture));
             }
@@ -86,7 +86,12 @@ namespace Coevery.Relationship.Settings {
             }
             var relationshipId = int.Parse(settingsDictionary["ReferenceFieldSettings.RelationshipId"]);
             var record = _repository.Table.FirstOrDefault(x => x.Relationship.Id == relationshipId);
-            _relationshipService.DeleteRelationship(record);
+            if (record != null) {
+                record = _repository.Table
+                    .First(x => x.Relationship.Name == record.Relationship.Name
+                                && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
+                _relationshipService.DeleteRelationship(record);
+            }
         }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {

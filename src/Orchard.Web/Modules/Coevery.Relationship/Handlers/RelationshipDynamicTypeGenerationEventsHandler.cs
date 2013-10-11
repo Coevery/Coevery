@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Coevery.Core.Events;
@@ -22,7 +23,10 @@ namespace Coevery.Relationship.Handlers {
         }
 
         public void OnBuilded(ModuleBuilder moduleBuilder) {
-            foreach (var manyToManyRelationshipRecord in _manyToManyRepository.Table) {
+            var records = _manyToManyRepository.Table
+                .Where(x => x.Relationship.PrimaryEntity.ContentItemVersionRecord.Latest
+                            && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
+            foreach (var manyToManyRelationshipRecord in records) {
                 var relationshipName = manyToManyRelationshipRecord.Relationship.Name;
                 var primaryName = relationshipName + manyToManyRelationshipRecord.Relationship.PrimaryEntity.Name;
                 var relatedName = relationshipName + manyToManyRelationshipRecord.Relationship.RelatedEntity.Name;
@@ -99,14 +103,14 @@ namespace Coevery.Relationship.Handlers {
                 MethodAttributes.SpecialName |
                 MethodAttributes.RTSpecialName,
                 CallingConventions.Standard,
-                new Type[1] { paramGenericType });
+                new Type[1] {paramGenericType});
 
             var generator = ctorBuilder.GetILGenerator();
             generator.Emit(OpCodes.Ldarg_0);
             generator.Emit(OpCodes.Ldarg_1);
             Type contentType = typeof(DynamicContentsHandler<>);
             var genericContentType = contentType.MakeGenericType(type);
-            var baseCtorInfo = genericContentType.GetConstructor(new Type[1] { paramGenericType });
+            var baseCtorInfo = genericContentType.GetConstructor(new Type[1] {paramGenericType});
             generator.Emit(OpCodes.Call, baseCtorInfo);
             generator.Emit(OpCodes.Ret);
         }
@@ -118,7 +122,7 @@ namespace Coevery.Relationship.Handlers {
                 MethodAttributes.SpecialName |
                 MethodAttributes.RTSpecialName,
                 CallingConventions.Standard,
-                new Type[] { seriviceType, typeof(IContentManager), repositoryType, typeof(IContentDefinitionManager) });
+                new Type[] {seriviceType, typeof(IContentManager), repositoryType, typeof(IContentDefinitionManager)});
 
             var generator = ctorBuilder.GetILGenerator();
             generator.Emit(OpCodes.Ldarg_0);
@@ -128,7 +132,7 @@ namespace Coevery.Relationship.Handlers {
             generator.Emit(OpCodes.Ldarg_S, (byte) 4);
             var baseCtorInfo = typeBuilder.BaseType.GetConstructor(
                 BindingFlags.NonPublic | BindingFlags.Instance, null,
-                new Type[] { seriviceType, typeof(IContentManager), repositoryType, typeof(IContentDefinitionManager) },
+                new Type[] {seriviceType, typeof(IContentManager), repositoryType, typeof(IContentDefinitionManager)},
                 null);
             generator.Emit(OpCodes.Call, baseCtorInfo);
             generator.Emit(OpCodes.Ldarg_0);

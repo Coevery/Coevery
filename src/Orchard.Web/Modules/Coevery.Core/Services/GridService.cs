@@ -11,6 +11,7 @@ using Orchard.Projections.Services;
 
 namespace Coevery.Core.Services {
     public class GridService : IGridService {
+        private const string Format = @"<Form><Description>{0}</Description><Sort>{1}</Sort></Form>";
         private readonly IQueryService _queryService;
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
@@ -36,8 +37,8 @@ namespace Coevery.Core.Services {
                 query.SortCriteria.Add(new SortCriterionRecord {
                     Category = entityName + "ContentFields",
                     Type = entityName + "." + sortInfo.First() + ".",
-                    State = FormParametersHelper.ToString(new Dictionary<string,bool> {
-                        { "Sort", sortInfo.Last() == "asc"}
+                    State = FormParametersHelper.ToString(new Dictionary<string,string> {
+                        { "Sort", (sortInfo.Last() == "asc").ToString().ToLower()}
                     }),
                     Description = sortInfo.First(),
                     Position = ++index

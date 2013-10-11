@@ -111,12 +111,12 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 $scope.AddAll = function () {
                     $.each($('td.unselectedField'), function (i, v) {
                         var displayName = $(v).text();
-                        var filedName = $(v).attr('filed-type');
+                        var fieldName = $(v).attr('filed-type');
                         var exsitsItem = $($scope.SelectedColumns).filter(function () {
                             return this.FieldName == fieldName;
                         });
                         if (exsitsItem.length <= 0) {
-                            $scope.addfield(filedName, displayName);
+                            $scope.addfield(fieldName, displayName);
                         }
                     });
                 };
