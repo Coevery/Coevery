@@ -86,7 +86,12 @@ namespace Coevery.Relationship.Settings {
             }
             var relationshipId = int.Parse(settingsDictionary["ReferenceFieldSettings.RelationshipId"]);
             var record = _repository.Table.FirstOrDefault(x => x.Relationship.Id == relationshipId);
-            _relationshipService.DeleteRelationship(record);
+            if (record != null) {
+                record = _repository.Table
+                    .First(x => x.Relationship.Name == record.Relationship.Name
+                                && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
+                _relationshipService.DeleteRelationship(record);
+            }
         }
 
         public override IEnumerable<TemplateViewModel> PartFieldEditor(ContentPartFieldDefinition definition) {
