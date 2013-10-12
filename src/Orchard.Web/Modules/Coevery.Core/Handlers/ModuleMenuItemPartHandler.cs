@@ -20,26 +20,23 @@ namespace Coevery.Core.Handlers {
         protected override void GetItemMetadata(GetContentItemMetadataContext context) {
             base.GetItemMetadata(context);
 
-            if (context.ContentItem.ContentType != "ModuleMenuItem")
-            {
+            if (context.ContentItem.ContentType != "ModuleMenuItem") {
                 return;
             }
 
             var moduleMenuItemPart = context.ContentItem.As<ModuleMenuItemPart>();
             // the display route for the menu item is the one for the referenced content item
-            if(moduleMenuItemPart != null) {
-
+            if (moduleMenuItemPart != null) {
                 // if the content doesn't exist anymore
-                if(moduleMenuItemPart.Record.ContentTypeDefinitionRecord == null) {
+                if (moduleMenuItemPart.Record.ContentTypeDefinitionRecord == null) {
                     return;
                 }
 
-               // context.Metadata.DisplayRouteValues = _contentManager.GetItemMetadata(moduleMenuItemPart.Content).DisplayRouteValues;
+                // context.Metadata.DisplayRouteValues = _contentManager.GetItemMetadata(moduleMenuItemPart.Content).DisplayRouteValues;
             }
         }
 
-        protected override void Loading(LoadContentContext context)
-        {
+        protected override void Loading(LoadContentContext context) {
             base.Loading(context);
         }
     }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -9,8 +7,7 @@ using System.Web.SessionState;
 using Orchard.Environment.ShellBuilders.Models;
 using Orchard.Mvc.Routes;
 
-namespace Coevery.Core
-{
+namespace Coevery.Core {
     public class Routes : IRouteProvider {
         private readonly ShellBlueprint _blueprint;
 
@@ -19,9 +16,9 @@ namespace Coevery.Core
         }
 
         public void GetRoutes(ICollection<RouteDescriptor> routes) {
-
-            foreach (var routeDescriptor in GetRoutes())
+            foreach (var routeDescriptor in GetRoutes()) {
                 routes.Add(routeDescriptor);
+            }
         }
 
         public IEnumerable<RouteDescriptor> GetRoutes() {
@@ -61,8 +58,7 @@ namespace Coevery.Core
             };
 
 
-            yield return new RouteDescriptor
-            {
+            yield return new RouteDescriptor {
                 Route = new Route(
                     "SystemAdmin",
                     new RouteValueDictionary {

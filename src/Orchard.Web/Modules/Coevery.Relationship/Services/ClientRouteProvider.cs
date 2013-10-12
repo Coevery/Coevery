@@ -1,5 +1,4 @@
 ﻿using Coevery.Core.ClientRoute;
-using Orchard.Environment.Extensions.Models;
 
 namespace Coevery.Relationship.Services {
     public class ClientRouteProvider : ClientRouteProviderBase {

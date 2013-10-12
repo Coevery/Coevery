@@ -2,10 +2,8 @@
 using System.Web.Mvc;
 using Coevery.Entities.Settings;
 
-namespace Coevery.Relationship.Settings
-{
-    public class ReferenceFieldSettings : FieldSettings
-    {
+namespace Coevery.Relationship.Settings {
+    public class ReferenceFieldSettings : FieldSettings {
         public bool DisplayAsLink { get; set; }
 
         /// <summary>

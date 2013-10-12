@@ -9,13 +9,13 @@ using Orchard.UI.Navigation;
 
 namespace Coevery.Core.FrontMenu {
     public class FrontMenuFilter : FilterProvider, IResultFilter {
-        private readonly INavigationManager _navigationManager;private readonly IWorkContextAccessor _workContextAccessor;
+        private readonly INavigationManager _navigationManager;
+        private readonly IWorkContextAccessor _workContextAccessor;
         private readonly dynamic _shapeFactory;
 
         public FrontMenuFilter(INavigationManager navigationManager,
             IWorkContextAccessor workContextAccessor,
             IShapeFactory shapeFactory) {
-
             _navigationManager = navigationManager;
             _workContextAccessor = workContextAccessor;
             _shapeFactory = shapeFactory;
@@ -30,8 +30,7 @@ namespace Coevery.Core.FrontMenu {
             WorkContext workContext = _workContextAccessor.GetContext(filterContext);
 
             const string menuName = "FrontMenu";
-            if (!FrontMenuAuthorFilter.IsApplied(filterContext.RequestContext))
-            {
+            if (!FrontMenuAuthorFilter.IsApplied(filterContext.RequestContext)) {
                 return;
             }
 
@@ -57,8 +56,9 @@ namespace Coevery.Core.FrontMenu {
 
             // Add any know image sets to the main nav
             IEnumerable<string> menuImageSets = _navigationManager.BuildImageSets(menuName);
-            if (menuImageSets != null && menuImageSets.Any())
+            if (menuImageSets != null && menuImageSets.Any()) {
                 menuShape.ImageSets(menuImageSets);
+            }
 
             workContext.Layout.Navigation.Add(menuShape);
 
@@ -68,6 +68,6 @@ namespace Coevery.Core.FrontMenu {
             workContext.Layout.LocalNavigation.Add(localMenuShape);
         }
 
-        public void OnResultExecuted(ResultExecutedContext filterContext) { }
+        public void OnResultExecuted(ResultExecutedContext filterContext) {}
     }
 }

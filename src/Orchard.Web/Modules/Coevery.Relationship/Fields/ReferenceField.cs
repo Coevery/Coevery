@@ -2,7 +2,6 @@
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.FieldStorage;
 using Orchard.Core.Common.Utilities;
-using Orchard.Environment.Extensions;
 
 namespace Coevery.Relationship.Fields {
     [CustomField]

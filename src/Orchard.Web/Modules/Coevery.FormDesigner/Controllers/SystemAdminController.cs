@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Mvc;
-using Coevery.Core.Admin;
 using Coevery.Entities.Services;
 using Coevery.FormDesigner.ViewModels;
 using Orchard;
@@ -11,7 +10,6 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Localization;
 using Orchard.Logging;
-using Orchard.Themes;
 
 namespace Coevery.FormDesigner.Controllers {
     public class SystemAdminController : Controller {

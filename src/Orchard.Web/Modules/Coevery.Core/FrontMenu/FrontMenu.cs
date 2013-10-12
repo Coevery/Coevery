@@ -3,7 +3,6 @@ using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using Coevery.Core.Models;
 using Orchard;
-using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Navigation.Models;
 using Orchard.Core.Navigation.Services;
 using Orchard.Core.Navigation.ViewModels;
@@ -13,8 +12,8 @@ using Orchard.UI;
 using Orchard.UI.Navigation;
 using Orchard.ContentManagement;
 using System.Linq;
-namespace Coevery.Core.FrontMenu
-{
+
+namespace Coevery.Core.FrontMenu {
     public class FrontMenu : INavigationProvider {
         private readonly IMenuService _menuService;
 
@@ -24,11 +23,14 @@ namespace Coevery.Core.FrontMenu
         }
 
         public Localizer T { get; set; }
-        public string MenuName { get { return "FrontMenu"; } }
+
+        public string MenuName {
+            get { return "FrontMenu"; }
+        }
+
         public IOrchardServices Services { get; set; }
 
         public void GetNavigation(NavigationBuilder builder) {
-
             var menus = Services.ContentManager.Query<TitlePart, TitlePartRecord>().OrderBy(x => x.Title).ForType("Menu").List().ToList();
             int firstMenuIndex = 0;
             menus.ForEach(c => {
@@ -50,7 +52,7 @@ namespace Coevery.Core.FrontMenu
                                 var position = (++menuIdex).ToString(CultureInfo.InvariantCulture);
                                 if (moduleMenuItem != null) {
                                     menu.Add(T(menuItemEntity.Text), position, item =>
-                                        item.Url(menuItemEntity.Url).Content(subMenuCotent).IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)), 
+                                        item.Url(menuItemEntity.Url).Content(subMenuCotent).IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)),
                                         new List<string>() {moduleMenuItem.IconClass});
                                 }
                                 else {
@@ -64,7 +66,7 @@ namespace Coevery.Core.FrontMenu
 
         private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart, string parentUrl) {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            string urlFormat = parentUrl+"/{0}";
+            string urlFormat = parentUrl + "/{0}";
             string pluralContentTypeName = pluralService.Pluralize(menuPart.MenuText);
             string url = string.Format(urlFormat, pluralContentTypeName);
 

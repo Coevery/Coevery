@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
+﻿using System.Text.RegularExpressions;
 using Orchard.Projections.Models;
-using Orchard.Projections.ViewModels;
 
-namespace Coevery.Core {
+namespace Coevery.Core.Services {
     public static class PropertyRecordExtension {
         public static string GetFiledName(this PropertyRecord property) {
             string type = property.Type;

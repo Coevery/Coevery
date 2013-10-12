@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Mvc;
-using Coevery.Core;
+using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
@@ -61,7 +61,7 @@ namespace Coevery.Relationship.Controllers {
         }
 
         public ActionResult Relationships() {
-            return View(new Dictionary<string,string>{ {"PublishTip",T("Works when the entity has been published.").Text} });
+            return View(new Dictionary<string, string> {{"PublishTip", T("Works when the entity has been published.").Text}});
         }
 
         #region OneToMany
@@ -116,7 +116,7 @@ namespace Coevery.Relationship.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.PublishContent, T("Not allowed to edit a content."))) {
                 return new HttpUnauthorizedResult();
             }
-            
+
             if (oneToMany.IsCreate) {
                 var checkNameMessage = _relationshipService.CheckRelationName(oneToMany.Name);
                 if (!string.IsNullOrWhiteSpace(checkNameMessage)) {
@@ -125,12 +125,10 @@ namespace Coevery.Relationship.Controllers {
                 }
                 var backMessage = _relationshipService.CreateRelationship(oneToMany);
                 int relationId;
-                if (int.TryParse(backMessage.ToString(),out relationId))
-                {
-                    return Json(new { relationId = relationId });
+                if (int.TryParse(backMessage, out relationId)) {
+                    return Json(new {relationId = relationId});
                 }
-                if (!string.IsNullOrWhiteSpace(backMessage))
-                {
+                if (!string.IsNullOrWhiteSpace(backMessage)) {
                     ModelState.AddModelError("OneToManyRelation", T(backMessage).ToString());
                     return ResponseError("");
                 }
@@ -220,12 +218,10 @@ namespace Coevery.Relationship.Controllers {
                 }
                 var backMessage = _relationshipService.CreateRelationship(manyToMany);
                 int relationId;
-                if (int.TryParse(backMessage.ToString(), out relationId))
-                {
-                    return Json(new { relationId = relationId });
+                if (int.TryParse(backMessage, out relationId)) {
+                    return Json(new {relationId = relationId});
                 }
-                if (!string.IsNullOrWhiteSpace(backMessage))
-                {
+                if (!string.IsNullOrWhiteSpace(backMessage)) {
                     ModelState.AddModelError("ManyToManyRelation", T(backMessage).ToString());
                     return ResponseError("");
                 }

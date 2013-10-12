@@ -84,12 +84,11 @@ namespace Coevery.Relationship.Settings {
             if (fieldType != "ReferenceField") {
                 return;
             }
-            var relationshipId = int.Parse(settingsDictionary["ReferenceFieldSettings.RelationshipId"]);
-            var record = _repository.Table.FirstOrDefault(x => x.Relationship.Id == relationshipId);
+            var relationshipName = settingsDictionary["ReferenceFieldSettings.RelationshipName"];
+            var record = _repository.Table
+                .FirstOrDefault(x => x.Relationship.Name == relationshipName
+                                     && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
             if (record != null) {
-                record = _repository.Table
-                    .First(x => x.Relationship.Name == record.Relationship.Name
-                                && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
                 _relationshipService.DeleteRelationship(record);
             }
         }

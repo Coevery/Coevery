@@ -37,7 +37,7 @@ namespace Coevery.SiteReset.Service
             _siteThemeService = siteThemeService;
             _virtualPathProvider = virtualPathProvider;
             _sessionFactoryHolder = sessionFactoryHolder;
-            var interpreter = new Coevery.Core.Services.DefaultDataMigrationInterpreter(shellSettings, sessionLocator, commandInterpreters, sessionFactoryHolder, reportsCoordinator);
+            var interpreter = new Coevery.Core.Services.DefaultDataMigrationInterpreter(shellSettings, commandInterpreters, sessionFactoryHolder, reportsCoordinator);
             _schemaBuilder = new SchemaBuilder(interpreter, "", s => s.Replace(".", "_"));
             Logger=NullLogger.Instance;
         }

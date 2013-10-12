@@ -16,17 +16,14 @@ using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinit
 namespace Coevery.Entities.Services {
     public class ContentDefinitionService : IContentDefinitionService {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
 
         public ContentDefinitionService(
             IOrchardServices services,
             IContentDefinitionManager contentDefinitionManager,
-            IEnumerable<IContentFieldDriver> contentFieldDrivers,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
-            _contentFieldDrivers = contentFieldDrivers;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             T = NullLocalizer.Instance;
         }

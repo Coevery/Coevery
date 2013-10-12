@@ -1,16 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Orchard.Data;
 using Orchard.Environment;
 using Orchard.Environment.Extensions.Models;
 using Orchard.Logging;
 using Orchard.Roles.Models;
-using Orchard.Roles.Services;
 using Orchard.Security;
-using Orchard.Security.Permissions;
 
-namespace Orchard.Roles {
+namespace Coevery.Core.Services {
     [UsedImplicitly]
     public class AnonymousRoleUpdater : IFeatureEventHandler {
         private readonly IRepository<RolesPermissionsRecord> _permissionRepository;

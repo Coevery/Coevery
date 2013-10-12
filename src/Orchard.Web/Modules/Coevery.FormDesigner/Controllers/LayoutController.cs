@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Text;
 using System.Web.Http;
 using System.Web.Mvc;
 using Coevery.Core.Services;
@@ -66,7 +64,7 @@ namespace Coevery.FormDesigner.Controllers {
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        private string GetLayout(ContentTypeDefinition contentTypeDefinition, ICollection<Section> data) {
+        private string GetLayout(ContentTypeDefinition contentTypeDefinition, IEnumerable<Section> data) {
             //check field valid
             if (contentTypeDefinition.Parts.Any()) {
                 var part = contentTypeDefinition.Parts.First(x => x.PartDefinition.Name == contentTypeDefinition.Name);
@@ -90,8 +88,7 @@ namespace Coevery.FormDesigner.Controllers {
                 }
             }
 
-            ViewDataDictionary viewData = new ViewDataDictionary();
-            viewData.Add("Layout", data);
+            var viewData = new ViewDataDictionary {{"Layout", data}};
             string layout = _templateViewService
                 .RenderView("Coevery.FormDesigner", "FormTemplate", "FormDesignerLayout", viewData);
             return layout;

@@ -7,7 +7,6 @@ using System.Text;
 using NHibernate.Dialect;
 using NHibernate.SqlTypes;
 using Orchard;
-using Orchard.ContentManagement.Records;
 using Orchard.Data;
 using Orchard.Data.Migration.Interpreters;
 using Orchard.Data.Migration.Schema;
@@ -19,7 +18,6 @@ using Orchard.Reports.Services;
 namespace Coevery.Core.Services {
     public class DefaultDataMigrationInterpreter : AbstractDataMigrationInterpreter, IDataMigrationInterpreter {
         private readonly ShellSettings _shellSettings;
-        private readonly ISessionLocator _sessionLocator;
         private readonly IEnumerable<ICommandInterpreter> _commandInterpreters;
         private readonly Dialect _dialect;
         private readonly List<string> _sqlStatements;
@@ -30,12 +28,10 @@ namespace Coevery.Core.Services {
 
         public DefaultDataMigrationInterpreter(
             ShellSettings shellSettings,
-            ISessionLocator sessionLocator,
             IEnumerable<ICommandInterpreter> commandInterpreters,
             ISessionFactoryHolder sessionFactoryHolder,
             IReportsCoordinator reportsCoordinator) {
             _shellSettings = shellSettings;
-            _sessionLocator = sessionLocator;
             _commandInterpreters = commandInterpreters;
             _sqlStatements = new List<string>();
             _sessionFactoryHolder = sessionFactoryHolder;

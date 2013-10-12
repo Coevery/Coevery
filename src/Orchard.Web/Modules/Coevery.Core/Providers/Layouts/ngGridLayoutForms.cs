@@ -4,13 +4,11 @@ using Orchard.Forms.Services;
 using Orchard.Localization;
 
 namespace Coevery.Core.Providers.Layouts {
-
     public class ngGridLayoutForms : IFormProvider {
-        protected dynamic Shape { get; set; }
+        public dynamic Shape { get; set; }
         public Localizer T { get; set; }
 
-        public ngGridLayoutForms(
-            IShapeFactory shapeFactory) {
+        public ngGridLayoutForms(IShapeFactory shapeFactory) {
             Shape = shapeFactory;
             T = NullLocalizer.Instance;
         }
@@ -18,7 +16,6 @@ namespace Coevery.Core.Providers.Layouts {
         public void Describe(DescribeContext context) {
             Func<IShapeFactory, object> form =
                 shape => {
-
                     var f = Shape.Form(
                         Id: "ngGridLayout",
                         _Options: Shape.Fieldset(
@@ -39,28 +36,28 @@ namespace Coevery.Core.Providers.Layouts {
                                 Title: T("Number of columns/lines "),
                                 Value: 3,
                                 Description: T("How many columns (in Horizontal mode) or lines (in Vertical mode) to display in the grid."),
-                                Classes: new[] { "small-text", "tokenized" }
+                                Classes: new[] {"small-text", "tokenized"}
                                 )
                             ),
                         _HtmlProperties: Shape.Fieldset(
-                            Title: T("Html properties"), 
+                            Title: T("Html properties"),
                             _ListId: Shape.TextBox(
                                 Id: "grid-id", Name: "GridId",
                                 Title: T("Grid id"),
                                 Description: T("The id to provide on the table element."),
-                                Classes: new[] { "textMedium", "tokenized" }
+                                Classes: new[] {"textMedium", "tokenized"}
                                 ),
                             _ListClass: Shape.TextBox(
                                 Id: "grid-class", Name: "GridClass",
                                 Title: T("Grid class"),
                                 Description: T("The class to provide on the table element."),
-                                Classes: new[] { "textMedium", "tokenized" }
+                                Classes: new[] {"textMedium", "tokenized"}
                                 ),
                             _ItemClass: Shape.TextBox(
                                 Id: "row-class", Name: "RowClass",
                                 Title: T("Row class"),
                                 Description: T("The class to provide on each row."),
-                                Classes: new[] { "textMedium", "tokenized" }
+                                Classes: new[] {"textMedium", "tokenized"}
                                 )
                             )
                         );
@@ -69,7 +66,6 @@ namespace Coevery.Core.Providers.Layouts {
                 };
 
             context.Form("ngGridLayout", form);
-
         }
     }
 
@@ -94,5 +90,4 @@ namespace Coevery.Core.Providers.Layouts {
             }
         }
     }
-
 }

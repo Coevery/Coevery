@@ -22,17 +22,16 @@ using Orchard.Mvc.Html;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 using Orchard.UI.Navigation;
-using Coevery.Core.ClientRoute;
 
 namespace Coevery.Core.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly INavigationManager _navigationManager;
-        
+
         public ViewTemplateController(
             IOrchardServices orchardServices,
             IContentDefinitionManager contentDefinitionManager,
-            INavigationManager navigationManager){
+            INavigationManager navigationManager) {
             Services = orchardServices;
             _contentDefinitionManager = contentDefinitionManager;
 
@@ -46,8 +45,7 @@ namespace Coevery.Core.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult MenuList()
-        {
+        public ActionResult MenuList() {
             const string menuName = "FrontMenu";
             IEnumerable<MenuItem> menuItems = _navigationManager.BuildMenu(menuName);
             return View(menuItems);
@@ -60,7 +58,7 @@ namespace Coevery.Core.Controllers {
 
             var contentItem = Services.ContentManager.New("ListViewPage");
             var model = Services.ContentManager.BuildDisplay(contentItem);
-            
+
             return View(model);
         }
 
@@ -140,7 +138,7 @@ namespace Coevery.Core.Controllers {
                 return this.RedirectLocal(returnUrl);
             }
 
-            return Json(new { Id = contentItem.Id });
+            return Json(new {Id = contentItem.Id});
         }
 
         public ActionResult Edit(int id) {
@@ -261,6 +259,5 @@ namespace Coevery.Core.Controllers {
         void IUpdateModel.AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
         }
-
     }
 }

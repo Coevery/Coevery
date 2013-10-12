@@ -46,20 +46,6 @@ define(['core/app/detourService'], function (detour) {
                         return;
                     }
                     var form = $('#field-info-form');
-                    //$.ajax({
-                    //    url: form.attr('action'),
-                    //    type: form.attr('method'),
-                    //    data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
-                    //    success: function (result) {                           
-                    //        logger.success('success');
-                    //        $scope.$parent.getAllField();
-                    //        $state.transitionTo('EntityDetail.Fields', { Id: entityName });                          
-                    //        $scope.closeDialog();
-                    //    },
-                    //    error: function (result) {
-                    //        logger.error('Failed:\n'+result.responseText);
-                    //    }
-                    //});
 
                     var promise = $http({
                         url: form.attr('action'),

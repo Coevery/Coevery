@@ -100,7 +100,6 @@
     <Compile Include="Admin\SystemAdminAttribute.cs" />
     <Compile Include="Admin\SystemAdminFilter.cs" />
     <Compile Include="Admin\SystemAdminMenu.cs" />
-    <Compile Include="Admin\SystemAdminThemeSelector.cs" />
     <Compile Include="Admin\SystemMenuFilter.cs" />
     <Compile Include="ClientRoute\ClientRouteAlteration.cs" />
     <Compile Include="ClientRoute\ClientRouteAlterationBuilder.cs" />
@@ -128,7 +127,6 @@
     <Compile Include="FrontMenu\FrontMenuFilter.cs" />
     <Compile Include="FrontMenu\FrontMenu.cs" />
     <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
-    <Compile Include="FrontMenu\FrontMenuThemeSelector.cs" />
     <Compile Include="FrontMenu\FrontMenuAttribute.cs" />
     <Compile Include="Handlers\CoeveryCommonPartHandler.cs" />
     <Compile Include="Handlers\DynamicContentsHandler.cs" />
@@ -213,9 +211,7 @@
     <Content Include="Views\ViewTemplate\MenuList.cshtml" />
     <Content Include="Views\ClientBootstrapScript.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Items\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>

@@ -65,7 +65,7 @@ namespace Coevery.Core.Services {
             IReportsCoordinator reportsCoordinator) {
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             _sessionFactoryHolder = sessionFactoryHolder;
-            var interpreter = new DefaultDataMigrationInterpreter(shellSettings, sessionLocator, commandInterpreters, sessionFactoryHolder, reportsCoordinator);
+            var interpreter = new DefaultDataMigrationInterpreter(shellSettings, commandInterpreters, sessionFactoryHolder, reportsCoordinator);
             _schemaBuilder = new SchemaBuilder(interpreter, "", s => s.Replace(".", "_"));
         }
 

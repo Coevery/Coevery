@@ -2,10 +2,7 @@
 using Coevery.Relationship.Fields;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData;
-using Orchard.Environment.Extensions;
 using Orchard.Localization;
-using Orchard.Security;
 
 namespace Coevery.Relationship.Handlers {
     public class ReferenceHandler : ContentHandler {

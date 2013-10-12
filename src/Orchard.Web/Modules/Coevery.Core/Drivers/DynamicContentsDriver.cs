@@ -20,8 +20,9 @@ namespace Coevery.Core.Drivers {
         protected override DriverResult Editor(TContent part, dynamic shapeHelper) {
             var results = new List<DriverResult> {ContentShape("Content_SaveButton", saveButton => saveButton)};
 
-            if (part.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable)
+            if (part.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable) {
                 results.Add(ContentShape("Content_PublishButton", publishButton => publishButton));
+            }
 
             return Combined(results.ToArray());
         }
@@ -30,11 +31,10 @@ namespace Coevery.Core.Drivers {
             return Editor(part, updater);
         }
 
-        public override IEnumerable<ContentPartInfo> GetPartInfo()
-        {
+        public override IEnumerable<ContentPartInfo> GetPartInfo() {
             var contentPartInfo = new[] {
                 new ContentPartInfo {
-                    PartName = typeof (TContent).Name.Replace("Part",string.Empty),
+                    PartName = typeof(TContent).Name.Replace("Part", string.Empty),
                     Factory = typePartDefinition => new TContent {TypePartDefinition = typePartDefinition}
                 }
             };
