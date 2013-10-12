@@ -2,7 +2,6 @@
 @using Orchard.UI.Resources;
 @{
     RegisterLink(new LinkEntry { Type = "image/x-icon", Rel = "shortcut icon", Href = Url.Content("~/modules/orchard.themes/Content/orchard.ico") });
-    Script.Include("html5.js").UseCondition("lt IE 9").AtHead();
 
     string title = Convert.ToString(Model.Title);
     string siteName = Convert.ToString(WorkContext.CurrentSite.SiteName);
@@ -32,11 +31,24 @@
     Script.Include("js/login.js");
 }
 <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7 static @Html.ClassForPage()" lang="@WorkContext.CurrentCulture"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8 static @Html.ClassForPage()" lang="@WorkContext.CurrentCulture"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9 static @Html.ClassForPage()" lang="@WorkContext.CurrentCulture"> <![endif]-->
+<!--[if gt IE 8]><!-->
 <html lang="@WorkContext.CurrentCulture" class="static @Html.ClassForPage()">
+<!--<![endif]-->
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@Html.Title(title, siteName)</title>
     @Display(Model.Head)
+    <link href='http://fonts.googleapis.com/css?family=Courgette' rel='stylesheet' type='text/css'>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     <script>(function (d) { d.className = "dyn" + d.className.substring(6, d.className.length); })(document.documentElement);</script>
     <style type="text/css">
         #Login-Main {
@@ -84,7 +96,7 @@
                                 Remember me
                             </label>
                         </div>
-                        @Html.ValidationSummary(T("Login was unsuccessful. Please correct the errors and try again.").ToString(),new{ @class="alert alert-danger fade in"})
+                        @Html.ValidationSummary(T("Login was unsuccessful. Please correct the errors and try again.").ToString(), new { @class = "alert alert-danger fade in" })
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success btn-block btn-large">Login</button>
                         </div>
