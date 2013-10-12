@@ -1,5 +1,4 @@
-﻿
-@using System.Web.Mvc
+﻿@using System.Web.Mvc
 @using System.Web.Routing
 @using Coevery.Relationship.Models
 @using Coevery.Relationship.Records
@@ -18,22 +17,20 @@
     </section>
 }
 
-@helper DisplayDeleteOption(OneToManyDeleteOption value,HtmlString attribute){
+@helper DisplayDeleteOption(OneToManyDeleteOption value, HtmlString attribute) {
     <input type="radio" ng-model="recordDeleteBehavior" 
            name="@Html.NameFor(model => model.DeleteOption)"
            value="@value" 
         @if (Model.DeleteOption == value) {
                 <text> checked="checked" </text>
-            }
-        @if (!Model.IsCreate) {          
+        }
+        @if (!Model.IsCreate) {
             if (Model.DeleteOption == value) {
                 <text> id="relation-deleteOption" data-ng-init="recordDeleteBehavior='@value'"</text>
-            }
-            else {
+            } else {
                 <text> disabled="disabled" </text>
             }
-        }
-        else {
+        } else {
             <text> @attribute </text>
         }/>
 }
@@ -46,7 +43,7 @@
 <header id="page-title">
     <h1 class="pull-left">One to Many Relationship Detail<span>show one to many relationship detail information</span></h1>
 </header>
-    
+
 <section id="main-content" style="margin-top: 47px">
     <div id="page-actions" class="clearfix">
         <btn-actions>
@@ -58,32 +55,36 @@
 
     <div class="row-fluid">
         @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post
-                                              , new { @class = "form-horizontal no-border edit-mode", id = "onetomany-form" }))
-        {
+                                              , new { @class = "form-horizontal no-border edit-mode", id = "onetomany-form" })) {
             @Html.ValidationSummary()
             @Html.HiddenFor(model => model.IsCreate, new { id = "IsCreate" })
 
             <fieldset>
                 <legend>General Information</legend>
-                                       
+
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new { @class = "span12 checkNameValid", id = "relation-name", required="" })
-                              ,"required")
-                    
+                              , Html.TextBoxFor(model =>
+                                  model.Name, new Dictionary<string, object> {
+                                      { "class", "span12 checkNameValid" }, 
+                                      { "id", "relation-name" }, 
+                                      {"required", ""},
+                                      {"data-check-name-valid",""},
+                                  })
+                              , "required")
+
                 @DisplayInput("Primary Entity"
                               , Html.TextBoxFor(model => model.PrimaryEntity, new { @class = "span12 primary-entity" })
-                              ,null)
-                    
+                              , null)
+
                 @if (Model.IsCreate) {
                     @DisplayInput("Related Entity"
                                   , Html.DropDownListFor(model => model.RelatedEntity, Model.EntityList,
-                                                         "Please select related entity", new { @class = "span12 related-entity", required="" })
-                                  ,"required")
-                }
-                else {
+                                                         "Please select related entity", new { @class = "span12 related-entity", required = "" })
+                                  , "required")
+                } else {
                     @DisplayInput("Related Entity"
                                   , Html.TextBoxFor(model => model.RelatedEntity, new { @class = "span12 related-entity", disabled = "disabled" })
-                                  ,null)
+                                  , null)
                 }
 
                 <section class="data-row control-group">
@@ -92,15 +93,15 @@
                     </label>
                     <div class="controls">
                         <label class="radio">
-                            @DisplayDeleteOption(OneToManyDeleteOption.NoAction,new HtmlString("ng-disabled='required'"))
+                            @DisplayDeleteOption(OneToManyDeleteOption.NoAction, new HtmlString("ng-disabled='required'"))
                             Clear the value of this field
                         </label>
                         <label class="radio">
-                            @DisplayDeleteOption(OneToManyDeleteOption.NotAllowed,null)
+                            @DisplayDeleteOption(OneToManyDeleteOption.NotAllowed, null)
                             Don't allow delete
                         </label>
                         <label class="radio">
-                            @DisplayDeleteOption(OneToManyDeleteOption.CascadingDelete,new HtmlString("id='defaultDeleteOption'"))
+                            @DisplayDeleteOption(OneToManyDeleteOption.CascadingDelete, new HtmlString("id='defaultDeleteOption'"))
                             Cascading delete
                         </label>
                     </div>
@@ -109,12 +110,12 @@
 
             <fieldset>
                 <legend>Related Entity Display Option</legend>
-                
-                @DisplayInput("Related Entity List Label"
-                              , Html.TextBoxFor(model => model.RelatedListLabel, new { @class = "span12",required="" })
-                              ,"required")
 
-                
+                @DisplayInput("Related Entity List Label"
+                              , Html.TextBoxFor(model => model.RelatedListLabel, new { @class = "span12", required = "" })
+                              , "required")
+
+
                 <section class="data-row control-group">
                     <div class="controls">
                         <label class="checkbox">
@@ -124,49 +125,49 @@
                             Show Related Entity List in the Primary Entity's Detail Page
                         </label>
                     </div>
-                </section>              
+                </section>
 
                 <section class="data-row control-group" ng-show="showRelatedList">
                     <div class="controls">
-                        @Html.ListBoxFor(m=>m.ColumnFieldList, Model.Fields)
+                        @Html.ListBoxFor(m => m.ColumnFieldList, Model.Fields)
                     </div>
                 </section>
 
             </fieldset>
 
-                if (Model.IsCreate) {
-                <fieldset>
-                    <legend>Reference Field</legend>
-                    @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new { @class = "span12", required="" }),"required")
-                    @DisplayInput("Field Name", Html.TextBoxFor(model => model.FieldName, new { @class = "span12", required="" }),"required")
+                                if (Model.IsCreate) {
+            <fieldset>
+                <legend>Reference Field</legend>
+                @DisplayInput("Field Label", Html.TextBoxFor(model => model.FieldLabel, new { @class = "span12", required = "" }), "required")
+                @DisplayInput("Field Name", Html.TextBoxFor(model => model.FieldName, new { @class = "span12", required = "" }), "required")
 
-                    <section class="data-row control-group">
-                        <label class="control-label">
-                            Options
+                <section class="data-row control-group">
+                    <label class="control-label">
+                        Options
+                    </label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" name="@Html.NameFor(model => model.Required)" ng-model="required" value="true"/>
+                            Required
                         </label>
-                        <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.Required)" ng-model="required" value="true"/>
-                                Required
-                            </label>
-                            <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.AlwaysInLayout)" ng-model="alwaysInLayout" value="true"/>
-                                Always In Layout
-                            </label>
-                            <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.DisplayAsLink)" value="true"/>
-                                Display As Link
-                            </label>
-                            <label class="checkbox">
-                                <input type="checkbox" name="@Html.NameFor(model => model.IsAudit)" value="true"/>
-                                Is Audit
-                            </label>
-                        </div>
-                    </section>
+                        <label class="checkbox">
+                            <input type="checkbox" name="@Html.NameFor(model => model.AlwaysInLayout)" ng-model="alwaysInLayout" value="true"/>
+                            Always In Layout
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" name="@Html.NameFor(model => model.DisplayAsLink)" value="true"/>
+                            Display As Link
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" name="@Html.NameFor(model => model.IsAudit)" value="true"/>
+                            Is Audit
+                        </label>
+                    </div>
+                </section>
 
-                    @DisplayInput("Help Text", Html.TextAreaFor(model => model.HelpText, new { @class = "span12" }),null)
-                </fieldset>
-                }
+                @DisplayInput("Help Text", Html.TextAreaFor(model => model.HelpText, new { @class = "span12" }), null)
+            </fieldset>
+                                }
         }
     </div>
 </section>
@@ -184,34 +185,22 @@
     }
 
     $(document).ready(
-        function () {
-            customPicklist($("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));
-
-            $.validator.addMethod("checkNameValid", function (value, element, params) {
-                var temp;
-                $.get("api/relationship/relationship?relationName="+value,
-                    function (data) {
-                        temp = data.ErrorMessage;
-                    },
-                    "json"
-                );
-                return !temp;
-            }, "Wrong decimal format!");
-            $.validator.classRuleSettings.checkNameValid = { checkNameValid: true };
+        function() {
+            customPicklist($("#@Html.FieldIdFor(m => m.ColumnFieldList)"));
 
             var jsonUrl = "@Url.Action("FieldNames", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Relationship" } })";
             var version = 0;
-            var getFields = function (entityName,selectElement) {
+            var getFields = function(entityName, selectElement) {
                 if (!entityName) {
                     return;
-                }   
+                }
 
                 $.post(jsonUrl, {
                         entityName: entityName,
                         version: ++version,
                         __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
                     },
-                    function (data) {
+                    function(data) {
                         if (version == data.version && data.result) {
                             selectElement.picklist("destroy");
                             customPicklist(selectElement.html(data.result));
@@ -221,11 +210,25 @@
                 );
             };
 
-            if ("@Model.IsCreate" == "False") {     
+            if ("@Model.IsCreate" == "False") {
                 $("#relation-name").prop('disabled', true);
             } else {
-                $("select.related-entity").change(function () {
-                    getFields($("select.related-entity option:selected").val(), $("#@Html.FieldIdFor(m=>m.ColumnFieldList)"));
+                var relationName = $("#relation-name");
+                var form = $("#onetomany-form");
+                relationName.keyup(function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $.get("api/relationship/relationship?relationName=" + relationName.val(),
+                        function(data) {
+                            relationName.attr("checkNameValid", data.ErrorMessage);
+                        },
+                        "json"
+                    ).done(function() {
+                        form.validate().element("#relation-name");
+                    });
+                });
+                $("select.related-entity").change(function() {
+                    getFields($("select.related-entity option:selected").val(), $("#@Html.FieldIdFor(m => m.ColumnFieldList)"));
                 });
             }
 

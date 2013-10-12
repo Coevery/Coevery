@@ -78,7 +78,10 @@
 
 		// Bootstrap Dropdown Workaround for touch devices
 		$(document).on('touchstart.dropdown.data-api', '.dropdown-menu', function (e) { e.stopPropagation(); });
-		
+		$.validator.addMethod("checkNameValid", function (value, element, params) {
+		    return !params[0];
+		}, $.validator.format("Error: {0}"));
+		$.validator.classRuleSettings.checkNameValid = { checkNameValid: true };
 		// Extend jQuery Validate Defaults.
 	    // You mav remove this if you use an another validation library
 		//if( $.validator ) {

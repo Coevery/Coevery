@@ -2,11 +2,11 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
         'CreateOneToManyCtrl',
-        ['$scope', 'logger', '$state', '$stateParams', '$http','$parse',
+        ['$scope', 'logger', '$state', '$stateParams', '$http', '$parse',
             function ($scope, logger, $state, $stateParams, $http, $parse) {
 
                 $scope.recordDeleteBehavior = 'CascadingDelete';
-                
+
                 $scope.$watch('required', function (newValue) {
                     if (newValue && $scope.recordDeleteBehavior == 'NoAction') {
                         $scope.recordDeleteBehavior = 'CascadingDelete';
@@ -19,7 +19,7 @@ define(['core/app/detourService'], function (detour) {
 
                 $scope.save = function () {
                     $("input.primary-entity").prop('disabled', false);
-                    var form = $('#onetomany-form');                  
+                    var form = $('#onetomany-form');
                     if (!validator.form()) {
                         return null;
                     }
@@ -55,8 +55,7 @@ define(['core/app/detourService'], function (detour) {
                     });
                     return promise;
                 };
-                
-                
+
                 $scope.saveAndBack = function () {
                     var promise = $scope.save();
                     promise && promise.then(function () {

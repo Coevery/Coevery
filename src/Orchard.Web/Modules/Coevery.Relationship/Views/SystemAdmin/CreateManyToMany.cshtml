@@ -45,7 +45,12 @@
             <fieldset>
                 <legend>General Information</legend>
                 @DisplayInput("Relationship Name"
-                              , Html.TextBoxFor(model => model.Name, new {@class = "span12",id = "relation-name", required=""})
+                              , Html.TextBoxFor(model => model.Name, new Dictionary<string, object> {
+                                      { "class", "span12 checkNameValid" }, 
+                                      { "id", "relation-name" }, 
+                                      {"required", ""},
+                                      {"data-check-name-valid",""},
+                                  })
                               , "required")
                     
                 @DisplayInput("Primary Entity"
@@ -161,7 +166,21 @@
            
             if ("@Model.IsCreate" == "False") {
                 $("#relation-name").prop('disabled', true);
-            } else {                
+            } else {
+                var relationName = $("#relation-name");
+                var form = $("#manytomany-form");
+                relationName.keyup(function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $.get("api/relationship/relationship?relationName=" + relationName.val(),
+                        function (data) {
+                            relationName.attr("checkNameValid", data.ErrorMessage);
+                        },
+                        "json"
+                    ).done(function () {
+                        form.validate().element("#relation-name");
+                    });
+                });
                 $("select.related-entity").change(function () {
                     getFields($("select.related-entity option:selected").val(), versionRel, $("#@Html.FieldIdFor(m=>m.RelatedColumnList)"), true);
                 });
