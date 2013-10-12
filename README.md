@@ -2,9 +2,13 @@ Coevery
 =======
 
 ## Demo
-Demo site url: http://demo.coevery.com:7575   
+Demo site1: http://demo.coevery.com:7575   
 User Name: admin  
-Password: 123456789
+Password: 123456789 
+  
+Demo site2: http://coevery.unmean.net   sponsored by：[永久](https://github.com/Jiuyong)  
+User Name: admin  
+Password: 123456789 
 
 ## License
 ### The Coevery Public License Version 3.0 ("CPL")
