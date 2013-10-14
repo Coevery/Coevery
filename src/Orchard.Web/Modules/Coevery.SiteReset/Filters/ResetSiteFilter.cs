@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using Orchard.Core.Scheduling.Models;
+using Orchard.Data;
 using Orchard.Mvc.Filters;
 using Orchard.Services;
 using Orchard.Tasks.Scheduling;
@@ -10,12 +10,13 @@ namespace Coevery.SiteReset.Filters
     public class ResetSiteFilter :FilterProvider, IActionFilter
     {
         private readonly IClock _clock;
-        private readonly IScheduledTaskManager _scheduledTaskManager;
+        private readonly IRepository<ScheduledTaskRecord> _repository;
         public ResetSiteFilter(
             IClock clock,
-            IScheduledTaskManager scheduledTaskManager) {
+            IRepository<ScheduledTaskRecord> repository)
+        {
             _clock = clock;
-            _scheduledTaskManager = scheduledTaskManager;
+            _repository = repository;
         }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
@@ -23,16 +24,11 @@ namespace Coevery.SiteReset.Filters
 
         }
 
-        public void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (!_scheduledTaskManager.GetTasks("ResetSite").Any()) return;
-            try {
-                _scheduledTaskManager.DeleteTasks(null, item => item.TaskType == "ResetSite");
-                _scheduledTaskManager.CreateTask("ResetSite", _clock.UtcNow.AddMinutes(30), null);
-            }
-            catch (Exception ex){
-                
-            }
+        public void OnActionExecuting(ActionExecutingContext filterContext) {
+            var task = _repository.Get(item => item.TaskType == "SwitchTheme");
+            if (task==null) return;
+            task.ScheduledUtc=_clock.UtcNow.AddMinutes(30);
+            _repository.Update(task);
         }
     }
 }

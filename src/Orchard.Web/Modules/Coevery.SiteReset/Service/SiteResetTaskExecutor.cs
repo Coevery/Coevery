@@ -12,6 +12,7 @@ using Orchard.Environment.Configuration;
 using Orchard.FileSystems.VirtualPath;
 using Orchard.Logging;
 using Orchard.Reports.Services;
+using Orchard.Services;
 using Orchard.Tasks.Scheduling;
 using Orchard.Themes.Services;
 
@@ -25,6 +26,8 @@ namespace Coevery.SiteReset.Service
         private readonly ISessionFactoryHolder _sessionFactoryHolder;
         private readonly SchemaBuilder _schemaBuilder;
         private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
+        private readonly IScheduledTaskManager _scheduledTaskManager;
+        private readonly IClock _clock;
         public SiteResetTaskExecutor(
             IThemeService themeService, 
             ISiteThemeService siteThemeService,
@@ -33,7 +36,9 @@ namespace Coevery.SiteReset.Service
             ShellSettings shellSettings,
             IEnumerable<ICommandInterpreter> commandInterpreters,
             IReportsCoordinator reportsCoordinator,
-            IDynamicAssemblyBuilder dynamicAssemblyBuilder)
+            IDynamicAssemblyBuilder dynamicAssemblyBuilder,
+            IScheduledTaskManager scheduledTaskManager,
+            IClock clock)
         {
             _themeService = themeService;
             _siteThemeService = siteThemeService;
@@ -42,42 +47,44 @@ namespace Coevery.SiteReset.Service
             var interpreter = new Coevery.Core.Services.DefaultDataMigrationInterpreter(shellSettings, commandInterpreters, sessionFactoryHolder, reportsCoordinator);
             _schemaBuilder = new SchemaBuilder(interpreter, "", s => s.Replace(".", "_"));
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
+            _scheduledTaskManager = scheduledTaskManager;
+            _clock = clock;
             Logger=NullLogger.Instance;
         }
 
         public ILogger Logger { get; set; }
 
         public void Process(ScheduledTaskContext context){
-             if (context.Task.TaskType == "ResetSite"){
-                 //_themeService.EnableThemeFeatures("Offline");
-                 //_siteThemeService.SetSiteTheme("Offline");
+            if (context.Task.TaskType == "SwitchTheme")
+            {
+                _themeService.EnableThemeFeatures("Offline");
+                _siteThemeService.SetSiteTheme("Offline");
+                _scheduledTaskManager.CreateTask("ResetSite", _clock.UtcNow.AddSeconds(1), null);
+            }
+            else if (context.Task.TaskType == "ResetSite") {
                 Logger.Information("start reseting site data at {2} utc", context.Task.ScheduledUtc);
                 DataTable tables = null;
                 var factory = _sessionFactoryHolder.GetSessionFactory();
-                using (var session = factory.OpenSession()){
+                using (var session = factory.OpenSession()) {
                     var connection = session.Connection;
                     var dialect = Dialect.GetDialect(_sessionFactoryHolder.GetConfiguration().Properties);
-                    var meta = dialect.GetDataBaseSchema((DbConnection)connection);
+                    var meta = dialect.GetDataBaseSchema((DbConnection) connection);
                     tables = meta.GetTables(null, null, null, null);
                 }
-                try
-                {
-                    foreach (DataRow dr in tables.Rows)
-                    {
+                try {
+                    foreach (DataRow dr in tables.Rows) {
                         if (dr["TABLE_NAME"].ToString().StartsWith("Coevery_DynamicTypes_"))
                             _schemaBuilder.DropTable(dr["TABLE_NAME"].ToString());
                     }
                     ExecuteOutSql("~/Modules/Coevery.SiteReset/Sql/create.sql");
                     _dynamicAssemblyBuilder.Build();
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     Logger.Warning(ex, "reset site error");
                 }
-                finally
-                {
-                    //_themeService.EnableThemeFeatures("Mooncake");
-                    //_siteThemeService.SetSiteTheme("Mooncake");
+                finally {
+                    _themeService.EnableThemeFeatures("Mooncake");
+                    _siteThemeService.SetSiteTheme("Mooncake");
                 }
             }
         }

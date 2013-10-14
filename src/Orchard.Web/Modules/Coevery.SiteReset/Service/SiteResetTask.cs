@@ -3,7 +3,6 @@ using Orchard.Data;
 using Orchard.Services;
 using Orchard.Tasks;
 using Orchard.Tasks.Scheduling;
-using Orchard.Themes.Services;
 
 namespace Coevery.SiteReset.Service
 {
@@ -12,20 +11,20 @@ namespace Coevery.SiteReset.Service
         private readonly IClock _clock;
         private readonly IScheduledTaskManager _scheduledTaskManager;
         private readonly IRepository<ScheduledTaskRecord> _repository;
-        public SiteResetTask(IScheduledTaskManager scheduledTaskManager,
+        public SiteResetTask(
+            IScheduledTaskManager scheduledTaskManager,
             IClock clock,
             IRepository<ScheduledTaskRecord> repository){
             _scheduledTaskManager = scheduledTaskManager;
             _clock = clock;
             _repository = repository;
-
         }
 
         public void Sweep(){
-            var peddingTaskCount = _repository.Count(x => x.ScheduledUtc > _clock.UtcNow && x.TaskType == "ResetSite");
+            var peddingTaskCount = _repository.Count(x => x.TaskType == "SwitchTheme" || x.TaskType == "ResetSite");
             if (peddingTaskCount == 0)
             {
-                _scheduledTaskManager.CreateTask("ResetSite", _clock.UtcNow.AddMinutes(30), null);
+                _scheduledTaskManager.CreateTask("SwitchTheme", _clock.UtcNow.AddMinutes(30), null);
             }
         }
     }
