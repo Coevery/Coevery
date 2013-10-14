@@ -95,6 +95,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filters\ResetSiteFilter.cs" />
     <Compile Include="Service\SiteResetTask.cs" />
     <Compile Include="Service\SiteResetTaskExecutor.cs" />
   </ItemGroup>

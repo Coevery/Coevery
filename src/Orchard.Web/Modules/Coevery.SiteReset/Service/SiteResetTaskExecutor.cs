@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.IO;
+using Coevery.Core.DynamicTypeGeneration;
 using NHibernate.Dialect;
 using Orchard.Data;
 using Orchard.Data.Migration.Interpreters;
@@ -23,15 +24,16 @@ namespace Coevery.SiteReset.Service
         private readonly IVirtualPathProvider _virtualPathProvider;
         private readonly ISessionFactoryHolder _sessionFactoryHolder;
         private readonly SchemaBuilder _schemaBuilder;
+        private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
         public SiteResetTaskExecutor(
             IThemeService themeService, 
             ISiteThemeService siteThemeService,
             ISessionFactoryHolder sessionFactoryHolder,
             IVirtualPathProvider virtualPathProvider,
             ShellSettings shellSettings,
-            ISessionLocator sessionLocator,
             IEnumerable<ICommandInterpreter> commandInterpreters,
-            IReportsCoordinator reportsCoordinator)
+            IReportsCoordinator reportsCoordinator,
+            IDynamicAssemblyBuilder dynamicAssemblyBuilder)
         {
             _themeService = themeService;
             _siteThemeService = siteThemeService;
@@ -39,33 +41,43 @@ namespace Coevery.SiteReset.Service
             _sessionFactoryHolder = sessionFactoryHolder;
             var interpreter = new Coevery.Core.Services.DefaultDataMigrationInterpreter(shellSettings, commandInterpreters, sessionFactoryHolder, reportsCoordinator);
             _schemaBuilder = new SchemaBuilder(interpreter, "", s => s.Replace(".", "_"));
+            _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
             Logger=NullLogger.Instance;
         }
 
         public ILogger Logger { get; set; }
 
         public void Process(ScheduledTaskContext context){
-            if (context.Task.TaskType == "SwitchTheme"){
-                _themeService.EnableThemeFeatures("Offline");
-                _siteThemeService.SetSiteTheme("Offline");
-            }
-            else if (context.Task.TaskType == "ResetSite"){
+             if (context.Task.TaskType == "ResetSite"){
+                 //_themeService.EnableThemeFeatures("Offline");
+                 //_siteThemeService.SetSiteTheme("Offline");
                 Logger.Information("start reseting site data at {2} utc", context.Task.ScheduledUtc);
+                DataTable tables = null;
                 var factory = _sessionFactoryHolder.GetSessionFactory();
                 using (var session = factory.OpenSession()){
                     var connection = session.Connection;
                     var dialect = Dialect.GetDialect(_sessionFactoryHolder.GetConfiguration().Properties);
                     var meta = dialect.GetDataBaseSchema((DbConnection)connection);
-                    var tables = meta.GetTables(null, null, null, null);
-                    try{
-                        foreach (DataRow dr in tables.Rows){
+                    tables = meta.GetTables(null, null, null, null);
+                }
+                try
+                {
+                    foreach (DataRow dr in tables.Rows)
+                    {
+                        if (dr["TABLE_NAME"].ToString().StartsWith("Coevery_DynamicTypes_"))
                             _schemaBuilder.DropTable(dr["TABLE_NAME"].ToString());
-                        }
-                        ExecuteOutSql("~/Modules/Coevery.SiteReset/Sql/create.sql");
                     }
-                    catch (Exception ex){
-                        Logger.Warning(ex, "reset site error");
-                    }
+                    ExecuteOutSql("~/Modules/Coevery.SiteReset/Sql/create.sql");
+                    _dynamicAssemblyBuilder.Build();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warning(ex, "reset site error");
+                }
+                finally
+                {
+                    //_themeService.EnableThemeFeatures("Mooncake");
+                    //_siteThemeService.SetSiteTheme("Mooncake");
                 }
             }
         }
