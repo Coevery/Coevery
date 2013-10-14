@@ -1,6 +1,9 @@
 ﻿using Coevery.Core.Drivers;
 using Coevery.Core.Events;
+using Coevery.Core.Extensions;
 using Coevery.Core.Handlers;
+using Coevery.Core.Providers;
+using Coevery.Entities.Extensions;
 using Orchard;
 using System;
 using System.Collections.Generic;
@@ -16,11 +19,7 @@ using Orchard.Environment.Features;
 using Orchard.FileSystems.VirtualPath;
 using Orchard.ContentManagement.Handlers;
 
-namespace Coevery.Core.DynamicTypeGeneration {
-    public interface IDynamicAssemblyBuilder : IDependency {
-        bool Build();
-        Type GetFieldType(string fieldNameType);
-    }
+namespace Coevery.Entities.DynamicTypeGeneration {   
 
     public class DynamicAssemblyBuilder : IDynamicAssemblyBuilder {
         internal const string AssemblyName = "Coevery.DynamicTypes";
@@ -28,16 +27,19 @@ namespace Coevery.Core.DynamicTypeGeneration {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IDynamicTypeGenerationEvents _dynamicTypeGenerationEvents;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public DynamicAssemblyBuilder(
             IVirtualPathProvider virtualPathProvider,
             IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
+            IContentDefinitionExtension contentDefinitionExtension,
             IDynamicTypeGenerationEvents dynamicTypeGenerationEvents) {
             _virtualPathProvider = virtualPathProvider;
             _contentDefinitionManager = contentDefinitionManager;
             _contentFieldDrivers = contentFieldDrivers;
             _dynamicTypeGenerationEvents = dynamicTypeGenerationEvents;
+            _contentDefinitionExtension = contentDefinitionExtension;
         }
 
         public Type GetFieldType(string fieldNameType) {
@@ -56,10 +58,10 @@ namespace Coevery.Core.DynamicTypeGeneration {
         public bool Build() {
             // user-defined parts
             // except for those parts with the same name as a type (implicit type's part or a mistake)
-            var userDefinedParts = _contentDefinitionManager
+            var userDefinedParts = _contentDefinitionExtension
                 .ListUserDefinedPartDefinitions()
                 .Select(cpd => new DynamicTypeDefinition {
-                    Name = cpd.Name,
+                    Name = cpd.Name.RemovePartSuffix(),
                     Fields = cpd.Fields.Select(f => new DynamicFieldDefinition {
                         Name = f.Name,
                         Type = GetFieldType(f.FieldDefinition.Name)

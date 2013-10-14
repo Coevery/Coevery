@@ -15,9 +15,9 @@
 
                 //init pagingoption
                 var pageSizes = [50, 100, 200];
-                var currentPage = parseInt($location.$$search['Page'], 10);
+                var currentPage = parseInt($location.$$search.Page, 10);
                 if (!currentPage) currentPage = 1;
-                var pageSize = parseInt($location.$$search['Rows'], 10);
+                var pageSize = parseInt($location.$$search.Rows, 10);
                 if (!pageSize || pageSizes.indexOf(pageSize) < 0) pageSize = 50;
 
                 var getPostData = function () {
@@ -36,7 +36,7 @@
                 // fetch view columns
                 $scope.FetchViewColumns = function (viewId) {
                     if (viewId <= 0) return;
-                    if (viewId == $scope.currentViewId) return;
+                    if (viewId === $scope.currentViewId) return;
                     var needGridReloading = true;
                     $scope.currentViewId = viewId;
                     $location.search("ViewId", viewId);
@@ -62,7 +62,7 @@
                                 loadComplete: function (data) {
                                     currentPage = data.page;
                                     pageSize = data.records;
-                                    if (currentFilterGroupId == 0) {
+                                    if (currentFilterGroupId === 0) {
                                         $scope.filterDescription = data.filterDescription;
                                     }
                                     $scope.$apply();
@@ -87,14 +87,14 @@
                 $scope.FetchDefinitionViews = function () {
                     var views = viewDefinitionService.query({ contentType: moduleName }, function () {
                         $scope.definitionViews = views;
-                        var defaultViewId = $location.$$search['ViewId'];
+                        var defaultViewId = $location.$$search.ViewId;
                         if (!defaultViewId) {
                             views.forEach(function (value, index) {
                                 if (value.Default) {
                                     defaultViewId = value.ContentId;
                                 }
                             });
-                            if (defaultViewId == 0 && views.length > 0)
+                            if (defaultViewId === 0 && views.length > 0)
                                 defaultViewId = views[0].ContentId;
                         }
                         $scope.FetchViewColumns(defaultViewId);
@@ -226,7 +226,7 @@
                 };
 
                 $scope.deleteFilter = function (filter) {
-                    if (filter.FilterGroupId == currentFilterGroupId) {
+                    if (filter.FilterGroupId === currentFilterGroupId) {
                         currentFilterGroupId = 0;
                     }
                     var index = $scope.definitionFilters.indexOf(filter);

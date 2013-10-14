@@ -174,7 +174,7 @@ namespace Orchard.ContentManagement.Drivers {
             return new CombinedResult(results);
         }
 
-        public virtual IEnumerable<ContentPartInfo> GetPartInfo() {
+        public IEnumerable<ContentPartInfo> GetPartInfo() {
             var contentPartInfo = new[] {
                 new ContentPartInfo {
                     PartName = typeof (TContent).Name,

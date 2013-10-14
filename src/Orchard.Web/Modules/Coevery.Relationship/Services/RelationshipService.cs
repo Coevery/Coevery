@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Coevery.Core.DynamicTypeGeneration;
+using Coevery.Core.Providers;
+using Coevery.Core.Extensions;
 using Coevery.Core.Services;
+using Coevery.Entities.Extensions;
 using Coevery.Entities.Services;
 using Coevery.Entities.ViewModels;
 using Coevery.Relationship.Records;
@@ -23,6 +25,7 @@ namespace Coevery.Relationship.Services {
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         private readonly IRepository<ManyToManyRelationshipRecord> _manyToManyRepository;
 
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IDynamicAssemblyBuilder _dynamicAssemblyBuilder;
         private readonly ISchemaUpdateService _schemaUpdateService;
@@ -33,6 +36,7 @@ namespace Coevery.Relationship.Services {
             IRepository<RelationshipRecord> relationshipRepository,
             IRepository<OneToManyRelationshipRecord> oneToManyRepository,
             IRepository<ManyToManyRelationshipRecord> manyToManyRepository,
+            IContentDefinitionExtension contentDefinitionExtension,
             IContentDefinitionManager contentDefinitionManager,
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
             ISchemaUpdateService schemaUpdateService,
@@ -46,6 +50,7 @@ namespace Coevery.Relationship.Services {
             _schemaUpdateService = schemaUpdateService;
             _contentManager = contentManager;
             _contentMetadataService = contentMetadataService;
+            _contentDefinitionExtension = contentDefinitionExtension;
         }
 
         #endregion
@@ -84,7 +89,7 @@ namespace Coevery.Relationship.Services {
         }
 
         public SelectListItem[] GetEntityNames(string excludeEntity) {
-            var entities = _contentDefinitionManager.ListUserDefinedTypeDefinitions();
+            var entities = _contentDefinitionExtension.ListUserDefinedTypeDefinitions();
             return entities == null
                 ? null
                 : (from entity in entities
@@ -360,7 +365,7 @@ namespace Coevery.Relationship.Services {
             }
             string category = typeName + "ContentFields";
             const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
-            var allFields = _contentDefinitionManager.GetPartDefinition(typeName).Fields.ToList();
+            var allFields = _contentDefinitionManager.GetPartDefinition(typeName.ToPartName()).Fields.ToList();
             foreach (var property in properties) {
                 var field = allFields.FirstOrDefault(c => c.Name == property);
                 if (field == null) {
@@ -426,13 +431,13 @@ namespace Coevery.Relationship.Services {
                 );
 
             _contentDefinitionManager.AlterPartDefinition(
-                primaryName + "Part",
+                primaryName.ToPartName(),
                 builder => builder
                     .Attachable()
                     .WithSetting("DisplayName", manyToMany.RelatedListLabel));
 
             _contentDefinitionManager.AlterPartDefinition(
-                relatedName + "Part",
+                relatedName.ToPartName(),
                 builder => builder
                     .Attachable()
                     .WithSetting("DisplayName", manyToMany.PrimaryListLabel));

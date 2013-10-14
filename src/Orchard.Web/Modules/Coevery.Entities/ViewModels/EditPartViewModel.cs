@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Coevery.Core.Extensions;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 using Orchard.Utility.Extensions;
@@ -24,7 +25,7 @@ namespace Coevery.Entities.ViewModels {
         private string _displayName;
         [Required]
         public string DisplayName {
-            get { return !string.IsNullOrWhiteSpace(_displayName) ? _displayName : Name.TrimEnd("Part").CamelFriendly(); }
+            get { return !string.IsNullOrWhiteSpace(_displayName) ? _displayName : Name.RemovePartSuffix().CamelFriendly(); }
             set { _displayName = value; }
         }
 

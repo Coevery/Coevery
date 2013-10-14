@@ -152,13 +152,10 @@ namespace Coevery.Entities.Services {
             }
             var hasPublished = entity.HasPublished();
 
-            if (!hasPublished) {
-                Services.ContentManager.Remove(entity.ContentItem);
-            }
-            else {
+            if (hasPublished) {
+                _schemaUpdateService.DropTable(entity.Name);
                 _entityEvents.OnDeleting(entity.Name);
                 _contentDefinitionService.RemoveType(entity.Name, true);
-                _schemaUpdateService.DropTable(entity.Name);
             }
             Services.ContentManager.Remove(entity.ContentItem);
 

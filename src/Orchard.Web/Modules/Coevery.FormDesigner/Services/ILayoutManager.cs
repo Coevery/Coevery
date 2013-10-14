@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Xml.Linq;
+using Coevery.Core.Extensions;
 using Orchard;
 using Orchard.ContentManagement.MetaData;
 
@@ -74,7 +75,7 @@ namespace Coevery.FormDesigner.Services {
             }
             var layout = GetLayoutElement("<fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"General Information\"></fd-section>");
             var section = layout.Descendants("fd-section").First();
-            var fields = typeDefinition.Parts.First(x => x.PartDefinition.Name == typeName).PartDefinition.Fields;
+            var fields = typeDefinition.Parts.First(x => x.PartDefinition.Name == typeName.ToPartName()).PartDefinition.Fields;
             foreach (var field in fields) {
                 var row = new XElement("fd-row");
                 section.Add(row);

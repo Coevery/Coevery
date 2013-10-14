@@ -30,16 +30,5 @@ namespace Coevery.Core.Drivers {
         protected override DriverResult Editor(TContent part, IUpdateModel updater, dynamic shapeHelper) {
             return Editor(part, updater);
         }
-
-        public override IEnumerable<ContentPartInfo> GetPartInfo() {
-            var contentPartInfo = new[] {
-                new ContentPartInfo {
-                    PartName = typeof(TContent).Name.Replace("Part", string.Empty),
-                    Factory = typePartDefinition => new TContent {TypePartDefinition = typePartDefinition}
-                }
-            };
-
-            return contentPartInfo;
-        }
     }
 }

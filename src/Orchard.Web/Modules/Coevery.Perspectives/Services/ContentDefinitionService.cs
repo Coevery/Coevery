@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Core.Extensions;
+using Coevery.Entities.Extensions;
 using Coevery.Perspectives.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
@@ -19,18 +21,21 @@ namespace Coevery.Perspectives.Services
         private readonly IEnumerable<IContentPartDriver> _contentPartDrivers;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public ContentDefinitionService(
                 IOrchardServices services,
                 IContentDefinitionManager contentDefinitionManager,
                 IEnumerable<IContentPartDriver> contentPartDrivers,
                 IEnumerable<IContentFieldDriver> contentFieldDrivers,
+            IContentDefinitionExtension contentDefinitionExtension,
                 IContentDefinitionEditorEvents contentDefinitionEditorEvents)
         {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             _contentPartDrivers = contentPartDrivers;
             _contentFieldDrivers = contentFieldDrivers;
+            _contentDefinitionExtension = contentDefinitionExtension;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             T = NullLocalizer.Instance;
         }
@@ -45,7 +50,7 @@ namespace Coevery.Perspectives.Services
 
         public IEnumerable<EditTypeViewModel> GetUserDefinedTypes()
         {
-            return _contentDefinitionManager.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
+            return _contentDefinitionExtension.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
         }
 
         public EditTypeViewModel GetType(string name)
@@ -153,7 +158,7 @@ namespace Coevery.Perspectives.Services
 
                 if (typeViewModel.Fields.Any())
                 {
-                    _contentDefinitionManager.AlterPartDefinition(typeViewModel.Name, partBuilder =>
+                    _contentDefinitionManager.AlterPartDefinition(typeViewModel.Name.ToPartName(), partBuilder =>
                     {
                         foreach (var field in typeViewModel.Fields)
                         {
@@ -177,7 +182,7 @@ namespace Coevery.Perspectives.Services
         public void AlterField(string typeName, EditPartFieldViewModel fieldViewModel, IUpdateModel updateModel) {
             var updater = new Updater(updateModel);
             updater._prefix = secondHalf => secondHalf;
-            _contentDefinitionManager.AlterPartDefinition(typeName, partBuilder => {
+            _contentDefinitionManager.AlterPartDefinition(typeName.ToPartName(), partBuilder => {
 
                 // allow extensions to alter partField configuration
                 if (fieldViewModel != null) {
@@ -199,9 +204,9 @@ namespace Coevery.Perspectives.Services
                 RemovePartFromType(partDefinition.PartDefinition.Name, name);
 
                 // delete the part if it's its own part
-                if (partDefinition.PartDefinition.Name == name)
+                if (partDefinition.PartDefinition.Name == name.ToPartName())
                 {
-                    RemovePart(name);
+                    RemovePart(name.ToPartName());
                 }
             }
 
@@ -237,13 +242,15 @@ namespace Coevery.Perspectives.Services
             // except for those parts with the same name as a type (implicit type's part or a mistake)
             var userContentParts = _contentDefinitionManager
                 .ListPartDefinitions()
-                .Where(cpd => !typeNames.Contains(cpd.Name))
+                .Where(cpd => !typeNames.Contains(cpd.Name.RemovePartSuffix()))
                 .Select(cpd => new EditPartViewModel(cpd));
 
             // code-defined parts
             var codeDefinedParts = metadataPartsOnly ?
                 Enumerable.Empty<EditPartViewModel>() :
-                _contentPartDrivers.SelectMany(d => d.GetPartInfo().Where(cpd => !userContentParts.Any(m => m.Name == cpd.PartName)).Select(cpi => new EditPartViewModel { Name = cpi.PartName }));
+                _contentPartDrivers.SelectMany(d => d.GetPartInfo()
+                    .Where(cpd => !userContentParts.Any(m => m.Name.ToPartName() == cpd.PartName))
+                    .Select(cpi => new EditPartViewModel { Name = cpi.PartName }));
 
             // Order by display name
             return userContentParts.Union(codeDefinedParts).OrderBy(m => m.DisplayName);
@@ -344,7 +351,7 @@ namespace Coevery.Perspectives.Services
         {
             IEnumerable<ContentPartFieldDefinition> fieldDefinitions;
 
-            var part = _contentDefinitionManager.GetPartDefinition(partName);
+            var part = _contentDefinitionManager.GetPartDefinition(partName.ToPartName());
             displayName = displayName.ToSafeName();
 
             if (part == null)
@@ -356,7 +363,7 @@ namespace Coevery.Perspectives.Services
                     throw new ArgumentException("The part doesn't exist: " + partName);
                 }
 
-                var typePart = type.Parts.FirstOrDefault(x => x.PartDefinition.Name == partName);
+                var typePart = type.Parts.FirstOrDefault(x => x.PartDefinition.Name == partName.ToPartName());
 
                 // id passed in might be that of a type w/ no implicit field
                 if (typePart == null)

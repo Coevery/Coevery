@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Mvc;
+using Coevery.Core.Extensions;
 using Coevery.Entities.Services;
 using Coevery.FormDesigner.ViewModels;
 using Orchard;
@@ -52,7 +53,7 @@ namespace Coevery.FormDesigner.Controllers {
             viewModel.Layout = layout;
             viewModel.DisplayName = contentItem.TypeDefinition.DisplayName;
             var templates = new List<dynamic>();
-            var fields = _contentDefinitionManager.GetPartDefinition(id).Fields
+            var fields = _contentDefinitionManager.GetPartDefinition(id.ToPartName()).Fields
                 .Select(x => new FieldViewModel {DisplayName = x.DisplayName, Name = x.Name})
                 .ToList();
             foreach (var item in model.Content.Items) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Coevery.Core.Extensions;
 using Coevery.Core.Services;
 using Coevery.Entities.Events;
 using Coevery.Entities.Models;
@@ -73,7 +74,7 @@ namespace Coevery.Entities.Handlers {
         private void CreateEntity(EntityMetadataPart part) {
             _contentDefinitionManager.AlterTypeDefinition(part.Name, builder => {
                 builder.DisplayedAs(part.DisplayName);
-                builder.WithPart(part.Name).WithPart("CoeveryCommonPart");
+                builder.WithPart(part.Name.ToPartName()).WithPart("CoeveryCommonPart");
             });
 
             foreach (var record in part.FieldMetadataRecords) {
@@ -119,7 +120,7 @@ namespace Coevery.Entities.Handlers {
             foreach (var fieldMetadataRecord in needUpdateFields) {
                 var record = fieldMetadataRecord;
                 var settings = _settingsFormatter.Map(Parse(record.Settings));
-                _contentDefinitionManager.AlterPartDefinition(entity.Name, builder =>
+                _contentDefinitionManager.AlterPartDefinition(entity.Name.ToPartName(), builder =>
                     builder.WithField(record.Name, fieldBuilder => {
                         fieldBuilder.WithDisplayName(settings["DisplayName"]);
                         _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
@@ -133,14 +134,14 @@ namespace Coevery.Entities.Handlers {
             var settings = _settingsFormatter.Map(Parse(field.Settings));
 
             // add field to part
-            _contentDefinitionManager.AlterPartDefinition(entityName, builder => {
+            _contentDefinitionManager.AlterPartDefinition(entityName.ToPartName(), builder => {
                 string fieldTypeName = field.ContentFieldDefinitionRecord.Name;
                 builder.WithField(field.Name, fieldBuilder =>
                     fieldBuilder.OfType(fieldTypeName).WithSetting("Storage", "Part"));
             });
 
             // update field settings
-            _contentDefinitionManager.AlterPartDefinition(entityName, builder =>
+            _contentDefinitionManager.AlterPartDefinition(entityName.ToPartName(), builder =>
                 builder.WithField(field.Name, fieldBuilder =>
                     _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings))
                 );

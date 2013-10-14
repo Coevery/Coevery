@@ -34,7 +34,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               var deleteEntity = $scope.selectedItems.length > 0 ? $scope.selectedRow[0].Id : null;
               if (!deleteEntity) return;
               entityDataService.delete({ name: deleteEntity }, function () {
-                  if ($scope.selectedItems.length != 0) {
+                  if ($scope.selectedItems.length !== 0) {
                       $scope.selectedItems = [];
                   }
                   $scope.getAllMetadata();

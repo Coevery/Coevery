@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using Coevery.Core.Extensions;
 using Coevery.Core.Services;
 using Coevery.FormDesigner.Models;
 using Orchard.ContentManagement.MetaData;
@@ -67,7 +68,7 @@ namespace Coevery.FormDesigner.Controllers {
         private string GetLayout(ContentTypeDefinition contentTypeDefinition, IEnumerable<Section> data) {
             //check field valid
             if (contentTypeDefinition.Parts.Any()) {
-                var part = contentTypeDefinition.Parts.First(x => x.PartDefinition.Name == contentTypeDefinition.Name);
+                var part = contentTypeDefinition.Parts.First(x => x.PartDefinition.Name == contentTypeDefinition.Name.ToPartName());
                 var partFields = part.PartDefinition.Fields.ToList();
                 var fields = data.SelectMany(x => x.Rows)
                     .SelectMany(x => x.Columns)
@@ -81,8 +82,7 @@ namespace Coevery.FormDesigner.Controllers {
                 foreach (var field in fields) {
                     if (partFields.Any(x => x.Name == field.FieldName)) {
                         field.IsValid = true;
-                    }
-                    else if (contentTypeDefinition.Parts.Any(x => x.PartDefinition.Name == field.FieldName)) {
+                    } else if (contentTypeDefinition.Parts.Any(x => x.PartDefinition.Name == field.FieldName)) {
                         field.IsValid = true;
                     }
                 }

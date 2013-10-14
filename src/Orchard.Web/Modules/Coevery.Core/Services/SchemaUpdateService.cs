@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using Coevery.Core.DynamicTypeGeneration;
+using Coevery.Core.Providers;
 using NHibernate.Dialect;
 using Orchard;
 using Orchard.Data;
@@ -98,8 +98,7 @@ namespace Coevery.Core.Services {
         }
 
         public void CreateTable(string tableName, Action<CreateTableContext> action = null) {
-            Func<string, string> format = x => string.Format(TableFormat, x);
-            string formatedTableName = format(tableName);
+            var formatedTableName = string.Format(TableFormat, tableName);
             bool result = CheckTableExists(formatedTableName);
             if (result) {
                 return;
@@ -132,6 +131,7 @@ namespace Coevery.Core.Services {
                 return;
             }
             _schemaBuilder.CreateTable(tableName, table);
+            GenerationDynmicAssembly();
         }
 
         public void DropCustomTable(string tableName) {
@@ -140,6 +140,7 @@ namespace Coevery.Core.Services {
                 return;
             }
             _schemaBuilder.DropTable(tableName);
+            GenerationDynmicAssembly();
         }
 
         public void CreateColumn(string tableName, string columnName, string columnType) {

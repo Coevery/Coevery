@@ -120,10 +120,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="CoreShapes.cs" />
     <Compile Include="Drivers\DynamicContentsDriver.cs" />
-    <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
-    <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
-    <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
+    <Compile Include="Extensions\CoeveryContentExtension.cs" />
+    <Compile Include="Extensions\CoeveryStringExtension.cs" />
     <Compile Include="FrontMenu\FrontMenuFilter.cs" />
     <Compile Include="FrontMenu\FrontMenu.cs" />
     <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
@@ -134,6 +133,7 @@
     <Compile Include="Models\CoeveryCommonPartRecord.cs" />
     <Compile Include="Models\CoeveryCommonPartVersionRecord.cs" />
     <Compile Include="Models\GridRequestModel.cs" />
+    <Compile Include="Providers\IDynamicAssemblyBuilder.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
     <Compile Include="Handlers\ModuleMenuItemPartHandler.cs">

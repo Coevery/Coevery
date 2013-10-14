@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Coevery.Core.Extensions;
 using Coevery.Entities.Services;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
@@ -186,7 +187,7 @@ namespace Coevery.Projections.Services {
                 var names = property.Split('.');
                 var propertyMatch = string.Format(fieldTypeFormat, names[0], names[1]);
                 var field = allFields.FirstOrDefault(c =>
-                    string.Format(fieldTypeFormat, entityName, c.Name) == propertyMatch);
+                    string.Format(fieldTypeFormat, entityName.ToPartName(), c.Name) == propertyMatch);
                 if (field == null) {
                     continue;
                 }

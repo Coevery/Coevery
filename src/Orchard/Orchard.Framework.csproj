@@ -171,7 +171,6 @@
     <Compile Include="ContentManagement\Handlers\ImportContentContext.cs" />
     <Compile Include="ContentManagement\IIdentityResolverSelector.cs" />
     <Compile Include="ContentManagement\ImportContentSession.cs" />
-    <Compile Include="ContentManagement\MetaData\ContentDefinitionManagerExtension.cs" />
     <Compile Include="ContentManagement\MetaData\Services\ISettingsFormatter.cs" />
     <Compile Include="ContentManagement\QueryHints.cs" />
     <Compile Include="ContentManagement\Utilities\ComputedField.cs" />

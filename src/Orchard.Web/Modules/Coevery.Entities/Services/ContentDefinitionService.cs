@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Core.Extensions;
+using Coevery.Entities.Extensions;
 using Coevery.Entities.ViewModels;
 using Orchard;
 using Orchard.ContentManagement;
@@ -16,15 +18,18 @@ using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinit
 namespace Coevery.Entities.Services {
     public class ContentDefinitionService : IContentDefinitionService {
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
 
         public ContentDefinitionService(
             IOrchardServices services,
             IContentDefinitionManager contentDefinitionManager,
+            IContentDefinitionExtension contentDefinitionExtension,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _contentDefinitionExtension = contentDefinitionExtension;
             T = NullLocalizer.Instance;
         }
 
@@ -36,7 +41,7 @@ namespace Coevery.Entities.Services {
         }
 
         public IEnumerable<EditTypeViewModel> GetUserDefinedTypes() {
-            return _contentDefinitionManager.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
+            return _contentDefinitionExtension.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
         }
 
         public EditTypeViewModel GetType(string name) {
@@ -127,7 +132,7 @@ namespace Coevery.Entities.Services {
                 }
 
                 if (typeViewModel.Fields.Any()) {
-                    _contentDefinitionManager.AlterPartDefinition(typeViewModel.Name, partBuilder => {
+                    _contentDefinitionManager.AlterPartDefinition(typeViewModel.Name.ToPartName(), partBuilder => {
                         foreach (var field in typeViewModel.Fields) {
                             var fieldViewModel = field;
 
@@ -163,8 +168,8 @@ namespace Coevery.Entities.Services {
                 RemovePartFromType(partDefinition.PartDefinition.Name, name);
 
                 // delete the part if it's its own part
-                if (partDefinition.PartDefinition.Name == name) {
-                    RemovePart(name);
+                if (string.Equals(partDefinition.PartDefinition.Name,name.ToPartName())) {
+                    RemovePart(name.ToPartName());
                 }
             }
 
@@ -286,17 +291,17 @@ namespace Coevery.Entities.Services {
         public string GenerateFieldNameFromDisplayName(string partName, string displayName) {
             IEnumerable<ContentPartFieldDefinition> fieldDefinitions;
 
-            var part = _contentDefinitionManager.GetPartDefinition(partName);
+            var part = _contentDefinitionManager.GetPartDefinition(partName.ToPartName());
             displayName = displayName.ToSafeName();
 
             if (part == null) {
                 var type = _contentDefinitionManager.GetTypeDefinition(partName);
 
                 if (type == null) {
-                    throw new ArgumentException("The part doesn't exist: " + partName);
+                    throw new ArgumentException("The entity doesn't exist: " + partName);
                 }
 
-                var typePart = type.Parts.FirstOrDefault(x => x.PartDefinition.Name == partName);
+                var typePart = type.Parts.FirstOrDefault(x => x.PartDefinition.Name == partName.ToPartName());
 
                 // id passed in might be that of a type w/ no implicit field
                 if (typePart == null) {

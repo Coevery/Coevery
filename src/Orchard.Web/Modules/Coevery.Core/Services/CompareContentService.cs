@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Coevery.Core.Extensions;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Forms.Services;
@@ -27,7 +28,7 @@ namespace Coevery.Core.Services {
 
         public bool CompareContent(ContentItem preContentItem, ContentItem newContentItem) {
             _defferences.Clear();
-            var part = newContentItem.Parts.FirstOrDefault(p => p.PartDefinition.Name.Contains(preContentItem.ContentType));
+            var part = newContentItem.Parts.FirstOrDefault(p => p.PartDefinition.Name == preContentItem.ContentType.ToPartName());
             if (part == null) {
                 return false;
             }

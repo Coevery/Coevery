@@ -21,7 +21,7 @@
                 var alias, initializeGrid, loadGrid;
                 gridCtrl.registerGridElement($element.find("table.gridz"));
                 alias = attrs.agGridName;
-                if (alias != null) {
+                if (alias) {
                     $scope[alias] = gridCtrl;
                 }
                 initializeGrid = function (gridOptions) {
@@ -111,7 +111,7 @@
                 };
 
                 loadGrid = function (gridOptions) {
-                    if (gridOptions == null) {
+                    if (!gridOptions) {
                         return;
                     }
                     var $grid;
@@ -144,7 +144,7 @@
 
     gridz.value("flatten", function (target, opts) {
         var delimiter, getKey, output, step;
-        if (opts == null) {
+        if (!opts) {
             opts = {
                 delimiter: "."
             };

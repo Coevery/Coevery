@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Coevery.Core.Extensions;
 using Coevery.Projections.FieldTypeEditors;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
@@ -15,15 +15,15 @@ using Orchard.Utility.Extensions;
 namespace Coevery.Projections.Providers.SortCriteria {
     [OrchardSuppressDependency("Orchard.Projections.Providers.SortCriteria.ContentFieldsSortCriterion")]
     public class ContentFieldsSortCriterion : ISortCriterionProvider {
-        private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IEnumerable<IConcreteFieldTypeEditor> _fieldTypeEditors;
 
         public ContentFieldsSortCriterion(
-            IContentDefinitionManager contentDefinitionManager,
+            IContentDefinitionExtension contentDefinitionExtension,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
             IEnumerable<IConcreteFieldTypeEditor> fieldTypeEditors) {
-            _contentDefinitionManager = contentDefinitionManager;
+            _contentDefinitionExtension = contentDefinitionExtension;
             _contentFieldDrivers = contentFieldDrivers;
             _fieldTypeEditors = fieldTypeEditors;
             T = NullLocalizer.Instance;
@@ -32,7 +32,7 @@ namespace Coevery.Projections.Providers.SortCriteria {
         public Localizer T { get; set; }
 
         public void Describe(DescribeSortCriterionContext describe) {
-            foreach(var part in _contentDefinitionManager.ListUserDefinedPartDefinitions()) {
+            foreach (var part in _contentDefinitionExtension.ListUserDefinedPartDefinitions()) {
                 if(!part.Fields.Any()) {
                     continue;
                 }

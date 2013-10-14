@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Core.Extensions;
 using Orchard.ContentManagement.MetaData.Models;
 using Orchard.ContentManagement.ViewModels;
 
@@ -32,7 +33,7 @@ namespace Coevery.Entities.ViewModels {
         public string FieldName { get; set; }
 
         private IEnumerable<EditPartFieldViewModel> GetTypeFields(ContentTypeDefinition contentTypeDefinition) {
-            var implicitTypePart = contentTypeDefinition.Parts.SingleOrDefault(p => string.Equals(p.PartDefinition.Name, Name, StringComparison.OrdinalIgnoreCase));
+            var implicitTypePart = contentTypeDefinition.Parts.SingleOrDefault(p => string.Equals(p.PartDefinition.Name, Name.ToPartName(), StringComparison.OrdinalIgnoreCase));
 
             return implicitTypePart == null
                 ? Enumerable.Empty<EditPartFieldViewModel>()
@@ -41,7 +42,7 @@ namespace Coevery.Entities.ViewModels {
 
         private IEnumerable<EditTypePartViewModel> GetTypeParts(ContentTypeDefinition contentTypeDefinition) {
             return contentTypeDefinition.Parts
-                .Where(p => !string.Equals(p.PartDefinition.Name, Name, StringComparison.OrdinalIgnoreCase))
+                .Where(p => !string.Equals(p.PartDefinition.Name, Name.ToPartName(), StringComparison.OrdinalIgnoreCase))
                 .Select((p, i) => new EditTypePartViewModel(i, p) { Type = this });
         }
     }
