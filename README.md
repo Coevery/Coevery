@@ -6,7 +6,7 @@ Demo site1: http://demo.coevery.com:7575
 User Name: admin  
 Password: 123456789 
   
-Demo site2: http://coevery.unmean.net   sponsored by：[永久](https://github.com/Jiuyong)  
+Demo site2: http://coevery.unmean.net   sponsored by：[久永](https://github.com/Jiuyong)  
 User Name: admin  
 Password: 123456789 
 
