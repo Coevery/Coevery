@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.IO;
-using Coevery.Core.DynamicTypeGeneration;
+using Coevery.Core.Providers;
 using NHibernate.Dialect;
 using Orchard.Data;
 using Orchard.Data.Migration.Interpreters;
