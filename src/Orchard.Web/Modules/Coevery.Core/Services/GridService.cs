@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Core.Extensions;
 using Orchard.Forms.Services;
 using Orchard.Localization;
 using Orchard.Logging;
@@ -33,8 +34,8 @@ namespace Coevery.Core.Services {
             foreach (var sortColumn in (sortColumns + " " + lastOrder).Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)) {
                 var sortInfo = sortColumn.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
                 query.SortCriteria.Add(new SortCriterionRecord {
-                    Category = entityName + "ContentFields",
-                    Type = entityName + "." + sortInfo.First() + ".",
+                    Category = entityName.ToPartName() + "ContentFields",
+                    Type = entityName.ToPartName() + "." + sortInfo.First() + ".",
                     State = FormParametersHelper.ToString(new Dictionary<string,string> {
                         { "Sort", (sortInfo.Last() == "asc").ToString().ToLower()}
                     }),

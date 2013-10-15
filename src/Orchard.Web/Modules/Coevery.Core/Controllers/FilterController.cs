@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Coevery.Core.Extensions;
 using Coevery.Core.ViewModels;
 using Orchard.Projections.Services;
 
@@ -20,7 +21,7 @@ namespace Coevery.Core.Controllers {
             var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             id = pluralService.Singularize(id);
 
-            string category = id + "ContentFields";
+            string category = id.ToPartName() + "ContentFields";
             var filters = _projectionManager.DescribeFilters()
                 .Where(x => x.Category == category)
                 .SelectMany(x => x.Descriptors);

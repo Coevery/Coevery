@@ -45,7 +45,7 @@ namespace Coevery.Projections.Services {
         public Localizer T { get; set; }
 
         public IEnumerable<PropertyDescriptor> GetFieldDescriptors(string entityType) {
-            var category = entityType + "ContentFields";
+            var category = entityType.ToPartName() + "ContentFields";
             var fieldDescriptors = _projectionManager.DescribeProperties().Where(x => x.Category == category).SelectMany(x => x.Descriptors).ToList();
             return fieldDescriptors;
         }
@@ -60,7 +60,7 @@ namespace Coevery.Projections.Services {
 
             var listViewPart = projectionItem.As<ListViewPart>();
             viewModel.Id = id;
-            viewModel.ItemContentType = listViewPart.ItemContentType;
+            viewModel.ItemContentType = listViewPart.ItemContentType.ToPartName();
             viewModel.DisplayName = listViewPart.As<TitlePart>().Title;
             viewModel.VisableTo = listViewPart.VisableTo;
             viewModel.PageRowCount = projectionPart.Record.ItemsPerPage;
@@ -87,7 +87,7 @@ namespace Coevery.Projections.Services {
             if (entityType == null || listViewParts == null || !listViewParts.Any()) {
                 return "Invalid entity name!";
             }
-            var category = entityName + "ContentFields";
+            var category = entityName.ToPartName() + "ContentFields";
             const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
             foreach (var view in listViewParts) {
                 var projection = view.As<ProjectionPart>().Record;
@@ -95,7 +95,7 @@ namespace Coevery.Projections.Services {
                 var pickedFileds = (from field in layout.Properties
                                     select field.Type).ToArray();
                 layout.Properties.Clear();
-                UpdateLayoutProperties(entityName,ref layout,category,settingName,pickedFileds);
+                UpdateLayoutProperties(entityName.ToPartName(),ref layout,category,settingName,pickedFileds);
                 layout.State = GetLayoutState(projection.QueryPartRecord.Id, layout.Properties.Count, layout.Description);
             }
             return null;
@@ -107,7 +107,7 @@ namespace Coevery.Projections.Services {
             QueryPart queryPart;
             if (id == 0) {
                 listViewPart = _contentManager.New<ListViewPart>("ListViewPage");
-                listViewPart.ItemContentType = viewModel.ItemContentType;
+                listViewPart.ItemContentType = viewModel.ItemContentType.RemovePartSuffix();
                 queryPart = _contentManager.New<QueryPart>("Query");
 
                 var layout = new LayoutRecord {
@@ -128,7 +128,7 @@ namespace Coevery.Projections.Services {
                     Category = "Content",
                     Type = "ContentTypes",
                     Position = filterGroup.Filters.Count,
-                    State = GetContentTypeFilterState(viewModel.ItemContentType)
+                    State = GetContentTypeFilterState(listViewPart.ItemContentType)
                 };
                 filterGroup.Filters.Add(filterRecord);
 
@@ -180,14 +180,14 @@ namespace Coevery.Projections.Services {
             return listViewPart.Id;
         }
 
-        private void UpdateLayoutProperties(string entityName, ref LayoutRecord layout, string category, string settingName, IEnumerable<string> pickedFileds) {
-            var allFields = _contentDefinitionManager.GetPartDefinition(entityName).Fields.ToList();
+        private void UpdateLayoutProperties(string partName, ref LayoutRecord layout, string category, string settingName, IEnumerable<string> pickedFileds) {
+            var allFields = _contentDefinitionManager.GetPartDefinition(partName).Fields.ToList();
             const string fieldTypeFormat = "{0}.{1}.";
             foreach (var property in pickedFileds) {
                 var names = property.Split('.');
                 var propertyMatch = string.Format(fieldTypeFormat, names[0], names[1]);
                 var field = allFields.FirstOrDefault(c =>
-                    string.Format(fieldTypeFormat, entityName.ToPartName(), c.Name) == propertyMatch);
+                    string.Format(fieldTypeFormat, partName, c.Name) == propertyMatch);
                 if (field == null) {
                     continue;
                 }

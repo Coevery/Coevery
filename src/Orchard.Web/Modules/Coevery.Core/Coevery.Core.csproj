@@ -122,6 +122,7 @@
     <Compile Include="Drivers\DynamicContentsDriver.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
+    <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
     <Compile Include="Extensions\CoeveryStringExtension.cs" />
     <Compile Include="FrontMenu\FrontMenuFilter.cs" />
     <Compile Include="FrontMenu\FrontMenu.cs" />

@@ -35,7 +35,7 @@ namespace Coevery.Core.Services {
             var fieldContext = new PropertyContext {
                 State = FormParametersHelper.ToDynamic(string.Empty)
             };
-            string category = newContentItem.ContentType + "ContentFields";
+            string category = newContentItem.ContentType.ToPartName() + "ContentFields";
             var allFielDescriptors = _projectionManager.DescribeProperties().Where(p => p.Category == category).SelectMany(x => x.Descriptors).ToList();
             foreach (var field in part.Fields) {
                 if (!field.PartFieldDefinition.Settings.ContainsKey(IsAuditKey)) {

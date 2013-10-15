@@ -33,7 +33,7 @@
         };
 
         AgGridCtrl.prototype.reload = function (callback) {
-            if (callback == null) {
+            if (!callback) {
                 callback = angular.noop;
             }
             this.$grid.trigger("reloadGrid");
@@ -54,7 +54,7 @@
         };
 
         AgGridCtrl.prototype.addRow = function (id, data, position) {
-            if (position == null) {
+            if (!position) {
                 position = "first";
             }
             this.$grid.addRowData(id, this.flatten(data), position);
@@ -101,7 +101,7 @@
             column = _.findWhere(this._getColModel(), {
                 name: columnId
             });
-            return column != null ? column.hidden : void 0;
+            return !column ? column.hidden : void 0;
         };
 
         AgGridCtrl.prototype.toggleColumn = function (columnId) {
@@ -113,7 +113,7 @@
 
         AgGridCtrl.prototype.columnChooser = function (options) {
             var _this = this;
-            if (options == null) {
+            if (!options) {
                 options = {};
             }
             options.done = function (perm) {
@@ -139,7 +139,7 @@
 
         AgGridCtrl.prototype._flashRow = function (id, complete) {
             var $row;
-            if (complete == null) {
+            if (!complete) {
                 complete = angular.noop;
             }
             $row = $(this.$grid[0].rows.namedItem(id));

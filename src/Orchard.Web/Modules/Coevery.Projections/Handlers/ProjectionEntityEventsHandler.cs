@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Coevery.Core.Extensions;
 using Coevery.Entities.Events;
 using Coevery.Projections.Models;
 using Coevery.Projections.Services;
@@ -20,7 +21,7 @@ namespace Coevery.Projections.Handlers {
         public void OnCreated(string entityName) {
             var fields = _projectionService.GetFieldDescriptors(entityName).Select(x => x.Type);
             var viewModel = new ProjectionEditViewModel {
-                ItemContentType = entityName,
+                ItemContentType = entityName.ToPartName(),
                 DisplayName = entityName + " DefaultView",
                 PageRowCount = 50,
                 IsDefault = true

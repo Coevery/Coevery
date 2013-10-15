@@ -20,23 +20,27 @@ namespace Coevery.Entities.Extensions {
         }
 
         public IEnumerable<ContentTypeDefinition> ListUserDefinedTypeDefinitions() {
-            var metaEntities = _contentManager.Query<EntityMetadataPart>(VersionOptions.Published)
+            var metaEntities = _contentManager.Query<EntityMetadataPart>(VersionOptions.Latest)
                                               .List();
             if (metaEntities == null || !metaEntities.Any()) {
                 return null;
             }
-            return _contentDefinitionManager.ListTypeDefinitions()
-                                            .Where(type => (metaEntities.Any(entity => string.Equals(entity.Name, type.Name, StringComparison.Ordinal))));
+            return from type in _contentDefinitionManager.ListTypeDefinitions()
+                   from entity in metaEntities
+                   where entity.Name == type.Name
+                   select type;
         }
 
         public IEnumerable<ContentPartDefinition> ListUserDefinedPartDefinitions() {
             var types = ListUserDefinedTypeDefinitions();
-            if (types == null) {
+            if (types == null || !types.Any()) {
                 return null;
             }
-            var result = types.SelectMany(type =>
-                                          type.Parts.Where(part => string.Equals(part.PartDefinition.Name, type.Name.ToPartName(), StringComparison.Ordinal))
-                                              .Select(part => part.PartDefinition));
+            var result = from type in types
+                         from partRelation in type.Parts
+                         let part = partRelation.PartDefinition
+                         where part.Name == type.Name.ToPartName()
+                         select part;
             return result.Any() ? result : null;
         }
     }

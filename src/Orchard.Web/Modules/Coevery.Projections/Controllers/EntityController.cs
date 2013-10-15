@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Coevery.Core;
+using Coevery.Core.Extensions;
 using Coevery.Core.Services;
 using Coevery.Core.ViewModels;
 using Newtonsoft.Json;
@@ -114,7 +115,7 @@ namespace Coevery.Projections.Controllers {
             filterDescription = string.Empty;
             if (model.FilterGroupId == 0) {
                 var filterDescriptors = _projectionManager.DescribeFilters()
-                    .Where(x => x.Category == entityName + "ContentFields")
+                    .Where(x => x.Category == entityName.ToPartName() + "ContentFields")
                     .SelectMany(x => x.Descriptors).ToList();
                 filterRecords = new List<FilterRecord>();
                 if (model.IsRelationList) {
@@ -124,8 +125,8 @@ namespace Coevery.Projections.Controllers {
                             {"Value",model.CurrentItem.ToString("D")}
                         };
                         var relationFilter = new FilterRecord {
-                            Category = entityName + "ContentFields",
-                            Type = entityName + "." + model.RelationId + ".",
+                            Category = entityName.ToPartName() + "ContentFields",
+                            Type = entityName.ToPartName() + "." + model.RelationId + ".",
                             State = FormParametersHelper.ToString(settings),
                             Description = "Only show entries related to current item."
                         };
@@ -140,7 +141,7 @@ namespace Coevery.Projections.Controllers {
                         continue;
                     }
                     var record = new FilterRecord {
-                        Category = entityName + "ContentFields",
+                        Category = entityName.ToPartName() + "ContentFields",
                         Type = filter.Type,
                     };
                     var dictionary = new Dictionary<string, string>();

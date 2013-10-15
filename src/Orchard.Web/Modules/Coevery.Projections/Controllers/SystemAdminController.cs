@@ -4,6 +4,7 @@ using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Coevery.Core.Extensions;
 using Coevery.Entities.Services;
 using Coevery.Projections.Services;
 using Coevery.Projections.ViewModels;
@@ -44,7 +45,7 @@ namespace Coevery.Projections.Controllers {
             }
 
             var viewModel = new ProjectionEditViewModel {
-                ItemContentType = id,
+                ItemContentType = id.ToPartName(),
                 DisplayName = string.Empty,
                 Fields = _projectionService.GetFieldDescriptors(id)
             };
@@ -64,6 +65,7 @@ namespace Coevery.Projections.Controllers {
         [FormValueRequired("submit.Save")]
         public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
             var pickArray = picklist.Split(new[] {'$'}, StringSplitOptions.RemoveEmptyEntries);
+            viewModel.ItemContentType = viewModel.ItemContentType;
             _projectionService.EditPost(id, viewModel, pickArray);
             return Json(new { id = id});
         }

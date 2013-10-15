@@ -3,6 +3,7 @@ using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Web.Http;
+using Coevery.Core.Extensions;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
 using Newtonsoft.Json.Linq;
@@ -66,7 +67,7 @@ namespace Coevery.Projections.Controllers {
                     continue;
                 }
                 var record = new FilterRecord {
-                    Category = id + "ContentFields",
+                    Category = id.ToPartName() + "ContentFields",
                     Type = filter.Type,
                 };
                 var dictionary = new Dictionary<string, string>();
