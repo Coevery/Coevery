@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Mvc;
+using Coevery.Core.Extensions;
 using Coevery.Core.Services;
 using Coevery.Entities.Services;
 using Coevery.Relationship.Records;
@@ -93,7 +94,7 @@ namespace Coevery.Relationship.Controllers {
             if (oneToMany == null || oneToMany.Id == 0) {
                 return ResponseError("Relationship not found");
             }
-            var part = _contentDefinitionManager.GetPartDefinition(oneToMany.Relationship.RelatedEntity.Name);
+            var part = _contentDefinitionManager.GetPartDefinition(oneToMany.Relationship.RelatedEntity.Name.ToPartName());
             var fields = part == null
                 ? new List<SelectListItem>()
                 : part.Fields.Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
@@ -162,7 +163,7 @@ namespace Coevery.Relationship.Controllers {
             }
 
             var primaryFields = _contentDefinitionManager
-                .GetPartDefinition(id).Fields
+                .GetPartDefinition(id.ToPartName()).Fields
                 .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
             return View(new ManyToManyRelationshipModel {
                 EntityList = _relationshipService.GetEntityNames(id),
@@ -183,10 +184,10 @@ namespace Coevery.Relationship.Controllers {
                 return ResponseError("Relationship not found");
             }
             var primaryFields = _contentDefinitionManager
-                .GetPartDefinition(manyToMany.Relationship.PrimaryEntity.Name).Fields
+                .GetPartDefinition(manyToMany.Relationship.PrimaryEntity.Name.ToPartName()).Fields
                 .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
             var relatedFields = _contentDefinitionManager
-                .GetPartDefinition(manyToMany.Relationship.RelatedEntity.Name).Fields
+                .GetPartDefinition(manyToMany.Relationship.RelatedEntity.Name.ToPartName()).Fields
                 .Select(x => new SelectListItem {Text = x.DisplayName, Value = x.Name});
             return View("CreateManyToMany", new ManyToManyRelationshipModel {
                 IsCreate = false,

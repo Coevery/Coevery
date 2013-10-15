@@ -70,14 +70,14 @@ namespace Coevery.Relationship.Services {
 
         public string GetReferenceField(string entityName, string relationName) {
             var reference = _contentDefinitionManager
-                .GetPartDefinition(entityName)
+                .GetPartDefinition(entityName.ToPartName())
                 .Fields.FirstOrDefault(field => field.FieldDefinition.Name == "ReferenceField"
                     && field.Settings.TryGetModel<ReferenceFieldSettings>().RelationshipName == relationName);
             return reference == null ? null : reference.Name;
         }
 
         public SelectListItem[] GetFieldNames(string entityName) {
-            var entity = _contentDefinitionManager.GetPartDefinition(entityName);
+            var entity = _contentDefinitionManager.GetPartDefinition(entityName.ToPartName());
             return entity == null
                 ? null
                 : (from field in entity.Fields
@@ -276,7 +276,10 @@ namespace Coevery.Relationship.Services {
             record.RelatedListProjection.QueryPartRecord.Layouts.Clear();
             record.RelatedListProjection.QueryPartRecord.FilterGroups.Clear();
             _oneToManyRepository.Delete(record);
-            _relationshipRepository.Delete(record.Relationship);
+
+            foreach (var relationRecord in _relationshipRepository.Fetch(rel => rel.Name == record.Relationship.Name)) {
+                _relationshipRepository.Delete(relationRecord);
+            }
         }
 
         private void DeleteRelationship(ManyToManyRelationshipRecord record) {
@@ -288,7 +291,9 @@ namespace Coevery.Relationship.Services {
             record.RelatedListProjection.QueryPartRecord.Layouts.Clear();
             record.RelatedListProjection.QueryPartRecord.FilterGroups.Clear();
             _manyToManyRepository.Delete(record);
-            _relationshipRepository.Delete(record.Relationship);
+            foreach (var relationRecord in _relationshipRepository.Fetch(rel => rel.Name == record.Relationship.Name)) {
+                _relationshipRepository.Delete(relationRecord);
+            }
 
             string primaryName = record.Relationship.PrimaryEntity.Name;
             string relatedName = record.Relationship.RelatedEntity.Name;
@@ -296,8 +301,8 @@ namespace Coevery.Relationship.Services {
             _schemaUpdateService.DropCustomTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", record.Relationship.Name, primaryName));
             _schemaUpdateService.DropCustomTable(string.Format("Coevery_DynamicTypes_{0}{1}PartRecord", record.Relationship.Name, relatedName));
 
-            _contentDefinitionManager.DeletePartDefinition(record.Relationship.Name + primaryName + "Part");
-            _contentDefinitionManager.DeletePartDefinition(record.Relationship.Name + relatedName + "Part");
+            _contentDefinitionManager.DeletePartDefinition(record.Relationship.Name + primaryName.ToPartName());
+            _contentDefinitionManager.DeletePartDefinition(record.Relationship.Name + relatedName.ToPartName());
 
             _dynamicAssemblyBuilder.Build();
         }
@@ -319,10 +324,10 @@ namespace Coevery.Relationship.Services {
             manyToManyRecord.ShowRelatedList = manyToMany.ShowRelatedList;
             manyToManyRecord.RelatedListLabel = manyToMany.RelatedListLabel;
 
-            var primaryPart = _contentDefinitionManager.GetPartDefinition(relationshipRecord.Name + relationshipRecord.PrimaryEntity.Name + "Part");
+            var primaryPart = _contentDefinitionManager.GetPartDefinition(relationshipRecord.Name + relationshipRecord.PrimaryEntity.Name.ToPartName());
             primaryPart.Settings["DisplayName"] = manyToMany.RelatedListLabel;
             _contentDefinitionManager.StorePartDefinition(primaryPart);
-            var relatedPart = _contentDefinitionManager.GetPartDefinition(relationshipRecord.Name + relationshipRecord.RelatedEntity.Name + "Part");
+            var relatedPart = _contentDefinitionManager.GetPartDefinition(relationshipRecord.Name + relationshipRecord.RelatedEntity.Name.ToPartName());
             relatedPart.Settings["DisplayName"] = manyToMany.PrimaryListLabel;
             _contentDefinitionManager.StorePartDefinition(relatedPart);
 
@@ -373,7 +378,7 @@ namespace Coevery.Relationship.Services {
                 }
                 var propertyRecord = new PropertyRecord {
                     Category = category,
-                    Type = string.Format("{0}.{1}.", typeName, property),
+                    Type = string.Format("{0}.{1}.", typeName.ToPartName(), property),
                     Description = field.DisplayName,
                     Position = layoutRecord.Properties.Count,
                     LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
@@ -442,8 +447,8 @@ namespace Coevery.Relationship.Services {
                     .Attachable()
                     .WithSetting("DisplayName", manyToMany.PrimaryListLabel));
 
-            _contentDefinitionManager.AlterTypeDefinition(manyToMany.PrimaryEntity, typeBuilder => typeBuilder.WithPart(primaryName + "Part"));
-            _contentDefinitionManager.AlterTypeDefinition(manyToMany.RelatedEntity, typeBuilder => typeBuilder.WithPart(relatedName + "Part"));
+            _contentDefinitionManager.AlterTypeDefinition(manyToMany.PrimaryEntity, typeBuilder => typeBuilder.WithPart(primaryName.ToPartName()));
+            _contentDefinitionManager.AlterTypeDefinition(manyToMany.RelatedEntity, typeBuilder => typeBuilder.WithPart(relatedName.ToPartName()));
             _dynamicAssemblyBuilder.Build();
         }
 

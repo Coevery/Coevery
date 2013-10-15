@@ -140,7 +140,6 @@ namespace Coevery.Core.Services {
                 return;
             }
             _schemaBuilder.DropTable(tableName);
-            GenerationDynmicAssembly();
         }
 
         public void CreateColumn(string tableName, string columnName, string columnType) {
