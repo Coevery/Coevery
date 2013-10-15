@@ -73,9 +73,9 @@
                         $scope.$apply(function () {
                             $scope.selectedRow = null;
                             $scope.selectedItems = gridCtrl.getSelectedRowIds();
-                            if ($scope.selectedItems.length === 1 && $scope.idAttr) {
+                            if ($scope.selectedItems.length === 1 && !!gridOptions.rowIdName) {
                                 $scope.selectedRow = gridCtrl.getParam("data").filter(function (element) {
-                                    return element[$scope.idAttr].toString() === $scope.selectedItems[0];
+                                    return element[gridOptions.rowIdName].toString() === $scope.selectedItems[0];
                                 });
                             }
                         });

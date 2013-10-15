@@ -13,7 +13,6 @@ define(['core/app/detourService'], function (detour) {
                     }
                 });
 
-                $scope.idAttr = 'ContentId';
                 var relationshipColumnDefs = [
                     { name: 'ContentId', label: 'Content Id', hidden: true },
                     {
@@ -28,6 +27,7 @@ define(['core/app/detourService'], function (detour) {
 
                 $scope.gridOptions = {
                     url: "api/relationship/Relationship?entityName=" + $stateParams.Id,
+                    rowIdName: 'ContentId',
                     colModel: relationshipColumnDefs
                 };
 
@@ -51,9 +51,9 @@ define(['core/app/detourService'], function (detour) {
                         if (!params) {
                             logger.error("No relation selected!");
                         }
-                        if (params.Type == "OneToMany") {
+                        if (params.Type === "OneToMany") {
                             $state.transitionTo('EditOneToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
-                        } else if (params.Type == "ManyToMany") {
+                        } else if (params.Type === "ManyToMany") {
                             $state.transitionTo('EditManyToMany', { EntityName: $stateParams.Id, RelationId: params.ContentId });
                         }
                     });

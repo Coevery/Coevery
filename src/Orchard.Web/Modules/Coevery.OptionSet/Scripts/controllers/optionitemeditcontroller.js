@@ -3,9 +3,15 @@
 define(['core/app/detourService'], function(detour) {
     detour.registerController([
         'OptionItemsCtrl',
-        ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams','optionItemDataService',
-            function ($rootScope, $scope, logger, $state, $resource, $stateParams, optionItemDataService) {
-                
+        ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams','optionItemDataService','$q',
+            function ($rootScope, $scope, logger, $state, $resource, $stateParams, optionItemDataService, $q) {
+                var defer = $q.defer();
+                $scope.$watch("selectedRow", function (newValue) {
+                    if (newValue) {
+                        defer.resolve();
+                    }
+                });
+
                 var optionColumnDefs = [
                     { name: 'Id', label: 'Id', sorttype:'int', hidden: true },
                     {
@@ -19,6 +25,7 @@ define(['core/app/detourService'], function(detour) {
 
                 $scope.gridOptions = {
                     url: "api/OptionSet/OptionItem/?optionSetId=" + $scope.optionSetId,
+                    rowIdName: "Id",
                     colModel: optionColumnDefs
                 };
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
@@ -33,16 +40,18 @@ define(['core/app/detourService'], function(detour) {
                     });
                 };
 
-                $scope.edit = function (paramString) {
-                    var item = JSON.parse(paramString);
-                    $scope.itemId = item.Id;
-                    $scope.itemValue = item.Name;
-                    $scope.itemSelectable = item.Selectable;
-                    $scope.itemWeight = item.Weight;
-                    $scope.editFunc = editItemFunc;
-                    $('#editModal').modal({
-                        backdrop: 'static',
-                        keyboard: true
+                $scope.edit = function (id) {
+                    defer.promise.then(function() {
+                        var item = $scope.selectedRow[0];
+                        $scope.itemId = item.Id;
+                        $scope.itemValue = item.Name;
+                        $scope.itemSelectable = item.Selectable;
+                        $scope.itemWeight = item.Weight;
+                        $scope.editFunc = editItemFunc;
+                        $('#editModal').modal({
+                            backdrop: 'static',
+                            keyboard: true
+                        });
                     });
                 };
 

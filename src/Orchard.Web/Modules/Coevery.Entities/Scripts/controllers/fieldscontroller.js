@@ -8,7 +8,6 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 $scope.$parent.showField = true;
                 $scope.selectedItems = [];
                 var entityName = $stateParams.Id;
-                $scope.idAttr = "Name"; //The attribute represent the id of a row
                 var fieldColumnDefs = [
                     { name: 'Name', label: 'Field Name', formatter: $rootScope.cellLinkTemplate },
                     { name: 'Id', label: 'Id', hidden: true },
@@ -34,6 +33,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
                 $scope.gridOptions = {
                     url: "api/entities/field?name=" + $scope.metaId,
+                    rowIdName: "Name",
                     colModel: fieldColumnDefs
                 };
 

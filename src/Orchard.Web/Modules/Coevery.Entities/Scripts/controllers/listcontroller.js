@@ -10,7 +10,6 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               return result;
           };
 
-          $scope.idAttr = "Name"; //The attribute represent the id of a row
           var metadataColumnDefs = [              
               {
                   name: 'Name', label: 'Name',
@@ -26,6 +25,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
           $scope.gridOptions = {
               url: "api/entities/entity",
               colModel: metadataColumnDefs,
+              rowIdName: "Name"
           };
 
           angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);

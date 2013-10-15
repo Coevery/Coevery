@@ -99,7 +99,7 @@ namespace Coevery.Entities.Handlers {
                 var exist = entity.FieldMetadataRecords.Any(x => x.OriginalId == fieldMetadataRecord.Id);
                 if (!exist) {
                     var record = fieldMetadataRecord;
-                    _contentDefinitionManager.AlterPartDefinition(entity.Name,
+                    _contentDefinitionManager.AlterPartDefinition(entity.Name.ToPartName(),
                         typeBuilder => typeBuilder.RemoveField(record.Name));
                     _schemaUpdateService.DropColumn(entity.Name, fieldMetadataRecord.Name);
                     _fieldEvents.OnDeleting(entity.Name, fieldMetadataRecord.Name);
