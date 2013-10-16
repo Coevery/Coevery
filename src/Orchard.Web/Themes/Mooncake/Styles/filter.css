@@ -1,6 +1,23 @@
-﻿.filter-label {
+﻿li.filter-label {
+    cursor: pointer;
+    display: block;
+    position: relative;
+    max-width: 200px;
+}
+
+#page-actions .btn-group .dropdown-menu > li.filter-label > a {
     overflow-x: hidden;
     -ms-text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
+    padding-right: 25px;
+}
+
+i.inline-icon {
+    width: 20px;
+    position: absolute;
+    right: 0;
+    padding: 3px 0 3px 5px;
+    line-height: 20px;
+    height: 20px
 }

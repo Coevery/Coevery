@@ -45,7 +45,7 @@
 
             $rootScope.cellLinkTemplate = function (cellvalue, options, rowObject) {
                 var template = '<div class="gridCellText">' +
-                    '<section class="row-actions hide">' +
+                    '<section class="row-actions">' +
                     '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
                     '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
                     'delete-action="delete(\'{0}\')" title="Delete"></span>{2}</section>' +

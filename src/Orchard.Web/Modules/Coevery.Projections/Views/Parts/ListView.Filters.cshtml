@@ -4,19 +4,18 @@
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <li ng-repeat="filter in definitionFilters" style="cursor: pointer; position: relative">
-            <div style="float:right; text-decoration: underline;" ng-click="deleteFilter(filter)">Delete</div>
-            <div class="filter-label" title="{{filter.Title}}">
-                <a ng-click="loadFilter({{filter}})" >
-                    <i ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
-                    {{filter.Title}}
-                </a>
-            </div>
+        <li data-ng-repeat="filter in definitionFilters" class="filter-label" data-ng-mouseenter="showRemoveIcon=true" data-ng-mouseleave="showRemoveIcon=false">
+            <i data-ng-show="showRemoveIcon" class="icon-remove inline-icon" data-ng-click="deleteFilter(filter)"></i>
+            <a data-ng-click="loadFilter({{filter}})" title="{{filter.Title}}">
+                <i data-ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
+                {{filter.Title}}
+            </a>
+            
         </li>
         <li class="divider"></li>
         <li>
             <a href="" ng-click="createFilter()">
-                <i class="viewUSelected"></i>Create filter
+                <i class="viewUSelected icon-plus"></i>Create filter
             </a>
         </li>
     </ul>
