@@ -30,7 +30,7 @@ namespace Coevery.Projections.Controllers {
 
         public IEnumerable<object> Get(int id) {
             if (id <= 0)
-                return null;
+                return new object[]{ };
             var properties = GetDescriptors(id).Select(x => new {FieldName = x.Descriptor.Type, DisplayName = x.Descriptor.Name.Text});
             return properties;
         }

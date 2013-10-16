@@ -86,6 +86,10 @@
                 // init views
                 $scope.FetchDefinitionViews = function () {
                     var views = viewDefinitionService.query({ contentType: moduleName }, function () {
+                        if (views.length == 0) {
+                            logger.info("No view for " + moduleName+", please create one.");
+                            return;
+                        }
                         $scope.definitionViews = views;
                         var defaultViewId = $location.$$search.ViewId;
                         if (!defaultViewId) {

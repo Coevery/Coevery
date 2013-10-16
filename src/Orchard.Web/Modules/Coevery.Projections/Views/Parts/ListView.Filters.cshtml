@@ -5,11 +5,13 @@
     </button>
     <ul class="dropdown-menu">
         <li ng-repeat="filter in definitionFilters" style="cursor: pointer; position: relative">
-                <div style="position: absolute; right: 0; text-decoration: underline;" ng-click="deleteFilter(filter)">Delete</div>
-                <a ng-click="loadFilter({{filter}})">
+            <div style="float:right; text-decoration: underline;" ng-click="deleteFilter(filter)">Delete</div>
+            <div class="filter-label" title="{{filter.Title}}">
+                <a ng-click="loadFilter({{filter}})" >
                     <i ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
                     {{filter.Title}}
                 </a>
+            </div>
         </li>
         <li class="divider"></li>
         <li>

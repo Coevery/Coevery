@@ -29,13 +29,12 @@ namespace Coevery.Projections.Controllers {
             }
 
             var query = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
-                .Where(v => v.ItemContentType == id).List().Select(record => new {
-                    ContentId = record.Id,
-                    EntityType = record.ItemContentType,
-                    DisplayName = record.As<TitlePart>().Title,
-                    Default = record.IsDefault
-                }).ToList();
-
+                 .Where(v => v.ItemContentType == id).List().Select(record => new {
+                     ContentId = record.Id,
+                     EntityType = record.ItemContentType,
+                     DisplayName = record.As<TitlePart>().Title,
+                     Default = record.IsDefault
+                 }).ToList();
             return query;
         }
 
@@ -54,7 +53,7 @@ namespace Coevery.Projections.Controllers {
 
             var totalRecords = query.Count();
             return new {
-                total = Convert.ToInt32(Math.Ceiling((double) totalRecords/rows)),
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
                 page = page,
                 records = totalRecords,
                 rows = query
