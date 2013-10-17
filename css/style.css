@@ -42,7 +42,9 @@ h6{ font-size:14px;}
 a {text-decoration: none; }
 
 /*add by philo*/
-
+h2 {
+    margin-bottom: 20px;
+}
 header h2{
     margin-top:40px;
 }
@@ -2206,4 +2208,8 @@ form#sign_form{
 	
 
 }
+}
+
+.strong {
+    font-weight: bold;
 }
