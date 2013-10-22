@@ -2,11 +2,11 @@ Coevery
 =======
 
 ## Demo
-Demo site1: http://demo.coevery.com:7575   
+Demo site1: http://coevery.unmean.net   (sponsored by：[久永](https://github.com/Jiuyong))  
 User Name: admin  
 Password: 123456789 
   
-Demo site2: http://coevery.unmean.net   sponsored by：[久永](https://github.com/Jiuyong)  
+Demo site2:  <http://demo.coevery.com:7575> (very slow, not recommended)  
 User Name: admin  
 Password: 123456789 
 
@@ -17,8 +17,7 @@ welcome and I encourage you to use the [Issues
 list](https://github.com/Coevery/Coevery/issues) on Github to provide that
 feedback.
 
-Feel free to fork this repo and to commit your additions. For a list of all
-contributors, please see the [AUTHORS](AUTHORS) file.
+Feel free to fork this repo and to commit your additions. 
 
 Any questions, tips, or general discussion can be posted to our Google group:
 [http://groups.google.com/group/coevery](http://groups.google.com/group/coevery)
@@ -26,8 +25,7 @@ Any questions, tips, or general discussion can be posted to our Google group:
 Contributing
 ------------
 Fork the repository. Then, do work and commit your changes. 
-
-When done, open a pull request to your feature branch.
+When done, open a pull request.
 
 ## License
 ### The Coevery Public License Version 3.0 ("CPL")
