@@ -10,6 +10,25 @@ Demo site2: http://coevery.unmean.net   sponsored by：[久永](https://github.c
 User Name: admin  
 Password: 123456789 
 
+Please help out
+---------------
+This project is still under development. Feedback and suggestions are very
+welcome and I encourage you to use the [Issues
+list](https://github.com/Coevery/Coevery/issues) on Github to provide that
+feedback.
+
+Feel free to fork this repo and to commit your additions. For a list of all
+contributors, please see the [AUTHORS](AUTHORS) file.
+
+Any questions, tips, or general discussion can be posted to our Google group:
+[http://groups.google.com/group/coevery](http://groups.google.com/group/coevery)
+
+Contributing
+------------
+Fork the repository. Then, do work and commit your changes. 
+
+When done, open a pull request to your feature branch.
+
 ## License
 ### The Coevery Public License Version 3.0 ("CPL")
 Coevery open source edition is licensed under coevery Public License. It's basically a GPLv3 License plus the "powered by coevery" text requirement on every single page. The coevery Public License Version 3.0 ("CPL") consists of the GPL3 License with the Additional Terms below. The original GPLv3 License can be found at: http://opensource.org/licenses/GPL-3.0
