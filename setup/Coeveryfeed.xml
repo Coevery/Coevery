@@ -31,7 +31,7 @@
 
     <version>1.0.3</version>
     <images>
-      <icon>http://10.10.120.4:7575/Package/Coevery.png</icon>
+      <icon>https://raw.github.com/Coevery/Coevery/gh-pages/Coevery.png</icon>
     </images>
     
     <updated>2013-10-9T16:30:00Z</updated>
@@ -58,7 +58,7 @@
         <installerFile>
           <!-- size of the package in KBs -->
           <fileSize>28363</fileSize>
-          <installerURL>http://10.10.120.4:7575/Package/Coevery.zip</installerURL>
+          <installerURL>https://github.com/Coevery/Coevery/releases/download/v1.0.3-alpha/Coevery.zip</installerURL>
           <!-- SHA of the package file for signature verification -->
           <sha1>27774fb59536e78df9995751a5b954abc0872738</sha1>
         </installerFile>
