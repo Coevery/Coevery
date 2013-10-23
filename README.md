@@ -10,6 +10,8 @@ Demo site2:  <http://demo.coevery.com:7575> (very slow, not recommended)
 User Name: admin  
 Password: 123456789 
 
+If you'd like to deploy Coevery on your computer, please follow the instructions [[Installing with Microsoft Web Platform Installer]] 
+
 Please help out
 ---------------
 This project is still under development. Feedback and suggestions are very
