@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <version>1.0.3</version>
+  <title>Coevery CRM</title>
+  <updated>2013-10-9T16:30:00Z</updated>
+  <author>
+    <name>nova software coporation coevery crm team</name>
+  </author>
+  <id>http://www.contoso.com/SampleApplicationsFeed.xml</id>
+
+    <languages>
+    <language default="true">
+      <languageId>en</languageId>
+      <name>English</name>
+    </language>
+  </languages>
+  
+  <!-- Sample ASP.NET & SQL app with dependencies -->
+  <entry type="application">
+    <productId>Coevery</productId>
+    <title>Coevery CRM</title>
+    <summary>A crm product which building with asp .net mvc</summary>
+    <longSummary>A flexible streamlined web development environment for designing data-centric business applications, which makes it possible to build data-centric applications quickly without writing any code</longSummary>
+
+    <!-- Defines grouping for the application based on the keyword(s) -->
+    <keywords>
+      <keywordId>ASPNETApps</keywordId>	
+	  <keywordId>SQL</keywordId>
+    </keywords>
+
+    <version>1.0.3</version>
+    <images>
+      <icon>http://10.10.120.4:7575/Package/Coevery.png</icon>
+    </images>
+    
+    <updated>2013-10-9T16:30:00Z</updated>
+    <published>2013-10-9T16:30:00Z</published>
+
+    <author>
+      <name>nova software coporation coevery crm team</name>
+    </author>
+    
+    <!-- Bring along SQLExpress, if it is not installed as a related/nice-to-have product, not a dependency -->
+    <related>
+      <relatedProduct>
+        <productId></productId>
+      </relatedProduct>
+    </related>
+
+    <!-- Installer for an application should be Web Deploy package -->
+    <installers>
+      <installer>
+        <id>1</id>
+        <!-- List of languages this package is localized in: English, Korean, Spanish, Traditional and Simplified Chinese -->
+        <languageId>en</languageId>
+
+        <installerFile>
+          <!-- size of the package in KBs -->
+          <fileSize>28363</fileSize>
+          <installerURL>http://10.10.120.4:7575/Package/Coevery.zip</installerURL>
+          <!-- SHA of the package file for signature verification -->
+          <sha1>27774fb59536e78df9995751a5b954abc0872738</sha1>
+        </installerFile>
+        <msDeploy>
+          <startPage>
+            <!-- start with a setup page rather than a default one -->
+            <startPage></startPage>
+          </startPage>
+        </msDeploy>
+      </installer>
+    </installers>
+  </entry>
+
+  <!-- Tab definition -->
+  <tabs>
+    <tab>
+      <keywordTab>
+        <id>Coevery</id>
+        <name>Coevery</name>
+        <description></description>
+        
+        <!-- Subtabs definitions -->
+        <keywords>
+          <keywordId>ASPNETApps</keywordId>
+        </keywords>
+      </keywordTab>
+    </tab>
+  </tabs>
+
+  <!-- Keyword/titles of subtabs to group apps with those keywords under -->
+  <keywords>
+    <keyword id="ASPNETApps">ASP.NET Apps</keyword>
+  </keywords>
+</feed>
