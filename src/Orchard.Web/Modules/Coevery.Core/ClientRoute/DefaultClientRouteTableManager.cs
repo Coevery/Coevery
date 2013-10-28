@@ -35,9 +35,7 @@ namespace Coevery.Core.ClientRoute {
 
             var alterationSets = _parallelCacheContext.RunInParallel(
                 _clientRouteProviders.Where(provider => provider.Value.IsFrontEnd == isFrontEnd), provider => {
-                    var feature = provider.Metadata.ContainsKey("Feature") ?
-                        (Feature) provider.Metadata["Feature"] :
-                        null;
+                    var feature = provider.Metadata.ContainsKey("Feature") ? (Feature) provider.Metadata["Feature"] : null;
 
                     var builder = new ClientRouteTableBuilder(feature);
                     provider.Value.Discover(builder);
