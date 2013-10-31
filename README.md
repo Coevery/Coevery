@@ -16,10 +16,15 @@ If you'd like to deploy Coevery on your computer, please follow the instructions
 
 Please help out
 ---------------
-This project is still under development. Feedback and suggestions are very
-welcome and I encourage you to use the [Issues
+This project is still under development. 
+
+Feedback and suggestions are very
+welcome and we encourage you to use the [Issues
 list](https://github.com/Coevery/Coevery/issues) on Github to provide that
 feedback.
+
+We also encourage you to post your ideas and suggestions on [User Voice](http://coevery.uservoice.com)
+
 
 Feel free to fork this repo and to commit your additions. 
 
