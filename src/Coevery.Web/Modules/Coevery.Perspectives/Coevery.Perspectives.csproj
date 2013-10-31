@@ -63,7 +63,6 @@
     <Reference Include="System.Web.Routing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\RouteCommands.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Extensions\PerspectiveExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

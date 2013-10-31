@@ -42,16 +42,6 @@ namespace Coevery.Perspectives {
         }
 
         public int UpdateFrom2() {
-            SchemaBuilder.ExecuteSql(string.Format(@"	UPDATE {0}Coevery_Alias_ActionRecord
-	                                                    SET	    Area = 'Coevery.Core',
-			                                                    Controller = 'Home',
-			                                                    [Action] = 'Index'
-	                                                    FROM	{0}Coevery_Autoroute_AutoroutePartRecord ar
-			                                                    INNER JOIN {0}Coevery_Alias_AliasRecord a
-			                                                    ON	a.Id = ar.UseCustomPattern
-			                                                    AND	ar.CustomPattern = '/'
-			                                                    INNER JOIN {0}Coevery_Alias_ActionRecord ac
-			                                                    ON	ac.Id	= a.Action_id", DataTablePrefix()));
             return 3;
         }
     }
