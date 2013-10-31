@@ -1,0 +1,10 @@
+﻿Name: DLR Scripting
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The DLR scripting module enables the possibility to execute scripts using the DLR.
+FeatureDescription: DLR scripting support.
+Dependencies: Coevery.Scripting
+Category: Scripting

@@ -1,9 +1,0 @@
-﻿.navicon-media {
-background-image:url(images/menu.media.png) !important;
-}
-.navicon-media:hover {
-background-position:0 -30px !important;
-}
-.summary .media-thumbnail {
-display: inline-block;
-}

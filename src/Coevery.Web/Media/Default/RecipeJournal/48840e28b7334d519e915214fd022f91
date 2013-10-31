@@ -1,0 +1,5 @@
+<RecipeJournal>
+  <Status>Failed</Status>
+  <Message>Executing step Feature.</Message>
+  <Message>Recipe execution with id 48840e28b7334d519e915214fd022f91 was cancelled because the "Feature" step failed to execute. The following exception was thrown: Could not enable feature Projections because it was not found.. Refer to the error logs for more information.</Message>
+</RecipeJournal>

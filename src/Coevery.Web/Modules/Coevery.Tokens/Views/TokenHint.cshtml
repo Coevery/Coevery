@@ -1,0 +1,13 @@
+﻿@{
+    Script.Require("jQueryUI_Autocomplete");
+    Script.Include("coevery-tokens-admin.js").AtFoot();
+    Style.Include("coevery-tokens-admin.css");
+}   
+
+@using(Script.Head()) {
+<script type="text/javascript">
+//<![CDATA[
+    var tokensUrl = '@Url.Action("Tokens", "Admin", new { area = "Coevery.Tokens" })';
+//]]>
+</script>
+}

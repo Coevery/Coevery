@@ -1,0 +1,10 @@
+﻿@using Coevery.ContentManagement;
+@using Coevery.Core.Common.Models;
+@using Coevery.PublishLater.Models;
+@{
+    PublishLaterPart publishLaterPart = Model.ContentPart;
+    DateTime? publishedUtc = publishLaterPart.As<CommonPart>() == null ? null : publishLaterPart.As<CommonPart>().PublishedUtc;
+}
+@if (publishLaterPart.IsPublished() && publishedUtc.HasValue) {
+    @T("Published: {0}", Display.DateTimeRelative(dateTimeUtc: publishedUtc.Value)) @T(" | ")
+}

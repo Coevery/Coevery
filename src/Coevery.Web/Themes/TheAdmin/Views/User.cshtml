@@ -1,0 +1,2 @@
+﻿@model dynamic
+@if (Model.CurrentUser != null) {<div id="login">@T("User:") @Html.ItemDisplayText((Coevery.ContentManagement.IContent)Model.CurrentUser) | @Html.ActionLink(T("Logout").ToString(), "LogOff", new { Area = "Coevery.Users", Controller = "Account" })</div>}

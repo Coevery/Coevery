@@ -1,0 +1,5 @@
+<RecipeJournal>
+  <Status>Failed</Status>
+  <Message>Executing step Feature.</Message>
+  <Message>Recipe execution with id 917cd1852dfa45bca1f1450e4770eef2 was cancelled because the "Feature" step failed to execute. The following exception was thrown: Could not enable feature Orchard.Alias because it was not found.. Refer to the error logs for more information.</Message>
+</RecipeJournal>

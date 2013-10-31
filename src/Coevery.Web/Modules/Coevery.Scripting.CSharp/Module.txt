@@ -1,0 +1,17 @@
+﻿Name: C# Scripting
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: Description for the module
+Features:
+    Coevery.Scripting.CSharp:
+        Description: Provides C# compiler services.
+		Category: Scripting
+		Dependencies: Coevery.Workflows
+	Coevery.Scripting.CSharp.Validation
+		Description: Provides a Script Validation part.
+		Name: Script Validation
+		Category: Scripting
+		Dependencies: Coevery.Scripting.CSharp

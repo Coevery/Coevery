@@ -1,0 +1,9 @@
+﻿Name: Title
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The title module enables content items to have titles.
+FeatureDescription: Title content part.
+Category: Core

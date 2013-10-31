@@ -1,0 +1,10 @@
+Name: Projections
+AntiForgery: enabled
+Author: 
+Website: http://coevery.codeplex.com
+Version: 1.0
+CoeveryVersion: 1.6
+Description: Projecttions for Coevery CRM
+Dependencies: Coevery.Common
+Category: Coevery
+Priority: 10

@@ -1,0 +1,6 @@
+﻿Name: SafeMode
+Author: Jonathan Wall
+Description: The Coevery Theme for setup and failure conditions.
+Version: 1.7.1
+Tags: hidden
+Website: http://www.coeveryproject.net

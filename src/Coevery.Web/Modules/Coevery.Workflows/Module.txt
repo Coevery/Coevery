@@ -1,0 +1,12 @@
+﻿Name: Workflows
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Category: Content
+Description: Provides tools to create custom workflows.
+Features:
+    Coevery.Workflows:
+        Description: Provides tools to create custom workflows.
+        Dependencies: Coevery.Tokens, Coevery.Forms, Coevery.jQuery

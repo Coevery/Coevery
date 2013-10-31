@@ -1,0 +1,9 @@
+﻿Name: Shapes
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The shapes module contains core shape templates and display hooks.
+FeatureDescription: Core shape templates and display hooks.
+Category: Core

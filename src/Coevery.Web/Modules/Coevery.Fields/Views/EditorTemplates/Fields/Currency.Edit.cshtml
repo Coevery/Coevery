@@ -1,0 +1,22 @@
+﻿@model Coevery.Fields.Fields.CurrencyField
+@using Coevery.Utility.Extensions;
+@using Coevery.Fields.Settings;
+@{
+    var settings = Model.PartFieldDefinition.Settings.GetModel<CurrencyFieldSettings>();
+    var required = settings.Required ? "required" : null;
+}
+
+<label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
+<div class="control controls errortips">
+    <input class="span12 number" type="text" 
+           id="@Html.FieldIdFor(m => m.Value)" 
+           name="@Html.FieldNameFor(m => m.Value)" 
+           value="@Model.Value" 
+           decimalFormat = "@settings.Length,@settings.DecimalPlaces"
+        @if (required != null)
+        {<text> required data-msg-required="Please fill this field!"</text> } 
+        @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text='@settings.HelpText'</text> }
+        />
+    @Html.ValidationMessageFor(m => m.Value)
+</div>
+

@@ -1,0 +1,12 @@
+Name: Forms
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryforms.codeplex.com
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: Provides a system to publish and alter html forms.
+Features:
+    Coevery.Forms:
+        Name: Forms
+        Description: Provides a system to publish and alter html forms.
+		Category: Developer

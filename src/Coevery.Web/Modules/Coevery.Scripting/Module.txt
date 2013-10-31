@@ -1,0 +1,20 @@
+﻿Name: Scripting
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The scripting module enables the possibility to execute scripts using a simple custom scripting language.
+FeatureDescription: Scripting support.
+Category: Scripting
+Features:
+    Coevery.Scripting.Lightweight:
+        Name: Lightweight scripting
+        Description: Custom lightweight and simple scripting language.
+        Dependencies: Coevery.Scripting
+        Category: Scripting
+    Coevery.Scripting.Rules:
+        Name: Scripting Rules
+        Description: Rules for the Scripting modules
+        Category: Rules
+        Dependencies: Coevery.Scripting, Coevery.Rules

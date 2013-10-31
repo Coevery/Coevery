@@ -1,0 +1,11 @@
+﻿Name: AngularJS
+Path: Coevery.AngularJS
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.6
+CoeveryVersion: 1.4
+Description: The AngularJs module contains the AngularJs and related script libraries.
+FeatureDescription: A common location for AngularJs and related script libraries.
+Dependencies: Coevery.jQuery
+Category: Core

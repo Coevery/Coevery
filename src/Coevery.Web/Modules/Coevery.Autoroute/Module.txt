@@ -1,0 +1,13 @@
+Name: Autoroute
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: Description for the module
+Features:
+    Coevery.Autoroute:
+		Name: Autoroute
+        Description: Enables the Autoroute part for tokenized routing
+		Dependencies: Coevery.Alias, Coevery.Tokens
+		Category: Content

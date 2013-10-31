@@ -1,9 +1,0 @@
-Name: Perspectives
-AntiForgery: enabled
-Author: 
-Website: http://coevery.codeplex.com
-Version: 1.0
-OrchardVersion: 1.6
-Description: Perspectives for Coevery CRM
-Dependencies: Coevery.Core, Orchard.Autoroute
-Category: Coevery

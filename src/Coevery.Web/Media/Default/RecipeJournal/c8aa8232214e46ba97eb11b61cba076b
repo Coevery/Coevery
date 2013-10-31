@@ -1,0 +1,5 @@
+<RecipeJournal>
+  <Status>Failed</Status>
+  <Message>Executing step Feature.</Message>
+  <Message>Recipe execution with id c8aa8232214e46ba97eb11b61cba076b was cancelled because the "Feature" step failed to execute. The following exception was thrown: Could not enable feature ZHOUXIANGHAO.Projections because it was not found.. Refer to the error logs for more information.</Message>
+</RecipeJournal>

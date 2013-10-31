@@ -1,0 +1,7 @@
+Name: Offline
+Author: The Coevery Team
+Website: http://www.coeveryproject.net
+Description: Description for the theme
+Version: 1.0
+# todo: provide tags
+# Tags: Classic, Serif

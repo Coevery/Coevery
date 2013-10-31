@@ -1,0 +1,15 @@
+Name: Alias
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: Maps friendly urls to specific module actions.
+FeatureDescription: Maps friendly urls to specific module actions.
+Category: Content
+Features:
+    Coevery.Alias.UI:
+		Name: Alias UI
+        Description: Admin user interface for Coevery.Alias.
+		Dependencies: Coevery.Alias
+		Category: Content

@@ -1,0 +1,11 @@
+﻿Name: Publish Later
+Path: PublishLater
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The PublishLater module introduces draft creation and scheduled publishing functionality.
+FeatureDescription: Draft creation and scheduled publishing.
+Category: Content
+Dependencies: Common, Scheduling, Coevery.jQuery
