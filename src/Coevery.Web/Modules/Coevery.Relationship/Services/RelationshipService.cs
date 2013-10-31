@@ -4,8 +4,6 @@ using System.Web.Mvc;
 using Coevery.Common.Providers;
 using Coevery.Common.Services;
 using Coevery.Common.Extensions;
-using Coevery.Common.Services;
-using Coevery.Entities.Extensions;
 using Coevery.Entities.Services;
 using Coevery.Entities.ViewModels;
 using Coevery.Relationship.Records;

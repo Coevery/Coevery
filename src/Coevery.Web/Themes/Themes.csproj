@@ -168,9 +168,6 @@
     <Folder Include="Offline\Zones\" />
   </ItemGroup>
   <ItemGroup>
-    <Fakes Include="Fakes\Coevery.Framework.fakes" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Coevery\Coevery.Framework.csproj">
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
       <Name>Coevery.Framework</Name>

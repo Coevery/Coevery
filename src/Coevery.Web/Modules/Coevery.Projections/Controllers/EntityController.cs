@@ -8,10 +8,8 @@ using System.Web.Http;
 using Coevery.Common.Extensions;
 using Coevery.Common.Services;
 using Coevery.Common.ViewModels;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NHibernate.Linq;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.Data;
 using Coevery.Forms.Services;
@@ -22,7 +20,6 @@ using Coevery.Orchard.Projections.Services;
 using System.Linq;
 using Coevery.Tokens;
 using Coevery.UI.Navigation;
-using Coevery.Common.Services;
 
 namespace Coevery.Projections.Controllers {
     public class EntityController : ApiController {
