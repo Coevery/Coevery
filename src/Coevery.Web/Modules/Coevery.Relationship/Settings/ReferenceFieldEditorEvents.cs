@@ -11,7 +11,7 @@ using Coevery.ContentManagement.MetaData.Builders;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.ContentManagement.ViewModels;
 using Coevery.Data;
-using Coevery.Orchard.Projections.Models;
+using Coevery.Projections.Models;
 using Coevery.Localization;
 
 namespace Coevery.Relationship.Settings {

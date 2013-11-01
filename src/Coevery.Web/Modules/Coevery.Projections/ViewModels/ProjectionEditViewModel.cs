@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Coevery.Orchard.Projections.Descriptors.Property;
+using Coevery.Projections.Descriptors.Property;
 
 namespace Coevery.Projections.ViewModels
 {

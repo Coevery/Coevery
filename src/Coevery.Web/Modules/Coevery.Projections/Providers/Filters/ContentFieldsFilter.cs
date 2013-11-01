@@ -7,9 +7,9 @@ using Coevery.ContentManagement.Handlers;
 using Coevery.ContentManagement.MetaData;
 using Coevery.Environment.Extensions;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.Descriptors.Filter;
-using Coevery.Orchard.Projections.FieldTypeEditors;
-using Coevery.Orchard.Projections.Services;
+using Coevery.Projections.Descriptors.Filter;
+using Coevery.Projections.FieldTypeEditors;
+using Coevery.Projections.Services;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.Providers.Filters {

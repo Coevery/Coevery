@@ -1,7 +1,7 @@
 ﻿using System;
 using Coevery.ContentManagement;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.FieldTypeEditors;
+using Coevery.Projections.FieldTypeEditors;
 
 namespace Coevery.Projections.FieldTypeEditors {
     internal class FieldTypeEditorAdaptor : ConcreteFieldTypeEditorBase {

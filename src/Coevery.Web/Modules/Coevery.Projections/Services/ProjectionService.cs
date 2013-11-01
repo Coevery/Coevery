@@ -12,9 +12,9 @@ using Coevery.ContentManagement.MetaData;
 using Coevery.Core.Title.Models;
 using Coevery.Forms.Services;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.Models;
-using Coevery.Orchard.Projections.Services;
-using Coevery.Orchard.Projections.Descriptors.Property;
+using Coevery.Projections.Models;
+using Coevery.Projections.Services;
+using Coevery.Projections.Descriptors.Property;
 using Coevery.UI.Notify;
 
 namespace Coevery.Projections.Services {

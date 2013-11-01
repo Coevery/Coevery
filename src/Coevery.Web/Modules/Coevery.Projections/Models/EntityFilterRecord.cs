@@ -1,4 +1,4 @@
-﻿using Coevery.Orchard.Projections.Models;
+﻿using Coevery.Projections.Models;
 
 namespace Coevery.Projections.Models {
     public class EntityFilterRecord {

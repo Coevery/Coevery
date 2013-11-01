@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Coevery.Orchard.Projections.ModelBinding;
-using Coevery.Orchard.Projections.PropertyEditors.Forms;
+using Coevery.Projections.ModelBinding;
+using Coevery.Projections.PropertyEditors.Forms;
 
 namespace Coevery.Projections.Providers.PropertyEditors {
     public class CoeveryNumericPropertyEditor : IPropertyEditor {

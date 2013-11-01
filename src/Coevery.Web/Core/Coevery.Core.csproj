@@ -86,7 +86,7 @@
     <Compile Include="Common\Settings\TextFieldSettingsEvents.cs" />
     <Compile Include="Common\Settings\TextFieldSettings.cs" />
     <Compile Include="Common\ViewModels\TextFieldDriverViewModel.cs" />
-    <Compile Include="Common\ViewModels\TextFieldSettingsEventsViewModel.cs" />
+    <Compile Include="Common\Views\TextFieldSettingsEventsViewModel.cs" />
     <Compile Include="Containers\Controllers\ItemController.cs" />
     <Compile Include="Containers\Drivers\ContainablePartDriver.cs" />
     <Compile Include="Containers\Drivers\ContainerPartDriver.cs" />

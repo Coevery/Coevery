@@ -3,15 +3,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Coevery.Common.Services;
-using Coevery.Projections.Models;
+using Coevery.Projections.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Coevery.ContentManagement;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.Descriptors.Property;
-using Coevery.Orchard.Projections.Models;
-using Coevery.Orchard.Projections.Services;
+using Coevery.Projections.Descriptors.Property;
+using Coevery.Projections.Models;
+using Coevery.Projections.Services;
 
 namespace Coevery.Projections.Controllers {
     public class PropertyController : ApiController {

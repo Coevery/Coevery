@@ -105,8 +105,6 @@
     <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
     <Compile Include="ContentPartFieldStorage\DefaultContentPartFieldStorageProvider.cs" />
     <Compile Include="ContentPartFieldStorage\DefaultCotentPartFieldStorage.cs" />
-    <Compile Include="Controllers\FilterController.cs" />
-    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
@@ -137,18 +135,13 @@
     <Compile Include="Migrations.cs" />
     <Compile Include="Models\ModuleMenuItemPart.cs" />
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
-    <Compile Include="Providers\Layouts\ngGridLayout.cs" />
-    <Compile Include="Providers\Layouts\ngGridLayoutForms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="ClientRoute\IClientRouteProvider.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
-    <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\AnonymousRoleUpdater.cs" />
     <Compile Include="Services\DefaultDataMigrationInterpreter.cs" />
-    <Compile Include="Services\GridService.cs" />
     <Compile Include="Services\IGridService.cs" />
-    <Compile Include="Services\PropertyRecordExtension.cs" />
     <Compile Include="Services\SchemaUpdateService.cs" />
     <Compile Include="Services\TemplateViewService.cs" />
     <Compile Include="ListViewShape.cs" />
@@ -206,7 +199,9 @@
     <Content Include="Views\ViewTemplate\MenuList.cshtml" />
     <Content Include="Views\ClientBootstrapScript.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Providers\Layouts\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Coevery\Coevery.Framework.csproj">
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
@@ -219,10 +214,6 @@
     <ProjectReference Include="..\Coevery.Forms\Coevery.Forms.csproj">
       <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
       <Name>Coevery.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coevery.Orchard.Projections\Coevery.Orchard.Projections.csproj">
-      <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
-      <Name>Coevery.Orchard.Projections</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coevery.Roles\Coevery.Roles.csproj">
       <Project>{d10ad48f-407d-4db5-a328-173ec7cb010f}</Project>

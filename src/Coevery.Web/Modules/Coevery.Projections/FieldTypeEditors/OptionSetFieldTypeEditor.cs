@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Coevery.OptionSet.Models;
-using Coevery.Orchard.Projections.Models;
+using Coevery.Projections.Models;
 using Coevery.Projections.FilterEditors.Forms;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.Descriptors.Filter;
+using Coevery.Projections.Descriptors.Filter;
 
 namespace Coevery.Projections.FieldTypeEditors {
     public class OptionSetFieldTypeEditor : ConcreteFieldTypeEditorBase {
@@ -49,7 +49,7 @@ namespace Coevery.Projections.FieldTypeEditors {
             }
         }
 
-        public override void ApplySortCriterion(Coevery.Orchard.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) { }
+        public override void ApplySortCriterion(Coevery.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) { }
 
         public override string FormName {
             get { return OptionSetFilterForm.FormName; }

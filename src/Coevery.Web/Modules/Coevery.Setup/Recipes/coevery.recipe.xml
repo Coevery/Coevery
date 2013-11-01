@@ -9,7 +9,7 @@
     <Version>1.0</Version>
   </Recipe>
 
-  <Feature enable="Coevery.Common,Coevery.Orchard.Projections,
+  <Feature enable="Coevery.Common,
                    Coevery.Entities,
                    Coevery.Perspectives,
                    Coevery.FormDesigner,

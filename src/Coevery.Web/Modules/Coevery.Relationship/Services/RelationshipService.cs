@@ -13,7 +13,7 @@ using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData;
 using Coevery.Core.Contents.Extensions;
 using Coevery.Data;
-using Coevery.Orchard.Projections.Models;
+using Coevery.Projections.Models;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Relationship.Services {

@@ -1,6 +1,6 @@
 ﻿
 using Autofac;
-using Coevery.Orchard.Projections.FieldTypeEditors;
+using Coevery.Projections.FieldTypeEditors;
 
 namespace Coevery.Projections.FieldTypeEditors {
     public class FieldTypeEditorModule: Module {

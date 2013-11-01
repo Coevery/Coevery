@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Coevery.Orchard.Projections.FieldTypeEditors;
+using Coevery.Projections.FieldTypeEditors;
 using Coevery.Projections.Models;
 using Coevery.ContentManagement.Drivers;
 using Coevery.Forms.Services;

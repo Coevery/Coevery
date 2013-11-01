@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using Coevery.Orchard.Projections.Services;
+using Coevery.Projections.Services;
 using Newtonsoft.Json.Linq;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData;

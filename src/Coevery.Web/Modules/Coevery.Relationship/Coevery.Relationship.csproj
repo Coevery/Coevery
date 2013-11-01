@@ -170,9 +170,9 @@
       <Project>{bd9aec06-5c81-4221-a817-408fb0c4b6c0}</Project>
       <Name>Coevery.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Coevery.Orchard.Projections\Coevery.Orchard.Projections.csproj">
-      <Project>{5531e894-d259-45a3-aa61-26dbe720c1ce}</Project>
-      <Name>Coevery.Orchard.Projections</Name>
+    <ProjectReference Include="..\Coevery.Projections\Coevery.Projections.csproj">
+      <Project>{c8ea0d61-05ba-404f-b658-f75db9de2d61}</Project>
+      <Name>Coevery.Projections</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

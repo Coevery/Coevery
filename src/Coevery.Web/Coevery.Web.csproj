@@ -190,9 +190,7 @@
       <DependentUpon>HostComponents.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Coevery.WarmupStarter\Coevery.WarmupStarter.csproj">
       <Project>{5c0d5249-aef5-4bb6-8f5f-057b91ac2d7a}</Project>

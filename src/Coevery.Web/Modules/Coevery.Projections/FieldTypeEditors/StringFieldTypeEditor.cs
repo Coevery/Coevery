@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Coevery.Orchard.Projections.FieldTypeEditors;
-using Coevery.Orchard.Projections.Models;
+using Coevery.Projections.FieldTypeEditors;
+using Coevery.Projections.Models;
 using Coevery.Projections.FilterEditors.Forms;
 using Coevery.ContentManagement;
 using Coevery.Environment.Extensions;

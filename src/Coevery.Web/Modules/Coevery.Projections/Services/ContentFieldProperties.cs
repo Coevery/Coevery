@@ -11,10 +11,10 @@ using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Environment.Extensions;
 using Coevery.Localization;
 using Coevery.Logging;
-using Coevery.Orchard.Projections.Descriptors.Property;
-using Coevery.Orchard.Projections.FieldTypeEditors;
-using Coevery.Orchard.Projections.PropertyEditors;
-using Coevery.Orchard.Projections.Services;
+using Coevery.Projections.Descriptors.Property;
+using Coevery.Projections.FieldTypeEditors;
+using Coevery.Projections.PropertyEditors;
+using Coevery.Projections.Services;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.Services {

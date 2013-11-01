@@ -256,7 +256,7 @@
                         loadEditors();
                         return;
                     }
-                    var url = 'Coevery/CoeveryCommon/Filter/GetFieldFilters/' + moduleName;
+                    var url = 'Coevery/Projections/FilterFields/GetFieldFilters/' + moduleName;
                     $http.get(url).then(function (response) {
                         $scope.fieldFilters = response.data;
                         loadEditors();

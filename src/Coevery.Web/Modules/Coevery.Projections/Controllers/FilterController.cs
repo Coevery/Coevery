@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Http;
 using Coevery.Common.Extensions;
-using Coevery.Orchard.Projections.Models;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
 using Newtonsoft.Json.Linq;
@@ -15,7 +14,7 @@ namespace Coevery.Projections.Controllers {
     public class FilterController : ApiController {
         private readonly IRepository<EntityFilterRecord> _entityFilterRepository;
         private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
-
+       
         public FilterController(
             IRepository<EntityFilterRecord> entityFilterRepository,
             IRepository<FilterGroupRecord> filterGroupRepository) {

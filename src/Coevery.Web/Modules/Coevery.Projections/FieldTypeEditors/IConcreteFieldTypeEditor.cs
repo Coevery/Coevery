@@ -3,9 +3,9 @@ using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.Descriptors.Filter;
-using Coevery.Orchard.Projections.Descriptors.SortCriterion;
-using Coevery.Orchard.Projections.FieldTypeEditors;
+using Coevery.Projections.Descriptors.Filter;
+using Coevery.Projections.Descriptors.SortCriterion;
+using Coevery.Projections.FieldTypeEditors;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.FieldTypeEditors {

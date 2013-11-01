@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Coevery.Projections.ViewModels;
 using Coevery;
-using Coevery.Orchard.Projections.Descriptors.Property;
+using Coevery.Projections.Descriptors.Property;
 
 namespace Coevery.Projections.Services {
     public interface IProjectionService : IDependency {

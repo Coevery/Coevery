@@ -11,7 +11,7 @@ using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Handlers;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.Services;
+using Coevery.Projections.Services;
 
 namespace Coevery.Relationship.Drivers {
     public class StateObject : DynamicObject {

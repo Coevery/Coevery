@@ -1,5 +1,5 @@
 ﻿using System;
-using Coevery.Orchard.Projections.Models;
+using Coevery.Projections.Models;
 using Coevery.Projections.FilterEditors.Forms;
 using Coevery.ContentManagement;
 using Coevery.Localization;

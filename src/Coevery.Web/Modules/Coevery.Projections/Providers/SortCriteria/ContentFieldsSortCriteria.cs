@@ -7,9 +7,9 @@ using Coevery.ContentManagement.Handlers;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Environment.Extensions;
 using Coevery.Localization;
-using Coevery.Orchard.Projections.Descriptors.SortCriterion;
-using Coevery.Orchard.Projections.Providers.SortCriteria;
-using Coevery.Orchard.Projections.Services;
+using Coevery.Projections.Descriptors.SortCriterion;
+using Coevery.Projections.Providers.SortCriteria;
+using Coevery.Projections.Services;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.Providers.SortCriteria {

@@ -1,5 +1,5 @@
 ﻿using Coevery.Entities.Models;
-using Coevery.Orchard.Projections.Models;
+using Coevery.Projections.Models;
 
 namespace Coevery.Relationship.Records {
     public enum OneToManyDeleteOption {
