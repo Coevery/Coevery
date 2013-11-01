@@ -15,7 +15,6 @@ namespace Coevery.Core.Settings.Services {
         private readonly ICacheManager _cacheManager;
 
         public SiteService(
-            IRepository<SiteSettingsPartRecord> siteSettingsRepository,
             IContentManager contentManager,
             ICacheManager cacheManager) {
             _contentManager = contentManager;
@@ -28,22 +27,22 @@ namespace Coevery.Core.Settings.Services {
         public ISite GetSiteSettings() {
             var siteId = _cacheManager.Get("SiteId", ctx => {
                 var site = _contentManager.Query("Site")
-                    .Slice(0, 1)
+                    .List()
                     .FirstOrDefault();
 
                 if (site == null) {
                     site = _contentManager.Create<SiteSettingsPart>("Site", item => {
-                        item.Record.SiteSalt = Guid.NewGuid().ToString("N");
-                        item.Record.SiteName = "My Coevery Project Application";
-                        item.Record.PageTitleSeparator = " - ";
-                        item.Record.SiteTimeZone = TimeZoneInfo.Local.Id;
+                        item.SiteSalt = Guid.NewGuid().ToString("N");
+                        item.SiteName = "My Coevery Project Application";
+                        item.PageTitleSeparator = " - ";
+                        item.SiteTimeZone = TimeZoneInfo.Local.Id;
                     }).ContentItem;
                 }
 
                 return site.Id;
             });
 
-            return _contentManager.Get<ISite>(siteId, VersionOptions.Published, new QueryHints().ExpandRecords<SiteSettingsPartRecord>());
+            return _contentManager.Get<ISite>(siteId, VersionOptions.Published);
         }
     }
 }

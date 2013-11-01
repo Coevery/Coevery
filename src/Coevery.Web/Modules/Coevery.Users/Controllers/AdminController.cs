@@ -300,7 +300,7 @@ namespace Coevery.Users.Controllers {
             var user = Services.ContentManager.Get<IUser>(id);
 
             if ( user != null ) {
-                var siteUrl = Services.WorkContext.CurrentSite.As<SiteSettings2Part>().BaseUrl;
+                var siteUrl = Services.WorkContext.CurrentSite.BaseUrl;
                 if (String.IsNullOrWhiteSpace(siteUrl)) {
                     siteUrl = HttpContext.Request.ToRootUrlString();
                 }

@@ -111,6 +111,8 @@
     <Compile Include="Descriptors\Filter\FilterDescriptor.cs" />
     <Compile Include="Descriptors\Layout\DescribeLayoutContext.cs" />
     <Compile Include="Descriptors\Layout\DescribeLayoutFor.cs" />
+    <Compile Include="Providers\Filters\ContentPartRecordsForm.cs" />
+    <Compile Include="Providers\Filters\EagerFetchFilter.cs" />
     <Compile Include="Descriptors\Layout\LayoutComponentResult.cs" />
     <Compile Include="Descriptors\Layout\LayoutContext.cs" />
     <Compile Include="Descriptors\Layout\LayoutDescriptor.cs" />

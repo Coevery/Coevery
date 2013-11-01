@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
+using Autofac;
 using Coevery.ContentManagement.MetaData.Models;
+using Coevery.ContentManagement.Records;
 using Coevery.ContentManagement.Utilities;
 using Coevery.UI;
 
@@ -77,9 +80,50 @@ namespace Coevery.ContentManagement {
             return true;
         }
 
+        public T Retrieve<T>(string fieldName) {
+            return InfosetHelper.Retrieve<T>(this, fieldName);
+        }
+
+        public T RetrieveVersioned<T>(string fieldName) {
+            return this.Retrieve<T>(fieldName, true);
+        }
+
+        public virtual void Store<T>(string fieldName, T value) {
+            InfosetHelper.Store(this, fieldName, value);
+        }
+
+        public virtual void StoreVersioned<T>(string fieldName, T value) {
+            this.Store(fieldName, value, true);
+        }
+
     }
 
     public class ContentPart<TRecord> : ContentPart {
+
+        static protected bool IsVersionableRecord { get; private set;}
+
+        static ContentPart() {
+            IsVersionableRecord = typeof (TRecord).IsAssignableTo<ContentItemVersionRecord>();
+        }
+
+        protected TProperty Retrieve<TProperty>(Expression<Func<TRecord, TProperty>> targetExpression) {
+            return InfosetHelper.Retrieve(this, targetExpression);
+        }
+
+        protected TProperty Retrieve<TProperty>(
+            Expression<Func<TRecord, TProperty>> targetExpression,
+            Func<TRecord, TProperty> defaultExpression) {
+
+            return InfosetHelper.Retrieve(this, targetExpression, defaultExpression);
+        }
+        protected ContentPart<TRecord> Store<TProperty>(
+            Expression<Func<TRecord, TProperty>> targetExpression,
+            TProperty value) {
+
+            InfosetHelper.Store(this, targetExpression, value);
+            return this;
+        }
+
         public readonly LazyField<TRecord> _record = new LazyField<TRecord>();
         public TRecord Record { get { return _record.Value; } set { _record.Value = value; } }
     }

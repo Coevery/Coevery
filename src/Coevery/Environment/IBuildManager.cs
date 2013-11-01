@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Compilation;
 using Coevery.FileSystems.VirtualPath;
+using Coevery.Logging;
+using System;
+using Coevery.Exceptions;
 
 namespace Coevery.Environment {
     public interface IBuildManager : IDependency {
@@ -16,12 +19,16 @@ namespace Coevery.Environment {
         private readonly IVirtualPathProvider _virtualPathProvider;
         private readonly IAssemblyLoader _assemblyLoader;
 
+        public ILogger Logger { get; set; }
+
         public DefaultBuildManager(
             IVirtualPathProvider virtualPathProvider, 
             IAssemblyLoader assemblyLoader) {
 
             _virtualPathProvider = virtualPathProvider;
             _assemblyLoader = assemblyLoader;
+
+            Logger = NullLogger.Instance;
         }
 
         public IEnumerable<Assembly> GetReferencedAssemblies() {
@@ -43,9 +50,12 @@ namespace Coevery.Environment {
 
         public Assembly GetCompiledAssembly(string virtualPath) {
             try {
-                return BuildManager.GetCompiledAssembly(virtualPath);    
+                return BuildManager.GetCompiledAssembly(virtualPath);
             }
-            catch {
+            catch (Exception ex) {
+                if (ex.IsFatal()) throw;
+
+                Logger.Warning(ex, "Error when compiling assembly under {0}.", virtualPath);
                 return null;
             }
 

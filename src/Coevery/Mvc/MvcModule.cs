@@ -46,19 +46,19 @@ namespace Coevery.Mvc {
                 return new HttpContextWrapper(HttpContext.Current);
             }
 
-            // this doesn't work in a background service, throws an exception in ContentManager.Handlers
-            //var siteService = context.Resolve<ISiteService>();
-            //var baseUrl = siteService.GetSiteSettings().BaseUrl;
+             //this doesn't work in a background service, throws an exception in ContentManager.Handlers
+            var siteService = context.Resolve<ISiteService>();
+            var baseUrl = siteService.GetSiteSettings().BaseUrl;
 
-            var session = context.Resolve<ISessionLocator>().For(typeof(ContentItem));
-            var shellSettings = context.Resolve<ShellSettings>();
+            //var session = context.Resolve<ISessionLocator>().For(typeof(ContentItem));
+            //var shellSettings = context.Resolve<ShellSettings>();
 
-            var tableName = "Settings_SiteSettings2PartRecord";
-            if (!string.IsNullOrEmpty(shellSettings.DataTablePrefix)) {
-                tableName = shellSettings.DataTablePrefix + "_" + tableName;
-            }
-            var query = session.CreateSQLQuery("SELECT BaseUrl FROM " + tableName);
-            var baseUrl = query.UniqueResult<string>();
+            //var tableName = "Settings_SiteSettings2PartRecord";
+            //if (!string.IsNullOrEmpty(shellSettings.DataTablePrefix)) {
+            //    tableName = shellSettings.DataTablePrefix + "_" + tableName;
+            //}
+            //var query = session.CreateSQLQuery("SELECT BaseUrl FROM " + tableName);
+            //var baseUrl = query.UniqueResult<string>();
 
             return new HttpContextPlaceholder(baseUrl);
         }

@@ -135,9 +135,9 @@ namespace Coevery.Users.Controllers {
                 var user = _membershipService.CreateUser(new CreateUserParams(userName, password, email, null, null, false));
 
                 if (user != null) {
-                    if (user.As<UserPart>().EmailStatus == UserStatus.Pending) {
-                        var siteUrl = _coeveryServices.WorkContext.CurrentSite.As<SiteSettings2Part>().BaseUrl;
-                        if (String.IsNullOrWhiteSpace(siteUrl)) {
+                    if ( user.As<UserPart>().EmailStatus == UserStatus.Pending ) {
+                        var siteUrl = _coeveryServices.WorkContext.CurrentSite.BaseUrl;
+                        if(String.IsNullOrWhiteSpace(siteUrl)) {
                             siteUrl = HttpContext.Request.ToRootUrlString();
                         }
 
@@ -188,7 +188,7 @@ namespace Coevery.Users.Controllers {
                 return View();
             }
 
-            var siteUrl = _coeveryServices.WorkContext.CurrentSite.As<SiteSettings2Part>().BaseUrl;
+            var siteUrl = _coeveryServices.WorkContext.CurrentSite.BaseUrl;
             if (String.IsNullOrWhiteSpace(siteUrl)) {
                 siteUrl = HttpContext.Request.ToRootUrlString();
             }

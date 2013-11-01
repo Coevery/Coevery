@@ -1,4 +1,5 @@
 ﻿using Coevery.ContentManagement;
+using Coevery.ContentManagement.FieldStorage.InfosetStorage;
 using Coevery.ContentManagement.Records;
 
 namespace Coevery.Core.Navigation.Models {
@@ -31,6 +32,11 @@ namespace Coevery.Core.Navigation.Models {
         public ContentItemRecord Menu {
             get { return Record.Menu; }
             set { Record.Menu = value; }
+        }
+
+        public bool ShowFullMenu {
+            get { return bool.Parse(this.As<InfosetPart>().Get<MenuWidgetPart>("ShowFullMenu") ?? "false"); }
+            set { this.As<InfosetPart>().Set<MenuWidgetPart>("ShowFullMenu", value.ToString()); }
         }
     }
 }
