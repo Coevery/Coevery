@@ -5,7 +5,7 @@ using System.Xml.XPath;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace MSBuild.Orchard.Tasks {
+namespace MSBuild.Coevery.Tasks {
     public class XmlDelete : Task {
 
         public string Namespace { get; set; }

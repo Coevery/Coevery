@@ -102,6 +102,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coevery", "Tools\Coevery\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coevery.Tests", "Tools\Coevery.Tests\Coevery.Tests.csproj", "{0DFA2E10-96C8-4E05-BC10-B710B97ECCDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSBuild.Coevery.Tasks", "Tools\MSBuild.Coevery.Tasks\MSBuild.Coevery.Tasks.csproj", "{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CodeCoverage|Any CPU = CodeCoverage|Any CPU
@@ -571,6 +573,16 @@ Global
 		{0DFA2E10-96C8-4E05-BC10-B710B97ECCDE}.FxCop|Any CPU.Build.0 = Release|Any CPU
 		{0DFA2E10-96C8-4E05-BC10-B710B97ECCDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DFA2E10-96C8-4E05-BC10-B710B97ECCDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.CodeCoverage|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.CodeCoverage|Any CPU.Build.0 = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.Coverage|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.Coverage|Any CPU.Build.0 = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.FxCop|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.FxCop|Any CPU.Build.0 = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -618,5 +630,6 @@ Global
 		{6CB3EB30-F725-45C0-9742-42599BA8E8D2} = {5C170F6B-6E28-4E6A-B5F5-082D99FC12A6}
 		{33B1BC8D-E292-4972-A363-22056B207156} = {D0288186-A66A-4E2C-8824-5E617CCB8783}
 		{0DFA2E10-96C8-4E05-BC10-B710B97ECCDE} = {D0288186-A66A-4E2C-8824-5E617CCB8783}
+		{5E5E7A21-C7B2-44D8-8593-2F9541AE041D} = {D0288186-A66A-4E2C-8824-5E617CCB8783}
 	EndGlobalSection
 EndGlobal

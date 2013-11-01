@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace MSBuild.Orchard.Tasks {
+namespace MSBuild.Coevery.Tasks {
     public class FileUpdateLines : Task {
         private int _replacementCount = -1;
         private Encoding _encodingValue { get; set; }

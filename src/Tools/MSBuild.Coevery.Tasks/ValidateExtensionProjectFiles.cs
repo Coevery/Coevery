@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace MSBuild.Orchard.Tasks {
+namespace MSBuild.Coevery.Tasks {
     /// <summary>
     /// Validate various aspect of a set of Module/Theme project files
     /// </summary>

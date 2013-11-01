@@ -10,7 +10,7 @@
     <ArtifactsFolder>$(MSBuildProjectDirectory)\artifacts\Azure</ArtifactsFolder>
 
     <StageFolder>$(BuildFolder)\Stage</StageFolder>
-    <CloudRootFolder>$(SrcFolder)\Orchard.Azure\Orchard.Azure.Web\obj\Release</CloudRootFolder>
+    <CloudRootFolder>$(SrcFolder)\Coevery.Azure\Coevery.Azure.Web\obj\Release</CloudRootFolder>
     <MsDeployFolder>$(CloudRootFolder)\Package\PackageTmp</MsDeployFolder>
 
   </PropertyGroup>
@@ -45,7 +45,7 @@
   <!-- Building -->
 
   <Target Name="Clean">
-    <MSBuild Projects="$(SrcFolder)\Orchard.Azure\Orchard.Azure.sln" Targets="Clean" />
+    <MSBuild Projects="$(SrcFolder)\Coevery.Azure\Coevery.Azure.sln" Targets="Clean" />
     <RemoveDir Directories="$(BuildFolder)" ContinueOnError="true" />
     <RemoveDir Directories="$(MsDeployFolder)" ContinueOnError="true" />
   </Target>
@@ -54,13 +54,13 @@
 
     <!-- behaves like MsDeploy since Azure SDK 1.4, output is $(MsDeployFolder) -->
     <MSBuild
-      Projects="$(SrcFolder)\Orchard.Azure\Orchard.Azure.sln"
+      Projects="$(SrcFolder)\Coevery.Azure\Coevery.Azure.sln"
       Targets="Build"
       Properties="Configuration=Release;DeployOnBuild=true;DeployTarget=Package;Platform=Any CPU" 
      />
     
     <MSBuild
-      Projects="$(SrcFolder)\Orchard.Azure.Tests\Orchard.Azure.Tests.sln"
+      Projects="$(SrcFolder)\Coevery.Azure.Tests\Coevery.Azure.Tests.sln"
       Targets="Build"
       Properties="Configuration=Release;OutputPath=$(CloudRootFolder)\Tests;Platform=Any CPU" 
     />
@@ -88,9 +88,9 @@
       <Excluded Include="$(SrcFolder)\**\bin\**\*;$(SrcFolder)\**\obj\**\*;$(SrcFolder)\**\*.user; $(SrcFolder)\**\*.cs;$(SrcFolder)\**\*.csproj;$(SrcFolder)\**\.hg\**\*" />
 
       <!-- list of files from Themes, Core and Modules to export -->
-      <Stage-Themes Include="$(SrcFolder)\Orchard.Web\Themes\**\*" Exclude="@(Excluded)" />
-      <Stage-Core Include="$(SrcFolder)\Orchard.Web\Core\**\*" Exclude="@(Excluded)" />
-      <Stage-Modules Include="$(SrcFolder)\Orchard.Web\Modules\**\*" Exclude="@(Excluded)" />
+      <Stage-Themes Include="$(SrcFolder)\Coevery.Web\Themes\**\*" Exclude="@(Excluded)" />
+      <Stage-Core Include="$(SrcFolder)\Coevery.Web\Core\**\*" Exclude="@(Excluded)" />
+      <Stage-Modules Include="$(SrcFolder)\Coevery.Web\Modules\**\*" Exclude="@(Excluded)" />
     </ItemGroup>
 
     <Copy SourceFiles="@(Stage-Themes)" DestinationFolder="$(MsDeployFolder)\Themes\%(RecursiveDir)" />
@@ -104,12 +104,12 @@
     <Delete Files="@(WebConfigs)" />
 
     <Copy 
-        SourceFiles="$(SrcFolder)\Orchard.Azure\Orchard.Azure.CloudService\ServiceConfiguration.cscfg" 
+        SourceFiles="$(SrcFolder)\Coevery.Azure\Coevery.Azure.CloudService\ServiceConfiguration.cscfg" 
         DestinationFolder="$(StageFolder)" 
       />
 
     <Copy 
-        SourceFiles="$(SrcFolder)\Orchard.Azure\Orchard.Azure.CloudService\Properties.txt" 
+        SourceFiles="$(SrcFolder)\Coevery.Azure\Coevery.Azure.CloudService\Properties.txt" 
         DestinationFolder="$(CloudRootFolder)" 
       />
 
@@ -126,14 +126,14 @@
   
   <Target Name="Package-Stage">
     <Exec
-        Command="&quot;$(ServiceHostingSDKBinDir)cspack&quot; &quot;$(SrcFolder)\Orchard.Azure\Orchard.Azure.CloudService\ServiceDefinition.csdef&quot; /role:Orchard.Azure.Web;&quot;$(MsDeployFolder)&quot;;Orchard.Azure.Web.dll /sites:Orchard.Azure.Web;Web;&quot;$(MsDeployFolder)&quot; /rolePropertiesFile:Orchard.Azure.Web;&quot;$(CloudRootFolder)\Properties.txt&quot; /out:&quot;$(StageFolder)\Orchard.Azure.Web.cspkg&quot;"
+        Command="&quot;$(ServiceHostingSDKBinDir)cspack&quot; &quot;$(SrcFolder)\Coevery.Azure\Coevery.Azure.CloudService\ServiceDefinition.csdef&quot; /role:Coevery.Azure.Web;&quot;$(MsDeployFolder)&quot;;Coevery.Azure.Web.dll /sites:Coevery.Azure.Web;Web;&quot;$(MsDeployFolder)&quot; /rolePropertiesFile:Coevery.Azure.Web;&quot;$(CloudRootFolder)\Properties.txt&quot; /out:&quot;$(StageFolder)\Coevery.Azure.Web.cspkg&quot;"
         WorkingDirectory="$(MsDeployFolder)" 
       />
   </Target>
 
   <Target Name="Package-Zip">
     <ItemGroup>
-      <Zip-Stage Include="$(StageFolder)\ServiceConfiguration.cscfg;$(StageFolder)\Orchard.Azure.Web.cspkg" />
+      <Zip-Stage Include="$(StageFolder)\ServiceConfiguration.cscfg;$(StageFolder)\Coevery.Azure.Web.cspkg" />
     </ItemGroup>
     
     <MakeDir Directories="$(ArtifactsFolder)" />

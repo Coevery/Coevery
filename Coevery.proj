@@ -14,7 +14,7 @@
     <MsDeployArtifactFolder>$(ArtifactsFolder)\MsDeploy</MsDeployArtifactFolder>
     <GalleryArtifactFolder>$(ArtifactsFolder)\Gallery</GalleryArtifactFolder>
     <ModulesSrcFolder>$(MSBuildProjectDirectory)\src\Coevery.Web\Modules</ModulesSrcFolder>
-    <OrchardCoreSrcFolder>$(MSBuildProjectDirectory)\src\Coevery.Web\Core</OrchardCoreSrcFolder>
+    <CoeveryCoreSrcFolder>$(MSBuildProjectDirectory)\src\Coevery.Web\Core</CoeveryCoreSrcFolder>
     <ThemesSrcFolder>$(MSBuildProjectDirectory)\src\Coevery.Web\Themes</ThemesSrcFolder>
 
     <CompileFolder>$(BuildFolder)\Compile</CompileFolder>
@@ -162,10 +162,10 @@
 
   <UsingTask AssemblyFile="$(LibFolder)\slowcheetah\SlowCheetah.Xdt.dll" TaskName="SlowCheetah.Xdt.TransformXml" />
 
-  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Orchard.Tasks.dll" TaskName="MSBuild.Orchard.Tasks.FilterModuleBinaries" />
-  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Orchard.Tasks.dll" TaskName="MSBuild.Orchard.Tasks.FileUpdateLines" />
-  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Orchard.Tasks.dll" TaskName="MSBuild.Orchard.Tasks.ValidateExtensionProjectFiles" />
-  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Orchard.Tasks.dll" TaskName="MSBuild.Orchard.Tasks.XmlDelete" />
+  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Coevery.Tasks.dll" TaskName="MSBuild.Coevery.Tasks.FilterModuleBinaries" />
+  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Coevery.Tasks.dll" TaskName="MSBuild.Coevery.Tasks.FileUpdateLines" />
+  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Coevery.Tasks.dll" TaskName="MSBuild.Coevery.Tasks.ValidateExtensionProjectFiles" />
+  <UsingTask AssemblyFile="$(MsBuildTasksFolder)\MSBuild.Coevery.Tasks.dll" TaskName="MSBuild.Coevery.Tasks.XmlDelete" />
 
   <Target Name="Package-Stage" DependsOnTargets="Compile">
     <CallTarget Targets="CompileMsBuildTasks"/>
@@ -174,13 +174,13 @@
     <ItemGroup>
       <SqlCe-Native-Binaries-x86 Include="$(SqlCeFolder)\x86\**\*"/>
       <SqlCe-Native-Binaries-amd64 Include="$(SqlCeFolder)\amd64\**\*"/>
-      <Stage-Orchard-Web-Bins Include="$(WebSitesFolder)\Orchard.Web\bin\*"/>
+      <Stage-Coevery-Web-Bins Include="$(WebSitesFolder)\Coevery.Web\bin\*"/>
       <Stage-Bin-Exclude Include="$(WebSitesFolder)\**\bin\**\*" />
-      <Stage-Web Include="$(WebSitesFolder)\Orchard.Web\**\*;$(SrcFolder)\Orchard.Web\*.csproj;" Exclude="$(SrcFolder)\Orchard.Web\Orchard.Web.csproj;$(SrcFolder)\Orchard.Web\**\*.Release.config;$(SrcFolder)\Orchard.Web\**\*.Debug.config"/>
-      <Stage-Web-Config Include="$(SrcFolder)\Orchard.Web\**\*.config" Exclude="$(SrcFolder)\Orchard.Web\**\*.Release.config;$(SrcFolder)\Orchard.Web\**\*.Debug.config"/>
-      <Stage-Media Include="$(SrcFolder)\Orchard.Web\Media\OrchardLogo.png" />
-      <Stage-PoFiles Include="$(SrcFolder)\Orchard.Web\**\*.po" />
-      <Stage-Core Include="$(WebSitesFolder)\Orchard.Core\**\*" Exclude="$(WebSitesFolder)\Orchard.Core\**\bin\**\*" />
+      <Stage-Web Include="$(WebSitesFolder)\Coevery.Web\**\*;$(SrcFolder)\Coevery.Web\*.csproj;" Exclude="$(SrcFolder)\Coevery.Web\Coevery.Web.csproj;$(SrcFolder)\Coevery.Web\**\*.Release.config;$(SrcFolder)\Coevery.Web\**\*.Debug.config"/>
+      <Stage-Web-Config Include="$(SrcFolder)\Coevery.Web\**\*.config" Exclude="$(SrcFolder)\Coevery.Web\**\*.Release.config;$(SrcFolder)\Coevery.Web\**\*.Debug.config"/>
+      <Stage-Media Include="$(SrcFolder)\Coevery.Web\Media\CoeveryLogo.png" />
+      <Stage-PoFiles Include="$(SrcFolder)\Coevery.Web\**\*.po" />
+      <Stage-Core Include="$(WebSitesFolder)\Coevery.Core\**\*" Exclude="$(WebSitesFolder)\Coevery.Core\**\bin\**\*" />
       <Stage-Themes Include="$(ThemesSrcFolder)\**\*" Exclude="@(Stage-Bin-Exclude);$(ThemesSrcFolder)\*.*;$(ThemesSrcFolder)\*.*;$(ThemesSrcFolder)\bin\**;$(ThemesSrcFolder)\obj\**;$(ThemesSrcFolder)\*.*;$(ThemesSrcFolder)\Properties\**" />
       <Stage-Themes-Binaries Include="$(ThemesSrcFolder)\*\**\bin\*" />
 
@@ -195,15 +195,15 @@
 
     <!-- Copying module binaries is somewhat tricky: From a module "bin" directory, we
          only want to include the files that are _not_ already present in 
-         the "Orchard.Web\Bin" folder. -->
+         the "Coevery.Web\Bin" folder. -->
     <FilterModuleBinaries
       ModulesBinaries="@(Stage-Modules-Binaries)"
-      OrchardWebBinaries="@(Stage-Orchard-Web-Bins)">
+      CoeveryWebBinaries="@(Stage-Coevery-Web-Bins)">
       <Output TaskParameter="ExcludedBinaries" ItemName="FilterModuleBinaries-ExcludedBinaries"/>
     </FilterModuleBinaries>
     <FilterModuleBinaries
       ModulesBinaries="@(Stage-Themes-Binaries)"
-      OrchardWebBinaries="@(Stage-Orchard-Web-Bins)">
+      CoeveryWebBinaries="@(Stage-Coevery-Web-Bins)">
       <Output TaskParameter="ExcludedBinaries" ItemName="FilterThemeBinaries-ExcludedBinariesFromThemes"/>
     </FilterModuleBinaries>
 
@@ -230,24 +230,24 @@
     <!-- extra processing of the staged config files -->
     <TransformXml 
       Source="$(StageFolder)\Web.Config"
-      Transform="$(SrcFolder)\Orchard.Web\Web.Release.Config"
+      Transform="$(SrcFolder)\Coevery.Web\Web.Release.Config"
       Destination="$(StageFolder)\Web.Config"
     />
 
     <TransformXml 
       Source="$(StageFolder)\Config\HostComponents.Config"
-      Transform="$(SrcFolder)\Orchard.Web\Config\HostComponents.Release.Config"
+      Transform="$(SrcFolder)\Coevery.Web\Config\HostComponents.Release.Config"
       Destination="$(StageFolder)\Config\HostComponents.Config"
     />
 
     <TransformXml 
       Source="$(StageFolder)\Config\log4net.Config"
-      Transform="$(SrcFolder)\Orchard.Web\Config\log4net.Release.Config"
+      Transform="$(SrcFolder)\Coevery.Web\Config\log4net.Release.Config"
       Destination="$(StageFolder)\Config\log4net.Config"
     />
     
     <!-- move over extra non-content files the csproj referenced -->
-    <Copy SourceFiles="@(StageProjectAlteration-ExtraFiles->'$(SrcFolder)\Orchard.Web\%(Identity)')"
+    <Copy SourceFiles="@(StageProjectAlteration-ExtraFiles->'$(SrcFolder)\Coevery.Web\%(Identity)')"
         DestinationFolder="$(StageFolder)\%(RecursiveDir)"/>
 
   </Target>
@@ -258,10 +258,10 @@
       <!--<MsDeploy-Folder-Input Include="$(StageFolder)\**\*" Exclude="$(StageFolder)\**\bin\**\*.pdb;$(StageFolder)\**\bin\**\*.xml" />-->
 
       <MsDeploy-Exclude-Modules Include="
-        $(StageFolder)\**\Modules\Orchard.Lists\**;
-        $(StageFolder)\**\Modules\Orchard.Media\**;
-        $(StageFolder)\**\Modules\Orchard.MediaPicker\**;
-        $(StageFolder)\**\Modules\Orchard.Rules\**;
+        $(StageFolder)\**\Modules\Coevery.Lists\**;
+        $(StageFolder)\**\Modules\Coevery.Media\**;
+        $(StageFolder)\**\Modules\Coevery.MediaPicker\**;
+        $(StageFolder)\**\Modules\Coevery.Rules\**;
         " />
 
       <MsDeploy-Folder-Input Include="$(StageFolder)\**\*" Exclude="$(StageFolder)\**\bin\**\*.xml;$(StageFolder)\**\obj\**\*;@(MsDeploy-Exclude-Modules)" />
@@ -269,11 +269,11 @@
     </ItemGroup>
 
     <Copy SourceFiles="@(MsDeploy-Folder-Input)"
-        DestinationFolder="$(MsDeployFolder)\Orchard\%(RecursiveDir)"/>
+        DestinationFolder="$(MsDeployFolder)\Coevery\%(RecursiveDir)"/>
     <Copy SourceFiles="@(MsDeploy-Parameters)"
         DestinationFolder="$(MsDeployFolder)"/>
 
-    <MakeDir Directories="$(MsDeployFolder)\Orchard\bin\HostRestart"/>
+    <MakeDir Directories="$(MsDeployFolder)\Coevery\bin\HostRestart"/>
   </Target>
 
   <!-- Packaging (Precompiled) -->
@@ -325,8 +325,8 @@
       <ZipVersionFileSuffix Condition="$(Version) == ''"></ZipVersionFileSuffix>
     </PropertyGroup>
 
-    <Zip Files="@(Zip-MsDeploy)" WorkingDirectory="$(MsDeployFolder)" ZipFileName="$(MsDeployArtifactFolder)\Orchard.Web$(ZipVersionFileSuffix).zip" />
-    <Zip Files="@(Zip-Source)" WorkingDirectory="$(MSBuildProjectDirectory)" ZipFileName="$(SourceArtifactFolder)\Orchard.Source$(ZipVersionFileSuffix).zip" />
+    <Zip Files="@(Zip-MsDeploy)" WorkingDirectory="$(MsDeployFolder)" ZipFileName="$(MsDeployArtifactFolder)\Coevery.Web$(ZipVersionFileSuffix).zip" />
+    <Zip Files="@(Zip-Source)" WorkingDirectory="$(MSBuildProjectDirectory)" ZipFileName="$(SourceArtifactFolder)\Coevery.Source$(ZipVersionFileSuffix).zip" />
   </Target>
 
   <!-- Profiling -->
@@ -345,11 +345,11 @@
   </Target>
 
   <Target Name="Profiling-Setup">
-    <ReadLinesFromFile File="$(SrcFolder)\Orchard.Profile\profiling-setup-commands.txt">
+    <ReadLinesFromFile File="$(SrcFolder)\Coevery.Profile\profiling-setup-commands.txt">
       <Output TaskParameter="Lines" ItemName="ProfilingSetupCommands"/>
     </ReadLinesFromFile>
 
-    <Exec Command="$(ProfilingFolder)\bin\Orchard.exe %(ProfilingSetupCommands.Identity)" WorkingDirectory="$(ProfilingFolder)"/>
+    <Exec Command="$(ProfilingFolder)\bin\Coevery.exe %(ProfilingSetupCommands.Identity)" WorkingDirectory="$(ProfilingFolder)"/>
   </Target>
 
   <!-- Gallery Packaging -->
@@ -377,7 +377,7 @@
 
     <ItemGroup>
       <Validate-ProjectFiles 
-        Include="$(ModulesSrcFolder)\**\*.csproj;$(ThemesSrcFolder)\**\*.csproj;$(OrchardCoreSrcFolder)\Orchard.Core.csproj"
+        Include="$(ModulesSrcFolder)\**\*.csproj;$(ThemesSrcFolder)\**\*.csproj;$(CoeveryCoreSrcFolder)\Coevery.Core.csproj"
         Exclude="$(ModulesSrcFolder)\**\*.Specs.csproj"
         />
     </ItemGroup>

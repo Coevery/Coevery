@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace MSBuild.Orchard.Tasks {
+namespace MSBuild.Coevery.Tasks {
     public class FilterModuleBinaries : Task {
         public ITaskItem[] ModulesBinaries { get; set; }
         public ITaskItem[] OrchardWebBinaries { get; set; }
