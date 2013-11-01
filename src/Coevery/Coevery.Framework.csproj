@@ -41,7 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\OrchardBasicCorrectness.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\CoeveryBasicCorrectness.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -577,6 +577,9 @@
     <Compile Include="IWorkContextAccessor.cs" />
     <Compile Include="Utility\Extensions\VirtualPathProviderExtensions.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
+    <Compile Include="Validation\JetBrains.Annotations.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Validation\PathValidation.cs" />
     <Compile Include="Wcf\CoeveryDependencyInjectionServiceBehavior.cs" />
     <Compile Include="Wcf\CoeveryInstanceContext.cs" />
@@ -933,7 +936,6 @@
     <Compile Include="Utility\Position.cs" />
     <Compile Include="Utility\Reflect.cs" />
     <Compile Include="Utility\ReflectOn.cs" />
-    <Compile Include="Validation\JetBrains.Annotations.cs" />
     <Compile Include="IMapper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\OrchardBasicCorrectness.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\CoeveryBasicCorrectness.ruleset</CodeAnalysisRuleSet>
     <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
     <PackageAsSingleFile>false</PackageAsSingleFile>
     <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
