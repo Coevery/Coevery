@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Orchard.Localization;
+using Coevery.Localization;
 
-namespace Orchard.Tests.Localization {
+namespace Coevery.Tests.Localization {
     [TestFixture]
     public class NullLocalizerTests {
         [Test]

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using NUnit.Framework;
-using Orchard.Tests.Stubs;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Services {
+namespace Coevery.Tests.Services {
 
     [TestFixture]
     public class ClockTests {

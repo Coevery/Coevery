@@ -5,27 +5,27 @@ using Autofac;
 using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Drivers;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Common.Handlers;
-using Orchard.Core.Common.Models;
-using Orchard.Data;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment;
-using Orchard.Environment.Extensions;
-using Orchard.Security;
-using Orchard.Tests.Modules;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Notify;
-using Orchard.UI.PageClass;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Drivers;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.Records;
+using Coevery.Core.Common.Handlers;
+using Coevery.Core.Common.Models;
+using Coevery.Data;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment;
+using Coevery.Environment.Extensions;
+using Coevery.Security;
+using Coevery.Tests.Modules;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Notify;
+using Coevery.UI.PageClass;
 
-namespace Orchard.Core.Tests.Body {
+namespace Coevery.Core.Tests.Body {
     [TestFixture]
     public class BodyPartTests : DatabaseEnabledTestsBase {
 
@@ -39,7 +39,7 @@ namespace Orchard.Core.Tests.Body {
             builder.RegisterInstance(new Mock<IAuthorizer>().Object);
             builder.RegisterInstance(new Mock<INotifier>().Object);
             builder.RegisterInstance(new Mock<IContentDisplay>().Object);
-            builder.RegisterType<OrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<CoeveryServices>().As<ICoeveryServices>();
             builder.RegisterType<DefaultShapeTableManager>().As<IShapeTableManager>();
             builder.RegisterType<DefaultShapeFactory>().As<IShapeFactory>();
             builder.RegisterType<ShapeTableLocator>().As<IShapeTableLocator>();

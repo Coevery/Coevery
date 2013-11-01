@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace Orchard.Web.Tests.Stubs {
+namespace Coevery.Web.Tests.Stubs {
     internal class StubContext : HttpContextBase {
         private readonly StubRequest request;
 

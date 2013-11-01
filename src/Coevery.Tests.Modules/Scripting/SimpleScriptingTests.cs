@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Orchard.Scripting;
-using Orchard.Tests.Stubs;
+using Coevery.Scripting;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Modules.Scripting {
+namespace Coevery.Tests.Modules.Scripting {
     [TestFixture]
     public class SimpleScriptingTests {
         [Test]

@@ -2,9 +2,9 @@
 using NHibernate;
 using NHibernate.Linq;
 using NUnit.Framework;
-using Orchard.Tests.Records;
+using Coevery.Tests.Records;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     [TestFixture]
     public class LinqToNHibernateTests {
         #region Setup/Teardown

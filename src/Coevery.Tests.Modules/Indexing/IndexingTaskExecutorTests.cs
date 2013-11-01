@@ -5,32 +5,32 @@ using Autofac;
 using Lucene.Services;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Drivers;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Builders;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Common.Handlers;
-using Orchard.Core.Common.Models;
-using Orchard.Data;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.LockFile;
-using Orchard.Indexing;
-using Orchard.Indexing.Handlers;
-using Orchard.Indexing.Models;
-using Orchard.Indexing.Services;
-using Orchard.Logging;
-using Orchard.Security;
-using Orchard.Tasks.Indexing;
-using Orchard.Tests.FileSystems.AppData;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Drivers;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.MetaData.Builders;
+using Coevery.ContentManagement.Records;
+using Coevery.Core.Common.Handlers;
+using Coevery.Core.Common.Models;
+using Coevery.Data;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.LockFile;
+using Coevery.Indexing;
+using Coevery.Indexing.Handlers;
+using Coevery.Indexing.Models;
+using Coevery.Indexing.Services;
+using Coevery.Logging;
+using Coevery.Security;
+using Coevery.Tasks.Indexing;
+using Coevery.Tests.FileSystems.AppData;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Modules.Indexing {
+namespace Coevery.Tests.Modules.Indexing {
     public class IndexingTaskExecutorTests : DatabaseEnabledTestsBase {
         private IIndexProvider _provider;
         private IAppDataFolder _appDataFolder;
@@ -75,7 +75,7 @@ namespace Orchard.Tests.Modules.Indexing {
             builder.RegisterType<DefaultContentManagerSession>().As<IContentManagerSession>();
             builder.RegisterInstance(new Mock<ITransactionManager>().Object);
             builder.RegisterInstance(new Mock<IAuthorizer>().Object);
-            builder.RegisterType<OrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<CoeveryServices>().As<ICoeveryServices>();
 
             builder.RegisterType<ThingHandler>().As<IContentHandler>();
             builder.RegisterType<CreateIndexingTaskHandler>().As<IContentHandler>();

@@ -4,16 +4,16 @@ using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NUnit.Framework;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Mvc;
-using Orchard.Tests.DisplayManagement;
-using Orchard.Tests.Stubs;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Mvc;
+using Coevery.Tests.DisplayManagement;
+using Coevery.Tests.Stubs;
 using Autofac;
 
-namespace Orchard.Tests.Mvc {
+namespace Coevery.Tests.Mvc {
     [TestFixture]
-    public class OrchardControllerFactoryTests {
-        private OrchardControllerFactory _controllerFactory;
+    public class CoeveryControllerFactoryTests {
+        private CoeveryControllerFactory _controllerFactory;
         private IWorkContextAccessor _workContextAccessor;
         private StubContainerProvider _containerProvider;
 
@@ -48,7 +48,7 @@ namespace Orchard.Tests.Mvc {
             };
             _workContextAccessor = new DefaultDisplayManagerTests.TestWorkContextAccessor(workContext);
 
-            _controllerFactory = new OrchardControllerFactory();
+            _controllerFactory = new CoeveryControllerFactory();
             InjectKnownControllerTypes(_controllerFactory, typeof(ReplacementFooController), typeof (FooController), typeof (BarController));
         }
 
@@ -60,7 +60,7 @@ namespace Orchard.Tests.Mvc {
             Assert.That(controller, Is.TypeOf<ReplacementFooController>());
         }
 
-        [Test, Ignore("OrchardControllerFactory depends on metadata, calling base when no context is causing errors.")]
+        [Test, Ignore("CoeveryControllerFactory depends on metadata, calling base when no context is causing errors.")]
         public void WhenNullOrMissingContainerNormalControllerFactoryRulesShouldBeUsedAsFallback() {
             var requestContext = GetRequestContext(null);
             var controller = _controllerFactory.CreateController(requestContext, "foo");
@@ -95,10 +95,10 @@ namespace Orchard.Tests.Mvc {
 
         [Test]
         public void NullServiceKeyReturnsDefault() {
-            OrchardControllerFactoryAccessor orchardControllerFactory = new OrchardControllerFactoryAccessor();
+            CoeveryControllerFactoryAccessor CoeveryControllerFactory = new CoeveryControllerFactoryAccessor();
             ReplacementFooController fooController;
 
-            Assert.That(orchardControllerFactory.TryResolveAccessor(_workContextAccessor.GetContext(), null, out fooController), Is.False);
+            Assert.That(CoeveryControllerFactory.TryResolveAccessor(_workContextAccessor.GetContext(), null, out fooController), Is.False);
             Assert.That(fooController, Is.Null);
         }
 
@@ -129,7 +129,7 @@ namespace Orchard.Tests.Mvc {
             public int Disposals { get; set; }
         }
 
-        internal class OrchardControllerFactoryAccessor : OrchardControllerFactory {
+        internal class CoeveryControllerFactoryAccessor : CoeveryControllerFactory {
             public bool TryResolveAccessor<T>(WorkContext workContext, object serviceKey, out T instance) {
                 return TryResolve(workContext, serviceKey, out instance);
             }

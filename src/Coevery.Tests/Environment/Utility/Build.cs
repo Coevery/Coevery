@@ -1,8 +1,8 @@
 using System.Linq;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.Descriptor.Models;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.Descriptor.Models;
 
-namespace Orchard.Tests.Environment.Utility {
+namespace Coevery.Tests.Environment.Utility {
     static class Build {
 
         public static ShellDescriptor ShellDescriptor() {

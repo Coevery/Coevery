@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Orchard.DisplayManagement.Shapes;
-using Orchard.UI.Zones;
+using Coevery.DisplayManagement.Shapes;
+using Coevery.UI.Zones;
 
-namespace Orchard.Tests.DisplayManagement {
+namespace Coevery.Tests.DisplayManagement {
     [TestFixture]
     public class ZoneHoldingTests {
 

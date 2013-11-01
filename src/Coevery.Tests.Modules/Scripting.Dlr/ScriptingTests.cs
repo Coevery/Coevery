@@ -4,16 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Scripting.Dlr.Services;
+using Coevery.Scripting.Dlr.Services;
 using Path = Bleroy.FluentPath.Path;
 
-namespace Orchard.Tests.Modules.Scripting.Dlr {
+namespace Coevery.Tests.Modules.Scripting.Dlr {
     [TestFixture]
     public class ScriptingTests {
         private IContainer _container;
         private IScriptingRuntime _scriptingRuntime;
         private IScriptingManager _scriptingManager;
-        private readonly Path _tempFixtureFolderName = Path.Get(System.IO.Path.GetTempPath()).Combine("Orchard.Tests.Modules.Scripting");
+        private readonly Path _tempFixtureFolderName = Path.Get(System.IO.Path.GetTempPath()).Combine("Coevery.Tests.Modules.Scripting");
         private Path _tempFolderName;
 
         [SetUp]

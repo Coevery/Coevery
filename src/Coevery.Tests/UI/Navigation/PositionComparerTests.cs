@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Orchard.UI;
+using Coevery.UI;
 
-namespace Orchard.Tests.UI.Navigation {
+namespace Coevery.Tests.UI.Navigation {
     [TestFixture]
     public class PositionComparerTests {
         private IComparer<string> _comparer;

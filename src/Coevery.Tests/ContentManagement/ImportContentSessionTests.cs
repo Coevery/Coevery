@@ -1,9 +1,9 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Records;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Records;
 
-namespace Orchard.Tests.ContentManagement {
+namespace Coevery.Tests.ContentManagement {
     [TestFixture]
     public class ImportContentSessionTests {
         private ContentIdentity _testItemIdentity1;

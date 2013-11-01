@@ -4,29 +4,29 @@ using System.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Common.Models;
-using Orchard.Core.Settings.Metadata.Records;
-using Orchard.Data;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.Features;
-using Orchard.Security;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Notify;
-using Orchard.UI.PageClass;
-using Orchard.Widgets.Models;
-using Orchard.Widgets.Services;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.Records;
+using Coevery.Core.Common.Models;
+using Coevery.Core.Settings.Metadata.Records;
+using Coevery.Data;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.Features;
+using Coevery.Security;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Notify;
+using Coevery.UI.PageClass;
+using Coevery.Widgets.Models;
+using Coevery.Widgets.Services;
 
-namespace Orchard.Tests.Modules.Widgets.Services {
+namespace Coevery.Tests.Modules.Widgets.Services {
 
     [TestFixture]
     public class WidgetsServiceTest : DatabaseEnabledTestsBase {
@@ -97,7 +97,7 @@ namespace Orchard.Tests.Modules.Widgets.Services {
             builder.RegisterInstance(new Mock<IAuthorizer>().Object);
             builder.RegisterInstance(new Mock<INotifier>().Object);
             builder.RegisterInstance(mockFeatureManager.Object);
-            builder.RegisterType<OrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<CoeveryServices>().As<ICoeveryServices>();
             builder.RegisterType<DefaultShapeTableManager>().As<IShapeTableManager>();
             builder.RegisterType<DefaultShapeFactory>().As<IShapeFactory>();
             builder.RegisterType<WidgetsService>().As<IWidgetsService>();

@@ -1,6 +1,6 @@
-using Orchard.Data.Conventions;
+using Coevery.Data.Conventions;
 
-namespace Orchard.Tests.Records {
+namespace Coevery.Tests.Records {
     public class BigRecord {
         public virtual int Id { get; set; }
         [StringLengthMax]

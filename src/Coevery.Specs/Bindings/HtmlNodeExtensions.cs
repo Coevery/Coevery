@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 
-namespace Orchard.Specs.Bindings {
+namespace Coevery.Specs.Bindings {
     public static class HtmlNodeExtensions {
         public static string GetOptionValue(this HtmlNode node) {
             return node.Attributes.Contains("value")

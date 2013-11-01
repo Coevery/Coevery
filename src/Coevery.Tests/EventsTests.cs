@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using Orchard.Logging;
+using Coevery.Logging;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     [TestFixture]
     public class EventsTests {
         [Test]

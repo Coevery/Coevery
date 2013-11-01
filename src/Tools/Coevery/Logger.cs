@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Orchard {
+namespace Coevery {
     public class Logger : MarshalByRefObject {
         private readonly bool _verbose;
         private readonly TextWriter _output;

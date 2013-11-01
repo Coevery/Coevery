@@ -5,16 +5,16 @@ using System.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Models;
-using Orchard.FileSystems.VirtualPath;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Descriptors.ShapeTemplateStrategy;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Models;
+using Coevery.FileSystems.VirtualPath;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.DisplayManagement.Descriptors {
+namespace Coevery.Tests.DisplayManagement.Descriptors {
     [TestFixture]
     public class ShapeTemplateBindingStrategyTests : ContainerTestBase {
         private ShellDescriptor _descriptor;

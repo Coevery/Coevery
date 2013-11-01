@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
-using Orchard.Parameters;
+using Coevery.Parameters;
 
-namespace Orchard {
+namespace Coevery {
     public class OrchardParametersParser : IOrchardParametersParser {
         [SecurityCritical]
         public OrchardParameters Parse(CommandParameters parameters) {

@@ -4,32 +4,32 @@ using Autofac;
 using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Comments.Handlers;
-using Orchard.Comments.Models;
-using Orchard.Comments.Services;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Drivers;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Common.Handlers;
-using Orchard.Core.Common.Models;
-using Orchard.Data;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment;
-using Orchard.Environment.Extensions;
-using Orchard.Security;
-using Orchard.Security.Providers;
-using Orchard.Services;
-using Orchard.Tests.Modules.Users;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Notify;
-using Orchard.UI.PageClass;
+using Coevery.Caching;
+using Coevery.Comments.Handlers;
+using Coevery.Comments.Models;
+using Coevery.Comments.Services;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Drivers;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.Records;
+using Coevery.Core.Common.Handlers;
+using Coevery.Core.Common.Models;
+using Coevery.Data;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment;
+using Coevery.Environment.Extensions;
+using Coevery.Security;
+using Coevery.Security.Providers;
+using Coevery.Services;
+using Coevery.Tests.Modules.Users;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Notify;
+using Coevery.UI.PageClass;
 
-namespace Orchard.Tests.Modules.Comments.Services {
+namespace Coevery.Tests.Modules.Comments.Services {
     [TestFixture]
     public class CommentServiceTests : DatabaseEnabledTestsBase {
         private IContentManager _contentManager;
@@ -47,7 +47,7 @@ namespace Orchard.Tests.Modules.Comments.Services {
             builder.RegisterInstance(new Mock<INotifier>().Object);
             builder.RegisterInstance(new Mock<IContentDisplay>().Object);
             builder.RegisterInstance(new Mock<IAuthenticationService>().Object);
-            builder.RegisterType<OrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<CoeveryServices>().As<ICoeveryServices>();
             builder.RegisterType<DefaultShapeTableManager>().As<IShapeTableManager>();
             builder.RegisterType<DefaultShapeFactory>().As<IShapeFactory>();
             builder.RegisterType<StubWorkContextAccessor>().As<IWorkContextAccessor>();

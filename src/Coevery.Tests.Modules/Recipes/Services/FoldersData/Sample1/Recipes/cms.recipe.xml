@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0"?>
-<Orchard>
+<Coevery>
   <Recipe>
     <Name>cms</Name>
-    <Description>a sample Orchard recipe describing a cms</Description>
+    <Description>a sample Coevery recipe describing a cms</Description>
     <Author>orchard</Author>
     <WebSite>http://orchardproject.net</WebSite>
     <Tags>tag1, tag2</Tags>
@@ -41,5 +41,5 @@
 
   <Custom1 attr1="value1" />
   <Custom2 attr2="value2" />
-</Orchard>
+</Coevery>
 

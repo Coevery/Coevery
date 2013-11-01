@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Web.Hosting;
-using Orchard.Parameters;
-using Orchard.ResponseFiles;
+using Coevery.Parameters;
+using Coevery.ResponseFiles;
 
-namespace Orchard.Host {
+namespace Coevery.Host {
 
     /// <summary>
     /// Different return codes for a command execution.

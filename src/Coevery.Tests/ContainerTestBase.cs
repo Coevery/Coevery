@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using NUnit.Framework;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     public class ContainerTestBase {
 
         protected IContainer _container;

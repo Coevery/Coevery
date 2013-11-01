@@ -1,8 +1,8 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Orchard.FileSystems.VirtualPath;
+using Coevery.FileSystems.VirtualPath;
 
-namespace Orchard.Tests.FileSystems.VirtualPath {
+namespace Coevery.Tests.FileSystems.VirtualPath {
     [TestFixture]
     public class DefaultVirtualPathProviderTests {
         [Test]

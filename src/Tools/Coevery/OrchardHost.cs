@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
-using Orchard.Host;
-using Orchard.HostContext;
-using Orchard.Parameters;
+using System.Linq;
+using Coevery.Host;
+using Coevery.HostContext;
+using Coevery.Parameters;
 
-namespace Orchard {
+namespace Coevery {
     class OrchardHost {
         private readonly TextReader _input;
         private readonly TextWriter _output;

@@ -5,22 +5,22 @@ using System.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.Records;
-using Orchard.Data;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Security;
-using Orchard.Tags.Handlers;
-using Orchard.Tags.Models;
-using Orchard.Tags.Services;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Utility;
-using Orchard.UI.Notify;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.Records;
+using Coevery.Data;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Security;
+using Coevery.Tags.Handlers;
+using Coevery.Tags.Models;
+using Coevery.Tags.Services;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Utility;
+using Coevery.UI.Notify;
 
-namespace Orchard.Tests.Modules.Tags.Services {
+namespace Coevery.Tests.Modules.Tags.Services {
     [TestFixture]
     public class TagsServiceTests : DatabaseEnabledTestsBase {
         private Mock<IAuthorizationService> _authz;
@@ -37,7 +37,7 @@ namespace Orchard.Tests.Modules.Tags.Services {
             builder.RegisterType<Notifier>().As<INotifier>();
             builder.RegisterType<ThingHandler>().As<IContentHandler>();
             builder.RegisterType<TagsPartHandler>().As<IContentHandler>();
-            builder.RegisterType<OrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<CoeveryServices>().As<ICoeveryServices>();
             builder.RegisterType<DefaultContentManager>().As<IContentManager>();
             builder.RegisterType<StubCacheManager>().As<ICacheManager>();
             builder.RegisterType<Signals>().As<ISignals>();

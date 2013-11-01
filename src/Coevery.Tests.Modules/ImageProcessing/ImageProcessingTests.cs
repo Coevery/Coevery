@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using Moq;
 using NUnit.Framework;
-using Orchard.MediaProcessing.Services;
+using Coevery.MediaProcessing.Services;
 
-namespace Orchard.Tests.Modules.ImageProcessing {
+namespace Coevery.Tests.Modules.ImageProcessing {
     [TestFixture]
     public class ImageProcessingTests {
 

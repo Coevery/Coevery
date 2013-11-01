@@ -3,20 +3,20 @@ using System.Linq;
 using System.Web.Mvc;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Environment;
+using Coevery.Environment;
 
-namespace Orchard.Tests.Environment {
+namespace Coevery.Tests.Environment {
     [TestFixture]
-    public class OrchardStarterTests {
+    public class CoeveryStarterTests {
         [Test]
-        public void DefaultOrchardHostInstanceReturnedByCreateHost() {
-            var host = OrchardStarter.CreateHost(b => b.RegisterInstance(new ControllerBuilder()));
-            Assert.That(host, Is.TypeOf<DefaultOrchardHost>());
+        public void DefaultCoeveryHostInstanceReturnedByCreateHost() {
+            var host = CoeveryStarter.CreateHost(b => b.RegisterInstance(new ControllerBuilder()));
+            Assert.That(host, Is.TypeOf<DefaultCoeveryHost>());
         }
 
         [Test]
         public void ContainerResolvesServicesInSameOrderTheyAreRegistered() {
-            var container = OrchardStarter.CreateHostContainer(builder => {
+            var container = CoeveryStarter.CreateHostContainer(builder => {
                 builder.RegisterType<Component1>().As<IServiceA>();
                 builder.RegisterType<Component2>().As<IServiceA>();
             });
@@ -28,7 +28,7 @@ namespace Orchard.Tests.Environment {
 
         [Test]
         public void MostRecentlyRegisteredServiceReturnsFromSingularResolve() {
-            var container = OrchardStarter.CreateHostContainer(builder => {
+            var container = CoeveryStarter.CreateHostContainer(builder => {
                 builder.RegisterType<Component1>().As<IServiceA>();
                 builder.RegisterType<Component2>().As<IServiceA>();
             });

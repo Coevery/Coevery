@@ -9,19 +9,19 @@ using HtmlAgilityPack;
 using log4net.Appender;
 using log4net.Core;
 using NUnit.Framework;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Specs.Hosting;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Specs.Hosting;
 using TechTalk.SpecFlow;
 using Path = Bleroy.FluentPath.Path;
 
-namespace Orchard.Specs.Bindings {
+namespace Coevery.Specs.Bindings {
     [Binding]
     public class WebAppHosting {
         private WebHost _webHost;
         private RequestDetails _details;
         private HtmlDocument _doc;
         private MessageSink _messages;
-        private static readonly Path _orchardTemp = Path.Get(System.IO.Path.GetTempPath()).Combine("Orchard.Specs");
+        private static readonly Path _orchardTemp = Path.Get(System.IO.Path.GetTempPath()).Combine("Coevery.Specs");
         private ExtensionDeploymentOptions _moduleDeploymentOptions = ExtensionDeploymentOptions.CompiledAssembly;
         private DynamicCompilationOption _dynamicCompilationOption = DynamicCompilationOption.Enabled;
 
@@ -65,7 +65,7 @@ namespace Orchard.Specs.Bindings {
 
         [Given(@"I have a clean site")]
         public void GivenIHaveACleanSite(string virtualDirectory = "/") {
-            GivenIHaveACleanSiteBasedOn("Orchard.Web", virtualDirectory);
+            GivenIHaveACleanSiteBasedOn("Coevery.Web", virtualDirectory);
         }
 
         [Given(@"I have chosen to deploy modules as source files only")]

@@ -2,10 +2,10 @@
 using System.Web;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Tests.Stubs;
-using Orchard.Time;
+using Coevery.Tests.Stubs;
+using Coevery.Time;
 
-namespace Orchard.Tests.Time {
+namespace Coevery.Tests.Time {
     [TestFixture]
     public class TimeZoneProviderTests {
         private IContainer _container;

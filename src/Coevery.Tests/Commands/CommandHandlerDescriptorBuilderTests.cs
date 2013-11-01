@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Orchard.Commands;
+using Coevery.Commands;
 
-namespace Orchard.Tests.Commands {
+namespace Coevery.Tests.Commands {
     [TestFixture]
     public class CommandHandlerDescriptorBuilderTests {
         [Test]
@@ -21,7 +21,7 @@ namespace Orchard.Tests.Commands {
             Assert.That(descriptor.Commands.Single(d => d.Name == "Foo_Bar").MethodInfo, Is.EqualTo(typeof(MyCommand).GetMethod("Foo_Bar3")));
         }
 
-        public class MyCommand : DefaultOrchardCommandHandler {
+        public class MyCommand : DefaultCoeveryCommandHandler {
             public void FooBar() {
             }
 

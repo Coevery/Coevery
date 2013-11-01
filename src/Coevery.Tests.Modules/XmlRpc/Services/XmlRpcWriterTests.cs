@@ -1,9 +1,9 @@
 ﻿using System.Xml.Linq;
 using NUnit.Framework;
-using Orchard.Core.XmlRpc.Models;
-using Orchard.Core.XmlRpc.Services;
+using Coevery.Core.XmlRpc.Models;
+using Coevery.Core.XmlRpc.Services;
 
-namespace Orchard.Tests.Modules.XmlRpc.Services {
+namespace Coevery.Tests.Modules.XmlRpc.Services {
     [TestFixture]
     public class XmlRpcWriterTests {
         [Test]

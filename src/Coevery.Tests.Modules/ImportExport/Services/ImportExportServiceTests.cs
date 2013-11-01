@@ -5,31 +5,31 @@ using Autofac;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Models;
-using Orchard.ContentManagement.MetaData.Services;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Settings.Metadata;
-using Orchard.Data;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Loaders;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.WebSite;
-using Orchard.ImportExport.Services;
-using Orchard.Recipes.Events;
-using Orchard.Recipes.Services;
-using Orchard.Services;
-using Orchard.Tests.ContentManagement;
-using Orchard.Tests.Environment.Extensions;
-using Orchard.Tests.Modules.Recipes.Services;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.UI.Navigation;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.MetaData.Models;
+using Coevery.ContentManagement.MetaData.Services;
+using Coevery.ContentManagement.Records;
+using Coevery.Core.Settings.Metadata;
+using Coevery.Data;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Loaders;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.WebSite;
+using Coevery.ImportExport.Services;
+using Coevery.Recipes.Events;
+using Coevery.Recipes.Services;
+using Coevery.Services;
+using Coevery.Tests.ContentManagement;
+using Coevery.Tests.Environment.Extensions;
+using Coevery.Tests.Modules.Recipes.Services;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.UI.Navigation;
 
-namespace Orchard.Tests.Modules.ImportExport.Services {
+namespace Coevery.Tests.Modules.ImportExport.Services {
     [TestFixture]
     public class ImportExportManagerTests {
         private IContainer _container;
@@ -69,7 +69,7 @@ namespace Orchard.Tests.Modules.ImportExport.Services {
             builder.RegisterType<DefaultContentManager>().As<IContentManager>();
             builder.RegisterType<ContentDefinitionManager>().As<IContentDefinitionManager>();
             builder.RegisterType<ContentDefinitionWriter>().As<IContentDefinitionWriter>();
-            builder.RegisterType<StubOrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<StubCoeveryServices>().As<ICoeveryServices>();
             builder.RegisterType<StubAppDataFolder>().As<IAppDataFolder>();
             builder.RegisterType<Signals>().As<ISignals>();
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
@@ -85,23 +85,23 @@ namespace Orchard.Tests.Modules.ImportExport.Services {
         [Test]
         public void ImportSucceedsWhenRecipeContainsImportSteps() {
             Assert.DoesNotThrow(() => _importExportService.Import(
-                                                                    @"<Orchard>
+                                                                    @"<Coevery>
                                                                         <Recipe>
                                                                         <Name>MyModuleInstaller</Name>
                                                                         </Recipe>
                                                                         <Settings />
-                                                                    </Orchard>"));
+                                                                    </Coevery>"));
         }
 
         [Test]
         public void ImportDoesntFailsWhenRecipeContainsNonImportSteps() {
             Assert.DoesNotThrow(() => _importExportService.Import(
-                                                                    @"<Orchard>
+                                                                    @"<Coevery>
                                                                         <Recipe>
                                                                         <Name>MyModuleInstaller</Name>
                                                                         </Recipe>
                                                                         <Module name=""MyModule"" />
-                                                                    </Orchard>"));
+                                                                    </Coevery>"));
         }
     }
 

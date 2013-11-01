@@ -6,27 +6,27 @@ using Autofac;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Builders;
-using Orchard.ContentManagement.MetaData.Models;
-using Orchard.Data;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.Records;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Tests.ContentManagement.Handlers;
-using Orchard.Tests.ContentManagement.Records;
-using Orchard.Tests.ContentManagement.Models;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.DisplayManagement;
+using Coevery.Caching;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.MetaData.Builders;
+using Coevery.ContentManagement.MetaData.Models;
+using Coevery.Data;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.Records;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Tests.ContentManagement.Handlers;
+using Coevery.Tests.ContentManagement.Records;
+using Coevery.Tests.ContentManagement.Models;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.DisplayManagement;
 using System.Collections.Generic;
-using Orchard.Tests.Stubs;
-using Orchard.UI.PageClass;
+using Coevery.Tests.Stubs;
+using Coevery.UI.PageClass;
 
-namespace Orchard.Tests.ContentManagement {
+namespace Coevery.Tests.ContentManagement {
     [TestFixture]
     public class DefaultContentManagerTests {
         private const string DefaultAlphaName = "alpha";

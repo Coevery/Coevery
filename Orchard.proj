@@ -13,9 +13,9 @@
     <SourceArtifactFolder>$(ArtifactsFolder)\Source</SourceArtifactFolder>
     <MsDeployArtifactFolder>$(ArtifactsFolder)\MsDeploy</MsDeployArtifactFolder>
     <GalleryArtifactFolder>$(ArtifactsFolder)\Gallery</GalleryArtifactFolder>
-    <ModulesSrcFolder>$(MSBuildProjectDirectory)\src\Orchard.Web\Modules</ModulesSrcFolder>
-    <OrchardCoreSrcFolder>$(MSBuildProjectDirectory)\src\Orchard.Web\Core</OrchardCoreSrcFolder>
-    <ThemesSrcFolder>$(MSBuildProjectDirectory)\src\Orchard.Web\Themes</ThemesSrcFolder>
+    <ModulesSrcFolder>$(MSBuildProjectDirectory)\src\Coevery.Web\Modules</ModulesSrcFolder>
+    <OrchardCoreSrcFolder>$(MSBuildProjectDirectory)\src\Coevery.Web\Core</OrchardCoreSrcFolder>
+    <ThemesSrcFolder>$(MSBuildProjectDirectory)\src\Coevery.Web\Themes</ThemesSrcFolder>
 
     <CompileFolder>$(BuildFolder)\Compile</CompileFolder>
     <WebSitesFolder>$(CompileFolder)\_PublishedWebsites</WebSitesFolder>
@@ -104,7 +104,7 @@
   <!-- Building -->
 
   <Target Name="Clean">
-    <MSBuild Projects="$(SrcFolder)\Orchard.sln" Targets="Clean" />
+    <MSBuild Projects="$(SrcFolder)\Coevery.sln" Targets="Clean" />
     <RemoveDir Directories="$(BuildFolder)" ContinueOnError="true"/>
     <RemoveDir Directories="$(ArtifactsFolder)" />
   </Target>
@@ -112,18 +112,18 @@
   <Target Name ="Compile">
     <!-- Compile to "OutputFolder" -->
     <MSBuild
-      Projects="$(SrcFolder)\Orchard.sln"
+      Projects="$(SrcFolder)\Coevery.sln"
       Targets="Build"
       Properties="Configuration=Release;OutputPath=$(CompileFolder)" />
     <!-- Compile to "regular" output folder for devs using VS locally -->
     <MSBuild
-      Projects="$(SrcFolder)\Orchard.sln"
+      Projects="$(SrcFolder)\Coevery.sln"
       Targets="Build"/>
   </Target>
 
   <Target Name ="CompileMsBuildTasks">
     <MSBuild
-      Projects="$(SrcFolder)\Tools\MSBuild.Orchard.Tasks\MSBuild.Orchard.Tasks.csproj"
+      Projects="$(SrcFolder)\Tools\MSBuild.Coevery.Tasks\MSBuild.Coevery.Tasks.csproj"
       Targets="Build"
       Properties="Configuration=Release;OutputPath=$(MsBuildTasksFolder)" />
   </Target>
@@ -142,7 +142,7 @@
       <Output TaskParameter="Include" ItemName="TestAssemblies" />
     </CreateItem>
 
-    <NUnit Assemblies="@(TestAssemblies)" ToolPath="$(LibFolder)\nunit" WorkingDirectory="$(CompileFolder)" OutputXmlFile="$(BuildFolder)\Orchard.Tests.xml" />
+    <NUnit Assemblies="@(TestAssemblies)" ToolPath="$(LibFolder)\nunit" WorkingDirectory="$(CompileFolder)" OutputXmlFile="$(BuildFolder)\Coevery.Tests.xml" />
   </Target>
 
   <Target Name ="Spec" DependsOnTargets="Package-Stage">
@@ -363,12 +363,12 @@
   </Target>
 
   <Target Name="Gallery-Setup">
-    <Exec Command="&quot;$(GalleryFolder)\bin\Orchard.exe&quot; setup /SiteName:Gallery /AdminUsername:admin /AdminPassword:gallery-secret /DatabaseProvider:SqlCe" WorkingDirectory="$(GalleryFolder)"/>
-    <Exec Command="&quot;$(GalleryFolder)\bin\Orchard.exe&quot; feature enable Orchard.Packaging" WorkingDirectory="$(GalleryFolder)"/>
-    <Exec Command="&quot;$(GalleryFolder)\bin\Orchard.exe&quot; package create Orchard.Lists &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
-    <Exec Command="&quot;$(GalleryFolder)\bin\Orchard.exe&quot; package create Orchard.Media &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
-    <Exec Command="&quot;$(GalleryFolder)\bin\Orchard.exe&quot; package create Orchard.MediaPicker &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
-    <Exec Command="&quot;$(GalleryFolder)\bin\Orchard.exe&quot; package create Orchard.Rules &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
+    <Exec Command="&quot;$(GalleryFolder)\bin\Coevery.exe&quot; setup /SiteName:Gallery /AdminUsername:admin /AdminPassword:gallery-secret /DatabaseProvider:SqlCe" WorkingDirectory="$(GalleryFolder)"/>
+    <Exec Command="&quot;$(GalleryFolder)\bin\Coevery.exe&quot; feature enable Coevery.Packaging" WorkingDirectory="$(GalleryFolder)"/>
+    <Exec Command="&quot;$(GalleryFolder)\bin\Coevery.exe&quot; package create Coevery.Lists &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
+    <Exec Command="&quot;$(GalleryFolder)\bin\Coevery.exe&quot; package create Coevery.Media &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
+    <Exec Command="&quot;$(GalleryFolder)\bin\Coevery.exe&quot; package create Coevery.MediaPicker &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
+    <Exec Command="&quot;$(GalleryFolder)\bin\Coevery.exe&quot; package create Coevery.Rules &quot;$(GalleryArtifactFolder)&quot;" WorkingDirectory="$(GalleryFolder)"/>
   </Target>
 
   <!-- ValidateProjectFiles-->
@@ -398,12 +398,12 @@
     </ItemGroup>
 
     <FileUpdateLines Files="@(Version-Modules)"
-        Regex="^(orchardversion|version)(\s*):(\s*)(.*)"
+        Regex="^(coeveryversion|version)(\s*):(\s*)(.*)"
         ReplacementText="${1}${2}:${3}$(Version)"
         IgnoreCase="True"/>
 
     <FileUpdateLines Files="@(Version-Themes)"
-          Regex="^(orchardversion|version)(\s*):(\s*)(.*)"
+          Regex="^(coeveryversion|version)(\s*):(\s*)(.*)"
           ReplacementText="${1}${2}:${3}$(Version)"
           IgnoreCase="True"/>
 

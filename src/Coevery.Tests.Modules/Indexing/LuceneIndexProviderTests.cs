@@ -5,12 +5,12 @@ using System.Linq;
 using Autofac;
 using Lucene.Services;
 using NUnit.Framework;
-using Orchard.Environment.Configuration;
-using Orchard.FileSystems.AppData;
-using Orchard.Indexing;
-using Orchard.Tests.FileSystems.AppData;
+using Coevery.Environment.Configuration;
+using Coevery.FileSystems.AppData;
+using Coevery.Indexing;
+using Coevery.Tests.FileSystems.AppData;
 
-namespace Orchard.Tests.Modules.Indexing {
+namespace Coevery.Tests.Modules.Indexing {
     public class LuceneIndexProviderTests {
         private IContainer _container;
         private IIndexProvider _provider;

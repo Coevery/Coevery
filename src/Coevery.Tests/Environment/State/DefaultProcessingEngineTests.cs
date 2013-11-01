@@ -4,16 +4,16 @@ using System.Web;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.ShellBuilders;
-using Orchard.Environment.State;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Events;
-using Orchard.Mvc;
-using Orchard.Tests.Utility;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.ShellBuilders;
+using Coevery.Environment.State;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Events;
+using Coevery.Mvc;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Environment.State {
+namespace Coevery.Tests.Environment.State {
     [TestFixture]
     public class DefaultProcessingEngineTests {
         private IContainer _container;

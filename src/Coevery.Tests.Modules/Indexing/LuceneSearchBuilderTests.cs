@@ -4,12 +4,12 @@ using System.Linq;
 using Autofac;
 using Lucene.Services;
 using NUnit.Framework;
-using Orchard.Environment.Configuration;
-using Orchard.FileSystems.AppData;
-using Orchard.Indexing;
-using Orchard.Tests.FileSystems.AppData;
+using Coevery.Environment.Configuration;
+using Coevery.FileSystems.AppData;
+using Coevery.Indexing;
+using Coevery.Tests.FileSystems.AppData;
 
-namespace Orchard.Tests.Modules.Indexing {
+namespace Coevery.Tests.Modules.Indexing {
     public class LuceneSearchBuilderTests {
         private IContainer _container;
         private IIndexProvider _provider;
@@ -319,7 +319,7 @@ namespace Orchard.Tests.Modules.Indexing {
         [Test]
         public void ShouldEscapeSpecialChars() {
             _provider.CreateIndex("default");
-            _provider.Store("default", _provider.New(1).Add("body", "Orchard has been developped in C#").Analyze());
+            _provider.Store("default", _provider.New(1).Add("body", "Coevery has been developped in C#").Analyze());
             _provider.Store("default", _provider.New(2).Add("body", "Windows has been developped in C++").Analyze());
 
             var cs = SearchBuilder.Parse("body", "C#").Search().ToList();
@@ -333,34 +333,34 @@ namespace Orchard.Tests.Modules.Indexing {
         [Test]
         public void ShouldHandleMandatoryFields() {
             _provider.CreateIndex("default");
-            _provider.Store("default", _provider.New(1).Add("body", "Orchard has been developped in C#").Analyze());
+            _provider.Store("default", _provider.New(1).Add("body", "Coevery has been developped in C#").Analyze());
             _provider.Store("default", _provider.New(2).Add("body", "Windows has been developped in C++").Analyze());
 
             Assert.That(SearchBuilder.WithField("body", "develop").Search().ToList().Count(), Is.EqualTo(2));
-            Assert.That(SearchBuilder.WithField("body", "develop").WithField("body", "Orchard").Search().ToList().Count(), Is.EqualTo(2));
-            Assert.That(SearchBuilder.WithField("body", "develop").WithField("body", "Orchard").Mandatory().Search().ToList().Count(), Is.EqualTo(1));
-            Assert.That(SearchBuilder.WithField("body", "develop").WithField("body", "Orchard").Mandatory().Search().First().ContentItemId, Is.EqualTo(1));
+            Assert.That(SearchBuilder.WithField("body", "develop").WithField("body", "Coevery").Search().ToList().Count(), Is.EqualTo(2));
+            Assert.That(SearchBuilder.WithField("body", "develop").WithField("body", "Coevery").Mandatory().Search().ToList().Count(), Is.EqualTo(1));
+            Assert.That(SearchBuilder.WithField("body", "develop").WithField("body", "Coevery").Mandatory().Search().First().ContentItemId, Is.EqualTo(1));
         }
 
         [Test]
         public void ShouldHandleForbiddenFields() {
             _provider.CreateIndex("default");
-            _provider.Store("default", _provider.New(1).Add("body", "Orchard has been developped in C#").Analyze());
+            _provider.Store("default", _provider.New(1).Add("body", "Coevery has been developped in C#").Analyze());
             _provider.Store("default", _provider.New(2).Add("body", "Windows has been developped in C++").Analyze());
 
             Assert.That(SearchBuilder.WithField("body", "developped").Search().ToList().Count(), Is.EqualTo(2));
-            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Orchard").Search().ToList().Count(), Is.EqualTo(2));
-            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Orchard").Forbidden().Search().ToList().Count(), Is.EqualTo(1));
-            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Orchard").Forbidden().Search().First().ContentItemId, Is.EqualTo(2));
+            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Coevery").Search().ToList().Count(), Is.EqualTo(2));
+            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Coevery").Forbidden().Search().ToList().Count(), Is.EqualTo(1));
+            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Coevery").Forbidden().Search().First().ContentItemId, Is.EqualTo(2));
         }
 
         [Test]
         public void ShouldHandleWeight() {
             _provider.CreateIndex("default");
-            _provider.Store("default", _provider.New(1).Add("body", "Orchard has been developped in C#").Analyze());
+            _provider.Store("default", _provider.New(1).Add("body", "Coevery has been developped in C#").Analyze());
             _provider.Store("default", _provider.New(2).Add("body", "Windows has been developped in C++").Analyze());
 
-            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Orchard").Weighted(2).Search().First().ContentItemId, Is.EqualTo(1));
+            Assert.That(SearchBuilder.WithField("body", "developped").WithField("body", "Coevery").Weighted(2).Search().First().ContentItemId, Is.EqualTo(1));
         }
 
         [Test]
@@ -454,7 +454,7 @@ namespace Orchard.Tests.Modules.Indexing {
         [Test]
         public void FiltersShouldNotAlterResults() {
             _provider.CreateIndex("default");
-            _provider.Store("default", _provider.New(1).Add("body", "Orchard has been developped by Microsoft in C#").Analyze().Add("culture", 1033));
+            _provider.Store("default", _provider.New(1).Add("body", "Coevery has been developped by Microsoft in C#").Analyze().Add("culture", 1033));
             _provider.Store("default", _provider.New(2).Add("body", "Windows a été développé par Microsoft en C++").Analyze().Add("culture", 1036));
             _provider.Store("default", _provider.New(3).Add("title", "Home").Analyze().Add("culture", 1033));
 
@@ -462,8 +462,8 @@ namespace Orchard.Tests.Modules.Indexing {
             Assert.That(SearchBuilder.WithField("body", "Microsoft").WithField("culture", 1033).Count(), Is.EqualTo(3));
             Assert.That(SearchBuilder.WithField("body", "Microsoft").WithField("culture", 1033).AsFilter().Count(), Is.EqualTo(1));
             
-            Assert.That(SearchBuilder.WithField("body", "Orchard").WithField("culture", 1036).Count(), Is.EqualTo(2));
-            Assert.That(SearchBuilder.WithField("body", "Orchard").WithField("culture", 1036).AsFilter().Count(), Is.EqualTo(0));
+            Assert.That(SearchBuilder.WithField("body", "Coevery").WithField("culture", 1036).Count(), Is.EqualTo(2));
+            Assert.That(SearchBuilder.WithField("body", "Coevery").WithField("culture", 1036).AsFilter().Count(), Is.EqualTo(0));
 
             Assert.That(SearchBuilder.WithField("culture", 1033).Count(), Is.EqualTo(2));
             Assert.That(SearchBuilder.WithField("culture", 1033).AsFilter().Count(), Is.EqualTo(2));

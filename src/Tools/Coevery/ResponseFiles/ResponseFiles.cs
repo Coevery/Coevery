@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Orchard.ResponseFiles {
+namespace Coevery.ResponseFiles {
     public class ResponseFiles {
         public IEnumerable<ResponseLine> ReadFiles(IEnumerable<string> filenames) {
             foreach (var filename in filenames) {

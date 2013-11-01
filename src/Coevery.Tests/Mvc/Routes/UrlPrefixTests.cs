@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Orchard.Mvc.Routes;
+using Coevery.Mvc.Routes;
 
-namespace Orchard.Tests.Mvc.Routes {
+namespace Coevery.Tests.Mvc.Routes {
     [TestFixture]
     public class UrlPrefixTests {
         [Test]

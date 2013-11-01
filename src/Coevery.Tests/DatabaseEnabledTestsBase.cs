@@ -6,15 +6,15 @@ using System.Linq;
 using Autofac;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.ContentManagement.FieldStorage.InfosetStorage;
-using Orchard.ContentManagement.Handlers;
-using Orchard.Data;
-using Orchard.Environment.Configuration;
-using Orchard.Services;
-using Orchard.Tests.Data;
-using Orchard.Tests.Stubs;
+using Coevery.ContentManagement.FieldStorage.InfosetStorage;
+using Coevery.ContentManagement.Handlers;
+using Coevery.Data;
+using Coevery.Environment.Configuration;
+using Coevery.Services;
+using Coevery.Tests.Data;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     public abstract class DatabaseEnabledTestsBase {
 
         protected IContainer _container;

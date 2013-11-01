@@ -3,19 +3,19 @@ using Autofac;
 using Moq;
 using NuGet;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Models;
-using Orchard.FileSystems.VirtualPath;
-using Orchard.FileSystems.WebSite;
-using Orchard.Packaging.Services;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Notify;
-using IPackageBuilder = Orchard.Packaging.Services.IPackageBuilder;
-using PackageBuilder = Orchard.Packaging.Services.PackageBuilder;
+using Coevery.Caching;
+using Coevery.Environment;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Models;
+using Coevery.FileSystems.VirtualPath;
+using Coevery.FileSystems.WebSite;
+using Coevery.Packaging.Services;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Notify;
+using IPackageBuilder = Coevery.Packaging.Services.IPackageBuilder;
+using PackageBuilder = Coevery.Packaging.Services.PackageBuilder;
 
-namespace Orchard.Tests.Modules.Packaging.Services {
+namespace Coevery.Tests.Modules.Packaging.Services {
     [TestFixture]
     public class FileBasedProjectSystemTests : ContainerTestBase {
         private const string PackageIdentifier = "Hello.World";
@@ -36,7 +36,7 @@ namespace Orchard.Tests.Modules.Packaging.Services {
 
             _mockedVirtualPathProvider = new Mock<IVirtualPathProvider>();
             builder.RegisterInstance(_mockedVirtualPathProvider.Object).As<IVirtualPathProvider>();
-            builder.RegisterType<DefaultOrchardFrameworkAssemblies>().As<IOrchardFrameworkAssemblies>();
+            builder.RegisterType<DefaultCoeveryFrameworkAssemblies>().As<ICoeveryFrameworkAssemblies>();
             builder.RegisterType<InMemoryWebSiteFolder>().As<IWebSiteFolder>()
                 .As<InMemoryWebSiteFolder>().InstancePerLifetimeScope();
         }

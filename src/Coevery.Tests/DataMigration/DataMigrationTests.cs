@@ -6,23 +6,23 @@ using Autofac;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.Records;
-using Orchard.Data;
-using Orchard.Data.Migration;
-using Orchard.Data.Migration.Interpreters;
-using Orchard.Data.Migration.Records;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Tests.ContentManagement;
-using Orchard.Data.Providers;
-using Orchard.Tests.DataMigration.Utilities;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.Records;
+using Coevery.Data;
+using Coevery.Data.Migration;
+using Coevery.Data.Migration.Interpreters;
+using Coevery.Data.Migration.Records;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Tests.ContentManagement;
+using Coevery.Data.Providers;
+using Coevery.Tests.DataMigration.Utilities;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.DataMigration {
+namespace Coevery.Tests.DataMigration {
     [TestFixture]
     public class DataMigrationTests {
         private IContainer _container;
@@ -258,7 +258,7 @@ namespace Orchard.Tests.DataMigration {
             _folders.Manifests.Add("Module2", @"
 Name: Module2
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -275,7 +275,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -292,7 +292,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -301,7 +301,7 @@ Features:
             _dataMigrationManager.Update("Feature1");
             Assert.That(_repository.Table.Count(), Is.EqualTo(1));
             Assert.That(_repository.Table.First().Version, Is.EqualTo(999));
-            Assert.That(_repository.Table.First().DataMigrationClass, Is.EqualTo("Orchard.Tests.DataMigration.DataMigrationTests+DataMigration11Create"));
+            Assert.That(_repository.Table.First().DataMigrationClass, Is.EqualTo("Coevery.Tests.DataMigration.DataMigrationTests+DataMigration11Create"));
         }
 
         [Test]
@@ -311,7 +311,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -329,14 +329,14 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
 ");
             _repository.Create(new DataMigrationRecord {
                 Version = 42,
-                DataMigrationClass = "Orchard.Tests.DataMigration.DataMigrationTests+DataMigrationSameMigrationClassCanEvolve"
+                DataMigrationClass = "Coevery.Tests.DataMigration.DataMigrationTests+DataMigrationSameMigrationClassCanEvolve"
             });
 
             _dataMigrationManager.Update("Feature1");
@@ -352,7 +352,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -362,7 +362,7 @@ Features:
             _folders.Manifests.Add("Module2", @"
 Name: Module2
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature2: 
         Description: Feature
@@ -370,8 +370,8 @@ Features:
             _dataMigrationManager.Update("Feature1");
             Assert.That(_repository.Table.Count(), Is.EqualTo(2));
             Assert.That(_repository.Fetch(d => d.Version == 999).Count(), Is.EqualTo(2));
-            Assert.That(_repository.Fetch(d => d.DataMigrationClass == "Orchard.Tests.DataMigration.DataMigrationTests+DataMigrationDependenciesModule1").Count(), Is.EqualTo(1));
-            Assert.That(_repository.Fetch(d => d.DataMigrationClass == "Orchard.Tests.DataMigration.DataMigrationTests+DataMigrationDependenciesModule2").Count(), Is.EqualTo(1));
+            Assert.That(_repository.Fetch(d => d.DataMigrationClass == "Coevery.Tests.DataMigration.DataMigrationTests+DataMigrationDependenciesModule1").Count(), Is.EqualTo(1));
+            Assert.That(_repository.Fetch(d => d.DataMigrationClass == "Coevery.Tests.DataMigration.DataMigrationTests+DataMigrationDependenciesModule2").Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -381,7 +381,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -399,7 +399,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -424,7 +424,7 @@ Features:
 
             _repository.Create(new DataMigrationRecord {
                 Version = 42,
-                DataMigrationClass = "Orchard.Tests.DataMigration.DataMigrationTests+DataMigrationFeatureNeedUpdate3"
+                DataMigrationClass = "Coevery.Tests.DataMigration.DataMigrationTests+DataMigrationFeatureNeedUpdate3"
             });
 
             Assert.That(_dataMigrationManager.GetFeaturesThatNeedUpdate().Contains("Feature3"), Is.True);
@@ -434,7 +434,7 @@ Features:
 
             _repository.Create(new DataMigrationRecord {
                 Version = 43,
-                DataMigrationClass = "Orchard.Tests.DataMigration.DataMigrationTests+DataMigrationFeatureNeedUpdate3"
+                DataMigrationClass = "Coevery.Tests.DataMigration.DataMigrationTests+DataMigrationFeatureNeedUpdate3"
             });
 
             Assert.That(_dataMigrationManager.GetFeaturesThatNeedUpdate().Contains("Feature3"), Is.False);
@@ -448,7 +448,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -464,7 +464,7 @@ Features:
             _folders.Manifests.Add("Module1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature

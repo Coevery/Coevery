@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Orchard.FileSystems.VirtualPath;
+using Coevery.FileSystems.VirtualPath;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubVirtualPathProvider : IVirtualPathProvider {
         private readonly StubFileSystem _fileSystem;
 

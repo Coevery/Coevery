@@ -1,7 +1,7 @@
 using System.Web;
 using System.Web.Routing;
 
-namespace Orchard.Specs.Hosting.Orchard.Web
+namespace Coevery.Specs.Hosting.Coevery.Web
 {
     public class HelloYetAgainHandler : IRouteHandler, IHttpHandler
     {

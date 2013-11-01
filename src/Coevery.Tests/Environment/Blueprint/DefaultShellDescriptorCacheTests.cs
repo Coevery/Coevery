@@ -3,12 +3,12 @@ using System.Runtime.Serialization;
 using System.Xml;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.FileSystems.AppData;
-using Orchard.Tests.Stubs;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.FileSystems.AppData;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Environment.Blueprint {
+namespace Coevery.Tests.Environment.Blueprint {
     [TestFixture]
     public class DefaultShellDescriptorCacheTests {
         private IContainer _container;

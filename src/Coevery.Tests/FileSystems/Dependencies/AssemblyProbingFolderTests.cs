@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.FileSystems.Dependencies;
-using Orchard.Tests.Stubs;
+using Coevery.Environment;
+using Coevery.FileSystems.Dependencies;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.FileSystems.Dependencies {
+namespace Coevery.Tests.FileSystems.Dependencies {
     [TestFixture]
     public class AssemblyProbingFolderTests {
 

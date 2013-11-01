@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Tests.Stubs;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Environment {
+namespace Coevery.Tests.Environment {
     [TestFixture]
     public class RunningShellTableTests {
         [Test]

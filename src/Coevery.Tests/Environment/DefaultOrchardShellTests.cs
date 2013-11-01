@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NUnit.Framework;
-using Orchard.Mvc.ModelBinders;
-using Orchard.Mvc.Routes;
-using IModelBinderProvider = Orchard.Mvc.ModelBinders.IModelBinderProvider;
+using Coevery.Mvc.ModelBinders;
+using Coevery.Mvc.Routes;
+using IModelBinderProvider = Coevery.Mvc.ModelBinders.IModelBinderProvider;
 
-namespace Orchard.Tests.Environment {
+namespace Coevery.Tests.Environment {
     [TestFixture]
-    public class DefaultOrchardShellTests {
+    public class DefaultCoeveryShellTests {
         static RouteDescriptor Desc(string name, string url) {
             return new RouteDescriptor { Name = name, Route = new Route(url, new MvcRouteHandler()) };
         }
@@ -29,13 +29,13 @@ namespace Orchard.Tests.Environment {
         //    var modelBinderProvider2 = new StubModelBinderProvider(new[] { BinderDesc(typeof(int), null), BinderDesc(typeof(long), null) });
         //    var modelBinderPublisher = new StubModelBinderPublisher();
 
-        //    var runtime = new DefaultOrchardShell(
+        //    var runtime = new DefaultCoeveryShell(
         //        new[] { provider1, provider2 },
         //        publisher,
         //        new[] { modelBinderProvider1, modelBinderProvider2 },
         //        modelBinderPublisher,
         //        new ViewEngineCollection { new WebFormViewEngine() },
-        //        new Mock<IOrchardShellEvents>().Object);
+        //        new Mock<ICoeveryShellEvents>().Object);
 
         //    runtime.Activate();
 

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData.Models;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.MetaData.Models;
 
-namespace Orchard.Tests.ContentManagement {
+namespace Coevery.Tests.ContentManagement {
     [TestFixture]
     public class DynamicContentItemTests {
 

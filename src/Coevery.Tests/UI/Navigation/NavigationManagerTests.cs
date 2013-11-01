@@ -4,22 +4,22 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac;
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.Core.Navigation.Services;
-using Orchard.Data;
-using Orchard.Localization;
-using Orchard.Security;
-using Orchard.Security.Permissions;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Navigation;
-using Orchard.UI.Notify;
+using Coevery.ContentManagement;
+using Coevery.Core.Navigation.Services;
+using Coevery.Data;
+using Coevery.Localization;
+using Coevery.Security;
+using Coevery.Security.Permissions;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Navigation;
+using Coevery.UI.Notify;
 
-namespace Orchard.Tests.UI.Navigation {
+namespace Coevery.Tests.UI.Navigation {
     [TestFixture]
     public class NavigationManagerTests {
         [Test]
         public void EmptyMenuIfNameDoesntMatch() {
-            var manager = new NavigationManager(new[] { new StubProvider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubOrchardServices());
+            var manager = new NavigationManager(new[] { new StubProvider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubCoeveryServices());
 
             var menuItems = manager.BuildMenu("primary");
             Assert.That(menuItems.Count(), Is.EqualTo(0));
@@ -36,7 +36,7 @@ namespace Orchard.Tests.UI.Navigation {
 
         [Test]
         public void NavigationManagerShouldUseProvidersToBuildNamedMenu() {
-            var manager = new NavigationManager(new[] { new StubProvider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubOrchardServices());
+            var manager = new NavigationManager(new[] { new StubProvider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubCoeveryServices());
 
             var menuItems = manager.BuildMenu("admin");
             Assert.That(menuItems.Count(), Is.EqualTo(2));
@@ -48,7 +48,7 @@ namespace Orchard.Tests.UI.Navigation {
 
         [Test]
         public void NavigationManagerShouldCatchProviderErrors() {
-            var manager = new NavigationManager(new[] { new BrokenProvider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubOrchardServices());
+            var manager = new NavigationManager(new[] { new BrokenProvider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubCoeveryServices());
 
             var menuItems = manager.BuildMenu("admin");
             Assert.That(menuItems.Count(), Is.EqualTo(0));
@@ -56,7 +56,7 @@ namespace Orchard.Tests.UI.Navigation {
 
         [Test]
         public void NavigationManagerShouldMergeAndOrderNavigation() {
-            var manager = new NavigationManager(new INavigationProvider[] { new StubProvider(), new Stub2Provider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubOrchardServices());
+            var manager = new NavigationManager(new INavigationProvider[] { new StubProvider(), new Stub2Provider() }, new IMenuProvider[] { }, new StubAuth(), new INavigationFilter[0], new UrlHelper(new RequestContext(new StubHttpContext("~/"), new RouteData())), new StubCoeveryServices());
 
             var menuItems = manager.BuildMenu("admin");
             Assert.That(menuItems.Count(), Is.EqualTo(3));
@@ -112,12 +112,12 @@ namespace Orchard.Tests.UI.Navigation {
         }
     }
 
-    public class StubOrchardServices : IOrchardServices {
+    public class StubCoeveryServices : ICoeveryServices {
         private readonly ILifetimeScope _lifetimeScope;
 
-        public StubOrchardServices() {}
+        public StubCoeveryServices() {}
 
-        public StubOrchardServices(ILifetimeScope lifetimeScope) {
+        public StubCoeveryServices(ILifetimeScope lifetimeScope) {
             _lifetimeScope = lifetimeScope;
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.SessionState;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubHttpContext : HttpContextBase {
         private readonly string _appRelativeCurrentExecutionFilePath;
         private readonly string _hostHeader;

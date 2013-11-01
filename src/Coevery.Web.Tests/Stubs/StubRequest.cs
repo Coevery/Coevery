@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace Orchard.Web.Tests.Stubs {
+namespace Coevery.Web.Tests.Stubs {
     public class StubRequest : HttpRequestBase {
         private readonly string relativeUrl;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security;
 
-namespace Orchard.Parameters {
+namespace Coevery.Parameters {
     public class CommandParametersParser : ICommandParametersParser {
         [SecurityCritical]
         public CommandParameters Parse(IEnumerable<string> args) {

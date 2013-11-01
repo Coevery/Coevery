@@ -5,19 +5,19 @@ using System.Xml;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Environment.Extensions.Loaders;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.WebSite;
-using Orchard.Recipes.Models;
-using Orchard.Recipes.Services;
-using Orchard.Services;
-using Orchard.Tests.Stubs;
-using Orchard.Recipes.Events;
+using Coevery.Caching;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Environment.Extensions.Loaders;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.WebSite;
+using Coevery.Recipes.Models;
+using Coevery.Recipes.Services;
+using Coevery.Services;
+using Coevery.Tests.Stubs;
+using Coevery.Recipes.Events;
 
-namespace Orchard.Tests.Modules.Recipes.Services {
+namespace Coevery.Tests.Modules.Recipes.Services {
     [TestFixture]
     public class RecipeManagerTests {
         private IContainer _container;
@@ -26,7 +26,7 @@ namespace Orchard.Tests.Modules.Recipes.Services {
         private IRecipeParser _recipeParser;
         private IExtensionFolders _folders;
 
-        private const string DataPrefix = "Orchard.Tests.Modules.Recipes.Services.FoldersData.";
+        private const string DataPrefix = "Coevery.Tests.Modules.Recipes.Services.FoldersData.";
         private string _tempFolderName;
 
         [SetUp]
@@ -116,7 +116,7 @@ namespace Orchard.Tests.Modules.Recipes.Services {
 
             var sampleRecipe = recipes[0];
             Assert.That(sampleRecipe.Name, Is.EqualTo("cms"));
-            Assert.That(sampleRecipe.Description, Is.EqualTo("a sample Orchard recipe describing a cms"));
+            Assert.That(sampleRecipe.Description, Is.EqualTo("a sample Coevery recipe describing a cms"));
             Assert.That(sampleRecipe.Author, Is.EqualTo("orchard"));
             Assert.That(sampleRecipe.Version, Is.EqualTo("1.1"));
             Assert.That(sampleRecipe.WebSite, Is.EqualTo("http://orchardproject.net"));

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Orchard.Caching;
+using Coevery.Caching;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubCacheManager : ICacheManager {
         private readonly ICacheManager _defaultCacheManager;
 

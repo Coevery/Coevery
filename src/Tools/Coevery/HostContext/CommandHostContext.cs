@@ -1,7 +1,7 @@
 using System.IO;
-using Orchard.Host;
+using Coevery.Host;
 
-namespace Orchard.HostContext {
+namespace Coevery.HostContext {
     public class CommandHostContext {
         public CommandReturnCodes StartSessionResult { get; set; }
         public CommandReturnCodes RetryResult { get; set; }

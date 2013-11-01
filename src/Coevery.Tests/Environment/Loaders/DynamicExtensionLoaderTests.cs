@@ -4,17 +4,17 @@ using System.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment;
-using Orchard.Environment.Extensions.Compilers;
-using Orchard.Environment.Extensions.Loaders;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.Dependencies;
-using Orchard.FileSystems.VirtualPath;
-using Orchard.Services;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.Environment;
+using Coevery.Environment.Extensions.Compilers;
+using Coevery.Environment.Extensions.Loaders;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.Dependencies;
+using Coevery.FileSystems.VirtualPath;
+using Coevery.Services;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Environment.Loaders {
+namespace Coevery.Tests.Environment.Loaders {
     [TestFixture]
     public class DynamicExtensionLoaderTests {
         private IContainer _container;
@@ -49,7 +49,7 @@ namespace Orchard.Tests.Environment.Loaders {
         [Test]
         public void GetDependenciesContainsNoDuplicatesTest() {
             const string pathPrefix = "~/modules/foo";
-            const string projectName = "orchard.a.csproj";
+            const string projectName = "Coevery.a.csproj";
             const string fileName1 = "a.cs";
             const string fileName2 = "b.cs";
 
@@ -75,9 +75,9 @@ namespace Orchard.Tests.Environment.Loaders {
             const string path1Prefix = "~/modules/foo";
             const string path2Prefix = "~/modules/bar";
             const string path3Prefix = "~/modules/blah";
-            const string project1Name = "orchard.a.csproj";
-            const string project2Name = "orchard.b.csproj";
-            const string project3Name = "orchard.c.csproj";
+            const string project1Name = "Coevery.a.csproj";
+            const string project2Name = "Coevery.b.csproj";
+            const string project3Name = "Coevery.c.csproj";
             const string fileName1 = "a.cs";
             const string fileName2 = "b.cs";
             const string commonFileName = "c.cs";

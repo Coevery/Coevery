@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Core.Settings.State;
-using Orchard.Core.Settings.Descriptor;
-using Orchard.Core.Settings.Descriptor.Records;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.State;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Events;
+using Coevery.Core.Settings.State;
+using Coevery.Core.Settings.Descriptor;
+using Coevery.Core.Settings.Descriptor.Records;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.State;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Events;
 
-namespace Orchard.Tests.Modules.Settings.Blueprint {
+namespace Coevery.Tests.Modules.Settings.Blueprint {
     [TestFixture]
     public class ShellDescriptorManagerTests : DatabaseEnabledTestsBase {
         public override void Register(ContainerBuilder builder) {

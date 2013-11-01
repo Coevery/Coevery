@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Orchard.Scripting.Compiler;
+using Coevery.Scripting.Compiler;
 
-namespace Orchard.Tests.Modules.Scripting {
+namespace Coevery.Tests.Modules.Scripting {
     public abstract class EvaluatorTestsBase {
         [Test]
         public void EvaluateSimpleConstant() {

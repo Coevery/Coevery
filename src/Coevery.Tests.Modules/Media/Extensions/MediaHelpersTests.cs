@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Orchard.Media.Helpers;
+using Coevery.Media.Helpers;
 
-namespace Orchard.Tests.Modules.Media.Extensions {
+namespace Coevery.Tests.Modules.Media.Extensions {
     [TestFixture]
     public class MediaHelpersTests {
         [Test]

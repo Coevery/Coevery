@@ -8,10 +8,10 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
-using Orchard.Specs.Util;
+using Coevery.Specs.Util;
 using Path = Bleroy.FluentPath.Path;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     public class WebHost {
         private readonly Path _orchardTemp;
         private WebHostAgent _webHostAgent;
@@ -36,16 +36,16 @@ namespace Orchard.Specs.Hosting {
             try { _tempSite.Delete(); }
             catch { }
             
-            // Trying the two known relative paths to the Orchard.Web directory.
+            // Trying the two known relative paths to the Coevery.Web directory.
             // The second one is for the target "spec" in orchard.proj.
             
             _orchardWebPath = baseDir;
 
-            while (!_orchardWebPath.Combine("Orchard.proj").Exists && _orchardWebPath.Parent != null) {
+            while (!_orchardWebPath.Combine("Coevery.proj").Exists && _orchardWebPath.Parent != null) {
                 _orchardWebPath = _orchardWebPath.Parent;
             }
 
-            _orchardWebPath = _orchardWebPath.Combine("src").Combine("Orchard.Web");
+            _orchardWebPath = _orchardWebPath.Combine("src").Combine("Coevery.Web");
 
             Log("Initialization of ASP.NET host for template web site \"{0}\":", templateName);
             Log(" Source location: \"{0}\"", _orchardWebPath);
@@ -80,7 +80,7 @@ namespace Orchard.Specs.Hosting {
                 }
             }
 
-            Log("Copy binaries of the \"Orchard.Web\" project");
+            Log("Copy binaries of the \"Coevery.Web\" project");
             _orchardWebPath.Combine("bin")
                 .ShallowCopy("*.dll", _tempSite.Combine("bin"))
                 .ShallowCopy("*.pdb", _tempSite.Combine("bin"));
@@ -99,13 +99,13 @@ namespace Orchard.Specs.Hosting {
             // Copy binaries of this project, so that remote execution of lambda
             // can be achieved through serialization to the ASP.NET appdomain
             // (see Execute(Action) method)
-            Log("Copy Orchard.Specflow test project binaries");
+            Log("Copy Coevery.Specflow test project binaries");
             baseDir.ShallowCopy(
                 path => IsSpecFlowTestAssembly(path) && !_tempSite.Combine("bin").Combine(path.FileName).Exists, 
                 _tempSite.Combine("bin"));
 
-            Log("Copy Orchard recipes");
-            _orchardWebPath.Combine("Modules").Combine("Orchard.Setup").Combine("Recipes").DeepCopy("*.xml", _tempSite.Combine("Modules").Combine("Orchard.Setup").Combine("Recipes"));
+            Log("Copy Coevery recipes");
+            _orchardWebPath.Combine("Modules").Combine("Coevery.Setup").Combine("Recipes").DeepCopy("*.xml", _tempSite.Combine("Modules").Combine("Coevery.Setup").Combine("Recipes"));
 
             StartAspNetHost(virtualDirectory);
 
@@ -245,7 +245,7 @@ namespace Orchard.Specs.Hosting {
             if (isAssemblyInWebAppBin)
                 return false;
 
-            bool isExtensionAssembly = IsOrchardExtensionFile(path);
+            bool isExtensionAssembly = IsCoeveryExtensionFile(path);
             bool copyExtensionAssembly = (deploymentOptions & ExtensionDeploymentOptions.CompiledAssembly) == ExtensionDeploymentOptions.CompiledAssembly;
             if (isExtensionAssembly && !copyExtensionAssembly)
                 return false;
@@ -257,7 +257,7 @@ namespace Orchard.Specs.Hosting {
             if (!IsAssemblyFile(path))
                 return false;
 
-            if (IsOrchardExtensionFile(path))
+            if (IsCoeveryExtensionFile(path))
                 return false;
 
             return true;
@@ -269,7 +269,7 @@ namespace Orchard.Specs.Hosting {
                    StringComparer.OrdinalIgnoreCase.Equals(path.Extension, ".pdb");
         }
 
-        private bool IsOrchardExtensionFile(Path path) {
+        private bool IsCoeveryExtensionFile(Path path) {
             return _knownModules.Where(name => StringComparer.OrdinalIgnoreCase.Equals(name, path.FileNameWithoutExtension)).Any() ||
                    _knownThemes.Where(name => StringComparer.OrdinalIgnoreCase.Equals(name, path.FileNameWithoutExtension)).Any();
         }

@@ -1,13 +1,13 @@
 ﻿using System;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Scripting;
-using Orchard.Caching;
-using Orchard.Tests.Stubs;
-using Orchard.Widgets.RuleEngine;
-using Orchard.Widgets.Services;
+using Coevery.Scripting;
+using Coevery.Caching;
+using Coevery.Tests.Stubs;
+using Coevery.Widgets.RuleEngine;
+using Coevery.Widgets.Services;
 
-namespace Orchard.Tests.Modules.Widgets {
+namespace Coevery.Tests.Modules.Widgets {
     [TestFixture]
     public class WidgetsTests {
         private IContainer _container;

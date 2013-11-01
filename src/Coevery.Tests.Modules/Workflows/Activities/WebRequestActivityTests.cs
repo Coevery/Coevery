@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
-using Orchard.Workflows.Activities;
+using Coevery.Workflows.Activities;
 
-namespace Orchard.Tests.Modules.Workflows.Activities {
+namespace Coevery.Tests.Modules.Workflows.Activities {
     [TestFixture]
     public class WebRequestActivityTests {
 

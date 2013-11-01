@@ -1,13 +1,13 @@
-﻿using Orchard.Environment.Extensions;
+﻿using Coevery.Environment.Extensions;
 
-namespace Orchard.Tests.Extensions.ExtensionTypes {
+namespace Coevery.Tests.Extensions.ExtensionTypes {
     public class Alpha {
     }
 
     public class Beta {
     }
 
-    [OrchardFeature("TestFeature")]
+    [CoeveryFeature("TestFeature")]
     public class Phi {
     }
 }

@@ -1,9 +1,9 @@
-﻿using Orchard.ContentManagement.Handlers;
-using Orchard.Data;
-using Orchard.Tests.ContentManagement.Models;
-using Orchard.Tests.ContentManagement.Records;
+﻿using Coevery.ContentManagement.Handlers;
+using Coevery.Data;
+using Coevery.Tests.ContentManagement.Models;
+using Coevery.Tests.ContentManagement.Records;
 
-namespace Orchard.Tests.ContentManagement.Handlers {
+namespace Coevery.Tests.ContentManagement.Handlers {
     public class DeltaPartHandler : ContentHandler {
         public DeltaPartHandler(IRepository<DeltaRecord> repository) {
             Filters.Add(new ActivatingFilter<DeltaPart>("delta"));

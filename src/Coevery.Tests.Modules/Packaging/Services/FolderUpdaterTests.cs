@@ -2,10 +2,10 @@
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Packaging.Services;
-using Orchard.UI.Notify;
+using Coevery.Packaging.Services;
+using Coevery.UI.Notify;
 
-namespace Orchard.Tests.Modules.Packaging.Services {
+namespace Coevery.Tests.Modules.Packaging.Services {
     [TestFixture]
     public class FolderUpdaterTests {
         protected IContainer _container;

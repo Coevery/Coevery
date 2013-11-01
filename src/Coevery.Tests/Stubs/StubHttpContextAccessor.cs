@@ -1,7 +1,7 @@
 ﻿using System.Web;
-using Orchard.Mvc;
+using Coevery.Mvc;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubHttpContextAccessor : IHttpContextAccessor {
         private HttpContextBase _httpContext;
 

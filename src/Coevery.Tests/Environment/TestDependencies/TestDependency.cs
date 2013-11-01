@@ -1,4 +1,4 @@
-﻿namespace Orchard.Tests.Environment.TestDependencies {
+﻿namespace Coevery.Tests.Environment.TestDependencies {
     
     public interface ITestDependency : IDependency {
         

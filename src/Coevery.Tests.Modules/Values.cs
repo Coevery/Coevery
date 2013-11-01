@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Orchard.Tests.Modules {
+namespace Coevery.Tests.Modules {
     public static class Values {
         public static IValueProvider From<T>(T obj) {
             if (obj is IDictionary<string,string>) {

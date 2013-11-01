@@ -1,8 +1,8 @@
 ﻿using FluentNHibernate.Cfg.Db;
-using Orchard.Data.Providers;
-using MsSqlCeConfiguration = Orchard.Data.Providers.MsSqlCeConfiguration;
+using Coevery.Data.Providers;
+using MsSqlCeConfiguration = Coevery.Data.Providers.MsSqlCeConfiguration;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     public class TraceEnabledDataServicesProviderFactory : IDataServicesProviderFactory {
         public IDataServicesProvider CreateProvider(DataServiceParameters sessionFactoryParameters) {
             return new TraceEnabledBuilder(sessionFactoryParameters.DataFolder, sessionFactoryParameters.ConnectionString);

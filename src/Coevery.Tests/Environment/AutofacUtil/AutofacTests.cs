@@ -3,7 +3,7 @@ using System.Linq;
 using Autofac;
 using NUnit.Framework;
 
-namespace Orchard.Tests.Environment.AutofacUtil {
+namespace Coevery.Tests.Environment.AutofacUtil {
     [TestFixture]
     public class AutofacTests {
         public interface IFoo { }

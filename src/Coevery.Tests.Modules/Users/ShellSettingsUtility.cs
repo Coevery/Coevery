@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
-using Orchard.Environment.Configuration;
-using Orchard.Utility.Extensions;
+using Coevery.Environment.Configuration;
+using Coevery.Utility.Extensions;
 
-namespace Orchard.Tests.Modules.Users {
+namespace Coevery.Tests.Modules.Users {
     public class ShellSettingsUtility {
         public static ShellSettings CreateEncryptionEnabled() {
 

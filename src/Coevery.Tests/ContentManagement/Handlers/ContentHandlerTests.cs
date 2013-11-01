@@ -1,9 +1,9 @@
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData.Builders;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.MetaData.Builders;
 
-namespace Orchard.Tests.ContentManagement.Handlers {
+namespace Coevery.Tests.ContentManagement.Handlers {
 
     [TestFixture]
     public class ContentHandlerTests {

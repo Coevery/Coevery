@@ -6,10 +6,10 @@ using System.IO;
 using Autofac.Features.Metadata;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
-using Orchard.Data.Providers;
-using Orchard.Environment.ShellBuilders.Models;
+using Coevery.Data.Providers;
+using Coevery.Environment.ShellBuilders.Models;
 
-namespace Orchard.Tests.Data {
+namespace Coevery.Tests.Data {
     public class ProviderUtilities {
 
         public static void RunWithSqlServer(IEnumerable<RecordBlueprint> recordDescriptors, Action<ISessionFactory> action) {
@@ -17,7 +17,7 @@ namespace Orchard.Tests.Data {
             if (File.Exists(temporaryPath))
                 File.Delete(temporaryPath);
             Directory.CreateDirectory(temporaryPath);
-            var databasePath = Path.Combine(temporaryPath, "Orchard.mdf");
+            var databasePath = Path.Combine(temporaryPath, "Coevery.mdf");
             var databaseName = Path.GetFileNameWithoutExtension(databasePath);
             try {
                 // create database
@@ -93,7 +93,7 @@ namespace Orchard.Tests.Data {
             if (File.Exists(temporaryPath))
                 File.Delete(temporaryPath);
             Directory.CreateDirectory(temporaryPath);
-            var databasePath = Path.Combine(temporaryPath, "Orchard.mdf");
+            var databasePath = Path.Combine(temporaryPath, "Coevery.mdf");
             var databaseName = Path.GetFileNameWithoutExtension(databasePath);
             var parameters = new SessionFactoryParameters {
                 Provider = "SqlCe",

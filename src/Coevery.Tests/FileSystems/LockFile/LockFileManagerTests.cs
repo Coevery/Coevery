@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.LockFile;
-using Orchard.Tests.Stubs;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.LockFile;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.FileSystems.LockFile {
+namespace Coevery.Tests.FileSystems.LockFile {
     [TestFixture]
     public class LockFileManagerTests {
         private string _tempFolder;

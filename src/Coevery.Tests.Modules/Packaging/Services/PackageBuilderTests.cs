@@ -3,14 +3,14 @@ using System.IO;
 using System.IO.Packaging;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Environment.Extensions.Models;
-using Orchard.FileSystems.VirtualPath;
-using Orchard.FileSystems.WebSite;
-using Orchard.Packaging.Services;
-using Orchard.Tests.Stubs;
+using Coevery.Environment;
+using Coevery.Environment.Extensions.Models;
+using Coevery.FileSystems.VirtualPath;
+using Coevery.FileSystems.WebSite;
+using Coevery.Packaging.Services;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Modules.Packaging.Services {
+namespace Coevery.Tests.Modules.Packaging.Services {
     [TestFixture]
     public class PackageBuilderTests : ContainerTestBase {
         private const string PackageIdentifier = "Hello.World";
@@ -18,7 +18,7 @@ namespace Orchard.Tests.Modules.Packaging.Services {
         protected override void Register(ContainerBuilder builder) {
             builder.RegisterType<PackageBuilder>().As<IPackageBuilder>();
             builder.RegisterType<DefaultVirtualPathProvider>().As<IVirtualPathProvider>();
-            builder.RegisterType<DefaultOrchardFrameworkAssemblies>().As<IOrchardFrameworkAssemblies>();
+            builder.RegisterType<DefaultCoeveryFrameworkAssemblies>().As<ICoeveryFrameworkAssemblies>();
             builder.RegisterType<InMemoryWebSiteFolder>().As<IWebSiteFolder>()
                 .As<InMemoryWebSiteFolder>().InstancePerLifetimeScope();
         }

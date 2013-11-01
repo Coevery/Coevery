@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using System;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.FileSystems.Media;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.FileSystems.Media;
 
-namespace Orchard.Tests.Storage {
+namespace Coevery.Tests.Storage {
     [TestFixture]
     public class FileSystemStorageProviderTests {
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using Orchard.Environment.Warmup;
+using Coevery.Environment.Warmup;
 
-namespace Orchard.Tests.Environment.Warmup {
+namespace Coevery.Tests.Environment.Warmup {
     [TestFixture]
     public class WarmupUtilityTests {
 

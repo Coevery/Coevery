@@ -1,9 +1,9 @@
 ﻿using System.Web.Routing;
 using NUnit.Framework;
-using Orchard.Localization;
-using Orchard.UI.Navigation;
+using Coevery.Localization;
+using Coevery.UI.Navigation;
 
-namespace Orchard.Tests.UI.Navigation {
+namespace Coevery.Tests.UI.Navigation {
     [TestFixture]
     public class MenuItemComparerTests {
         [Test]

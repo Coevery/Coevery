@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Scripting;
-using Orchard.Scripting.Compiler;
-using Orchard.Scripting.Dlr.Services;
-using Orchard.Tests.Stubs;
+using Coevery.Scripting;
+using Coevery.Scripting.Compiler;
+using Coevery.Scripting.Dlr.Services;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Modules.Scripting.Dlr {
+namespace Coevery.Tests.Modules.Scripting.Dlr {
     [TestFixture]
     public class EvaluatorTests : EvaluatorTestsBase {
         private IContainer _container;

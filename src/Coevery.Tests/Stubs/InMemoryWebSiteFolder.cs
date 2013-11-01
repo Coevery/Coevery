@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Orchard.Caching;
-using Orchard.FileSystems.WebSite;
+using Coevery.Caching;
+using Coevery.FileSystems.WebSite;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class InMemoryWebSiteFolder : IWebSiteFolder {
         Dictionary<string, string> _contents = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 

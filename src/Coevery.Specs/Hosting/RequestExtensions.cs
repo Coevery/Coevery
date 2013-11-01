@@ -8,9 +8,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Hosting;
-using Orchard.Specs.Util;
+using Coevery.Specs.Util;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     public static class RequestExtensions {
         public static RequestDetails SendRequest(this WebHost webHost, string urlPath, IDictionary<string, IEnumerable<string>> postData, string requestMethod = null) {
 

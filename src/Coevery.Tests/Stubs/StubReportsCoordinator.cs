@@ -1,7 +1,7 @@
-﻿using Orchard.Reports;
-using Orchard.Reports.Services;
+﻿using Coevery.Reports;
+using Coevery.Reports.Services;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubReportsCoordinator : IReportsCoordinator {
         public void Add(string reportKey, ReportEntryType type, string message) {
             

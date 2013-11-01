@@ -1,11 +1,11 @@
 ﻿using System;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Services;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.Services;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Caching {
+namespace Coevery.Tests.Caching {
     [TestFixture]
     public class ClockCachingTests {
         private IContainer _container;

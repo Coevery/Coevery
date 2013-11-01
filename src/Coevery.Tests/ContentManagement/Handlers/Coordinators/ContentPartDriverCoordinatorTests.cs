@@ -3,15 +3,15 @@ using System.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Drivers;
-using Orchard.ContentManagement.Drivers.Coordinators;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Implementation;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Drivers;
+using Coevery.ContentManagement.Drivers.Coordinators;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.MetaData;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Implementation;
 
-namespace Orchard.Tests.ContentManagement.Handlers.Coordinators {
+namespace Coevery.Tests.ContentManagement.Handlers.Coordinators {
     [TestFixture]
     public class ContentPartDriverCoordinatorTests {
         private IContainer _container;

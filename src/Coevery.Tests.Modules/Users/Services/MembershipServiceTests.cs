@@ -5,32 +5,32 @@ using Autofac;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Models;
-using Orchard.ContentManagement.MetaData.Services;
-using Orchard.Core.Settings.Metadata;
-using Orchard.Data;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.Records;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Messaging.Events;
-using Orchard.Messaging.Services;
-using Orchard.Security;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Utility;
-using Orchard.UI.PageClass;
-using Orchard.Users.Handlers;
-using Orchard.Users.Models;
-using Orchard.Users.Services;
+using Coevery.Caching;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.MetaData.Models;
+using Coevery.ContentManagement.MetaData.Services;
+using Coevery.Core.Settings.Metadata;
+using Coevery.Data;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.Records;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Messaging.Events;
+using Coevery.Messaging.Services;
+using Coevery.Security;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Utility;
+using Coevery.UI.PageClass;
+using Coevery.Users.Handlers;
+using Coevery.Users.Models;
+using Coevery.Users.Services;
 
-namespace Orchard.Tests.Modules.Users.Services {
+namespace Coevery.Tests.Modules.Users.Services {
     [TestFixture]
     public class MembershipServiceTests {
         private IMembershipService _membershipService;
@@ -82,7 +82,7 @@ namespace Orchard.Tests.Modules.Users.Services {
             builder.RegisterInstance(new ShellSettings { Name = ShellSettings.DefaultName, DataProvider = "SqlCe" });
             builder.RegisterType<UserPartHandler>().As<IContentHandler>();
             builder.RegisterType<StubWorkContextAccessor>().As<IWorkContextAccessor>();
-            builder.RegisterType<OrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<CoeveryServices>().As<ICoeveryServices>();
             builder.RegisterAutoMocking(MockBehavior.Loose);
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             builder.RegisterInstance(new Mock<IMessageEventHandler>().Object);

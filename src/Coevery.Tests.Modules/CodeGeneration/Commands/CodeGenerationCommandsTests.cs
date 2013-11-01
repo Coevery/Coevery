@@ -3,23 +3,23 @@ using System.IO;
 using Autofac;
 using Autofac.Features.Metadata;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.CodeGeneration.Commands;
-using Orchard.Commands;
-using Orchard.Data;
-using Orchard.Data.Migration.Generator;
-using Orchard.Data.Providers;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.ShellBuilders;
-using Orchard.Environment.ShellBuilders.Models;
-using Orchard.FileSystems.AppData;
-using Orchard.Tests.Environment;
-using Orchard.Tests.FileSystems.AppData;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.CodeGeneration.Commands;
+using Coevery.Commands;
+using Coevery.Data;
+using Coevery.Data.Migration.Generator;
+using Coevery.Data.Providers;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.ShellBuilders;
+using Coevery.Environment.ShellBuilders.Models;
+using Coevery.FileSystems.AppData;
+using Coevery.Tests.Environment;
+using Coevery.Tests.FileSystems.AppData;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Modules.CodeGeneration.Commands {
+namespace Coevery.Tests.Modules.CodeGeneration.Commands {
     [TestFixture]
     public class CodeGenerationCommandsTests {
 

@@ -1,12 +1,12 @@
 ﻿using System.Web;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Mvc;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Utility;
+using Coevery.Environment;
+using Coevery.Mvc;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Environment {
+namespace Coevery.Tests.Environment {
     [TestFixture]
     public class DefaultWorkContextAccessorTests : ContainerTestBase {
 

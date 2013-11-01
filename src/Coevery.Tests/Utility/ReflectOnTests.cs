@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Orchard.Utility;
+using Coevery.Utility;
 
-namespace Orchard.Tests.Utility {
+namespace Coevery.Tests.Utility {
     [TestFixture]
     public class ReflectOnTests {
         private class TestClass {

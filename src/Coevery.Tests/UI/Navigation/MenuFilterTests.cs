@@ -4,11 +4,11 @@ using System.Web.Routing;
 using Castle.Core;
 using Moq;
 using NUnit.Framework;
-using Orchard.DisplayManagement;
-using Orchard.Localization;
-using Orchard.UI.Navigation;
+using Coevery.DisplayManagement;
+using Coevery.Localization;
+using Coevery.UI.Navigation;
 
-namespace Orchard.Tests.UI.Navigation {
+namespace Coevery.Tests.UI.Navigation {
     [TestFixture]
     public class MenuFilterTests {
         private const string FirstLevel1Action = "FirstLevel1";

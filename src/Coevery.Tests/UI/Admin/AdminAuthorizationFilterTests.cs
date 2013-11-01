@@ -2,12 +2,12 @@
 using System.Web.Routing;
 using Moq;
 using NUnit.Framework;
-using Orchard.Localization;
-using Orchard.Security;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Admin;
+using Coevery.Localization;
+using Coevery.Security;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Admin;
 
-namespace Orchard.Tests.UI.Admin {
+namespace Coevery.Tests.UI.Admin {
     [TestFixture]
     public class AdminAuthorizationFilterTests {
 

@@ -1,12 +1,12 @@
 ﻿using Autofac;
 using NUnit.Framework;
-using Orchard.Environment.Configuration;
-using Orchard.Mvc;
-using Orchard.Tests.Stubs;
-using Orchard.Widgets.RuleEngine;
-using Orchard.Widgets.Services;
+using Coevery.Environment.Configuration;
+using Coevery.Mvc;
+using Coevery.Tests.Stubs;
+using Coevery.Widgets.RuleEngine;
+using Coevery.Widgets.Services;
 
-namespace Orchard.Tests.Modules.Widgets.RuleEngine {
+namespace Coevery.Tests.Modules.Widgets.RuleEngine {
     [TestFixture]
     public class UrlRuleProviderTest {
         private IContainer _container;

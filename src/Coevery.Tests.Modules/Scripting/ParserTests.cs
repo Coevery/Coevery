@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using NUnit.Framework;
-using Orchard.Scripting.Ast;
-using Orchard.Scripting.Compiler;
+using Coevery.Scripting.Ast;
+using Coevery.Scripting.Compiler;
 
-namespace Orchard.Tests.Modules.Scripting {
+namespace Coevery.Tests.Modules.Scripting {
     [TestFixture]
     public class ParserTests {
         [Test]

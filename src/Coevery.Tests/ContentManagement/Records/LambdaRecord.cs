@@ -1,7 +1,7 @@
 using System;
-using Orchard.ContentManagement.Records;
+using Coevery.ContentManagement.Records;
 
-namespace Orchard.Tests.ContentManagement.Records {
+namespace Coevery.Tests.ContentManagement.Records {
     public class LambdaRecord : ContentPartRecord {
         public LambdaRecord() {
             DateTimeStuff = new DateTime(1980,1,1);

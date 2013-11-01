@@ -2,13 +2,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Security;
-using System.Web;
 using System.Web.Compilation;
 using System.Web.Hosting;
-using Orchard.Host;
-using Orchard.Parameters;
+using Coevery.Host;
+using Coevery.Parameters;
 
-namespace Orchard.HostContext {
+namespace Coevery.HostContext {
     public class CommandHostContextProvider : ICommandHostContextProvider {
         private readonly string[] _args;
         private TextWriter _output;

@@ -3,13 +3,13 @@ using System.IO;
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.Dependencies;
-using Orchard.Services;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.Dependencies;
+using Coevery.Services;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.FileSystems.Dependencies {
+namespace Coevery.Tests.FileSystems.Dependencies {
     [TestFixture]
     public class DependenciesFolderTests {
         public IContainer BuildContainer() {

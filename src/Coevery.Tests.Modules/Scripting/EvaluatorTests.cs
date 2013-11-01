@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
-using Orchard.Scripting.Compiler;
+using Coevery.Scripting.Compiler;
 
-namespace Orchard.Tests.Modules.Scripting {
+namespace Coevery.Tests.Modules.Scripting {
     [TestFixture]
     public class EvaluatorTests : EvaluatorTestsBase {
         protected override EvaluationResult EvaluateSimpleExpression(string expression, Func<string, IList<object>, object> methodInvocationCallback) {

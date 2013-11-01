@@ -3,12 +3,12 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
 
-namespace Orchard.Specs.Hosting.Orchard.Web {
+namespace Coevery.Specs.Hosting.Coevery.Web {
     public class MvcApplication : HttpApplication {
-        private static IOrchardHost _host;
+        private static ICoeveryHost _host;
         private static IContainer _container;
 
         public static void RegisterRoutes(RouteCollection routes) {
@@ -17,8 +17,8 @@ namespace Orchard.Specs.Hosting.Orchard.Web {
 
         protected void Application_Start() {
             RegisterRoutes(RouteTable.Routes);
-            _container = OrchardStarter.CreateHostContainer(MvcSingletons);
-            _host = _container.Resolve<IOrchardHost>();
+            _container = CoeveryStarter.CreateHostContainer(MvcSingletons);
+            _host = _container.Resolve<ICoeveryHost>();
 
             _host.Initialize();
 

@@ -1,7 +1,7 @@
-﻿using Orchard.ContentManagement;
-using Orchard.Tests.ContentManagement.Records;
+﻿using Coevery.ContentManagement;
+using Coevery.Tests.ContentManagement.Records;
 
-namespace Orchard.Tests.ContentManagement.Models {
+namespace Coevery.Tests.ContentManagement.Models {
     public class DeltaPart : ContentPart<DeltaRecord> {
     }
 }

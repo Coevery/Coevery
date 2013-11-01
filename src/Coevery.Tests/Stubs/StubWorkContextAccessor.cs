@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Autofac;
-using Orchard.ContentManagement;
-using Orchard.Security;
-using Orchard.Settings;
+using Coevery.ContentManagement;
+using Coevery.Security;
+using Coevery.Settings;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubWorkContextAccessor : IWorkContextAccessor {
         private readonly ILifetimeScope _lifetimeScope;
         private readonly WorkContext _workContext;

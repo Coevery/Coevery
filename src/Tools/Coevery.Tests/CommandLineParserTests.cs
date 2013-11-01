@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Orchard.Parameters;
+using Coevery.Parameters;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     [TestFixture]
     public class CommandLineParseTests {
         [Test]

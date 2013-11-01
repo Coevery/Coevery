@@ -5,32 +5,32 @@ using System.Xml.Linq;
 using Autofac;
 using NuGet;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Core.Settings.Descriptor;
-using Orchard.Core.Settings.Descriptor.Records;
-using Orchard.Core.Settings.State;
-using Orchard.Data.Migration;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.Features;
-using Orchard.Environment.State;
-using Orchard.Events;
-using Orchard.Packaging.GalleryServer;
-using Orchard.Packaging.Models;
-using Orchard.Packaging.Services;
-using Orchard.Recipes.Models;
-using Orchard.Recipes.RecipeHandlers;
-using Orchard.Recipes.Services;
-using Orchard.Tests.Environment.Extensions;
-using Orchard.Tests.Environment.Features;
-using Orchard.Tests.Stubs;
-using IPackageManager = Orchard.Packaging.Services.IPackageManager;
+using Coevery.Caching;
+using Coevery.Core.Settings.Descriptor;
+using Coevery.Core.Settings.Descriptor.Records;
+using Coevery.Core.Settings.State;
+using Coevery.Data.Migration;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.Features;
+using Coevery.Environment.State;
+using Coevery.Events;
+using Coevery.Packaging.GalleryServer;
+using Coevery.Packaging.Models;
+using Coevery.Packaging.Services;
+using Coevery.Recipes.Models;
+using Coevery.Recipes.RecipeHandlers;
+using Coevery.Recipes.Services;
+using Coevery.Tests.Environment.Extensions;
+using Coevery.Tests.Environment.Features;
+using Coevery.Tests.Stubs;
+using IPackageManager = Coevery.Packaging.Services.IPackageManager;
 
-namespace Orchard.Tests.Modules.Recipes.RecipeHandlers {
+namespace Coevery.Tests.Modules.Recipes.RecipeHandlers {
     [TestFixture]
     public class ModuleRecipeHandlerTest : DatabaseEnabledTestsBase {
         private ExtensionManagerTests.StubFolders _folders;
@@ -74,13 +74,13 @@ namespace Orchard.Tests.Modules.Recipes.RecipeHandlers {
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     SuperWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
 ");
             _packagesInRepository.AddPublishedPackage(new PublishedPackage {
-                Id = "Orchard.Module.SuperWiki",
+                Id = "Coevery.Module.SuperWiki",
                 PackageType = DefaultExtensionTypes.Module,
                 Title = "SuperWiki",
                 Version = "1.0.3",
@@ -96,7 +96,7 @@ Features:
             ModuleRecipeHandler moduleRecipeHandler = _container.Resolve<ModuleRecipeHandler>();
 
             RecipeContext recipeContext = new RecipeContext { RecipeStep = new RecipeStep { Name = "Module", Step = new XElement("SuperWiki") } };
-            recipeContext.RecipeStep.Step.Add(new XAttribute("packageId", "Orchard.Module.SuperWiki"));
+            recipeContext.RecipeStep.Step.Add(new XAttribute("packageId", "Coevery.Module.SuperWiki"));
             recipeContext.RecipeStep.Step.Add(new XAttribute("repository", "test"));
 
             IFeatureManager featureManager = _container.Resolve<IFeatureManager>();
@@ -115,10 +115,10 @@ Features:
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     SuperWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
 ");
 
             ModuleRecipeHandler moduleRecipeHandler = _container.Resolve<ModuleRecipeHandler>();
@@ -132,14 +132,14 @@ Features:
         [Test]
         public void ExecuteRecipeStepWithRepositoryAndVersionNotLatestTest() {
             _packagesInRepository.AddPublishedPackage(new PublishedPackage {
-                Id = "Orchard.Module.SuperWiki",
+                Id = "Coevery.Module.SuperWiki",
                 PackageType = DefaultExtensionTypes.Module,
                 Title = "SuperWiki",
                 Version = "1.0.3",
                 IsLatestVersion = true,
             });
             _packagesInRepository.AddPublishedPackage(new PublishedPackage {
-                Id = "Orchard.Module.SuperWiki",
+                Id = "Coevery.Module.SuperWiki",
                 PackageType = DefaultExtensionTypes.Module,
                 Title = "SuperWiki",
                 Version = "1.0.2",
@@ -149,13 +149,13 @@ Features:
             ModuleRecipeHandler moduleRecipeHandler = _container.Resolve<ModuleRecipeHandler>();
 
             RecipeContext recipeContext = new RecipeContext { RecipeStep = new RecipeStep { Name = "Module", Step = new XElement("SuperWiki") } };
-            recipeContext.RecipeStep.Step.Add(new XAttribute("packageId", "Orchard.Module.SuperWiki"));
+            recipeContext.RecipeStep.Step.Add(new XAttribute("packageId", "Coevery.Module.SuperWiki"));
             recipeContext.RecipeStep.Step.Add(new XAttribute("repository", "test"));
             recipeContext.RecipeStep.Step.Add(new XAttribute("version", "1.0.2"));
 
             moduleRecipeHandler.ExecuteRecipeStep(recipeContext);
 
-            var installedPackage = _packageManager.GetInstalledPackages().FirstOrDefault(info => info.ExtensionName == "Orchard.Module.SuperWiki");
+            var installedPackage = _packageManager.GetInstalledPackages().FirstOrDefault(info => info.ExtensionName == "Coevery.Module.SuperWiki");
             Assert.That(installedPackage, Is.Not.Null);
             Assert.That(installedPackage.ExtensionVersion, Is.EqualTo("1.0.2"));
             Assert.That(recipeContext.Executed, Is.True);

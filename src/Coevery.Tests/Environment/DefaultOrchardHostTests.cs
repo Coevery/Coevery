@@ -6,28 +6,28 @@ using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Web;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.ShellBuilders;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.VirtualPath;
-using Orchard.Mvc.ModelBinders;
-using Orchard.Mvc.Routes;
-using Orchard.Tests.Environment.TestDependencies;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Utility;
-using Orchard.WebApi.Routes;
-using IModelBinderProvider = Orchard.Mvc.ModelBinders.IModelBinderProvider;
+using Coevery.Caching;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.ShellBuilders;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.VirtualPath;
+using Coevery.Mvc.ModelBinders;
+using Coevery.Mvc.Routes;
+using Coevery.Tests.Environment.TestDependencies;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Utility;
+using Coevery.WebApi.Routes;
+using IModelBinderProvider = Coevery.Mvc.ModelBinders.IModelBinderProvider;
 
-namespace Orchard.Tests.Environment {
+namespace Coevery.Tests.Environment {
     [TestFixture]
-    public class DefaultOrchardHostTests {
+    public class DefaultCoeveryHostTests {
         private IContainer _container;
         private ILifetimeScope _lifetime;
         private RouteCollection _routeCollection;
@@ -45,7 +45,7 @@ namespace Orchard.Tests.Environment {
             _modelBinderDictionary = new ModelBinderDictionary();
             _viewEngineCollection = new ViewEngineCollection { new WebFormViewEngine() };
 
-            _container = OrchardStarter.CreateHostContainer(
+            _container = CoeveryStarter.CreateHostContainer(
                 builder => {
                     builder.RegisterInstance(new StubShellSettingsLoader()).As<IShellSettingsManager>();
                     builder.RegisterType<RoutePublisher>().As<IRoutePublisher>();
@@ -76,10 +76,10 @@ namespace Orchard.Tests.Environment {
             _container.Mock<IShellDescriptorManager>()
                 .Setup(cp => cp.GetShellDescriptor()).Returns(default(ShellDescriptor));
 
-            _container.Mock<IOrchardShellEvents>()
+            _container.Mock<ICoeveryShellEvents>()
                 .Setup(e => e.Activated());
 
-            _container.Mock<IOrchardShellEvents>()
+            _container.Mock<ICoeveryShellEvents>()
                 .Setup(e => e.Terminating()).Callback(() => new object());
         }
 
@@ -89,7 +89,7 @@ namespace Orchard.Tests.Environment {
             }
 
             public IEnumerable<ExtensionDescriptor> AvailableExtensions() {
-                var ext = new ExtensionDescriptor { Id = "Orchard.Framework" };
+                var ext = new ExtensionDescriptor { Id = "Coevery.Framework" };
                 ext.Features = new[] { new FeatureDescriptor { Extension = ext, Id = ext.Id } };
                 yield return ext;
             }
@@ -101,7 +101,7 @@ namespace Orchard.Tests.Environment {
 
             public IEnumerable<Feature> LoadFeatures(IEnumerable<FeatureDescriptor> featureDescriptors) {
                 foreach (var descriptor in featureDescriptors) {
-                    if (descriptor.Id == "Orchard.Framework") {
+                    if (descriptor.Id == "Coevery.Framework") {
                         yield return FrameworkFeature(descriptor);
                     }
                 }
@@ -139,7 +139,7 @@ namespace Orchard.Tests.Environment {
 
         [Test, Ignore("containers are disposed when calling BeginRequest, maybe by the StubVirtualPathMonitor")]
         public void NormalDependenciesShouldBeUniquePerRequestContainer() {
-            var host = _lifetime.Resolve<IOrchardHost>();
+            var host = _lifetime.Resolve<ICoeveryHost>();
             var container1 = host.CreateShellContainer_Obsolete();
             ((IShellDescriptorManagerEventHandler)host).Changed(null, ShellSettings.DefaultName);
             host.BeginRequest(); // force reloading the shell
@@ -178,7 +178,7 @@ namespace Orchard.Tests.Environment {
         }
         [Test]
         public void SingletonDependenciesShouldBeUniquePerShell() {
-            var host = _lifetime.Resolve<IOrchardHost>();
+            var host = _lifetime.Resolve<ICoeveryHost>();
             var container1 = host.CreateShellContainer_Obsolete();
             var container2 = host.CreateShellContainer_Obsolete();
             var requestContainer1a = container1.BeginLifetimeScope();
@@ -201,7 +201,7 @@ namespace Orchard.Tests.Environment {
         }
         [Test]
         public void TransientDependenciesShouldBeUniquePerResolve() {
-            var host = _lifetime.Resolve<IOrchardHost>();
+            var host = _lifetime.Resolve<ICoeveryHost>();
             var container1 = host.CreateShellContainer_Obsolete();
             var container2 = host.CreateShellContainer_Obsolete();
             var requestContainer1a = container1.BeginLifetimeScope();
@@ -240,15 +240,15 @@ namespace Orchard.Tests.Environment {
     }
 
     public static class TextExtensions {
-        public static ILifetimeScope CreateShellContainer_Obsolete(this IOrchardHost host) {
-            return ((DefaultOrchardHost)host)
+        public static ILifetimeScope CreateShellContainer_Obsolete(this ICoeveryHost host) {
+            return ((DefaultCoeveryHost)host)
                 .Current
                 .Single(x => x.Settings.Name == ShellSettings.DefaultName)
                 .LifetimeScope;
         }
 
-        public static IOrchardShell CreateShell_Obsolete(this IOrchardHost host) {
-            return host.CreateShellContainer_Obsolete().Resolve<IOrchardShell>();
+        public static ICoeveryShell CreateShell_Obsolete(this ICoeveryHost host) {
+            return host.CreateShellContainer_Obsolete().Resolve<ICoeveryShell>();
         }
     }
 }

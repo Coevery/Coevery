@@ -1,8 +1,8 @@
-﻿using Orchard.ContentManagement;
-using Orchard.ContentManagement.FieldStorage.InfosetStorage;
-using Orchard.ContentManagement.Records;
+﻿using Coevery.ContentManagement;
+using Coevery.ContentManagement.FieldStorage.InfosetStorage;
+using Coevery.ContentManagement.Records;
 
-namespace Orchard.Tests.ContentManagement {
+namespace Coevery.Tests.ContentManagement {
     public class ContentHelpers {
         public static ContentItem PreparePart<TPart, TRecord>(TPart part, string contentType, int id = -1)
             where TPart : ContentPart<TRecord>

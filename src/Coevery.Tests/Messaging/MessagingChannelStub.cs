@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Orchard.Messaging.Services;
-using Orchard.Messaging.Models;
+using Coevery.Messaging.Services;
+using Coevery.Messaging.Models;
 
-namespace Orchard.Tests.Messaging {
+namespace Coevery.Tests.Messaging {
     public class MessagingChannelStub : IMessagingChannel {
         public List<MessageContext> Messages { get; private set; }
 

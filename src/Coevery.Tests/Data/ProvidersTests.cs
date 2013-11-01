@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Orchard.Environment.ShellBuilders.Models;
-using Orchard.Tests.Records;
+using Coevery.Environment.ShellBuilders.Models;
+using Coevery.Tests.Records;
 
-namespace Orchard.Tests.Data {
+namespace Coevery.Tests.Data {
     [TestFixture]
     public class ProvidersTests {
 

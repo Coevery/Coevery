@@ -9,11 +9,11 @@ using FluentNHibernate.Diagnostics;
 using NHibernate.Criterion;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
-using Orchard.Data.Providers;
-using Orchard.Tests.Records;
-using MsSqlCeConfiguration = Orchard.Data.Providers.MsSqlCeConfiguration;
+using Coevery.Data.Providers;
+using Coevery.Tests.Records;
+using MsSqlCeConfiguration = Coevery.Data.Providers.MsSqlCeConfiguration;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     [TestFixture]
     public class FluentDbTests {
         public class Types : ITypeSource {

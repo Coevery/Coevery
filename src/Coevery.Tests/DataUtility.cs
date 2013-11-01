@@ -9,12 +9,12 @@ using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Diagnostics;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
-using Orchard.Data;
-using Orchard.Data.Providers;
-using Orchard.Environment.ShellBuilders.Models;
-using MsSqlCeConfiguration = Orchard.Data.Providers.MsSqlCeConfiguration;
+using Coevery.Data;
+using Coevery.Data.Providers;
+using Coevery.Environment.ShellBuilders.Models;
+using MsSqlCeConfiguration = Coevery.Data.Providers.MsSqlCeConfiguration;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     public static class DataUtility {
         public static ISessionFactory CreateSessionFactory(string fileName, params Type[] types) {
 

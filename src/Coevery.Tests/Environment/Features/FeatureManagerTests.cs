@@ -4,22 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Core.Settings.Descriptor;
-using Orchard.Core.Settings.Descriptor.Records;
-using Orchard.Core.Settings.State;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Environment.Features;
-using Orchard.Environment.State;
-using Orchard.Events;
-using Orchard.Tests.Environment.Extensions;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.Core.Settings.Descriptor;
+using Coevery.Core.Settings.Descriptor.Records;
+using Coevery.Core.Settings.State;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Environment.Features;
+using Coevery.Environment.State;
+using Coevery.Events;
+using Coevery.Tests.Environment.Extensions;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Environment.Features {
+namespace Coevery.Tests.Environment.Features {
     [TestFixture]
     public class FeatureManagerTests : DatabaseEnabledTestsBase {
         private ExtensionManagerTests.StubFolders _folders;
@@ -55,10 +55,10 @@ namespace Orchard.Tests.Environment.Features {
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     SuperWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
 ");
 
             // Initialize the shell descriptor with 0 features
@@ -83,13 +83,13 @@ Features:
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     SuperWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
         Dependencies: SuperWikiDep
     SuperWikiDep:
-        Description: My super wiki module for Orchard dependency.
+        Description: My super wiki module for Coevery dependency.
 ");
 
             // Initialize the shell descriptor with 0 features
@@ -119,10 +119,10 @@ Features:
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     SuperWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
 ");
 
             // Initialize the shell descriptor with 0 features
@@ -145,13 +145,13 @@ Features:
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     SuperWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
         Dependencies: SuperWikiDep
     SuperWikiDep:
-        Description: My super wiki module for Orchard dependency.
+        Description: My super wiki module for Coevery dependency.
 ");
 
             // Initialize the shell descriptor with 0 features

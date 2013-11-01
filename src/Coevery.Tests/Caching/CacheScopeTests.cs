@@ -1,19 +1,19 @@
 ﻿using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment;
+using Coevery.Caching;
+using Coevery.Environment;
 using Autofac;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.WebSite;
-using Orchard.Services;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.WebSite;
+using Coevery.Services;
 
-namespace Orchard.Tests.Caching {
+namespace Coevery.Tests.Caching {
     [TestFixture]
     public class CacheScopeTests {
         private IContainer _hostContainer;
 
         [SetUp]
         public void Init() {
-            _hostContainer = OrchardStarter.CreateHostContainer(builder => {
+            _hostContainer = CoeveryStarter.CreateHostContainer(builder => {
                 builder.RegisterType<Alpha>().InstancePerDependency();
             });
 

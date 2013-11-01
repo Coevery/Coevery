@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Orchard {
+namespace Coevery {
     public class Program {
         const int ConsoleInputBufferSize = 8192;
 

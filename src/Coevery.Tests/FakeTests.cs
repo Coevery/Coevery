@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Orchard.Tests {
+namespace Coevery.Tests {
     [TestFixture]
     public class FakeTests {
         #region Setup/Teardown

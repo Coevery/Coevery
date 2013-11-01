@@ -1,7 +1,7 @@
-﻿using Orchard.Data.Migration.Interpreters;
-using Orchard.Data.Migration.Schema;
+﻿using Coevery.Data.Migration.Interpreters;
+using Coevery.Data.Migration.Schema;
 
-namespace Orchard.Tests.DataMigration.Utilities {
+namespace Coevery.Tests.DataMigration.Utilities {
     public class NullInterpreter : IDataMigrationInterpreter {
 
         public void Visit(ISchemaBuilderCommand command) {

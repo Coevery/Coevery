@@ -1,6 +1,6 @@
-using Orchard.Data.Conventions;
+using Coevery.Data.Conventions;
 
-namespace Orchard.Tests.ContentManagement.Records {
+namespace Coevery.Tests.ContentManagement.Records {
     public class MegaRecord {
         public virtual int Id { get; set; }
 

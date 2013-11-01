@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Security;
 using System.Text;
 
-namespace Orchard.Parameters {
+namespace Coevery.Parameters {
     public interface ICommandLineParser {
         IEnumerable<string> Parse(string commandLine);
     }

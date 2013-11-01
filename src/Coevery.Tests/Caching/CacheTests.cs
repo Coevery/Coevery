@@ -1,9 +1,9 @@
 ﻿using System;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
+using Coevery.Caching;
 
-namespace Orchard.Tests.Caching {
+namespace Coevery.Tests.Caching {
     [TestFixture]
     public class CacheTests {
         private IContainer _container;

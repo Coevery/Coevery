@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     public class HostingTraceListener : TraceListener {
         private static Action<string> _hook = ignored => { };
         private string _message;

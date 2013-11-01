@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Tests.Stubs;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Environment.Configuration {
+namespace Coevery.Tests.Environment.Configuration {
     [TestFixture]
     public class DefaultTenantManagerTests {
         private StubAppDataFolder _appDataFolder;

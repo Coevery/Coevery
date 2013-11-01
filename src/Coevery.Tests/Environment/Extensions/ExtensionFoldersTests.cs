@@ -2,14 +2,14 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Tests.Stubs;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Environment.Extensions {
+namespace Coevery.Tests.Environment.Extensions {
     [TestFixture]
     public class ExtensionFoldersTests {
-        private const string DataPrefix = "Orchard.Tests.Environment.Extensions.FoldersData.";
+        private const string DataPrefix = "Coevery.Tests.Environment.Extensions.FoldersData.";
         private string _tempFolderName;
 
         [SetUp]

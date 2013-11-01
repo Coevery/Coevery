@@ -8,8 +8,8 @@
     <ProjectGuid>{33B1BC8D-E292-4972-A363-22056B207156}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Orchard</RootNamespace>
-    <AssemblyName>Orchard</AssemblyName>
+    <RootNamespace>Coevery</RootNamespace>
+    <AssemblyName>Coevery</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

@@ -4,17 +4,17 @@ using System.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Descriptors.ShapePlacementStrategy;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Tests.Stubs;
-using Orchard.UI.PageClass;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Descriptors.ShapePlacementStrategy;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Tests.Stubs;
+using Coevery.UI.PageClass;
 
-namespace Orchard.Tests.DisplayManagement.Descriptors {
+namespace Coevery.Tests.DisplayManagement.Descriptors {
     [TestFixture]
     public class DefaultShapeTableManagerTests : ContainerTestBase {
         protected override void Register(ContainerBuilder builder) {

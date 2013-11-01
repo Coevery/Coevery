@@ -5,18 +5,18 @@ using Autofac;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Builders;
-using Orchard.ContentManagement.MetaData.Services;
-using Orchard.Core.Settings.Metadata;
-using Orchard.Core.Settings.Metadata.Records;
-using Orchard.Data;
-using Orchard.Tests;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Utility;
+using Coevery.Caching;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.MetaData.Builders;
+using Coevery.ContentManagement.MetaData.Services;
+using Coevery.Core.Settings.Metadata;
+using Coevery.Core.Settings.Metadata.Records;
+using Coevery.Data;
+using Coevery.Tests;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Core.Tests.Settings.Metadata {
+namespace Coevery.Core.Tests.Settings.Metadata {
     [TestFixture]
     public class ContentDefinitionManagerTests {
         private string _databaseFileName;

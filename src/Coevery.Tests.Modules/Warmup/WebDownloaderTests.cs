@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using NUnit.Framework;
-using Orchard.Warmup.Services;
+using Coevery.Warmup.Services;
 
-namespace Orchard.Tests.Modules.Warmup {
+namespace Coevery.Tests.Modules.Warmup {
     public class WebDownloaderTests {
         private readonly IWebDownloader _webDownloader = new WebDownloader();
 

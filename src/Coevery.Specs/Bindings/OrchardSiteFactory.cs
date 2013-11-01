@@ -1,29 +1,29 @@
 ﻿using System.Linq;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.MetaData.Models;
-using Orchard.Core.Contents.Extensions;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Specs.Hosting.Orchard.Web;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.MetaData.Models;
+using Coevery.Core.Contents.Extensions;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Specs.Hosting.Coevery.Web;
 using TechTalk.SpecFlow;
 
-namespace Orchard.Specs.Bindings {
+namespace Coevery.Specs.Bindings {
     [Binding]
-    public class OrchardSiteFactory : BindingBase {
-        [Given(@"I have installed Orchard")]
-        public void GivenIHaveInstalledOrchard() {
-            GivenIHaveInstalledOrchard("/");
+    public class CoeverySiteFactory : BindingBase {
+        [Given(@"I have installed Coevery")]
+        public void GivenIHaveInstalledCoevery() {
+            GivenIHaveInstalledCoevery("/");
         }
 
-        [Given(@"I have installed Orchard at ""(.*)\""")]
-        public void GivenIHaveInstalledOrchard(string virtualDirectory) {
+        [Given(@"I have installed Coevery at ""(.*)\""")]
+        public void GivenIHaveInstalledCoevery(string virtualDirectory) {
             var webApp = Binding<WebAppHosting>();
 
             webApp.GivenIHaveACleanSiteWith(
                 virtualDirectory,
                 TableData(
-                new { extension = "Module", names = "Orchard.Setup, Orchard.Pages, Orchard.ContentPicker, Orchard.Blogs, Orchard.Messaging, Orchard.MediaLibrary, Orchard.Modules, Orchard.Packaging, Orchard.PublishLater, Orchard.Themes, Orchard.Scripting, Orchard.Widgets, Orchard.Users, Orchard.ContentTypes, Orchard.Roles, Orchard.Comments, Orchard.jQuery, Orchard.Tags, TinyMce, Orchard.Recipes, Orchard.Warmup, Orchard.Alias, Orchard.Forms, Orchard.Tokens, Orchard.Autoroute, Orchard.Projections, Orchard.Fields, Orchard.MediaProcessing, Orchard.OutputCache, Orchard.Taxonomies, Orchard.Workflows, Orchard.Scripting.CSharp" }, 
+                new { extension = "Module", names = "Coevery.Setup, Coevery.Pages, Coevery.ContentPicker, Coevery.Blogs, Coevery.Messaging, Coevery.MediaLibrary, Coevery.Modules, Coevery.Packaging, Coevery.PublishLater, Coevery.Themes, Coevery.Scripting, Coevery.Widgets, Coevery.Users, Coevery.ContentTypes, Coevery.Roles, Coevery.Comments, Coevery.jQuery, Coevery.Tags, TinyMce, Coevery.Recipes, Coevery.Warmup, Coevery.Alias, Coevery.Forms, Coevery.Tokens, Coevery.Autoroute, Coevery.Projections, Coevery.Fields, Coevery.MediaProcessing, Coevery.OutputCache, Coevery.Taxonomies, Coevery.Workflows, Coevery.Scripting.CSharp" }, 
                 new { extension = "Core", names = "Common, Containers, Dashboard, Feeds, Navigation, Contents, Scheduling, Settings, Shapes, XmlRpc, Title, Reports" },
                 new { extension = "Theme", names = "SafeMode, TheAdmin, TheThemeMachine" }));
 

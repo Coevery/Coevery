@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using NUnit.Framework;
-using Orchard.Media.Extensions;
+using Coevery.Media.Extensions;
 
-namespace Orchard.Tests.Modules.Media.Extensions {
+namespace Coevery.Tests.Modules.Media.Extensions {
     [TestFixture]
     public class LongExtensionsTests {
         [Test]

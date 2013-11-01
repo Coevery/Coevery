@@ -6,16 +6,16 @@ using System.Web.Routing;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Mvc;
-using Orchard.Mvc.Routes;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Utility;
+using Coevery.Caching;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Mvc;
+using Coevery.Mvc.Routes;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Mvc.Routes {
+namespace Coevery.Tests.Mvc.Routes {
     [TestFixture]
     public class ShellRouteTests {
         private RouteCollection _routes;

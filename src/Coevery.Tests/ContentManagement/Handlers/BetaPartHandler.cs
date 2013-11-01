@@ -1,7 +1,7 @@
-﻿using Orchard.ContentManagement.Handlers;
-using Orchard.Tests.ContentManagement.Models;
+﻿using Coevery.ContentManagement.Handlers;
+using Coevery.Tests.ContentManagement.Models;
 
-namespace Orchard.Tests.ContentManagement.Handlers {
+namespace Coevery.Tests.ContentManagement.Handlers {
     public class BetaPartHandler : ContentHandler {
         public BetaPartHandler() {
             Filters.Add(new ActivatingFilter<BetaPart>("beta"));

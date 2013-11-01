@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-using Orchard.Commands;
+using Coevery.Commands;
 using System;
 using System.Linq;
 
-namespace Orchard.Tests.Commands {
+namespace Coevery.Tests.Commands {
     [TestFixture]
     public class CommandsTests {
         private ICommandHandler _handler;
@@ -98,14 +98,14 @@ namespace Orchard.Tests.Commands {
 
         [Test]
         public void TestStringSwitchForCommand() {
-            var commandContext = CreateCommandContext("Baz", new Dictionary<string, string> {{"User", "OrchardUser"}});
+            var commandContext = CreateCommandContext("Baz", new Dictionary<string, string> {{"User", "CoeveryUser"}});
             _handler.Execute(commandContext);
-            Assert.That(commandContext.Output.ToString(), Is.EqualTo("Command Baz Called : current user is OrchardUser"));
+            Assert.That(commandContext.Output.ToString(), Is.EqualTo("Command Baz Called : current user is CoeveryUser"));
         }
 
         [Test]
         public void TestSwitchForCommandWithoutSupportForIt() {
-            var switches = new Dictionary<string, string> {{"User", "OrchardUser"}};
+            var switches = new Dictionary<string, string> {{"User", "CoeveryUser"}};
             var commandContext = CreateCommandContext("Foo", switches);
             Assert.Throws<InvalidOperationException>(() => _handler.Execute(commandContext));
         }
@@ -173,14 +173,14 @@ namespace Orchard.Tests.Commands {
         }
     }
 
-    public class StubCommandHandler : DefaultOrchardCommandHandler {
-        [OrchardSwitch]
+    public class StubCommandHandler : DefaultCoeveryCommandHandler {
+        [CoeverySwitch]
         public bool Verbose { get; set; }
 
-        [OrchardSwitch]
+        [CoeverySwitch]
         public int Level { get; set; }
 
-        [OrchardSwitch]
+        [CoeverySwitch]
         public string User { get; set; }
 
         public string Foo() {
@@ -192,7 +192,7 @@ namespace Orchard.Tests.Commands {
             return "Hello World!";
         }
 
-        [OrchardSwitches("Verbose, Level, User")]
+        [CoeverySwitches("Verbose, Level, User")]
         [CommandHelp("Baz help")]
         public string Baz() {
             string trace = "Command Baz Called";

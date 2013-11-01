@@ -3,12 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using Autofac;
 using NUnit.Framework;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Admin;
-using Orchard.UI.Resources;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Admin;
+using Coevery.UI.Resources;
 
-namespace Orchard.Tests.UI.Resources {
+namespace Coevery.Tests.UI.Resources {
     [TestFixture]
     public class ResourceManagerTests {
         private IContainer _container;

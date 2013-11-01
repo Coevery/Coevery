@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Linq;
-using Orchard.Commands;
-using Orchard.Parameters;
-using Orchard.Specs.Hosting;
+using Coevery.Parameters;
+using Coevery.Commands;
+using Coevery.Specs.Hosting;
 using TechTalk.SpecFlow;
 
-namespace Orchard.Specs.Bindings {
+namespace Coevery.Specs.Bindings {
     [Binding]
     public class CommandLine : BindingBase {
         [When(@"I execute >(.*)")]

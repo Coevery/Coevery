@@ -2,10 +2,10 @@
 using System.Xml;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Orchard.ContentManagement.MetaData.Builders;
-using Orchard.ContentManagement.MetaData.Services;
+using Coevery.ContentManagement.MetaData.Builders;
+using Coevery.ContentManagement.MetaData.Services;
 
-namespace Orchard.Tests.ContentManagement.MetaData.Services {
+namespace Coevery.Tests.ContentManagement.MetaData.Services {
     [TestFixture]
     public class ContentDefinitionWriterTests {
         private ContentDefinitionWriter _writer;

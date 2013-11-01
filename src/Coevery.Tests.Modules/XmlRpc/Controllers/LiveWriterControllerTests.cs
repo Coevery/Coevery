@@ -2,12 +2,12 @@
 using System.Xml.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Core.XmlRpc;
-using Orchard.Core.XmlRpc.Controllers;
-using Orchard.Core.XmlRpc.Models;
-using Orchard.Core.XmlRpc.Services;
+using Coevery.Core.XmlRpc;
+using Coevery.Core.XmlRpc.Controllers;
+using Coevery.Core.XmlRpc.Models;
+using Coevery.Core.XmlRpc.Services;
 
-namespace Orchard.Tests.Modules.XmlRpc.Controllers {
+namespace Coevery.Tests.Modules.XmlRpc.Controllers {
     [TestFixture]
     public class LiveWriterControllerTests {
         [Test]

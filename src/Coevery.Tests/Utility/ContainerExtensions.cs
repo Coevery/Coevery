@@ -7,7 +7,7 @@ using Autofac.Builder;
 using Autofac.Core;
 using Moq;
 
-namespace Orchard.Tests.Utility {
+namespace Coevery.Tests.Utility {
     public static class ContainerExtensions {
         public static Mock<T> Mock<T>(this IComponentContext container) where T : class {
             return container.Resolve<Mock<T>>();

@@ -1,13 +1,13 @@
 ﻿using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment.Extensions;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment.Extensions;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.DisplayManagement {
+namespace Coevery.Tests.DisplayManagement {
     [TestFixture]
     public class ShapeHelperTests {
         private IContainer _container;

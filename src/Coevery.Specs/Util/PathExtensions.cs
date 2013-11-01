@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Path = Bleroy.FluentPath.Path;
 
-namespace Orchard.Specs.Util {
+namespace Coevery.Specs.Util {
     public static class PathExtensions {
         public static Path GetRelativePath(this Path path, Path basePath) {
             if (path.Equals(basePath))

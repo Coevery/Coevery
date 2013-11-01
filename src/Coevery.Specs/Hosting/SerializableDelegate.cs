@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     /// <summary>
     /// Makes delegates serializable where possible
     /// Adapted from http://www.codeproject.com/KB/cs/AnonymousSerialization.aspx

@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.DisplayManagement.Descriptors.ShapePlacementStrategy;
-using Orchard.FileSystems.WebSite;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.DisplayManagement.Descriptors.ShapePlacementStrategy;
+using Coevery.FileSystems.WebSite;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.DisplayManagement.Descriptors {
+namespace Coevery.Tests.DisplayManagement.Descriptors {
     [TestFixture]
     public class PlacementFileParserTests : ContainerTestBase {
         private IPlacementFileParser _parser;

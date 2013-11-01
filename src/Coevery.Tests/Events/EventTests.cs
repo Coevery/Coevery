@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Events;
+using Coevery.Events;
 using System;
-using Orchard.Exceptions;
+using Coevery.Exceptions;
 
-namespace Orchard.Tests.Events {
+namespace Coevery.Tests.Events {
     [TestFixture]
     public class EventTests {
         private IContainer _container;
@@ -19,7 +19,7 @@ namespace Orchard.Tests.Events {
             _eventHandler = new StubEventHandler();
 
             var builder = new ContainerBuilder();
-            builder.RegisterType<DefaultOrchardEventBus>().As<IEventBus>();
+            builder.RegisterType<DefaultCoeveryEventBus>().As<IEventBus>();
             builder.RegisterType<StubExceptionPolicy>().As<IExceptionPolicy>();
 
             builder.RegisterType<StubEventHandler2>()

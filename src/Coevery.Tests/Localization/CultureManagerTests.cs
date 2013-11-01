@@ -7,23 +7,23 @@ using Autofac;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
-using Orchard.Data;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment;
-using Orchard.Localization.Records;
-using Orchard.Localization.Services;
-using Orchard.Mvc;
-using Orchard.Security;
-using Orchard.Tests.ContentManagement;
-using Orchard.Tests.Stubs;
-using Orchard.UI.Notify;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.MetaData;
+using Coevery.Data;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment;
+using Coevery.Localization.Records;
+using Coevery.Localization.Services;
+using Coevery.Mvc;
+using Coevery.Security;
+using Coevery.Tests.ContentManagement;
+using Coevery.Tests.Stubs;
+using Coevery.UI.Notify;
 
-namespace Orchard.Tests.Localization {
+namespace Coevery.Tests.Localization {
     [TestFixture]
     public class CultureManagerTests {
         private IContainer _container;
@@ -54,7 +54,7 @@ namespace Orchard.Tests.Localization {
             builder.RegisterType<WorkContextAccessor>().As<IWorkContextAccessor>();
             builder.RegisterType<DefaultContentManager>().As<IContentManager>();
             builder.RegisterType<DefaultContentManagerSession>().As<IContentManagerSession>();
-            builder.RegisterType<OrchardServices>().As<IOrchardServices>();
+            builder.RegisterType<CoeveryServices>().As<ICoeveryServices>();
             builder.RegisterType<TestCultureSelector>().As<ICultureSelector>();
             builder.RegisterType<DefaultCultureManager>().As<ICultureManager>();
             builder.RegisterType<Signals>().As<ISignals>();

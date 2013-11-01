@@ -7,21 +7,21 @@ using System.Xml.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.FieldStorage.InfosetStorage;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.MetaData.Builders;
-using Orchard.Core.Common.Models;
-using Orchard.Core.Feeds;
-using Orchard.Core.Feeds.Controllers;
-using Orchard.Core.Feeds.Models;
-using Orchard.Core.Feeds.Rss;
-using Orchard.Core.Feeds.StandardBuilders;
-using Orchard.Tests.Modules;
-using Orchard.Tests.Stubs;
-using Orchard.Core.Title.Models;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.FieldStorage.InfosetStorage;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.MetaData.Builders;
+using Coevery.Core.Common.Models;
+using Coevery.Core.Feeds;
+using Coevery.Core.Feeds.Controllers;
+using Coevery.Core.Feeds.Models;
+using Coevery.Core.Feeds.Rss;
+using Coevery.Core.Feeds.StandardBuilders;
+using Coevery.Tests.Modules;
+using Coevery.Tests.Stubs;
+using Coevery.Core.Title.Models;
 
-namespace Orchard.Core.Tests.Feeds.Controllers {
+namespace Coevery.Core.Tests.Feeds.Controllers {
     [TestFixture]
     public class FeedControllerTests {
         [Test]

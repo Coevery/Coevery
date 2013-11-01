@@ -1,8 +1,8 @@
 ﻿using System.Web.Routing;
+using Coevery.Web.Tests.Stubs;
 using NUnit.Framework;
-using Orchard.Web.Tests.Stubs;
 
-namespace Orchard.Web.Tests.Routes {
+namespace Coevery.Web.Tests.Routes {
     [TestFixture]
     public class RouteTests {
         [Test]

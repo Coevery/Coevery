@@ -4,14 +4,14 @@ using Autofac;
 using log4net.Appender;
 using log4net.Core;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Logging;
-using Orchard.Tests.Environment;
-using ILogger = Orchard.Logging.ILogger;
-using ILoggerFactory = Orchard.Logging.ILoggerFactory;
-using NullLogger = Orchard.Logging.NullLogger;
+using Coevery.Environment;
+using Coevery.Logging;
+using Coevery.Tests.Environment;
+using ILogger = Coevery.Logging.ILogger;
+using ILoggerFactory = Coevery.Logging.ILoggerFactory;
+using NullLogger = Coevery.Logging.NullLogger;
 
-namespace Orchard.Tests.Logging {
+namespace Coevery.Tests.Logging {
     [TestFixture]
     public class LoggingModuleTests {
         [Test]

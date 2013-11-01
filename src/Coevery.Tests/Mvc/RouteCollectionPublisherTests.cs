@@ -5,12 +5,12 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Mvc.Routes;
-using Orchard.Tests.Utility;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Mvc.Routes;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Mvc {
+namespace Coevery.Tests.Mvc {
     [TestFixture]
     public class RouteCollectionPublisherTests {
         private IContainer _container;

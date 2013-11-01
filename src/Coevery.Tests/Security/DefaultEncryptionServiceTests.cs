@@ -3,12 +3,12 @@ using System.Security.Cryptography;
 using System.Text;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Environment.Configuration;
-using Orchard.Security;
-using Orchard.Security.Providers;
-using Orchard.Utility.Extensions;
+using Coevery.Environment.Configuration;
+using Coevery.Security;
+using Coevery.Security.Providers;
+using Coevery.Utility.Extensions;
 
-namespace Orchard.Tests.Security {
+namespace Coevery.Tests.Security {
     [TestFixture]
     public class DefaultEncryptionServiceTests {
         private IContainer _container;

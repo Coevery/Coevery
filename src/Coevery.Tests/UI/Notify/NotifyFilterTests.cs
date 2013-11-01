@@ -2,9 +2,9 @@
 using System.Web.Routing;
 using Moq;
 using NUnit.Framework;
-using Orchard.Tests.Stubs;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.UI.Notify {
+namespace Coevery.Tests.UI.Notify {
     [TestFixture]
     public class NotifyFilterTests {
         private static ActionExecutedContext BuildContext() {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Orchard {
+namespace Coevery {
     public class OrchardParameters : MarshalByRefObject {
         public bool Verbose { get; set; }
         public string VirtualPath { get; set; }

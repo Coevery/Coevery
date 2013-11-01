@@ -9,34 +9,34 @@ using Autofac;
 using Autofac.Features.Metadata;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.CodeGeneration.Services;
-using Orchard.ContentManagement.Records;
-using Orchard.Data;
-using Orchard.Data.Conventions;
-using Orchard.Data.Migration.Generator;
-using Orchard.Data.Migration.Interpreters;
-using Orchard.Data.Migration.Schema;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Environment.Extensions.Loaders;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.ShellBuilders;
-using Orchard.Environment.ShellBuilders.Models;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.Dependencies;
-using Orchard.Tests.ContentManagement;
-using Orchard.Data.Providers;
-using Orchard.Tests.DataMigration.Utilities;
-using Orchard.Tests.FileSystems.AppData;
-using Orchard.Tests.Modules.Migrations.Orchard.Tests.DataMigration.Records;
+using Coevery.Caching;
+using Coevery.CodeGeneration.Services;
+using Coevery.ContentManagement.Records;
+using Coevery.Data;
+using Coevery.Data.Conventions;
+using Coevery.Data.Migration.Generator;
+using Coevery.Data.Migration.Interpreters;
+using Coevery.Data.Migration.Schema;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Environment.Extensions.Loaders;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.ShellBuilders;
+using Coevery.Environment.ShellBuilders.Models;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.Dependencies;
+using Coevery.Tests.ContentManagement;
+using Coevery.Data.Providers;
+using Coevery.Tests.DataMigration.Utilities;
+using Coevery.Tests.FileSystems.AppData;
+using Coevery.Tests.Modules.Migrations.Coevery.Tests.DataMigration.Records;
 using Path = Bleroy.FluentPath.Path;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Environment;
-using Orchard.Environment;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Environment;
+using Coevery.Environment;
 
-namespace Orchard.Tests.Modules.Migrations {
+namespace Coevery.Tests.Modules.Migrations {
     [TestFixture]
     public class SchemaCommandGeneratorTests {
         private IContainer _container;
@@ -44,7 +44,7 @@ namespace Orchard.Tests.Modules.Migrations {
         private ISchemaCommandGenerator _generator;
         private ISessionFactory _sessionFactory;
         private ISession _session;
-        private readonly Path _tempFixtureFolderName = Path.Get(System.IO.Path.GetTempPath()).Combine("Orchard.Tests.Modules.Migrations");
+        private readonly Path _tempFixtureFolderName = Path.Get(System.IO.Path.GetTempPath()).Combine("Coevery.Tests.Modules.Migrations");
         private Path _tempFolderName;
 
         [TestFixtureSetUp]
@@ -104,7 +104,7 @@ namespace Orchard.Tests.Modules.Migrations {
             _folders.Manifests.Add("Feature1", @"
 Name: Module1
 Version: 0.1
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     Feature1: 
         Description: Feature
@@ -265,7 +265,7 @@ Features:
 
 
     // namespace is needed as the shell composition strategy will filter records using it also
-    namespace Orchard.Tests.DataMigration.Records {
+    namespace Coevery.Tests.DataMigration.Records {
         public class BlogRecord : ContentPartRecord {
             public virtual string Description { get; set; }
             public virtual int PostCount { get; set; }

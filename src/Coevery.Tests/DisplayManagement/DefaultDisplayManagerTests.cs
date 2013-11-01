@@ -5,12 +5,12 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Web;
 using NUnit.Framework;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.DisplayManagement.Shapes;
-using Orchard.Environment.Extensions.Models;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.DisplayManagement.Shapes;
+using Coevery.Environment.Extensions.Models;
 
-namespace Orchard.Tests.DisplayManagement {
+namespace Coevery.Tests.DisplayManagement {
     [TestFixture]
     public class DefaultDisplayManagerTests : ContainerTestBase {
         ShapeTable _defaultShapeTable;

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Roles.Models;
-using Orchard.Roles.Services;
-using Orchard.Security.Permissions;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Roles.Models;
+using Coevery.Roles.Services;
+using Coevery.Security.Permissions;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Modules.Roles.Services {
+namespace Coevery.Tests.Modules.Roles.Services {
     [TestFixture]
     public class RoleServiceTests : DatabaseEnabledTestsBase {
         public override void Register(ContainerBuilder builder) {

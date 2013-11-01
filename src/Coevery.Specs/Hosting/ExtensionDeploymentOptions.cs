@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     [Flags]
     public enum ExtensionDeploymentOptions {
         CompiledAssembly = 0x01,

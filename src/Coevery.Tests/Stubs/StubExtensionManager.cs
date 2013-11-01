@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Models;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Models;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubExtensionManager : IExtensionManager {
         public ExtensionDescriptor GetExtension(string name) {
             throw new NotImplementedException();

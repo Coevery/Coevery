@@ -1,8 +1,8 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Orchard.Autoroute.Services;
+using Coevery.Autoroute.Services;
 
-namespace Orchard.Tests.Modules.Autoroute {
+namespace Coevery.Tests.Modules.Autoroute {
     [TestFixture]
     public class DefaultSlugServiceTests {
 

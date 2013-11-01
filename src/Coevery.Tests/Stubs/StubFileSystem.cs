@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Orchard.Caching;
-using Orchard.Services;
+using Coevery.Caching;
+using Coevery.Services;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubFileSystem {
         public class Entry {
             public string Name { get; set; }

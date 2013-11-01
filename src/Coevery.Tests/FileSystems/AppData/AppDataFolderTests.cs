@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
 using NUnit.Framework;
-using Orchard.FileSystems.AppData;
-using Orchard.Tests.Stubs;
+using Coevery.FileSystems.AppData;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.FileSystems.AppData {
+namespace Coevery.Tests.FileSystems.AppData {
     [TestFixture]
     public class AppDataFolderTests {
         private string _tempFolder;

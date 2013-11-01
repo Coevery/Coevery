@@ -2,10 +2,10 @@
 using System.Web.Mvc;
 using Moq;
 using NUnit.Framework;
-using Orchard.Mvc.Html;
+using Coevery.Mvc.Html;
 using System.Collections.Generic;
 
-namespace Orchard.Tests.Mvc.Html {
+namespace Coevery.Tests.Mvc.Html {
     [TestFixture]
     public class HtmlHelperExtensionsTests {
         [Test]

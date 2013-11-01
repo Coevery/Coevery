@@ -2,11 +2,11 @@
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Tasks;
-using Orchard.Tests.Utility;
+using Coevery.Environment;
+using Coevery.Tasks;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Tasks {
+namespace Coevery.Tests.Tasks {
     [TestFixture]
     public class SweepGeneratorTests : ContainerTestBase {
         protected override void Register(ContainerBuilder builder) {

@@ -1,8 +1,8 @@
-﻿using Orchard.ContentManagement.Handlers;
-using Orchard.Data;
-using Orchard.Tests.ContentManagement.Models;
+﻿using Coevery.ContentManagement.Handlers;
+using Coevery.Data;
+using Coevery.Tests.ContentManagement.Models;
 
-namespace Orchard.Tests.ContentManagement.Handlers {
+namespace Coevery.Tests.ContentManagement.Handlers {
     public class EpsilonPartHandler : ContentHandler {
         public EpsilonPartHandler(IRepository<EpsilonRecord> repository) {
             Filters.Add(new ActivatingFilter<EpsilonPart>("gamma"));

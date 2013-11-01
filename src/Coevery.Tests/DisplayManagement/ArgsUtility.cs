@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
-using Orchard.DisplayManagement;
+using Coevery.DisplayManagement;
 
-namespace Orchard.Tests.DisplayManagement {
+namespace Coevery.Tests.DisplayManagement {
     public static class ArgsUtility {
         public static INamedEnumerable<T> Named<T>(IDictionary<string, T> args) {
             return FromDictionary(args);

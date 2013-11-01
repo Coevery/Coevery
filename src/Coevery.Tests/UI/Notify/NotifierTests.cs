@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Orchard.Localization;
-using Orchard.UI.Notify;
+using Coevery.Localization;
+using Coevery.UI.Notify;
 
-namespace Orchard.Tests.UI.Notify {
+namespace Coevery.Tests.UI.Notify {
     [TestFixture]
     public class NotifierTests {
 

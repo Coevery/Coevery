@@ -1,7 +1,7 @@
-﻿using Orchard.Caching;
-using Orchard.FileSystems.VirtualPath;
+﻿using Coevery.Caching;
+using Coevery.FileSystems.VirtualPath;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubVirtualPathMonitor : IVirtualPathMonitor {
         public class Token : IVolatileToken {
             public bool IsCurrent { get; set; }

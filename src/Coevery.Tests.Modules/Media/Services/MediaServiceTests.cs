@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using Ionic.Zip;
 using NUnit.Framework;
-using Orchard.Environment.Configuration;
-using Orchard.FileSystems.Media;
-using Orchard.Media.Models;
-using Orchard.Media.Services;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.UI.Navigation;
+using Coevery.Environment.Configuration;
+using Coevery.FileSystems.Media;
+using Coevery.Media.Models;
+using Coevery.Media.Services;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.UI.Navigation;
 
-namespace Orchard.Tests.Modules.Media.Services {
+namespace Coevery.Tests.Modules.Media.Services {
     [TestFixture]
     public class MediaServiceTests {
         private const string FolderName1 = "Folder1";
@@ -33,15 +33,15 @@ namespace Orchard.Tests.Modules.Media.Services {
 
         private const string MediaFolder = "Media";
 
-        private StubOrchardServices OrchardServices { get; set; }
+        private StubCoeveryServices CoeveryServices { get; set; }
         private StubStorageProvider StorageProvider { get; set; }
         private MediaServiceAccessor MediaService { get; set; }
 
         [SetUp]
         public void Setup() {
-            OrchardServices = new StubOrchardServices();
+            CoeveryServices = new StubCoeveryServices();
             StorageProvider = new StubStorageProvider(new ShellSettings { Name = ShellSettings.DefaultName });
-            MediaService = new MediaServiceAccessor(StorageProvider, OrchardServices);
+            MediaService = new MediaServiceAccessor(StorageProvider, CoeveryServices);
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Orchard.Tests.Modules.Media.Services {
         public void UnzipMediaFileArchiveAdministratorTest() {
             // Test unzip some valid and invalid files as an administrator user
             StorageProvider.SavedStreams.Clear();
-            StubWorkContextAccessor.WorkContextImpl.StubSite.DefaultSuperUser = OrchardServices.WorkContext.CurrentUser.UserName;
+            StubWorkContextAccessor.WorkContextImpl.StubSite.DefaultSuperUser = CoeveryServices.WorkContext.CurrentUser.UserName;
 
             MediaService.UnzipMediaFileArchiveAccessor(FolderName1, CreateZipMemoryStream());
             Assert.That(StorageProvider.SavedStreams.Contains(StorageProvider.Combine(FolderName1, TextFileName)), Is.True, "text files are allowed for super users");
@@ -188,7 +188,7 @@ namespace Orchard.Tests.Modules.Media.Services {
         }
 
         private class MediaServiceAccessor : MediaService {
-            public MediaServiceAccessor(IStorageProvider storageProvider, IOrchardServices orchardServices)
+            public MediaServiceAccessor(IStorageProvider storageProvider, ICoeveryServices orchardServices)
                 : base (storageProvider, orchardServices) {}
 
             public void UnzipMediaFileArchiveAccessor(string targetFolder, Stream zipStream) {

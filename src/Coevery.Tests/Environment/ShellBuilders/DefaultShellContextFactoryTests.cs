@@ -2,16 +2,16 @@
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.ShellBuilders;
-using Orchard.Environment.Descriptor;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Environment.ShellBuilders.Models;
-using Orchard.Mvc;
-using Orchard.Tests.Utility;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.ShellBuilders;
+using Coevery.Environment.Descriptor;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Environment.ShellBuilders.Models;
+using Coevery.Mvc;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Environment.ShellBuilders {
+namespace Coevery.Tests.Environment.ShellBuilders {
     [TestFixture]
     public class DefaultShellContextFactoryTests {
         private IContainer _container;
@@ -61,11 +61,11 @@ namespace Orchard.Tests.Environment.ShellBuilders {
             Assert.That(context.Descriptor, Is.SameAs(descriptor));
             Assert.That(context.Blueprint, Is.SameAs(blueprint));
             Assert.That(context.LifetimeScope, Is.SameAs(shellLifetimeScope));
-            Assert.That(context.Shell, Is.SameAs(shellLifetimeScope.Resolve<IOrchardShell>()));
+            Assert.That(context.Shell, Is.SameAs(shellLifetimeScope.Resolve<ICoeveryShell>()));
         }
 
         [Test]
-        public void CreatingSetupContextUsesOrchardSetupFeature() {
+        public void CreatingSetupContextUsesCoeverySetupFeature() {
             var settings = default(ShellSettings);
             var descriptor = default(ShellDescriptor);
             var blueprint = new ShellBlueprint();
@@ -85,7 +85,7 @@ namespace Orchard.Tests.Environment.ShellBuilders {
             var factory = _container.Resolve<IShellContextFactory>();
             var context = factory.CreateSetupContext(new ShellSettings { Name = ShellSettings.DefaultName });
 
-            Assert.That(context.Descriptor.Features, Has.Some.With.Property("Name").EqualTo("Orchard.Setup"));
+            Assert.That(context.Descriptor.Features, Has.Some.With.Property("Name").EqualTo("Coevery.Setup"));
         }
     }
 }

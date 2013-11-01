@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Orchard.DisplayManagement.Shapes;
+using Coevery.DisplayManagement.Shapes;
 
-namespace Orchard.Tests.DisplayManagement {
+namespace Coevery.Tests.DisplayManagement {
     [TestFixture]
     public class CompositeTests {
 

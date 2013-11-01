@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     [Serializable]
     public class RequestDetails {
         public RequestDetails() {

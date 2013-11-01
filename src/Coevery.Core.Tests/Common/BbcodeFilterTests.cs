@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Orchard.Core.Common.Services;
+using Coevery.Core.Common.Services;
 
-namespace Orchard.Core.Tests.Common {
+namespace Coevery.Core.Tests.Common {
     [TestFixture]
     public class BbcodeFilterTests {
 

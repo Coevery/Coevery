@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Orchard.Caching;
-using Orchard.FileSystems.AppData;
-using Orchard.Services;
+using Coevery.Caching;
+using Coevery.FileSystems.AppData;
+using Coevery.Services;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubAppDataFolder : IAppDataFolder {
         private readonly IClock _clock;
         private readonly StubFileSystem _fileSystem;

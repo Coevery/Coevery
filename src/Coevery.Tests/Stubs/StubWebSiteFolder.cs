@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Orchard.Caching;
-using Orchard.FileSystems.WebSite;
+using Coevery.Caching;
+using Coevery.FileSystems.WebSite;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubWebSiteFolder : IWebSiteFolder {
         public IEnumerable<string> ListDirectories(string path) {
             if (!Directory.Exists(path))

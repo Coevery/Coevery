@@ -1,6 +1,6 @@
-using Orchard.Parameters;
+using Coevery.Parameters;
 
-namespace Orchard {
+namespace Coevery {
     public interface IOrchardParametersParser {
         OrchardParameters Parse(CommandParameters parameters);
     }

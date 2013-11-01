@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Core.Shapes;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Tests.DisplayManagement;
-using Orchard.UI.Zones;
+using Coevery.Core.Shapes;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Tests.DisplayManagement;
+using Coevery.UI.Zones;
 
-namespace Orchard.Tests.UI {
+namespace Coevery.Tests.UI {
     [TestFixture]
     public class ShapeTests : ContainerTestBase {
         dynamic _layout;

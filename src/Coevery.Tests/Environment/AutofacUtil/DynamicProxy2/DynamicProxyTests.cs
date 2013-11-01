@@ -4,9 +4,9 @@ using Autofac.Core;
 using Autofac.Features.Metadata;
 using Castle.Core.Interceptor;
 using NUnit.Framework;
-using Orchard.Environment.AutofacUtil.DynamicProxy2;
+using Coevery.Environment.AutofacUtil.DynamicProxy2;
 
-namespace Orchard.Tests.Environment.AutofacUtil.DynamicProxy2 {
+namespace Coevery.Tests.Environment.AutofacUtil.DynamicProxy2 {
     [TestFixture]
     public class DynamicProxyTests {
         [Test]
@@ -19,8 +19,8 @@ namespace Orchard.Tests.Environment.AutofacUtil.DynamicProxy2 {
             var container = builder.Build();
 
             var meta = container.Resolve<Meta<SimpleComponent>>();
-            Assert.That(meta.Metadata, Has.Some.Property("Key").EqualTo("Orchard.Environment.AutofacUtil.DynamicProxy2.DynamicProxyContext.ProxyContextKey"));
-            Assert.That(meta.Metadata["Orchard.Environment.AutofacUtil.DynamicProxy2.DynamicProxyContext.ProxyContextKey"], Is.SameAs(context));
+            Assert.That(meta.Metadata, Has.Some.Property("Key").EqualTo("Coevery.Environment.AutofacUtil.DynamicProxy2.DynamicProxyContext.ProxyContextKey"));
+            Assert.That(meta.Metadata["Coevery.Environment.AutofacUtil.DynamicProxy2.DynamicProxyContext.ProxyContextKey"], Is.SameAs(context));
         }
 
         [Test]

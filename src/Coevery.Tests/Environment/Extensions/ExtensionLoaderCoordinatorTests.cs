@@ -4,16 +4,16 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Folders;
-using Orchard.Environment.Extensions.Loaders;
-using Orchard.Environment.Extensions.Models;
-using Orchard.FileSystems.Dependencies;
-using Orchard.Tests.Extensions.ExtensionTypes;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Folders;
+using Coevery.Environment.Extensions.Loaders;
+using Coevery.Environment.Extensions.Models;
+using Coevery.FileSystems.Dependencies;
+using Coevery.Tests.Extensions.ExtensionTypes;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.Environment.Extensions {
+namespace Coevery.Tests.Environment.Extensions {
     [TestFixture]
     public class ExtensionLoaderCoordinatorTests {
         private IContainer _container;
@@ -154,20 +154,20 @@ Version: 2.x
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     SuperWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
 ");
 
             var descriptor = _manager.AvailableExtensions().Single();
             Assert.That(descriptor.Id, Is.EqualTo("SuperWiki"));
             Assert.That(descriptor.Version, Is.EqualTo("1.0.3"));
-            Assert.That(descriptor.OrchardVersion, Is.EqualTo("1"));
+            Assert.That(descriptor.CoeveryVersion, Is.EqualTo("1"));
             Assert.That(descriptor.Features.Count(), Is.EqualTo(1));
             Assert.That(descriptor.Features.First().Id, Is.EqualTo("SuperWiki"));
             Assert.That(descriptor.Features.First().Extension.Id, Is.EqualTo("SuperWiki"));
-            Assert.That(descriptor.Features.First().Description, Is.EqualTo("My super wiki module for Orchard."));
+            Assert.That(descriptor.Features.First().Description, Is.EqualTo("My super wiki module for Coevery."));
         }
 
         [Test]
@@ -176,18 +176,18 @@ Features:
             _folders.Manifests.Add("SuperWiki", @"
 Name: SuperWiki
 Version: 1.0.3
-OrchardVersion: 1
-Description: My super wiki module for Orchard.
+CoeveryVersion: 1
+Description: My super wiki module for Coevery.
 ");
 
             var descriptor = _manager.AvailableExtensions().Single();
             Assert.That(descriptor.Id, Is.EqualTo("SuperWiki"));
             Assert.That(descriptor.Version, Is.EqualTo("1.0.3"));
-            Assert.That(descriptor.OrchardVersion, Is.EqualTo("1"));
+            Assert.That(descriptor.CoeveryVersion, Is.EqualTo("1"));
             Assert.That(descriptor.Features.Count(), Is.EqualTo(1));
             Assert.That(descriptor.Features.First().Id, Is.EqualTo("SuperWiki"));
             Assert.That(descriptor.Features.First().Extension.Id, Is.EqualTo("SuperWiki"));
-            Assert.That(descriptor.Features.First().Description, Is.EqualTo("My super wiki module for Orchard."));
+            Assert.That(descriptor.Features.First().Description, Is.EqualTo("My super wiki module for Coevery."));
         }
 
         [Test]
@@ -198,10 +198,10 @@ Name: AnotherWiki
 Author: Coder Notaprogrammer
 Website: http://anotherwiki.codeplex.com
 Version: 1.2.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     AnotherWiki: 
-        Description: My super wiki module for Orchard.
+        Description: My super wiki module for Coevery.
         Dependencies: Versioning, Search
         Category: Content types
     AnotherWiki Editor:
@@ -224,13 +224,13 @@ Features:
             Assert.That(descriptor.Author, Is.EqualTo("Coder Notaprogrammer"));
             Assert.That(descriptor.WebSite, Is.EqualTo("http://anotherwiki.codeplex.com"));
             Assert.That(descriptor.Version, Is.EqualTo("1.2.3"));
-            Assert.That(descriptor.OrchardVersion, Is.EqualTo("1"));
+            Assert.That(descriptor.CoeveryVersion, Is.EqualTo("1"));
             Assert.That(descriptor.Features.Count(), Is.EqualTo(5));
             foreach (var featureDescriptor in descriptor.Features) {
                 switch (featureDescriptor.Id) {
                     case "AnotherWiki":
                         Assert.That(featureDescriptor.Extension, Is.SameAs(descriptor));
-                        Assert.That(featureDescriptor.Description, Is.EqualTo("My super wiki module for Orchard."));
+                        Assert.That(featureDescriptor.Description, Is.EqualTo("My super wiki module for Coevery."));
                         Assert.That(featureDescriptor.Category, Is.EqualTo("Content types"));
                         Assert.That(featureDescriptor.Dependencies.Count(), Is.EqualTo(2));
                         Assert.That(featureDescriptor.Dependencies.Contains("Versioning"));
@@ -279,9 +279,9 @@ Name: AnotherWiki
 Author: Coder Notaprogrammer
 Website: http://anotherwiki.codeplex.com
 Version: 1.2.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Description: Module Description
-FeatureDescription: My super wiki module for Orchard.
+FeatureDescription: My super wiki module for Coevery.
 Dependencies: Versioning, Search
 Category: Content types
 Features:
@@ -305,14 +305,14 @@ Features:
             Assert.That(descriptor.Author, Is.EqualTo("Coder Notaprogrammer"));
             Assert.That(descriptor.WebSite, Is.EqualTo("http://anotherwiki.codeplex.com"));
             Assert.That(descriptor.Version, Is.EqualTo("1.2.3"));
-            Assert.That(descriptor.OrchardVersion, Is.EqualTo("1"));
+            Assert.That(descriptor.CoeveryVersion, Is.EqualTo("1"));
             Assert.That(descriptor.Description, Is.EqualTo("Module Description"));
             Assert.That(descriptor.Features.Count(), Is.EqualTo(4));
             foreach (var featureDescriptor in descriptor.Features) {
                 switch (featureDescriptor.Id) {
                     case "AnotherWiki":
                         Assert.That(featureDescriptor.Extension, Is.SameAs(descriptor));
-                        Assert.That(featureDescriptor.Description, Is.EqualTo("My super wiki module for Orchard."));
+                        Assert.That(featureDescriptor.Description, Is.EqualTo("My super wiki module for Coevery."));
                         Assert.That(featureDescriptor.Category, Is.EqualTo("Content types"));
                         Assert.That(featureDescriptor.Dependencies.Count(), Is.EqualTo(2));
                         Assert.That(featureDescriptor.Dependencies.Contains("Versioning"));
@@ -357,10 +357,10 @@ Features:
             extensionFolder.Manifests.Add("TestModule", @"
 Name: TestModule
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     TestModule: 
-        Description: My test module for Orchard.
+        Description: My test module for Coevery.
     TestFeature:
         Description: Contains the Phi type.
 ");
@@ -383,10 +383,10 @@ Features:
             extensionFolder.Manifests.Add("TestModule", @"
 Name: TestModule
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     TestModule: 
-        Description: My test module for Orchard.
+        Description: My test module for Coevery.
     TestFeature:
         Description: Contains the Phi type.
 ");
@@ -412,10 +412,10 @@ Features:
             extensionFolder.Manifests.Add("TestModule", @"
 Name: TestModule
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     TestModule: 
-        Description: My test module for Orchard.
+        Description: My test module for Coevery.
     TestFeature:
         Description: Contains the Phi type.
 ");
@@ -427,7 +427,7 @@ Features:
 
             foreach (var feature in extensionManager.LoadFeatures(new[] { testFeature })) {
                 foreach (var type in feature.ExportedTypes) {
-                    foreach (OrchardFeatureAttribute featureAttribute in type.GetCustomAttributes(typeof(OrchardFeatureAttribute), false)) {
+                    foreach (CoeveryFeatureAttribute featureAttribute in type.GetCustomAttributes(typeof(CoeveryFeatureAttribute), false)) {
                         Assert.That(featureAttribute.FeatureName, Is.EqualTo("TestFeature"));
                     }
                 }
@@ -442,10 +442,10 @@ Features:
             extensionFolder.Manifests.Add("TestModule", @"
 Name: TestModule
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     TestModule: 
-        Description: My test module for Orchard.
+        Description: My test module for Coevery.
     TestFeature:
         Description: Contains the Phi type.
 ");
@@ -470,10 +470,10 @@ Features:
             extensionFolder.Manifests.Add("TestModule", @"
 Name: TestModule
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 Features:
     TestModule: 
-        Description: My test module for Orchard.
+        Description: My test module for Coevery.
     TestFeature:
         Description: Contains the Phi type.
 ");
@@ -499,7 +499,7 @@ Features:
             extensionFolder.Manifests.Add("Minimalistic", @"
 Name: Minimalistic
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 ");
 
             IExtensionManager extensionManager = CreateExtensionManager(extensionFolder, extensionLoader);
@@ -518,7 +518,7 @@ OrchardVersion: 1
             extensionFolder.Manifests.Add("Minimalistic", @"
 Name: Minimalistic
 Version: 1.0.3
-OrchardVersion: 1
+CoeveryVersion: 1
 ");
 
             IExtensionManager extensionManager = CreateExtensionManager(extensionFolder, extensionLoader);

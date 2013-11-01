@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Orchard.Data;
-using Orchard.Roles.Models;
-using Orchard.Roles.Services;
-using Orchard.Security;
-using Orchard.Specs.Hosting.Orchard.Web;
+using Coevery.Data;
+using Coevery.Roles.Models;
+using Coevery.Roles.Services;
+using Coevery.Security;
+using Coevery.Specs.Hosting.Coevery.Web;
 using TechTalk.SpecFlow;
 
-namespace Orchard.Specs.Bindings {
+namespace Coevery.Specs.Bindings {
     [Binding]
     public class UsersPermissionsAndRoles : BindingBase {
 

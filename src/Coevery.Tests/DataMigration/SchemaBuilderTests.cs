@@ -4,22 +4,22 @@ using System.Linq;
 using Autofac;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Data;
-using Orchard.Data.Migration.Interpreters;
-using Orchard.Data.Migration.Schema;
-using Orchard.Data.Providers;
-using Orchard.Environment;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.ShellBuilders.Models;
-using Orchard.FileSystems.AppData;
-using Orchard.Reports.Services;
-using Orchard.Tests.ContentManagement;
+using Coevery.Data;
+using Coevery.Data.Migration.Interpreters;
+using Coevery.Data.Migration.Schema;
+using Coevery.Data.Providers;
+using Coevery.Environment;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.ShellBuilders.Models;
+using Coevery.FileSystems.AppData;
+using Coevery.Reports.Services;
+using Coevery.Tests.ContentManagement;
 using System.IO;
-using Orchard.Tests.Environment;
-using Orchard.Tests.FileSystems.AppData;
-using Orchard.Tests.Stubs;
+using Coevery.Tests.Environment;
+using Coevery.Tests.FileSystems.AppData;
+using Coevery.Tests.Stubs;
 
-namespace Orchard.Tests.DataMigration {
+namespace Coevery.Tests.DataMigration {
     [TestFixture]
     public class SchemaBuilderTestsBase {
         private IContainer _container;
@@ -211,7 +211,7 @@ namespace Orchard.Tests.DataMigration {
                 .ExecuteSql(String.Format("insert into TEST_ContentItemRecord (Data) values('{0}')", new String('x', 2048)));
         }
 
-        [Test, ExpectedException(typeof(OrchardException))]
+        [Test, ExpectedException(typeof(CoeveryException))]
         public void ChangingSizeWithoutTypeShouldNotBeAllowed() {
             _schemaBuilder
                 .CreateTable("ContentItemRecord", table => table

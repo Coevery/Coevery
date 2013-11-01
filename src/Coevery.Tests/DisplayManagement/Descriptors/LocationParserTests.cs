@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Orchard.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Descriptors;
 
-namespace Orchard.Tests.DisplayManagement.Descriptors {
+namespace Coevery.Tests.DisplayManagement.Descriptors {
     [TestFixture]
     public class LocationParserTests : ContainerTestBase {
 

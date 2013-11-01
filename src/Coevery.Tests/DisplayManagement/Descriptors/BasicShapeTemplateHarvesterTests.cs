@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Orchard.DisplayManagement.Descriptors.ShapeTemplateStrategy;
+using Coevery.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 
-namespace Orchard.Tests.DisplayManagement.Descriptors {
+namespace Coevery.Tests.DisplayManagement.Descriptors {
     [TestFixture]
     public class BasicShapeTemplateHarvesterTests {
         private static void VerifyShapeType(string givenSubPath, string givenFileName, string expectedShapeType) {

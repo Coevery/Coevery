@@ -1,19 +1,19 @@
 ﻿using System;
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Aspects;
-using Orchard.Core.Contents;
-using Orchard.Data;
-using Orchard.Roles.Models;
-using Orchard.Roles.Services;
-using Orchard.Security;
-using Orchard.Security.Permissions;
-using Orchard.Specs.Hosting.Orchard.Web;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Aspects;
+using Coevery.Core.Contents;
+using Coevery.Data;
+using Coevery.Roles.Models;
+using Coevery.Roles.Services;
+using Coevery.Security;
+using Coevery.Security.Permissions;
+using Coevery.Specs.Hosting.Coevery.Web;
 using TechTalk.SpecFlow;
-using Orchard.Localization.Services;
+using Coevery.Localization.Services;
 using System.Linq;
 
-namespace Orchard.Specs.Bindings {
+namespace Coevery.Specs.Bindings {
     [Binding]
     public class Settings : BindingBase {
 
@@ -23,7 +23,7 @@ namespace Orchard.Specs.Bindings {
             var webApp = Binding<WebAppHosting>();
             webApp.Host.Execute(() => {
                 using ( var environment = MvcApplication.CreateStandaloneEnvironment("Default") ) {
-                    var orchardServices = environment.Resolve<IOrchardServices>();
+                    var orchardServices = environment.Resolve<ICoeveryServices>();
                     var cultureManager = environment.Resolve<ICultureManager>();
 
                     var currentCultures = cultureManager.ListCultures();

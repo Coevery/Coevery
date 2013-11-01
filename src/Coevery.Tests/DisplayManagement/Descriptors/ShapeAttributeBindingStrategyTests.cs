@@ -6,15 +6,15 @@ using Autofac;
 using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Descriptors.ShapeAttributeStrategy;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Tests.Utility;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Descriptors.ShapeAttributeStrategy;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.DisplayManagement.Descriptors {
+namespace Coevery.Tests.DisplayManagement.Descriptors {
     [TestFixture]
     public class ShapeAttributeBindingStrategyTests : ContainerTestBase {
         private Feature _testFeature;
@@ -40,8 +40,8 @@ namespace Orchard.Tests.DisplayManagement.Descriptors {
         }
 
         protected override void Resolve(ILifetimeScope container) {
-            // implementation resorts to orchard host to resolve "current scope" services
-            container.Resolve<Mock<IOrchardHostContainer>>()
+            // implementation resorts to Coevery host to resolve "current scope" services
+            container.Resolve<Mock<ICoeveryHostContainer>>()
                 .Setup(x => x.Resolve<IComponentContext>())
                 .Returns(container);
         }

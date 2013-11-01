@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Orchard.ContentManagement;
+using Coevery.ContentManagement;
 
-namespace Orchard.Tests.ContentManagement {
+namespace Coevery.Tests.ContentManagement {
     [TestFixture]
     public class XmlHelperTests {
         [Test]

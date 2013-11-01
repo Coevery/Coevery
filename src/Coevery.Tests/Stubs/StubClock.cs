@@ -1,8 +1,8 @@
 ﻿using System;
-using Orchard.Caching;
-using Orchard.Services;
+using Coevery.Caching;
+using Coevery.Services;
 
-namespace Orchard.Tests.Stubs {
+namespace Coevery.Tests.Stubs {
     public class StubClock : IClock {
         public StubClock() {
             UtcNow = new DateTime(2009, 10, 14, 12, 34, 56, DateTimeKind.Utc);

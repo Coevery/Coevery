@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Orchard.Parameters;
+using Coevery.Parameters;
 
-namespace Orchard.ResponseFiles {
+namespace Coevery.ResponseFiles {
     public class ResponseLine : MarshalByRefObject {
         public string Filename { get; set; }
         public string LineText { get; set; }

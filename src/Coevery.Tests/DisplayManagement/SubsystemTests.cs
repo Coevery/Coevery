@@ -4,18 +4,18 @@ using System.Web.Routing;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Descriptors.ShapeAttributeStrategy;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.DisplayManagement.Shapes;
-using Orchard.Environment;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.Utility;
+using Coevery.Caching;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Descriptors.ShapeAttributeStrategy;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.DisplayManagement.Shapes;
+using Coevery.Environment;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.DisplayManagement {
+namespace Coevery.Tests.DisplayManagement {
     [TestFixture]
     public class SubsystemTests {
         private IContainer _container;
@@ -56,7 +56,7 @@ namespace Orchard.Tests.DisplayManagement {
             builder.RegisterAutoMocking(MockBehavior.Loose);
 
             _container = builder.Build();
-            _container.Resolve<Mock<IOrchardHostContainer>>()
+            _container.Resolve<Mock<ICoeveryHostContainer>>()
                 .Setup(x => x.Resolve<IComponentContext>())
                 .Returns(_container);
         }

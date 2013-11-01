@@ -3,26 +3,26 @@ using Autofac;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement.MetaData;
-using Orchard.Data;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
-using Orchard.ContentManagement.Records;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Tests.ContentManagement.Handlers;
-using Orchard.Tests.ContentManagement.Records;
-using Orchard.Tests.ContentManagement.Models;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Tests.Stubs;
+using Coevery.Caching;
+using Coevery.ContentManagement.MetaData;
+using Coevery.Data;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.Handlers;
+using Coevery.ContentManagement.Records;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Tests.ContentManagement.Handlers;
+using Coevery.Tests.ContentManagement.Records;
+using Coevery.Tests.ContentManagement.Models;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Tests.Stubs;
 using NHibernate.Impl;
-using Orchard.UI.PageClass;
+using Coevery.UI.PageClass;
 using System.Collections.Generic;
 
-namespace Orchard.Tests.ContentManagement {
+namespace Coevery.Tests.ContentManagement {
     [TestFixture]
     public class ContentQueryTests {
         private IContainer _container;

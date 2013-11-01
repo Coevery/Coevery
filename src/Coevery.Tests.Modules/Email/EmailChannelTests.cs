@@ -1,13 +1,13 @@
 ﻿using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.ContentManagement.Records;
-using Orchard.Messaging.Events;
-using Orchard.Messaging.Services;
-using Orchard.Tests.Messaging;
-using Orchard.Tests.Utility;
+using Coevery.ContentManagement.Records;
+using Coevery.Messaging.Events;
+using Coevery.Messaging.Services;
+using Coevery.Tests.Messaging;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Modules.Email {
+namespace Coevery.Tests.Modules.Email {
     [TestFixture]
     public class EmailChannelTests {
         private MessagingChannelStub _channel;

@@ -1,6 +1,6 @@
-﻿using Orchard.ContentManagement.Handlers;
+﻿using Coevery.ContentManagement.Handlers;
 
-namespace Orchard.Tests.ContentManagement.Models {
+namespace Coevery.Tests.ContentManagement.Models {
     public class StyledHandler : ContentHandler {
         public StyledHandler() {
             OnGetDisplayShape<StyledPart>((ctx, part) => ctx.Shape.Zones["Main"].Add(part, "10"));

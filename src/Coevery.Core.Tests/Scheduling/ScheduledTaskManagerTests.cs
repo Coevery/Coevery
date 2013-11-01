@@ -4,32 +4,32 @@ using System.Linq;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Scheduling.Models;
-using Orchard.Core.Scheduling.Services;
-using Orchard.Data;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment.Extensions;
-using Orchard.Tasks.Scheduling;
-using Orchard.Tests.Modules;
-using Orchard.Tests.Stubs;
-using Orchard.UI.PageClass;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.Records;
+using Coevery.Core.Scheduling.Models;
+using Coevery.Core.Scheduling.Services;
+using Coevery.Data;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment.Extensions;
+using Coevery.Tasks.Scheduling;
+using Coevery.Tests.Modules;
+using Coevery.Tests.Stubs;
+using Coevery.UI.PageClass;
 
-namespace Orchard.Core.Tests.Scheduling {
+namespace Coevery.Core.Tests.Scheduling {
     [TestFixture]
     public class ScheduledTaskManagerTests : DatabaseEnabledTestsBase {
         private IRepository<ScheduledTaskRecord> _repository;
         private IScheduledTaskManager _scheduledTaskManager;
         private IContentManager _contentManager;
-        private Mock<IOrchardServices> _mockServices;
+        private Mock<ICoeveryServices> _mockServices;
 
         public override void Init() {
-            _mockServices = new Mock<IOrchardServices>();
+            _mockServices = new Mock<ICoeveryServices>();
             base.Init();
             _repository = _container.Resolve<IRepository<ScheduledTaskRecord>>();
             _scheduledTaskManager = _container.Resolve<IScheduledTaskManager>();

@@ -7,16 +7,16 @@ using Autofac;
 using Autofac.Core;
 using Moq;
 using NUnit.Framework;
-using Orchard.ContentManagement.Records;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.ShellBuilders;
-using Orchard.Tests.Environment.Utility;
-using Orchard.Tests.Records;
-using Orchard.Tests.Utility;
+using Coevery.ContentManagement.Records;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.ShellBuilders;
+using Coevery.Tests.Environment.Utility;
+using Coevery.Tests.Records;
+using Coevery.Tests.Utility;
 
-namespace Orchard.Tests.Environment {
+namespace Coevery.Tests.Environment {
     [TestFixture]
     public class DefaultCompositionStrategyTests {
 
@@ -244,7 +244,7 @@ namespace Orchard.Tests.Environment {
 
         [Test]
         public void CoreRecordsAreAddedAutomatically() {
-            var descriptor = Build.ShellDescriptor().WithFeatures("Orchard.Framework");
+            var descriptor = Build.ShellDescriptor().WithFeatures("Coevery.Framework");
 
             var compositionStrategy = _container.Resolve<ICompositionStrategy>();
             var blueprint = compositionStrategy.Compose(BuildDefaultSettings(), descriptor);
@@ -253,14 +253,14 @@ namespace Orchard.Tests.Environment {
             var ci = blueprint.Records.Single(x => x.Type == typeof(ContentItemRecord));
             var civ = blueprint.Records.Single(x => x.Type == typeof(ContentItemVersionRecord));
 
-            Assert.That(ct.Feature.Descriptor.Id, Is.EqualTo("Orchard.Framework"));
-            Assert.That(ct.TableName, Is.EqualTo("Orchard_Framework_ContentTypeRecord"));
+            Assert.That(ct.Feature.Descriptor.Id, Is.EqualTo("Coevery.Framework"));
+            Assert.That(ct.TableName, Is.EqualTo("Coevery_Framework_ContentTypeRecord"));
 
-            Assert.That(ci.Feature.Descriptor.Id, Is.EqualTo("Orchard.Framework"));
-            Assert.That(ci.TableName, Is.EqualTo("Orchard_Framework_ContentItemRecord"));
+            Assert.That(ci.Feature.Descriptor.Id, Is.EqualTo("Coevery.Framework"));
+            Assert.That(ci.TableName, Is.EqualTo("Coevery_Framework_ContentItemRecord"));
 
-            Assert.That(civ.Feature.Descriptor.Id, Is.EqualTo("Orchard.Framework"));
-            Assert.That(civ.TableName, Is.EqualTo("Orchard_Framework_ContentItemVersionRecord"));
+            Assert.That(civ.Feature.Descriptor.Id, Is.EqualTo("Coevery.Framework"));
+            Assert.That(civ.TableName, Is.EqualTo("Coevery_Framework_ContentItemVersionRecord"));
         }
 
         [Test]
@@ -310,13 +310,13 @@ namespace Orchard.Tests.Environment {
             Assert.That(blueprint.Dependencies.FirstOrDefault(dependency => dependency.Type.Equals(typeof(StubNestedType))), Is.Not.Null);
         }
 
-        [OrchardSuppressDependency("Orchard.Tests.Environment.DefaultCompositionStrategyTests+ReplacedStubNestedType")]
+        [CoeverySuppressDependency("Coevery.Tests.Environment.DefaultCompositionStrategyTests+ReplacedStubNestedType")]
         internal class StubNestedType : IDependency {}
 
         internal class ReplacedStubNestedType : IDependency {}
     }
 
-    [OrchardSuppressDependency("Orchard.Tests.Environment.ReplacedStubType")]
+    [CoeverySuppressDependency("Coevery.Tests.Environment.ReplacedStubType")]
     internal class StubType : IDependency { }
 
     internal class ReplacedStubType : IDependency { }

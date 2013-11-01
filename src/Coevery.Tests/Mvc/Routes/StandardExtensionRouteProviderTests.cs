@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Web.Routing;
 using NUnit.Framework;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.ShellBuilders.Models;
-using Orchard.Mvc.Routes;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.ShellBuilders.Models;
+using Coevery.Mvc.Routes;
 
-namespace Orchard.Tests.Mvc.Routes {
+namespace Coevery.Tests.Mvc.Routes {
     [TestFixture]
     public class StandardExtensionRouteProviderTests {
         [Test]

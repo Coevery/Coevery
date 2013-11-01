@@ -8,15 +8,15 @@ using Autofac.Features.Indexed;
 using Autofac.Features.Metadata;
 using Castle.Core.Interceptor;
 using NUnit.Framework;
-using Orchard.Environment;
-using Orchard.Environment.AutofacUtil.DynamicProxy2;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Extensions.Models;
-using Orchard.Environment.ShellBuilders;
-using Orchard.Environment.Descriptor.Models;
-using Orchard.Environment.ShellBuilders.Models;
+using Coevery.Environment;
+using Coevery.Environment.AutofacUtil.DynamicProxy2;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Extensions.Models;
+using Coevery.Environment.ShellBuilders;
+using Coevery.Environment.Descriptor.Models;
+using Coevery.Environment.ShellBuilders.Models;
 
-namespace Orchard.Tests.Environment.ShellBuilders {
+namespace Coevery.Tests.Environment.ShellBuilders {
     [TestFixture]
     public class DefaultShellContainerFactoryTests {
         private IContainer _container;

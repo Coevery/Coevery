@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Orchard.Caching;
-using Orchard.FileSystems.WebSite;
+using Coevery.Caching;
+using Coevery.FileSystems.WebSite;
 
-namespace Orchard.Tests.DisplayManagement.Descriptors {
+namespace Coevery.Tests.DisplayManagement.Descriptors {
     public class InMemoryWebSiteFolder : IWebSiteFolder {
         public InMemoryWebSiteFolder() {
             Contents = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);

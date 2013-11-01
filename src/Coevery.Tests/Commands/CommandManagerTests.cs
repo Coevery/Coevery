@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using Autofac;
 using NUnit.Framework;
-using Orchard.Commands;
+using Coevery.Commands;
 
-namespace Orchard.Tests.Commands {
+namespace Coevery.Tests.Commands {
     [TestFixture]
     public class CommandManagerTests {
         private ICommandManager _manager;
@@ -33,7 +33,7 @@ namespace Orchard.Tests.Commands {
             Assert.That(context.Output.ToString(), Is.EqualTo("Bleah"));
         }
 
-        public class MyCommand : DefaultOrchardCommandHandler {
+        public class MyCommand : DefaultCoeveryCommandHandler {
 
             public string FooBar() {
                 return "success!";

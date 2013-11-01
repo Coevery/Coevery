@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Caching;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.MetaData;
-using Orchard.ContentManagement.Records;
-using Orchard.Core.Scheduling.Models;
-using Orchard.Core.Scheduling.Services;
-using Orchard.Data;
-using Orchard.DisplayManagement;
-using Orchard.DisplayManagement.Descriptors;
-using Orchard.DisplayManagement.Implementation;
-using Orchard.Environment.Extensions;
-using Orchard.Tasks;
-using Orchard.Tasks.Scheduling;
-using Orchard.Tests.Modules;
-using Orchard.Tests.Stubs;
-using Orchard.UI.PageClass;
+using Coevery.Caching;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.MetaData;
+using Coevery.ContentManagement.Records;
+using Coevery.Core.Scheduling.Models;
+using Coevery.Core.Scheduling.Services;
+using Coevery.Data;
+using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Descriptors;
+using Coevery.DisplayManagement.Implementation;
+using Coevery.Environment.Extensions;
+using Coevery.Tasks;
+using Coevery.Tasks.Scheduling;
+using Coevery.Tests.Modules;
+using Coevery.Tests.Stubs;
+using Coevery.UI.PageClass;
 
-namespace Orchard.Core.Tests.Scheduling {
+namespace Coevery.Core.Tests.Scheduling {
     [TestFixture]
     public class ScheduledTaskExecutorTests : DatabaseEnabledTestsBase {
         private StubTaskHandler _handler;
@@ -34,7 +34,7 @@ namespace Orchard.Core.Tests.Scheduling {
         }
         public override void Register(ContainerBuilder builder) {
             _handler = new StubTaskHandler();
-            builder.RegisterInstance(new Mock<IOrchardServices>().Object);
+            builder.RegisterInstance(new Mock<ICoeveryServices>().Object);
             builder.RegisterInstance(new Mock<ITransactionManager>().Object);
             builder.RegisterType<DefaultContentManager>().As<IContentManager>();
             builder.RegisterType<StubCacheManager>().As<ICacheManager>();

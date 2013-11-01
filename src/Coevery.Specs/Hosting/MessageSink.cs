@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Orchard.Specs.Hosting {
+namespace Coevery.Specs.Hosting {
     public class MessageSink : MarshalByRefObject {
         readonly IList<string> _messages = new List<string>();
 

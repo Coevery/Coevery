@@ -1,8 +1,8 @@
 using System;
 using NHibernate;
-using Orchard.Data;
+using Coevery.Data;
 
-namespace Orchard.Tests.Data {
+namespace Coevery.Tests.Data {
     public class StubLocator : ISessionLocator {
         private readonly ISession _session;
 

@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
-using Orchard.Data.Bags;
-using Orchard.Data.Bags.Serialization;
+using Coevery.Data.Bags;
+using Coevery.Data.Bags.Serialization;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Orchard.Tests.Data.Bags {
+namespace Coevery.Tests.Data.Bags {
     [TestFixture]
     public class BagsTests {
         [Test]

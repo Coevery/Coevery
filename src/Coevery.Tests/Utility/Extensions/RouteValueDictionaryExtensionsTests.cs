@@ -1,8 +1,8 @@
 ﻿using System.Web.Routing;
 using NUnit.Framework;
-using Orchard.Utility.Extensions;
+using Coevery.Utility.Extensions;
 
-namespace Orchard.Tests.Utility.Extensions {
+namespace Coevery.Tests.Utility.Extensions {
     [TestFixture]
     class RouteValueDictionaryExtensionsTests {
         [Test]

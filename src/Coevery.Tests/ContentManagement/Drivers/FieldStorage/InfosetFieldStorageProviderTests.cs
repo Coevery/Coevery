@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.FieldStorage;
-using Orchard.ContentManagement.FieldStorage.InfosetStorage;
-using Orchard.ContentManagement.MetaData.Builders;
-using Orchard.ContentManagement.MetaData.Models;
-using Orchard.ContentManagement.Records;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.FieldStorage;
+using Coevery.ContentManagement.FieldStorage.InfosetStorage;
+using Coevery.ContentManagement.MetaData.Builders;
+using Coevery.ContentManagement.MetaData.Models;
+using Coevery.ContentManagement.Records;
 
-namespace Orchard.Tests.ContentManagement.Drivers.FieldStorage {
+namespace Coevery.Tests.ContentManagement.Drivers.FieldStorage {
     public class InfosetFieldStorageProviderTests {
         private IContainer _container;
         private IFieldStorageProvider _provider;

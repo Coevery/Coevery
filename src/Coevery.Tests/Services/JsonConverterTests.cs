@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
 using Newtonsoft.Json.Linq;
-using Orchard.Services;
+using Coevery.Services;
 
-namespace Orchard.Tests.Services {
+namespace Coevery.Tests.Services {
 
     [TestFixture]
     public class JsonConverterTests {

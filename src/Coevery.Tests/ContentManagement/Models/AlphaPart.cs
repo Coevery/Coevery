@@ -1,6 +1,6 @@
-using Orchard.ContentManagement;
+using Coevery.ContentManagement;
 
-namespace Orchard.Tests.ContentManagement.Models {
+namespace Coevery.Tests.ContentManagement.Models {
     public class AlphaPart : ContentPart {
     }
 }

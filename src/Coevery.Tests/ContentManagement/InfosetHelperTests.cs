@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using Orchard.ContentManagement;
-using Orchard.ContentManagement.FieldStorage.InfosetStorage;
-using Orchard.ContentManagement.Records;
+using Coevery.ContentManagement;
+using Coevery.ContentManagement.FieldStorage.InfosetStorage;
+using Coevery.ContentManagement.Records;
 
-namespace Orchard.Tests.ContentManagement {
+namespace Coevery.Tests.ContentManagement {
     public class InfosetHelperTests {
         [Test]
         public void StoreByNameSavesIntoInfoset() {

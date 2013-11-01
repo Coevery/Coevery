@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using NHibernate;
 using NUnit.Framework;
-using Orchard.Data;
-using Orchard.Tests.Records;
+using Coevery.Data;
+using Coevery.Tests.Records;
 
-namespace Orchard.Tests.Data {
+namespace Coevery.Tests.Data {
     [TestFixture]
     public class RepositoryTests {
         #region Setup/Teardown

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
-namespace Orchard.Specs.Bindings {
+namespace Coevery.Specs.Bindings {
     public class BindingBase {
         protected static T Binding<T>() {
             return (T)ScenarioContext.Current.GetBindingInstance(typeof(T));

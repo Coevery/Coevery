@@ -6,18 +6,18 @@ using System.Xml;
 using Autofac;
 using Moq;
 using NUnit.Framework;
-using Orchard.Environment.Configuration;
-using Orchard.Environment.Warmup;
-using Orchard.FileSystems.AppData;
-using Orchard.FileSystems.LockFile;
-using Orchard.Services;
-using Orchard.Tests.FileSystems.AppData;
-using Orchard.Tests.Stubs;
-using Orchard.Tests.UI.Navigation;
-using Orchard.Warmup.Models;
-using Orchard.Warmup.Services;
+using Coevery.Environment.Configuration;
+using Coevery.Environment.Warmup;
+using Coevery.FileSystems.AppData;
+using Coevery.FileSystems.LockFile;
+using Coevery.Services;
+using Coevery.Tests.FileSystems.AppData;
+using Coevery.Tests.Stubs;
+using Coevery.Tests.UI.Navigation;
+using Coevery.Warmup.Models;
+using Coevery.Warmup.Services;
 
-namespace Orchard.Tests.Modules.Warmup {
+namespace Coevery.Tests.Modules.Warmup {
     public class WarmupUpdaterTests {
         protected IContainer _container;
         private IWarmupUpdater _warmupUpdater;
@@ -25,7 +25,7 @@ namespace Orchard.Tests.Modules.Warmup {
         private ILockFileManager _lockFileManager;
         private StubClock _clock;
         private Mock<IWebDownloader> _webDownloader;
-        private IOrchardServices _orchardServices;
+        private ICoeveryServices _orchardServices;
         private WarmupSettingsPart _settings;
         private IWarmupReportManager _reportManager;
 
@@ -51,7 +51,7 @@ namespace Orchard.Tests.Modules.Warmup {
             Directory.CreateDirectory(_basePath);
             _appDataFolder = AppDataFolderTests.CreateAppDataFolder(_basePath);
             _webDownloader = new Mock<IWebDownloader>();
-            _orchardServices = new StubOrchardServices();
+            _orchardServices = new StubCoeveryServices();
             ((StubWorkContextAccessor.WorkContextImpl.StubSite) _orchardServices.WorkContext.CurrentSite).BaseUrl = "http://orchardproject.net";
 
             _settings = new WarmupSettingsPart { Record = new WarmupSettingsPartRecord() };
@@ -59,7 +59,7 @@ namespace Orchard.Tests.Modules.Warmup {
  
             var builder = new ContainerBuilder();
             builder.RegisterInstance(_appDataFolder).As<IAppDataFolder>();
-            builder.RegisterInstance(_orchardServices).As<IOrchardServices>();
+            builder.RegisterInstance(_orchardServices).As<ICoeveryServices>();
             builder.RegisterType<DefaultLockFileManager>().As<ILockFileManager>();
             builder.RegisterType<WarmupUpdater>().As<IWarmupUpdater>();
             builder.RegisterType<StubClock>().As<IClock>();
