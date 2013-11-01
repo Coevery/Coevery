@@ -148,7 +148,6 @@
     <Compile Include="DefaultRoute.cs" />
     <Compile Include="ViewModels\CommonDetailViewModel.cs" />
     <Compile Include="ViewModels\Data.cs" />
-    <Compile Include="ViewModels\FieldFilterViewModel.cs" />
     <Compile Include="ViewModels\FilterData.cs" />
     <Compile Include="ViewModels\ListQueryModel.cs" />
     <Compile Include="ViewModels\ViewWithRelationsModel.cs" />

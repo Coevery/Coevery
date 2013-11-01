@@ -3,8 +3,8 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Coevery.Common.Extensions;
-using Coevery.Common.ViewModels;
 using Coevery.Projections.Services;
+using Coevery.Projections.ViewModels;
 
 namespace Coevery.Projections.Controllers
 {

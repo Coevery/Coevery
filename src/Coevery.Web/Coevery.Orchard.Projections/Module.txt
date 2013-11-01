@@ -1,9 +1,0 @@
-Name: Projector
-AntiForgery: enabled
-Author: The Coevery Team
-Website: http://coeveryprojections.codeplex.com
-Version: 1.7.1
-CoeveryVersion: 1.7.1
-Description: Provides methods to control how lists of content items are filtered and displayed
-Category: Content
-Dependencies: Coevery.Tokens, Coevery.Forms, Feeds, Title
