@@ -9,7 +9,6 @@ using Coevery.Forms.Services;
 using Coevery.Localization;
 
 namespace Coevery.Projections.FilterEditors.Forms {
-    [CoeverySuppressDependency("Coevery.Projections.FilterEditors.Forms.StringFilterForm")]
     public class StringFilterForm : IFormProvider {
         public const string FormName = "StringFilter";
 

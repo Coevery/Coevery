@@ -101,8 +101,6 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\OptionSetController.cs" />
-    <Compile Include="Controllers\OrchardFilterController.cs" />
-    <Compile Include="Controllers\OrchardPropertyController.cs" />
     <Compile Include="Controllers\ReferenceController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
@@ -139,12 +137,6 @@
     <Compile Include="FieldTypeEditors\IFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\IntegerFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\OptionSetFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\OrchardBooleanFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\OrchardDateTimeFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\OrchardDecimalFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\OrchardFloatFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\OrchardIntegerFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\OrchardStringFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\ReferenceFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\DateFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\DateTimeFieldTypeEditor.cs" />
@@ -156,18 +148,6 @@
     <Compile Include="FilterEditors\Forms\DateTimeFormValidation.cs" />
     <Compile Include="FilterEditors\Forms\NumericFilterFormValidation.cs" />
     <Compile Include="FilterEditors\Forms\OptionSetFilterForm.cs" />
-    <Compile Include="FilterEditors\Forms\OrchardBooleanFilterForm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="FilterEditors\Forms\OrchardDateTimeFilterForm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="FilterEditors\Forms\OrchardNumericFilterForm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="FilterEditors\Forms\OrchardStringFilterForm.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="FilterEditors\Forms\ReferenceFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\BooleanFilterForm.cs" />
     <Compile Include="FilterEditors\Forms\DateFilterForm.cs" />
@@ -216,7 +196,6 @@
     <Compile Include="PropertyEditors\NumericPropertyEditor.cs" />
     <Compile Include="Providers\Filters\ContentTypesFilter.cs" />
     <Compile Include="Providers\Filters\MemberBindingFilter.cs" />
-    <Compile Include="Providers\Filters\OrchardContentFieldsFilter.cs" />
     <Compile Include="Providers\Layouts\GridLayout.cs" />
     <Compile Include="Providers\Layouts\GridLayoutForms.cs" />
     <Compile Include="Providers\Layouts\LayoutShapes.cs" />
@@ -235,7 +214,6 @@
     <Compile Include="Providers\SortCriteria\ContentFieldsSortCriteria.cs" />
     <Compile Include="Providers\Filters\ContentFieldsFilter.cs" />
     <Compile Include="Providers\SortCriteria\MemberBindingSortCriteria.cs" />
-    <Compile Include="Providers\SortCriteria\OrchardContentFieldsSortCriteria.cs" />
     <Compile Include="Providers\SortCriteria\RandomSortCriterion.cs" />
     <Compile Include="Providers\SortCriteria\SortOrderFormProvider.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
@@ -399,13 +377,13 @@
     <Content Include="Views\Binding\Select.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\NavigationQueryPart.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\ProjectionPart.cshtml" />
-    <Content Include="Views\Filter\Add.cshtml" />
-    <Content Include="Views\Filter\Edit.cshtml" />
+    <Content Include="Views\OrchardFilter\Add.cshtml" />
+    <Content Include="Views\OrchardFilter\Edit.cshtml" />
     <Content Include="Views\Layout\Add.cshtml" />
     <Content Include="Views\Layout\Create.cshtml" />
     <Content Include="Views\Layout\Edit.cshtml" />
-    <Content Include="Views\Property\Add.cshtml" />
-    <Content Include="Views\Property\Edit.cshtml" />
+    <Content Include="Views\OrchardProperty\Add.cshtml" />
+    <Content Include="Views\OrchardProperty\Edit.cshtml" />
     <Content Include="Views\SortCriterion\Add.cshtml" />
     <Content Include="Views\SortCriterion\Edit.cshtml" />
   </ItemGroup>

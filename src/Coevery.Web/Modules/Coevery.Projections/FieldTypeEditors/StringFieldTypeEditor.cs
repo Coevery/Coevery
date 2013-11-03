@@ -8,7 +8,6 @@ using Coevery.Environment.Extensions;
 using Coevery.Localization;
 
 namespace Coevery.Projections.FieldTypeEditors {
-    [CoeverySuppressDependency("Coevery.Projections.FieldTypeEditors.StringFieldTypeEditor")]
     public class StringFieldTypeEditor : IFieldTypeEditor {
         public Localizer T { get; set; }
 

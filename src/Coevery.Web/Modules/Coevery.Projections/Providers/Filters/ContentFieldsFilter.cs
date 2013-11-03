@@ -13,7 +13,6 @@ using Coevery.Projections.Services;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.Providers.Filters {
-    [CoeverySuppressDependency("Coevery.Projections.Providers.Filters.ContentFieldsFilter")]
     public class ContentFieldsFilter : IFilterProvider {
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;

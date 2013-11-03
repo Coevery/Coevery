@@ -13,7 +13,6 @@ using Coevery.Projections.Services;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.Providers.SortCriteria {
-    [CoeverySuppressDependency("Coevery.Projections.Providers.SortCriteria.ContentFieldsSortCriterion")]
     public class ContentFieldsSortCriterion : ISortCriterionProvider {
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;

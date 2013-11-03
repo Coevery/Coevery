@@ -6,7 +6,6 @@ using Coevery.Forms.Services;
 using Coevery.Localization;
 
 namespace Coevery.Projections.FilterEditors.Forms {
-    [CoeverySuppressDependency("Coevery.Projections.FilterEditors.Forms.BooleanFilterForm")]
     public class BooleanFilterForm : IFormProvider {
         public const string FormName = "BooleanFilter";
 

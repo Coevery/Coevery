@@ -8,7 +8,6 @@ using Coevery.Forms.Services;
 using Coevery.Localization;
 
 namespace Coevery.Projections.FilterEditors.Forms {
-    [CoeverySuppressDependency("Coevery.Projections.FilterEditors.Forms.DateTimeFilterForm")]
     public class DateTimeFilterForm : IFormProvider {
         public const string FormName = "DateTimeFilter";
 

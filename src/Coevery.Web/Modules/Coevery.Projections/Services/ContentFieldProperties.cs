@@ -18,8 +18,6 @@ using Coevery.Projections.Services;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.Services {
-
-    [CoeverySuppressDependency("Coevery.Projections.Providers.Properties.ContentFieldProperties")]
     public class ContentFieldProperties : IPropertyProvider {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
