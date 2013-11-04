@@ -103,8 +103,6 @@
     <Compile Include="ClientRoute\ClientViewDescriptor.cs" />
     <Compile Include="ClientRoute\DefaultClientRouteTableManager.cs" />
     <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
-    <Compile Include="ContentPartFieldStorage\DefaultContentPartFieldStorageProvider.cs" />
-    <Compile Include="ContentPartFieldStorage\DefaultCotentPartFieldStorage.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />

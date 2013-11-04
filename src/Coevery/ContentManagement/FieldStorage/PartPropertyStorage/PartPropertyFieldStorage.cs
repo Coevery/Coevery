@@ -2,17 +2,15 @@
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using Microsoft.CSharp.RuntimeBinder;
-using Coevery.ContentManagement;
-using Coevery.ContentManagement.FieldStorage;
 using Coevery.ContentManagement.MetaData.Models;
+using Microsoft.CSharp.RuntimeBinder;
 
-namespace Coevery.Common.ContentPartFieldStorage {
-    public class DefaultCotentPartFieldStorage : IFieldStorage {
+namespace Coevery.ContentManagement.FieldStorage.PartPropertyStorage {
+    public class PartPropertyFieldStorage : IFieldStorage {
         private readonly ContentPart _contentPart;
         private readonly ContentPartFieldDefinition _partFieldDefinition;
 
-        public DefaultCotentPartFieldStorage(ContentPart contentPart, ContentPartFieldDefinition partFieldDefinition) {
+        public PartPropertyFieldStorage(ContentPart contentPart, ContentPartFieldDefinition partFieldDefinition) {
             _contentPart = contentPart;
             _partFieldDefinition = partFieldDefinition;
         }

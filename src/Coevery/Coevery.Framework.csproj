@@ -156,6 +156,8 @@
     <Compile Include="ContentManagement\Aspects\ILocalizableAspect.cs" />
     <Compile Include="ContentManagement\ContentIdentity.cs" />
     <Compile Include="ContentManagement\DefaultHqlQuery.cs" />
+    <Compile Include="ContentManagement\FieldStorage\PartPropertyStorage\PartPropertyStorageProvider.cs" />
+    <Compile Include="ContentManagement\FieldStorage\PartPropertyStorage\PartPropertyFieldStorage.cs" />
     <Compile Include="ContentManagement\InfosetHelper.cs" />
     <Compile Include="ContentManagement\XmlHelper.cs" />
     <Compile Include="ContentManagement\Handlers\TemplateFilterForPart.cs" />
