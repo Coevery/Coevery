@@ -1,0 +1,10 @@
+﻿Name: jQuery
+Path: Coevery.jQuery
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The jQuery module contains the jQuery and related script libraries.
+FeatureDescription: A common location for jQuery and related script libraries.
+Category: Core

@@ -1,0 +1,17 @@
+﻿Name: Contents
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The contents module enables the creation of custom content types. 
+Features:
+    Contents
+        Name: Contents
+        Description: Default custom content type definition, creation and management.
+        Category: Core
+    Contents.ControlWrapper:
+        Name: Content Control Wrapper
+        Description: Add an Edit button on the front-end for authenticated users
+        Category: Content
+        Dependencies: Contents

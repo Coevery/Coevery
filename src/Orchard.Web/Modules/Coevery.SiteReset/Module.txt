@@ -1,8 +1,0 @@
-﻿Name: SiteReset
-AntiForgery: enabled
-Author: The Orchard Team
-Website: http://coevery.codeplex.com
-Version: 1.0
-OrchardVersion: 1.7
-Description: reset site per 30 minutes.
-Category: Core

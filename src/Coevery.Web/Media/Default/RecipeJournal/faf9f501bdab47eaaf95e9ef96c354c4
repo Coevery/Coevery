@@ -1,0 +1,9 @@
+<RecipeJournal>
+  <Status>Failed</Status>
+  <Message>Executing step Feature.</Message>
+  <Message>Executing step Metadata.</Message>
+  <Message>Executing step Settings.</Message>
+  <Message>Executing step Migration.</Message>
+  <Message>Executing step Command.</Message>
+  <Message>Recipe execution with id faf9f501bdab47eaaf95e9ef96c354c4 was cancelled because the "Command" step failed to execute. The following exception was thrown: No command found matching arguments "page create". Commands available: autoroute create,menuitem create,menu create,feature list,feature enable,feature disable,package create,package install,package uninstall,set route,site setting set baseurl,recipes harvest,recipes execute,user create,theme list,theme activate,layer create,widget create,cultures list,cultures get site culture,cultures set site culture,cultures add,help commands,help.. Refer to the error logs for more information.</Message>
+</RecipeJournal>

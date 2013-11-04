@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F10B6E1F-27A1-4383-862C-3437B6E73827}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Coevery.Relationship</RootNamespace>
+    <AssemblyName>Coevery.Relationship</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\autofac\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\aspnetwebapi\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\RelationshipController.cs" />
+    <Compile Include="Controllers\SystemAdminController.cs" />
+    <Compile Include="Data\RelationshipModule.cs" />
+    <Compile Include="Drivers\DynamicPrimaryPartDriver.cs" />
+    <Compile Include="Drivers\ReferenceFieldDriver.cs" />
+    <Compile Include="Drivers\DynamicRelatedPartDriver.cs" />
+    <Compile Include="Drivers\RelatedEntityListDriver.cs" />
+    <Compile Include="Handlers\EntityMetadataPartHandler.cs" />
+    <Compile Include="Handlers\RelationshipEntityEventsHandler.cs" />
+    <Compile Include="Handlers\RelationshipDynamicTypeGenerationEventsHandler.cs" />
+    <Compile Include="Fields\ReferenceField.cs" />
+    <Compile Include="Handlers\ReferenceHandler.cs" />
+    <Compile Include="Migrations.cs" />
+    <Compile Include="Models\ContentLinkRecord.cs" />
+    <Compile Include="Models\ManyToManyRelationshipModel.cs" />
+    <Compile Include="Models\OneToManyRelationshipModel.cs" />
+    <Compile Include="Models\ReferenceFieldViewModel.cs" />
+    <Compile Include="Models\RelationshipModel.cs" />
+    <Compile Include="Projections\ReferenceFieldValueProvider.cs" />
+    <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
+    <Compile Include="Records\OneToManyRelationshipRecord.cs" />
+    <Compile Include="Records\RelationshipRecord.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClientRouteProvider.cs" />
+    <Compile Include="Services\DynamicRelatedService.cs" />
+    <Compile Include="Services\DynamicPrimaryService.cs" />
+    <Compile Include="Services\IRelationshipService.cs" />
+    <Compile Include="Services\RelationshipService.cs" />
+    <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
+    <Compile Include="Settings\ReferenceFieldSettings.cs" />
+    <Compile Include="Models\ReferenceUpdateModel.cs" />
+    <Compile Include="ViewModels\RelatedEntityViewModel.cs" />
+    <Compile Include="ViewModels\EditRelationshipViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Module.txt" />
+    <Content Include="Scripts\controllers\editmanytomanycontroller.js" />
+    <Content Include="Scripts\controllers\editonetomanycontroller.js" />
+    <Content Include="Scripts\controllers\manytomanydetailcontroller.js" />
+    <Content Include="Scripts\controllers\onetomanydetailcontroller.js" />
+    <Content Include="Scripts\controllers\relatedentitylistcontroller.js" />
+    <Content Include="Scripts\controllers\relationshipscontroller.js" />
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\CreateOneToMany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\CreateManyToMany.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\Relationships.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\Reference.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\Reference.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\ReferenceFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Placement.info">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\Relationship.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\RelatedEntityList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\Reference.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Coevery\Coevery.Framework.csproj">
+      <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
+      <Name>Coevery.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Coevery.Core.csproj">
+      <Project>{9916839c-39fc-4ceb-a5af-89ca7e87119f}</Project>
+      <Name>Coevery.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coevery.Common\Coevery.Common.csproj">
+      <Project>{9f68eb9e-d609-4dfa-85b6-1f642db80e6d}</Project>
+      <Name>Coevery.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coevery.Entities\Coevery.Entities.csproj">
+      <Project>{bd9aec06-5c81-4221-a817-408fb0c4b6c0}</Project>
+      <Name>Coevery.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Coevery.Projections\Coevery.Projections.csproj">
+      <Project>{c8ea0d61-05ba-404f-b658-f75db9de2d61}</Project>
+      <Name>Coevery.Projections</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1162</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:1096/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://orchard.codeplex.com</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Coevery.Web\Modules\Coevery.DynamicTypes\bin\"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

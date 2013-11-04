@@ -1,0 +1,6 @@
+﻿@using Coevery.ContentManagement
+@using Coevery.Utility.Extensions
+@{
+    ContentItem contentItem = Model.ContentItem;
+    Html.AddPageClassNames("detail-" + contentItem.ContentType.HtmlClassify());
+}@Display(Model)

@@ -1,0 +1,8 @@
+﻿Name: SiteReset
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coevery.codeplex.com
+Version: 1.0
+CoeveryVersion: 1.7
+Description: reset site per 30 minutes.
+Category: Core

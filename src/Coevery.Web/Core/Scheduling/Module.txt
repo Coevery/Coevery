@@ -1,0 +1,9 @@
+﻿Name: Scheduling
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The scheduling module enables background task scheduling. 
+FeatureDescription: Scheduled background tasks.
+Category: Core

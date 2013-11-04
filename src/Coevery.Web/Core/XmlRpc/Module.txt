@@ -1,0 +1,9 @@
+﻿Name: XmlRpc
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The XmlRpc module enables creation of contents from client applications such as LiveWriter.
+FeatureDescription: XML-RPC opt-in implementation.
+Category: Content Publishing

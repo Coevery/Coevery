@@ -1,0 +1,5 @@
+<RecipeJournal>
+  <Status>Failed</Status>
+  <Message>Executing step Feature.</Message>
+  <Message>Recipe execution with id 2091811a48434f6e90fbc5205907c3e5 was cancelled because the "Feature" step failed to execute. The following exception was thrown: 序列不包含任何匹配元素. Refer to the error logs for more information.</Message>
+</RecipeJournal>

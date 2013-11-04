@@ -1,0 +1,10 @@
+﻿Name: Themes
+AntiForgery: enabled
+SessionState: required
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.7.1
+CoeveryVersion: 1.7.1
+Description: The themes module makes it possible for Coevery applications to customize the look and feel of an Coevery web site.
+FeatureDescription: Basic theming capability.
+Category: Core

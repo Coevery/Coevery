@@ -1,0 +1,7 @@
+﻿@using Coevery.Utility.Extensions;
+@{
+    string editorFlavor = Model.EditorFlavor;
+}
+@(Model.Required != null && Model.Required
+         ? Html.TextArea("Text", (string)Model.Text, 25, 80, new { @class = editorFlavor.HtmlClassify(), required = "required" })
+         : Html.TextArea("Text", (string)Model.Text, 25, 80, new { @class = editorFlavor.HtmlClassify() }))

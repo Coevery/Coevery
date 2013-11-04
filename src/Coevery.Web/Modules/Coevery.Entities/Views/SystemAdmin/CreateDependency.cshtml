@@ -1,0 +1,92 @@
+﻿@using Coevery.Utility.Extensions
+@model Coevery.Entities.ViewModels.FieldDependencyViewModel
+<header id="main-header" class="page-header" style="background-image: none; margin-bottom: 0;">
+    <h1 id="main-heading" style="background-image: none;">Field Dependency <span>Define dependencies between fields</span></h1>
+</header>
+
+<section id="main-content">
+    <div class="row-fluid">
+        <div id="page-toolbar">
+            <div class="step1">
+                <button class="btn" data-ng-click="exit()">Back</button>
+                <button class="btn" data-ng-click="next()">Next</button>
+            </div>
+            <div class="step2">
+                <button class="btn" data-ng-click="exit()">Back</button>
+                <button class="btn" data-ng-click="prev()">Previous</button>
+                <button class="btn btn-primary" data-ng-click="save()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid step1">
+        <h5>Step 1. Select a control field and a dependent field</h5>
+        <div class="widget">
+            <div class="widget-content form-container">
+                <form class="form-horizontal no-border">
+                    <section class="control-group">
+                        <label class="control-label">
+                            Control Field
+                        </label>
+                        <div class="controls">
+                            <select class="span12" data-ng-model="controlField">
+                                @foreach (var field in Model.ControlFields) {
+                                    @Html.SelectOption(field.Name, false, field.DisplayName, new { field_type = field.FieldDefinition.Name })
+                                }
+                            </select>
+                        </div>
+                    </section>
+                    <section class="control-group">
+                        <label class="control-label">
+                            Dependent Field
+                        </label>
+                        <div class="controls">
+                            <select class="span12" data-ng-model="dependentField">
+                                @foreach (var field in Model.DependentFields) {
+                                    @Html.SelectOption(field.Name, false, field.DisplayName)
+                                }
+                            </select>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid step2">
+        <h5>Step 2. Edit the filter rules that control the values that appear in the dependent field for each value in the control field</h5>
+        <div class="row-fluid">
+            <section class="span12 widget">
+                <section class="widget-content table-container">
+                    <table class="table table-condensed" style="border-collapse: separate">
+                        <thead>
+                            <tr>
+                                <th>{{controlField}}</th>
+                                <th data-ng-repeat="controlFieldItem in controlFieldItems">{{controlFieldItem.Value}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th rowspan="999">{{dependentField}}</th>
+                            </tr>
+                            <tr data-ng-repeat="dependentFieldItem in dependentFieldItems">
+                                <td data-ng-repeat="controlFieldItem in controlFieldItems">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="{{controlFieldItem.Value}}" value="{{dependentFieldItem.Id}}">
+                                        {{dependentFieldItem.Value}}
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(function () {
+        
+        $('.page-actions').affix({ offset: { top: 71 } });
+    });
+</script>
