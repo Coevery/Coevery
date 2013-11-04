@@ -238,23 +238,7 @@ namespace Coevery.Entities.Services {
         }
 
         public IEnumerable<TemplateViewModel> GetFields() {
-            //return _contentFieldDrivers.Where(d=>IsCustomFieldDriver(d.GetType())).SelectMany(d => d.GetFieldInfo());
-            return _contentDefinitionEditorEvents.FieldDescriptor();
-        }
-
-        private bool IsCustomFieldDriver(Type driverType) {
-            var filedType = GetDriverUnderlyingType(driverType.BaseType);
-            var isCustomField = filedType != null && filedType.GetCustomAttributes(typeof (CustomFieldAttribute), false).Any();
-            return driverType.Namespace == "Coevery.Fields.Drivers" || isCustomField;
-        }
-
-        private Type GetDriverUnderlyingType(Type driverType) {
-            if (driverType == null)
-                throw new ArgumentNullException("driverType");
-            Type type = null;
-            if (driverType.IsGenericType && !driverType.IsGenericTypeDefinition && ReferenceEquals(driverType.GetGenericTypeDefinition(), typeof(ContentFieldDriver<>)))
-                type = driverType.GetGenericArguments()[0];
-            return type;
+            return _contentDefinitionEditorEvents.FieldTypeDescriptor();
         }
 
         public void AddFieldToPart(string fieldName, string fieldTypeName, string partName) {

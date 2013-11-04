@@ -4,7 +4,6 @@ using Coevery.ContentManagement.FieldStorage;
 using Coevery.Core.Common.Utilities;
 
 namespace Coevery.Relationship.Fields {
-    [CustomField]
     public class ReferenceField : ContentField {
         private readonly LazyField<IContent> _contentItem = new LazyField<IContent>();
 

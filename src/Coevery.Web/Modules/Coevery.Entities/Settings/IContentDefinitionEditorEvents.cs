@@ -8,7 +8,7 @@ using Coevery.Events;
 
 namespace Coevery.Entities.Settings {
     public interface IContentDefinitionEditorEvents : IEventHandler {
-        IEnumerable<TemplateViewModel> FieldDescriptor();
+        IEnumerable<TemplateViewModel> FieldTypeDescriptor();
         void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel);
         void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary);
         void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary);
@@ -25,8 +25,8 @@ namespace Coevery.Entities.Settings {
     }
 
     public abstract class ContentDefinitionEditorEventsBase : IContentDefinitionEditorEvents {
-        public virtual IEnumerable<TemplateViewModel> FieldDescriptor() {
-            return null;
+        public virtual IEnumerable<TemplateViewModel> FieldTypeDescriptor() {
+            return Enumerable.Empty<TemplateViewModel>();
         }
 
         public virtual void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {}
@@ -69,6 +69,10 @@ namespace Coevery.Entities.Settings {
 
         protected static TemplateViewModel DefinitionTemplate<TModel>(TModel model) {
             return DefinitionTemplate(model, typeof (TModel).Name, typeof (TModel).Name);
+        }
+
+        protected static TemplateViewModel DisplayTemplate<TModel>(TModel model) {
+            return DisplayTemplate(model, typeof(TModel).Name, typeof(TModel).Name);
         }
 
         protected static TemplateViewModel DisplayTemplate<TModel>(TModel model, string templateName, string prefix) {

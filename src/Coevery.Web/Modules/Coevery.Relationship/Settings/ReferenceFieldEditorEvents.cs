@@ -35,7 +35,7 @@ namespace Coevery.Relationship.Settings {
             T = NullLocalizer.Instance;
         }
 
-        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+        public override IEnumerable<TemplateViewModel> FieldTypeDescriptor() {
             var model = string.Empty;
             yield return DisplayTemplate(model, "Reference", null);
         }

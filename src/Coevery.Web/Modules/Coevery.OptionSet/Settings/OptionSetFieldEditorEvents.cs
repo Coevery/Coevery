@@ -27,7 +27,7 @@ namespace Coevery.OptionSet.Settings {
 
         public Localizer T { get; set; }
 
-        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+        public override IEnumerable<TemplateViewModel> FieldTypeDescriptor() {
             var model = string.Empty;
             yield return DisplayTemplate(model, "OptionSet", null);
         }

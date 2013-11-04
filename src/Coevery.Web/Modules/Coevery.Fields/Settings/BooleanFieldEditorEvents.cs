@@ -7,7 +7,7 @@ using Coevery.ContentManagement.ViewModels;
 
 namespace Coevery.Fields.Settings {
     public class BooleanFieldEditorEvents : FieldEditorEvents {
-        public override IEnumerable<TemplateViewModel> FieldDescriptor() {
+        public override IEnumerable<TemplateViewModel> FieldTypeDescriptor() {
             var model = string.Empty;
             yield return DisplayTemplate(model, "Boolean", null);
         }
