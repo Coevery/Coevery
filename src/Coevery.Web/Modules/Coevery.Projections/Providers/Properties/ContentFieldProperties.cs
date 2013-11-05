@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Common.Extensions;
+using Coevery.Entities.Services;
+using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Handlers;
 using Coevery.ContentManagement.MetaData;
 using Coevery.ContentManagement.MetaData.Models;
+using Coevery.Environment.Extensions;
 using Coevery.Localization;
+using Coevery.Logging;
 using Coevery.Projections.Descriptors.Property;
 using Coevery.Projections.FieldTypeEditors;
 using Coevery.Projections.PropertyEditors;
@@ -15,34 +20,39 @@ using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.Providers.Properties {
     public class ContentFieldProperties : IPropertyProvider {
-        private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IEnumerable<IFieldTypeEditor> _fieldTypeEditors;
+        private readonly IEnumerable<IContentFieldValueProvider> _contentFieldValueProviders;
         private readonly IPropertyFormater _propertyFormater;
 
         public ContentFieldProperties(
-            IContentDefinitionManager contentDefinitionManager,
+            IContentDefinitionExtension contentDefinitionExtension,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
             IEnumerable<IFieldTypeEditor> fieldTypeEditors,
-            IPropertyFormater propertyFormater) {
-            _contentDefinitionManager = contentDefinitionManager;
+            IPropertyFormater propertyFormater,
+            IEnumerable<IContentFieldValueProvider> contentFieldValueProviders) {
+            _contentDefinitionExtension = contentDefinitionExtension;
             _contentFieldDrivers = contentFieldDrivers;
             _fieldTypeEditors = fieldTypeEditors;
             _propertyFormater = propertyFormater;
+            _contentFieldValueProviders = contentFieldValueProviders;
+
             T = NullLocalizer.Instance;
         }
 
         public Localizer T { get; set; }
+        public ILogger Logger { get; set; }
 
         public void Describe(DescribePropertyContext describe) {
-            foreach(var part in _contentDefinitionManager.ListPartDefinitions()) {
-                if(!part.Fields.Any()) {
+            foreach (var part in _contentDefinitionExtension.ListUserDefinedPartDefinitions()) {
+                if (!part.Fields.Any()) {
                     continue;
                 }
 
                 var descriptor = describe.For(part.Name + "ContentFields", T("{0} Content Fields", part.Name.CamelFriendly()), T("Content Fields for {0}", part.Name.CamelFriendly()));
 
-                foreach(var field in part.Fields) {
+                foreach (var field in part.Fields) {
                     var localField = field;
                     var localPart = part;
                     var drivers = _contentFieldDrivers.Where(x => x.GetFieldInfo().Any(fi => fi.FieldTypeName == localField.FieldDefinition.Name)).ToList();
@@ -51,7 +61,7 @@ namespace Coevery.Projections.Providers.Properties {
                         (storageName, storageType, displayName, description) => {
                             // look for a compatible field type editor
                             IFieldTypeEditor fieldTypeEditor = _fieldTypeEditors.FirstOrDefault(x => x.CanHandle(storageType));
-                            
+
                             descriptor.Element(
                                 type: localPart.Name + "." + localField.Name + "." + storageName ?? "",
                                 name: new LocalizedString(localField.DisplayName + (displayName != null ? ":" + displayName.Text : "")),
@@ -61,8 +71,8 @@ namespace Coevery.Projections.Providers.Properties {
                                 form: _propertyFormater.GetForm(storageType)
                             );
                         });
-                    
-                    foreach(var driver in drivers) {
+
+                    foreach (var driver in drivers) {
                         driver.Describe(membersContext);
                     }
                 }
@@ -70,19 +80,30 @@ namespace Coevery.Projections.Providers.Properties {
         }
 
         public dynamic Render(PropertyContext context, ContentItem contentItem, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-            var p = contentItem.Parts.FirstOrDefault( x => x.PartDefinition.Name == part.Name);
+            var p = contentItem.Parts.FirstOrDefault(x => x.PartDefinition.Name == part.Name);
 
-            if(p == null) {
+            if (p == null) {
                 return String.Empty;
             }
 
             var f = p.Fields.FirstOrDefault(x => x.Name == field.Name);
 
-            if(f == null) {
+            if (f == null) {
                 return String.Empty;
             }
 
-            var value = f.Storage.Get<object>(storageName);
+            object value = null;
+
+            _contentFieldValueProviders.Invoke(provider => {
+                var result = provider.GetValue(contentItem, f);
+                if (result != null) {
+                    value = result;
+                }
+            }, Logger);
+
+            if (value == null) {
+                value = f.Storage.Get<object>(storageName);
+            }
 
             if (value == null) {
                 return null;
@@ -96,6 +117,4 @@ namespace Coevery.Projections.Providers.Properties {
             return T("Field {0}: {1}", fieldDefinition.Name, String.IsNullOrEmpty(storageName) ? T("Default value").Text : storageName);
         }
     }
-
-
 }

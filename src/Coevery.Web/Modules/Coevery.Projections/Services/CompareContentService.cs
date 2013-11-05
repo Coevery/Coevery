@@ -20,7 +20,7 @@ namespace Coevery.Projections.Services
         }
 
         private readonly Dictionary<string, string> _defferences = new Dictionary<string, string>();
-        private const string IsAuditKey = "CoeveryTextFieldSettings.IsAudit";
+        private const string IsAuditKey = "TextFieldSettings.IsAudit";
         private readonly IProjectionManager _projectionManager;
 
         public CompareContentService(IProjectionManager projectionManager) {

@@ -1,8 +1,0 @@
-﻿namespace Coevery.Core.Common.Settings {
-
-    public class TextFieldSettings {
-        public string Flavor { get; set; }
-        public bool Required { get; set; }
-        public string Hint { get; set; }
-    }
-}

@@ -9,11 +9,11 @@ using Coevery.Localization;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Fields.Drivers {
-    public class CoeveryTextFieldDriver : ContentFieldDriver<CoeveryTextField> {
+    public class TextFieldDriver : ContentFieldDriver<TextField> {
         public ICoeveryServices Services { get; set; }
-        private const string TemplateName = "Fields/CoeveryText.Edit";
+        private const string TemplateName = "Fields/Text.Edit";
 
-        public CoeveryTextFieldDriver(ICoeveryServices services) {
+        public TextFieldDriver(ICoeveryServices services) {
             Services = services;
             T = NullLocalizer.Instance;
         }
@@ -24,33 +24,33 @@ namespace Coevery.Fields.Drivers {
             return part.PartDefinition.Name + "." + field.Name;
         }
 
-        private static string GetDifferentiator(CoeveryTextField field, ContentPart part) {
+        private static string GetDifferentiator(TextField field, ContentPart part) {
             return field.Name;
         }
 
-        protected override void GetContentItemMetadata(ContentPart part, CoeveryTextField field, ContentItemMetadata metadata) {
-            var model=field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
+        protected override void GetContentItemMetadata(ContentPart part, TextField field, ContentItemMetadata metadata) {
+            var model=field.PartFieldDefinition.Settings.GetModel<TextFieldSettings>();
 
             if (model.IsDispalyField) {
                 metadata.DisplayText = field.Value;
             }
         }
 
-        protected override DriverResult Display(ContentPart part, CoeveryTextField field, string displayType, dynamic shapeHelper) {
-            return ContentShape("Fields_CoeveryText", GetDifferentiator(field, part), () => {
-                var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
-                return shapeHelper.Fields_CoeveryText().Settings(settings);
+        protected override DriverResult Display(ContentPart part, TextField field, string displayType, dynamic shapeHelper) {
+            return ContentShape("Fields_Text", GetDifferentiator(field, part), () => {
+                var settings = field.PartFieldDefinition.Settings.GetModel<TextFieldSettings>();
+                return shapeHelper.Fields_Text().Settings(settings);
             });
         }
 
-        protected override DriverResult Editor(ContentPart part, CoeveryTextField field, dynamic shapeHelper) {
-            return ContentShape("Fields_CoeveryText_Edit", GetDifferentiator(field, part),
+        protected override DriverResult Editor(ContentPart part, TextField field, dynamic shapeHelper) {
+            return ContentShape("Fields_Text_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: field, Prefix: GetPrefix(field, part)));
         }
 
-        protected override DriverResult Editor(ContentPart part, CoeveryTextField field, IUpdateModel updater, dynamic shapeHelper) {
+        protected override DriverResult Editor(ContentPart part, TextField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
-                var settings = field.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
+                var settings = field.PartFieldDefinition.Settings.GetModel<TextFieldSettings>();
                 if (settings.Required && string.IsNullOrWhiteSpace(field.Value)) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
@@ -61,11 +61,11 @@ namespace Coevery.Fields.Drivers {
             return Editor(part, field, shapeHelper);
         }
 
-        protected override void Importing(ContentPart part, CoeveryTextField field, ImportContentContext context) {
+        protected override void Importing(ContentPart part, TextField field, ImportContentContext context) {
             context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = v);
         }
 
-        protected override void Exporting(ContentPart part, CoeveryTextField field, ExportContentContext context) {
+        protected override void Exporting(ContentPart part, TextField field, ExportContentContext context) {
             context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value);
         }
 

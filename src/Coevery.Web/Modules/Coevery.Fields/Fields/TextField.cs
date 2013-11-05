@@ -3,7 +3,7 @@ using Coevery.ContentManagement;
 using Coevery.ContentManagement.FieldStorage;
 
 namespace Coevery.Fields.Fields {
-    public class CoeveryTextField : ContentField {
+    public class TextField : ContentField {
         public string Value {
             get { return Storage.Get<string>(Name); }
             set { Storage.Set(value ?? String.Empty); }

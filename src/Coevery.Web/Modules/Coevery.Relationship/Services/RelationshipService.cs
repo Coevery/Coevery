@@ -368,7 +368,7 @@ namespace Coevery.Relationship.Services {
                 return;
             }
             string category = typeName.ToPartName() + "ContentFields";
-            const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
+            const string settingName = "TextFieldSettings.IsDispalyField";
             var allFields = _contentDefinitionManager.GetPartDefinition(typeName.ToPartName()).Fields.ToList();
             foreach (var property in properties) {
                 var field = allFields.FirstOrDefault(c => c.Name == property);

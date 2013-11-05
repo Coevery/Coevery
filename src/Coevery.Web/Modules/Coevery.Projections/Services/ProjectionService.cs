@@ -13,6 +13,7 @@ using Coevery.Forms.Services;
 using Coevery.Localization;
 using Coevery.Projections.Descriptors.Property;
 using Coevery.UI.Notify;
+using NHibernate.Criterion;
 
 namespace Coevery.Projections.Services {
     public class ProjectionService : IProjectionService {
@@ -43,7 +44,8 @@ namespace Coevery.Projections.Services {
 
         public IEnumerable<PropertyDescriptor> GetFieldDescriptors(string entityType) {
             var category = entityType.ToPartName() + "ContentFields";
-            var fieldDescriptors = _projectionManager.DescribeProperties().Where(x => x.Category == category).SelectMany(x => x.Descriptors).ToList();
+            var fieldDescriptors = _projectionManager.DescribeProperties()
+                .Where(x => x.Category == category).SelectMany(x => x.Descriptors).ToList();
             return fieldDescriptors;
         }
 
@@ -85,13 +87,12 @@ namespace Coevery.Projections.Services {
                 return "Invalid entity name!";
             }
             var category = entityName.ToPartName() + "ContentFields";
-            const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
+            const string settingName = "TextFieldSettings.IsDispalyField";
             foreach (var view in listViewParts) {
                 var projection = view.As<ProjectionPart>().Record;
                 var layout = projection.LayoutRecord;
                 var pickedFileds = (from field in layout.Properties
                                     select field.Type).ToArray();
-                layout.Properties.Clear();
                 UpdateLayoutProperties(entityName.ToPartName(),ref layout,category,settingName,pickedFileds);
                 layout.State = GetLayoutState(projection.QueryPartRecord.Id, layout.Properties.Count, layout.Description);
             }
@@ -151,10 +152,9 @@ namespace Coevery.Projections.Services {
             projectionPart.Record.ItemsPerPage = viewModel.PageRowCount;
             //Post Selected Fields
             var layoutRecord = projectionPart.Record.LayoutRecord;
-            layoutRecord.Properties.Clear();
 
             var category = viewModel.ItemContentType + "ContentFields";
-            const string settingName = "CoeveryTextFieldSettings.IsDispalyField";
+            const string settingName = "TextFieldSettings.IsDispalyField";
             try {
                 UpdateLayoutProperties(viewModel.ItemContentType, ref layoutRecord, category, settingName, pickedFileds);
             }
@@ -180,6 +180,7 @@ namespace Coevery.Projections.Services {
         private void UpdateLayoutProperties(string partName, ref LayoutRecord layout, string category, string settingName, IEnumerable<string> pickedFileds) {
             var allFields = _contentDefinitionManager.GetPartDefinition(partName).Fields.ToList();
             const string fieldTypeFormat = "{0}.{1}.";
+            layout.Properties.Clear();
             foreach (var property in pickedFileds) {
                 var names = property.Split('.');
                 var propertyMatch = string.Format(fieldTypeFormat, names[0], names[1]);

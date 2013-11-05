@@ -10,7 +10,7 @@ namespace Coevery.Fields.Projections {
     public class DefaultFieldStateProvider : FieldToPropertyStateProvider {
         public DefaultFieldStateProvider() {
             FieldTypeSet = new[] {
-                "EmailField", "CoeveryTextField","PhoneField","UrlField",
+                "EmailField", "TextField","PhoneField","UrlField",
                  "BooleanField", "OptionSetField", "ReferenceField"
             };
         }

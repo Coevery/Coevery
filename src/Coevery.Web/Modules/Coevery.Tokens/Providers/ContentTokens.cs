@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Aspects;
 using Coevery.ContentManagement.MetaData.Models;
-using Coevery.Core.Common.Fields;
+//using Coevery.Core.Common.Fields;
 using Coevery.Core.Common.Models;
 using Coevery.Localization;
 using Coevery.ContentManagement.FieldStorage;
@@ -118,11 +118,11 @@ namespace Coevery.Tokens.Providers {
                    .Chain("Absolute", "Text", url => _urlHelper.MakeAbsolute(url))
                 ;
 
-            context.For<TextField>("TextField")
-                .Token("Length", field => (field.Value ?? "").Length)
-                .Token("Text", field => field.Value ?? "")
-                .Chain("Text", "Text", field => field.Value ?? "")
-                ;
+            //context.For<TextField>("TextField")
+            //    .Token("Length", field => (field.Value ?? "").Length)
+            //    .Token("Text", field => field.Value ?? "")
+            //    .Chain("Text", "Text", field => field.Value ?? "")
+            //    ;
 
             context.For<ContentTypeDefinition>("TypeDefinition")
                 .Token("Name", def => def.Name)

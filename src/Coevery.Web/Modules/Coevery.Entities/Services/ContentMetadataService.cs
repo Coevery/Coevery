@@ -124,19 +124,19 @@ namespace Coevery.Entities.Services {
                 {"DisplayName", sourceModel.FieldLabel},
                 {"AddInLayout", bool.TrueString},
                 {"Storage", "Part"},
-                {"CoeveryTextFieldSettings.IsDispalyField", bool.TrueString},
-                {"CoeveryTextFieldSettings.Required", bool.TrueString},
-                {"CoeveryTextFieldSettings.ReadOnly", bool.TrueString},
-                {"CoeveryTextFieldSettings.AlwaysInLayout", bool.TrueString},
-                {"CoeveryTextFieldSettings.IsSystemField", bool.TrueString},
-                {"CoeveryTextFieldSettings.IsAudit", bool.FalseString}
+                {"TextFieldSettings.IsDispalyField", bool.TrueString},
+                {"TextFieldSettings.Required", bool.TrueString},
+                {"TextFieldSettings.ReadOnly", bool.TrueString},
+                {"TextFieldSettings.AlwaysInLayout", bool.TrueString},
+                {"TextFieldSettings.IsSystemField", bool.TrueString},
+                {"TextFieldSettings.IsAudit", bool.FalseString}
             };
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
 
             entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                 Name = sourceModel.FieldName,
-                ContentFieldDefinitionRecord = FetchFieldDefinition("CoeveryTextField"),
+                ContentFieldDefinitionRecord = FetchFieldDefinition("TextField"),
                 Settings = CompileSetting(baseFieldSetting)
             });
             Services.ContentManager.Create(entityDraft, VersionOptions.Draft);

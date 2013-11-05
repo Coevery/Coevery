@@ -1,8 +1,8 @@
-﻿@model Coevery.Fields.Fields.CoeveryTextField
+﻿@model Coevery.Fields.Fields.TextField
 @using Coevery.Utility.Extensions;
 @using Coevery.Fields.Settings;
 @{
-    var settings = Model.PartFieldDefinition.Settings.GetModel<CoeveryTextFieldSettings>();
+    var settings = Model.PartFieldDefinition.Settings.GetModel<TextFieldSettings>();
     var required = settings.Required ? "required" : null;
 }
 

@@ -1992,9 +1992,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Fields.Common.Text.Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\DifferentResource.cshtml" />
   </ItemGroup>
   <ItemGroup>

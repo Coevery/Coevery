@@ -14,7 +14,7 @@ namespace Coevery.FormDesigner.Controllers {
     public class LayoutController : ApiController {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITemplateViewService _templateViewService;
-        private const string AlwaysInLayoutKey = "CoeveryTextFieldSettings.AlwaysInLayout";
+        private const string AlwaysInLayoutKey = "TextFieldSettings.AlwaysInLayout";
 
         public LayoutController(IContentDefinitionManager contentDefinitionManager,
             ITemplateViewService templateViewService) {

@@ -120,16 +120,16 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\DefinitionTemplates\BooleanFieldSettings.cshtml" />
-    <Content Include="Views\DefinitionTemplates\CoeveryTextFieldSettings.cshtml" />
+    <Content Include="Views\DefinitionTemplates\TextFieldSettings.cshtml" />
     <Content Include="Views\EditorTemplates\Fields\Boolean.Edit.cshtml" />
-    <Content Include="Views\EditorTemplates\Fields\CoeveryText.Edit.cshtml" />
+    <Content Include="Views\EditorTemplates\Fields\Text.Edit.cshtml" />
     <Content Include="Views\Fields\Boolean.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drivers\BooleanFieldDriver.cs" />
-    <Compile Include="Drivers\CoeveryTextFieldDriver.cs" />
+    <Compile Include="Drivers\TextFieldDriver.cs" />
     <Compile Include="Fields\BooleanField.cs" />
-    <Compile Include="Fields\CoeveryTextField.cs" />
+    <Compile Include="Fields\TextField.cs" />
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
@@ -148,8 +148,8 @@
     <Compile Include="Settings\NumberFieldSettings.cs" />
     <Compile Include="Settings\CurrencyFieldEditorEvents.cs" />
     <Compile Include="Settings\CurrencyFieldSettings.cs" />
-    <Compile Include="Settings\CoeveryTextFieldEditorEvents.cs" />
-    <Compile Include="Settings\CoeveryTextFieldSettings.cs" />
+    <Compile Include="Settings\TextFieldEditorEvents.cs" />
+    <Compile Include="Settings\TextFieldSettings.cs" />
     <Compile Include="Tokens\FieldTokens.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +161,7 @@
     <Folder Include="Views\SystemAdmin\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Fields\CoeveryText.cshtml" />
+    <Content Include="Views\Fields\Text.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Wrapper.Script.cshtml" />
@@ -236,7 +236,7 @@
     <Content Include="Views\DisplayTemplates\Boolean.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\DisplayTemplates\CoeveryText.cshtml" />
+    <Content Include="Views\DisplayTemplates\Text.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DisplayTemplates\Currency.cshtml" />
