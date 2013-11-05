@@ -66,19 +66,19 @@ namespace Coevery.Relationship.Handlers {
                 BuildHandlerCtor(relatedHandlerType, relatedPartRecordType);
                 relatedHandlerType.CreateType();
 
-                var primarySeriviceType = typeof(IDynamicPrimaryService<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType);
+                var primarySeriviceType = typeof(IDynamicPrimaryService<>).MakeGenericType(contentLinkRecordType);
                 var primaryDriverType = BuildType(
                     string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", primaryName),
                     moduleBuilder,
-                    typeof(DynamicPrimaryPartDriver<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType));
+                    typeof(DynamicPrimaryPartDriver<,>).MakeGenericType(primaryPartType, contentLinkRecordType));
                 BuildDriverCtor(primaryDriverType, primarySeriviceType, contentLinkRecordType, manyToManyRelationshipRecord.Relationship.RelatedEntity.Name);
                 primaryDriverType.CreateType();
 
-                var relatedSeriviceType = typeof(IDynamicRelatedService<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType);
+                var relatedSeriviceType = typeof(IDynamicRelatedService<>).MakeGenericType(contentLinkRecordType);
                 var relatedDriverType = BuildType(
                     string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", relatedName),
                     moduleBuilder,
-                    typeof(DynamicRelatedPartDriver<,,,,>).MakeGenericType(primaryPartType, relatedPartType, primaryPartRecordType, relatedPartRecordType, contentLinkRecordType));
+                    typeof(DynamicRelatedPartDriver<,>).MakeGenericType(relatedPartType, contentLinkRecordType));
                 BuildDriverCtor(relatedDriverType, relatedSeriviceType, contentLinkRecordType, manyToManyRelationshipRecord.Relationship.PrimaryEntity.Name);
                 relatedDriverType.CreateType();
             }

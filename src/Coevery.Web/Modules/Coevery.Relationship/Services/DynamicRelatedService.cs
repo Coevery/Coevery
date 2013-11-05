@@ -1,22 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Coevery.ContentManagement;
-using Coevery.ContentManagement.Records;
 using Coevery.Data;
 using Coevery.Relationship.Models;
 
 namespace Coevery.Relationship.Services {
-    public interface IDynamicRelatedService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> {
+    public interface IDynamicRelatedService<TContentLinkRecord> {
         void UpdateForContentItem(ContentItem item, string[] links);
-        IEnumerable<ContentPartRecord> GetLinks(string entityName);
+        IEnumerable<IContent> GetLinks(string entityName);
     }
 
-    public class DynamicRelatedService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord>
-        : IDynamicRelatedService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord>
-        where TPrimaryPart : ContentPart<TPrimaryPartRecord>
-        where TRelatedPart : ContentPart<TRelatedPartRecord>
-        where TPrimaryPartRecord : ContentPartRecord
-        where TRelatedPartRecord : ContentPartRecord
+    public class DynamicRelatedService<TContentLinkRecord>
+        : IDynamicRelatedService<TContentLinkRecord>
         where TContentLinkRecord : ContentLinkRecord, new() {
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
         private readonly IContentManager _contentManager;
@@ -53,9 +48,8 @@ namespace Coevery.Relationship.Services {
             }
         }
 
-        public IEnumerable<ContentPartRecord> GetLinks(string entityName) {
-            return _contentManager.Query(VersionOptions.Published, new[] {entityName})
-                .List().AsPart<TPrimaryPart>().Select(x => x.Record);
+        public IEnumerable<IContent> GetLinks(string entityName) {
+            return _contentManager.Query(VersionOptions.Published, new[] {entityName}).List();
         }
     }
 }

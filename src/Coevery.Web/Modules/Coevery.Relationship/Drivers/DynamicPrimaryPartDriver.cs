@@ -13,14 +13,11 @@ using JetBrains.Annotations;
 
 namespace Coevery.Relationship.Drivers {
     [UsedImplicitly]
-    public abstract class DynamicPrimaryPartDriver<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord>
+    public abstract class DynamicPrimaryPartDriver<TPrimaryPart, TContentLinkRecord>
         : ContentPartDriver<TPrimaryPart>
-        where TPrimaryPart : ContentPart<TPrimaryPartRecord>, new()
-        where TRelatedPart : ContentPart<TRelatedPartRecord>
-        where TPrimaryPartRecord : ContentPartRecord
-        where TRelatedPartRecord : ContentPartRecord
+        where TPrimaryPart : ContentPart, new()
         where TContentLinkRecord : ContentLinkRecord, new() {
-        private readonly IDynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> _primaryService;
+        private readonly IDynamicPrimaryService<TContentLinkRecord> _primaryService;
         private readonly IContentManager _contentManager;
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -30,7 +27,7 @@ namespace Coevery.Relationship.Drivers {
         private const string TemplateName = "Parts/Relationship.Edit";
 
         protected DynamicPrimaryPartDriver(
-            IDynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> primaryService,
+            IDynamicPrimaryService<TContentLinkRecord> primaryService,
             IContentManager contentManager,
             IRepository<TContentLinkRecord> contentLinkRepository,
             IContentDefinitionManager contentDefinitionManager) {
@@ -45,7 +42,6 @@ namespace Coevery.Relationship.Drivers {
         }
 
         protected override DriverResult Editor(TPrimaryPart part, dynamic shapeHelper) {
-            part.Record = part.Record;
             return ContentShape("Parts_Relationship_Edit",
                 () => shapeHelper.EditorTemplate(
                     TemplateName: TemplateName,
@@ -74,7 +70,7 @@ namespace Coevery.Relationship.Drivers {
             return new EditRelationshipViewModel {
                 Links = _primaryService.GetLinks(_entityName).Select(r => new SelectListItem() {
                     Value = r.Id.ToString(),
-                    Text = _contentManager.GetItemMetadata(_contentManager.Get(r.Id)).DisplayText,
+                    Text = _contentManager.GetItemMetadata(r).DisplayText,
                 }).ToList(),
                 SelectedIds = GetLinks(part).Select(x => x.Id.ToString()).ToArray(),
                 DisplayName = _contentDefinitionManager.GetPartDefinition(typeof (TPrimaryPart).Name).Settings["DisplayName"]
