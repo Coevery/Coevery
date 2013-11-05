@@ -1,6 +1,6 @@
 ﻿Name: $$ThemeName$$
-Author: The Orchard Team
-Website: http://www.orchardproject.net
+Author: The Coevery Team
+Website: http://www.coeveryproject.net
 Description: Description for the theme
 Version: 1.0
 BaseTheme: $$BaseTheme$$

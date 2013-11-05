@@ -4,8 +4,8 @@
     I want to create lists
 
 Scenario: I can create a new list
-    Given I have installed Orchard
-		And I have installed "Orchard.Lists"
+    Given I have installed Coevery
+		And I have installed "Coevery.Lists"
     When I go to "Admin/Contents/Create/List"
         And I fill in
             | name | value |
@@ -15,8 +15,8 @@ Scenario: I can create a new list
     Then I should see "MyList"
 
 Scenario: I can add content items to a list
-    Given I have installed Orchard
-		And I have installed "Orchard.Lists"
+    Given I have installed Coevery
+		And I have installed "Coevery.Lists"
         And I have a containable content type "MyType"
     When I go to "Admin/Contents/Create/List"
         And I fill in

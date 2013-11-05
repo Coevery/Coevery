@@ -1,5 +1,5 @@
 ﻿Feature: Using SpecFlow
-    In order to test Orchard
+    In order to test Coevery
     As a developer or contributor
     I want to define scenarios that ensure functionality
 

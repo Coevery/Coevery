@@ -2,7 +2,7 @@
 using System.Net;
 using TechTalk.SpecFlow;
 
-namespace Orchard.Profile.Tests {
+namespace Coevery.Profile.Tests {
     [Binding]
     public class HttpClient {
         private readonly CookieContainer _cookieContainer = new CookieContainer();

@@ -6,8 +6,8 @@
 Scenario: Creating and using Date fields
 	
 	# Creating an Event content type 
-    Given I have installed Orchard
-		And I have installed "Orchard.Fields"
+    Given I have installed Coevery
+		And I have installed "Coevery.Fields"
     When I go to "Admin/ContentTypes"
     Then I should see "<a[^>]*>.*?Create new type</a>"
     When I go to "Admin/ContentTypes/Create"
@@ -142,9 +142,9 @@ Scenario: Creating and using Date fields
 Scenario: Creating and using date time fields in another culture
 
 	# Creating an Event content type 
-    Given I have installed Orchard
-		And I have installed "Orchard.Fields"
-		And I have the file "Content\orchard.core.po" in "Core\App_Data\Localization\fr-FR\orchard.core.po"
+    Given I have installed Coevery
+		And I have installed "Coevery.Fields"
+		And I have the file "Content\coevery.core.po" in "Core\App_Data\Localization\fr-FR\coevery.core.po"
     When I go to "Admin/ContentTypes"
     Then I should see "<a[^>]*>.*?Create new type</a>"
     When I go to "Admin/ContentTypes/Create"

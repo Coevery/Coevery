@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Orchard.Profile.Tests
+namespace Coevery.Profile.Tests
 {
     using TechTalk.SpecFlow;
     

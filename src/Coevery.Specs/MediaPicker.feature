@@ -6,9 +6,9 @@
 Scenario: Creating and using media fields
 	
 	# Creating an Event content type 
-    Given I have installed Orchard
-		And I have installed "Orchard.Media"
-		And I have installed "Orchard.MediaPicker"
+    Given I have installed Coevery
+		And I have installed "Coevery.Media"
+		And I have installed "Coevery.MediaPicker"
 
     When I go to "Admin/ContentTypes"
     Then I should see "<a[^>]*>.*?Create new type</a>"

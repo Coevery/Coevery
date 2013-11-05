@@ -208,7 +208,7 @@ namespace Coevery.ContentManagement {
         public int Count() {
             ApplyHqlVersionOptionsRestrictions(_versionOptions);
             var hql = ToHql(true);
-            hql = "select count(Id) from Orchard.ContentManagement.Records.ContentItemVersionRecord where Id in ( " + hql + " )";
+            hql = "select count(Id) from Coevery.ContentManagement.Records.ContentItemVersionRecord where Id in ( " + hql + " )";
             return Convert.ToInt32(_session.CreateQuery(hql)
                            .SetCacheable(true)
                            .UniqueResult())

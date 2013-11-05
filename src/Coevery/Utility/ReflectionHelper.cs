@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Orchard.Utility {
+namespace Coevery.Utility {
     public class ReflectionHelper<T> {
         private static readonly ConcurrentDictionary<string, Delegate> _getterCache =
             new ConcurrentDictionary<string, Delegate>();

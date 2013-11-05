@@ -5,14 +5,14 @@
 
 @management
 Scenario: There is only one user by default
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
     Then I should see "Users"
         And I should see "<a[^>]*>admin</a>"
 
 @management
 Scenario: I can create a new user
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
     Then I should see "Users"
     When I follow "Add a new user"
@@ -76,7 +76,7 @@ Scenario: I can create a new user
 
 @management
 Scenario: I can edit an existing user
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
         And I follow "Add a new user"
         And I fill in
@@ -106,7 +106,7 @@ Scenario: I can edit an existing user
 
 @management
 Scenario: I should not be able to reuse an existing username or email
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
 # create user1
         And I follow "Add a new user"
@@ -153,7 +153,7 @@ Scenario: I should not be able to reuse an existing username or email
 @management
 @ignore
 Scenario: I should be able to remove an existing user
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
 # create user1
         And I follow "Add a new user"
@@ -179,7 +179,7 @@ Scenario: I should be able to remove an existing user
 
 @filtering
 Scenario: I should not be able to filter users by name
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
 # create user1
         And I follow "Add a new user"
@@ -227,7 +227,7 @@ Scenario: I should not be able to filter users by name
 
 @filtering
 Scenario: I should be able to filter users by status
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
 # create user1
         And I follow "Add a new user"
@@ -289,7 +289,7 @@ Scenario: I should be able to filter users by status
         And I should see "<a[^>]*>admin</a>"
 @email
 Scenario: I should not be able to add users with invalid email addresses
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
         And I follow "Add a new user"
         And I fill in
@@ -302,7 +302,7 @@ Scenario: I should not be able to add users with invalid email addresses
     Then I should see "You must specify a valid email address."
 @email
 Scenario: I should be able to add users with valid email addresses
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/users"
         And I follow "Add a new user"
         And I fill in

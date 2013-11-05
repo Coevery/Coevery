@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Xml;
 using System.Xml.Linq;
 using NHibernate.Util;
-using Orchard.Utility;
+using Coevery.Utility;
 
 namespace Coevery.ContentManagement {
     public static class XmlHelper {

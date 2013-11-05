@@ -27,9 +27,9 @@ namespace Coevery.CodeGeneration.Commands {
         };
 
         private const string ModuleName = "CodeGeneration";
-        private static readonly string _codeGenTemplatePath = HostingEnvironment.MapPath("~/Modules/Orchard." + ModuleName + "/CodeGenerationTemplates/");
-        private static readonly string _orchardWebProj = HostingEnvironment.MapPath("~/Orchard.Web.csproj");
-        private static readonly string _orchardThemesProj = HostingEnvironment.MapPath("~/Themes/Themes.csproj");
+        private static readonly string _codeGenTemplatePath = HostingEnvironment.MapPath("~/Modules/Coevery." + ModuleName + "/CodeGenerationTemplates/");
+        private static readonly string _coeveryWebProj = HostingEnvironment.MapPath("~/Coevery.Web.csproj");
+        private static readonly string _coeveryThemesProj = HostingEnvironment.MapPath("~/Themes/Themes.csproj");
 
         public CodeGenerationCommands(
             IExtensionManager extensionManager,
@@ -64,7 +64,7 @@ namespace Coevery.CodeGeneration.Commands {
 
             string dataMigrationFolderPath = HostingEnvironment.MapPath("~/Modules/" + extensionDescriptor.Id + "/");
             string dataMigrationFilePath = dataMigrationFolderPath + "Migrations.cs";
-            string templatesPath = HostingEnvironment.MapPath("~/Modules/Orchard." + ModuleName + "/CodeGenerationTemplates/");
+            string templatesPath = HostingEnvironment.MapPath("~/Modules/Coevery." + ModuleName + "/CodeGenerationTemplates/");
             string moduleCsProjPath = HostingEnvironment.MapPath(string.Format("~/Modules/{0}/{0}.csproj", extensionDescriptor.Id));
                     
             if (!Directory.Exists(dataMigrationFolderPath)) {
@@ -109,7 +109,7 @@ namespace Coevery.CodeGeneration.Commands {
             Context.Output.WriteLine(T("Data migration created successfully in Module {0}", extensionDescriptor.Id));
         }
 
-        [CommandHelp("codegen module <module-name> [/IncludeInSolution:true|false]\r\n\t" + "Create a new Orchard module")]
+        [CommandHelp("codegen module <module-name> [/IncludeInSolution:true|false]\r\n\t" + "Create a new Coevery module")]
         [CommandName("codegen module")]
         [CoeverySwitches("IncludeInSolution")]
         public void CreateModule(string moduleName) {
@@ -125,7 +125,7 @@ namespace Coevery.CodeGeneration.Commands {
         }
 
         [CommandName("codegen theme")]
-        [CommandHelp("codegen theme <theme-name> [/CreateProject:true|false][/IncludeInSolution:true|false][/BasedOn:<theme-name>]\r\n\tCreate a new Orchard theme")]
+        [CommandHelp("codegen theme <theme-name> [/CreateProject:true|false][/IncludeInSolution:true|false][/BasedOn:<theme-name>]\r\n\tCreate a new Coevery theme")]
         [CoeverySwitches("IncludeInSolution,BasedOn,CreateProject")]
         public void CreateTheme(string themeName) {
             Context.Output.WriteLine(T("Creating Theme {0}", themeName));
@@ -146,7 +146,7 @@ namespace Coevery.CodeGeneration.Commands {
             Context.Output.WriteLine(T("Theme {0} created successfully", themeName));
         }
 
-        [CommandHelp("codegen controller <module-name> <controller-name>\r\n\t" + "Create a new Orchard controller in a module")]
+        [CommandHelp("codegen controller <module-name> <controller-name>\r\n\t" + "Create a new Coevery controller in a module")]
         [CommandName("codegen controller")]
         public void CreateController(string moduleName, string controllerName) {
             Context.Output.WriteLine(T("Creating Controller {0} in Module {1}", controllerName, moduleName));
@@ -162,7 +162,7 @@ namespace Coevery.CodeGeneration.Commands {
             string moduleControllersPath = HostingEnvironment.MapPath("~/Modules/" + extensionDescriptor.Id + "/Controllers/");
             string controllerPath = moduleControllersPath + controllerName + ".cs";
             string moduleCsProjPath = HostingEnvironment.MapPath(string.Format("~/Modules/{0}/{0}.csproj", extensionDescriptor.Id));
-            string templatesPath = HostingEnvironment.MapPath("~/Modules/Orchard." + ModuleName + "/CodeGenerationTemplates/");
+            string templatesPath = HostingEnvironment.MapPath("~/Modules/Coevery." + ModuleName + "/CodeGenerationTemplates/");
 
             if (!Directory.Exists(moduleControllersPath)) {
                 Directory.CreateDirectory(moduleControllersPath);
@@ -254,32 +254,32 @@ namespace Coevery.CodeGeneration.Commands {
             text = text.Replace("$$ModuleName$$", projectName);
             text = text.Replace("$$ModuleProjectGuid$$", projectGuid);
             text = text.Replace("$$FileIncludes$$", itemGroup ?? "");
-            text = text.Replace("$$OrchardReferences$$", GetOrchardReferences());
+            text = text.Replace("$$CoeveryReferences$$", GetCoeveryReferences());
             return text;
         }
 
-        private static string GetOrchardReferences() {
+        private static string GetCoeveryReferences() {
             return IsSourceEnlistment() ? 
-@"<ProjectReference Include=""..\..\..\Orchard\Orchard.Framework.csproj"">
+@"<ProjectReference Include=""..\..\..\Coevery\Coevery.Framework.csproj"">
       <Project>{2D1D92BB-4555-4CBE-8D0E-63563D6CE4C6}</Project>
-      <Name>Orchard.Framework</Name>
+      <Name>Coevery.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include=""..\..\Core\Orchard.Core.csproj"">
+    <ProjectReference Include=""..\..\Core\Coevery.Core.csproj"">
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
-      <Name>Orchard.Core</Name>
+      <Name>Coevery.Core</Name>
     </ProjectReference>" :
-@"<Reference Include=""Orchard.Core"">
+@"<Reference Include=""Coevery.Core"">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Orchard.Core.dll</HintPath>
+      <HintPath>..\..\bin\Coevery.Core.dll</HintPath>
     </Reference>
-    <Reference Include=""Orchard.Framework"">
+    <Reference Include=""Coevery.Framework"">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Orchard.Framework.dll</HintPath>
+      <HintPath>..\..\bin\Coevery.Framework.dll</HintPath>
     </Reference>";
         }
 
         private static bool IsSourceEnlistment() {
-            return File.Exists(Directory.GetParent(_orchardWebProj).Parent.FullName + "\\Orchard.sln");
+            return File.Exists(Directory.GetParent(_coeveryWebProj).Parent.FullName + "\\Coevery.sln");
         }
 
         private void CreateThemeFromTemplates(TextWriter output, string themeName, string baseTheme, string projectGuid, bool includeInSolution) {
@@ -334,9 +334,9 @@ namespace Coevery.CodeGeneration.Commands {
 
             if (includeInSolution) {
                 if (projectGuid == null) {
-                    // include in solution but dont create a project: just add the references to Orchard.Themes project
+                    // include in solution but dont create a project: just add the references to Coevery.Themes project
                     var itemGroup = CreateProjectItemGroup(HostingEnvironment.MapPath("~/Themes/"), createdFiles, createdFolders);
-                    AddFilesToOrchardThemesProject(output, itemGroup);
+                    AddFilesToCoeveryThemesProject(output, itemGroup);
                     TouchSolution(output);
                 }
                 else {
@@ -349,9 +349,9 @@ namespace Coevery.CodeGeneration.Commands {
 
         private void AddToSolution(TextWriter output, string projectName, string projectGuid, string containingFolder, string solutionFolderGuid) {
             if (!string.IsNullOrEmpty(projectGuid)) {
-                var solutionPath = Directory.GetParent(_orchardWebProj).Parent.FullName + "\\Orchard.sln";
+                var solutionPath = Directory.GetParent(_coeveryWebProj).Parent.FullName + "\\Coevery.sln";
                 if (File.Exists(solutionPath)) {
-                    var projectReference = string.Format("EndProject\r\nProject(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"{0}\", \"Orchard.Web\\{2}\\{0}\\{0}.csproj\", \"{{{1}}}\"\r\n", projectName, projectGuid, containingFolder);
+                    var projectReference = string.Format("EndProject\r\nProject(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"{0}\", \"Coevery.Web\\{2}\\{0}\\{0}.csproj\", \"{{{1}}}\"\r\n", projectName, projectGuid, containingFolder);
                     var projectConfiguationPlatforms = string.Format("GlobalSection(ProjectConfigurationPlatforms) = postSolution\r\n\t\t{{{0}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\r\n\t\t{{{0}}}.Debug|Any CPU.Build.0 = Debug|Any CPU\r\n\t\t{{{0}}}.Release|Any CPU.ActiveCfg = Release|Any CPU\r\n\t\t{{{0}}}.Release|Any CPU.Build.0 = Release|Any CPU\r\n", projectGuid);
                     var solutionText = File.ReadAllText(solutionPath);
                     solutionText = solutionText.Insert(solutionText.LastIndexOf("EndProject\r\n"), projectReference).Replace("GlobalSection(ProjectConfigurationPlatforms) = postSolution\r\n", projectConfiguationPlatforms);
@@ -383,12 +383,12 @@ namespace Coevery.CodeGeneration.Commands {
             return string.Format(CultureInfo.InvariantCulture, "<ItemGroup>\r\n{0}\r\n  </ItemGroup>\r\n  ", contentInclude);
         }
 
-        private void AddFilesToOrchardThemesProject(TextWriter output, string itemGroup) {
-            if (!File.Exists(_orchardThemesProj)) {
-                output.WriteLine(T("Warning: Orchard.Themes project file could not be found at {0}", _orchardThemesProj));
+        private void AddFilesToCoeveryThemesProject(TextWriter output, string itemGroup) {
+            if (!File.Exists(_coeveryThemesProj)) {
+                output.WriteLine(T("Warning: Coevery.Themes project file could not be found at {0}", _coeveryThemesProj));
             }
             else {
-                var projectText = File.ReadAllText(_orchardThemesProj);
+                var projectText = File.ReadAllText(_coeveryThemesProj);
 
                 // find where the first ItemGroup is after any References
                 var refIndex = projectText.LastIndexOf("<Reference Include");
@@ -396,17 +396,17 @@ namespace Coevery.CodeGeneration.Commands {
                     var firstItemGroupIndex = projectText.IndexOf("<ItemGroup>", refIndex);
                     if (firstItemGroupIndex != -1) {
                         projectText = projectText.Insert(firstItemGroupIndex, itemGroup);
-                        File.WriteAllText(_orchardThemesProj, projectText);
+                        File.WriteAllText(_coeveryThemesProj, projectText);
                         return;
                     }
                 }
-                output.WriteLine(T("Warning: Unable to modify Orchard.Themes project file at {0}", _orchardThemesProj));
+                output.WriteLine(T("Warning: Unable to modify Coevery.Themes project file at {0}", _coeveryThemesProj));
             }
         }
 
         private void TouchSolution(TextWriter output) {
-            string rootWebProjectPath = HostingEnvironment.MapPath("~/Orchard.Web.csproj");
-            string solutionPath = Directory.GetParent(rootWebProjectPath).Parent.FullName + "\\Orchard.sln";
+            string rootWebProjectPath = HostingEnvironment.MapPath("~/Coevery.Web.csproj");
+            string solutionPath = Directory.GetParent(rootWebProjectPath).Parent.FullName + "\\Coevery.sln";
             if (!File.Exists(solutionPath)) {
                 output.WriteLine(T("Warning: Solution file could not be found at {0}", solutionPath));
                 return;

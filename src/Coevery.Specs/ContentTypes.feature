@@ -4,7 +4,7 @@
     I want to create create content types
 
 Scenario: I can create a new content type
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/ContentTypes"
     Then I should see "<a[^>]*>.*?Create new type</a>"
     When I go to "Admin/ContentTypes/Create"
@@ -17,7 +17,7 @@ Scenario: I can create a new content type
     Then I should see "Event"
 
 Scenario: I can't create a content type with an already existing name
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/ContentTypes/Create"
         And I fill in
             | name | value |
@@ -36,7 +36,7 @@ Scenario: I can't create a content type with an already existing name
         And I should see "validation-summary-errors"
 
 Scenario: I can't create a content type with an already existing technical name
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/ContentTypes/Create"
         And I fill in
             | name | value |
@@ -55,7 +55,7 @@ Scenario: I can't create a content type with an already existing technical name
         And I should see "validation-summary-errors"
 
 Scenario: I can't rename a content type with an already existing name
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/ContentTypes/Create"
         And I fill in
             | name | value |

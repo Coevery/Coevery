@@ -4,7 +4,7 @@
     I want to create and edit widgets and layers
 
 Scenario: I can edit a default layer
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/Widgets"
         And I follow "Edit"
     Then I should see "<input[^>]*name="LayerPart.Name"[^>]*value="Default"[^>]*>"
@@ -18,7 +18,7 @@ Scenario: I can edit a default layer
     Then I should see "<textarea[^>]*>\s*This is the default layer.\s*</textarea>"
 
 Scenario: I can add a new layer and that layer is active when I'm redirected to the widget management page
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/Widgets"
         And I follow "Add a new layer..."
     Then I should see "<h1[^>]*>Add Layer</h1>"
@@ -32,7 +32,7 @@ Scenario: I can add a new layer and that layer is active when I'm redirected to 
         And I should see "<option[^>]+selected="selected"[^>]+value="\d+">For awesome stuff</option>"
 
 Scenario: I can delete a layer
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/Widgets"
     Then I should see "<option[^>]*>Default</option>"
     When I follow "Edit"
@@ -43,7 +43,7 @@ Scenario: I can delete a layer
         And I should not see "<option[^>]*>Default</option>"
 
 Scenario: I can add a widget to a specific zone in a specific layer
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "Admin/Widgets"
         And I fill in
             | name | value |

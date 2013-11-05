@@ -6,8 +6,8 @@
 Scenario: Creating and using Link fields
 	
 	# Creating an Event content type 
-    Given I have installed Orchard
-		And I have installed "Orchard.Fields"
+    Given I have installed Coevery
+		And I have installed "Coevery.Fields"
     When I go to "Admin/ContentTypes"
     Then I should see "<a[^>]*>.*?Create new type</a>"
     When I go to "Admin/ContentTypes/Create"
@@ -36,16 +36,16 @@ Scenario: Creating and using Link fields
 	Then I should see "Site Url"
 	When I fill in 
 	        | name			  | value                         |
-	        | Event.SiteUrl.Value | http://www.orchardproject.net |
+	        | Event.SiteUrl.Value | http://www.coeveryproject.net |
 		And I fill in
 	        | name			  | value   |
-	        | Event.SiteUrl.Text | Orchard |
+	        | Event.SiteUrl.Text | Coevery |
 		And I hit "Save"
 		And I am redirected
 	Then I should see "Your Event has been created."
 	When I go to "Admin/Contents/List"
 	Then I should see "Site Url:" 
-		And I should see "<a href=\"http://www.orchardproject.net\">Orchard</a>"
+		And I should see "<a href=\"http://www.coeveryproject.net\">Coevery</a>"
 
 	# The hint should be displayed
 	When I go to "Admin/ContentTypes/Edit/Event"

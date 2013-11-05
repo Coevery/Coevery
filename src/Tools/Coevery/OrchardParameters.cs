@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Coevery {
-    public class OrchardParameters : MarshalByRefObject {
+    public class CoeveryParameters : MarshalByRefObject {
         public bool Verbose { get; set; }
         public string VirtualPath { get; set; }
         public string WorkingDirectory { get; set; }

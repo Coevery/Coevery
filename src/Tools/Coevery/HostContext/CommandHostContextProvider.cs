@@ -30,7 +30,7 @@ namespace Coevery.HostContext {
         public void Shutdown(CommandHostContext context) {
             try {
                 if (context.CommandHost != null) {
-                    LogInfo(context, "Shutting down Orchard session...");
+                    LogInfo(context, "Shutting down Coevery session...");
                     context.CommandHost.StopSession(_input, _output);
                 }
             }
@@ -45,7 +45,7 @@ namespace Coevery.HostContext {
         }
 
         private void Initialize(CommandHostContext context) {
-            context.Arguments = new OrchardParametersParser().Parse(new CommandParametersParser().Parse(_args));
+            context.Arguments = new CoeveryParametersParser().Parse(new CommandParametersParser().Parse(_args));
             context.Logger = new Logger(context.Arguments.Verbose, _output);
 
             // Perform some argument validation and display usage if something is incorrect
@@ -68,14 +68,14 @@ namespace Coevery.HostContext {
 
             LogInfo(context, "Working directory: \"{0}\"", context.Arguments.WorkingDirectory);
 
-            LogInfo(context, "Detecting orchard installation root directory...");
-            context.OrchardDirectory = GetOrchardDirectory(context.Arguments.WorkingDirectory);
-            LogInfo(context, "Orchard root directory: \"{0}\"", context.OrchardDirectory.FullName);
+            LogInfo(context, "Detecting coevery installation root directory...");
+            context.CoeveryDirectory = GetCoeveryDirectory(context.Arguments.WorkingDirectory);
+            LogInfo(context, "Coevery root directory: \"{0}\"", context.CoeveryDirectory.FullName);
 
             LogInfo(context, "Creating ASP.NET AppDomain for command agent...");
-            context.CommandHost = CreateWorkerAppDomainWithHost(context.Arguments.VirtualPath, context.OrchardDirectory.FullName, typeof(CommandHost));
+            context.CommandHost = CreateWorkerAppDomainWithHost(context.Arguments.VirtualPath, context.CoeveryDirectory.FullName, typeof(CommandHost));
 
-            LogInfo(context, "Starting Orchard session");
+            LogInfo(context, "Starting Coevery session");
             context.StartSessionResult = context.CommandHost.StartSession(_input, _output);
         }
 
@@ -84,7 +84,7 @@ namespace Coevery.HostContext {
                 context.Logger.LogInfo(format, args);
         }
 
-        private DirectoryInfo GetOrchardDirectory(string directory) {
+        private DirectoryInfo GetCoeveryDirectory(string directory) {
             for (var directoryInfo = new DirectoryInfo(directory); directoryInfo != null; directoryInfo = directoryInfo.Parent) {
                 if (!directoryInfo.Exists) {
                     throw new ApplicationException(string.Format("Directory \"{0}\" does not exist", directoryInfo.FullName));
@@ -92,7 +92,7 @@ namespace Coevery.HostContext {
 
                 // We look for 
                 // 1) .\web.config
-                // 2) .\bin\Orchard.Framework.dll
+                // 2) .\bin\Coevery.Framework.dll
                 var webConfigFileInfo = new FileInfo(Path.Combine(directoryInfo.FullName, "web.config"));
                 if (!webConfigFileInfo.Exists)
                     continue;
@@ -101,20 +101,20 @@ namespace Coevery.HostContext {
                 if (!binDirectoryInfo.Exists)
                     continue;
 
-                var orchardFrameworkFileInfo = new FileInfo(Path.Combine(binDirectoryInfo.FullName, "Orchard.Framework.dll"));
-                if (!orchardFrameworkFileInfo.Exists)
+                var coeveryFrameworkFileInfo = new FileInfo(Path.Combine(binDirectoryInfo.FullName, "Coevery.Framework.dll"));
+                if (!coeveryFrameworkFileInfo.Exists)
                     continue;
 
                 return directoryInfo;
             }
 
             throw new ApplicationException(
-                string.Format("Directory \"{0}\" doesn't seem to contain an Orchard installation", new DirectoryInfo(directory).FullName));
+                string.Format("Directory \"{0}\" doesn't seem to contain an Coevery installation", new DirectoryInfo(directory).FullName));
         }
 
         private static CommandHost CreateWorkerAppDomainWithHost(string virtualPath, string physicalPath, Type hostType) {
             var clientBuildManager = new ClientBuildManager(virtualPath, physicalPath);
-            // Fix for http://orchard.codeplex.com/workitem/17920
+            // Fix for http://coevery.codeplex.com/workitem/17920
             // By forcing the CBM to build App_Code, etc, we ensure that the ASP.NET BuildManager
             // is in a state where it can safely (i.e. in a multi-threaded safe way) process
             // multiple concurrent calls to "GetCompiledAssembly".

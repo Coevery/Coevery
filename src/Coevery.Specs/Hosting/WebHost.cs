@@ -13,17 +13,17 @@ using Path = Bleroy.FluentPath.Path;
 
 namespace Coevery.Specs.Hosting {
     public class WebHost {
-        private readonly Path _orchardTemp;
+        private readonly Path _coeveryTemp;
         private WebHostAgent _webHostAgent;
         private Path _tempSite;
-        private Path _orchardWebPath;
+        private Path _coeveryWebPath;
         private Path _codeGenDir;
         private IEnumerable<string> _knownModules;
         private IEnumerable<string> _knownThemes;
         private IEnumerable<string> _knownBinAssemblies;
 
-        public WebHost(Path orchardTemp) {
-            _orchardTemp = orchardTemp;
+        public WebHost(Path coeveryTemp) {
+            _coeveryTemp = coeveryTemp;
         }
 
         public void Initialize(string templateName, string virtualDirectory, DynamicCompilationOption dynamicCompilationOption) {
@@ -32,34 +32,34 @@ namespace Coevery.Specs.Hosting {
 
             var baseDir = Path.Get(AppDomain.CurrentDomain.BaseDirectory);
 
-            _tempSite = _orchardTemp.Combine(System.IO.Path.GetRandomFileName());
+            _tempSite = _coeveryTemp.Combine(System.IO.Path.GetRandomFileName());
             try { _tempSite.Delete(); }
             catch { }
             
             // Trying the two known relative paths to the Coevery.Web directory.
-            // The second one is for the target "spec" in orchard.proj.
+            // The second one is for the target "spec" in coevery.proj.
             
-            _orchardWebPath = baseDir;
+            _coeveryWebPath = baseDir;
 
-            while (!_orchardWebPath.Combine("Coevery.proj").Exists && _orchardWebPath.Parent != null) {
-                _orchardWebPath = _orchardWebPath.Parent;
+            while (!_coeveryWebPath.Combine("Coevery.proj").Exists && _coeveryWebPath.Parent != null) {
+                _coeveryWebPath = _coeveryWebPath.Parent;
             }
 
-            _orchardWebPath = _orchardWebPath.Combine("src").Combine("Coevery.Web");
+            _coeveryWebPath = _coeveryWebPath.Combine("src").Combine("Coevery.Web");
 
             Log("Initialization of ASP.NET host for template web site \"{0}\":", templateName);
-            Log(" Source location: \"{0}\"", _orchardWebPath);
+            Log(" Source location: \"{0}\"", _coeveryWebPath);
             Log(" Temporary location: \"{0}\"", _tempSite);
 
-            _knownModules = _orchardWebPath.Combine("Modules").Directories.Where(d => d.Combine("module.txt").Exists).Select(d => d.FileName).ToList();
+            _knownModules = _coeveryWebPath.Combine("Modules").Directories.Where(d => d.Combine("module.txt").Exists).Select(d => d.FileName).ToList();
             //foreach (var filename in _knownModules)
             //    Log("Available Module: \"{0}\"", filename);
 
-            _knownThemes = _orchardWebPath.Combine("Themes").Directories.Where(d => d.Combine("theme.txt").Exists).Select(d => d.FileName).ToList();
+            _knownThemes = _coeveryWebPath.Combine("Themes").Directories.Where(d => d.Combine("theme.txt").Exists).Select(d => d.FileName).ToList();
             //foreach (var filename in _knownThemes)
             //    Log("Available Theme: \"{0}\"", filename);
 
-            _knownBinAssemblies = _orchardWebPath.Combine("bin").GetFiles("*.dll").Select(f => f.FileNameWithoutExtension);
+            _knownBinAssemblies = _coeveryWebPath.Combine("bin").GetFiles("*.dll").Select(f => f.FileNameWithoutExtension);
             //foreach (var filename in _knownBinAssemblies)
             //    Log("Assembly in ~/bin: \"{0}\"", filename);
 
@@ -81,18 +81,18 @@ namespace Coevery.Specs.Hosting {
             }
 
             Log("Copy binaries of the \"Coevery.Web\" project");
-            _orchardWebPath.Combine("bin")
+            _coeveryWebPath.Combine("bin")
                 .ShallowCopy("*.dll", _tempSite.Combine("bin"))
                 .ShallowCopy("*.pdb", _tempSite.Combine("bin"));
 
             Log("Copy SqlCe native binaries");
-            if (_orchardWebPath.Combine("bin").Combine("x86").IsDirectory) {
-                _orchardWebPath.Combine("bin").Combine("x86")
+            if (_coeveryWebPath.Combine("bin").Combine("x86").IsDirectory) {
+                _coeveryWebPath.Combine("bin").Combine("x86")
                     .DeepCopy("*.*", _tempSite.Combine("bin").Combine("x86"));
             }
 
-            if (_orchardWebPath.Combine("bin").Combine("amd64").IsDirectory) {
-                _orchardWebPath.Combine("bin").Combine("amd64")
+            if (_coeveryWebPath.Combine("bin").Combine("amd64").IsDirectory) {
+                _coeveryWebPath.Combine("bin").Combine("amd64")
                     .DeepCopy("*.*", _tempSite.Combine("bin").Combine("amd64"));
             }
 
@@ -105,7 +105,7 @@ namespace Coevery.Specs.Hosting {
                 _tempSite.Combine("bin"));
 
             Log("Copy Coevery recipes");
-            _orchardWebPath.Combine("Modules").Combine("Coevery.Setup").Combine("Recipes").DeepCopy("*.xml", _tempSite.Combine("Modules").Combine("Coevery.Setup").Combine("Recipes"));
+            _coeveryWebPath.Combine("Modules").Combine("Coevery.Setup").Combine("Recipes").DeepCopy("*.xml", _tempSite.Combine("Modules").Combine("Coevery.Setup").Combine("Recipes"));
 
             StartAspNetHost(virtualDirectory);
 
@@ -190,7 +190,7 @@ namespace Coevery.Specs.Hosting {
 
         public void CopyExtension(string extensionFolder, string extensionName, ExtensionDeploymentOptions deploymentOptions) {
             Log("Copy extension \"{0}\\{1}\" (options={2})", extensionFolder, extensionName, deploymentOptions);
-            var sourceModule = _orchardWebPath.Combine(extensionFolder).Combine(extensionName);
+            var sourceModule = _coeveryWebPath.Combine(extensionFolder).Combine(extensionName);
             var targetModule = _tempSite.Combine(extensionFolder).Combine(extensionName);
 
             sourceModule.ShallowCopy("*.txt", targetModule);

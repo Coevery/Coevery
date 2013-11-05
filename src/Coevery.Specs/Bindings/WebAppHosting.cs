@@ -21,7 +21,7 @@ namespace Coevery.Specs.Bindings {
         private RequestDetails _details;
         private HtmlDocument _doc;
         private MessageSink _messages;
-        private static readonly Path _orchardTemp = Path.Get(System.IO.Path.GetTempPath()).Combine("Coevery.Specs");
+        private static readonly Path _coeveryTemp = Path.Get(System.IO.Path.GetTempPath()).Combine("Coevery.Specs");
         private ExtensionDeploymentOptions _moduleDeploymentOptions = ExtensionDeploymentOptions.CompiledAssembly;
         private DynamicCompilationOption _dynamicCompilationOption = DynamicCompilationOption.Enabled;
 
@@ -36,14 +36,14 @@ namespace Coevery.Specs.Bindings {
 
         [BeforeTestRun]
         public static void BeforeTestRun() {
-            try { _orchardTemp.Delete(true).CreateDirectory(); }
+            try { _coeveryTemp.Delete(true).CreateDirectory(); }
             catch { }
         }
 
         [AfterTestRun]
         public static void AfterTestRun() {
             try {
-                _orchardTemp.Delete(true); // <- try to clear any stragglers on the way out
+                _coeveryTemp.Delete(true); // <- try to clear any stragglers on the way out
             }
             catch { }
         }
@@ -91,7 +91,7 @@ namespace Coevery.Specs.Bindings {
 
         [Given(@"I have a clean site based on (.*) at ""(.*)""")]
         public void GivenIHaveACleanSiteBasedOn(string siteFolder, string virtualDirectory) {
-            _webHost = new WebHost(_orchardTemp);
+            _webHost = new WebHost(_coeveryTemp);
             Host.Initialize(siteFolder, virtualDirectory ?? "/", _dynamicCompilationOption);
             var shuttle = new Shuttle();
             Host.Execute(() => {

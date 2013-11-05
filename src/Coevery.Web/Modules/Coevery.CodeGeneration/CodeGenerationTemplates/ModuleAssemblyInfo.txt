@@ -9,7 +9,7 @@ using System.Security;
 [assembly: AssemblyTitle("$$ModuleName$$")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Orchard")]
+[assembly: AssemblyProduct("Coevery")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

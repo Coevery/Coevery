@@ -366,7 +366,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 146
   testRunner.And("I have installed \"Coevery.Fields\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
-  testRunner.And("I have the file \"Content\\orchard.core.po\" in \"Core\\App_Data\\Localization\\fr-FR\\or" +
+  testRunner.And("I have the file \"Content\\coevery.core.po\" in \"Core\\App_Data\\Localization\\fr-FR\\or" +
                     "chard.core.po\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
     testRunner.When("I go to \"Admin/ContentTypes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

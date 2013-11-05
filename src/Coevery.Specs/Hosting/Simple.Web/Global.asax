@@ -1,1 +1,1 @@
-﻿<%@ Application Inherits="Orchard.Specs.Hosting.Simple.Web.MvcApplication, Orchard.Specs" %>
+﻿<%@ Application Inherits="Coevery.Specs.Hosting.Simple.Web.MvcApplication, Coevery.Specs" %>

@@ -282,7 +282,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table12.AddRow(new string[] {
                         "Event.Contact.Value",
-                        "contact@orchardproject.net"});
+                        "contact@coeveryproject.net"});
 #line 122
  testRunner.When("I fill in", ((string)(null)), table12, "When ");
 #line 125
@@ -296,7 +296,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 129
  testRunner.Then("I should see \"Contact:\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 130
-  testRunner.And("I should see \"contact@orchardproject.net\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I should see \"contact@coeveryproject.net\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

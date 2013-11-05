@@ -23,7 +23,7 @@ namespace Coevery.Specs.Bindings {
             var webApp = Binding<WebAppHosting>();
             webApp.Host.Execute(() => {
                 using ( var environment = MvcApplication.CreateStandaloneEnvironment("Default") ) {
-                    var orchardServices = environment.Resolve<ICoeveryServices>();
+                    var coeveryServices = environment.Resolve<ICoeveryServices>();
                     var cultureManager = environment.Resolve<ICultureManager>();
 
                     var currentCultures = cultureManager.ListCultures();
@@ -31,7 +31,7 @@ namespace Coevery.Specs.Bindings {
                         cultureManager.AddCulture(cultureName);
                     }
 
-                    orchardServices.WorkContext.CurrentSite.SiteCulture = cultureName;
+                    coeveryServices.WorkContext.CurrentSite.SiteCulture = cultureName;
                 }
             });
         }

@@ -6,8 +6,8 @@
 Scenario: Creating and using Boolean fields
 	
 	# Creating an Event content type 
-    Given I have installed Orchard
-		And I have installed "Orchard.Fields"
+    Given I have installed Coevery
+		And I have installed "Coevery.Fields"
     When I go to "Admin/ContentTypes"
     Then I should see "<a[^>]*>.*?Create new type</a>"
     When I go to "Admin/ContentTypes/Create"

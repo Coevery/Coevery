@@ -3,8 +3,8 @@
   <Recipe>
     <Name>cms</Name>
     <Description>a sample Coevery recipe describing a cms</Description>
-    <Author>orchard</Author>
-    <WebSite>http://orchardproject.net</WebSite>
+    <Author>coevery</Author>
+    <WebSite>http://coeveryproject.net</WebSite>
     <Tags>tag1, tag2</Tags>
     <Version>1.1</Version>
   </Recipe>

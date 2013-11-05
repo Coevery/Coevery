@@ -7,7 +7,7 @@ namespace Coevery {
 
         public static int Main(string[] args) {
             Console.SetIn(new StreamReader(Console.OpenStandardInput(ConsoleInputBufferSize)));
-            return (int)new OrchardHost(Console.In, Console.Out, args).Run();
+            return (int)new CoeveryHost(Console.In, Console.Out, args).Run();
         }
     }
 }

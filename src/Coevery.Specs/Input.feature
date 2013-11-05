@@ -6,8 +6,8 @@
 Scenario: Creating and using Input fields
 	
 	# Creating an Event content type 
-    Given I have installed Orchard
-		And I have installed "Orchard.Fields"
+    Given I have installed Coevery
+		And I have installed "Coevery.Fields"
     When I go to "Admin/ContentTypes"
     Then I should see "<a[^>]*>.*?Create new type</a>"
     When I go to "Admin/ContentTypes/Create"
@@ -121,10 +121,10 @@ Scenario: Creating and using Input fields
 	Then I should see "Contact"
 	When I fill in 
 	        | name			      | value                      |
-	        | Event.Contact.Value | contact@orchardproject.net |
+	        | Event.Contact.Value | contact@coeveryproject.net |
 		And I hit "Save"
 		And I am redirected
 	Then I should see "Your Event has been created."
 	When I go to "Admin/Contents/List"
 	Then I should see "Contact:" 
-		And I should see "contact@orchardproject.net"
+		And I should see "contact@coeveryproject.net"

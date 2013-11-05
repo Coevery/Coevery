@@ -4,7 +4,7 @@
     I want to create, publish and edit routes
 
 Scenario: I can create and publish a new Page with international characters in its route
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/contents/create/page"
         And I fill in
             | name | value |
@@ -14,7 +14,7 @@ Scenario: I can create and publish a new Page with international characters in i
     Then I should see "<h1[^>]*>.*?Χελλο.*?</h1>"
 
 Scenario: I can create and publish a new Home Page
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/contents/create/page"
         And I fill in
             | name | value |
@@ -23,5 +23,5 @@ Scenario: I can create and publish a new Home Page
         And I hit "Publish Now"
         And I go to "/"
     Then I should see "<h1[^>]*>.*?Foo.*?</h1>"
-    When I go to "/welcome-to-orchard"
+    When I go to "/welcome-to-coevery"
     Then I should see "<h1[^>]*>.*?Welcome.*?</h1>"

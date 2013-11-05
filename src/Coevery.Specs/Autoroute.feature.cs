@@ -125,7 +125,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
     testRunner.Then("I should see \"<h1[^>]*>.*?Foo.*?</h1>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
-    testRunner.When("I go to \"/welcome-to-orchard\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I go to \"/welcome-to-coevery\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
     testRunner.Then("I should see \"<h1[^>]*>.*?Welcome.*?</h1>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

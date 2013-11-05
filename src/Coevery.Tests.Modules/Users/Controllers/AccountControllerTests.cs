@@ -122,7 +122,7 @@ namespace Coevery.Tests.Modules.Users.Controllers {
             _controller = _container.Resolve<AccountController>();
 
             var mockHttpContext = new Mock<HttpContextBase>();
-            mockHttpContext.SetupGet(x => x.Request.Url).Returns(new Uri("http://www.orchardproject.net"));
+            mockHttpContext.SetupGet(x => x.Request.Url).Returns(new Uri("http://www.coeveryproject.net"));
             mockHttpContext.SetupGet(x => x.Request).Returns(new HttpRequestStub());
 
             _controller.ControllerContext = new ControllerContext(
@@ -348,14 +348,14 @@ namespace Coevery.Tests.Modules.Users.Controllers {
 
             public override Uri Url {
                 get {
-                    return new Uri("http://orchardproject.net");
+                    return new Uri("http://coeveryproject.net");
                 }
             }
 
             public override NameValueCollection Headers {
                 get {
                     var nv = new NameValueCollection();
-                    nv["Host"] = "orchardproject.net";
+                    nv["Host"] = "coeveryproject.net";
                     return nv;
                 }
             }

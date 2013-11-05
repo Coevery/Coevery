@@ -77,7 +77,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
     testRunner.When("I go to \"admin\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
-    testRunner.Then("I should see \"<div id=\"orchard-version\">Coevery v(?:\\.\\d+){2,4}</div>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("I should see \"<div id=\"coevery-version\">Coevery v(?:\\.\\d+){2,4}</div>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

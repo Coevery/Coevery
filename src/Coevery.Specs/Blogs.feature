@@ -4,12 +4,12 @@
     I want to create blogs and create, publish and edit blog posts
 
 Scenario: In the admin (menu) there is a link to create a Blog
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin"
     Then I should see "<a[^>]*href="/Admin/Blogs/Create"[^>]*>Blog</a>"
     
 Scenario: I can create a new blog and blog post
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |
@@ -33,7 +33,7 @@ Scenario: I can create a new blog and blog post
         And I should see "Hi there."
 
 Scenario: I can create a new blog with multiple blog posts each with the same title and unique slugs are generated or given for said posts
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |
@@ -75,7 +75,7 @@ Scenario: I can create a new blog with multiple blog posts each with the same ti
         And I should see "Are you still there?"
 
 Scenario: When viewing a blog the user agent is given an RSS feed of the blog's posts
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |
@@ -94,9 +94,9 @@ Scenario: When viewing a blog the user agent is given an RSS feed of the blog's 
     Then I should see "<link rel="alternate" type="application/rss\+xml" title="My Blog" href="/rss\?containerid=\d+" />"
     
 Scenario: Enabling remote blog publishing inserts the appropriate metaweblogapi markup into the blog's page
-    Given I have installed Orchard
+    Given I have installed Coevery
         And I have enabled "XmlRpc"
-        And I have enabled "Orchard.Blogs.RemotePublishing"
+        And I have enabled "Coevery.Blogs.RemotePublishing"
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |
@@ -110,9 +110,9 @@ Scenario: Enabling remote blog publishing inserts the appropriate metaweblogapi 
         And I should see "<clientType>Metaweblog</clientType>"
 
 Scenario: The virtual path of my installation when not at the root is reflected in the URL example for the slug field when creating a blog or blog post
-    Given I have installed Orchard at "/OrchardLocal"
+    Given I have installed Coevery at "/CoeveryLocal"
     When I go to "admin/blogs/create"
-    Then I should see "<span>http\://localhost/OrchardLocal/</span>"
+    Then I should see "<span>http\://localhost/CoeveryLocal/</span>"
     When I fill in
         | name | value |
         | Title.Title | My Blog |
@@ -120,10 +120,10 @@ Scenario: The virtual path of my installation when not at the root is reflected 
         And I go to "admin/blogs"
         And I follow "My Blog"
         And I follow "New Post" where class name has "primaryAction"
-    Then I should see "<span>http\://localhost/OrchardLocal/</span>"
+    Then I should see "<span>http\://localhost/CoeveryLocal/</span>"
 
 Scenario: The virtual path of my installation when at the root is reflected in the URL example for the slug field when creating a blog or blog post
-    Given I have installed Orchard at "/"
+    Given I have installed Coevery at "/"
     When I go to "admin/blogs/create"
     Then I should see "<span>http\://localhost/</span>"
     When I fill in
@@ -136,7 +136,7 @@ Scenario: The virtual path of my installation when at the root is reflected in t
     Then I should see "<span>http\://localhost/</span>"
 
 Scenario: I set my blog to be the content for the home page and the posts for the blog be rooted to the app
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |
@@ -160,7 +160,7 @@ Scenario: I set my blog to be the content for the home page and the posts for th
     Then I should see "<h1>My Post</h1>"
 
 Scenario: I can create browse blog posts on several pages
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |
@@ -275,7 +275,7 @@ Scenario: I can create browse blog posts on several pages
         And I should not see "<h1[^>]*>.*?My Post 3.*?</h1>"
 
 Scenario: I can create a new blog with a percent sign in the title and it gets stripped out of the slug
-	   Given I have installed Orchard
+	   Given I have installed Coevery
 	   When I go to "admin/blogs/create"
 	   And I fill in
 	     | name        | value   |

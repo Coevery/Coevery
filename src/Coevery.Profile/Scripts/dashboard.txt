@@ -1,6 +1,6 @@
 scenario
 {
-    name    = "Orchard Dashboard";
+    name    = "Coevery Dashboard";
 
     warmup      = 10;
     duration    = 30;

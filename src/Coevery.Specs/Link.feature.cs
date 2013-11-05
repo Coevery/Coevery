@@ -135,7 +135,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table3.AddRow(new string[] {
                         "Event.SiteUrl.Value",
-                        "http://www.orchardproject.net"});
+                        "http://www.coeveryproject.net"});
 #line 37
  testRunner.When("I fill in", ((string)(null)), table3, "When ");
 #line hidden
@@ -158,7 +158,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
  testRunner.Then("I should see \"Site Url:\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 48
-  testRunner.And("I should see \"<a href=\\\"http://www.orchardproject.net\\\">Coevery</a>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I should see \"<a href=\\\"http://www.coeveryproject.net\\\">Coevery</a>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
  testRunner.When("I go to \"Admin/ContentTypes/Edit/Event\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden

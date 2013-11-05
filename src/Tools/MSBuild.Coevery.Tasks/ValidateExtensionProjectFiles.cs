@@ -108,7 +108,7 @@ namespace MSBuild.Coevery.Tasks {
             }
 
             private void CheckCodeAnalysisRuleSet(XDocument document) {
-                const string orchardbasiccorrectnessRuleset = "OrchardBasicCorrectness.ruleset";
+                const string coeverybasiccorrectnessRuleset = "CoeveryBasicCorrectness.ruleset";
 
                 var elements = document
                     .Elements(Project)
@@ -117,11 +117,11 @@ namespace MSBuild.Coevery.Tasks {
 
                 foreach (var element in elements) {
                     var filename = Path.GetFileName(element.Value);
-                    bool isValid = StringComparer.OrdinalIgnoreCase.Equals(filename, orchardbasiccorrectnessRuleset);
+                    bool isValid = StringComparer.OrdinalIgnoreCase.Equals(filename, coeverybasiccorrectnessRuleset);
                     if (!isValid) {
                         string message = string.Format(
                             "\"{0}\" element should be \"{1}\" instead of \"{2}\".",
-                            element.Name.LocalName, orchardbasiccorrectnessRuleset, element.Value);
+                            element.Name.LocalName, coeverybasiccorrectnessRuleset, element.Value);
                         AddValidationError(element, message);
                     }
                 }

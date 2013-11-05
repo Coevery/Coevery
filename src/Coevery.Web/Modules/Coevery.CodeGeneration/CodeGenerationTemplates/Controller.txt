@@ -1,12 +1,12 @@
 ﻿using System.Web.Mvc;
-using Orchard.Localization;
-using Orchard;
+using Coevery.Localization;
+using Coevery;
 
 namespace $$ModuleName$$.Controllers {
     public class $$ControllerName$$ : Controller {
-        public IOrchardServices Services { get; set; }
+        public ICoeveryServices Services { get; set; }
 
-        public $$ControllerName$$(IOrchardServices services) {
+        public $$ControllerName$$(ICoeveryServices services) {
             Services = services;
             T = NullLocalizer.Instance;
         }

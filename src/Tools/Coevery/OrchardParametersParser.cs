@@ -4,11 +4,11 @@ using System.Security;
 using Coevery.Parameters;
 
 namespace Coevery {
-    public class OrchardParametersParser : IOrchardParametersParser {
+    public class CoeveryParametersParser : ICoeveryParametersParser {
         [SecurityCritical]
-        public OrchardParameters Parse(CommandParameters parameters) {
+        public CoeveryParameters Parse(CommandParameters parameters) {
 
-            var result = new OrchardParameters {
+            var result = new CoeveryParameters {
                 Arguments = new List<string>(),
                 ResponseFiles = new List<string>(),
                 Switches = new Dictionary<string, string>()

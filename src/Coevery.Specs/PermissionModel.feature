@@ -5,7 +5,7 @@
 
 @security
 Scenario: Login can be automated
-    Given I have installed Orchard
+    Given I have installed Coevery
         And I have a user "bob" with permissions "AccessFrontEnd"
     When I go to "users/account/logoff"
         And I go to "users/account/logon"
@@ -20,7 +20,7 @@ Scenario: Login can be automated
 
 @security
 Scenario: Anonymous user can see the home page but not the dashboard
-    Given I have installed Orchard
+    Given I have installed Coevery
     And I have a user "bob" with permissions "AccessFrontEnd"
     When I sign in as "bob"
      And I go to "/"

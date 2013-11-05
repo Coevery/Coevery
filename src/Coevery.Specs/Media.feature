@@ -4,8 +4,8 @@
     I want to upload and manage files in a media folder
 
 Scenario: Media admin is available
-    Given I have installed Orchard
-		And I have installed "Orchard.Media"
+    Given I have installed Coevery
+		And I have installed "Coevery.Media"
 
 	# Accessing the media page
     When I go to "admin/media"

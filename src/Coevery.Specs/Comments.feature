@@ -4,7 +4,7 @@
     I want to allow comments to be safely posted on specific content item pages
 
 Scenario: HTML markup in any given comment is encoded
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |
@@ -44,7 +44,7 @@ Scenario: HTML markup in any given comment is encoded
         And I should not see "<br id="bad-anon-br" />"
 
 Scenario: Moderated comments are not displayed
-    Given I have installed Orchard
+    Given I have installed Coevery
     When I go to "admin/blogs/create"
         And I fill in
             | name | value |

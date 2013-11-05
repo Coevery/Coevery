@@ -6,12 +6,12 @@ using Coevery.HostContext;
 using Coevery.Parameters;
 
 namespace Coevery {
-    class OrchardHost {
+    class CoeveryHost {
         private readonly TextReader _input;
         private readonly TextWriter _output;
         private readonly ICommandHostContextProvider _commandHostContextProvider;
 
-        public OrchardHost(TextReader input, TextWriter output, string[] args) {
+        public CoeveryHost(TextReader input, TextWriter output, string[] args) {
             _input = input;
             _output = output;
             _commandHostContextProvider = new CommandHostContextProvider(args);
@@ -55,13 +55,13 @@ namespace Coevery {
         }
 
         private CommandHostContext CommandHostContext() {
-            _output.WriteLine("Initializing Orchard session. (This might take a few seconds...)");
+            _output.WriteLine("Initializing Coevery session. (This might take a few seconds...)");
             var result = _commandHostContextProvider.CreateContext();
             if (result.StartSessionResult == result.RetryResult) {
                 result = _commandHostContextProvider.CreateContext();
             }
             else if(result.StartSessionResult == CommandReturnCodes.Fail) {
-                _output.WriteLine("Failed to initialize Orchard session.");    
+                _output.WriteLine("Failed to initialize Coevery session.");    
             }
 
             return result;
@@ -103,7 +103,7 @@ namespace Coevery {
 
         private string ReadCommand(CommandHostContext context) {
             _output.WriteLine();
-            _output.Write("orchard> ");
+            _output.Write("coevery> ");
             return _input.ReadLine();
         }
 
@@ -124,18 +124,18 @@ namespace Coevery {
 
         private CommandReturnCodes RunCommandInSession(CommandHostContext context, string command) {
             try {
-                var args = new OrchardParametersParser().Parse(new CommandParametersParser().Parse(new CommandLineParser().Parse(command)));
+                var args = new CoeveryParametersParser().Parse(new CommandParametersParser().Parse(new CommandLineParser().Parse(command)));
                 return context.CommandHost.RunCommandInSession(_input, _output, context.Logger, args);
             }
             catch (AppDomainUnloadedException) {
-                _output.WriteLine("AppDomain of Orchard session has been unloaded. (Retrying...)");
+                _output.WriteLine("AppDomain of Coevery session has been unloaded. (Retrying...)");
                 return context.RetryResult;
             }
         }
 
         private void DisplayInteractiveHelp() {
-            _output.WriteLine("The Orchard command interpreter supports running a few built-in commands");
-            _output.WriteLine("as well as specific commands from enabled features of an Orchard installation.");
+            _output.WriteLine("The Coevery command interpreter supports running a few built-in commands");
+            _output.WriteLine("as well as specific commands from enabled features of an Coevery installation.");
             _output.WriteLine("");
             _output.WriteLine("The general syntax of commands is");
             _output.WriteLine("");
@@ -183,16 +183,16 @@ namespace Coevery {
         }
 
         private void DisplayUsageHelp() {
-            _output.WriteLine("Executes Orchard commands from a Orchard installation directory.");
+            _output.WriteLine("Executes Coevery commands from a Coevery installation directory.");
             _output.WriteLine("");
             _output.WriteLine("Usage:");
-            _output.WriteLine("   orchard.exe");
-            _output.WriteLine("       Starts the Orchard command interpreter");
+            _output.WriteLine("   coevery.exe");
+            _output.WriteLine("       Starts the Coevery command interpreter");
             _output.WriteLine("");
-            _output.WriteLine("   orchard.exe <command-name> [arg1] ... [argn] [/switch1[:value1]] ... [/switchn[:valuen]]");
+            _output.WriteLine("   coevery.exe <command-name> [arg1] ... [argn] [/switch1[:value1]] ... [/switchn[:valuen]]");
             _output.WriteLine("       Executes a single command");
             _output.WriteLine("");
-            _output.WriteLine("   orchard.exe @response-file1 ... [@response-filen] [/switch1[:value1]] ... [/switchn[:valuen]]");
+            _output.WriteLine("   coevery.exe @response-file1 ... [@response-filen] [/switch1[:value1]] ... [/switchn[:valuen]]");
             _output.WriteLine("       Executes multiples commands from response files");
             _output.WriteLine("");
             _output.WriteLine(" where");
@@ -225,7 +225,7 @@ namespace Coevery {
             _output.WriteLine("");
             _output.WriteLine("   /WorkingDirectory:<physical-path>");
             _output.WriteLine("   /wd:<physical-path>");
-            _output.WriteLine("       Specifies the orchard installation directory. The current directory is the default.");
+            _output.WriteLine("       Specifies the coevery installation directory. The current directory is the default.");
             _output.WriteLine("");
             _output.WriteLine("   /Verbose");
             _output.WriteLine("   /v");

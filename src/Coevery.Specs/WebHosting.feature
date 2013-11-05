@@ -1,5 +1,5 @@
 ﻿Feature: Web Hosting
-    In order to test orchard
+    In order to test coevery
     As an integration runner
     I want to verify basic hosting is working
 
@@ -53,7 +53,7 @@ Scenario: Being redirected
 
 Scenario: Not found modules file
     Given I have a clean site based on Simple.Web
-    When I go to "/Modules/Orchard.Blogs/module.txt"
+    When I go to "/Modules/Coevery.Blogs/module.txt"
     Then the status should be 404 "Not Found"
 
 Scenario: Not found themes file

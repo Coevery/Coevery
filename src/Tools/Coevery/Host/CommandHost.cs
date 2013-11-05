@@ -20,7 +20,7 @@ namespace Coevery.Host {
 
     /// <summary>
     /// The CommandHost runs inside the ASP.NET AppDomain and serves as an intermediate
-    /// between the command line and the CommandHostAgent, which is known to the Orchard
+    /// between the command line and the CommandHostAgent, which is known to the Coevery
     /// Framework and has the ability to execute commands.
     /// </summary>
     public class CommandHost : MarshalByRefObject, IRegisteredObject {
@@ -53,7 +53,7 @@ namespace Coevery.Host {
             }
         }
 
-        public CommandReturnCodes RunCommand(TextReader input, TextWriter output, Logger logger, OrchardParameters args) {
+        public CommandReturnCodes RunCommand(TextReader input, TextWriter output, Logger logger, CoeveryParameters args) {
             var agent = CreateAgent();
             CommandReturnCodes result = (CommandReturnCodes)agent.GetType().GetMethod("RunSingleCommand").Invoke(agent, new object[] { 
                 input,
@@ -65,7 +65,7 @@ namespace Coevery.Host {
             return result;
         }
 
-        public CommandReturnCodes RunCommandInSession(TextReader input, TextWriter output, Logger logger, OrchardParameters args) {
+        public CommandReturnCodes RunCommandInSession(TextReader input, TextWriter output, Logger logger, CoeveryParameters args) {
             CommandReturnCodes result = (CommandReturnCodes)_agent.GetType().GetMethod("RunCommand").Invoke(_agent, new object[] { 
                 input,
                 output,
@@ -86,7 +86,7 @@ namespace Coevery.Host {
             foreach (var line in responseLines) {
                 logger.LogInfo("{0} ({1}): Running command: {2}", line.Filename, line.LineNumber, line.LineText);
 
-                var args = new OrchardParametersParser().Parse(new CommandParametersParser().Parse(line.Args));
+                var args = new CoeveryParametersParser().Parse(new CommandParametersParser().Parse(line.Args));
 
                 result = (CommandReturnCodes)agent.GetType().GetMethod("RunCommand").Invoke(agent, new object[] { 
                     input,
@@ -106,7 +106,7 @@ namespace Coevery.Host {
         }
 
         private object CreateAgent() {
-            return Activator.CreateInstance("Orchard.Framework", "Orchard.Commands.CommandHostAgent").Unwrap();
+            return Activator.CreateInstance("Coevery.Framework", "Coevery.Commands.CommandHostAgent").Unwrap();
         }
 
         private CommandReturnCodes StopHost(object agent, TextReader input, TextWriter output) {
