@@ -1,10 +1,19 @@
 ﻿'use strict';
 
-define(['core/app/detourService'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
       'EntityEditCtrl',
-      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource','$http','$parse',
-      function ($timeout, $scope, logger, $state, $stateParams, $resource, $http, $parse) {
+      ['$timeout', '$scope', 'logger', '$state', '$stateParams', '$resource', '$http', '$parse', 'entityDataService',
+      function ($timeout, $scope, logger, $state, $stateParams, $resource, $http, $parse, entityDataService) {
+          $scope.fieldtypes = ['TextField','ReferenceField'];
+          $scope.fieldtype = $scope.fieldtypes[0];
+          $scope.nextfieldtype = $scope.fieldtypes[1];
+          $scope.getEntities = function() {
+              $scope.entities=entityDataService.query();
+              //$scope.entities = [];
+          };
+
+          $scope.getEntities();
 
           var validator = $("#myForm").validate({
               errorClass: "inputError"

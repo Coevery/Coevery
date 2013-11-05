@@ -111,4 +111,33 @@ angular.module('coevery.common', [])
                  });
              }
          };
+     }])
+    .directive('changeRequired', ["logger", function (logger) {
+         return {
+             restrict: 'A',
+             link: function (scope, element, attrs) {
+                 element.css("display", "none");
+                 var fieldtype = attrs["changeRequired"];
+                 scope.$watch(function() {
+                     return scope.fieldtype;
+                 }, function (newval,oldval) {
+                     if (newval == fieldtype) {
+                         if (scope.entities.length == 0) {
+                             logger.info("please create a entity first");
+                             scope.fieldtype = oldval;
+                             return;
+                         }
+                         element.css("display", "block");
+                         element.find(":text").addClass("required");
+                         var scrolloffset = element.find("#pos").offset();
+                         $("body,html").animate({
+                             scrollTop: scrolloffset.top
+                         }, 800);
+                     } else {
+                         element.css("display", "none");
+                         element.find(":text").removeClass("required");
+                     }
+                 });
+             }
+         };
      }]);

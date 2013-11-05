@@ -53,7 +53,6 @@ namespace Coevery.Entities.Controllers {
             }
 
             var typeViewModel = _contentDefinitionService.GetType(string.Empty);
-
             return View(typeViewModel);
         }
 
@@ -81,7 +80,9 @@ namespace Coevery.Entities.Controllers {
 
             viewModel.FieldLabel = string.IsNullOrWhiteSpace(viewModel.FieldLabel) ? String.Empty : viewModel.FieldLabel.Trim();
             viewModel.FieldName = (viewModel.FieldName ?? viewModel.FieldLabel).ToSafeName();
-
+            viewModel.FieldType = Convert.ToInt32(viewModel.FieldType) == 0 ? "CoeveryTextField" : "ReferenceField";
+            viewModel.RelationName = string.IsNullOrWhiteSpace(viewModel.RelationName) ? String.Empty : viewModel.RelationName.Trim();
+            
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
             }
@@ -108,6 +109,8 @@ namespace Coevery.Entities.Controllers {
                 ModelState.AddModelError("Name", T("A type with the same Name or DisplayName already exists.").ToString());
             }
 
+            
+
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
                 Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -117,6 +120,13 @@ namespace Coevery.Entities.Controllers {
                 return Content(string.Concat(temp));
             }
             _contentMetadataService.CreateEntity(viewModel);
+            if (viewModel.FieldType == "ReferenceField")
+            {
+                var entity = _contentMetadataService.GetDraftEntity(viewModel.Name);
+                var referField = entity.FieldMetadataRecords.FirstOrDefault(x => x.Name == viewModel.FieldName);
+                _contentMetadataService.UpdateFieldSetting(referField,viewModel);
+                referField.EntityMetadataRecord = entity.Record;
+            }
             return Json(new {entityName = viewModel.Name});
         }
 
