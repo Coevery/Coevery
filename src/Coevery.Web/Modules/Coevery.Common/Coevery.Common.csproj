@@ -118,11 +118,7 @@
     <Compile Include="FrontMenu\FrontMenu.cs" />
     <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
     <Compile Include="FrontMenu\FrontMenuAttribute.cs" />
-    <Compile Include="Handlers\CoeveryCommonPartHandler.cs" />
     <Compile Include="Handlers\DynamicContentsHandler.cs" />
-    <Compile Include="Models\CoeveryCommonPart.cs" />
-    <Compile Include="Models\CoeveryCommonPartRecord.cs" />
-    <Compile Include="Models\CoeveryCommonPartVersionRecord.cs" />
     <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Providers\IDynamicAssemblyBuilder.cs" />
     <Compile Include="Routes.cs" />

@@ -5,24 +5,7 @@ using Coevery.Data.Migration;
 
 namespace Coevery.Common {
     public class Migrations : DataMigrationImpl {
-        public int Create() {
-            SchemaBuilder.CreateTable("CoeveryCommonPartRecord",
-                table => table
-                    .ContentPartRecord()
-                    .Column<int>("OwnerId")
-                    .Column<int>("ModifierId")
-                    .Column<DateTime>("CreatedUtc")
-                    .Column<DateTime>("ModifiedUtc")
-                    .Column<int>("Container_id")
-                );
-
-            SchemaBuilder.CreateTable("CoeveryCommonPartVersionRecord",
-                table => table
-                    .ContentPartVersionRecord()
-                    .Column<DateTime>("CreatedUtc")
-                    .Column<DateTime>("ModifiedUtc")
-                );
-
+        public int Create() { 
             SchemaBuilder.CreateTable("ModuleMenuItemPartRecord",
                 table => table
                     .ContentPartRecord()
@@ -39,11 +22,7 @@ namespace Coevery.Common {
                 .WithSetting("Stereotype", "MenuItem")
                 );
 
-            ContentDefinitionManager.AlterPartDefinition("CoeveryCommonPart", builder => builder
-                .Attachable()
-                .WithDescription("Provides common information about a content item, such as Owner, Date Created, Modifier and Date Modified."));
-
-            return 1;
+           return 1;
         }
 
         public int UpdateFrom1() {

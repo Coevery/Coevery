@@ -74,7 +74,7 @@ namespace Coevery.Entities.Handlers {
         private void CreateEntity(EntityMetadataPart part) {
             _contentDefinitionManager.AlterTypeDefinition(part.Name, builder => {
                 builder.DisplayedAs(part.DisplayName);
-                builder.WithPart(part.Name.ToPartName()).WithPart("CoeveryCommonPart");
+                builder.WithPart(part.Name.ToPartName());
             });
 
             foreach (var record in part.FieldMetadataRecords) {

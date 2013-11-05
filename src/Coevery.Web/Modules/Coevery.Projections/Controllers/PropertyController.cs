@@ -10,7 +10,6 @@ using Coevery.ContentManagement;
 using Coevery.Localization;
 using Coevery.Projections.Descriptors.Property;
 using Coevery.Projections.Models;
-using Coevery.Projections.Services;
 
 namespace Coevery.Projections.Controllers {
     public class PropertyController : ApiController {

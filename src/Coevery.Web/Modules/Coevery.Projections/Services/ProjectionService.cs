@@ -6,14 +6,11 @@ using Coevery.Common.Extensions;
 using Coevery.Entities.Services;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData;
 using Coevery.Core.Title.Models;
 using Coevery.Forms.Services;
 using Coevery.Localization;
-using Coevery.Projections.Models;
-using Coevery.Projections.Services;
 using Coevery.Projections.Descriptors.Property;
 using Coevery.UI.Notify;
 

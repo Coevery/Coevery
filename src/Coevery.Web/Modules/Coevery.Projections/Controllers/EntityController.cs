@@ -17,7 +17,6 @@ using Coevery.Forms.Services;
 using Coevery.Projections.Descriptors.Filter;
 using Coevery.Projections.Descriptors.Property;
 using Coevery.Projections.Models;
-using Coevery.Projections.Services;
 using System.Linq;
 using Coevery.Tokens;
 using Coevery.UI.Navigation;
