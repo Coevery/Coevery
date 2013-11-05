@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Coevery.Common.Events;
-using Coevery.Common.Handlers;
+using Coevery.Core.Common.Handlers;
 using Coevery.Relationship.Drivers;
 using Coevery.Relationship.Models;
 using Coevery.Relationship.Records;
@@ -42,7 +42,7 @@ namespace Coevery.Relationship.Handlers {
 
                 var contentLinkRecordType = BuildType(
                     string.Format("Coevery.DynamicTypes.{0}.{1}ContentLinkRecord", "Models", relationshipName),
-                    moduleBuilder, typeof(ContentLinkRecord<,>).MakeGenericType(primaryPartRecordType, relatedPartRecordType))
+                    moduleBuilder, typeof(ContentLinkRecord))
                     .CreateType();
 
                 var primaryPartType = BuildType(

@@ -2,7 +2,7 @@
 using Coevery.ContentManagement.Records;
 using Coevery.Data;
 
-namespace Coevery.Common.Handlers {
+namespace Coevery.Core.Common.Handlers {
     public abstract class DynamicContentsHandler<TRecord> : ContentHandler where TRecord : ContentPartRecord, new() {
         public DynamicContentsHandler(IRepository<TRecord> repository) {
             Filters.Add(StorageFilter.For(repository));

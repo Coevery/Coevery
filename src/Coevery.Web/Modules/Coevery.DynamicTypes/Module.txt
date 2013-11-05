@@ -4,5 +4,4 @@ Website: http://coevery.codeplex.com
 Version: 1.2
 CoeveryVersion: 1.5
 Description: Metadata modules enables the creation and alteration of entity types not based on code.
-Dependencies: Coevery.Relationship
 Category: Coevery

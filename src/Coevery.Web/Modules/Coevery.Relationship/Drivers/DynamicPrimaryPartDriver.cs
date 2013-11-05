@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Coevery.Relationship.Models;
-using Coevery.Relationship.Services;
-using Coevery.Relationship.ViewModels;
-using JetBrains.Annotations;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.MetaData;
 using Coevery.ContentManagement.Records;
 using Coevery.Data;
+using Coevery.Relationship.Models;
+using Coevery.Relationship.Services;
+using Coevery.Relationship.ViewModels;
+using JetBrains.Annotations;
 
 namespace Coevery.Relationship.Drivers {
     [UsedImplicitly]
@@ -19,7 +19,7 @@ namespace Coevery.Relationship.Drivers {
         where TRelatedPart : ContentPart<TRelatedPartRecord>
         where TPrimaryPartRecord : ContentPartRecord
         where TRelatedPartRecord : ContentPartRecord
-        where TContentLinkRecord : ContentLinkRecord<TPrimaryPartRecord, TRelatedPartRecord>, new() {
+        where TContentLinkRecord : ContentLinkRecord, new() {
         private readonly IDynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> _primaryService;
         private readonly IContentManager _contentManager;
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
@@ -64,7 +64,7 @@ namespace Coevery.Relationship.Drivers {
             return Editor(part, shapeHelper);
         }
 
-        private IEnumerable<ContentPartRecord> GetLinks(TPrimaryPart part) {
+        private IEnumerable<ContentItemRecord> GetLinks(TPrimaryPart part) {
             return _contentLinkRepository.Table
                 .Where(x => x.PrimaryPartRecord.Id == part.Id)
                 .Select(x => x.RelatedPartRecord);

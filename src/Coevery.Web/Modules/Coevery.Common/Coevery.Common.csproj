@@ -109,7 +109,6 @@
     <Compile Include="Controllers\ViewTemplateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="CoreShapes.cs" />
-    <Compile Include="Drivers\DynamicContentsDriver.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
     <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
@@ -118,7 +117,6 @@
     <Compile Include="FrontMenu\FrontMenu.cs" />
     <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
     <Compile Include="FrontMenu\FrontMenuAttribute.cs" />
-    <Compile Include="Handlers\DynamicContentsHandler.cs" />
     <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Providers\IDynamicAssemblyBuilder.cs" />
     <Compile Include="Routes.cs" />

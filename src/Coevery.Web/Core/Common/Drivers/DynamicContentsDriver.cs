@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
-using Coevery.ContentManagement.MetaData;
 using Coevery.Core.Contents.Settings;
 
-namespace Coevery.Common.Drivers {
+namespace Coevery.Core.Common.Drivers {
     public abstract class DynamicContentsDriver<TContent> : ContentPartDriver<TContent> where TContent : ContentPart, new() {
         protected override DriverResult Display(TContent part, string displayType, dynamic shapeHelper) {
             return Combined(

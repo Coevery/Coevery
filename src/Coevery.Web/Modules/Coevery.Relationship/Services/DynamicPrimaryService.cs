@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Coevery.Relationship.Models;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Records;
 using Coevery.Data;
+using Coevery.Relationship.Models;
 
 namespace Coevery.Relationship.Services {
     public interface IDynamicPrimaryService<TPrimaryPart, TRelatedPart, TPrimaryPartRecord, TRelatedPartRecord, TContentLinkRecord> {
@@ -17,7 +17,7 @@ namespace Coevery.Relationship.Services {
         where TRelatedPart : ContentPart<TRelatedPartRecord>
         where TPrimaryPartRecord : ContentPartRecord
         where TRelatedPartRecord : ContentPartRecord
-        where TContentLinkRecord : ContentLinkRecord<TPrimaryPartRecord, TRelatedPartRecord>, new() {
+        where TContentLinkRecord : ContentLinkRecord, new() {
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
         private readonly IContentManager _contentManager;
 
@@ -29,9 +29,8 @@ namespace Coevery.Relationship.Services {
         }
 
         public void UpdateForContentItem(ContentItem item, string[] links) {
-            var record = item.As<TPrimaryPart>().Record;
             var oldLinks = _contentLinkRepository.Fetch(
-                r => r.PrimaryPartRecord == record);
+                r => r.PrimaryPartRecord == item.Record);
             var lookupNew = links != null
                 ? links.ToDictionary(r => r, r => false)
                 : new Dictionary<string, bool>();
@@ -48,8 +47,8 @@ namespace Coevery.Relationship.Services {
             // Add the new rewards
             foreach (var reward in lookupNew.Where(kvp => !kvp.Value).Select(kvp => kvp.Key)) {
                 _contentLinkRepository.Create(new TContentLinkRecord {
-                    PrimaryPartRecord = record,
-                    RelatedPartRecord = _contentManager.Get(int.Parse(reward)).As<TRelatedPart>().Record
+                    PrimaryPartRecord = item.Record,
+                    RelatedPartRecord = _contentManager.Get(int.Parse(reward)).Record
                 });
             }
         }

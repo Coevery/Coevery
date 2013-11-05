@@ -72,8 +72,8 @@
     <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Data\RelationshipModule.cs" />
     <Compile Include="Drivers\DynamicPrimaryPartDriver.cs" />
-    <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\DynamicRelatedPartDriver.cs" />
+    <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\RelatedEntityListDriver.cs" />
     <Compile Include="Handlers\EntityMetadataPartHandler.cs" />
     <Compile Include="Handlers\RelationshipEntityEventsHandler.cs" />
@@ -92,15 +92,15 @@
     <Compile Include="Records\RelationshipRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
-    <Compile Include="Services\DynamicRelatedService.cs" />
     <Compile Include="Services\DynamicPrimaryService.cs" />
+    <Compile Include="Services\DynamicRelatedService.cs" />
     <Compile Include="Services\IRelationshipService.cs" />
     <Compile Include="Services\RelationshipService.cs" />
     <Compile Include="Settings\ReferenceFieldEditorEvents.cs" />
     <Compile Include="Settings\ReferenceFieldSettings.cs" />
     <Compile Include="Models\ReferenceUpdateModel.cs" />
-    <Compile Include="ViewModels\RelatedEntityViewModel.cs" />
     <Compile Include="ViewModels\EditRelationshipViewModel.cs" />
+    <Compile Include="ViewModels\RelatedEntityViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />

@@ -1,10 +1,8 @@
-﻿using Coevery.Common.Drivers;
-using Coevery.Common.Events;
+﻿using Coevery.Common.Events;
 using Coevery.Common.Extensions;
-using Coevery.Common.Handlers;
 using Coevery.Common.Providers;
-using Coevery.Entities.Extensions;
-using Coevery;
+using Coevery.Core.Common.Drivers;
+using Coevery.Core.Common.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +10,8 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
-using Coevery.ContentManagement.MetaData;
 using Coevery.ContentManagement.Records;
 using Coevery.Data;
-using Coevery.Environment.Features;
 using Coevery.FileSystems.VirtualPath;
 using Coevery.ContentManagement.Handlers;
 
@@ -24,19 +20,16 @@ namespace Coevery.Entities.DynamicTypeGeneration {
     public class DynamicAssemblyBuilder : IDynamicAssemblyBuilder {
         internal const string AssemblyName = "Coevery.DynamicTypes";
         private readonly IVirtualPathProvider _virtualPathProvider;
-        private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IDynamicTypeGenerationEvents _dynamicTypeGenerationEvents;
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public DynamicAssemblyBuilder(
             IVirtualPathProvider virtualPathProvider,
-            IContentDefinitionManager contentDefinitionManager,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
             IContentDefinitionExtension contentDefinitionExtension,
             IDynamicTypeGenerationEvents dynamicTypeGenerationEvents) {
             _virtualPathProvider = virtualPathProvider;
-            _contentDefinitionManager = contentDefinitionManager;
             _contentFieldDrivers = contentFieldDrivers;
             _dynamicTypeGenerationEvents = dynamicTypeGenerationEvents;
             _contentDefinitionExtension = contentDefinitionExtension;

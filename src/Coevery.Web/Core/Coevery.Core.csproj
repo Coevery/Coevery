@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="Common\Controllers\ErrorController.cs" />
     <Compile Include="Common\DateEditor\DateEditorSettings.cs" />
+    <Compile Include="Common\Drivers\DynamicContentsDriver.cs" />
+    <Compile Include="Common\Handlers\DynamicContentsHandler.cs" />
     <Compile Include="Common\OwnerEditor\OwnerEditorSettings.cs" />
     <Compile Include="Common\OwnerEditor\OwnerEditorDriver.cs" />
     <Compile Include="Common\DateEditor\DateEditorDriver.cs" />
