@@ -70,7 +70,6 @@
   <ItemGroup>
     <Compile Include="Controllers\RelationshipController.cs" />
     <Compile Include="Controllers\SystemAdminController.cs" />
-    <Compile Include="Data\RelationshipModule.cs" />
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\RelatedEntityListDriver.cs" />
     <Compile Include="Handlers\EntityMetadataPartHandler.cs" />

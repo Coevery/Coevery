@@ -109,13 +109,12 @@ namespace Coevery.Relationship.Handlers {
         }
 
         private static Type BuildDriverType(string entityName, Type contentLinkRecordType, Type partType, ModuleBuilder moduleBuilder) {
-            var seriviceType = typeof(IDynamicRelationshipService<>).MakeGenericType(contentLinkRecordType);
             var driverType = BuildType(
                 string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", entityName),
                 moduleBuilder,
                 typeof(DynamicRelationshipPartDriver<,>).MakeGenericType(partType, contentLinkRecordType));
 
-            BuildDriverCtor(driverType, seriviceType, contentLinkRecordType);
+            BuildDriverCtor(driverType, typeof(IDynamicRelationshipService), contentLinkRecordType);
             return driverType.CreateType();
         }
 

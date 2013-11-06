@@ -5,28 +5,24 @@ using Coevery.Core.Common.Models;
 using Coevery.Data;
 
 namespace Coevery.Core.Common.Services {
-    public interface IDynamicRelationshipService<TContentLinkRecord> {
-        void UpdateForContentItem(ContentItem item, string[] links, bool isPrimary);
+    public interface IDynamicRelationshipService : IDependency {
+        void UpdateForContentItem<TContentLinkRecord>(ContentItem item, string[] links, bool isPrimary, IRepository<TContentLinkRecord> repository) where TContentLinkRecord : ContentLinkRecord, new();
         IEnumerable<IContent> GetLinks(string entityName);
     }
 
-    public class DynamicRelationshipService<TContentLinkRecord>
-        : IDynamicRelationshipService<TContentLinkRecord>
-        where TContentLinkRecord : ContentLinkRecord, new() {
-        private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
+    public class DynamicRelationshipService : IDynamicRelationshipService {
         private readonly IContentManager _contentManager;
 
         public DynamicRelationshipService(
-            IRepository<TContentLinkRecord> contentLinkRepository,
             IContentManager contentManager) {
-            _contentLinkRepository = contentLinkRepository;
             _contentManager = contentManager;
         }
 
-        public void UpdateForContentItem(ContentItem item, string[] links, bool isPrimary) {
+        public void UpdateForContentItem<TContentLinkRecord>(ContentItem item, string[] links, bool isPrimary, IRepository<TContentLinkRecord> repository)
+            where TContentLinkRecord : ContentLinkRecord, new() {
             var oldLinks = isPrimary
-                ? _contentLinkRepository.Fetch(r => r.PrimaryPartRecord == item.Record)
-                : _contentLinkRepository.Fetch(r => r.RelatedPartRecord == item.Record);
+                ? repository.Fetch(r => r.PrimaryPartRecord == item.Record)
+                : repository.Fetch(r => r.RelatedPartRecord == item.Record);
 
             var lookupNew = links != null
                 ? links.ToDictionary(r => r, r => false)
@@ -38,7 +34,7 @@ namespace Coevery.Core.Common.Services {
                     lookupNew[record.Key] = true;
                 }
                 else {
-                    _contentLinkRepository.Delete(contentRewardProgramsRecord);
+                    repository.Delete(contentRewardProgramsRecord);
                 }
             }
 
@@ -47,7 +43,7 @@ namespace Coevery.Core.Common.Services {
                     PrimaryPartRecord = isPrimary ? item.Record : _contentManager.Get(id).Record,
                     RelatedPartRecord = isPrimary ? _contentManager.Get(id).Record : item.Record
                 };
-                _contentLinkRepository.Create(newRecord);
+                repository.Create(newRecord);
             }
         }
 

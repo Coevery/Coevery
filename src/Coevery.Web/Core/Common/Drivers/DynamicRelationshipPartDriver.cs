@@ -18,7 +18,7 @@ namespace Coevery.Core.Common.Drivers {
         : ContentPartDriver<TPrimaryPart>
         where TPrimaryPart : ContentPart, new()
         where TContentLinkRecord : ContentLinkRecord, new() {
-        private readonly IDynamicRelationshipService<TContentLinkRecord> _primaryService;
+        private readonly IDynamicRelationshipService _primaryService;
         private readonly IContentManager _contentManager;
         private readonly IRepository<TContentLinkRecord> _contentLinkRepository;
         private readonly IContentDefinitionManager _contentDefinitionManager;
@@ -28,7 +28,7 @@ namespace Coevery.Core.Common.Drivers {
         private const string TemplateName = "Parts/Relationship.Edit";
 
         protected DynamicRelationshipPartDriver(
-            IDynamicRelationshipService<TContentLinkRecord> primaryService,
+            IDynamicRelationshipService primaryService,
             IContentManager contentManager,
             IRepository<TContentLinkRecord> contentLinkRepository,
             IContentDefinitionManager contentDefinitionManager) {
@@ -61,7 +61,7 @@ namespace Coevery.Core.Common.Drivers {
             updater.TryUpdateModel(model, GetPrefix(part), null, null);
 
             if (part.ContentItem.Id != 0) {
-                _primaryService.UpdateForContentItem(part.ContentItem, model.SelectedIds, _isPrimary);
+                _primaryService.UpdateForContentItem(part.ContentItem, model.SelectedIds, _isPrimary, _contentLinkRepository);
             }
 
             return Editor(part, shapeHelper);
