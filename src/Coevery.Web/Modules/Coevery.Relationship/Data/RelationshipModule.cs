@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Coevery.Relationship.Services;
+using Coevery.Core.Common.Services;
 using Module = Autofac.Module;
 
 namespace Coevery.Relationship.Data {

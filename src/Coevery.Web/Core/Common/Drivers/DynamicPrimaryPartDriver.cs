@@ -5,13 +5,13 @@ using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.MetaData;
 using Coevery.ContentManagement.Records;
+using Coevery.Core.Common.Models;
+using Coevery.Core.Common.Services;
+using Coevery.Core.Common.ViewModels;
 using Coevery.Data;
-using Coevery.Relationship.Models;
-using Coevery.Relationship.Services;
-using Coevery.Relationship.ViewModels;
 using JetBrains.Annotations;
 
-namespace Coevery.Relationship.Drivers {
+namespace Coevery.Core.Common.Drivers {
     [UsedImplicitly]
     public abstract class DynamicPrimaryPartDriver<TPrimaryPart, TContentLinkRecord>
         : ContentPartDriver<TPrimaryPart>

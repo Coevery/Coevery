@@ -1,6 +1,6 @@
 ﻿@using Coevery.Mvc.Html
 @using System.Web.Mvc.Html
-@model Coevery.Relationship.ViewModels.EditRelationshipViewModel
+@model Coevery.Core.Common.ViewModels.EditRelationshipViewModel
 <label class="title control-label">@Model.DisplayName</label>
 <div class="control controls">
     @Html.ListBoxFor(m => m.SelectedIds, Model.Links, new { @class = "span12" })

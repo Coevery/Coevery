@@ -69,7 +69,10 @@
     <Compile Include="Common\Controllers\ErrorController.cs" />
     <Compile Include="Common\DateEditor\DateEditorSettings.cs" />
     <Compile Include="Common\Drivers\DynamicContentsDriver.cs" />
+    <Compile Include="Common\Drivers\DynamicPrimaryPartDriver.cs" />
+    <Compile Include="Common\Drivers\DynamicRelatedPartDriver.cs" />
     <Compile Include="Common\Handlers\DynamicContentsHandler.cs" />
+    <Compile Include="Common\Models\ContentLinkRecord.cs" />
     <Compile Include="Common\OwnerEditor\OwnerEditorSettings.cs" />
     <Compile Include="Common\OwnerEditor\OwnerEditorDriver.cs" />
     <Compile Include="Common\DateEditor\DateEditorDriver.cs" />
@@ -81,9 +84,12 @@
     <Compile Include="Common\Models\IdentityPart.cs" />
     <Compile Include="Common\ResourceManifest.cs" />
     <Compile Include="Common\Routes.cs" />
+    <Compile Include="Common\Services\DynamicPrimaryService.cs" />
+    <Compile Include="Common\Services\DynamicRelatedService.cs" />
     <Compile Include="Common\Services\IdentifierResolverSelector.cs" />
     <Compile Include="Common\Services\XmlRpcHandler.cs" />
     <Compile Include="Common\DateEditor\DateEditorViewModel.cs" />
+    <Compile Include="Common\ViewModels\EditRelationshipViewModel.cs" />
     <Compile Include="Containers\Controllers\ItemController.cs" />
     <Compile Include="Containers\Drivers\ContainablePartDriver.cs" />
     <Compile Include="Containers\Drivers\ContainerPartDriver.cs" />

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Coevery.ContentManagement;
+using Coevery.Core.Common.Models;
 using Coevery.Data;
-using Coevery.Relationship.Models;
 
-namespace Coevery.Relationship.Services {
+namespace Coevery.Core.Common.Services {
     public interface IDynamicPrimaryService<TContentLinkRecord> {
         void UpdateForContentItem(ContentItem item, string[] links);
         IEnumerable<IContent> GetLinks(string entityName);
@@ -29,21 +29,21 @@ namespace Coevery.Relationship.Services {
             var lookupNew = links != null
                 ? links.ToDictionary(r => r, r => false)
                 : new Dictionary<string, bool>();
-            // Delete the rewards that are no longer there and mark the ones that should stay
+
             foreach (var contentRewardProgramsRecord in oldLinks) {
-                var newReward = lookupNew.FirstOrDefault(x => x.Key == contentRewardProgramsRecord.RelatedPartRecord.Id.ToString());
-                if (newReward.Key != null) {
-                    lookupNew[newReward.Key] = true;
+                var record = lookupNew.FirstOrDefault(x => x.Key == contentRewardProgramsRecord.RelatedPartRecord.Id.ToString());
+                if (record.Key != null) {
+                    lookupNew[record.Key] = true;
                 }
                 else {
                     _contentLinkRepository.Delete(contentRewardProgramsRecord);
                 }
             }
-            // Add the new rewards
-            foreach (var reward in lookupNew.Where(kvp => !kvp.Value).Select(kvp => kvp.Key)) {
+
+            foreach (var id in lookupNew.Where(kvp => !kvp.Value).Select(kvp => kvp.Key)) {
                 _contentLinkRepository.Create(new TContentLinkRecord {
                     PrimaryPartRecord = item.Record,
-                    RelatedPartRecord = _contentManager.Get(int.Parse(reward)).Record
+                    RelatedPartRecord = _contentManager.Get(int.Parse(id)).Record
                 });
             }
         }
