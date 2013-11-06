@@ -5,8 +5,7 @@ using Module = Autofac.Module;
 namespace Coevery.Relationship.Data {
     public class RelationshipModule : Module {
         protected override void Load(ContainerBuilder builder) {
-            builder.RegisterGeneric(typeof(DynamicPrimaryService<>)).As(typeof(IDynamicPrimaryService<>)).InstancePerDependency();
-            builder.RegisterGeneric(typeof(DynamicRelatedService<>)).As(typeof(IDynamicRelatedService<>)).InstancePerDependency();
+            builder.RegisterGeneric(typeof(DynamicRelationshipService<>)).As(typeof(IDynamicRelationshipService<>)).InstancePerDependency();
         }
     }
 }

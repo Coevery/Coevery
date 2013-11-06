@@ -66,11 +66,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Attributes\RelationshipInfoAttribute.cs" />
     <Compile Include="Common\Controllers\ErrorController.cs" />
     <Compile Include="Common\DateEditor\DateEditorSettings.cs" />
     <Compile Include="Common\Drivers\DynamicContentsDriver.cs" />
-    <Compile Include="Common\Drivers\DynamicPrimaryPartDriver.cs" />
-    <Compile Include="Common\Drivers\DynamicRelatedPartDriver.cs" />
+    <Compile Include="Common\Drivers\DynamicRelationshipPartDriver.cs" />
     <Compile Include="Common\Handlers\DynamicContentsHandler.cs" />
     <Compile Include="Common\Models\ContentLinkRecord.cs" />
     <Compile Include="Common\OwnerEditor\OwnerEditorSettings.cs" />
@@ -84,8 +84,7 @@
     <Compile Include="Common\Models\IdentityPart.cs" />
     <Compile Include="Common\ResourceManifest.cs" />
     <Compile Include="Common\Routes.cs" />
-    <Compile Include="Common\Services\DynamicPrimaryService.cs" />
-    <Compile Include="Common\Services\DynamicRelatedService.cs" />
+    <Compile Include="Common\Services\DynamicRelationshipService.cs" />
     <Compile Include="Common\Services\IdentifierResolverSelector.cs" />
     <Compile Include="Common\Services\XmlRpcHandler.cs" />
     <Compile Include="Common\DateEditor\DateEditorViewModel.cs" />

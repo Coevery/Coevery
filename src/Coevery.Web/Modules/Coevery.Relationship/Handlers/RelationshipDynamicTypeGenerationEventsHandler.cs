@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Coevery.Common.Events;
+using Coevery.Core.Common.Attributes;
 using Coevery.Core.Common.Drivers;
 using Coevery.Core.Common.Handlers;
 using Coevery.Core.Common.Models;
@@ -28,8 +29,10 @@ namespace Coevery.Relationship.Handlers {
                             && x.Relationship.RelatedEntity.ContentItemVersionRecord.Latest);
             foreach (var manyToManyRelationshipRecord in records) {
                 var relationshipName = manyToManyRelationshipRecord.Relationship.Name;
-                var primaryName = relationshipName + manyToManyRelationshipRecord.Relationship.PrimaryEntity.Name;
-                var relatedName = relationshipName + manyToManyRelationshipRecord.Relationship.RelatedEntity.Name;
+                var primaryEntityName = manyToManyRelationshipRecord.Relationship.PrimaryEntity.Name;
+                var relatedEntityName = manyToManyRelationshipRecord.Relationship.RelatedEntity.Name;
+                var primaryName = relationshipName + primaryEntityName;
+                var relatedName = relationshipName + relatedEntityName;
 
                 var primaryPartRecordType = BuildType(
                     string.Format("Coevery.DynamicTypes.{0}.{1}PartRecord", "Models", primaryName),
@@ -45,42 +48,14 @@ namespace Coevery.Relationship.Handlers {
                     moduleBuilder, typeof(ContentLinkRecord))
                     .CreateType();
 
-                var primaryPartType = BuildType(
-                    string.Format("Coevery.DynamicTypes.{0}.{1}Part", "Models", primaryName),
-                    moduleBuilder, typeof(ContentPart<>).MakeGenericType(primaryPartRecordType))
-                    .CreateType();
-                var relatedPartType = BuildType(
-                    string.Format("Coevery.DynamicTypes.{0}.{1}Part", "Models", relatedName),
-                    moduleBuilder, typeof(ContentPart<>).MakeGenericType(relatedPartRecordType))
-                    .CreateType();
+                var primaryPartType = BuildPartType(primaryName, relatedEntityName, primaryPartRecordType, true, moduleBuilder);
+                var relatedPartType = BuildPartType(relatedName, primaryEntityName, relatedPartRecordType, false, moduleBuilder);
 
-                var primaryHandlerType = BuildType(
-                    string.Format("Coevery.DynamicTypes.{0}.{1}PartHandler", "Handlers", primaryName),
-                    moduleBuilder, typeof(DynamicContentsHandler<>).MakeGenericType(primaryPartRecordType));
-                BuildHandlerCtor(primaryHandlerType, primaryPartRecordType);
-                primaryHandlerType.CreateType();
+                BuildHandlerType(primaryName, primaryPartRecordType, moduleBuilder);
+                BuildHandlerType(relatedName, relatedPartRecordType, moduleBuilder);
 
-                var relatedHandlerType = BuildType(
-                    string.Format("Coevery.DynamicTypes.{0}.{1}PartHandler", "Handlers", relatedName),
-                    moduleBuilder, typeof(DynamicContentsHandler<>).MakeGenericType(relatedPartRecordType));
-                BuildHandlerCtor(relatedHandlerType, relatedPartRecordType);
-                relatedHandlerType.CreateType();
-
-                var primarySeriviceType = typeof(IDynamicPrimaryService<>).MakeGenericType(contentLinkRecordType);
-                var primaryDriverType = BuildType(
-                    string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", primaryName),
-                    moduleBuilder,
-                    typeof(DynamicPrimaryPartDriver<,>).MakeGenericType(primaryPartType, contentLinkRecordType));
-                BuildDriverCtor(primaryDriverType, primarySeriviceType, contentLinkRecordType, manyToManyRelationshipRecord.Relationship.RelatedEntity.Name);
-                primaryDriverType.CreateType();
-
-                var relatedSeriviceType = typeof(IDynamicRelatedService<>).MakeGenericType(contentLinkRecordType);
-                var relatedDriverType = BuildType(
-                    string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", relatedName),
-                    moduleBuilder,
-                    typeof(DynamicRelatedPartDriver<,>).MakeGenericType(relatedPartType, contentLinkRecordType));
-                BuildDriverCtor(relatedDriverType, relatedSeriviceType, contentLinkRecordType, manyToManyRelationshipRecord.Relationship.PrimaryEntity.Name);
-                relatedDriverType.CreateType();
+                BuildDriverType(primaryName, contentLinkRecordType, primaryPartType, moduleBuilder);
+                BuildDriverType(relatedName, contentLinkRecordType, relatedPartType, moduleBuilder);
             }
         }
 
@@ -93,6 +68,24 @@ namespace Coevery.Relationship.Handlers {
                 TypeAttributes.BeforeFieldInit |
                 TypeAttributes.AutoLayout, parentType);
             return typBuilder;
+        }
+
+        private static Type BuildPartType(string entityName, string otherEntityName, Type partRecordType, bool isPrimary, ModuleBuilder moduleBuilder) {
+            var partBuilder = BuildType(
+                string.Format("Coevery.DynamicTypes.{0}.{1}Part", "Models", entityName),
+                moduleBuilder, typeof(ContentPart<>).MakeGenericType(partRecordType));
+
+            SetRelationshipInfoAttribute(partBuilder, otherEntityName, isPrimary);
+            return partBuilder.CreateType();
+        }
+
+        private static Type BuildHandlerType(string entityName, Type partRecordType, ModuleBuilder moduleBuilder) {
+            var handlerType = BuildType(
+                string.Format("Coevery.DynamicTypes.{0}.{1}PartHandler", "Handlers", entityName),
+                moduleBuilder, typeof(DynamicContentsHandler<>).MakeGenericType(partRecordType));
+
+            BuildHandlerCtor(handlerType, partRecordType);
+            return handlerType.CreateType();
         }
 
         private static void BuildHandlerCtor(TypeBuilder typeBuilder, Type type) {
@@ -115,7 +108,18 @@ namespace Coevery.Relationship.Handlers {
             generator.Emit(OpCodes.Ret);
         }
 
-        private static void BuildDriverCtor(TypeBuilder typeBuilder, Type seriviceType, Type contentLinkRecordType, string name) {
+        private static Type BuildDriverType(string entityName, Type contentLinkRecordType, Type partType, ModuleBuilder moduleBuilder) {
+            var seriviceType = typeof(IDynamicRelationshipService<>).MakeGenericType(contentLinkRecordType);
+            var driverType = BuildType(
+                string.Format("Coevery.DynamicTypes.{0}.{1}PartDriver", "Drivers", entityName),
+                moduleBuilder,
+                typeof(DynamicRelationshipPartDriver<,>).MakeGenericType(partType, contentLinkRecordType));
+
+            BuildDriverCtor(driverType, seriviceType, contentLinkRecordType);
+            return driverType.CreateType();
+        }
+
+        private static void BuildDriverCtor(TypeBuilder typeBuilder, Type seriviceType, Type contentLinkRecordType) {
             var repositoryType = typeof(IRepository<>).MakeGenericType(contentLinkRecordType);
             var ctorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public |
@@ -135,10 +139,15 @@ namespace Coevery.Relationship.Handlers {
                 new Type[] {seriviceType, typeof(IContentManager), repositoryType, typeof(IContentDefinitionManager)},
                 null);
             generator.Emit(OpCodes.Call, baseCtorInfo);
-            generator.Emit(OpCodes.Ldarg_0);
-            generator.Emit(OpCodes.Ldstr, name);
-            generator.Emit(OpCodes.Stfld, typeBuilder.BaseType.GetField("_entityName", BindingFlags.Instance | BindingFlags.NonPublic));
             generator.Emit(OpCodes.Ret);
+        }
+
+        private static void SetRelationshipInfoAttribute(TypeBuilder typeBuilder, string entityName, bool isPrimary) {
+            var ctorParams = new[] {typeof(string), typeof(bool)};
+            var ctorInfo = typeof(RelationshipInfoAttribute).GetConstructor(ctorParams);
+            var builder = new CustomAttributeBuilder(ctorInfo, new object[] {entityName, isPrimary});
+
+            typeBuilder.SetCustomAttribute(builder);
         }
     }
 }
