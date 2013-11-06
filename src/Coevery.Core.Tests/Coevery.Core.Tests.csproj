@@ -115,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coevery.Tests.Modules\Coevery.Tests.Modules.csproj">
-      <Project>{6CB3EB30-F725-45C0-9742-42599BA8E8D2}</Project>
+      <Project>{6cb3eb30-f725-45c0-9742-42599ba8e8d2}</Project>
       <Name>Coevery.Tests.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coevery.Tests\Coevery.Framework.Tests.csproj">
