@@ -80,7 +80,7 @@ namespace Coevery.Entities.Controllers {
 
             viewModel.FieldLabel = string.IsNullOrWhiteSpace(viewModel.FieldLabel) ? String.Empty : viewModel.FieldLabel.Trim();
             viewModel.FieldName = (viewModel.FieldName ?? viewModel.FieldLabel).ToSafeName();
-            viewModel.FieldType = Convert.ToInt32(viewModel.FieldType) == 0 ? "CoeveryTextField" : "ReferenceField";
+            viewModel.FieldType = Convert.ToInt32(viewModel.FieldType) == 0 ? "TextField" : "ReferenceField";
             viewModel.RelationName = string.IsNullOrWhiteSpace(viewModel.RelationName) ? String.Empty : viewModel.RelationName.Trim();
             
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
