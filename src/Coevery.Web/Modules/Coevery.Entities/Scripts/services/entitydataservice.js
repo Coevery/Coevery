@@ -11,7 +11,10 @@ define(['core/app/detourService'], function (detour) {
         ['$rootScope', '$resource', function($rootScope, $resource) {
             return $resource('api/entities/entity/:Name',
                 { Name: '@Name' },
-                { update: { method: 'PUT' } });
+                {
+                    update: { method: 'PUT' },
+                    get: { method: 'GET'}
+                });
         }]
     ]);
 });

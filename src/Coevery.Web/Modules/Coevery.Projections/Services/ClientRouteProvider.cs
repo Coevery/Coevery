@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Coevery.Common.ClientRoute;
-using Coevery.Common.Models;
-using Coevery.Common.Services;
-using Newtonsoft.Json.Linq;
-using Coevery;
-using Coevery.Environment.Extensions.Models;
+﻿using Coevery.Mvc.ClientRoute;
 
 namespace Coevery.Projections.Services
 {

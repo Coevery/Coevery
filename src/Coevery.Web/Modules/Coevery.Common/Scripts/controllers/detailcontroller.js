@@ -36,7 +36,7 @@
                   var getter = $parse('Id');
                   var Id = getter(response.data);
                   if (Id)
-                      $state.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: Id });
+                      $state.transitionTo('Root.Menu.Detail', { NavigationId: navigationId, Module: moduleName, Id: Id });
               });
               return promise;
           };
@@ -55,14 +55,14 @@
 
           $scope.edit = function () {
               var id = $rootScope.$stateParams.Id;
-              $state.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
+              $state.transitionTo('Root.Menu.Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
           };
 
           $scope.exit = function () {
               //if(window.history.length>1)
               //    window.history.back();
               //else
-              $state.transitionTo('List', { NavigationId: navigationId, Module: moduleName });
+              $state.transitionTo('Root.Menu.List', { NavigationId: navigationId, Module: moduleName });
           };
 
 

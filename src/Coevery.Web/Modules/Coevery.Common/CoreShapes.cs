@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using Coevery.Common.ClientRoute;
 using Coevery.DisplayManagement;
 using Coevery.DisplayManagement.Descriptors;
 using Coevery.Mvc;
+using Coevery.Mvc.ClientRoute;
 
 namespace Coevery.Common {
     public class CoreShapes : IShapeTableProvider {

@@ -1,3 +1,4 @@
+@using System.Security.Policy
 @model Coevery.Entities.ViewModels.EditTypeViewModel
 <header id="page-title">
     <h1 class="pull-left">@T("New Entity") <span>Create a new entity</span></h1>
@@ -44,6 +45,12 @@
                                 Note that the Record Name field is always called "Name" when referenced via the API.
                             </p>
                         </section>
+                        <section class="data-row control-group">
+                            <label class="control-label required" for="FieldType">@T("Field Type")</label>
+                            <div class="controls">
+                                <select name="@Html.FieldNameFor(m => m.FieldType)" data-ng-model="fieldtype" data-ng-options="fieldtype for fieldtype in fieldtypes"></select>
+                            </div>
+                        </section>
                         <section class="data-row control-group">                          
                             <label class="control-label required" for="FieldLabel">@T("Record Name Label")</label>
                             <div class="controls errortips">
@@ -56,6 +63,23 @@
                                 @Html.TextBoxFor(m => m.FieldName, new { @class = "span12 nameisnotid required safename", @id = "FieldName" })
                             </div>
                         </section>
+                        <div data-change-required="{{nextfieldtype}}">
+                            <section class="data-row control-group">
+                                <label class="control-label required" for="EntityList">@T("Primary Entity")</label>
+                                <div class="controls">
+                                    <select name="@Html.FieldNameFor(m => m.ReferName)">
+                                        <option data-ng-repeat="entity in entities" value="{{entity.name}}">{{entity.name}}</option>
+                                    </select>
+                                </div>
+                            </section>
+                            <section class="data-row control-group">
+                                <label class="control-label required">@T("Relation Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.RelationName, new { @class = "span12 nameisnotid"})
+                                </div>
+                            </section>
+                            <div id="pos"></div>
+                        </div>
                     </fieldset>
                 }
             </div>

@@ -1,4 +1,4 @@
-﻿using Coevery.Common.ClientRoute;
+﻿using Coevery.Mvc.ClientRoute;
 
 namespace Coevery.Relationship.Services {
     public class ClientRouteProvider : ClientRouteProviderBase {

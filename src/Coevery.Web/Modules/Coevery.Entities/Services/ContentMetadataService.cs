@@ -35,6 +35,7 @@ namespace Coevery.Entities.Services {
         void CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
         bool DeleteField(string filedName,string entityName);
         void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel);
+        void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel);
     }
 
     public class ContentMetadataService : IContentMetadataService {
@@ -52,7 +53,8 @@ namespace Coevery.Entities.Services {
             ISchemaUpdateService schemaUpdateService,
             IEntityEvents entityEvents,
             IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents)
+        {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             _entityEvents = entityEvents;
@@ -120,27 +122,65 @@ namespace Coevery.Entities.Services {
 
         public void CreateEntity(EditTypeViewModel sourceModel) {
             var entityDraft = Services.ContentManager.New<EntityMetadataPart>("EntityMetadata");
-            var baseFieldSetting = new SettingsDictionary {
-                {"DisplayName", sourceModel.FieldLabel},
-                {"AddInLayout", bool.TrueString},
-                {"Storage", "Part"},
-                {"TextFieldSettings.IsDispalyField", bool.TrueString},
-                {"TextFieldSettings.Required", bool.TrueString},
-                {"TextFieldSettings.ReadOnly", bool.TrueString},
-                {"TextFieldSettings.AlwaysInLayout", bool.TrueString},
-                {"TextFieldSettings.IsSystemField", bool.TrueString},
-                {"TextFieldSettings.IsAudit", bool.FalseString}
-            };
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
 
-            entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
-                Name = sourceModel.FieldName,
-                ContentFieldDefinitionRecord = FetchFieldDefinition("TextField"),
-                Settings = CompileSetting(baseFieldSetting)
-            });
+            if (sourceModel.FieldType == "TextField")
+            {
+                var baseFieldSetting = new SettingsDictionary {
+                    {"DisplayName", sourceModel.FieldLabel},
+                    {"AddInLayout", bool.TrueString},
+                    {"Storage", "Part"},
+                    {"TextFieldSettings.IsDispalyField", bool.TrueString},
+                    {"TextFieldSettings.Required", bool.TrueString},
+                    {"TextFieldSettings.ReadOnly", bool.TrueString},
+                    {"TextFieldSettings.AlwaysInLayout", bool.TrueString},
+                    {"TextFieldSettings.IsSystemField", bool.TrueString},
+                    {"TextFieldSettings.IsAudit", bool.FalseString}
+                };
+                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord
+                {
+                    Name = sourceModel.FieldName,
+                    ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
+                    Settings = CompileSetting(baseFieldSetting)
+                });
+            }
+            else if (sourceModel.FieldType == "ReferenceField")
+            {
+                var baseFieldSetting = new SettingsDictionary {
+                    {"DisplayName", sourceModel.FieldLabel},
+                    {"AddInLayout", bool.TrueString},
+                    {"EntityName", sourceModel.Name},
+                    {"ReferenceFieldSettings.ContentTypeName",sourceModel.ReferName},
+                    {"ReferenceFieldSettings.RelationshipName",sourceModel.RelationName},
+                    {"ReferenceFieldSettings.DisplayAsLink", bool.FalseString},
+                    {"ReferenceFieldSettings.IsDispalyField", bool.TrueString},
+                    {"ReferenceFieldSettings.HelpText", string.Empty},
+                    {"ReferenceFieldSettings.Required", bool.TrueString},
+                    {"ReferenceFieldSettings.ReadOnly", bool.TrueString},
+                    {"ReferenceFieldSettings.AlwaysInLayout", bool.TrueString},
+                    {"ReferenceFieldSettings.IsSystemField", bool.TrueString},
+                    {"ReferenceFieldSettings.IsAudit", bool.FalseString}
+                };
+                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord
+                {
+                    Name = sourceModel.FieldName,
+                    ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
+                    Settings = CompileSetting(baseFieldSetting)
+                });
+            }
             Services.ContentManager.Create(entityDraft, VersionOptions.Draft);
         }
+
+        public void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel)
+        {
+            var settingsDictionary = ParseSetting(record.Settings);
+            _contentDefinitionEditorEvents.UpdateFieldSettings(sourceModel.FieldType, sourceModel.FieldName,
+                    sourceModel.Name, sourceModel.ReferName, sourceModel.RelationName, settingsDictionary);
+            record.Settings = CompileSetting(settingsDictionary);
+
+        }
+
 
         public string DeleteEntity(int id) {
             var entity = GetEntity(id);

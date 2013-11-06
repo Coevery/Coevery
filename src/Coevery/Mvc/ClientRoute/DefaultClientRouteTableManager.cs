@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using Autofac.Features.Metadata;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Coevery.Caching;
 using Coevery.Environment.Extensions.Models;
 using Coevery.Logging;
 using Coevery.Utility.Extensions;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public class DefaultClientRouteTableManager : IClientRouteTableManager {
         private readonly IEnumerable<Meta<IClientRouteProvider>> _clientRouteProviders;
         private readonly ICacheManager _cacheManager;

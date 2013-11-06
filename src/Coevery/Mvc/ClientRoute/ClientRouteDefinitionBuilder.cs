@@ -4,9 +4,9 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json.Linq;
-using Coevery.Environment.Extensions.Models;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public class ClientRouteDefinitionBuilder {
         private readonly string _baseUrl;
         private readonly string _name;

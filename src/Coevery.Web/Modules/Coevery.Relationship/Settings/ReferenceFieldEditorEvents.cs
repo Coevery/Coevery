@@ -64,6 +64,18 @@ namespace Coevery.Relationship.Settings {
             }
         }
 
+        public override void UpdateFieldSettings(string fieldType, string fieldName, string entityName, string contentTypeName, string relationshipName, SettingsDictionary settingsDictionary)
+        {
+            if (fieldType != "ReferenceField")
+            {
+                return;
+            }
+            var queryId = CreateQuery(contentTypeName);
+            var relationshipId = _relationshipService.CreateOneToManyRelationship(fieldName, relationshipName, contentTypeName, entityName);
+            settingsDictionary["ReferenceFieldSettings.QueryId"] = queryId.ToString(CultureInfo.InvariantCulture);
+            settingsDictionary["ReferenceFieldSettings.RelationshipId"] = relationshipId.ToString(CultureInfo.InvariantCulture);
+        }
+
         public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
             if (builder.FieldType != "ReferenceField") {
                 return;

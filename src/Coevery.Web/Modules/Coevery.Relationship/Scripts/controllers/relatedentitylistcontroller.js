@@ -100,21 +100,21 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
           };
 
           $scope.add = function () {
-              $state.transitionTo('Create', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName });
+              $state.transitionTo('Root.Menu.Create', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName });
           };
 
           $scope.edit = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = $scope.selectedItems[0];
               }
-              $state.transitionTo('Detail', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
+              $state.transitionTo('Root.Menu.Detail', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
           };
           
           $scope.view = function (id) {
               if (!id && $scope.selectedItems.length > 0) {
                   id = $scope.selectedItems[0];
               }
-              $state.transitionTo('View', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
+              $state.transitionTo('Root.Menu.View', { NavigationId: $stateParams.NavigationId, Module: $scope.entityTypeName, Id: id });
           };
       }]
     ]);
