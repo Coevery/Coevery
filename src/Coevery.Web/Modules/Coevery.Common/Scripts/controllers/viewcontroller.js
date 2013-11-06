@@ -37,10 +37,10 @@
                     //if (window.history.length > 1)
                     //    window.history.back();
                     //else
-                    $state.transitionTo('List', { NavigationId: navigationId, Module: moduleName });
+                    $state.transitionTo('Root.Menu.List', { NavigationId: navigationId, Module: moduleName });
                 };
                 $scope.edit = function () {
-                    $state.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
+                    $state.transitionTo('Root.Menu.Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
             }]
     ]);

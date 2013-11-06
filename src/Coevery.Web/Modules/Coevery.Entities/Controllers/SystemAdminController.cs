@@ -250,6 +250,11 @@ namespace Coevery.Entities.Controllers {
                 ModelState.AddModelError("Name", T("A field with the same name or displayName already exists.").ToString());
             }
 
+            if (String.IsNullOrWhiteSpace(Request.Form["ReferenceFieldSettings.ContentTypeName"]))
+            {
+                ModelState.AddModelError("Primary Entity", T("The Primary Entity can't be empty.").ToString());
+            }
+
             try {
                 _contentMetadataService.CreateField(entity, viewModel, this);
                 if (!ModelState.IsValid) {

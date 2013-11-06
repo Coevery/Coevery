@@ -1,5 +1,4 @@
-﻿using Coevery.Common.ClientRoute;
-using Coevery.Environment.Extensions.Models;
+﻿using Coevery.Mvc.ClientRoute;
 
 namespace Coevery.Entities.Services {
     public class ClientRouteProvider : ClientRouteProviderBase {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Coevery.Environment.Extensions.Models;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public class ClientRouteAlteration {
         private readonly IList<Action<ClientRouteDescriptor>> _configurations;
 

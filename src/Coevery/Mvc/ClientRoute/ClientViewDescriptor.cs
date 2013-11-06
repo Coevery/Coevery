@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public class ClientViewDescriptor {
 
         private List<string> _dependencies;

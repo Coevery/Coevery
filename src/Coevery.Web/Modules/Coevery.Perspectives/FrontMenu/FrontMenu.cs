@@ -12,7 +12,8 @@ using Coevery.UI.Navigation;
 using Coevery.ContentManagement;
 using System.Linq;
 
-namespace Coevery.Common.FrontMenu {
+namespace Coevery.Perspectives.FrontMenu
+{
     public class FrontMenu : INavigationProvider {
         private readonly IMenuService _menuService;
 

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Newtonsoft.Json.Linq;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public class ClientRouteDescriptor {
 
         private readonly List<ClientViewDescriptor> _views = new List<ClientViewDescriptor>();

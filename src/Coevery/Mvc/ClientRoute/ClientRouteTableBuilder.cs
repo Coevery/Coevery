@@ -2,7 +2,8 @@
 using System.Linq;
 using Coevery.Environment.Extensions.Models;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public class ClientRouteTableBuilder {
 
         private readonly Dictionary<string, ClientRouteAlterationBuilder> _alterationBuilders = new Dictionary<string, ClientRouteAlterationBuilder>();

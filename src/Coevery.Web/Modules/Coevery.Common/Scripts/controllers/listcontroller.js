@@ -139,21 +139,21 @@
                 };
 
                 $scope.add = function () {
-                    $state.transitionTo('Create', { NavigationId: navigationId, Module: moduleName });
+                    $state.transitionTo('Root.Menu.Create', { NavigationId: navigationId, Module: moduleName });
                 };
 
                 $scope.edit = function (id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = $scope.selectedItems[0];
                     }
-                    $state.transitionTo('Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
+                    $state.transitionTo('Root.Menu.Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
 
                 $scope.view = function (id) {
                     if (!id && $scope.selectedItems.length > 0) {
                         id = $scope.selectedItems[0];
                     }
-                    $state.transitionTo('View', { NavigationId: navigationId, Module: moduleName, Id: id });
+                    $state.transitionTo('Root.Menu.View', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
 
                 // filters

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Coevery.Common.Models;
-using Newtonsoft.Json.Linq;
-using Coevery;
+﻿using System.Web;
 using Coevery.Environment.Extensions.Models;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public interface IClientRouteProvider : IDependency {
         Feature Feature { get; }
         bool IsFrontEnd { get; }

@@ -95,28 +95,26 @@
     <Compile Include="Admin\SystemAdminFilter.cs" />
     <Compile Include="Admin\SystemAdminMenu.cs" />
     <Compile Include="Admin\SystemMenuFilter.cs" />
-    <Compile Include="ClientRoute\ClientRouteAlteration.cs" />
-    <Compile Include="ClientRoute\ClientRouteAlterationBuilder.cs" />
-    <Compile Include="ClientRoute\ClientRouteDescriptor.cs" />
-    <Compile Include="ClientRoute\ClientRouteDefinitionBuilder.cs" />
-    <Compile Include="ClientRoute\ClientRouteTableBuilder.cs" />
-    <Compile Include="ClientRoute\ClientViewDescriptor.cs" />
-    <Compile Include="ClientRoute\DefaultClientRouteTableManager.cs" />
-    <Compile Include="ClientRoute\IClientRouteTableManager.cs" />
-    <Compile Include="Controllers\NavigationController.cs" />
-    <Compile Include="Controllers\RouteController.cs" />
-    <Compile Include="Controllers\SystemAdminController.cs" />
-    <Compile Include="Controllers\ViewTemplateController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HomeController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\NavigationController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\RouteController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\SystemAdminController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\ViewTemplateController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CoreShapes.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
     <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
     <Compile Include="Extensions\CoeveryStringExtension.cs" />
-    <Compile Include="FrontMenu\FrontMenuFilter.cs" />
-    <Compile Include="FrontMenu\FrontMenu.cs" />
-    <Compile Include="FrontMenu\FrontMenuAuthorFilter.cs" />
-    <Compile Include="FrontMenu\FrontMenuAttribute.cs" />
     <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Providers\IDynamicAssemblyBuilder.cs" />
     <Compile Include="Routes.cs" />
@@ -129,7 +127,6 @@
     <Compile Include="Models\ModuleMenuItemPartRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
-    <Compile Include="ClientRoute\IClientRouteProvider.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\AnonymousRoleUpdater.cs" />
     <Compile Include="Services\DefaultDataMigrationInterpreter.cs" />

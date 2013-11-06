@@ -123,7 +123,7 @@ angular.module('coevery.common', [])
                  }, function (newval,oldval) {
                      if (newval == fieldtype) {
                          if (scope.entities.length == 0) {
-                             logger.info("please create a entity first");
+                             logger.info("please create and a entity and then publish it first");
                              scope.fieldtype = oldval;
                              return;
                          }

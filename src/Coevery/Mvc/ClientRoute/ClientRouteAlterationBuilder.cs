@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Coevery.Environment.Extensions.Models;
 
-namespace Coevery.Common.ClientRoute {
+namespace Coevery.Mvc.ClientRoute
+{
     public class ClientRouteAlterationBuilder {
         private readonly Feature _feature;
         private readonly string _routeName;
