@@ -91,6 +91,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\SystemAdminThemeSelector.cs" />
     <Compile Include="Admin\SystemAdminAttribute.cs" />
     <Compile Include="Admin\SystemAdminFilter.cs" />
     <Compile Include="Admin\SystemAdminMenu.cs" />

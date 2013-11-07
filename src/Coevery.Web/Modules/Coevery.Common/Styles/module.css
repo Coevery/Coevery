@@ -439,7 +439,7 @@
         margin-left: 4px; 
         margin-bottom: 4px;
         background-repeat: no-repeat; 
-        background-image: url('/CoeveryLocal/Themes/Mooncake/Styles/images/twisty_sprite.png'); 
+        background-image: url('~/Themes/MooncakeBase/Styles/images/twisty_sprite.png'); 
         height: 11px; 
         width: 11px; 
         display: inline-block; 
@@ -453,7 +453,7 @@
         margin-left: 4px; 
         margin-bottom: 4px;
         background-repeat: no-repeat; 
-        background-image: url('/CoeveryLocal/Themes/Mooncake/Styles/images/twisty_sprite.png'); 
+        background-image: url('~/Themes/MooncakeBase/Styles/images/twisty_sprite.png'); 
         height: 11px; 
         width: 11px; 
         display: inline-block; 

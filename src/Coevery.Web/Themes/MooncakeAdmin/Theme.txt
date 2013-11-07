@@ -1,6 +1,6 @@
-Name: Mooncake
+Name: MooncakeAdmin
 Author: coevery team
-Description: coevery front theme
+Description: coevery background management theme
 Version: 1.6
 Tags: Awesome
 Website: http://coeveryproject.net

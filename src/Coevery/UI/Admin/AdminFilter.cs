@@ -65,6 +65,5 @@ namespace Coevery.UI.Admin {
                 .Concat(descriptor.ControllerDescriptor.GetCustomAttributes(typeof(AdminAttribute), true))
                 .OfType<AdminAttribute>();
         }
-
     }
 }
