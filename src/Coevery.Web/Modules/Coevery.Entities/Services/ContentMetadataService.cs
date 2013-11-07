@@ -33,7 +33,7 @@ namespace Coevery.Entities.Services {
         string ConstructFieldName(string entityName, string displayName);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
         void CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
-        bool DeleteField(string filedName,string entityName);
+        bool DeleteField(string filedName, string entityName);
         void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel);
         void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel);
     }
@@ -53,8 +53,7 @@ namespace Coevery.Entities.Services {
             ISchemaUpdateService schemaUpdateService,
             IEntityEvents entityEvents,
             IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents)
-        {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             _entityEvents = entityEvents;
@@ -125,8 +124,7 @@ namespace Coevery.Entities.Services {
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
 
-            if (sourceModel.FieldType == "TextField")
-            {
+            if (sourceModel.FieldType == "TextField") {
                 var baseFieldSetting = new SettingsDictionary {
                     {"DisplayName", sourceModel.FieldLabel},
                     {"AddInLayout", bool.TrueString},
@@ -138,21 +136,19 @@ namespace Coevery.Entities.Services {
                     {"TextFieldSettings.IsSystemField", bool.TrueString},
                     {"TextFieldSettings.IsAudit", bool.FalseString}
                 };
-                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord
-                {
+                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                     Name = sourceModel.FieldName,
                     ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
                     Settings = CompileSetting(baseFieldSetting)
                 });
             }
-            else if (sourceModel.FieldType == "ReferenceField")
-            {
+            else if (sourceModel.FieldType == "ReferenceField") {
                 var baseFieldSetting = new SettingsDictionary {
                     {"DisplayName", sourceModel.FieldLabel},
                     {"AddInLayout", bool.TrueString},
                     {"EntityName", sourceModel.Name},
-                    {"ReferenceFieldSettings.ContentTypeName",sourceModel.ReferName},
-                    {"ReferenceFieldSettings.RelationshipName",sourceModel.RelationName},
+                    {"ReferenceFieldSettings.ContentTypeName", sourceModel.ReferName},
+                    {"ReferenceFieldSettings.RelationshipName", sourceModel.RelationName},
                     {"ReferenceFieldSettings.DisplayAsLink", bool.FalseString},
                     {"ReferenceFieldSettings.IsDispalyField", bool.TrueString},
                     {"ReferenceFieldSettings.HelpText", string.Empty},
@@ -162,8 +158,7 @@ namespace Coevery.Entities.Services {
                     {"ReferenceFieldSettings.IsSystemField", bool.TrueString},
                     {"ReferenceFieldSettings.IsAudit", bool.FalseString}
                 };
-                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord
-                {
+                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                     Name = sourceModel.FieldName,
                     ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
                     Settings = CompileSetting(baseFieldSetting)
@@ -172,11 +167,10 @@ namespace Coevery.Entities.Services {
             Services.ContentManager.Create(entityDraft, VersionOptions.Draft);
         }
 
-        public void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel)
-        {
+        public void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel) {
             var settingsDictionary = ParseSetting(record.Settings);
             _contentDefinitionEditorEvents.UpdateFieldSettings(sourceModel.FieldType, sourceModel.FieldName,
-                    sourceModel.Name, sourceModel.ReferName, sourceModel.RelationName, settingsDictionary);
+                sourceModel.Name, sourceModel.ReferName, sourceModel.RelationName, settingsDictionary);
             record.Settings = CompileSetting(settingsDictionary);
 
         }
@@ -211,7 +205,7 @@ namespace Coevery.Entities.Services {
         }
 
         public SettingsDictionary ParseSetting(string setting) {
-            return string.IsNullOrWhiteSpace(setting) 
+            return string.IsNullOrWhiteSpace(setting)
                 ? null
                 : _settingsFormatter.Map(XElement.Parse(setting));
         }
@@ -262,7 +256,7 @@ namespace Coevery.Entities.Services {
             record.Settings = CompileSetting(settingsDictionary);
         }
 
-        public bool DeleteField(string fieldName,string entityName) {
+        public bool DeleteField(string fieldName, string entityName) {
             var entity = GetDraftEntity(entityName);
             if (entity == null) {
                 return false;
