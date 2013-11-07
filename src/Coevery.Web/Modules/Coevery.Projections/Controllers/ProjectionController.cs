@@ -40,8 +40,6 @@ namespace Coevery.Projections.Controllers {
         }
 
         public object Get(string id, int page, int rows) {
-            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
-
             var query = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
                 .Where(v => v.ItemContentType == id).List().Select(record => new {
                     ContentId = record.Id,
