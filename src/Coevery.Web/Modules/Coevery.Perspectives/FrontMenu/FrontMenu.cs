@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Globalization;
 using Coevery.Common.Extensions;
 using Coevery.Common.Models;

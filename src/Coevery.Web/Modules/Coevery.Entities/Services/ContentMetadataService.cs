@@ -157,7 +157,7 @@ namespace Coevery.Entities.Services {
             var entityDraft = Services.ContentManager.New<EntityMetadataPart>("EntityMetadata");
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
-
+            entityDraft.EntitySetting = _settingService.CompileSetting(sourceModel.Settings);
             if (sourceModel.FieldType == "TextField") {
                 var baseFieldSetting = new SettingsDictionary {
                     {"DisplayName", sourceModel.FieldLabel},
@@ -173,7 +173,7 @@ namespace Coevery.Entities.Services {
                 entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                     Name = sourceModel.FieldName,
                     ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
-                    Settings = CompileSetting(baseFieldSetting)
+                    Settings = _settingService.CompileSetting(baseFieldSetting)
                 });
             }
             else if (sourceModel.FieldType == "ReferenceField") {
@@ -195,17 +195,17 @@ namespace Coevery.Entities.Services {
                 entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                     Name = sourceModel.FieldName,
                     ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
-                    Settings = CompileSetting(baseFieldSetting)
+                    Settings = _settingService.CompileSetting(baseFieldSetting)
                 });
             }
             Services.ContentManager.Create(entityDraft, VersionOptions.Draft);
         }
 
         public void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel) {
-            var settingsDictionary = ParseSetting(record.Settings);
+            var settingsDictionary = _settingService.ParseSetting(record.Settings);
             _contentDefinitionEditorEvents.UpdateFieldSettings(sourceModel.FieldType, sourceModel.FieldName,
                 sourceModel.Name, sourceModel.ReferName, sourceModel.RelationName, settingsDictionary);
-            record.Settings = CompileSetting(settingsDictionary);
+            record.Settings = _settingService.CompileSetting(settingsDictionary);
 
         }
 
