@@ -10,9 +10,12 @@ namespace Coevery.Projections.Controllers
 {
     public class FilterFieldsController : Controller {
         private readonly IProjectionManager _projectionManager;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
-        public FilterFieldsController(IProjectionManager projectionManager)
-        {
+        public FilterFieldsController(
+            IContentDefinitionExtension contentDefinitionExtension,
+            IProjectionManager projectionManager) {
+            _contentDefinitionExtension = contentDefinitionExtension;
             _projectionManager = projectionManager;
         }
 
@@ -20,8 +23,7 @@ namespace Coevery.Projections.Controllers
             if (string.IsNullOrWhiteSpace(id)) {
                 return null;
             }
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            id = pluralService.Singularize(id);
+            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
 
             string category = id.ToPartName() + "ContentFields";
             var filters = _projectionManager.DescribeFilters()

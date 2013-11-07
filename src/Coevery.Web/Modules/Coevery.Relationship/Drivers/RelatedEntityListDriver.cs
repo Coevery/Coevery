@@ -2,6 +2,7 @@
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
+using Coevery.Entities.Services;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
 using Coevery.Relationship.ViewModels;
@@ -11,8 +12,12 @@ using Coevery.ContentManagement.Drivers;
 namespace Coevery.Relationship.Drivers {
     public class RelatedEntityListDriver : ContentPartDriver<ContentPart> {
         private readonly IRelationshipService _relationshipService;
+        private readonly ISettingService _settingService;
 
-        public RelatedEntityListDriver(IRelationshipService relationshipService) {
+        public RelatedEntityListDriver(
+            IRelationshipService relationshipService,
+            ISettingService settingService) {
+            _settingService = settingService;
             _relationshipService = relationshipService;
         }
 
@@ -34,7 +39,6 @@ namespace Coevery.Relationship.Drivers {
                 .Where(x => (x.PrimaryEntity.Name == contentType)
                             || ((RelationshipType)x.Type) == RelationshipType.ManyToMany).ToList();
 
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             foreach (var record in records) {
                 var relationshipType = (RelationshipType)record.Type;
 
@@ -45,14 +49,16 @@ namespace Coevery.Relationship.Drivers {
                             RelationId = _relationshipService.GetReferenceField(record.RelatedEntity.Name, record.Name),
                             RelationType = "OneToMany",
                             Label = oneToMany.RelatedListLabel,
-                            RelatedEntityName = pluralService.Pluralize(record.RelatedEntity.Name),
+                            RelatedEntityName = _settingService.ParseSetting(record.RelatedEntity.Settings)["CollectionName"],
                             ProjectionId = oneToMany.RelatedListProjection.Id
                         };
                     }
                 }
                 else {
                     var manyToMany = _relationshipService.GetManyToMany(record.Id);
-                    var relatedEntityName = record.PrimaryEntity.Name == contentType ? record.RelatedEntity.Name : record.PrimaryEntity.Name;
+                    var relatedEntityName = record.PrimaryEntity.Name == contentType
+                        ? _settingService.ParseSetting(record.RelatedEntity.Settings)["CollectionName"]
+                        : _settingService.ParseSetting(record.PrimaryEntity.Settings)["CollectionName"];
                     var projectionId = record.PrimaryEntity.Name == contentType ? manyToMany.RelatedListProjection.Id : manyToMany.PrimaryListProjection.Id;
                     var label = record.PrimaryEntity.Name == contentType ? manyToMany.RelatedListLabel : manyToMany.PrimaryListLabel;
                     var showList = record.PrimaryEntity.Name == contentType ? manyToMany.ShowRelatedList : manyToMany.ShowPrimaryList;
@@ -61,7 +67,7 @@ namespace Coevery.Relationship.Drivers {
                             RelationId = record.Name,
                             RelationType = "ManyToMany",
                             Label = label,
-                            RelatedEntityName = pluralService.Pluralize(relatedEntityName),
+                            RelatedEntityName = relatedEntityName,
                             ProjectionId = projectionId
                         };
                     }

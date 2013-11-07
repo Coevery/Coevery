@@ -1,45 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 using Coevery.Common.Services;
 using Coevery.Entities.Events;
 using Coevery.Entities.Models;
+using Coevery.Entities.Settings;
 using Coevery.Entities.ViewModels;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData.Models;
-using Coevery.ContentManagement.MetaData.Services;
 using Coevery.Core.Settings.Metadata.Records;
 using Coevery.Data;
+using Coevery.Utility.Extensions;
 using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinitionEditorEvents;
 
 namespace Coevery.Entities.Services {
     public interface IContentMetadataService : IDependency {
         void CreateEntity(EditTypeViewModel sourceModel);
         IEnumerable<EntityMetadataPart> GetRawEntities();
+
         EntityMetadataPart GetEntity(int id);
         EntityMetadataPart GetEntity(string name);
         EntityMetadataPart GetDraftEntity(int id);
         EntityMetadataPart GetDraftEntity(string name);
-        bool CheckEntityCreationValid(string name, string displayName);
+
+        bool CheckEntityCreationValid(string name, string displayName, SettingsDictionary settings);
         bool CheckEntityPublished(string name);
-        bool CheckEntityDisplayValid(string name, string displayName);
+        bool CheckEntityDisplayValid(string name, string displayName, SettingsDictionary settings);
         string ConstructEntityName(string entityName);
         string DeleteEntity(int id);
 
         IEnumerable<FieldMetadataRecord> GetFieldsList(int entityId);
-        SettingsDictionary ParseSetting(string setting);
         string ConstructFieldName(string entityName, string displayName);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
         void CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
-        bool DeleteField(string filedName,string entityName);
+        bool DeleteField(string filedName, string entityName);
         void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel);
         void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel);
     }
 
     public class ContentMetadataService : IContentMetadataService {
-        private readonly ISettingsFormatter _settingsFormatter;
+        private readonly ISettingService _settingService;
         private readonly IRepository<ContentFieldDefinitionRecord> _fieldDefinitionRepository;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IContentDefinitionService _contentDefinitionService;
@@ -48,17 +50,16 @@ namespace Coevery.Entities.Services {
 
         public ContentMetadataService(
             ICoeveryServices services,
-            ISettingsFormatter settingsFormatter,
+            ISettingService settingService,
             IContentDefinitionService contentDefinitionService,
             ISchemaUpdateService schemaUpdateService,
             IEntityEvents entityEvents,
             IRepository<ContentFieldDefinitionRecord> fieldDefinitionRepository,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents)
-        {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
             _contentDefinitionService = contentDefinitionService;
             _schemaUpdateService = schemaUpdateService;
             _entityEvents = entityEvents;
-            _settingsFormatter = settingsFormatter;
+            _settingService = settingService;
             _fieldDefinitionRepository = fieldDefinitionRepository;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             Services = services;
@@ -73,22 +74,54 @@ namespace Coevery.Entities.Services {
                 .ForVersion(VersionOptions.Latest).List();
         }
 
-        public bool CheckEntityCreationValid(string name, string displayName) {
-            return !Services.ContentManager
-                .Query<EntityMetadataPart>(VersionOptions.Latest, "EntityMetadata").List()
+        //todo: use ModelState to check error in one function
+        public bool CheckEntityCreationValid(string name, string displayName, SettingsDictionary settings) {
+            var entities = Services.ContentManager.Query<EntityMetadataPart>(VersionOptions.Latest, "EntityMetadata").List();
+            var isValid = !entities
                 .Any(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase)
                           || string.Equals(x.DisplayName, displayName, StringComparison.OrdinalIgnoreCase));
+
+            var collectionName = settings["CollectionName"];
+            var collectionDisplayName = settings["CollectionDisplayName"];
+            if (collectionName != collectionName.ToSafeName()) {
+                isValid = false;
+            }
+            var hasDuplicateEntities = (from entity in entities
+                                        let tSetting = _settingService.ParseSetting(entity.EntitySetting)
+                                        where tSetting != null
+                                        && (tSetting.ContainsKey("CollectionName") && tSetting["CollectionName"] == collectionName)
+                                        && (tSetting.ContainsKey("CollectionDisplayName") && tSetting["CollectionDisplayName"] == collectionDisplayName)
+                                        select entity).Any();
+            if (hasDuplicateEntities) {
+                isValid = false;
+            }
+            return isValid;
         }
 
         public bool CheckEntityPublished(string name) {
             return GetEntity(name).HasPublished();
         }
 
-        public bool CheckEntityDisplayValid(string name, string displayName) {
-            return !Services.ContentManager
-                .Query<EntityMetadataPart>(VersionOptions.Latest, "EntityMetadata").List()
-                .Any(x => !string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase)
-                          && string.Equals(x.DisplayName, displayName, StringComparison.OrdinalIgnoreCase));
+        //todo: use ModelState to check error in one function
+        public bool CheckEntityDisplayValid(string name, string displayName, SettingsDictionary settings) {
+            var entities = Services.ContentManager
+                .Query<EntityMetadataPart, EntityMetadataRecord>(VersionOptions.Latest)
+                .Where(record => record.Name != name).List<EntityMetadataPart>();
+            var isValid = !entities.Any(x => string.Equals(x.DisplayName, displayName, StringComparison.OrdinalIgnoreCase));
+            var collectionName = settings["CollectionName"];
+            var collectionDisplayName = settings["CollectionDisplayName"];
+            if (collectionName != collectionName.ToSafeName()) {
+                isValid = false;
+            }
+            var hasDuplicateEntities = (from entity in entities
+                                        let tSetting = _settingService.ParseSetting(entity.EntitySetting)
+                                        where tSetting["CollectionName"] == collectionName ||
+                                              tSetting["CollectionDisplayName"] == collectionDisplayName
+                                        select entity).Any();
+            if (hasDuplicateEntities) {
+                isValid = false;
+            }
+            return isValid;
         }
 
         public EntityMetadataPart GetEntity(int id) {
@@ -124,9 +157,8 @@ namespace Coevery.Entities.Services {
             var entityDraft = Services.ContentManager.New<EntityMetadataPart>("EntityMetadata");
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
-
-            if (sourceModel.FieldType == "TextField")
-            {
+            entityDraft.EntitySetting = _settingService.CompileSetting(sourceModel.Settings);
+            if (sourceModel.FieldType == "TextField") {
                 var baseFieldSetting = new SettingsDictionary {
                     {"DisplayName", sourceModel.FieldLabel},
                     {"AddInLayout", bool.TrueString},
@@ -138,21 +170,19 @@ namespace Coevery.Entities.Services {
                     {"TextFieldSettings.IsSystemField", bool.TrueString},
                     {"TextFieldSettings.IsAudit", bool.FalseString}
                 };
-                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord
-                {
+                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                     Name = sourceModel.FieldName,
                     ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
-                    Settings = CompileSetting(baseFieldSetting)
+                    Settings = _settingService.CompileSetting(baseFieldSetting)
                 });
             }
-            else if (sourceModel.FieldType == "ReferenceField")
-            {
+            else if (sourceModel.FieldType == "ReferenceField") {
                 var baseFieldSetting = new SettingsDictionary {
                     {"DisplayName", sourceModel.FieldLabel},
                     {"AddInLayout", bool.TrueString},
                     {"EntityName", sourceModel.Name},
-                    {"ReferenceFieldSettings.ContentTypeName",sourceModel.ReferName},
-                    {"ReferenceFieldSettings.RelationshipName",sourceModel.RelationName},
+                    {"ReferenceFieldSettings.ContentTypeName", sourceModel.ReferName},
+                    {"ReferenceFieldSettings.RelationshipName", sourceModel.RelationName},
                     {"ReferenceFieldSettings.DisplayAsLink", bool.FalseString},
                     {"ReferenceFieldSettings.IsDispalyField", bool.TrueString},
                     {"ReferenceFieldSettings.HelpText", string.Empty},
@@ -162,22 +192,20 @@ namespace Coevery.Entities.Services {
                     {"ReferenceFieldSettings.IsSystemField", bool.TrueString},
                     {"ReferenceFieldSettings.IsAudit", bool.FalseString}
                 };
-                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord
-                {
+                entityDraft.FieldMetadataRecords.Add(new FieldMetadataRecord {
                     Name = sourceModel.FieldName,
                     ContentFieldDefinitionRecord = FetchFieldDefinition(sourceModel.FieldType),
-                    Settings = CompileSetting(baseFieldSetting)
+                    Settings = _settingService.CompileSetting(baseFieldSetting)
                 });
             }
             Services.ContentManager.Create(entityDraft, VersionOptions.Draft);
         }
 
-        public void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel)
-        {
-            var settingsDictionary = ParseSetting(record.Settings);
+        public void UpdateFieldSetting(FieldMetadataRecord record, EditTypeViewModel sourceModel) {
+            var settingsDictionary = _settingService.ParseSetting(record.Settings);
             _contentDefinitionEditorEvents.UpdateFieldSettings(sourceModel.FieldType, sourceModel.FieldName,
-                    sourceModel.Name, sourceModel.ReferName, sourceModel.RelationName, settingsDictionary);
-            record.Settings = CompileSetting(settingsDictionary);
+                sourceModel.Name, sourceModel.ReferName, sourceModel.RelationName, settingsDictionary);
+            record.Settings = _settingService.CompileSetting(settingsDictionary);
 
         }
 
@@ -188,7 +216,7 @@ namespace Coevery.Entities.Services {
                 return "Invalid id";
             }
             foreach (var field in entity.FieldMetadataRecords) {
-                _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
+                _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, _settingService.ParseSetting(field.Settings));
             }
             var hasPublished = entity.HasPublished();
 
@@ -210,22 +238,10 @@ namespace Coevery.Entities.Services {
             return GetEntity(entityId).FieldMetadataRecords;
         }
 
-        public SettingsDictionary ParseSetting(string setting) {
-            return string.IsNullOrWhiteSpace(setting) 
-                ? null
-                : _settingsFormatter.Map(XElement.Parse(setting));
-        }
-
-        private string CompileSetting(SettingsDictionary settings) {
-            return settings == null
-                ? null
-                : _settingsFormatter.Map(settings).ToString();
-        }
-
         public bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName) {
             return !entity.FieldMetadataRecords.Any(
                 field => string.Equals(field.Name, name, StringComparison.OrdinalIgnoreCase)
-                         || string.Equals(ParseSetting(field.Settings)["DisplayName"], displayName, StringComparison.OrdinalIgnoreCase));
+                         || string.Equals(_settingService.ParseSetting(field.Settings)["DisplayName"], displayName, StringComparison.OrdinalIgnoreCase));
         }
 
         public string ConstructFieldName(string entityName, string displayName) {
@@ -251,18 +267,18 @@ namespace Coevery.Entities.Services {
             };
             entity.FieldMetadataRecords.Add(field);
             _contentDefinitionEditorEvents.UpdateFieldSettings(viewModel.FieldTypeName, viewModel.Name, settingsDictionary, updateModel);
-            field.Settings = CompileSetting(settingsDictionary);
+            field.Settings = _settingService.CompileSetting(settingsDictionary);
             field.EntityMetadataRecord = entity.Record;
         }
 
         public void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel) {
-            var settingsDictionary = ParseSetting(record.Settings);
+            var settingsDictionary = _settingService.ParseSetting(record.Settings);
             settingsDictionary["DisplayName"] = displayName;
             _contentDefinitionEditorEvents.UpdateFieldSettings(record.ContentFieldDefinitionRecord.Name, record.Name, settingsDictionary, updateModel);
-            record.Settings = CompileSetting(settingsDictionary);
+            record.Settings = _settingService.CompileSetting(settingsDictionary);
         }
 
-        public bool DeleteField(string fieldName,string entityName) {
+        public bool DeleteField(string fieldName, string entityName) {
             var entity = GetDraftEntity(entityName);
             if (entity == null) {
                 return false;
@@ -272,39 +288,38 @@ namespace Coevery.Entities.Services {
                 return false;
             }
 
-            _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, ParseSetting(field.Settings));
+            _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, _settingService.ParseSetting(field.Settings));
             entity.FieldMetadataRecords.Remove(field);
             return true;
         }
 
-        #region Field Private Methods
+        #endregion
+
+        #region Private Methods
 
         private ContentFieldDefinitionRecord FetchFieldDefinition(string fieldType) {
             var baseFieldDefinition = _fieldDefinitionRepository.Get(def => def.Name == fieldType);
             if (baseFieldDefinition == null) {
-                baseFieldDefinition = new ContentFieldDefinitionRecord {Name = fieldType};
+                baseFieldDefinition = new ContentFieldDefinitionRecord { Name = fieldType };
                 _fieldDefinitionRepository.Create(baseFieldDefinition);
             }
             return baseFieldDefinition;
         }
 
-        #endregion
-
-        #endregion
-
         private static string VersionName(string name) {
             int version;
-            var nameParts = name.Split(new[] {'_'}, StringSplitOptions.RemoveEmptyEntries);
+            var nameParts = name.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (nameParts.Length > 1 && int.TryParse(nameParts.Last(), out version)) {
                 version = version > 0 ? ++version : 2;
                 //this could unintentionally chomp something that looks like a version
                 name = string.Join("_", nameParts.Take(nameParts.Length - 1));
-            }
-            else {
+            } else {
                 version = 2;
             }
             return string.Format("{0}_{1}", name, version);
         }
+
+        #endregion
     }
 }

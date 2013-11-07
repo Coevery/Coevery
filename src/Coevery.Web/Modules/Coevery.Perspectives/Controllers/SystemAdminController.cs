@@ -3,11 +3,10 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Coevery.Core;
+using Coevery.Common.Extensions;
 using Coevery.Common.Models;
 using Coevery.Perspectives.Services;
 using Coevery.Perspectives.ViewModels;
-using Coevery;
 using Coevery.ContentManagement.Aspects;
 using Coevery.Core.Contents.Settings;
 using Coevery.Core.Navigation.Models;
@@ -25,15 +24,18 @@ namespace Coevery.Perspectives.Controllers {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IRepository<ContentTypeDefinitionRecord> _contentTypeDefinitionRepository;
         private readonly IContentManager _contentManager;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly INavigationManager _navigationManager;
 
         public SystemAdminController(
             ICoeveryServices coeveryServices,
             IContentDefinitionService contentDefinitionService,
+            IContentDefinitionExtension contentDefinitionExtension,
             IRepository<ContentTypeDefinitionRecord> contentTypeDefinitionRepository,
             IContentManager contentManager,
             INavigationManager navigationManager) {
             Services = coeveryServices;
+            _contentDefinitionExtension = contentDefinitionExtension;
             _contentDefinitionService = contentDefinitionService;
             _contentTypeDefinitionRepository = contentTypeDefinitionRepository;
             _contentManager = contentManager;
@@ -94,9 +96,8 @@ namespace Coevery.Perspectives.Controllers {
 
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            model.EntityName = contentItem.As<MenuPart>().MenuText;
-            model.EntityName = pluralService.Singularize(model.EntityName);
+            model.EntityName = _contentDefinitionExtension.GetEntityNameFromCollectionName(
+                contentItem.As<MenuPart>().MenuText, true);
             var menuId = contentItem.As<MenuPart>().Record.MenuId;
             var perspectiveItem = _contentManager.Get(menuId, VersionOptions.Latest);
             model.Title = perspectiveItem.As<TitlePart>().Title;
@@ -113,12 +114,12 @@ namespace Coevery.Perspectives.Controllers {
 
         [HttpPost, ActionName("EditNavigationItem")]
         public ActionResult EditNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model) {
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            string pluralContentTypeName = pluralService.Pluralize(model.EntityName);
+            var pluralContentTypeName = _contentDefinitionExtension.GetEntityNames(model.EntityName);
 
             var contentItem = _contentManager.Get(navigationId, VersionOptions.DraftRequired);
-            contentItem.As<MenuPart>().MenuText = pluralContentTypeName;
-            //contentItem.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
+            
+            //Used as the module id of front end
+            contentItem.As<MenuPart>().MenuText = pluralContentTypeName.CollectionDisplayName;
             contentItem.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
             contentItem.As<ModuleMenuItemPart>().IconClass = model.IconClass;
             //contentItem.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
@@ -144,8 +145,7 @@ namespace Coevery.Perspectives.Controllers {
 
         [HttpPost, ActionName("CreateNavigationItem")]
         public ActionResult CreateNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model) {
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            string pluralContentTypeName = pluralService.Pluralize(model.EntityName);
+            var pluralContentTypeName = _contentDefinitionExtension.GetEntityNames(model.EntityName);
 
             if (string.IsNullOrWhiteSpace(model.IconClass)) {
                 Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -158,10 +158,11 @@ namespace Coevery.Perspectives.Controllers {
             // load the menu
             var menu = Services.ContentManager.Get(perspectiveId);
 
-            moduleMenuPart.MenuText = pluralContentTypeName;
+            moduleMenuPart.MenuText = pluralContentTypeName.CollectionDisplayName;
             moduleMenuPart.MenuPosition = Position.GetNext(_navigationManager.BuildMenu(menu));
             moduleMenuPart.Menu = menu;
-            //menuPart.As<MenuItemPart>().Url = "~/Coevery#/" + pluralContentTypeName;
+            moduleMenuPart.MenuText = pluralContentTypeName.CollectionDisplayName;
+
             moduleMenuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
             moduleMenuPart.As<ModuleMenuItemPart>().IconClass = model.IconClass;
             //menuPart.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;

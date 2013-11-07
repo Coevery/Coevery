@@ -61,7 +61,6 @@ namespace Coevery.Entities.Services {
                 foreach (var field in viewModel.Fields)
                     field.Templates = _contentDefinitionEditorEvents.PartFieldEditor(field._Definition);
             }
-
             return viewModel;
         }
 

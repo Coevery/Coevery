@@ -14,19 +14,19 @@ namespace Coevery.Projections.Controllers {
     public class FilterController : ApiController {
         private readonly IRepository<EntityFilterRecord> _entityFilterRepository;
         private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
        
         public FilterController(
             IRepository<EntityFilterRecord> entityFilterRepository,
+            IContentDefinitionExtension contentDefinitionExtension,
             IRepository<FilterGroupRecord> filterGroupRepository) {
             _entityFilterRepository = entityFilterRepository;
             _filterGroupRepository = filterGroupRepository;
+            _contentDefinitionExtension = contentDefinitionExtension;
         }
 
         public IEnumerable<JObject> Get(string id) {
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            if (pluralService.IsPlural(id)) {
-                id = pluralService.Singularize(id);
-            }
+            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
             var entityFilters = new List<JObject>();
             var entityFilterRecords = _entityFilterRepository.Table.Where(x => x.EntityName == id);
             foreach (var entityFilterRecord in entityFilterRecords) {
@@ -48,10 +48,7 @@ namespace Coevery.Projections.Controllers {
         }
 
         public IEnumerable<JObject> Post(string id, FilterViewModel model) {
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            if (pluralService.IsPlural(id)) {
-                id = pluralService.Singularize(id);
-            }
+            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
 
             var groupRecord = new FilterGroupRecord();
                 _filterGroupRepository.Create(groupRecord);
