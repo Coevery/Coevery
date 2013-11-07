@@ -29,17 +29,20 @@ namespace Coevery.Projections.Controllers {
         private readonly IGridService _gridService;
         private readonly IRepository<FilterRecord> _filterRepository;
         private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public EntityController(
             IContentManager iContentManager,
             ICoeveryServices coeveryServices,
             IProjectionManager projectionManager,
+            IContentDefinitionExtension contentDefinitionExtension,
             ITokenizer tokenizer,
             IGridService gridService,
             IRepository<FilterRecord> filterRepository,
             IRepository<FilterGroupRecord> filterGroupRepository) {
             _contentManager = iContentManager;
             Services = coeveryServices;
+            _contentDefinitionExtension = contentDefinitionExtension;
             _projectionManager = projectionManager;
             _tokenizer = tokenizer;
             _gridService = gridService;
@@ -57,8 +60,7 @@ namespace Coevery.Projections.Controllers {
             if (part == null) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            id = pluralService.Singularize(id);
+            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
             string filterDescription = null;
             
             return GetFilteredRecords(id, part, out filterDescription, model, p => {

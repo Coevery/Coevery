@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
+using System.Data.SqlTypes;
 using System.Globalization;
+using Coevery.Common.Extensions;
 using Coevery.Common.Models;
 using Coevery.Core.Navigation.Models;
 using Coevery.Core.Navigation.Services;
@@ -16,8 +17,13 @@ namespace Coevery.Perspectives.FrontMenu
 {
     public class FrontMenu : INavigationProvider {
         private readonly IMenuService _menuService;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
-        public FrontMenu(ICoeveryServices coeveryServices, IMenuService menuService) {
+        public FrontMenu(
+            ICoeveryServices coeveryServices, 
+            IContentDefinitionExtension contentDefinitionExtension,
+            IMenuService menuService) {
+            _contentDefinitionExtension = contentDefinitionExtension;
             Services = coeveryServices;
             _menuService = menuService;
         }
@@ -65,10 +71,19 @@ namespace Coevery.Perspectives.FrontMenu
         }
 
         private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart, string parentUrl) {
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
             string urlFormat = parentUrl + "/{0}";
-            string pluralContentTypeName = pluralService.Pluralize(menuPart.MenuText);
-            string url = string.Format(urlFormat, pluralContentTypeName);
+            string url;
+
+            if (menuPart.Is<ModuleMenuItemPart>())
+            {
+                var urlName = _contentDefinitionExtension.GetEntityNames(
+                    menuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord.Name).CollectionName;
+                url = string.Format(urlFormat, urlName);
+            }
+            else
+            {
+                url = string.Format(urlFormat, menuPart.MenuText);
+            }
 
             return new MenuItemEntry {
                 MenuItemId = menuPart.Id,

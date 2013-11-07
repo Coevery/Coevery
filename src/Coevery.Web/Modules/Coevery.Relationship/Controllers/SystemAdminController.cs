@@ -61,7 +61,7 @@ namespace Coevery.Relationship.Controllers {
         }
 
         public ActionResult Relationships() {
-            return View(new Dictionary<string, string> {{"PublishTip", T("Works when the entity has been published.").Text}});
+            return View();
         }
 
         #region OneToMany

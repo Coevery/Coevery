@@ -17,11 +17,14 @@ namespace Coevery.Projections.Controllers {
     public class SystemAdminController : Controller {
         private readonly IProjectionService _projectionService;
         private readonly IContentMetadataService _contentMetadataService;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public SystemAdminController(
             ICoeveryServices services,
             IContentMetadataService contentMetadataService,
+            IContentDefinitionExtension contentDefinitionExtension,
             IProjectionService projectionService) {
+            _contentDefinitionExtension = contentDefinitionExtension;
             _contentMetadataService = contentMetadataService;
             _projectionService = projectionService;
             Services = services;
@@ -36,10 +39,7 @@ namespace Coevery.Projections.Controllers {
         }
 
         public ActionResult Create(string id) {   
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            if (pluralService.IsPlural(id)) {
-                id = pluralService.Singularize(id);
-            }
+            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
             if (!_contentMetadataService.CheckEntityPublished(id)) {
                 return Content(T("The \"{0}\" hasn't been published!", id).Text);
             }

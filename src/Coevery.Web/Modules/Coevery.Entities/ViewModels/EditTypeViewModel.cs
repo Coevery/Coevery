@@ -49,5 +49,4 @@ namespace Coevery.Entities.ViewModels {
                 .Select((p, i) => new EditTypePartViewModel(i, p) { Type = this });
         }
     }
-
 }

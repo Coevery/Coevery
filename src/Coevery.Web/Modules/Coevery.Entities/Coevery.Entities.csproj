@@ -103,8 +103,10 @@
     <Compile Include="Services\IContentFieldValueProvider.cs" />
     <Compile Include="Services\ContentFieldValueProvider.cs" />
     <Compile Include="Services\ContentMetadataService.cs" />
+    <Compile Include="Services\SettingService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
+    <Compile Include="Settings\EntitySetting.cs" />
     <Compile Include="Settings\FieldEditorEvents.cs" />
     <Compile Include="Settings\FieldSettings.cs">
       <SubType>Code</SubType>

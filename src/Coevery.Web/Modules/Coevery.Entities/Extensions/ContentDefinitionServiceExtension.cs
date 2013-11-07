@@ -6,15 +6,19 @@ using Coevery.Entities.Models;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData;
 using Coevery.ContentManagement.MetaData.Models;
+using Coevery.Entities.Services;
 
 namespace Coevery.Entities.Extensions {
     public class ContentDefinitionExtension : IContentDefinitionExtension {
         private readonly IContentManager _contentManager;
+        private readonly ISettingService _settingService;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
         public ContentDefinitionExtension(
             IContentManager contentManager,
+            ISettingService settingService,
             IContentDefinitionManager contentDefinitionManager) {
+            _settingService = settingService;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
         }
@@ -31,6 +35,38 @@ namespace Coevery.Entities.Extensions {
                    select type;
         }
 
+        public EntityNames GetEntityNames(string entityName) {
+            var entity = _contentDefinitionManager.GetTypeDefinition(entityName);
+            if (entity == null) {
+                return null;
+            }
+            var setting = entity.Settings;
+            return setting.ContainsKey("CollectionName") && setting.ContainsKey("CollectionDisplayName")
+                ? new EntityNames {
+                    Name = entity.Name,
+                    DisplayName = entity.DisplayName,
+                    CollectionName = setting["CollectionName"],
+                    CollectionDisplayName = setting["CollectionDisplayName"]
+                }
+                : null;
+        }
+
+        public string GetEntityNameFromCollectionName(string collectionname, bool isDisplayName) {
+            var entity = _contentDefinitionManager.ListTypeDefinitions().Where(type => {
+                var setting = type.Settings;
+                if (isDisplayName && setting.ContainsKey("CollectionDisplayName"))
+                {
+                    return setting["CollectionDisplayName"] == collectionname;
+                }
+                if (!isDisplayName && setting.ContainsKey("CollectionName"))
+                {
+                    return setting["CollectionName"] == collectionname;
+                }
+                return false;
+            });
+            return entity.Count() == 1 ? entity.First().Name : null;
+        }
+
         public IEnumerable<ContentPartDefinition> ListUserDefinedPartDefinitions() {
             var types = ListUserDefinedTypeDefinitions();
             if (types == null || !types.Any()) {
@@ -43,5 +79,6 @@ namespace Coevery.Entities.Extensions {
                          select part;
             return result.Any() ? result : null;
         }
+
     }
 }

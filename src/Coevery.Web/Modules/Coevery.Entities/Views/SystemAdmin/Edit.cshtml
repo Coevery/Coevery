@@ -36,6 +36,21 @@
                             </div>
                             <meta itemprop="DisplayName" content="@Model.DisplayName" />
                         </section>
+
+                        <section class="data-row control-group">
+                            <label class="control-label required" >@T("Collection Name")</label>
+                            <div class="controls errortips">
+                                @Html.TextBoxFor(m => m.Settings["CollectionName"], new { @class = "span12 required safename" })
+                                <span class="help-block">@T("Technical name of the type's collection.")</span>
+                            </div>
+                        </section>
+                        <section class="data-row control-group">
+                            <label class="control-label required" >@T("Collection Display Name")</label>
+                            <div class="controls errortips">
+                                @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new { @class = "span12 required" })
+                                <span class="help-block">@T("Display name of the type's collection.")</span>
+                            </div>
+                        </section>
                     </fieldset>
                 }
             </div>

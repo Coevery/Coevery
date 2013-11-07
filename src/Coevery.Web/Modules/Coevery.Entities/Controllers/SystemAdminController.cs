@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Data.Entity.Design.PluralizationServices;
 using System.Web.Mvc;
 using Coevery.Entities.Services;
 using Coevery.Entities.ViewModels;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Localization;
@@ -23,13 +20,16 @@ namespace Coevery.Entities.Controllers {
         private readonly IContentDefinitionService _contentDefinitionService;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IContentMetadataService _contentMetadataService;
+        private readonly ISettingService _settingService;
 
         public SystemAdminController(
             ICoeveryServices coeveryServices,
+            ISettingService settingService,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents,
             IContentMetadataService contentMetadataService) {
             Services = coeveryServices;
+            _settingService = settingService;
             _contentDefinitionService = contentDefinitionService;
             T = NullLocalizer.Instance;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
@@ -53,6 +53,8 @@ namespace Coevery.Entities.Controllers {
             }
 
             var typeViewModel = _contentDefinitionService.GetType(string.Empty);
+            typeViewModel.Settings.Add("CollectionName", string.Empty);
+            typeViewModel.Settings.Add("CollectionDisplayName", string.Empty);
             return View(typeViewModel);
         }
 
@@ -90,9 +92,6 @@ namespace Coevery.Entities.Controllers {
             if (String.IsNullOrWhiteSpace(viewModel.Name)) {
                 ModelState.AddModelError("Name", T("The Content Type Id can't be empty.").ToString());
             }
-            else if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.Name)) {
-                ModelState.AddModelError("Name", T("The name should be singular.").ToString());
-            }
 
             if (String.IsNullOrWhiteSpace(viewModel.FieldLabel)) {
                 ModelState.AddModelError("DisplayName", T("The Field Label name can't be empty.").ToString());
@@ -101,11 +100,8 @@ namespace Coevery.Entities.Controllers {
             if (String.IsNullOrWhiteSpace(viewModel.FieldName)) {
                 ModelState.AddModelError("Name", T("The Field Name can't be empty.").ToString());
             }
-            else if (!PluralizationService.CreateService(new CultureInfo("en-US")).IsSingular(viewModel.FieldName)) {
-                ModelState.AddModelError("FieldName", T("The field name should be singular.").ToString());
-            }
 
-            if (!_contentMetadataService.CheckEntityCreationValid(viewModel.Name, viewModel.DisplayName)) {
+            if (!_contentMetadataService.CheckEntityCreationValid(viewModel.Name, viewModel.DisplayName,viewModel.Settings)) {
                 ModelState.AddModelError("Name", T("A type with the same Name or DisplayName already exists.").ToString());
             }
 
@@ -142,7 +138,8 @@ namespace Coevery.Entities.Controllers {
             }
             var viewModel = new EditTypeViewModel {
                 Name = entity.Name,
-                DisplayName = entity.DisplayName
+                DisplayName = entity.DisplayName,
+                Settings = _settingService.ParseSetting(entity.EntitySetting)
             };
             return View(viewModel);
         }
@@ -157,11 +154,12 @@ namespace Coevery.Entities.Controllers {
             if (entity == null) {
                 return HttpNotFound();
             }
-            bool valid = _contentMetadataService.CheckEntityDisplayValid(id, viewModel.DisplayName);
+            bool valid = _contentMetadataService.CheckEntityDisplayValid(id, viewModel.DisplayName,viewModel.Settings);
             if (!valid) {
                 return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
             entity.DisplayName = viewModel.DisplayName;
+            entity.EntitySetting = _settingService.CompileSetting(viewModel.Settings);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
@@ -302,7 +300,7 @@ namespace Coevery.Entities.Controllers {
             if (field == null) {
                 return HttpNotFound();
             }
-            var settings = _contentMetadataService.ParseSetting(field.Settings);
+            var settings = _settingService.ParseSetting(field.Settings);
             var fieldDefinition = new ContentFieldDefinition(field.ContentFieldDefinitionRecord.Name);
             var viewModel = new EditPartFieldViewModel {
                 Name = field.Name,
@@ -340,7 +338,7 @@ namespace Coevery.Entities.Controllers {
             }
 
             bool displayNameExist = entity.FieldMetadataRecords.Any(t => {
-                string displayName = _contentMetadataService.ParseSetting(t.Settings)["DisplayName"];
+                string displayName = _settingService.ParseSetting(t.Settings)["DisplayName"];
                 return t.Name != viewModel.Name && String.Equals(displayName.Trim(), viewModel.DisplayName.Trim(), StringComparison.OrdinalIgnoreCase);
             });
             if (displayNameExist) {

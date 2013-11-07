@@ -13,6 +13,11 @@ namespace Coevery.Entities.Models {
             set { Record.DisplayName = value; }
         }
 
+        public string EntitySetting {
+            get { return Record.Settings; }
+            set { Record.Settings = value; }
+        }
+
         public IList<FieldMetadataRecord> FieldMetadataRecords {
             get { return Record.FieldMetadataRecords; }
         }

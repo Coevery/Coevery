@@ -11,9 +11,12 @@ using Coevery.Utility.Extensions;
 namespace Coevery.Entities.Controllers {
     public class FieldController : ApiController {
         private readonly IContentMetadataService _contentMetadataService;
+        private readonly ISettingService _settingService;
 
         public FieldController(
+            ISettingService settingService,
             IContentMetadataService contentMetadataService) {
+            _settingService = settingService;
             _contentMetadataService = contentMetadataService;
             T = NullLocalizer.Instance;
         }
@@ -25,21 +28,21 @@ namespace Coevery.Entities.Controllers {
             var metadataTypes = _contentMetadataService.GetFieldsList(name);
 
             var query = from field in metadataTypes
-                let fieldType = field.ContentFieldDefinitionRecord.Name
-                let setting = _contentMetadataService.ParseSetting(field.Settings)
-                select new {
-                    field.Name,
-                    field.Id,
-                    DisplayName = setting["DisplayName"],
-                    FieldType = fieldType.CamelFriendly(),
-                    Type = setting.GetModel<FieldSettings>(fieldType + "Settings").IsSystemField
-                        ? "System Field" : "User Field",
-                    ControllField = string.Empty
-                };
+                        let fieldType = field.ContentFieldDefinitionRecord.Name
+                        let setting = _settingService.ParseSetting(field.Settings)
+                        select new {
+                            field.Name,
+                            field.Id,
+                            DisplayName = setting["DisplayName"],
+                            FieldType = fieldType.CamelFriendly(),
+                            Type = setting.GetModel<FieldSettings>(fieldType + "Settings").IsSystemField
+                                ? "System Field" : "User Field",
+                            ControllField = string.Empty
+                        };
 
             var totalRecords = query.Count();
             return new {
-                total = Convert.ToInt32(Math.Ceiling((double) totalRecords/rows)),
+                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
                 page = page,
                 records = totalRecords,
                 rows = query
@@ -47,8 +50,8 @@ namespace Coevery.Entities.Controllers {
         }
 
         // DELETE api/metadata/field/name
-        public virtual HttpResponseMessage Delete(string name,string entityName) {
-            return _contentMetadataService.DeleteField(name,entityName)
+        public virtual HttpResponseMessage Delete(string name, string entityName) {
+            return _contentMetadataService.DeleteField(name, entityName)
                 ? Request.CreateResponse(HttpStatusCode.OK)
                 : Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid id!");
         }

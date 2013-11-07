@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Coevery;
+using Coevery.Common.Extensions;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Aspects;
 using Coevery.ContentManagement.MetaData;
@@ -27,11 +28,14 @@ namespace Coevery.Common.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly INavigationManager _navigationManager;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public ViewTemplateController(
             ICoeveryServices coeveryServices,
             IContentDefinitionManager contentDefinitionManager,
+            IContentDefinitionExtension contentDefinitionExtension,
             INavigationManager navigationManager) {
+            _contentDefinitionExtension = contentDefinitionExtension;
             Services = coeveryServices;
             _contentDefinitionManager = contentDefinitionManager;
 
@@ -66,9 +70,7 @@ namespace Coevery.Common.Controllers {
             if (string.IsNullOrEmpty(id)) {
                 return CreatableTypeList(containerId);
             }
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            id = pluralService.Singularize(id);
-            var contentItem = Services.ContentManager.New(id);
+            var contentItem = Services.ContentManager.New(_contentDefinitionExtension.GetEntityNameFromCollectionName(id));
 
             if (!Services.Authorizer.Authorize(Permissions.EditContent, contentItem, T("Cannot create content"))) {
                 return new HttpUnauthorizedResult();

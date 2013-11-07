@@ -4,6 +4,7 @@ using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Web.Http;
+using Coevery.Common.Extensions;
 using Coevery.Projections.Models;
 using Coevery;
 using Coevery.ContentManagement;
@@ -12,10 +13,13 @@ using Coevery.Core.Title.Models;
 namespace Coevery.Projections.Controllers {
     public class ProjectionController : ApiController {
         private readonly IContentManager _contentManager;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public ProjectionController(
             IContentManager contentManager,
+            IContentDefinitionExtension contentDefinitionExtension,
             ICoeveryServices coeveryServices) {
+            _contentDefinitionExtension = contentDefinitionExtension;
             _contentManager = contentManager;
             Services = coeveryServices;
         }
@@ -23,10 +27,7 @@ namespace Coevery.Projections.Controllers {
         public ICoeveryServices Services { get; private set; }
 
         public IEnumerable<object> Get(string id) {
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            if (pluralService.IsPlural(id)) {
-                id = pluralService.Singularize(id);
-            }
+            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
 
             var query = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
                  .Where(v => v.ItemContentType == id).List().Select(record => new {
@@ -39,10 +40,7 @@ namespace Coevery.Projections.Controllers {
         }
 
         public object Get(string id, int page, int rows) {
-            var pluralService = PluralizationService.CreateService(new CultureInfo("en-US"));
-            if (pluralService.IsPlural(id)) {
-                id = pluralService.Singularize(id);
-            }
+            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
 
             var query = Services.ContentManager.Query<ListViewPart, ListViewPartRecord>("ListViewPage")
                 .Where(v => v.ItemContentType == id).List().Select(record => new {
