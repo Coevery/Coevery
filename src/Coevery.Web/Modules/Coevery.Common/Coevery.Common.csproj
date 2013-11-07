@@ -159,6 +159,7 @@
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
+    <Content Include="Scripts\directives\cobusy-directive.js" />
     <Content Include="Scripts\i18n\resources-locale_en-us.json" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.json" />
     <Content Include="Scripts\directives\common.js" />
@@ -171,7 +172,6 @@
     <Content Include="Scripts\services\historyservice.js" />
     <Content Include="Scripts\services\navigationdataservice.js" />
     <Content Include="Scripts\services\viewdefinitionservice.js" />
-    <Content Include="Scripts\services\loadingservice.js" />
     <Content Include="Styles\module.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
