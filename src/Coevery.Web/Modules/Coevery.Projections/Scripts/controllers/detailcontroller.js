@@ -65,7 +65,8 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                         url: form.attr('action'),
                         method: "POST",
                         data: form.serialize() + '&submit.Save=Save',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        tracker: 'saveview'
                     }).then(function (response) {
                         logger.success('Save succeeded.');
                         return response;
@@ -77,22 +78,20 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
 
                 $scope.saveAndView = function () {
                     var promise = $scope.save();
-                    promise.then(function (response) {
+                    promise && promise.then(function (response) {
                         var getter = $parse('id');
                         var id = getter(response.data);
                         if (id)
                             $state.transitionTo('ProjectionEdit', { EntityName: $stateParams.EntityName, Id: id });
                     });
-                    return promise;
                 };
 
                 $scope.saveAndBack = function () {
                     var promise = $scope.save();
-                    promise.then(function () {
+                    promise && promise.then(function () {
                         $scope.exit();
                     }, function () {
                     });
-                    return promise;
                 };
 
                 $scope.exit = function () {

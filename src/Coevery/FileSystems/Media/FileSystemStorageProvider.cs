@@ -11,7 +11,7 @@ namespace Coevery.FileSystems.Media {
     public class FileSystemStorageProvider : IStorageProvider {
         private readonly string _storagePath; // c:\coevery\media\default
         private readonly string _virtualPath; // ~/Media/Default/
-        private readonly string _publicPath; // /Coevery/Media/Default/
+        private readonly string _publicPath; // /Media/Default/
 
         public FileSystemStorageProvider(ShellSettings settings) {
             var mediaPath = HostingEnvironment.IsHosted

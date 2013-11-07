@@ -38,7 +38,8 @@ namespace Coevery.AngularJS {
             manifest.DefineScript("ui_bootstrap").SetUrl("ui-bootstrap-tpls-0.4.0.js", "ui-bootstrap-tpls-0.4.0.js").SetVersion("0.4.0").SetDependencies("angular");
             manifest.DefineScript("underscore").SetUrl("underscore.min.js", "underscore.js").SetVersion("1.5.1");
             manifest.DefineScript("angularunderscore").SetUrl("angular-underscore.js", "angular-underscore.js").SetVersion("1.0.0").SetDependencies("angular");
-
+            manifest.DefineScript("promisetracker").SetUrl("promise-tracker.js", "promise-tracker.js").SetVersion("1.4.2").SetDependencies("angular");
+            //manifest.DefineScript("spin").SetUrl("spin.js", "spin.js").SetVersion("1.3.2").SetDependencies("angular");
         }
     }
 }

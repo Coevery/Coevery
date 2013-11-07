@@ -46,12 +46,12 @@ define(['core/app/detourService'], function (detour) {
                         return;
                     }
                     var form = $('#field-info-form');
-
-                    var promise = $http({
+                    $http({
                         url: form.attr('action'),
                         method: form.attr('method'),
                         data: form.serialize() + '&' + $('#AddInLayout').serialize() + '&submit.Save=Save',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        tracker: 'savefield'
                     }).then(function () {
                         logger.success('success');
                         $scope.$parent.getAllField();
@@ -60,7 +60,6 @@ define(['core/app/detourService'], function (detour) {
                     }, function (reason) {
                         logger.error('Failed:\n' + reason.responseText);
                     });
-                    return promise;
                 };
 
                 $scope.$on('$destroy', function () {

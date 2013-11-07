@@ -66,8 +66,8 @@ namespace Coevery.Projections.Controllers {
         public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
             var pickArray = picklist.Split(new[] {'$'}, StringSplitOptions.RemoveEmptyEntries);
             viewModel.ItemContentType = viewModel.ItemContentType;
-            _projectionService.EditPost(id, viewModel, pickArray);
-            return Json(new { id = id});
+            var viewid=_projectionService.EditPost(id, viewModel, pickArray);
+            return Json(new { id = viewid });
         }
     }
 }

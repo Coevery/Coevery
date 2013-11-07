@@ -28,7 +28,8 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   url: form.attr('action'),
                   method: "POST",
                   data: form.serialize(),
-                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  tracker: 'saveentity'
               }).then(function (response) {
                   logger.success('Save succeeded.');
                   return response;
@@ -40,13 +41,12 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
 
           $scope.saveAndView = function () {
               var promise = $scope.save();
-              promise.done(function (response) {
+              promise && promise.then(function (response) {
                   var getter = $parse('entityName');
                   var entityName = getter(response.data);
                   if (entityName)
                       $state.transitionTo('EntityEdit', { Id: entityName });
               });
-              return promise;
           };
 
           $scope.saveAndBack = function () {
@@ -54,7 +54,6 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               promise && promise.then(function () {
                   $scope.exit();
               });
-              return promise;
           };
           
           $scope.exit = function () {

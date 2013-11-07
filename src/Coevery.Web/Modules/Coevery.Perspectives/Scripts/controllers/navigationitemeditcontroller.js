@@ -25,7 +25,8 @@ define(['core/app/detourService'], function (detour) {
                    url: form.attr('action'),
                    method: "POST",
                    data: form.serialize() + '&submit.Save=Save',
-                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                   tracker: 'savenavigationitem'
                }).then(function (response) {
                    logger.success('Save succeeded.');
                    return response;
@@ -38,21 +39,19 @@ define(['core/app/detourService'], function (detour) {
 
            $scope.saveAndView = function () {
                var promise = $scope.save();
-               promise.then(function (response) {
+               promise && promise.then(function (response) {
                    var getter = $parse('id');
                    var id = getter(response.data);
                    if(id)
                        $state.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId: id });
                });
-               return promise;
            };
            
            $scope.saveAndBack = function () {
                var promise = $scope.save();
-               promise.then(function () {
+               promise && promise.then(function () {
                    $scope.exit();
                });
-               return promise;
            };
 
            $scope.opts = {

@@ -42,21 +42,6 @@ namespace Coevery.Common {
                     new MvcRouteHandler())
             };
 
-            yield return new RouteDescriptor {
-                Route = new Route(
-                    "Coevery",
-                    new RouteValueDictionary {
-                        {"area", "Coevery.Common"},
-                        {"controller", "Home"},
-                        {"action", "Index"}
-                    },
-                    new RouteValueDictionary(),
-                    new RouteValueDictionary {
-                        {"area", "Coevery.Common"}
-                    },
-                    new MvcRouteHandler())
-            };
-
 
             yield return new RouteDescriptor {
                 Route = new Route(
@@ -83,7 +68,7 @@ namespace Coevery.Common {
                     Priority = -10,
                     SessionState = defaultSessionState,
                     Route = new Route(
-                        "Coevery/" + displayPath + "/{controller}/{action}/{id}",
+                        displayPath + "/{controller}/{action}/{id}",
                         new RouteValueDictionary {
                             {"area", areaName},
                             {"controller", "home"},

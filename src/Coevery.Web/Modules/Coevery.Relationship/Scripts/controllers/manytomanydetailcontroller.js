@@ -23,11 +23,12 @@ define(['core/app/detourService'], function (detour) {
                         url: form.attr('action'),
                         method: form.attr('method'),
                         data: form.serialize(),
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        tracker: 'saverelation'
                     }).then(function (response) {
-                        return response;
                         logger.success('success');
                         $("input.primary-entity").prop('disabled', true);
+                        return response;
                     }, function (result) {
                         logger.error('Failed:\n' + result);
                         $("input.primary-entity").prop('disabled', true);
@@ -41,13 +42,12 @@ define(['core/app/detourService'], function (detour) {
 
                 $scope.saveAndView = function () {
                     var promise = $scope.save();
-                    promise.then(function (response) {
+                    promise && promise.then(function (response) {
                         var getter = $parse('relationId');
                         var relationId = getter(response.data);
                         if (relationId)
                             $state.transitionTo('EditManyToMany', { EntityName: $stateParams.EntityName, RelationId: relationId });
                     });
-                    return promise;
                 };
                 
                 $scope.saveAndBack = function () {
@@ -55,7 +55,6 @@ define(['core/app/detourService'], function (detour) {
                     promise && promise.then(function () {
                         $scope.exit();
                     });
-                    return promise;
                 };
             }]
     ]);

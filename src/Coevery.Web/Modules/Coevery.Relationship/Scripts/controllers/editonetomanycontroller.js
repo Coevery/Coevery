@@ -18,7 +18,8 @@ define(['core/app/detourService'], function (detour) {
                         url: form.attr('action'),
                         method: form.attr('method'),
                         data: form.serialize(),
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        tracker: 'saverelation'
                     }).then(function () {
                         logger.success('success');
                     }, function (result) {

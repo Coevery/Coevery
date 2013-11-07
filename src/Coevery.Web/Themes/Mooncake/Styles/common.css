@@ -151,7 +151,7 @@
     left: 50%;
     top: 71px;
     margin-left: -35px;
-    display: none;
+    display: block;
     background: gold;
     padding: 0.3em;
     font-weight: bold;

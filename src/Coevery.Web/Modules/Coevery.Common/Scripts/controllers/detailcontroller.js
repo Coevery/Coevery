@@ -20,7 +20,8 @@
                   url: form.attr('action'),
                   method: "POST",
                   data: form.serialize() + '&submit.Save=Save',
-                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  tracker: 'saveentity'
               }).then(function (response) {
                   logger.success('Save succeeded.');
                   return response;
@@ -32,13 +33,12 @@
 
           $scope.saveAndView = function () {
               var promise = $scope.save();
-              promise.then(function (response) {
+              promise && promise.then(function (response) {
                   var getter = $parse('Id');
                   var Id = getter(response.data);
                   if (Id)
                       $state.transitionTo('Root.Menu.Detail', { NavigationId: navigationId, Module: moduleName, Id: Id });
               });
-              return promise;
           };
 
           $scope.saveAndBack = function () {
@@ -46,7 +46,6 @@
               promise && promise.then(function () {
                   $scope.exit();
               });
-              return promise;
           };
 
           $scope.change = function () {

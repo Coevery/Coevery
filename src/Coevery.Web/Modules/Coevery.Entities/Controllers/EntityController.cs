@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Coevery.Common.Extensions;
 using Coevery.Entities.Services;
 using Coevery.ContentManagement;
+using Coevery.Entities.ViewModels;
 using Coevery.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,12 +15,13 @@ using Newtonsoft.Json.Linq;
 namespace Coevery.Entities.Controllers {
     public class EntityController : ApiController {
         private readonly IContentMetadataService _contentMetadataService;
-        private readonly IContentDefinitionService _contentDefinitionService;
+        private readonly IContentDefinitionExtension _contentDefinitionExtension;
         public EntityController(
             IContentMetadataService contentMetadataService,
-            IContentDefinitionService contentDefinitionService){
+            IContentDefinitionExtension contentDefinitionService)
+        {
             _contentMetadataService = contentMetadataService;
-            _contentDefinitionService = contentDefinitionService;
+            _contentDefinitionExtension = contentDefinitionService;
             T = NullLocalizer.Instance;
         }
 
@@ -27,22 +30,20 @@ namespace Coevery.Entities.Controllers {
         //QUERY api/Entities/Entity
         public HttpResponseMessage Get()
         {
-            var entitiesJ = new List<JObject>();
-            try
+            var entities = new List<JObject>();
+            var usertypelist = _contentDefinitionExtension.ListUserDefinedTypeDefinitions();
+            if(usertypelist!=null)
             {
-                var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+                var metadataTypes = usertypelist.Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
                 var entityList = metadataTypes.Select(item => item.Name).ToList();
                 foreach (var entity in entityList)
                 {
-                    var entityJ = new JObject();
-                    entityJ["name"] = entity;
-                    entitiesJ.Add(entityJ);
+                    var entityitem = new JObject();
+                    entityitem["name"] = entity;
+                    entities.Add(entityitem);
                 }
             }
-            catch (Exception)
-            {
-            }
-            var json = JsonConvert.SerializeObject(entitiesJ);
+            var json = JsonConvert.SerializeObject(entities);
             return new HttpResponseMessage { Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json") };
         }
 

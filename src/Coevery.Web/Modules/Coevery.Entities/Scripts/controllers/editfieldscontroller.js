@@ -25,7 +25,8 @@ define(['core/app/detourService'], function (detour) {
                         url: form.attr('action'),
                         method: "POST",
                         data: form.serialize() + '&submit.Save=Save',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        tracker: 'savefield'
                     }).then(function () {
                         logger.success('Save succeeded.');
                     }, function (reason) {
@@ -36,11 +37,10 @@ define(['core/app/detourService'], function (detour) {
 
                 $scope.saveAndBack = function () {
                     var promise = $scope.save();
-                    promise.then(function () {
+                    promise && promise.then(function () {
                         $scope.exit();
                     }, function () {
                     });
-                    return promise;
                 };
             }]
     ]);

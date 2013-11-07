@@ -50,7 +50,8 @@ define(['core/app/detourService'], function (detour) {
                         url: 'api/formdesigner/layout/' + $stateParams.EntityName,
                         method: "POST",
                         data: JSON.stringify(layoutObject),
-                        headers: { 'Content-Type': 'application/json' }
+                        headers: { 'Content-Type': 'application/json' },
+                        tracker: 'saveform'
                     }).then(function () {
                         logger.success('Save succeeded.');
                     }, function (reason) {
@@ -65,11 +66,7 @@ define(['core/app/detourService'], function (detour) {
                     promise && promise.then(function () {
                         $scope.exit();
                     });
-                    return promise;
                 };
-
-               
-
             }]
     ]);
 });

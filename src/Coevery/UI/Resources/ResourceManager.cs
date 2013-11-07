@@ -142,7 +142,7 @@ namespace Coevery.UI.Resources {
                 throw new ArgumentNullException("resourcePath");
             }
 
-            // ~/ ==> convert to absolute path (e.g. /coevery/..)
+            // ~/ ==> convert to absolute path (e.g. /..)
             if (VirtualPathUtility.IsAppRelative(resourcePath)) {
                 resourcePath = VirtualPathUtility.ToAbsolute(resourcePath);
             }

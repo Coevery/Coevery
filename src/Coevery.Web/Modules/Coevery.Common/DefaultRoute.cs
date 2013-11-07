@@ -7,7 +7,7 @@ namespace Coevery.Common {
         private readonly RouteBase _route;
 
         public DefaultRoute() {
-            _route = new Route("Coevery/{area}/{controller}/{action}/{id}", new MvcRouteHandler());
+            _route = new Route("{area}/{controller}/{action}/{id}", new MvcRouteHandler());
         }
 
         public override RouteData GetRouteData(HttpContextBase httpContext) {

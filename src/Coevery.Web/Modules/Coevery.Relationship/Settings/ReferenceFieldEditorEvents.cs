@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -44,8 +45,11 @@ namespace Coevery.Relationship.Settings {
             if (fieldType != "ReferenceField") {
                 return;
             }
+
             var model = new ReferenceFieldSettings();
             if (updateModel.TryUpdateModel(model, "ReferenceFieldSettings", null, null)) {
+                if (string.IsNullOrEmpty(model.ContentTypeName))
+                    throw  new Exception("primary entity is null",new ArgumentNullException());
                 if (model.QueryId <= 0) {
                     model.QueryId = CreateQuery(model.ContentTypeName);
                 }
