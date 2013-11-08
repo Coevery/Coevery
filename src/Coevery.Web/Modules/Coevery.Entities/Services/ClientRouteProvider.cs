@@ -64,20 +64,30 @@ namespace Coevery.Entities.Services {
                     descriptor.Url = "/Create";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateChooseType/' + params.Id; }";
-                    view.Controller = "FieldCreateChooseTypeCtrl";
-                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/createchoosetypecontroller" });
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"ChooseFieldType/' + params.Id; }";
+                    view.Controller = "ChooseFieldTypeCtrl";
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/choosefieldtypecontroller" });
                 });
 
-            builder.Describe("EntityDetail.Fields.CreateEditInfo")
+            builder.Describe("EntityDetail.Fields.CreateFillInfo")
                 .Configure(descriptor => {
                     descriptor.Url = "/Create/{FieldTypeName:[0-9a-zA-Z]+}";
                     })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateEditInfo/' + params.Id + '?FieldTypeName=' + params.FieldTypeName; }";
-                    view.Controller = "FieldCreateEditInfoCtrl";
-                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/createeditinfocontroller" });
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"FillFieldInfo/' + params.Id + '?FieldTypeName=' + params.FieldTypeName; }";
+                    view.Controller = "FillFieldInfoCtrl";
+                    view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/fillfieldinfocontroller" });
                 });
+
+            builder.Describe("EntityDetail.Fields.CreateConfirmInfo")
+               .Configure(descriptor => {
+                   descriptor.Url = "/Create/{FieldTypeName:[0-9a-zA-Z]+}/Confirm";
+               })
+               .View(view => {
+                   view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"ConfirmFieldInfo/' + params.Id; }";
+                   view.Controller = "ConfirmFieldInfoCtrl";
+                   view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/confirmfieldinfocontroller" });
+               });
 
             builder.Describe("FieldEdit")
                 .Configure(descriptor => {
