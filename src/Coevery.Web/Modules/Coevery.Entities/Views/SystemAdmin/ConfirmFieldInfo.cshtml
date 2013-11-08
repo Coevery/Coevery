@@ -1,0 +1,60 @@
+﻿<div class="row-fluid">
+    <h5>Step 3. Confirm informations and add in layout</h5>
+    <div class="form-container">
+        <form class="form-horizontal no-border">
+            <section class="control-group">
+                <label class="control-label">
+                    Field Label
+                </label>
+                <div class="controls">
+                    <input type="text" class="span12" readonly ng-model="fieldInfo.fieldLabel">
+                </div>
+            </section>
+            <section class="control-group">
+                <label class="control-label">
+                    Field Name
+                </label>
+                <div class="controls">
+                    <input type="text" class="span12" readonly ng-model="fieldInfo.fieldName">
+                </div>
+            </section>
+            <section class="control-group">
+                <label class="control-label">
+                    Options
+                </label>
+                <div class="controls">
+                    <label class="checkbox">
+                        <input type="checkbox" disabled ng-model="fieldInfo.required" />
+                        Required
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" disabled ng-model="fieldInfo.alwaysInLayout" />
+                        Always In Layout
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" disabled ng-model="fieldInfo.isAudit" />
+                        IsAudit
+                    </label>
+                </div>
+            </section>
+            <section class="control-group">
+                <label class="control-label">
+                    Help Text
+                </label>
+                <div class="controls">
+                    <textarea class="span12" readonly ng-model="fieldInfo.helpText"></textarea>
+                </div>
+            </section>
+            <section class="control-group">
+                <label class="control-label">
+                </label>
+                <div class="controls">
+                    <label class="checkbox">
+                        <input type="checkbox" name="AddInLayout" id="AddInLayout" value="true" ng-model="addInLayout" />
+                        Add in layout
+                    </label>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>

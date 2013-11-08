@@ -187,7 +187,7 @@ namespace Coevery.Entities.Controllers {
 
         #region Field Methods
 
-        public ActionResult CreateChooseType(string id) {
+        public ActionResult ChooseFieldType(string id) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part."))) {
                 return new HttpUnauthorizedResult();
             }
@@ -199,7 +199,7 @@ namespace Coevery.Entities.Controllers {
             return View(viewModel);
         }
 
-        public ActionResult CreateEditInfo(string id, string fieldTypeName) {
+        public ActionResult FillFieldInfo(string id, string fieldTypeName) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part."))) {
                 return new HttpUnauthorizedResult();
             }
@@ -216,8 +216,15 @@ namespace Coevery.Entities.Controllers {
             return View(viewModel);
         }
 
-        [HttpPost, ActionName("CreateEditInfo")]
-        public ActionResult CreateEditInfoPost(string id, AddFieldViewModel viewModel) {
+        public ActionResult ConfirmFieldInfo(string id) {
+            if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part."))) {
+                return new HttpUnauthorizedResult();
+            }
+            return View();
+        }
+
+        [HttpPost, ActionName("FillFieldInfo")]
+        public ActionResult FillFieldInfoPost(string id, AddFieldViewModel viewModel) {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to edit a content part."))) {
                 return new HttpUnauthorizedResult();
             }

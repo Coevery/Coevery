@@ -1,0 +1,133 @@
+﻿@model Coevery.Entities.ViewModels.AddFieldViewModel
+<div class="row-fluid">
+    <h5>Step 2. Enter the detail informations</h5>
+    <div class="widget-content form-container edit-mode">
+        @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+            new {@class = "form-horizontal no-border", @id = "field-info-form", @name = "myForm"})) {
+            <fieldset>
+                <legend>Information</legend>
+                <section class="data-row control-group">
+                    <label class="control-label required" for="@Html.FieldIdFor(m => m.DisplayName)">
+                        @T("Field Label")
+                    </label>
+                    <div class="controls errortips">
+                        @Html.TextBoxFor(m => m.DisplayName, new {@class = "span12 required labelForName", autofocus = "autofocus", ng_model = "fieldInfo.fieldLabel"})
+                    </div>
+                </section>
+                <section class="data-row control-group">
+                    <label class="control-label required" for="@Html.FieldIdFor(m => m.Name)">
+                        @T("Field Name")
+                    </label>
+                    <div class="controls errortips">
+                        @Html.TextBoxFor(m => m.Name, new {@class = "span12 nameisnotid required safename", id = "inputFieldName", ng_model = "fieldInfo.fieldName"})
+                    </div>
+                </section>
+                <section class="data-row control-group">
+                    <label class="control-label">
+                        @T("Options")
+                    </label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            @Html.CheckBox(Model.FieldTypeName + "Settings.Required", Model.Required, new {ng_model = "fieldInfo.required"})
+                            @T("Required")
+                        </label>
+                        <label class="checkbox">
+                            @Html.CheckBox(Model.FieldTypeName + "Settings.AlwaysInLayout", Model.AlwaysInLayout, new {ng_model = "fieldInfo.alwaysInLayout"})
+                            @T("Always In Layout")
+                        </label>
+                        <label class="checkbox">
+                            @Html.CheckBox(Model.FieldTypeName + "Settings.IsAudit", Model.IsAudit, new {ng_model = "fieldInfo.isAudit"})
+                            @T("IsAudit")
+                        </label>
+                    </div>
+                </section>
+                <section class="data-row control-group">
+                    <label class="control-label" for="@Html.FieldIdFor(m => m.HelpText)">
+                        @T("Help Text")
+                    </label>
+                    <div class="controls">
+                        @Html.TextArea(Model.FieldTypeName + "Settings.HelpText", Model.HelpText, new {@class = "span12", ng_model = "fieldInfo.helpText"})
+                    </div>
+                </section>
+                @Html.HiddenFor(m => m.FieldTypeName)
+            </fieldset>
+            <fieldset id="fieldPanel">
+                <legend>Field Information</legend>
+                @{ Html.RenderTemplates(Model.TypeTemplates); }
+            </fieldset>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        //Validation
+
+        $.validator.addMethod("nameisnotid", function(value) {
+            return !(value.toLowerCase() == "id");
+        }, "FieldName should not be 'id'");
+        $.validator.classRuleSettings.nameisnotid = { nameisnotid: true };
+
+        $.validator.addMethod("safename", function(value) {
+            return (/^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value));
+        }, "FieldName is not legal!");
+        $.validator.classRuleSettings.safename = { safename: true };
+
+
+        var validator = $("#field-info-form").validate({
+            //ignore: "*:not('.toValidate *')",
+            onkeyup: function(element) {
+                if (element.type == "text") {
+                    this.element(element);
+                }
+            },
+            errorClass: "inputError"
+        });
+
+        //Auto get name
+        var $name = $("#inputFieldName");
+        var $displayName = $(".labelForName");
+        var $entityName = '@Request.Url.Segments.LastOrDefault()';
+
+        var jsonUrl = '@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary {{"Area", "Coevery.Entities"}})';
+        var version = 0;
+
+        var nameAltered;
+        $name.keyup(function() {
+            if (!$name.val()) {
+                nameAltered = false;
+            } else {
+                nameAltered = true;
+            }
+        });
+
+        var compute = function() {
+            // stop processing automatically if altered by the user
+            if (nameAltered) {
+                return;
+            }
+
+            $.post(jsonUrl, {
+                    creatingEntity: false,
+                    entityName: $entityName,
+                    displayName: $displayName.val(),
+                    version: ++version,
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                },
+                function(data) {
+                    if (version == data.version) {
+                        $name.val(data.result);
+                    }
+                },
+                "json"
+            );
+        };
+
+        $displayName.keyup(function() {
+            compute();
+            setTimeout(function() {
+                validator.element($name);
+            }, 100);
+        });
+    });
+</script>

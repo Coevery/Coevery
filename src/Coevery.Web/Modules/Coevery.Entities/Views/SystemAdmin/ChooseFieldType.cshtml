@@ -1,0 +1,17 @@
+﻿@model Coevery.Entities.ViewModels.AddFieldViewModel
+
+<h5>Step 1. Choose the field type</h5>
+<div class="row-fluid">
+    <div class="form-container">
+        <form id="field-type-form" class="no-border">
+            @{
+                foreach (var field in Model.Fields) {
+                    Html.RenderTemplates(field);
+                }
+            }
+        </form>
+    </div>
+</div>
+<div class="inputErrorForField" id="error-tip">
+    You must select a data type.
+</div>

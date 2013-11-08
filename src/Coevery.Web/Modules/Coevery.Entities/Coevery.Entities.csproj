@@ -124,8 +124,9 @@
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
     <Compile Include="ViewModels\EntityDetailViewModel.cs" />
     <Compile Include="ViewModels\FieldDependencyViewModel.cs" />
-    <Content Include="Scripts\controllers\createchoosetypecontroller.js" />
-    <Content Include="Scripts\controllers\createeditinfocontroller.js" />
+    <Content Include="Scripts\controllers\choosefieldtypecontroller.js" />
+    <Content Include="Scripts\controllers\confirmfieldinfocontroller.js" />
+    <Content Include="Scripts\controllers\fillfieldinfocontroller.js" />
     <Content Include="Scripts\controllers\dependencycreatecontroller.js" />
     <Content Include="Scripts\controllers\dependencyeditcontroller.js" />
     <Content Include="Scripts\controllers\dependencylistcontroller.js" />
@@ -184,10 +185,10 @@
     <Content Include="Views\SystemAdmin\CreateDependency.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\CreateChooseType.cshtml" />
+    <Content Include="Views\SystemAdmin\ChooseFieldType.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\CreateEditInfo.cshtml" />
+    <Content Include="Views\SystemAdmin\FillFieldInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\DependencyList.cshtml" />
@@ -197,6 +198,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\EditFields.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\SystemAdmin\ConfirmFieldInfo.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
