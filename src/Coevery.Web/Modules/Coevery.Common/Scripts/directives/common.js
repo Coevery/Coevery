@@ -72,24 +72,30 @@ angular.module('coevery.common', [])
              link: function (scope, element, attrs) {
                  element.css("display", "none");
                  var fieldtype = attrs["changeRequired"];
+                 var entityselector = element.find("#entityselector");
                  scope.$watch(function() {
                      return scope.fieldtype;
-                 }, function (newval,oldval) {
+                 }, function (newval) {
                      if (newval == fieldtype) {
-                         if (scope.entities.length == 0) {
-                             logger.info("please create and a entity and then publish it first");
-                             scope.fieldtype = oldval;
-                             return;
-                         }
                          element.css("display", "block");
-                         element.find(":text").addClass("required");
                          var scrolloffset = element.find("#pos").offset();
+                         entityselector.parent("div").css('width', '160px');
                          $("body,html").animate({
                              scrollTop: scrolloffset.top
                          }, 800);
+                         if (scope.entities.length == 0) {
+                             //logger.notice("please create a entity and then publish it first");
+                             entityselector.attr('data-msg-required', 'please create a entity first');
+                             entityselector.addClass("required");
+                             element.find(":text").addClass("required");
+                         }
                      } else {
                          element.css("display", "none");
-                         element.find(":text").removeClass("required");
+                         if (scope.entities.length == 0) {
+                             entityselector.removeAttr("data-msg-required");
+                             entityselector.removeClass("required");
+                             element.find(":text").removeClass("required");
+                         }
                      }
                  });
              }

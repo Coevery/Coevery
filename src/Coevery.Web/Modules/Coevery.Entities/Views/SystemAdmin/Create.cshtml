@@ -83,8 +83,8 @@
                         <div data-change-required="{{nextfieldtype}}">
                             <section class="data-row control-group">
                                 <label class="control-label required" for="EntityList">@T("Primary Entity")</label>
-                                <div class="controls">
-                                    <select name="@Html.FieldNameFor(m => m.ReferName)">
+                                <div class="controls errortips">
+                                    <select id="entityselector" name="@Html.FieldNameFor(m => m.ReferName)" >
                                         <option data-ng-repeat="entity in entities" value="{{entity.name}}">{{entity.name}}</option>
                                     </select>
                                 </div>
