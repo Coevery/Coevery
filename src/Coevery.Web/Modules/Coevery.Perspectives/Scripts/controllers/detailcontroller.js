@@ -37,7 +37,7 @@ define(['core/app/detourService',
               {
                   name: 'DisplayName', label: t('DisplayName'), 
                   formatter: $rootScope.cellLinkTemplate,
-                  formatoptions: { hasView: true }
+                  formatoptions: { hasView: false }
               }];
 
           $scope.gridOptions = {

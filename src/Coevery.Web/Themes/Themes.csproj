@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MooncakeAdmin\Scripts\js\setup-systemadmin.js" />
     <Content Include="MooncakeAdmin\Theme.png" />
     <Content Include="MooncakeAdmin\Theme.txt" />
     <Content Include="MooncakeBase\Scripts\js\bootstrap-datetimepicker.min.js" />
@@ -1968,6 +1969,7 @@
     <Content Include="MooncakeBase\Styles\widget.css" />
     <Content Include="MooncakeBase\Theme.png" />
     <Content Include="MooncakeBase\Theme.txt" />
+    <Content Include="Mooncake\Scripts\js\setup.js" />
     <Content Include="Mooncake\Theme.png" />
     <Content Include="Mooncake\Theme.txt" />
     <Content Include="Offline\Views\Layout.cshtml" />
@@ -2127,6 +2129,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MooncakeAdmin\Views\Resource.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MooncakeAdmin\Scripts\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Mooncake\Scripts\Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
