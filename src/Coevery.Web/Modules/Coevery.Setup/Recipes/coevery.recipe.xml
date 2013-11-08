@@ -64,7 +64,8 @@
     widget create HtmlWidget /Title:"Second Leader Aside" /Zone:"TripelSecond" /Position:"5" /Layer:"TheHomepage" /Identity:"SetupHtmlWidget2" /UseLoremIpsumText:true
     widget create HtmlWidget /Title:"Third Leader Aside" /Zone:"TripelThird" /Position:"5" /Layer:"TheHomepage" /Identity:"SetupHtmlWidget3" /UseLoremIpsumText:true
     site setting set baseurl
+	theme activate "MooncakeAdmin"
     theme activate "Mooncake"
-
+	
   </Command>
 </Coevery>
