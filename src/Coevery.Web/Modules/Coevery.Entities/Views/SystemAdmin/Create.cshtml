@@ -21,32 +21,37 @@
                     <fieldset>
                         <legend>General Information</legend>
                         <section class="data-row control-group">
-                            <label class="control-label required" >@T("Display Name")</label>
-                            <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.DisplayName, new {@class = "span12 labelForName", autofocus = "autofocus", required = ""})
+                            <div class="span6">
+                                <label class="control-label required" >@T("Display Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus",required="" })
+                                </div>
                             </div>
-                        </section>
-                        <section class="data-row control-group">
-                            <label class="control-label required" >@T("Name")</label>
-                            <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.Name, new {@class = "span12 required safename", @id = "EntityName"})
-                                <span class="help-block">@T("Technical name of the type.")</span>
-                            </div>
-                        </section>
-                        <section class="data-row control-group">
-                            <label class="control-label required" >@T("Collection Name")</label>
-                            <div class="controls errortips">
+                            <div class="span6">
+                                <label class="control-label required" >@T("Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
+                                    <span class="help-block">@T("Technical name of the type.")</span>
+                                </div>
                                 @Html.TextBoxFor(m => m.Settings["CollectionName"], new {@class = "span12 required safename"})
-                                <span class="help-block">@T("Technical name of the type's collection.")</span>
                             </div>
                         </section>
                         <section class="data-row control-group">
-                            <label class="control-label required" >@T("Collection Display Name")</label>
-                            <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new {@class = "span12 required"})
-                                <span class="help-block">@T("Display name of the type's collection.")</span>
+                            <div class="span6">
+                                <label class="control-label required" >@T("Collection Display Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new { @class = "span12 required" })
+                                    <span class="help-block">@T("Display name of the type's collection.")</span>
+                                </div>
                             </div>
-                        </section>
+                            <div class="span6">
+                                <label class="control-label required" >@T("Collection Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.Settings["CollectionName"], new { @class = "span12 required safename" })
+                                    <span class="help-block">@T("Technical name of the type's collection.")</span>
+                                </div>
+                            </div>
+                            </section>
                     </fieldset>
                     <fieldset>
                         <legend>Enter Record Name and Label</legend>

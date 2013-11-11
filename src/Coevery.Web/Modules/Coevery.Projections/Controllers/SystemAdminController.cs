@@ -39,7 +39,6 @@ namespace Coevery.Projections.Controllers {
         }
 
         public ActionResult Create(string id) {   
-            id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
             if (!_contentMetadataService.CheckEntityPublished(id)) {
                 return Content(T("The \"{0}\" hasn't been published!", id).Text);
             }
