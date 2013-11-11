@@ -2104,7 +2104,7 @@
     <Content Include="MooncakeBase\Views\BadgeOfHonor.cshtml" />
     <Content Include="MooncakeBase\Views\BaseResource.cshtml" />
     <Content Include="MooncakeBase\Views\Branding.cshtml" />
-    <Content Include="Mooncake\Views\Resource.cshtml" />
+    <Content Include="Mooncake\Views\MooncakeResource.cshtml" />
     <Content Include="MooncakeBase\Views\InputWrapper.cshtml" />
     <Content Include="MooncakeAdmin\Views\Layout.cshtml" />
     <Content Include="Mooncake\Views\Layout.cshtml" />
@@ -2126,7 +2126,7 @@
     <Content Include="MooncakeAdmin\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MooncakeAdmin\Views\Resource.cshtml" />
+    <Content Include="MooncakeAdmin\Views\MooncakeResource.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
