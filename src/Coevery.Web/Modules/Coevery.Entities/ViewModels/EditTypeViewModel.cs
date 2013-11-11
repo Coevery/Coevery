@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using Coevery.Common.Extensions;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.ContentManagement.ViewModels;
@@ -32,8 +33,8 @@ namespace Coevery.Entities.ViewModels {
         public string FieldLabel { get; set; }
         public string FieldName { get; set; }
         public string FieldType { get; set; }
-        public string ReferName { get; set; }
-        public string RelationName { get; set; }
+        public IEnumerable<SelectListItem> FieldTypes { get; set; }
+        public IEnumerable<EntityRecordViewModel> FieldTemplates { get; set; }
 
         private IEnumerable<EditPartFieldViewModel> GetTypeFields(ContentTypeDefinition contentTypeDefinition) {
             var implicitTypePart = contentTypeDefinition.Parts.SingleOrDefault(p => string.Equals(p.PartDefinition.Name, Name.ToPartName(), StringComparison.OrdinalIgnoreCase));

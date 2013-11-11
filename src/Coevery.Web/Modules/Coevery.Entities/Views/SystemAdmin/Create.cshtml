@@ -1,8 +1,4 @@
-@using System.Security.Policy
-@model Coevery.Entities.ViewModels.EditTypeViewModel
-@{
-    var setting = Model.Settings;
-}          
+@model Coevery.Entities.ViewModels.EditTypeViewModel        
 <header id="page-title">
     <h1 class="pull-left">@T("New Entity") <span>Create a new entity</span></h1>
 </header>
@@ -20,35 +16,34 @@
         <div class="span12">
             <div class="form-horizontal">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                              new { @class = "edit-mode", id = "myForm" }))
-                {
+                    new {@class = "edit-mode", id = "myForm"})) {
                     @Html.ValidationSummary()
                     <fieldset>
                         <legend>General Information</legend>
                         <section class="data-row control-group">
                             <label class="control-label required" >@T("Display Name")</label>
                             <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12 labelForName", autofocus = "autofocus",required="" })
+                                @Html.TextBoxFor(m => m.DisplayName, new {@class = "span12 labelForName", autofocus = "autofocus", required = ""})
                             </div>
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required" >@T("Name")</label>
                             <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.Name, new { @class = "span12 required safename", @id = "EntityName" })
+                                @Html.TextBoxFor(m => m.Name, new {@class = "span12 required safename", @id = "EntityName"})
                                 <span class="help-block">@T("Technical name of the type.")</span>
                             </div>
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required" >@T("Collection Name")</label>
                             <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.Settings["CollectionName"], new { @class = "span12 required safename" })
+                                @Html.TextBoxFor(m => m.Settings["CollectionName"], new {@class = "span12 required safename"})
                                 <span class="help-block">@T("Technical name of the type's collection.")</span>
                             </div>
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required" >@T("Collection Display Name")</label>
                             <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new { @class = "span12 required" })
+                                @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new {@class = "span12 required"})
                                 <span class="help-block">@T("Display name of the type's collection.")</span>
                             </div>
                         </section>
@@ -63,39 +58,32 @@
                             </p>
                         </section>
                         <section class="data-row control-group">
-                            <label class="control-label required" for="FieldType">@T("Field Type")</label>
+                            <label class="control-label required" for="@Html.NameFor(m => m.FieldType)">@T("Field Type")</label>
                             <div class="controls">
-                                <select name="@Html.FieldNameFor(m => m.FieldType)" data-ng-model="fieldtype" data-ng-options="fieldtype for fieldtype in fieldtypes"></select>
+                                @Html.DropDownListFor(m => m.FieldType, Model.FieldTypes, new {ng_model = "selection"})
                             </div>
                         </section>
                         <section class="data-row control-group">                          
-                            <label class="control-label required" for="FieldLabel">@T("Record Name Label")</label>
+                            <label class="control-label required" for="@Html.NameFor(m => m.FieldLabel)">@T("Record Name Label")</label>
                             <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.FieldLabel, new { @class = "span12 labelForFieldName", required="" })
+                                @Html.TextBoxFor(m => m.FieldLabel, new {@class = "span12 labelForFieldName", required = ""})
                             </div>
                         </section>
                         <section class="data-row control-group">
-                            <label class="control-label required" for="FieldName">@T("Record Name")</label>
+                            <label class="control-label required" for="@Html.NameFor(m => m.FieldName)">@T("Record Name")</label>
                             <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.FieldName, new { @class = "span12 nameisnotid required safename", @id = "FieldName" })
+                                @Html.TextBoxFor(m => m.FieldName, new {@class = "span12 nameisnotid required safename", @id = "FieldName"})
                             </div>
                         </section>
-                        <div data-change-required="{{nextfieldtype}}">
-                            <section class="data-row control-group">
-                                <label class="control-label required" for="EntityList">@T("Primary Entity")</label>
-                                <div class="controls errortips">
-                                    <select id="entityselector" name="@Html.FieldNameFor(m => m.ReferName)" >
-                                        <option data-ng-repeat="entity in entities" value="{{entity.name}}">{{entity.name}}</option>
-                                    </select>
-                                </div>
-                            </section>
-                            <section class="data-row control-group">
-                                <label class="control-label required">@T("Relation Name")</label>
-                                <div class="controls errortips">
-                                    @Html.TextBoxFor(m => m.RelationName, new { @class = "span12 nameisnotid"})
-                                </div>
-                            </section>
-                            <div id="pos"></div>
+                        
+                        <div ng-switch on="selection">
+                            @foreach (var fieldTemplate in Model.FieldTemplates) {
+                                if (fieldTemplate.TemplateViewModel != null) {
+                                    <div ng-switch-when="@fieldTemplate.FieldTypeName">
+                                        @{ Html.RenderTemplates(fieldTemplate.TemplateViewModel); }                                        
+                                    </div>
+                                }
+                            }
                         </div>
                     </fieldset>
                 }
@@ -105,16 +93,16 @@
 </section>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         //Validation
-        $.validator.addMethod("safename", function (value) {
+        $.validator.addMethod("safename", function(value) {
             return (/^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value));
         }, "FieldName is not legal!");
         $.validator.classRuleSettings.safename = { safename: true };
 
         var validator = $("#myForm").validate({
             //ignore: "*:not('.toValidate *')",
-            onkeyup: function (element) {
+            onkeyup: function(element) {
                 if (element.type == "text") {
                     this.element(element);
                 }
@@ -125,11 +113,11 @@
         //Auto get name
         var $name = $("#EntityName");
         var $displayName = $(".labelForName");
-        var jsonUrl = "@Url.Action("EntityName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Entities" } })";
+        var jsonUrl = "@Url.Action("EntityName", "SystemAdmin", new RouteValueDictionary {{"Area", "Coevery.Entities"}})";
         var version = 0;
 
         var nameAltered;
-        $name.keyup(function () {
+        $name.keyup(function() {
             if (!$name.val()) {
                 nameAltered = false;
             } else {
@@ -137,18 +125,18 @@
             }
         });
 
-        var compute = function () {
+        var compute = function() {
             // stop processing automatically if altered by the user
             if (nameAltered) {
                 return;
             }
 
             $.post(jsonUrl, {
-                displayName: $displayName.val(),
-                version: ++version,
-                __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
-            },
-                function (data) {
+                    displayName: $displayName.val(),
+                    version: ++version,
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                },
+                function(data) {
                     if (version == data.version) {
                         $name.val(data.result);
                     }
@@ -157,18 +145,18 @@
             );
         };
 
-        $displayName.keyup(function () {
+        $displayName.keyup(function() {
             compute();
         });
 
 
         var $fieldName = $("#FieldName");
         var $displayFieldName = $(".labelForFieldName");
-        var jsonUrlFieldName = '@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary { { "Area", "Coevery.Entities" } })';
+        var jsonUrlFieldName = '@Url.Action("FieldName", "SystemAdmin", new RouteValueDictionary {{"Area", "Coevery.Entities"}})';
         var versionFieldName = 0;
 
         var nameAlteredFieldName;
-        $fieldName.keyup(function () {
+        $fieldName.keyup(function() {
             if (!$fieldName.val()) {
                 nameAlteredFieldName = false;
             } else {
@@ -176,20 +164,20 @@
             }
         });
 
-        var computeFieldName = function () {
+        var computeFieldName = function() {
             // stop processing automatically if altered by the user
             if (nameAlteredFieldName) {
                 return;
             }
 
             $.post(jsonUrlFieldName, {
-                creatingEntity: true,
-                entityName: $name.val(),
-                displayName: $displayFieldName.val(),
-                version: ++versionFieldName,
-                __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
-            },
-                function (data) {
+                    creatingEntity: true,
+                    entityName: $name.val(),
+                    displayName: $displayFieldName.val(),
+                    version: ++versionFieldName,
+                    __RequestVerificationToken: $("input[name=__RequestVerificationToken]").val()
+                },
+                function(data) {
                     if (versionFieldName == data.version) {
                         $fieldName.val(data.result);
                     }
@@ -198,7 +186,7 @@
             );
         };
 
-        $displayFieldName.keyup(function () {
+        $displayFieldName.keyup(function() {
             computeFieldName();
         });
     });

@@ -12,13 +12,11 @@ using Coevery.ContentManagement.MetaData.Builders;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.ContentManagement.ViewModels;
 using Coevery.Data;
-using Coevery.Projections.Models;
 using Coevery.Localization;
 
 namespace Coevery.Relationship.Settings {
     public class ReferenceFieldEditorEvents : FieldEditorEvents {
         private readonly IContentDefinitionService _contentDefinitionService;
-        private readonly IContentManager _contentManager;
         private readonly IRelationshipService _relationshipService;
         private readonly IRepository<OneToManyRelationshipRecord> _repository;
 
@@ -26,11 +24,9 @@ namespace Coevery.Relationship.Settings {
 
         public ReferenceFieldEditorEvents(
             IContentDefinitionService contentDefinitionService,
-            IContentManager contentManager,
             IRelationshipService relationshipService,
             IRepository<OneToManyRelationshipRecord> repository) {
             _contentDefinitionService = contentDefinitionService;
-            _contentManager = contentManager;
             _relationshipService = relationshipService;
             _repository = repository;
             T = NullLocalizer.Instance;
@@ -48,10 +44,11 @@ namespace Coevery.Relationship.Settings {
 
             var model = new ReferenceFieldSettings();
             if (updateModel.TryUpdateModel(model, "ReferenceFieldSettings", null, null)) {
-                if (string.IsNullOrEmpty(model.ContentTypeName))
-                    throw  new Exception("primary entity is null",new ArgumentNullException());
+                if (string.IsNullOrEmpty(model.ContentTypeName)) {
+                    throw new Exception("primary entity is null", new ArgumentNullException());
+                }
                 if (model.QueryId <= 0) {
-                    model.QueryId = CreateQuery(model.ContentTypeName);
+                    model.QueryId = _relationshipService.CreateEntityQuery(model.ContentTypeName);
                 }
 
                 if (model.RelationshipId <= 0) {
@@ -66,18 +63,6 @@ namespace Coevery.Relationship.Settings {
                 settingsDictionary["ReferenceFieldSettings.QueryId"] = model.QueryId.ToString(CultureInfo.InvariantCulture);
                 settingsDictionary["ReferenceFieldSettings.RelationshipId"] = model.RelationshipId.ToString(CultureInfo.InvariantCulture);
             }
-        }
-
-        public override void UpdateFieldSettings(string fieldType, string fieldName, string entityName, string contentTypeName, string relationshipName, SettingsDictionary settingsDictionary)
-        {
-            if (fieldType != "ReferenceField")
-            {
-                return;
-            }
-            var queryId = CreateQuery(contentTypeName);
-            var relationshipId = _relationshipService.CreateOneToManyRelationship(fieldName, relationshipName, contentTypeName, entityName);
-            settingsDictionary["ReferenceFieldSettings.QueryId"] = queryId.ToString(CultureInfo.InvariantCulture);
-            settingsDictionary["ReferenceFieldSettings.RelationshipId"] = relationshipId.ToString(CultureInfo.InvariantCulture);
         }
 
         public override void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {
@@ -121,26 +106,6 @@ namespace Coevery.Relationship.Settings {
                 }).ToList();
                 yield return DefinitionTemplate(model);
             }
-        }
-
-        private int CreateQuery(string entityType) {
-            var queryPart = _contentManager.New<QueryPart>("Query");
-            var filterGroup = new FilterGroupRecord();
-            queryPart.Record.FilterGroups.Add(filterGroup);
-            var filterRecord = new FilterRecord {
-                Category = "Content",
-                Type = "ContentTypes",
-                Position = filterGroup.Filters.Count,
-                State = GetContentTypeFilterState(entityType)
-            };
-            filterGroup.Filters.Add(filterRecord);
-            _contentManager.Create(queryPart);
-            return queryPart.Id;
-        }
-
-        private static string GetContentTypeFilterState(string entityType) {
-            const string format = @"<Form><Description></Description><ContentTypes>{0}</ContentTypes></Form>";
-            return string.Format(format, entityType);
         }
     }
 }

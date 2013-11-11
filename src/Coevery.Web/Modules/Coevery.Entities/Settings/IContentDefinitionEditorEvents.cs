@@ -10,7 +10,6 @@ namespace Coevery.Entities.Settings {
     public interface IContentDefinitionEditorEvents : IEventHandler {
         IEnumerable<TemplateViewModel> FieldTypeDescriptor();
         void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel);
-        void UpdateFieldSettings(string fieldType, string fieldName, string entityName, string contentTypeName,string relationshipName, SettingsDictionary settingsDictionary);
         void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary);
         void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary);
 
@@ -31,8 +30,6 @@ namespace Coevery.Entities.Settings {
         }
 
         public virtual void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel) {}
-
-        public virtual void UpdateFieldSettings(string fieldType, string fieldName, string entityName, string contentTypeName, string relationshipName, SettingsDictionary settingsDictionary){}
 
         public virtual void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {}
 

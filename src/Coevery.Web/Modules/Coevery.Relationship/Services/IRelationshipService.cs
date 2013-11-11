@@ -13,6 +13,7 @@ namespace Coevery.Relationship.Services {
         ManyToManyRelationshipRecord GetManyToMany(int id);
         string GetReferenceField(string entityName, string relationName);
 
+        int CreateEntityQuery(string entityName);
         int CreateOneToManyRelationship(string fieldName, string relationName, string primaryEntityName, string relatedEntityName);
         string CreateRelationship(OneToManyRelationshipModel oneToMany);
         string CreateRelationship(ManyToManyRelationshipModel manyToMany);

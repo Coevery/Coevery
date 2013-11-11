@@ -27,7 +27,7 @@ namespace Coevery.Entities.Extensions {
             var metaEntities = _contentManager.Query<EntityMetadataPart>(VersionOptions.Latest)
                                               .List();
             if (metaEntities == null || !metaEntities.Any()) {
-                return null;
+                return Enumerable.Empty<ContentTypeDefinition>();
             }
             return from type in _contentDefinitionManager.ListTypeDefinitions()
                    from entity in metaEntities

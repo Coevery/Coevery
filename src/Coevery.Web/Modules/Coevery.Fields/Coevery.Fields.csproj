@@ -133,6 +133,7 @@
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="EntityRecords\TextFieldEntityRecordEditorEvents.cs" />
     <Compile Include="Settings\DatetimeFieldEditorEvents.cs" />
     <Compile Include="Settings\DatetimeFieldSettings.cs" />
     <Compile Include="Settings\DateFieldEditorEvents.cs" />

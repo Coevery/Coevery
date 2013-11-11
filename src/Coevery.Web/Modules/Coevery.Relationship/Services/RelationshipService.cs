@@ -245,6 +245,21 @@ namespace Coevery.Relationship.Services {
             return relationship.Id.ToString();
         }
 
+        public int CreateEntityQuery(string entityName) {
+            var queryPart = _contentManager.New<QueryPart>("Query");
+            var filterGroup = new FilterGroupRecord();
+            queryPart.Record.FilterGroups.Add(filterGroup);
+            var filterRecord = new FilterRecord {
+                Category = "Content",
+                Type = "ContentTypes",
+                Position = filterGroup.Filters.Count,
+                State = GetContentTypeFilterState(entityName)
+            };
+            filterGroup.Filters.Add(filterRecord);
+            _contentManager.Create(queryPart);
+            return queryPart.Id;
+        }
+
         #endregion
 
         #region Delete And Edit
@@ -461,6 +476,11 @@ namespace Coevery.Relationship.Services {
                 .Where(x => x.PrimaryEntity.ContentItemVersionRecord.Latest
                             && x.RelatedEntity.ContentItemVersionRecord.Latest)
                 .Any(record => record.Name == name);
+        }
+
+        private static string GetContentTypeFilterState(string entityType) {
+            const string format = @"<Form><Description></Description><ContentTypes>{0}</ContentTypes></Form>";
+            return string.Format(format, entityType);
         }
 
         #endregion
