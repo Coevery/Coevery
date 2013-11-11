@@ -1,9 +1,9 @@
 jQuery(function($) {
 
     var slides = [// Slideshow Images
-        { image: 'images/slide1.jpg' },
-        { image: 'images/slide4.jpg' },
-        { image: 'images/slide3.jpg' }
+        { image: 'images/slide1_960.jpg' },
+        { image: 'images/slide4_960.jpg' },
+        { image: 'images/slide3_960.jpg' }
     ];
 
     $.supersized({
