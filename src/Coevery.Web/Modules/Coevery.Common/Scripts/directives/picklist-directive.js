@@ -84,7 +84,7 @@
                 '<span style="margin-left: 3px;">{{targetItem.Text}}</span>' +
                 '<div class="pull-right"><button class="btn-link" type="button" ng-click="targetItem.Selected=false">Remove</button>' +
                 '</div></li></ul></div></div></div> ' +
-                '<select multiple="multiple" ng-attr-name="{{ selectName }}" ng-attr-id="{{selectId}}">' +
+                '<select multiple="multiple" style="display:none;" ng-attr-name="{{ selectName }}" ng-attr-id="{{selectId}}">' +
                 '<option ng-repeat="option in sourceList | filter: { Selected: true } | orderBy:\'+Order\'" ng-attr-value="{{ option.Value }}" selected=true> ' +
                 '{{ option.Text }}</option>' +
                 '</select></div></div>',
