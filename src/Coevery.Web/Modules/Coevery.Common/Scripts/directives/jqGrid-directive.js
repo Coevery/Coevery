@@ -35,7 +35,7 @@
                         var width, pager;
                         width = $element.parent().width() - 1;
                         pager = $(gridOptions.pager + '_center');
-                        if (pager.find(".custom-pager").length === 0 && attrs.agGridDrag === undefined) {
+                        if (pager.find(".custom-pager").length === 0) {
                             var pagerOption = {
                                 items: $grid.getGridParam("records"),
                                 itemsOnPage: $grid.getGridParam("rowNum"),
@@ -90,7 +90,15 @@
                     $grid.jqGrid(gridOptions);
                     
                     if (attrs.agGridDrag!=undefined) {
-                        $grid.jqGrid('sortableRows');
+                        $grid.jqGrid('sortableRows',{
+                            update: function(event, ui) { 
+                                var posturl = ''; 
+                                var neworder = '';
+                                $.post(posturl, neworder, function(message, status) {
+                                    
+                                });
+                            }
+                        });
                     }
                     /*
                     adds listener to resize grid to parent container when window is resized.

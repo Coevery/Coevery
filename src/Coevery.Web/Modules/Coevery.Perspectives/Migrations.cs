@@ -1,5 +1,6 @@
 ﻿using System;
 using Coevery.ContentManagement.MetaData;
+using Coevery.Core.Contents.Extensions;
 using Coevery.Data.Migration;
 using Coevery.Environment.Configuration;
 
@@ -42,7 +43,19 @@ namespace Coevery.Perspectives {
         }
 
         public int UpdateFrom2() {
+            SchemaBuilder.CreateTable("PerspectivePartRecord",
+                table => table
+                    .ContentPartVersionRecord()
+                    .Column<string>("Name", column => column.WithLength(1024))
+                    .Column<string>("Description",column=>column.WithLength(1024))
+                    .Column<int>("Order")
+                );
+
+            ContentDefinitionManager.AlterPartDefinition("PerspectivePart", builder => builder
+                .Attachable()
+                .WithDescription("Provides a perspective for your content item."));
             return 3;
         }
+
     }
 }
