@@ -6,22 +6,6 @@ jQuery(function($) {
         { image: 'images/slide3.jpg' }
     ];
 
-    var windowWidth = $(window).width();
-    if (windowWidth < 960) {
-        slides = [
-            { image: 'images/slide1_960.jpg' },
-            { image: 'images/slide4_960.jpg' },
-            { image: 'images/slide3_960.jpg' }
-        ];
-    }
-    else if (windowWidth < 1350) {
-        slides = [
-            { image: 'images/slide1_1350.jpg' },
-            { image: 'images/slide4_1350.jpg' },
-            { image: 'images/slide3_1350.jpg' }
-        ];
-    }
-
     $.supersized({
         // Functionality
         slideshow: 1,			// Slideshow on/off
@@ -57,5 +41,4 @@ jQuery(function($) {
         progress_bar: 1,			// Timer for each slide							
         mouse_scrub: 0
     });
-    setTimeout($("#defaultslide").fadeOut("slow").remove(), 3000);
 });
