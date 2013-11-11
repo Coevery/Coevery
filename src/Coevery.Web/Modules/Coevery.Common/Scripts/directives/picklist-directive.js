@@ -1,5 +1,5 @@
 ﻿(function () {
-    function getTargetList(sourceList,orderList) {
+    function getTargetList(sourceList, orderList) {
         if (!orderList) {
             return;
         }
@@ -26,8 +26,8 @@
             }
             var selectE = $element.find("select");
             var sortE = $element.find('.sortable-list ul');
-            selectE.attr("id", attrs.id);
-            selectE.attr("name", attrs.name);
+            $scope.selectId = attrs.id;
+            $scope.selectName = attrs.name;
             $scope.sourceListLabel = attrs.sourceListLabel;
             $scope.targetListLabel = attrs.targetListLabel;
 
@@ -47,6 +47,13 @@
                 });
             };
 
+            $scope.$on("getSelectedList", function(event,target) {
+                //event.stopPropagation();
+                target.list = $scope.sourceList.filter(function (element) { return element.Selected; }).sort(function(a,b) {
+                    return a.Order - b.Order;
+                });
+            });
+
             sortE.sortable({
                 placeholder: 'placeholder',
                 forcePlaceholderSize: true,
@@ -55,7 +62,7 @@
                     $scope.$apply();
                 },
             });
-            
+
             return $element;
         };
         return {
@@ -76,12 +83,12 @@
                 '<div class="span6"><div class="viewfields-widget">' +
                 '<h5>{{targetListLabel}}</h5>' +
                 '<div class="sortable-list"><ul id="sortable">' +
-                '<li ng-repeat="targetItem in sourceList | filter: { Selected: true }" ng-attr-value="{{targetItem.Value}}">' +
+                '<li ng-repeat="targetItem in sourceList | filter: { Selected: true } | orderBy:\'+Order\'" ng-attr-value="{{targetItem.Value}}">' +
                 '<span style="margin-left: 3px;">{{targetItem.Text}}</span>' +
                 '<div class="pull-right"><button class="btn-link" type="button" ng-click="targetItem.Selected=false">Remove</button>' +
                 '</div></li></ul></div></div></div> ' +
-                '<select multiple="multiple" style="display: none;">' +
-                '<option ng-repeat="option in sourceList | filter: { Selected: true } | orderBy:\'+Order\'" ng-attr-value="{{ option.Value }}"> ' +
+                '<select multiple="multiple" ng-attr-name="{{ selectName }}" ng-attr-id="{{selectId}}">' +
+                '<option ng-repeat="option in sourceList | filter: { Selected: true } | orderBy:\'+Order\'" ng-attr-value="{{ option.Value }}" selected=true> ' +
                 '{{ option.Text }}</option>' +
                 '</select></div></div>',
             compile: function (element, attrs) {

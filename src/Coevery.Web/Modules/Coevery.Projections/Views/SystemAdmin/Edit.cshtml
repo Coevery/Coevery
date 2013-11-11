@@ -1,7 +1,7 @@
 ﻿@model Coevery.Projections.ViewModels.ProjectionEditViewModel
 @using Coevery.Core.Common.ViewModels
 @{
-    var sortedBy = Model.Fields.Select(c => new SelectListItem { Selected = (c.Type == Model.SortedBy), Text = c.Name.Text }).ToList();
+    var sortedBy = Model.Fields.Select(c => new SelectListItem { Selected = (c.Value == Model.SortedBy), Text = c.Text }).ToList();
 
     var sortMode = new List<SelectListItem>();
     sortMode.Add(new SelectListItem { Selected = Model.SortMode == "Desc", Text = "Desc" });
@@ -15,18 +15,6 @@
     pageRowCount.Add(new SelectListItem { Selected = Model.VisableTo == "50", Text = "50" });
     pageRowCount.Add(new SelectListItem { Selected = Model.VisableTo == "100", Text = "100" });
     pageRowCount.Add(new SelectListItem { Selected = Model.VisableTo == "200", Text = "200" });
-
-
-    var testData = new PicklistItemViewModel[10];
-    for (var index = 0; index < 10; index++) {
-        testData[index] = new PicklistItemViewModel {
-            Text = Convert.ToString(Convert.ToChar(index+48)),
-            Value = index.ToString("D"),
-            Selected = true,
-            Order = 0
-        };
-    }
-    var fields = Json.Encode(testData);
 }
 <header id="page-title">
     <h1 class="pull-left">View Detail <span>show view detail information</span></h1>
@@ -94,54 +82,10 @@
                         <legend>
                             <h5>Select Fields to Display</h5>
                         </legend>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <div class="span6">
-                                    <div class="viewfields-widget">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Fields</th>
-                                                    <th class="rightCell">
-                                                        <button class="btn-link" ng-click="AddAll()" type="button">Add All</button></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var field in Model.Fields) {
-                                                    string fieldName = field.Name.Text;
-                                                    <tr>
-                                                        <td class="unselectedField" filed-type="@field.Type">@fieldName</td>
-                                                        <td class="rightCell">
-                                                            <span ng-class="LabelClass('@field.Type')">Added</span>
-                                                            <span ng-style="ButtonStyle('@field.Type')" class=""style="line-height: 14px;">
-                                                                <button class="btn-link" ng-click="addfield('@field.Type','@fieldName')" type="button" style="line-height: 14px;">Add</button>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                        <select data-ng-picklist="@Json.Encode(Model.Fields)" data-source-list-label="Fields" data-use-default-model=true
+                                data-target-list-label="Drag and drop to reorder" id="pickList" name="PickedFields">
+                        </select>
 
-                                <div class="span6">
-                                    <div class="viewfields-widget">
-                                        <h5>Drag and drop to reorder</h5>
-                                        <input id="picklist" name="picklist" type="hidden" />
-                                        <div class="sortable-list">
-                                            <ul id="sortable">
-                                                <li ng-repeat="selectedColumn in SelectedColumns" style=""><span style="margin-left: 3px;">{{selectedColumn.DisplayName}}</span>
-                                                    <div class="pull-right">
-                                                        <button class="btn-link" type="button" ng-click="removefield($index)">Remove</button>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row-fluid">
                             <div class="span12 sortedbyspan">
                                 <div class="span8">
@@ -149,7 +93,7 @@
                                     <div class="controls" style="margin-left: 10px;">
                                         @Html.DropDownListFor(m => m.SortedBy, sortedBy, string.Empty, new { @class = "span4", @id = "sortby" })
                                         @Html.DropDownListFor(m => m.SortMode, sortMode, string.Empty, new { @class = "span4", @id = "sortmode" })
-                                        <input type="button" class="btn" name="Preview" value="Preview" ng-click="preview()" />
+                                        <input type="button" class="btn" name="Preview" value="Preview" data-ng-click="preview()" />
                                     </div>
                                 </div>
                             </div>
@@ -160,9 +104,7 @@
         </div>
     }
     <div class="row-fluid" data-ag-grid="gridOptions" data-ag-grid-name="previewList"></div>
-    <select data-ng-picklist="@fields" data-source-list-label="Fields" data-use-default-model=true
-        data-target-list-label="Drag and drop to reorder" id="pickList" name="">
-    </select>
+
 </section>
 <script>
     $(function () {

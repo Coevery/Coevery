@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Coevery.Common.Extensions;
+using Coevery.Core.Common.ViewModels;
 using Coevery.Entities.Services;
 using Coevery.Projections.Models;
 using Coevery.Projections.ViewModels;
@@ -42,10 +44,23 @@ namespace Coevery.Projections.Services {
         public ICoeveryServices Services { get; set; }
         public Localizer T { get; set; }
 
-        public IEnumerable<PropertyDescriptor> GetFieldDescriptors(string entityType) {
+        public IEnumerable<PicklistItemViewModel> GetFieldDescriptors(string entityType, int projectionId) {
             var category = entityType.ToPartName() + "ContentFields";
             var fieldDescriptors = _projectionManager.DescribeProperties()
-                .Where(x => x.Category == category).SelectMany(x => x.Descriptors).ToList();
+                .Where(x => x.Category == category).SelectMany(x => x.Descriptors)
+                .Select(element=>new PicklistItemViewModel {
+                    Text = element.Name.Text,
+                    Value = element.Type
+                }).ToList();
+            if (projectionId <= 0)
+                return fieldDescriptors;
+            var selectedFields = _contentManager.Get<ProjectionPart>(projectionId).Record.LayoutRecord.Properties;
+            var order = 0;
+            foreach (var field in selectedFields) {
+                var viewModel = fieldDescriptors.Find(model => model.Value == field.Type);
+                viewModel.Selected = true;
+                viewModel.Order = ++order;
+            }
             return fieldDescriptors;
         }
 
@@ -66,7 +81,7 @@ namespace Coevery.Projections.Services {
             viewModel.IsDefault = listViewPart.IsDefault;
 
             //Get AllFields
-            viewModel.Fields = GetFieldDescriptors(listViewPart.ItemContentType);
+            viewModel.Fields = GetFieldDescriptors(listViewPart.ItemContentType, id);
 
             var sortCriterion = queryPart.SortCriteria.FirstOrDefault();
             if (sortCriterion != null) {

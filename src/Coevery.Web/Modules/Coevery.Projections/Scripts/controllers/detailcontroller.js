@@ -11,11 +11,14 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                 $scope.SelectedColumns = [];
 
                 $scope.preview = function () {
+                    var pool = { list: [] };
+                    $scope.$broadcast("getSelectedList", pool);
+
                     $scope.fieldCoumns = [];
                     $scope.myData = [];
                     var jasondata = {};
-                    for (var i = 0; i < $scope.SelectedColumns.length; i++) {
-                        var fieldNames = $scope.SelectedColumns[i].FieldName.split(".");
+                    for (var i = 0; i < pool.list.length; i++) {
+                        var fieldNames = pool.list[i].Value.split(".");
                         $scope.fieldCoumns[i] = { name: fieldNames[1], label: fieldNames[1] };
                         jasondata[fieldNames[1]] = "data_" + fieldNames[1];
                     }
@@ -54,12 +57,12 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                     if (!validator.form()) {
                         return null;
                     }
-                    var pickListValue = '';
-                    for (var i = 0; i < $scope.SelectedColumns.length; i++) {
-                        var fieldName = $scope.SelectedColumns[i].FieldName;
-                        pickListValue += fieldName + '$';
-                    }
-                    $('#picklist')[0].value = pickListValue;
+                    //var pickListValue = '';
+                    //for (var i = 0; i < $scope.SelectedColumns.length; i++) {
+                    //    var fieldName = $scope.SelectedColumns[i].FieldName;
+                    //    pickListValue += fieldName + '$';
+                    //}
+                    //$('#picklist')[0].value = pickListValue;
 
                     var promise = $http({
                         url: form.attr('action'),
@@ -98,80 +101,80 @@ define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/
                     $state.transitionTo('EntityDetail.Views', { Id: $stateParams.EntityName });
                 };
 
-                $scope.addfield = function (fieldName, displayName) {
-                    var selectedField = { FieldName: fieldName, DisplayName: displayName };
-                    $scope.SelectedColumns.splice($scope.SelectedColumns.length, 0, selectedField);
-                };
+                //$scope.addfield = function (fieldName, displayName) {
+                //    var selectedField = { FieldName: fieldName, DisplayName: displayName };
+                //    $scope.SelectedColumns.splice($scope.SelectedColumns.length, 0, selectedField);
+                //};
 
-                $scope.removefield = function (index) {
-                    $scope.SelectedColumns.splice(index, 1);
-                };
+                //$scope.removefield = function (index) {
+                //    $scope.SelectedColumns.splice(index, 1);
+                //};
 
-                $scope.AddAll = function () {
-                    $.each($('td.unselectedField'), function (i, v) {
-                        var displayName = $(v).text();
-                        var fieldName = $(v).attr('filed-type');
-                        var exsitsItem = $($scope.SelectedColumns).filter(function () {
-                            return this.FieldName == fieldName;
-                        });
-                        if (exsitsItem.length <= 0) {
-                            $scope.addfield(fieldName, displayName);
-                        }
-                    });
-                };
+                //$scope.AddAll = function () {
+                //    $.each($('td.unselectedField'), function (i, v) {
+                //        var displayName = $(v).text();
+                //        var fieldName = $(v).attr('filed-type');
+                //        var exsitsItem = $($scope.SelectedColumns).filter(function () {
+                //            return this.FieldName == fieldName;
+                //        });
+                //        if (exsitsItem.length <= 0) {
+                //            $scope.addfield(fieldName, displayName);
+                //        }
+                //    });
+                //};
 
-                $scope.LabelClass = function (fieldName) {
-                    for (var i = 0; i < $scope.SelectedColumns.length; i++) {
-                        if ($scope.SelectedColumns[i].FieldName == fieldName) return 'label';
-                    }
-                    return 'label hide';
-                };
+                //$scope.LabelClass = function (fieldName) {
+                //    for (var i = 0; i < $scope.SelectedColumns.length; i++) {
+                //        if ($scope.SelectedColumns[i].FieldName == fieldName) return 'label';
+                //    }
+                //    return 'label hide';
+                //};
 
-                $scope.ButtonStyle = function (fieldName) {
-                    var selected = $.grep($scope.SelectedColumns, function (n, i) {
-                        return n.FieldName == fieldName;
-                    });
-                    if (selected.length > 0) {
-                        return { 'display': 'none' };
-                    }
-                    return { 'display': 'block' };
-                };
+                //$scope.ButtonStyle = function (fieldName) {
+                //    var selected = $.grep($scope.SelectedColumns, function (n, i) {
+                //        return n.FieldName == fieldName;
+                //    });
+                //    if (selected.length > 0) {
+                //        return { 'display': 'none' };
+                //    }
+                //    return { 'display': 'block' };
+                //};
 
 
-                $scope.InitSeletedFieldData = function () {
-                    var id = $stateParams.Id || -1;
-                    var properties = propertyDataService.query({ id: id }, function () {
-                        properties = properties || [];
-                        $.each(properties, function (index, value) {
-                            $scope.addfield(value.FieldName, value.DisplayName);
-                        });
-                    }, function () {
+                //$scope.InitSeletedFieldData = function () {
+                //    var id = $stateParams.Id || -1;
+                //    var properties = propertyDataService.query({ id: id }, function () {
+                //        properties = properties || [];
+                //        $.each(properties, function (index, value) {
+                //            $scope.addfield(value.FieldName, value.DisplayName);
+                //        });
+                //    }, function () {
 
-                    });
-                };
+                //    });
+                //};
 
-                $scope.InitSeletedFieldData();
+                //$scope.InitSeletedFieldData();
 
-                $scope.dragStart = function (e, ui) {
-                    ui.item.data('start', ui.item.index());
-                };
+                //$scope.dragStart = function (e, ui) {
+                //    ui.item.data('start', ui.item.index());
+                //};
 
-                $scope.dragEnd = function (e, ui) {
-                    var start = ui.item.data('start'),
-                        end = ui.item.index();
+                //$scope.dragEnd = function (e, ui) {
+                //    var start = ui.item.data('start'),
+                //        end = ui.item.index();
 
-                    $scope.SelectedColumns.splice(end, 0,
-                        $scope.SelectedColumns.splice(start, 1)[0]);
+                //    $scope.SelectedColumns.splice(end, 0,
+                //        $scope.SelectedColumns.splice(start, 1)[0]);
 
-                    $scope.$apply();
-                };
+                //    $scope.$apply();
+                //};
 
-                $('.sortable-list ul').sortable({
-                    placeholder: 'placeholder',
-                    forcePlaceholderSize: true,
-                    start: $scope.dragStart,
-                    update: $scope.dragEnd
-                });
+                //$('.sortable-list ul').sortable({
+                //    placeholder: 'placeholder',
+                //    forcePlaceholderSize: true,
+                //    start: $scope.dragStart,
+                //    update: $scope.dragEnd
+                //});
             }]
     ]);
 });
