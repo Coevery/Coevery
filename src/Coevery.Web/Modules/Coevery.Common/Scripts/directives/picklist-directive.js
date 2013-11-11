@@ -24,7 +24,7 @@
                 $element.html("");
                 return null;
             }
-            var selectE = $element.find("select");
+
             var sortE = $element.find('.sortable-list ul');
             $scope.selectId = attrs.id;
             $scope.selectName = attrs.name;
@@ -33,9 +33,6 @@
 
             if (attrs.useDefaultModel) {
                 $scope.sourceList = sourceList;
-                //angular.forEach($scope.sourceList, function (item, key) {
-                //    item.Order = key;
-                //});
             }
                 //todo:add methods for data not use format { Text:"", Value: "", Selected: "",Order: "" }
             else {

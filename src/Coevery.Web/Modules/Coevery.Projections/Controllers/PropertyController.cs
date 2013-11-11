@@ -25,13 +25,6 @@ namespace Coevery.Projections.Controllers {
 
         public Localizer T { get; set; }
 
-        //public IEnumerable<object> Get(int id) {
-        //    if (id <= 0)
-        //        return new object[]{ };
-        //    var properties = GetDescriptors(id).Select(x => new {FieldName = x.Descriptor.Type, DisplayName = x.Descriptor.Name.Text});
-        //    return properties;
-        //}
-
         public HttpResponseMessage Get(string id, int viewId) {
             if (string.IsNullOrEmpty(id)) {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
