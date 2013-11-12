@@ -50,7 +50,7 @@
                         if (!$scope.isInit && !needGridReloading) {
                             $scope.getPagedDataAsync();
                         } else {
-                            $scope.gridOptions = {
+                            var gridOptions = {
                                 url: 'api/projections/entity/' + moduleName,
                                 mtype: "post",
                                 postData: getPostData(),
@@ -71,7 +71,8 @@
                                     logger.error("Failed to fetched records for " + moduleName + ":\n" + error);
                                 }
                             };
-                            angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+                            angular.extend(gridOptions, $rootScope.defaultGridOptions);
+                            $scope.gridOptions = gridOptions;
                             $scope.isInit = false;
                         }
                     }, function (response) {

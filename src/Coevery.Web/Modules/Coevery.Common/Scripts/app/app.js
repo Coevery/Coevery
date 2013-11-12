@@ -1,7 +1,7 @@
 ﻿define(['core/directives/common'], function () {
     'use strict';
 
-    coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato',
+    coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato', '$http',
         function ($rootScope, $state, $stateParams, $couchPotato) {
             //"cheating" so that couchPotato is available in requirejs
             //define modules -- we want run-time registration of components

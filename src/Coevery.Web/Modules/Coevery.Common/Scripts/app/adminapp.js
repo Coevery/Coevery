@@ -45,7 +45,7 @@
 
             $rootScope.cellLinkTemplate = function (cellvalue, options, rowObject) {
                 var template = '<div class="gridCellText">' +
-                    '<section class="row-actions">' +
+                    '<section class="row-actions hide">' +
                     '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
                     '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
                     'delete-action="delete(\'{0}\')" title="Delete"></span>{2}</section>' +
@@ -80,7 +80,7 @@
                 pgbuttons: false,
                 rowNum: 50,
                 rowList: [50, 100, 200],
-                //loadui: "disable",
+                loadui: "disable",
                 jsonReader: {
                     repeatitems: false,
                     id: "0" //Get Id from first column

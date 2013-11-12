@@ -25,10 +25,19 @@
                     $scope[alias] = gridCtrl;
                 }
                 initializeGrid = function (gridOptions) {
-                    var $grid;
+                    var $grid, isInitial=true;
                     //logger.info("Initializing the grid");
                     $grid = $element.find("table.gridz");
                     gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+
+                    gridOptions.loadBeforeSend = function (xhr, settings) {
+                        if (isInitial) {
+                            $element.hide();
+                        }
+                        $http.pendingRequests.unshift("jqGrid");
+                        $rootScope.$broadcast('_START_REQUEST_');
+                        return true;
+                    },
                     gridOptions.gridComplete = function () {
                         $compile($grid)($scope);
 
@@ -58,8 +67,14 @@
                             pager.append("<section class='custom-pager pagination'></section>");
                             pager.find("section").pagination(pagerOption);
                         }
-
-                        return $grid.setGridWidth(width);
+                        $grid.setGridWidth(width);
+                        if (isInitial) {
+                            $element.show();
+                            isInitial = false;
+                        }
+                        $http.pendingRequests.shift();
+                        $rootScope.$broadcast('_END_REQUEST_');
+                        return $grid;
                     };
 
                     gridOptions.onPaging = function (pageOption) {
