@@ -3,6 +3,10 @@
   <Place Fields_Text_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Text="Content:after;Wrapper=Wrapper_Script"/>
 
+  <!-- MultilineText -->
+  <Place Fields_MultilineText_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
+  <Place Fields_MultilineText="Content:after;Wrapper=Wrapper_Script"/>
+  
   <!-- Boolean -->
   <Place Fields_Boolean_Edit="Content:2.6;Wrapper=Wrapper_Script"/>
   <Place Fields_Boolean="Content:after;Wrapper=Wrapper_Script"/>

@@ -1,0 +1,28 @@
+﻿@model Coevery.Fields.Settings.MultilineTextFieldSettings
+@using Coevery.Fields.Settings;
+
+<section class="control-group data-row">
+    <label class="control-label">
+        Length
+    </label>
+    <div class="controls">
+        @Html.TextBoxFor(m => m.MaxLength, new { @class = "span12" })
+    </div>
+</section>
+<section class="control-group data-row">
+    <label class="control-label">
+        Place Holder Text
+    </label>
+    <div class="controls">
+        @Html.TextBoxFor(m => m.PlaceHolderText, new { @class = "span12" })
+    </div>
+</section>
+
+<section class="control-group data-row">
+    <label class="control-label">
+        Row Number
+    </label>
+    <div class="controls">
+        @Html.TextBoxFor(m => m.RowNumber, new { @class = "span12" })
+    </div>
+</section>
