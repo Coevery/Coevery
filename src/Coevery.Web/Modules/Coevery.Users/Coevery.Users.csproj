@@ -51,8 +51,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.Mvc.dll</HintPath>
@@ -63,7 +66,8 @@
   <ItemGroup>
     <Compile Include="Commands\UserCommands.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Drivers\UserPartDriver.cs" />
     <Compile Include="Migrations.cs" />
     <Compile Include="Events\UserContext.cs" />
@@ -78,10 +82,11 @@
     <Compile Include="Models\UserPartRecord.cs" />
     <Compile Include="Models\UserStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\IUserService.cs" />
+    <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UserResolverSelector.cs" />
     <Compile Include="Services\MembershipService.cs" />
-    <Compile Include="AdminMenu.cs" />
     <Compile Include="Services\MissingSettingsBanner.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="ViewModels\UserCreateViewModel.cs" />
@@ -92,6 +97,9 @@
     <Content Include="Content\Admin\images\offline.gif" />
     <Content Include="Content\Admin\images\online.gif" />
     <Content Include="Module.txt" />
+    <Content Include="Scripts\controllers\editcontroller.js" />
+    <Content Include="Scripts\controllers\listcontroller.js" />
+    <Content Include="Scripts\services\userdataservice.js" />
     <Content Include="Styles\images\menu.users.png" />
     <Content Include="Styles\menu.users-admin.css" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
@@ -101,9 +109,9 @@
     <Content Include="Views\Account\ChallengeEmailSent.cshtml" />
     <Content Include="Views\Account\ChallengeEmailFail.cshtml" />
     <Content Include="Views\Register.cshtml" />
-    <Content Include="Views\Admin\Edit.cshtml" />
-    <Content Include="Views\Admin\Create.cshtml" />
-    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\SystemAdmin\Edit.cshtml" />
+    <Content Include="Views\SystemAdmin\Create.cshtml" />
+    <Content Include="Views\SystemAdmin\List.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Users.RegistrationSettings.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
@@ -146,6 +154,9 @@
     <Content Include="Styles\Web.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
