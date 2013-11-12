@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.Core.Navigation.Models;
 using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
-using Coevery.Core.Title.Models;
 using Coevery.Localization;
+using Coevery.Perspectives.Models;
+using Coevery.Perspectives.ViewModels;
 using Coevery.UI;
 using Coevery.UI.Navigation;
 
@@ -34,9 +34,9 @@ namespace Coevery.Perspectives.Controllers {
 
         // GET api/perspective/perspective
         public object Get(int page, int rows) {
-            IEnumerable<TitlePart> menus = Services.ContentManager.Query<TitlePart, TitlePartRecord>().OrderBy(x => x.Title).ForType("Menu").List();
+            IEnumerable<PerspectivePart> menus = Services.ContentManager.Query<PerspectivePart, PerspectivePartRecord>().OrderBy(x => x.Position).ForType("Menu").List();
             var query = from menu in menus
-                select new {Id = menu.Id, DisplayName = menu.Title};
+                select new {Id = menu.Id, DisplayName = menu.Title,Description=menu.Description};
             var totalRecords = query.Count();
             return new {
                 total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),

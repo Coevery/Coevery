@@ -15,7 +15,7 @@
     gridz = angular.module("coevery.grid", []);
 
     gridz.directive("agGrid", [
-        "$rootScope", "$compile", "logger", function ($rootScope, $compile, logger) {
+        "$rootScope", "$compile", "logger","$http", function ($rootScope, $compile, logger,$http) {
             var link;
             link = function ($scope, $element, attrs, gridCtrl) {
                 var alias, initializeGrid, loadGrid;
@@ -88,14 +88,24 @@
                     };
 
                     $grid.jqGrid(gridOptions);
-                    
-                    if (attrs.agGridDrag!=undefined) {
-                        $grid.jqGrid('sortableRows',{
-                            update: function(event, ui) { 
-                                var posturl = ''; 
-                                var neworder = '';
-                                $.post(posturl, neworder, function(message, status) {
-                                    
+
+                    if (attrs.agGridDrag != undefined) {
+                        $grid.jqGrid('sortableRows', {
+                            update: function () {
+                                var form = $("form[name=myForm]");
+                                var postData = form.serialize() + "&ids=";
+                                $grid.find("tr[id]").each(function (i, item) {
+                                    postData += $(item).attr("id")+",";
+                                });
+                                $http({
+                                    url: form.attr('action'),
+                                    method: form.attr('method'),
+                                    data: postData,
+                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
+                                }).then(function() {
+                                    logger.success('Reordering succeeded.');
+                                }, function(response) {
+                                    logger.error('Reordering Failed');
                                 });
                             }
                         });

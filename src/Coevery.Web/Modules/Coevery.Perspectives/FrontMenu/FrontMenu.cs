@@ -7,6 +7,7 @@ using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
 using Coevery.Core.Title.Models;
 using Coevery.Localization;
+using Coevery.Perspectives.Models;
 using Coevery.UI;
 using Coevery.UI.Navigation;
 using Coevery.ContentManagement;
@@ -36,11 +37,10 @@ namespace Coevery.Perspectives.FrontMenu
         public ICoeveryServices Services { get; set; }
 
         public void GetNavigation(NavigationBuilder builder) {
-            var menus = Services.ContentManager.Query<TitlePart, TitlePartRecord>().OrderBy(x => x.Title).ForType("Menu").List().ToList();
-            int firstMenuIndex = 0;
+            var menus = Services.ContentManager.Query<PerspectivePart, PerspectivePartRecord>().OrderBy(x => x.Position).ForType("Menu").List().ToList();
             menus.ForEach(c => {
                 builder.AddImageSet(c.Title)
-                    .Add(T(c.Title), (++firstMenuIndex).ToString(),
+                    .Add(T(c.Title), c.Position.ToString(),
                         menu => {
                             string url = string.Format("#/{0}", c.Id);
                             menu.Url(url);

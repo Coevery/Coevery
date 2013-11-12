@@ -17,45 +17,21 @@ namespace Coevery.Perspectives {
             return _shellSettings.DataTablePrefix + "_";
         }
 
-        public int Create() {
-            SchemaBuilder.CreateTable("ModuleMenuItemPartRecord",
-                table => table
-                    .ContentPartRecord()
-                    .Column<int>("ContentTypeDefinitionRecord_id")
-                );
-            
-            ContentDefinitionManager.AlterTypeDefinition("ModuleMenuItem", cfg => cfg
-                .WithPart("MenuPart")
-                .WithPart("CommonPart")
-                .WithPart("IdentityPart")
-                .WithPart("ModuleMenuItemPart")
-                .DisplayedAs("Module Menu Item")
-                .WithSetting("Description", "Adds a Module Menu Item to navigation")
-                .WithSetting("Stereotype", "MenuItem")
-                );
-
-            return 1;
-        }
-
-        public int UpdateFrom1() {
-            SchemaBuilder.AlterTable("ModuleMenuItemPartRecord", table => table.AddColumn<string>("IconClass"));
-            return 2;
-        }
-
-        public int UpdateFrom2() {
+        public int Create()
+        {
             SchemaBuilder.CreateTable("PerspectivePartRecord",
                 table => table
-                    .ContentPartVersionRecord()
-                    .Column<string>("Name", column => column.WithLength(1024))
-                    .Column<string>("Description",column=>column.WithLength(1024))
-                    .Column<int>("Order")
+                    .ContentPartRecord()
+                    .Column<string>("Title", column => column.WithLength(255))
+                    .Column<string>("Description",column=>column.Unlimited())
+                    .Column<int>("Position")
                 );
 
             ContentDefinitionManager.AlterPartDefinition("PerspectivePart", builder => builder
                 .Attachable()
                 .WithDescription("Provides a perspective for your content item."));
-            return 3;
-        }
 
+            return 1;
+        }
     }
 }

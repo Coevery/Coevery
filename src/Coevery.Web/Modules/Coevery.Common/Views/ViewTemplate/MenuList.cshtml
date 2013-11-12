@@ -5,7 +5,7 @@
         </a>
         <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
             <li data-ng-repeat="menu in menus" data-ng-class="{active: $uiRoute}" data-ui-route="{{menu.Href}}/?.*">
-                <a href="{{menu.Href}}" title="{{menu.Text.Text}}">
+                <a href="{{menu.Href}}" title="{{menu.Text.Text}}" data-ng-click="setcurrmenu({{menu.IdHint}})">
                     <label><strong>{{menu.Text.Text}}</strong></label>
                 </a>
             </li>

@@ -26,6 +26,7 @@ namespace Coevery.WebApi.Routes {
                     RouteTemplate = "api/" + displayPath + "/{controller}/{id}",
                     Defaults = new {area = areaName, controller = "api", id = RouteParameter.Optional}
                 };
+
             }
         }
 

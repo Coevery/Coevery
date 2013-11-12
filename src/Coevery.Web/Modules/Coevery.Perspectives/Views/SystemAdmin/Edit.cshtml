@@ -14,9 +14,9 @@
     <div class="row-fluid">
         <div class="span12">
             <div class="form-horizontal no-border">
-                @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                              FormMethod.Post,
-                                                              new { @class = "form-horizontal edit-mode", @name = "myForm", @ng_submit = "save()" }))
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new { ReturnUrl = Request.QueryString["ReturnUrl"] }),
+                    FormMethod.Post,
+                    new { @class = "form-horizontal edit-mode", @name = "myForm", @ng_submit = "save()" }))
                 {
                     <fieldset>
                         <legend>General Information</legend>
@@ -26,7 +26,15 @@
                                 @Html.TextBoxFor(m => m.Title, new { @class = "span12",required="" })
                             </div>
                         </section>
+                        <section class="data-row control-group">
+                            <label class="control-label required">Description</label>
+                            <div class="controls errortips">
+                                @Html.TextBoxFor(m => m.Description, new { @class = "span12",required="" })
+                            </div>
+                        </section>
                     </fieldset>
+                    @Html.HiddenFor(m=>m.Id)
+                    @Html.HiddenFor(m=>m.Position)
                 }
             </div>
         </div>

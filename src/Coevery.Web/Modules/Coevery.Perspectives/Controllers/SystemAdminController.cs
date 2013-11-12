@@ -1,10 +1,13 @@
-﻿using System.Data.Entity.Design.PluralizationServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Coevery.Common.Extensions;
 using Coevery.Common.Models;
+using Coevery.Perspectives.Models;
 using Coevery.Perspectives.Services;
 using Coevery.Perspectives.ViewModels;
 using Coevery.ContentManagement.Aspects;
@@ -60,7 +63,15 @@ namespace Coevery.Perspectives.Controllers {
         [HttpPost, ActionName("Create")]
         public ActionResult CreatePOST(PerspectiveViewModel model) {
             var contentItem = _contentManager.New("Menu");
-            contentItem.As<TitlePart>().Title = model.Title;
+            var currPos = 0;
+            var lastPos = _contentManager.Query<PerspectivePart, PerspectivePartRecord>().OrderByDescending(x => x.Position).ForType("Menu").List().FirstOrDefault();
+            if (lastPos != null) {
+                currPos = lastPos.Position;
+                currPos++;
+            }
+            contentItem.As<PerspectivePart>().Title = model.Title;
+            contentItem.As<PerspectivePart>().Description = model.Description;
+            contentItem.As<PerspectivePart>().Position = currPos;
             _contentManager.Create(contentItem, VersionOptions.Draft);
             _contentManager.Publish(contentItem);
             return Json(new {id = contentItem.Id});
@@ -70,15 +81,19 @@ namespace Coevery.Perspectives.Controllers {
         public ActionResult Edit(int id) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
             PerspectiveViewModel model = new PerspectiveViewModel();
-            model.Title = contentItem.As<TitlePart>().Title;
-            model.Id = contentItem.As<TitlePart>().Id;
+            model.Id = contentItem.As<PerspectivePart>().Id;
+            model.Title = contentItem.As<PerspectivePart>().Title;
+            model.Description = contentItem.As<PerspectivePart>().Description;
+            model.Position = contentItem.As<PerspectivePart>().Position;
             return View(model);
         }
 
         [HttpPost, ActionName("Edit")]
-        public ActionResult EditPOST(int id, PerspectiveViewModel model) {
-            var contentItem = _contentManager.Get(id, VersionOptions.DraftRequired);
-            contentItem.As<TitlePart>().Title = model.Title;
+        public ActionResult EditPOST(PerspectiveViewModel model) {
+            var contentItem = _contentManager.Get(model.Id, VersionOptions.DraftRequired);
+            contentItem.As<PerspectivePart>().Title = model.Title;
+            contentItem.As<PerspectivePart>().Description = model.Description;
+            contentItem.As<PerspectivePart>().Position = model.Position;
             _contentManager.Publish(contentItem);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
@@ -86,8 +101,10 @@ namespace Coevery.Perspectives.Controllers {
         public ActionResult Detail(int id) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
             PerspectiveViewModel model = new PerspectiveViewModel();
-            model.Title = contentItem.As<TitlePart>().Title;
-            model.Id = contentItem.As<TitlePart>().Id;
+            model.Id = contentItem.As<PerspectivePart>().Id;
+            model.Title = contentItem.As<PerspectivePart>().Title;
+            model.Description = contentItem.As<PerspectivePart>().Description;
+            model.Position = contentItem.As<PerspectivePart>().Position;
             return View(model);
         }
 
@@ -100,8 +117,9 @@ namespace Coevery.Perspectives.Controllers {
                 contentItem.As<MenuPart>().MenuText, true);
             var menuId = contentItem.As<MenuPart>().Record.MenuId;
             var perspectiveItem = _contentManager.Get(menuId, VersionOptions.Latest);
-            model.Title = perspectiveItem.As<TitlePart>().Title;
+            model.Title = perspectiveItem.As<PerspectivePart>().Title;
             model.IconClass = contentItem.As<ModuleMenuItemPart>().IconClass;
+            model.Description = contentItem.As<MenuPart>().Description;
             model.Entities = metadataTypes.Select(item => new SelectListItem {
                 Text = item.Name,
                 Value = item.Name,
@@ -122,7 +140,7 @@ namespace Coevery.Perspectives.Controllers {
             contentItem.As<MenuPart>().MenuText = pluralContentTypeName.CollectionDisplayName;
             contentItem.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
             contentItem.As<ModuleMenuItemPart>().IconClass = model.IconClass;
-            //contentItem.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
+            contentItem.As<MenuPart>().Description = model.Description;
             _contentManager.Publish(contentItem);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
@@ -131,8 +149,10 @@ namespace Coevery.Perspectives.Controllers {
         public ActionResult CreateNavigationItem(int id) {
             NavigationViewModel model = new NavigationViewModel();
             var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+            if(metadataTypes==null)
+                metadataTypes=new List<EditTypeViewModel>();
             var perspectiveItem = _contentManager.Get(id, VersionOptions.Latest);
-            model.Title = perspectiveItem.As<TitlePart>().Title;
+            model.Title = perspectiveItem.As<PerspectivePart>().Title;
             model.Entities = metadataTypes.Select(item => new SelectListItem {
                 Text = item.Name,
                 Value = item.Name,
@@ -165,12 +185,54 @@ namespace Coevery.Perspectives.Controllers {
 
             moduleMenuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
             moduleMenuPart.As<ModuleMenuItemPart>().IconClass = model.IconClass;
-            //menuPart.As<MenuItemPart>().FeatureId = "Coevery." + pluralContentTypeName;
+            moduleMenuPart.As<MenuPart>().Description = model.Description;
             Services.ContentManager.Create(moduleMenuPart);
             if (!moduleMenuPart.ContentItem.Has<IPublishingControlAspect>() && !moduleMenuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable) {
                 _contentManager.Publish(moduleMenuPart.ContentItem);
             }
             return Json(new {id = moduleMenuPart.ContentItem.Id});
+        }
+
+        [HttpPost, ActionName("Reordering")]
+        public ActionResult Reordering(string ids) {
+            try {
+                var perspectiveIds = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                var pos = 0;
+                foreach (var perspectiveId in perspectiveIds)
+                {
+                    var contentItem = _contentManager.Get(Convert.ToInt32(perspectiveId), VersionOptions.DraftRequired);
+                    contentItem.As<PerspectivePart>().Position = pos++;
+                    _contentManager.Publish(contentItem);
+                }
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
+
+        [HttpPost, ActionName("ReorderingNavigationItem")]
+        public ActionResult ReorderingNavigationItem(string ids)
+        {
+            try
+            {
+                var navigationItemIds = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                var pos = 1;
+                foreach (var navigationItemId in navigationItemIds)
+                {
+                    var contentItem = _contentManager.Get(Convert.ToInt32(navigationItemId), VersionOptions.DraftRequired);
+                    contentItem.As<MenuPart>().MenuPosition = pos.ToString();
+                    _contentManager.Publish(contentItem);
+                    pos++;
+                }
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, ex.Message);
+            }
         }
     }
 }

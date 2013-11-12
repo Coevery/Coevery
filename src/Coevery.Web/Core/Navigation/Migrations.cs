@@ -19,6 +19,7 @@ namespace Coevery.Core.Navigation {
             SchemaBuilder.CreateTable("MenuPartRecord", 
                 table => table
                     .ContentPartRecord()
+                    .Column<string>("Description", column => column.Unlimited())
                     .Column<string>("MenuText")
                     .Column<string>("MenuPosition")
                     .Column<int>("MenuId")
@@ -197,6 +198,14 @@ namespace Coevery.Core.Navigation {
             );
 
             return 6;
+        }
+
+        public int UpdateFrom6()
+        {
+            ContentDefinitionManager.AlterTypeDefinition("Menu", cfg => cfg
+                .WithPart("PerspectivePart")
+            );
+            return 7;
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Coevery.ContentManagement.MetaData;
-
-namespace Coevery.Perspectives.ViewModels {
+﻿namespace Coevery.Perspectives.ViewModels {
     public class PerspectiveViewModel {
-        public string Title { get; set; }
         public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public int Position { get; set; }
     }
 }

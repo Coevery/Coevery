@@ -51,6 +51,12 @@
                                 <button type="button" class="btn btn-small" ng-click="openDialog()">Select</button>
                             </div>
                         </section>
+                        <section class="data-row control-group">
+                            <label class="control-label required">Description</label>
+                            <div class="controls errortips">
+                                @Html.TextBoxFor(m => m.Description, new { @class = "span12",required=""})
+                            </div>
+                        </section>
                     </fieldset>
                 }
             </div>

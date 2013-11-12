@@ -3,7 +3,7 @@
         'NavigationCtrl',
         ['$scope', '$state', '$stateParams', 'navigationDataService', 'logger',
             function($scope, $state, $stateParams, navigationDataService, logger) {
-                var navigationId = $stateParams.NavigationId;
+                var navigationId = $state.params.NavigationId;
 
                 $scope.currentMenu = {};
                 $scope.menus = {};
@@ -30,6 +30,20 @@
                         logger.error("Failed to fetched menus in front");
                     });
                 };
+
+                $scope.setcurrmenu = function (id) {
+                    $.each($scope.menus,function(i, item) {
+                        if (item.IdHint == id){
+                            $scope.currentMenu = item;
+                            return;
+                        }
+                    });
+                    
+                    $.each($scope.currentMenu.Items || [], function (i, item) {
+                        item.class = (item.Classes || []).join(" ");
+                    });
+                };
+
                 $scope.init();
             }]
     ]);

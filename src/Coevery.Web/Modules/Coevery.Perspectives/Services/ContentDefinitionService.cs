@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Coevery.Common.Extensions;
 using Coevery.Perspectives.ViewModels;
@@ -18,7 +20,8 @@ namespace Coevery.Perspectives.Services
 
         public IEnumerable<EditTypeViewModel> GetUserDefinedTypes()
         {
-            return _contentDefinitionExtension.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
+            return _contentDefinitionExtension.ListUserDefinedTypeDefinitions()==null?null: 
+                _contentDefinitionExtension.ListUserDefinedTypeDefinitions().Select(ctd => new EditTypeViewModel(ctd)).OrderBy(m => m.DisplayName);
         }
     }
 }

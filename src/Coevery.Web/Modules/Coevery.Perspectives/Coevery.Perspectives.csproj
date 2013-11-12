@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Drivers\PerspectiveDriver.cs" />
     <Compile Include="Extensions\PerspectiveExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FrontMenu\FrontMenu.cs" />
@@ -71,7 +72,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Handlers\PerspectiveEntityEventsHandler.cs" />
+    <Compile Include="Handlers\PerspectivePartHandler.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Models\PerspectivePart.cs" />
+    <Compile Include="Models\PerspectivePartRecord.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
@@ -129,9 +133,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Drivers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Create.cshtml" />
   </ItemGroup>

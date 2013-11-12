@@ -34,6 +34,7 @@ namespace Coevery.Perspectives.Controllers {
                 IsMenuItem = menuPart.Is<MenuItemPart>(),
                 Text = menuPart.MenuText,
                 Position = menuPart.MenuPosition,
+                Description = menuPart.Description,
                 Url = menuPart.Is<MenuItemPart>()
                     ? menuPart.As<MenuItemPart>().Url
                     : _navigationManager.GetUrl(null, Services.ContentManager.GetItemMetadata(menuPart).DisplayRouteValues),
@@ -45,7 +46,7 @@ namespace Coevery.Perspectives.Controllers {
             var menuEntitys = _menuService.GetMenuParts(id).Select(CreateMenuItemEntries)
                 .OrderBy(menuPartEntry => menuPartEntry.Position, new FlatPositionComparer()).ToList();
             var query = from menuEntry in menuEntitys
-                select new {Id = menuEntry.ContentItem.Id, DisplayName = menuEntry.Text,};
+                        select new { Id = menuEntry.ContentItem.Id, DisplayName = menuEntry.Text, Description = menuEntry.Description };
 
             var totalRecords = query.Count();
             return new {
