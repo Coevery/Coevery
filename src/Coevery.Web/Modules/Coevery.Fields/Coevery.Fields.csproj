@@ -136,6 +136,7 @@
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
     <Compile Include="EntityRecords\TextFieldEntityRecordEditorEvents.cs" />
+    <Compile Include="Settings\MultilineTextFieldEditorEvents.cs" />
     <Compile Include="Settings\MultilineTextFieldSettings.cs" />
     <Compile Include="Settings\DatetimeFieldEditorEvents.cs" />
     <Compile Include="Settings\DatetimeFieldSettings.cs" />
