@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Coevery.Entities.Services;
+using Coevery.Entities.Settings;
 using Coevery.Entities.ViewModels;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData.Models;
@@ -21,19 +22,22 @@ namespace Coevery.Entities.Controllers {
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
         private readonly IContentMetadataService _contentMetadataService;
         private readonly ISettingService _settingService;
+        private readonly IEntityRecordEditorEvents _entityRecordEditorEvents;
 
         public SystemAdminController(
             ICoeveryServices coeveryServices,
             ISettingService settingService,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionEditorEvents contentDefinitionEditorEvents,
-            IContentMetadataService contentMetadataService) {
+            IContentMetadataService contentMetadataService,
+            IEntityRecordEditorEvents entityRecordEditorEvents) {
             Services = coeveryServices;
             _settingService = settingService;
             _contentDefinitionService = contentDefinitionService;
             T = NullLocalizer.Instance;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
             _contentMetadataService = contentMetadataService;
+            _entityRecordEditorEvents = entityRecordEditorEvents;
         }
 
         public ICoeveryServices Services { get; private set; }
@@ -51,10 +55,16 @@ namespace Coevery.Entities.Controllers {
             if (!Services.Authorizer.Authorize(Permissions.EditContentTypes, T("Not allowed to create a content type."))) {
                 return new HttpUnauthorizedResult();
             }
+            var entityRecords = _entityRecordEditorEvents.FieldSettingsEditor().ToList();
+            var fieldTypes = entityRecords.Select(x =>
+                new SelectListItem {Text = x.FieldTypeDisplayName, Value = x.FieldTypeName});
 
             var typeViewModel = _contentDefinitionService.GetType(string.Empty);
             typeViewModel.Settings.Add("CollectionName", string.Empty);
             typeViewModel.Settings.Add("CollectionDisplayName", string.Empty);
+            typeViewModel.FieldTypes = fieldTypes;
+            typeViewModel.FieldTemplates = entityRecords;
+
             return View(typeViewModel);
         }
 
@@ -82,9 +92,7 @@ namespace Coevery.Entities.Controllers {
 
             viewModel.FieldLabel = string.IsNullOrWhiteSpace(viewModel.FieldLabel) ? String.Empty : viewModel.FieldLabel.Trim();
             viewModel.FieldName = (viewModel.FieldName ?? viewModel.FieldLabel).ToSafeName();
-            viewModel.FieldType = Convert.ToInt32(viewModel.FieldType) == 0 ? "TextField" : "ReferenceField";
-            viewModel.RelationName = string.IsNullOrWhiteSpace(viewModel.RelationName) ? String.Empty : viewModel.RelationName.Trim();
-            
+
             if (String.IsNullOrWhiteSpace(viewModel.DisplayName)) {
                 ModelState.AddModelError("DisplayName", T("The Display Name name can't be empty.").ToString());
             }
@@ -101,11 +109,9 @@ namespace Coevery.Entities.Controllers {
                 ModelState.AddModelError("Name", T("The Field Name can't be empty.").ToString());
             }
 
-            if (!_contentMetadataService.CheckEntityCreationValid(viewModel.Name, viewModel.DisplayName,viewModel.Settings)) {
+            if (!_contentMetadataService.CheckEntityCreationValid(viewModel.Name, viewModel.DisplayName, viewModel.Settings)) {
                 ModelState.AddModelError("Name", T("A type with the same Name or DisplayName already exists.").ToString());
             }
-
-            
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
@@ -115,14 +121,8 @@ namespace Coevery.Entities.Controllers {
                     select error.ErrorMessage).ToArray();
                 return Content(string.Concat(temp));
             }
-            _contentMetadataService.CreateEntity(viewModel);
-            if (viewModel.FieldType == "ReferenceField")
-            {
-                var entity = _contentMetadataService.GetDraftEntity(viewModel.Name);
-                var referField = entity.FieldMetadataRecords.FirstOrDefault(x => x.Name == viewModel.FieldName);
-                _contentMetadataService.UpdateFieldSetting(referField,viewModel);
-                referField.EntityMetadataRecord = entity.Record;
-            }
+
+            _contentMetadataService.CreateEntity(viewModel, this);
             return Json(new {entityName = viewModel.Name});
         }
 
@@ -154,7 +154,7 @@ namespace Coevery.Entities.Controllers {
             if (entity == null) {
                 return HttpNotFound();
             }
-            bool valid = _contentMetadataService.CheckEntityDisplayValid(id, viewModel.DisplayName,viewModel.Settings);
+            bool valid = _contentMetadataService.CheckEntityDisplayValid(id, viewModel.DisplayName, viewModel.Settings);
             if (!valid) {
                 return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }

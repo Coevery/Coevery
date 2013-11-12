@@ -11,7 +11,7 @@ namespace Coevery.Fields.Projections {
         public DefaultFieldStateProvider() {
             FieldTypeSet = new[] {
                 "EmailField", "TextField","PhoneField","UrlField",
-                 "BooleanField", "OptionSetField", "ReferenceField"
+                 "BooleanField", "OptionSetField", "ReferenceField", "MultilineTextField"
             };
         }
         public override string GetPropertyState(string fieldType, string filedName, IDictionary<string, string> customSettings) {

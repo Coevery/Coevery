@@ -1,0 +1,13 @@
+﻿@model Coevery.Relationship.Settings.ReferenceFieldSettings
+<section class="data-row control-group">
+    <label class="control-label required" for="ReferenceFieldSettings.ContentTypeName">@T("Primary Entity")</label>
+    <div class="controls errortips">
+        @Html.DropDownList("ReferenceFieldSettings.ContentTypeName", Model.ContentTypeList)
+    </div>
+</section>
+<section class="data-row control-group">
+    <label class="control-label required" for="ReferenceFieldSettings.RelationshipName">@T("Relation Name")</label>
+    <div class="controls errortips">
+        @Html.TextBox("ReferenceFieldSettings.RelationshipName", string.Empty, new {@class = "span12 nameisnotid"})
+    </div>
+</section>

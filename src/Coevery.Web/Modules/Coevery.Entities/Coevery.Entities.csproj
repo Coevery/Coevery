@@ -106,6 +106,7 @@
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Services\UpdateModelWithInitializer.cs" />
+    <Compile Include="Settings\IEntityRecordEditorEvents.cs" />
     <Compile Include="Settings\EntitySetting.cs" />
     <Compile Include="Settings\FieldEditorEvents.cs" />
     <Compile Include="Settings\FieldSettings.cs">
@@ -124,6 +125,7 @@
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
     <Compile Include="ViewModels\EntityDetailViewModel.cs" />
     <Compile Include="ViewModels\FieldDependencyViewModel.cs" />
+    <Compile Include="ViewModels\EntityRecordTemplateViewModel.cs" />
     <Content Include="Scripts\controllers\choosefieldtypecontroller.js" />
     <Content Include="Scripts\controllers\confirmfieldinfocontroller.js" />
     <Content Include="Scripts\controllers\fillfieldinfocontroller.js" />

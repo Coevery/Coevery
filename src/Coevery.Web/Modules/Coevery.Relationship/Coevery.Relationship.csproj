@@ -72,6 +72,7 @@
     <Compile Include="Controllers\SystemAdminController.cs" />
     <Compile Include="Drivers\ReferenceFieldDriver.cs" />
     <Compile Include="Drivers\RelatedEntityListDriver.cs" />
+    <Compile Include="EntityRecords\ReferenceFieldEntityRecordEditorEvents.cs" />
     <Compile Include="Handlers\EntityMetadataPartHandler.cs" />
     <Compile Include="Handlers\RelationshipEntityEventsHandler.cs" />
     <Compile Include="Handlers\RelationshipDynamicTypeGenerationEventsHandler.cs" />
@@ -172,6 +173,7 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\ReferenceFieldEntityRecord.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

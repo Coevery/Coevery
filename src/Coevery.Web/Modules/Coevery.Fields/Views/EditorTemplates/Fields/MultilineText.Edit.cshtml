@@ -1,0 +1,24 @@
+﻿@model Coevery.Fields.Fields.MultilineTextField
+@using Coevery.Utility.Extensions;
+@using Coevery.Fields.Settings;
+@{
+    var settings = Model.PartFieldDefinition.Settings.GetModel<MultilineTextFieldSettings>();
+    var required = settings.Required ? "required" : null;
+}
+
+<label class="title control-label @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
+
+<div class="control controls errortips">
+    <textarea class="span12" id="@Html.FieldIdFor(m => m.Value)" name="@Html.FieldNameFor(m => m.Value)" 
+              rows="@settings.RowNumber"
+        @if (required != null) {
+            <text>required data-msg-required="This field is required."</text>
+        } 
+        @if (settings.MaxLength > 1) {
+            <text> maxlength="@settings.MaxLength"</text>
+        } placeholder="@settings.PlaceHolderText" 
+        @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {
+            <text>helper:text='@settings.HelpText'</text>
+        } >@Model.Value</textarea>
+    @Html.ValidationMessageFor(m => m.Value)
+</div>

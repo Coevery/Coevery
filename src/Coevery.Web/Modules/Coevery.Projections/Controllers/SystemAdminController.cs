@@ -47,7 +47,7 @@ namespace Coevery.Projections.Controllers {
             var viewModel = new ProjectionEditViewModel {
                 ItemContentType = id.ToPartName(),
                 DisplayName = string.Empty,
-                Fields = _projectionService.GetFieldDescriptors(id)
+                Fields = _projectionService.GetFieldDescriptors(id,-1)
             };
             return View("Edit", viewModel);
         }
@@ -63,10 +63,9 @@ namespace Coevery.Projections.Controllers {
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
-        public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string picklist, string returnUrl) {
-            var pickArray = picklist.Split(new[] {'$'}, StringSplitOptions.RemoveEmptyEntries);
+        public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string returnUrl) {
             viewModel.ItemContentType = viewModel.ItemContentType;
-            var viewid=_projectionService.EditPost(id, viewModel, pickArray);
+            var viewid = _projectionService.EditPost(id, viewModel, viewModel.PickedFields);
             return Json(new { id = viewid });
         }
     }

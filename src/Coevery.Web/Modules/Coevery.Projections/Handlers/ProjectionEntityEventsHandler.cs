@@ -19,7 +19,7 @@ namespace Coevery.Projections.Handlers {
         }
 
         public void OnCreated(string entityName) {
-            var fields = _projectionService.GetFieldDescriptors(entityName).Select(x => x.Type);
+            var fields = _projectionService.GetFieldDescriptors(entityName,-1).Select(x => x.Value);
             var viewModel = new ProjectionEditViewModel {
                 ItemContentType = entityName.ToPartName(),
                 DisplayName = entityName + " DefaultView",

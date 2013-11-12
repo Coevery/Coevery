@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FieldDependencyController.cs" />
+    <Compile Include="Drivers\MultilineTextFieldDriver.cs" />
+    <Compile Include="Fields\MultilineTextField.cs" />
     <Compile Include="Projections\NumericTypeStateProvider.cs" />
     <Compile Include="Projections\DefaultFieldStateProvider.cs" />
     <Compile Include="Projections\DatetimeTypeStateProvider.cs" />
@@ -133,6 +135,9 @@
     <Compile Include="Settings\BooleanFieldEditorEvents.cs" />
     <Compile Include="Settings\BooleanFieldSettings.cs" />
     <Compile Include="Settings\BooleanFieldDisplaySettings.cs" />
+    <Compile Include="EntityRecords\TextFieldEntityRecordEditorEvents.cs" />
+    <Compile Include="Settings\MultilineTextFieldEditorEvents.cs" />
+    <Compile Include="Settings\MultilineTextFieldSettings.cs" />
     <Compile Include="Settings\DatetimeFieldEditorEvents.cs" />
     <Compile Include="Settings\DatetimeFieldSettings.cs" />
     <Compile Include="Settings\DateFieldEditorEvents.cs" />
@@ -258,6 +263,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DisplayTemplates\Url.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\MultilineText.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\MultilineText.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DisplayTemplates\MultilineText.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\MultilineTextFieldSettings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

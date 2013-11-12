@@ -89,6 +89,7 @@
     <Compile Include="Common\Services\XmlRpcHandler.cs" />
     <Compile Include="Common\DateEditor\DateEditorViewModel.cs" />
     <Compile Include="Common\ViewModels\EditRelationshipViewModel.cs" />
+    <Compile Include="Common\ViewModels\PicklistItemViewModel.cs" />
     <Compile Include="Containers\Controllers\ItemController.cs" />
     <Compile Include="Containers\Drivers\ContainablePartDriver.cs" />
     <Compile Include="Containers\Drivers\ContainerPartDriver.cs" />
