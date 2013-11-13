@@ -1,0 +1,51 @@
+@model RoleCreateViewModel
+@using Coevery.Mvc.Html
+@using Coevery.Roles.ViewModels;
+<header id="page-title">
+    <h1 class="pull-left">@T("Role Detail ") <span>show role detail information</span></h1>
+</header>
+
+<section id="main-content" style="margin-top: 47px">
+    <div id="page-actions" class="clearfix">
+        <btn-actions>
+            <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-small btn-primary" data-cobusy="{tracker:'saveRole'}" data-ng-click="saveAndView()">Save</button>
+            <button class="btn btn-small btn-primary" data-cobusy="{tracker:'saveRole'}" data-ng-click="saveAndBack()">Save & Back</button>
+        </btn-actions>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="form-horizontal no-border">
+                @using (Html.BeginFormAntiForgeryPost(Url.Action("Create"),
+                    FormMethod.Post,
+                    new {@class = "form-horizontal edit-mode", @name = "myForm"})) {
+                    <fieldset>
+                        <legend>@T("Information")</legend>
+                        <section class="data-row control-group">
+                            <label class="control-label required" for="pageTitle">@T("Role Name")</label>
+                            <div class="controls errortips">
+                                <input id="Name" class="span12" name="Name" type="text" required value="@Model.Name" />
+                            </div>
+                        </section>
+                    </fieldset>
+                    <fieldset>
+                        <legend>@T("Permissions")</legend>
+                        @foreach (var featureName in Model.FeaturePermissions.Keys) {
+                            <section class="data-row control-group">
+                                <label class="control-label" >@T("{0} Module", featureName)</label>
+                                <div class="controls">
+                                    @foreach (var permission in Model.FeaturePermissions[featureName]) {
+                                        <label class="checkbox" for="Checkbox.@permission.Name">
+                                            <input type="checkbox" value="true" id="Checkbox.@permission.Name" name="Checkbox.@permission.Name"/>
+                                            @permission.Description
+                                        </label>
+                                    }
+                                </div>
+                            </section>
+                        }
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </div>
+</section>

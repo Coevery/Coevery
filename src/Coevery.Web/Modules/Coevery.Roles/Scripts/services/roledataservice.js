@@ -2,9 +2,9 @@
 
 define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
-        'userDataService',
+        'roleDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            return $resource('api/users/User/:Id',
+            return $resource('api/roles/Role/:Id',
                 { Id: '@Id' },
                 { update: { method: 'PUT' } });
         }]

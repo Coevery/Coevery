@@ -20,7 +20,7 @@ define(['core/app/detourService'], function (detour) {
                   method: "POST",
                   data: form.serialize(),
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                  tracker: 'saveperspective'
+                  tracker: 'saveUser'
               }).then(function (response) {
                   logger.success('Save succeeded');
                   return response;

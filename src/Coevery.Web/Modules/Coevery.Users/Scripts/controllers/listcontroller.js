@@ -2,8 +2,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Users/Scripts/services/userdataservice'], function(detour) {
     detour.registerController([
         'UserListCtrl',
-        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'userdataserviceDataService', '$http',
-            function($rootScope, $scope, logger, $state, $stateParams, userdataserviceDataService, $http) {
+        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'userDataService', '$http',
+            function($rootScope, $scope, logger, $state, $stateParams, userDataService, $http) {
                 var t = function(str) {
                     var result = i18n.t(str);
                     return result;
@@ -57,19 +57,19 @@ define(['core/app/detourService', 'Modules/Coevery.Users/Scripts/services/userda
                     $http({
                         url: 'SystemAdmin/Users/Moderate/' + id,
                         tracker: 'disableUser'
-                    }).then(function (response) {
+                    }).then(function(response) {
                         $scope.getAllUsers();
                         logger.success('Disable succeeded');
                         return response;
-                    }, function (reason) {
+                    }, function(reason) {
                         logger.error('Disable Failed： ' + reason.data);
                     });
                 };
 
-                $scope.delete = function () {
+                $scope.delete = function() {
                     var id = $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!id) return;
-                    userdataserviceDataService.delete({ id: id }, function() {
+                    userDataService.delete({ id: id }, function() {
                         $scope.getAllUsers();
                         logger.success('Delete the user successful.');
                     }, function(result) {

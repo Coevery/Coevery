@@ -1,7 +1,7 @@
 ﻿Name: Roles
 AntiForgery: enabled
 Author: The Coevery Team
-Website: http://coeveryproject.net
+Website: http://coevery.codeplex.com
 Version: 1.7.1
 CoeveryVersion: 1.7.1
 Description: The roles module is adding the ability to assign roles to users. It's also providing a set of default roles for which other modules can define default permissions.
