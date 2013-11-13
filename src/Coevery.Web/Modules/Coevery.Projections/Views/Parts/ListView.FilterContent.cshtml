@@ -3,7 +3,7 @@
         <div class="accordion-group">
             <div class="collapseHeader" ng-click="expendCollapse()">
                 <span ng-class="{'icon-collapse-hide':!showFilterEditorZone, 'icon-collapse-show':showFilterEditorZone}"></span>
-                <span class="filterInfo">Filter</span>
+                <span class="filterInfo">@T("Filter")</span>
                 <span class="filterTitle" ng-hide="showFilterEditorZone">{{filterDescription}}</span>
                 <span ng-hide="showFilterEditorZone" class="close deleteBtn" ng-click="clearFilter()">×</span>
             </div>
@@ -12,15 +12,15 @@
                     <div class="control-group filterCreatorWrap">
                     </div>
                     <div class="filterAddNewWrap">
-                        <a href="" ng-click="addNewFilterCondition()">+ Add another filter condition</a>
+                        <a href="" ng-click="addNewFilterCondition()">+ @T("Add another filter condition")</a>
                     </div>
                     <div class="filterAppWrap">
                         <div class="filterOkCancelWrap">
-                            <button class="btn btn-small btn-primary" ng-click="applyFilter()">Apply</button>
-                            <button class="btn btn-small" ng-click="clearFilter()">Clear</button>
+                            <button class="btn btn-small btn-primary" ng-click="applyFilter()">@T("Apply")</button>
+                            <button class="btn btn-small" ng-click="clearFilter()">@T("Clear")</button>
                         </div>
                         <label class="checkbox checkInput">
-                            <input type="checkbox" ng-model="needSaveFilter">Save Filter
+                            <input type="checkbox" ng-model="needSaveFilter">@T("Save Filter")
                         </label>
                         <input type="text" class="filterInput" ng-show="needSaveFilter" ng-model="currentFilter.Title" placeholder="Enter filter name">
                     </div>

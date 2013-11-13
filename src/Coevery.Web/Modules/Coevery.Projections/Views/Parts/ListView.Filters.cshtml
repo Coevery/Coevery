@@ -1,6 +1,6 @@
 ﻿<div class="btn-group">
     <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-        <i class="icon-filter"></i>&nbsp;Filter
+        <i class="icon-filter"></i>&nbsp;@T("Filter")
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
@@ -10,12 +10,11 @@
                 <i data-ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
                 {{filter.Title}}
             </a>
-            
         </li>
         <li class="divider"></li>
         <li>
             <a href="" ng-click="createFilter()">
-                <i class="viewUSelected icon-plus"></i>Create filter
+                <i class="viewUSelected icon-plus"></i>@T("Create filter")
             </a>
         </li>
     </ul>
