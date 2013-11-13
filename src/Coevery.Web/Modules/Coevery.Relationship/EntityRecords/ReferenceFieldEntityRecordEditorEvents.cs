@@ -58,7 +58,7 @@ namespace Coevery.Relationship.EntityRecords {
                 settings["ReferenceFieldSettings.ContentTypeName"] = model.ContentTypeName;
                 settings["ReferenceFieldSettings.RelationshipName"] = model.RelationshipName;
                 settings["ReferenceFieldSettings.DisplayAsLink"] = bool.FalseString;
-                settings["ReferenceFieldSettings.IsDispalyField"] = bool.TrueString;
+                settings["ReferenceFieldSettings.IsDisplayField"] = bool.TrueString;
                 settings["ReferenceFieldSettings.HelpText"] = string.Empty;
                 settings["ReferenceFieldSettings.Required"] = bool.TrueString;
                 settings["ReferenceFieldSettings.ReadOnly"] = bool.TrueString;

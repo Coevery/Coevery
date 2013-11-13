@@ -18,7 +18,7 @@ namespace Coevery.Fields.EntityRecords {
                 return;
             }
 
-            settings["TextFieldSettings.IsDispalyField"] = bool.TrueString;
+            settings["TextFieldSettings.IsDisplayField"] = bool.TrueString;
             settings["TextFieldSettings.Required"] = bool.TrueString;
             settings["TextFieldSettings.ReadOnly"] = bool.TrueString;
             settings["TextFieldSettings.AlwaysInLayout"] = bool.TrueString;

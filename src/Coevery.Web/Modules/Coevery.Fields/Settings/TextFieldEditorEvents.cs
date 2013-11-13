@@ -19,7 +19,6 @@ namespace Coevery.Fields.Settings {
             var model = new TextFieldSettings();
             if (updateModel.TryUpdateModel(model, "TextFieldSettings", null, null)) {
                 UpdateSettings(model, settingsDictionary, "TextFieldSettings");
-                settingsDictionary["TextFieldSettings.IsDispalyField"] = model.IsDispalyField.ToString();
                 settingsDictionary["TextFieldSettings.MaxLength"] = model.MaxLength.ToString();
                 settingsDictionary["TextFieldSettings.PlaceHolderText"] = model.PlaceHolderText;
             }
@@ -32,7 +31,7 @@ namespace Coevery.Fields.Settings {
             var model = settingsDictionary.TryGetModel<TextFieldSettings>();
             if (model != null) {
                 UpdateSettings(model, builder, "TextFieldSettings");
-                builder.WithSetting("TextFieldSettings.IsDispalyField", model.IsDispalyField.ToString());
+                builder.WithSetting("TextFieldSettings.IsDisplayField", model.IsDisplayField.ToString());
                 builder.WithSetting("TextFieldSettings.MaxLength", model.MaxLength.ToString());
                 builder.WithSetting("TextFieldSettings.PlaceHolderText", model.PlaceHolderText);
             }

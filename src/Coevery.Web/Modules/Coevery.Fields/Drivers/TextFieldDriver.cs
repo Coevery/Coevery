@@ -31,7 +31,7 @@ namespace Coevery.Fields.Drivers {
         protected override void GetContentItemMetadata(ContentPart part, TextField field, ContentItemMetadata metadata) {
             var model=field.PartFieldDefinition.Settings.GetModel<TextFieldSettings>();
 
-            if (model.IsDispalyField) {
+            if (model.IsDisplayField) {
                 metadata.DisplayText = field.Value;
             }
         }

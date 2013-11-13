@@ -102,7 +102,7 @@ namespace Coevery.Projections.Services {
                 return "Invalid entity name!";
             }
             var category = entityName.ToPartName() + "ContentFields";
-            const string settingName = "TextFieldSettings.IsDispalyField";
+            const string settingName = "TextFieldSettings.IsDisplayField";
             foreach (var view in listViewParts) {
                 var projection = view.As<ProjectionPart>().Record;
                 var layout = projection.LayoutRecord;
@@ -169,7 +169,7 @@ namespace Coevery.Projections.Services {
             var layoutRecord = projectionPart.Record.LayoutRecord;
 
             var category = viewModel.ItemContentType + "ContentFields";
-            const string settingName = "TextFieldSettings.IsDispalyField";
+            const string settingName = "TextFieldSettings.IsDisplayField";
             try {
                 UpdateLayoutProperties(viewModel.ItemContentType, ref layoutRecord, category, settingName, pickedFileds);
             }
