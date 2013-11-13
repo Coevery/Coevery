@@ -17,7 +17,7 @@
             </button>
             <button type="button" data-ng-disabled="isPublished=='False'"
                     class="btn btn-small" data-ng-click="formDesigner()"
-                title="@Model.PublishTip">
+                title="@T("Works when the entity has been published.")">
                 Form Designer
             </button>
         </btn-actions>
@@ -31,15 +31,33 @@
                         <h5>General Info</h5>
                     </header>
                     <div class="data-row clearfix">
-                        <span class="title control-label">Name</span>
-                        <div class="controls">
-                            <span class="control-text">@Model.Name</span>
+                        <div class="span6">
+                            <span class="title control-label">@T("Display Name")</span>
+                            <div class="controls">
+                                <span class="control-text">@Model.DisplayName</span>
+                            </div>
                         </div>
+                        <div class="span6">
+                            <span class="title control-label">@T("Name")</span>
+                            <div class="controls">
+                                <span class="control-text">@Model.Name</span>
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="data-row clearfix">
-                        <span class="title control-label">Display Name</span>
-                        <div class="controls">
-                            <span class="control-text">@Model.DisplayName</span>
+                        <div class="span6">
+                            <span class="title control-label">@T("Plural Display Name")</span>
+                            <div class="controls">
+                                <span class="control-text">@Model.Settings["CollectionDisplayName"]</span>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <span class="title control-label">@T("Plural Name")</span>
+                            <div class="controls">
+                                <span class="control-text">@Model.Settings["CollectionName"]</span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -51,10 +69,10 @@
                         <li data-ng-class="{active: showField}">
                             <a data-ng-href="#/Entities/{{$stateParams.Id}}">Fields</a>
                         </li>
-                        <li data-ng-class="{active: showRelation}" title="@Model.PublishTip">
+                        <li data-ng-class="{active: showRelation}" title="@T("Works when the entity has been published.")">
                             <a data-ng-href="#/Entities/{{$stateParams.Id}}/Relationships">Relationships</a>
                         </li>
-                        <li data-ng-class="{active: showView}" title="@Model.PublishTip">
+                        <li data-ng-class="{active: showView}" title="@T("Works when the entity has been published.")">
                             <a data-ng-href="#/Entities/{{$stateParams.Id}}/Views">Views</a>
                         </li>
                     </ul>

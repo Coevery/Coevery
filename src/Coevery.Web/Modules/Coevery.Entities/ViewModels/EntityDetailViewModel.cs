@@ -4,11 +4,8 @@ using System.Linq;
 using System.Web;
 
 namespace Coevery.Entities.ViewModels {
-    public class EntityDetailViewModel {
+    public class EntityDetailViewModel : EditTypeViewModel {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string DisplayName { get; set; }
         public bool HasPublished { get; set; }
-        public string PublishTip { get; set; }
     }
 }
