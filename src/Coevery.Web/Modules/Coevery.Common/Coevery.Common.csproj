@@ -161,6 +161,7 @@
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
     <Content Include="Scripts\directives\cobusy-directive.js" />
+    <Content Include="Scripts\directives\dependency-directive.js" />
     <Content Include="Scripts\directives\wizzard-directive.js" />
     <Content Include="Scripts\directives\picklist-directive.js" />
     <Content Include="Scripts\i18n\resources-locale_en-us.json" />

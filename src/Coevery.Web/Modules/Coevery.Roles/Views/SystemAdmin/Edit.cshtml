@@ -1,5 +1,6 @@
 @model RoleEditViewModel
 @using Coevery.Roles.ViewModels;
+@using Coevery.Security.Permissions
 <header id="page-title">
     <h1 class="pull-left">@T("Role Detail ") <span>show role detail information</span></h1>
 </header>
@@ -44,45 +45,23 @@
                                 <label class="control-label" >@category</label>
                                 <div class="controls">
                                     @foreach (var permission in Model.RoleCategoryPermissions[category]) {
+                                        string setting = null;
+                                        if (permission.ImpliedBy != null) {
+                                            string expression = GetImpliedExpression(permission).Substring(2);
+                                            setting = string.Format("co-dependency={0}", expression);
+                                        }
                                         <label class="checkbox" for="Checkbox.@permission.Name">
                                             @if (Model.EffectivePermissions.Contains(permission.Name)) {
-                                                <input type="checkbox" value="true" id="Checkbox.@permission.Name" name="Checkbox.@permission.Name" checked="checked"/>
+                                                <input type="checkbox" value="true" id="Checkbox.@permission.Name" name="Checkbox.@permission.Name" checked="checked" ng-model="@permission.Name" ng-init="@permission.Name = true" @setting />
                                             }
                                             else {
-                                                <input type="checkbox" value="true" id="Checkbox.@permission.Name" name="Checkbox.@permission.Name"/>
+                                                <input type="checkbox" value="true" id="Checkbox.@permission.Name" name="Checkbox.@permission.Name" ng-model="@permission.Name"  @setting />
                                             }
                                             @permission.Description
                                         </label>
                                     }
                                 </div>
                             </section>
-                            
-                            @*<fieldset>
-                                <legend>@category</legend>
-                                <table class="items">
-                                    @foreach (var permission in Model.RoleCategoryPermissions[category]) {
-                                        <tr>
-                                            <td>@T(permission.Description)</td>
-                                            <td style="width: 60px;">
-                                                @if (Model.CurrentPermissions.Contains(permission.Name)) {
-                                                    <input type="checkbox" value="true" name="Checkbox.@permission.Name" checked="checked"/>
-                                                }
-                                                else {
-                                                    <input type="checkbox" value="true" name="Checkbox.@permission.Name"/>
-                                                }
-                                            </td>    
-                                            <td style="width: 60px;">
-                                                @if (Model.EffectivePermissions.Contains(permission.Name)) {
-                                                    <input type="checkbox" disabled="disabled" name="Effective.@permission.Name" checked="checked"/>
-                                                }
-                                                else {
-                                                    <input type="checkbox" disabled="disabled" name="Effective.@permission.Name"/>
-                                                }
-                                            </td>                
-                                        </tr>
-                                    }
-                                </table>
-                            </fieldset>*@
                         }
                     </fieldset>
                 }
@@ -90,3 +69,18 @@
         </div>
     </div>
 </section>
+
+@functions{
+
+    private string GetImpliedExpression(Permission permission) {
+        string str = string.Empty;
+        if (permission.ImpliedBy != null) {
+            foreach (var p in permission.ImpliedBy) {
+                str += "||" + p.Name + GetImpliedExpression(p);
+            }
+        }
+
+        return str;
+    }
+
+}
