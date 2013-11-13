@@ -1,0 +1,97 @@
+﻿<header id="page-title" class="ng-scope affix">
+    <h1 class="pull-left">@T("Import a translation")  <span></span></h1>
+</header>
+<section id="main-content" style="margin-top: 47px;" class="ng-scope">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="row-fluid">
+                <div class="span12">
+                    <section class="span12 view-mode">
+                        <header>
+                            <h5>@T("Generate from source")</h5>
+                        </header>
+                        <div class="data-row clearfix">
+                            @T("Developing a module and want to add new translations to the database?")@T("Existing translations will not be altered, only new translatable strings will be added.")
+                        </div>
+                        <div class="data-row clearfix">
+                            <button class="btn btn-primary" data-ng-click="generateFromSource('@Url.Action("FromSource")')">
+                                @T("Generate from source")
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            @*<div class="row-fluid">
+                <div class="span12">
+                    <section class="span12 view-mode">
+                        <header>
+                            <h5>@T("Upload a new or updated translation file"):</h5>
+                        </header>
+                        <div class="data-row clearfix">
+                            @T("The community is constantly adding new languages and translations, downloadable at <a target=\"_blank\" href=\"http://www.orchardproject.net/localize\">orchardproject.net/localize</a>. You can import the newest version of these *.po.zip files here.")
+                        </div>
+                        <div class="data-row clearfix">
+                            <form id="uploadForm" action="@Url.Action("Upload")" method="post" enctype="multipart/form-data">
+                                <input type="file" class="fileinput-holder" name="files[]" />
+                                <span class="btn btn-success fileinput-button">
+                                    <i class="icon-plus"></i>
+                                    <span>Select files...</span>
+                                    <!-- The file input field used as target for the file upload widget -->
+                                    <input id="fileupload" type="file" name="files[]" multiple="">
+                                </span>
+                                <button class="btn btn-primary" data-ng-click="upload()">
+                                    @T("Upload")
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>*@
+
+            <div class="row-fluid">
+                <div class="span12">
+                    <section class="span12 view-mode">
+                        <header>
+                            <h5>@T("Manually add translations")</h5>
+                        </header>
+                        <div class="data-row clearfix">
+                            @T("Missing a specific translation? Add it here!")
+                        </div>
+                        <div class="data-row clearfix">
+                            <form id="manualForm" action="@Url.Action("ManualAdd")" method="post">
+                                <label>@T("Context (i.e. ~/Core/Common/Module.txt)")</label>
+                                <div class="errortips ng-scope">
+                                    <input type="text" id="context" name="record.Context" class="span12" placeholder="@T("Context")" required/>
+                                </div>
+                                <label>@T("Path of the file (i.e. Core/App_Data/Localization/{0}/orchard.core.po)")</label>
+                                <div class="errortips ng-scope">
+                                    <input type="text" id="path" name="record.Path" class="span12" placeholder="@T("Path")" required/>
+                                </div>
+                                <label>@T("Translatable string (i.e. 'Translate me!')")</label>
+                                <div class="errortips ng-scope">
+                                    <input type="text" id="stringKey" name="record.StringKey" class="span12"  placeholder="@T("Translatable string")" required/>
+                                </div>
+                                <div>
+                                    <label>@T("Translation Result")</label>
+                                    <select id="culture" style="margin-right: 19px;" name="culture" class="span3">
+                                        @foreach (var state in Model.TranslationStates)
+                                        { 
+                                            <option @if (state.Key == ViewBag.culture)
+                                                    {<text>selected="selected"</text>}>@state.Key</option>
+                                        }
+                                    </select>
+                                    <input type="text" id="translationResult" name="translationResult" class="span9"  placeholder="@T("translation result")"/>
+                                </div>
+                                <br />
+                                <button class="btn btn-primary" data-ng-click="manualSubmit()">
+                                    @T("Submit")
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

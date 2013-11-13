@@ -1,0 +1,30 @@
+﻿@using Q42.DbTranslations.ViewModels
+<header id="page-title" class="ng-scope affix">
+    <h1 class="pull-left">@T("Find a translation")  <span></span></h1>
+</header>
+<section id="main-content" style="margin-top: 47px;" class="ng-scope">
+    <form id="queryForm">
+        <div id="page-actions" class="clearfix">
+            <btn-actions>
+                <div class="controls errortips" style="display: inline-block;">
+                    <input name="querystring" type="text" value="" id="queryString" class="span3" required/>
+                </div>
+                <select id="culture" style="margin-left: 5px;">
+                    @foreach (var state in Model.TranslationStates)
+                    { 
+                        <option @if (state.Key == ViewBag.culture)
+                                {<text>selected="selected"</text>}>@state.Key</option>
+                    }
+                </select>
+                <button class="btn" style="vertical-align: top;margin-left: 5px;" data-ng-click="search()">
+                    <i class="icon-search"></i>&nbsp;@T("Search")
+                </button>
+                <button id="btnSave" class="btn btn-primary" data-indi-click="saveAndView()" style="vertical-align: top;"  disabled="disabled">@T("Save")</button>
+            </btn-actions>
+        </div>
+    </form>
+    <div class="row-fluid">
+        <div class="span12" id="searchResult">
+        </div>
+    </div>
+</section>

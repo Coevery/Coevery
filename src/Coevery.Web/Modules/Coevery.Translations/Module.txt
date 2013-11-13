@@ -1,0 +1,8 @@
+Name: Translations
+AntiForgery: enable
+Author: Coevery
+Website: http://coevery.codeplex.com
+Version: 1.0
+OrchardVersion: 1.6
+Description: Translations for Coevery CRM
+Category: Coevery

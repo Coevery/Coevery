@@ -1,0 +1,40 @@
+﻿@using System.Globalization
+@model Q42.DbTranslations.ViewModels.CultureIndexViewModel
+<header id="page-title" class="ng-scope affix">
+    <h1 class="pull-left">Export Translations  <span></span></h1>
+</header>
+<section id="main-content" style="margin-top: 47px;" class="ng-scope">
+    <h4>@T("Download *.po.zip files")</h4>
+    <table class="table table-striped table-hover">
+        <th>@T("Culture")</th>
+        <th>@T("Translatable")</th>
+        <th>@T("Translated")</th>
+        <th>@T("Missing")</th>
+        @foreach (var translation in Model.TranslationStates.OrderBy(c => c.Key))
+        {
+            var culture = CultureInfo.GetCultureInfoByIetfLanguageTag(translation.Key);
+            <tr>
+                <td>
+                    @if (translation.Value.NumberOfTranslatedStrings > 0)
+                    {
+                        @Html.ActionLink(culture.IetfLanguageTag + " - " + culture.DisplayName,
+            "Download", new { culture = culture }, new { @class = "download-link" }) 
+                    }
+                    else
+                    { 
+                        @(culture.IetfLanguageTag + " - " + culture.DisplayName)
+                    }
+                </td>
+                <td>@Model.NumberOfStringsInDefaultCulture</td>
+                <td>@translation.Value.NumberOfTranslatedStrings</td>
+                <td>@(Model.NumberOfStringsInDefaultCulture - translation.Value.NumberOfTranslatedStrings)</td>
+            </tr>
+        }
+    </table>
+
+    <p>&nbsp;</p>
+
+    <h4>@T("Export *.po files to disk")</h4>
+    <p>@T("Want to go back to the way it was? Export your translations to disk and disable the Q42.DbTranslations feature. <br />Might also be useful if you want to check your translations into a code repository.")</p>
+    @Html.ActionLink("Export!", "PoFilesToDisk", null, new { @class = "button" })
+</section>

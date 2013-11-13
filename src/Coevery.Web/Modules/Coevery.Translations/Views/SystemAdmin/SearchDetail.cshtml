@@ -1,0 +1,76 @@
+﻿@model Q42.DbTranslations.ViewModels.CultureGroupDetailsViewModel
+<style type="text/css">
+    table.table tr td {
+        font-size: 10px;
+        vertical-align: middle;
+        padding: 6px;
+        color: black;
+    }
+
+    table.table tr th {
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    table.table-hover tbody tr:hover > td {
+        background-color: #EDF9F5;
+    }
+
+    table.table-hover tbody tr:hover > th {
+        background-color: #f9f9f9;
+    }
+</style>
+<section id="main-content" style="margin-top: 47px;" class="ng-scope">
+    <div class="row-fluid">
+        <div class="span12">
+            @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
+                                new { @class = "edit-mode", id = "myForm" }))
+            {
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th width="50%">@T("Key")</th>
+                        <th width="50%">@T("Value in {0}", Model.Culture)</th>
+                    </tr>
+                    @foreach (var translationGroup in Model.CurrentGroupTranslations)
+                    {
+                        <tr>
+                            <th colspan="2" style="font-weight: normal; background-color: #f9f9f9;">@translationGroup.Key</th>
+                        </tr>
+                        foreach (var translation in translationGroup.OrderBy(t => t.Key))
+                        {
+                        <tr>
+                            <td style="word-break:break-all" @if (translation.OriginalString != translation.LocalString)
+                                                             {
+                                            <text>title="@translation.OriginalString" </text>
+                                                             }>@Q42.DbTranslations.Services.LocalizationService.ImportPoText(translation.Key)</td>
+                            <td>
+                                @if (!Model.CanTranslate)
+                                {
+                                    @translation.LocalString
+                                }
+                                else
+                                {
+                                    if (translation.OriginalString.Contains('\n') || (translation.LocalString != null && translation.LocalString.Length > 70))
+                                    {
+                                    <textarea data-id="@translation.Id" class="span12" name="@translation.Id">@translation.LocalString</textarea>
+                                    }
+                                    else
+                                    {
+                                    <input type="text" style="margin-bottom: 0; min-height: 25px;" class="span12" value="@translation.LocalString" name="@translation.Id" 
+                                               data-id="@translation.Id" 
+                                            @if (@translation.OriginalString != translation.Key)
+                                            {
+                                                <text>placeholder="@translation.OriginalString"</text>
+                                            } />
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        }
+                    }
+                </table>
+            }
+        </div>
+    </div>
+</section>
+

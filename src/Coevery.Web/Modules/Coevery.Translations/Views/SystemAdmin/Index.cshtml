@@ -1,0 +1,15 @@
+﻿<header id="page-title" class="ng-scope affix">
+    <h1 class="pull-left">@T("Coevery Translations")  <span>@T("culture list")</span></h1>
+</header>
+<section id="main-content" style="margin-top: 47px;" class="ng-scope">
+    <div id="page-actions" class="clearfix">
+        <btn-actions>
+            <button class="btn btn-small" data-ng-click="getAllMetadata()">
+                <i class="icon-refresh"></i>&nbsp;@T("Refresh")
+            </button>
+        </btn-actions>
+    </div>
+
+    <div class="row-fluid" data-ag-grid="gridOptions" data-ag-grid-name="gridList">
+    </div>
+</section>
