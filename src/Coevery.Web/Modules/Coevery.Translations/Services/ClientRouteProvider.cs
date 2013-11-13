@@ -44,7 +44,7 @@ namespace Coevery.Translations.Services
                 .View(view =>
                 {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = '" + ModuleBasePath + @"Detail/' + $stateParams.Culture + '/' + $stateParams.Path; 
+                                                var url = '" + ModuleBasePath + @"Detail/' + $stateParams.Culture + '?path=' + $stateParams.Path; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "TranslationDetailCtrl";

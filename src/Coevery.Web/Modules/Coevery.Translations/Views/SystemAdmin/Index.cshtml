@@ -7,6 +7,12 @@
             <button class="btn btn-small" data-ng-click="getAllMetadata()">
                 <i class="icon-refresh"></i>&nbsp;@T("Refresh")
             </button>
+            <button class="btn btn-small" data-ng-click="view(selectedItems[0])" ng-disabled="!(selectedItems.length == 1)">
+                <i class="icon-edit"></i>&nbsp;View
+            </button>
+            <button class="btn btn-small" data-ng-click="edit(selectedItems[0])" ng-disabled="!(selectedItems.length == 1)">
+                <i class="icon-edit"></i>&nbsp;Edit
+            </button>
         </btn-actions>
     </div>
 

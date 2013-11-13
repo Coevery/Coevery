@@ -1,4 +1,4 @@
-﻿@model Q42.DbTranslations.ViewModels.CultureGroupDetailsViewModel
+﻿@model Coevery.Translations.ViewModels.CultureGroupDetailsViewModel
 <style type="text/css">
     table.table tr td {
         font-size: 10px;
@@ -42,7 +42,7 @@
                             <td style="word-break:break-all" @if (translation.OriginalString != translation.LocalString)
                                                              {
                                             <text>title="@translation.OriginalString" </text>
-                                                             }>@Q42.DbTranslations.Services.LocalizationService.ImportPoText(translation.Key)</td>
+                                                             }>@Coevery.Translations.Services.LocalizationService.ImportPoText(translation.Key)</td>
                             <td>
                                 @if (!Model.CanTranslate)
                                 {

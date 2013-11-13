@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model Q42.DbTranslations.ViewModels.CultureIndexViewModel
+@model Coevery.Translations.ViewModels.CultureIndexViewModel
 <header id="page-title" class="ng-scope affix">
     <h1 class="pull-left">Export Translations  <span></span></h1>
 </header>
@@ -35,6 +35,6 @@
     <p>&nbsp;</p>
 
     <h4>@T("Export *.po files to disk")</h4>
-    <p>@T("Want to go back to the way it was? Export your translations to disk and disable the Q42.DbTranslations feature. <br />Might also be useful if you want to check your translations into a code repository.")</p>
+    <p>@T("Want to go back to the way it was? Export your translations to disk and disable the Coevery.Translations feature. <br />Might also be useful if you want to check your translations into a code repository.")</p>
     @Html.ActionLink("Export!", "PoFilesToDisk", null, new { @class = "button" })
 </section>

@@ -47,28 +47,28 @@ namespace Coevery.Translations.Controllers
             return View();
         }
 
-        public ActionResult Culture(string culture)
+        public ActionResult Culture(string id)
         {
-            ViewData["Culture"] = culture;
+            ViewData["Culture"] = id;
             return View();
         }
 
-        public ActionResult Detail(string culture, byte[] path)
+        public ActionResult Detail(string id, byte[] path)
         {
             var pathTemp = HttpUtility.UrlDecode(path, new UTF8Encoding());
             if (!Services.Authorizer.Authorize(Permissions.Translate))
             {
                 return new HttpUnauthorizedResult();
             }
-            if (culture == null)
+            if (id == null)
             {
                 throw new HttpException(404, "Not found");
             }
-            new CultureInfo(culture); // Throws if invalid culture
-            var model = _localizationService.GetTranslations(culture, pathTemp);
+            new CultureInfo(id); // Throws if invalid culture
+            var model = _localizationService.GetTranslations(id, pathTemp);
             model.CurrentGroupPath = pathTemp;
             model.CanTranslate = Services.Authorizer.Authorize(Permissions.ImportExport) &&
-                                 _localizationService.IsCultureAllowed(culture);
+                                 _localizationService.IsCultureAllowed(id);
             ViewData["ModuleName"] = LocalizationHelpers.GetPoFileName(pathTemp);
             return View(model);
         }

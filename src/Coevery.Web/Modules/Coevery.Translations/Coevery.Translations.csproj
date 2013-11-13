@@ -46,7 +46,6 @@
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\controllers\searchcontroller.js" />
     <Content Include="Scripts\services\columnDefinitionService.js" />
-    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CultureController.cs" />
@@ -81,14 +80,10 @@
     <Content Include="Views\SystemAdmin\Index.cshtml" />
     <Content Include="Views\SystemAdmin\Search.cshtml" />
     <Content Include="Views\SystemAdmin\SearchDetail.cshtml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="web.config" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Fluent.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

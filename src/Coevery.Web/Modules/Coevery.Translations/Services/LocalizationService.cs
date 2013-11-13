@@ -123,8 +123,8 @@ namespace Coevery.Translations.Services
                 string.Format(@"  SELECT Localizable.Path,
                     COUNT(Localizable.Id) AS TotalCount,
                     COUNT(Translation.Id) AS TranslatedCount
-                FROM {0}Q42_DbTranslations_LocalizableStringRecord AS Localizable
-                LEFT OUTER JOIN {0}Q42_DbTranslations_TranslationRecord AS Translation
+                FROM {0}Coevery_Translations_LocalizableStringRecord AS Localizable
+                LEFT OUTER JOIN {0}Coevery_Translations_TranslationRecord AS Translation
                     ON Localizable.Id = Translation.LocalizableStringRecord_id
                     AND Translation.Culture = :culture
                 GROUP BY Localizable.Path
@@ -154,8 +154,8 @@ namespace Coevery.Translations.Services
                     Localizable.Context,
                     Localizable.OriginalLanguageString,
                     Translation.Value
-                FROM {0}Q42_DbTranslations_LocalizableStringRecord AS Localizable
-                LEFT OUTER JOIN {0}Q42_DbTranslations_TranslationRecord AS Translation
+                FROM {0}Coevery_Translations_LocalizableStringRecord AS Localizable
+                LEFT OUTER JOIN {0}Coevery_Translations_TranslationRecord AS Translation
                     ON Localizable.Id = Translation.LocalizableStringRecord_id
                     AND Translation.Culture = :culture
                 WHERE Localizable.Path = :path", DataTablePrefix()))
@@ -195,8 +195,8 @@ namespace Coevery.Translations.Services
                     Localizable.OriginalLanguageString,
                     Translation.Value,
                     Localizable.Path
-                FROM {0}Q42_DbTranslations_LocalizableStringRecord AS Localizable
-                LEFT OUTER JOIN {0}Q42_DbTranslations_TranslationRecord AS Translation
+                FROM {0}Coevery_Translations_LocalizableStringRecord AS Localizable
+                LEFT OUTER JOIN {0}Coevery_Translations_TranslationRecord AS Translation
                     ON Localizable.Id = Translation.LocalizableStringRecord_id
                     AND Translation.Culture = :culture
                 WHERE Localizable.OriginalLanguageString LIKE :query 
@@ -232,8 +232,8 @@ namespace Coevery.Translations.Services
               Localizable.StringKey,
               Localizable.Context,
               Translation.Value
-          FROM {0}Q42_DbTranslations_LocalizableStringRecord AS Localizable
-          INNER JOIN {0}Q42_DbTranslations_TranslationRecord AS Translation
+          FROM {0}Coevery_Translations_LocalizableStringRecord AS Localizable
+          INNER JOIN {0}Coevery_Translations_TranslationRecord AS Translation
               ON Localizable.Id = Translation.LocalizableStringRecord_id
               AND Translation.Culture = :culture", DataTablePrefix()))
               .AddScalar("StringKey", NHibernateUtil.String)
@@ -390,7 +390,7 @@ namespace Coevery.Translations.Services
 # Copyright (c) 2010 Outercurve Foundation
 # All rights reserved
 # This file is distributed under the BSD license
-# This file is generated using the Q42.DbTranslations module
+# This file is generated using the Coevery.Translations module
 ", culture);
                             foreach (var translation in translationGroup.Translations)
                             {
@@ -454,7 +454,7 @@ namespace Coevery.Translations.Services
 # Copyright (c) 2010 Outercurve Foundation
 # All rights reserved
 # This file is distributed under the BSD license
-# This file is generated using the Q42.DbTranslations module
+# This file is generated using the Coevery.Translations module
 ", culture);
                     foreach (var translation in translationGroup.Translations)
                     {
@@ -598,7 +598,7 @@ namespace Coevery.Translations.Services
 
                 yield return new NotifyEntry
                 {
-                    Message = T("Translation cache needs to be flushed. <a href=\"{0}\">Click here to flush!</a>", urlHelper.Action("FlushCache", "Admin", new { area = "Q42.DbTranslations", redirectUrl = currentUrl })),
+                    Message = T("Translation cache needs to be flushed. <a href=\"{0}\">Click here to flush!</a>", urlHelper.Action("FlushCache", "Admin", new { area = "Coevery.Translations", redirectUrl = currentUrl })),
                     Type = NotifyType.Warning
                 };
             }
@@ -607,17 +607,17 @@ namespace Coevery.Translations.Services
         public void ResetCache()
         {
             _signals.Trigger("culturesChanged");
-            _wca.GetContext().HttpContext.Application.Remove("q42TranslationsDirty");
+            _wca.GetContext().HttpContext.Application.Remove("coeveryTranslationsDirty");
         }
 
         private void SetCacheInvalid()
         {
-            _wca.GetContext().HttpContext.Application["q42TranslationsDirty"] = true;
+            _wca.GetContext().HttpContext.Application["coeveryTranslationsDirty"] = true;
         }
 
         private bool IsCacheValid()
         {
-            return !_wca.GetContext().HttpContext.Application.AllKeys.Contains("q42TranslationsDirty");
+            return !_wca.GetContext().HttpContext.Application.AllKeys.Contains("coeveryTranslationsDirty");
         }
     }
 }
