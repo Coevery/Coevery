@@ -14,6 +14,7 @@ namespace Coevery.Relationship.Settings {
         public int QueryId { get; set; }
         public int RelationshipId { get; set; }
         public string RelationshipName { get; set; }
+        public bool IsDisplayField { get; set; }
 
         public IList<SelectListItem> ContentTypeList { get; set; }
     }

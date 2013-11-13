@@ -73,6 +73,7 @@ namespace Coevery.Relationship.Settings {
             var model = settingsDictionary.TryGetModel<ReferenceFieldSettings>();
             if (model != null) {
                 UpdateSettings(model, builder, "ReferenceFieldSettings");
+                builder.WithSetting("ReferenceFieldSettings.IsDisplayField", model.IsDisplayField.ToString());
                 builder.WithSetting("ReferenceFieldSettings.DisplayAsLink", model.DisplayAsLink.ToString());
                 builder.WithSetting("ReferenceFieldSettings.ContentTypeName", model.ContentTypeName);
                 builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName);

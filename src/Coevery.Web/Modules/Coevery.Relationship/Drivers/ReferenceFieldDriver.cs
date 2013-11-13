@@ -48,6 +48,14 @@ namespace Coevery.Relationship.Drivers {
             return field.Name;
         }
 
+        protected override void GetContentItemMetadata(ContentPart part, ReferenceField field, ContentItemMetadata metadata) {
+            var model = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
+
+            if (model.IsDisplayField) {
+                metadata.DisplayText = _contentManager.GetItemMetadata(field.ContentItem).DisplayText;
+            }
+        }
+
         protected override DriverResult Display(ContentPart part, ReferenceField field, string displayType, dynamic shapeHelper) {
             var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
             int? value = field.Value;
@@ -93,7 +101,7 @@ namespace Coevery.Relationship.Drivers {
         }
 
         protected override void Importing(ContentPart part, ReferenceField field, ImportContentContext context) {
-            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v), () => field.Value = (int?)null);
+            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v), () => field.Value = (int?) null);
         }
 
         protected override void Exporting(ContentPart part, ReferenceField field, ExportContentContext context) {
