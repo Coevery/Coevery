@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Coevery.Common.Extensions;
 using Coevery;
 using Coevery.ContentManagement.MetaData;
+using Coevery.Localization;
 
 namespace Coevery.FormDesigner.Services {
     public interface ILayoutManager : IDependency {
@@ -16,11 +17,13 @@ namespace Coevery.FormDesigner.Services {
         private const string StartTag = "<form>";
         private const string EndTag = "</form>";
 
-
         public LayoutManager(IContentDefinitionManager contentDefinitionManager) {
             _contentDefinitionManager = contentDefinitionManager;
+            T = NullLocalizer.Instance;
         }
 
+        public Localizer T { get; set; }
+        
         public void DeleteField(string typeName, string fieldName) {
             var typeDefinition = _contentDefinitionManager.GetTypeDefinition(typeName);
             if (typeDefinition == null
@@ -48,7 +51,7 @@ namespace Coevery.FormDesigner.Services {
             }
             string layoutStr = typeDefinition.Settings.ContainsKey("Layout")
                 ? typeDefinition.Settings["Layout"]
-                : "<fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"General Information\"><fd-row><fd-column></fd-column></fd-row></fd-section>";
+                : "<fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\""+T("General Information")+"\"><fd-row><fd-column></fd-column></fd-row></fd-section>";
             var layout = GetLayoutElement(layoutStr);
             var emptyColumn = layout.Descendants("fd-column").FirstOrDefault(x => !x.HasElements);
             if (emptyColumn == null) {
@@ -73,7 +76,7 @@ namespace Coevery.FormDesigner.Services {
             if (typeDefinition == null) {
                 return;
             }
-            var layout = GetLayoutElement("<fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"General Information\"></fd-section>");
+            var layout = GetLayoutElement("<fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"" + T("General Information") + "\"></fd-section>");
             var section = layout.Descendants("fd-section").First();
             var fields = typeDefinition.Parts.First(x => x.PartDefinition.Name == typeName.ToPartName()).PartDefinition.Fields;
             foreach (var field in fields) {

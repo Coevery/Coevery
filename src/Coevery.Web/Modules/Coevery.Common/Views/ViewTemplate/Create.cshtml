@@ -8,15 +8,15 @@
 
 <section ng-controller="GeneralDetailCtrl" >
     <header id="page-title">
-        <h1 class="pull-left">{{moduleName}} <span>create a data</span></h1>
+        <h1 class="pull-left">@typeDisplayName <span>@T("create a new {0}",typeDisplayName)</span></h1>
     </header>
 
     <section id="main-content">
         <div id="page-actions" class="clearfix">
             <btn-actions>
-                <button class="btn btn-small" ng-click="exit()">Back</button>
-                <button class="btn btn-small btn-primary" data-cobusy="'saveentity'" data-ng-click="saveAndView()">Save</button>
-                <button class="btn btn-small btn-primary" data-cobusy="'saveentity'" data-ng-click="saveAndBack()">Save & Back</button>
+                <button class="btn btn-small" ng-click="exit()">@T("Back")</button>
+                <button class="btn btn-small btn-primary" data-cobusy="'saveentity'" data-ng-click="saveAndView()">@T("Save")</button>
+                <button class="btn btn-small btn-primary" data-cobusy="'saveentity'" data-ng-click="saveAndBack()">@T("Save & Back")</button>
             </btn-actions>
         </div>
 
