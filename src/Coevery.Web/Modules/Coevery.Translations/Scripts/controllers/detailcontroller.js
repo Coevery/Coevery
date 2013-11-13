@@ -15,10 +15,11 @@ define(['core/app/detourService'], function (detour) {
                   return null;
               }
               var form = $("#myForm");
+              var url = "SystemAdmin/Translations/Detail";
               var promise = $http({
-                  url: form.attr('action'),
+                  url: url,
                   method: "POST",
-                  data: form.serialize(),
+                  data: form.serialize() + "&culture=" + culture,
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }).then(function (response) {
                   logger.success('Save succeeded.');

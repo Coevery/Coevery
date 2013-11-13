@@ -16,12 +16,12 @@ define(['core/app/detourService'], function (detour) {
               }
               var queryString = $("#queryString").val();
               var culture = $("#culture").val();
-              var url = "/OrchardLocal/SystemAdmin/Translations/Search/" + queryString + "/" + culture;
+              var url = "SystemAdmin/Translations/Search";
 
               $http({
                   url: url,
                   method: "POST",
-                  data: "",
+                  data: "culture=" + culture + "&queryString=" + queryString,
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }).success(function (data) {
                   if (data == "") {
@@ -38,12 +38,12 @@ define(['core/app/detourService'], function (detour) {
 
           $scope.save = function () {
               var culture = $("#culture").val();
-              var url = "/OrchardLocal/SystemAdmin/Translations/Detail/" + culture + "/";
+              var url = "SystemAdmin/Translations/Detail";
               var form = $("#myForm");
               var promise = $http({
                   url: url,
                   method: "POST",
-                  data: form.serialize(),
+                  data: form.serialize() + "&culture=" + culture,
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
               }).then(function (response) {
                   logger.success('Save succeeded.');

@@ -99,6 +99,8 @@ namespace Coevery.Translations.Controllers
                 _localizationService.UpdateTranslation(translationViewModel.Id, culture, translationViewModel.LocalString);
             }
 
+            _localizationService.ResetCache();
+
             return Content("Success");
         }
 
@@ -109,7 +111,7 @@ namespace Coevery.Translations.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult Search(string queryString, string culture)
+        public ActionResult Search(string culture, string queryString)
         {
             if (!string.IsNullOrEmpty(queryString))
             {
