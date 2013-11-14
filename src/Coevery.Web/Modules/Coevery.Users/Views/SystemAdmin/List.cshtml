@@ -1,0 +1,33 @@
+<header id="page-title">
+    <h1 class="pull-left">@T("Users") <span>@T("Manage all users")</span></h1>
+</header>
+<section id="main-content">
+    <div id="page-actions" class="clearfix">
+        <btn-actions>
+            <button type="button" class="btn btn-small btn-success" data-ng-click="addUser()"><i class="icon-plus"></i>&nbsp;@T("Add")</button>
+            <button type="button" class="btn btn-small " data-ng-click="getAllUsers()"><i class="icon-refresh"></i>&nbsp;@T("Refresh")</button>
+            <div class="btn-group" ng-show="selectedItems.length > 0">
+                <button class="btn btn-small" data-ng-click="edit(selectedItems[0])" ng-disabled="selectedItems.length > 1">
+                    <i class="icon-edit"></i>&nbsp;@T("Edit")
+                </button>
+                <button class="btn btn-small" data-ng-click="approve(selectedItems[0])" data-cobusy="{tracker:'approveUser'}" ng-disabled="selectedItems.length > 1">
+                    @T("Approve")
+                </button>
+                <button class="btn btn-small" data-ng-click="disable(selectedItems[0])" data-cobusy="{tracker:'disableUser'}" ng-disabled="selectedItems.length > 1">
+                    @T("Disable")
+                </button>
+                <button class="btn btn-small" co-delete-button confirm-message="You really want to delete this user?" delete-action="delete()">
+                    <i class="icon-remove"></i>&nbsp;@T("Delete")
+                </button>
+            </div>
+        </btn-actions>
+    </div>
+    <div class="row-fluid" data-ag-grid="gridOptions" data-ag-grid-name="userList"> </div>
+</section>
+
+<script>
+    $(function() {
+        $("#main-content").css("margin-top", $("#page-title").outerHeight(true));
+        $("#page-actions h1 span").attr("title", $("#page-actions h1 span").html());
+    });
+</script>
