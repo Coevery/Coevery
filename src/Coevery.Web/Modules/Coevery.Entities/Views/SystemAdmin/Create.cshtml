@@ -59,8 +59,8 @@
                         </section>
                         <section class="data-row control-group">
                             <label class="control-label required" for="@Html.NameFor(m => m.FieldType)">@T("Field Type")</label>
-                            <div class="controls">
-                                @Html.DropDownListFor(m => m.FieldType, Model.FieldTypes, new {ng_model = "selection"})
+                            <div class="controls errortips" style="width:200px">
+                                @Html.DropDownListFor(m => m.FieldType,Model.FieldTypes,string.Empty, new {ng_model = "selection",required=""})
                             </div>
                         </section>
                         <section class="data-row control-group">                          
@@ -189,5 +189,7 @@
         $displayFieldName.keyup(function() {
             computeFieldName();
         });
+
+        
     });
 </script>

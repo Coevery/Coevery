@@ -66,41 +66,51 @@ angular.module('coevery.common', [])
             }
         };
     })
-    .directive('changeRequired', ["logger", function (logger) {
-         return {
-             restrict: 'A',
-             link: function (scope, element, attrs) {
-                 element.css("display", "none");
-                 var fieldtype = attrs["changeRequired"];
-                 var entityselector = element.find("#entityselector");
-                 scope.$watch(function() {
-                     return scope.fieldtype;
-                 }, function (newval) {
-                     if (newval == fieldtype) {
-                         element.css("display", "block");
-                         var scrolloffset = element.find("#pos").offset();
-                         entityselector.parent("div").css('width', '160px');
-                         $("body,html").animate({
-                             scrollTop: scrolloffset.top
-                         }, 800);
-                         if (scope.entities.length == 0) {
-                             //logger.notice("please create a entity and then publish it first");
-                             entityselector.attr('data-msg-required', 'please create a entity first');
-                             entityselector.addClass("required");
-                             element.find(":text").addClass("required");
-                         }
-                     } else {
-                         element.css("display", "none");
-                         if (scope.entities.length == 0) {
-                             entityselector.removeAttr("data-msg-required");
-                             entityselector.removeClass("required");
-                             element.find(":text").removeClass("required");
-                         }
-                     }
-                 });
-             }
-         };
-    }])
+    .directive('featureFilter', function () {
+    return {
+        restrict: "A",
+        link: function (scope) {
+            scope.$watch(function() {
+                return scope.featurename;
+            }, function (newval) {
+                if (newval==undefined) return;
+                $("div.category:hidden").show();
+                $(".row-fluid > div").each(function(i, item) {
+                    if ($(item).find(".title").text().toLowerCase().indexOf(newval.toLowerCase()) >= 0) {
+                        $(item).show();
+                    } else {
+                        $(item).hide();
+                    }
+                });
+                $("div.category:not(:has(.row-fluid > div:visible))").hide();
+            });
+        }
+    };
+    })
+    .directive('featureSelector', function () {
+        return {
+            restrict: "A",
+            link: function (scope, element) {
+                var checkbox = element.find(":checkbox:first");
+                checkbox.on('click', function (e) {
+                    setcss();
+                    e.stopPropagation();
+                });
+                element.on('click', function () {
+                    checkbox.get(0).checked = !checkbox.get(0).checked;
+                    setcss();
+                });
+
+                var setcss = function() {
+                    if (checkbox.get(0).checked)
+                        element.find("span:first").css("color", "rgba(255, 255, 0, 1);");
+                    else {
+                        element.find("span:first").css("color", "");
+                    }
+                };
+            }
+        };
+    })
     .directive('loadingIndicator', function () {
         return {
             restrict: "A",

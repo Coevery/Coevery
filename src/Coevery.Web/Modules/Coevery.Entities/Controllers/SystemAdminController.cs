@@ -109,6 +109,11 @@ namespace Coevery.Entities.Controllers {
                 ModelState.AddModelError("Name", T("The Field Name can't be empty.").ToString());
             }
 
+            if (String.IsNullOrWhiteSpace(viewModel.FieldType))
+            {
+                ModelState.AddModelError("Name", T("The FieldType can't be empty.").ToString());
+            }
+
             if (!_contentMetadataService.CheckEntityCreationValid(viewModel.Name, viewModel.DisplayName, viewModel.Settings)) {
                 ModelState.AddModelError("Name", T("A type with the same Name or DisplayName already exists.").ToString());
             }
