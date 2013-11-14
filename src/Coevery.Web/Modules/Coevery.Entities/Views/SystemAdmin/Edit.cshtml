@@ -38,14 +38,14 @@
                         </section>
 
                         <section class="data-row control-group">
-                            <label class="control-label required" >@T("Collection Name")</label>
+                            <label class="control-label required" >@T("Plural Name")</label>
                             <div class="controls errortips">
                                 @Html.TextBoxFor(m => m.Settings["CollectionName"], new { @class = "span12 required safename" })
                                 <span class="help-block">@T("Technical name of the type's collection.")</span>
                             </div>
                         </section>
                         <section class="data-row control-group">
-                            <label class="control-label required" >@T("Collection Display Name")</label>
+                            <label class="control-label required" >@T("Plural Display Name")</label>
                             <div class="controls errortips">
                                 @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new { @class = "span12 required" })
                                 <span class="help-block">@T("Display name of the type's collection.")</span>

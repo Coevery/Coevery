@@ -38,7 +38,11 @@ namespace Coevery.Projections.Controllers {
             return View(new Dictionary<string, string> { { "PublishTip", T("Works when the entity has been published.").Text } });
         }
 
-        public ActionResult Create(string id) {   
+        public ActionResult Create(string id) {
+            var entityName = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
+            if (entityName != null) {
+                id = entityName;
+            }
             if (!_contentMetadataService.CheckEntityPublished(id)) {
                 return Content(T("The \"{0}\" hasn't been published!", id).Text);
             }
