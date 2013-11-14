@@ -74,9 +74,12 @@
     <Compile Include="Projections\DatetimeTypeStateProvider.cs" />
     <Compile Include="Projections\DatetimeTypeValueProvider.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
+    <Compile Include="ResourceManifest.cs" />
     <Compile Include="Services\DependencyExtension.cs" />
     <Compile Include="Services\IFieldDependencyService.cs" />
     <Compile Include="Services\FieldDependencyService.cs" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Styles\bootstrap-datetimepicker.min.css" />
     <Content Include="Styles\media-gallery-admin.css" />
     <Content Include="Styles\datetime.css" />
     <Content Include="Styles\Images\move.gif" />
@@ -275,6 +278,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\MultilineTextFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DateTimePickerLocalization.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\BootstrapDatePickerLocalization.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

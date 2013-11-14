@@ -15,34 +15,23 @@
            id="@Html.FieldIdFor(m => m.Value)" 
            name="@Html.FieldNameFor(m => m.Value)" 
            value="@Model.Value" 
-           data-format="MM/dd/yyyy HH:mm PP" 
-        @if (required != null)
-        {<text> required data-msg-required="Please fill this field!"</text> } 
-        @if (!string.IsNullOrWhiteSpace(settings.HelpText)){<text>helper:text='@settings.HelpText'</text> }
+        @if (required != null) {<text> required data-msg-required="Please fill this field!"</text> } 
+        @if (!string.IsNullOrWhiteSpace(settings.HelpText)) {<text>helper:text='@settings.HelpText'</text> }
         />
     @Html.ValidationMessageFor(m => m.Value)
+
+
 </div>
 
 <script type="text/javascript">
-    function convertDatetime(dateStr) {
-        if (dateStr) {
-            var tempDate = new Date(dateStr);
-            return (tempDate.getMonth() + 1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear() + ' ' +
-                    tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + ((tempDate.getHours() < 12) ? " AM" : " PM");
-        } else {
-            return "";
-        }
-    }
-
     $(function () {
-        var defaultDatetime = $("#@Html.FieldIdFor(m => m.Value)");
-        if (defaultDatetime.length != 0) {
-            defaultDatetime.parent().datetimepicker({
-                pick12HourFormat: true,
-                pickSeconds: false,
-            });
-
-            defaultDatetime.val(convertDatetime(defaultDatetime.val()));
+        var defaultDate = $("#@Html.FieldIdFor(m => m.Value)");
+            if (defaultDate.length != 0) {
+                defaultDate.parent().datetimepicker();
+            @if (Model.Value.HasValue) {
+            <text>var date = new Date('@Model.Value.Value'); defaultDate.parent().data('datetimepicker').setLocalDate(date);</text> }
         }
-    });
+        });
 </script>
+
+@Display.DateTimePickerLocalization()

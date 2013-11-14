@@ -56,7 +56,6 @@
     <Content Include="MooncakeAdmin\Scripts\js\setup-systemadmin.js" />
     <Content Include="MooncakeAdmin\Theme.png" />
     <Content Include="MooncakeAdmin\Theme.txt" />
-    <Content Include="MooncakeBase\Scripts\js\bootstrap-datetimepicker.min.js" />
     <Content Include="MooncakeBase\Scripts\js\customizer.js" />
     <Content Include="MooncakeBase\Scripts\js\demo\alerts.js" />
     <Content Include="MooncakeBase\Scripts\js\demo\boxes.js" />
@@ -581,7 +580,6 @@
     <Content Include="MooncakeBase\Scripts\plugins\select2\select2.min.js" />
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.js" />
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.min.js" />
-    <Content Include="MooncakeBase\Styles\bootstrap-datetimepicker.min.css" />
     <Content Include="MooncakeBase\Styles\bootstrap\bootstrap-responsive.css" />
     <Content Include="MooncakeBase\Styles\bootstrap\bootstrap-responsive.min.css" />
     <Content Include="MooncakeBase\Styles\bootstrap\bootstrap.css" />

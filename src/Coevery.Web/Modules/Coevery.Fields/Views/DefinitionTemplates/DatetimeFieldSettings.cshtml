@@ -9,42 +9,29 @@
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "date", id = "datetimeDefault", name = "datetimeDefault" })
+        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "date" })
     </div>
-    <script>
-        function convertDatetime(dateStr) {
-            if (dateStr) {
-                var tempDate = new Date(dateStr);
-                return (tempDate.getMonth() + 1).toString() + '/' + tempDate.getDate() + '/' + tempDate.getFullYear() + ' ' +
-                    tempDate.getHours() % 12 + ':' + tempDate.getMinutes() + ((tempDate.getHours() < 12) ? " AM" : " PM");
-            } else {
-                return "";
-            }
-        }
-
-        $(document).ready(function () {
-            var defaultDatetime = $("#datetimeDefault");
-            if (defaultDatetime.length != 0) {
-                defaultDatetime.attr("data-format", "MM/dd/yyyy HH:mm PP");
-                defaultDatetime.parent().datetimepicker({
-                    pick12HourFormat: true,
-                    pickSeconds: false,
-                });
-                defaultDatetime.val(convertDatetime(defaultDatetime.val()));
-            }
-
-
-            $(".add-on").click(function () {
-                setTimeout(function () {
-                    $(".bootstrap-datetimepicker-widget").offset(function (index, coords) {
-                        var result = { top: 0, left: 0 };
-                        result.left = coords.left;
-                        result.top = $(".input-prepend").offset().top -
-                                $(".bootstrap-datetimepicker-widget").outerHeight(true) - 4;
-                        return result;
-                    });
-                }, 0);
-            });
-        });
-    </script>
 </section>
+@Display.DateTimePickerLocalization()
+<script>
+    $(function () {
+        var defaultDate = $("#@Html.FieldIdFor(m => m.DefaultValue)");
+            if (defaultDate.length != 0) {
+                defaultDate.parent().datetimepicker();
+                @if (Model.DefaultValue.HasValue) {
+            <text>var date = new Date('@Model.DefaultValue.Value'); defaultDate.parent().data('datetimepicker').setLocalDate(date);</text> }
+            }
+            //$(".add-on").click(function () {
+            //    setTimeout(function () {
+            //        $(".bootstrap-datetimepicker-widget").offset(function (index, coords) {
+            //            var result = { top: 0, left: 0 };
+            //            result.left = coords.left;
+            //            result.top = $(".input-prepend").offset().top -
+            //                    $(".bootstrap-datetimepicker-widget").outerHeight(true) - 4;
+            //            return result;
+            //        });
+            //    }, 0);
+            //});
+        });
+</script>
+

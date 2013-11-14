@@ -89,11 +89,6 @@
                 return $(em).attr("decimalplaces");
             }
         };
-        
-        $.validator.addMethod("dateForShort", function (value) {
-            return /^\d\d?\/\d\d?\/\d{4}$/.test(value) || !value;
-        }, "Wrong date format,should be mm/dd/yyyy");
-        $.validator.classRuleSettings.dateForShort = { dateForShort: true };
     });
 
 }) (jQuery, window, document);
