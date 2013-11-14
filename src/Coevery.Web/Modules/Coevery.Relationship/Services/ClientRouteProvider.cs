@@ -65,7 +65,7 @@ namespace Coevery.Relationship.Services {
                     view.AddDependencies(ToAbsoluteScriptUrl, new [] {"controllers/editmanytomanycontroller"});
                 });
 
-            builder.Describe("View")
+            builder.Describe("Root.Menu.View")
                 .View(view => view.AddDependencies(ToAbsoluteScriptUrl, "controllers/relatedentitylistcontroller"));
         }
     }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using Coevery.Localization;
 using Coevery.Logging;
-using Coevery.Mvc;
 using Coevery.Mvc.Extensions;
 using Coevery.Roles.Models;
 using Coevery.Roles.Services;
@@ -14,14 +14,13 @@ using Coevery.UI.Notify;
 
 namespace Coevery.Roles.Controllers {
     [ValidateInput(false)]
-    public class AdminController : Controller {
+    public class SystemAdminController : Controller {
         private readonly IRoleService _roleService;
         private readonly IAuthorizationService _authorizationService;
 
-        public AdminController(
+        public SystemAdminController(
             ICoeveryServices services,
             IRoleService roleService,
-            INotifier notifier,
             IAuthorizationService authorizationService) {
             Services = services;
             _roleService = roleService;
@@ -35,46 +34,35 @@ namespace Coevery.Roles.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult Index() {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles")))
+        public ActionResult List() {
+            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles"))) {
                 return new HttpUnauthorizedResult();
+            }
 
-            var model = new RolesIndexViewModel { Rows = _roleService.GetRoles().OrderBy(r => r.Name).ToList() };
+            var model = new RolesIndexViewModel {Rows = _roleService.GetRoles().OrderBy(r => r.Name).ToList()};
 
             return View(model);
         }
 
-        [HttpPost, ActionName("Index")]
-        public ActionResult IndexPOST() {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles")))
-                return new HttpUnauthorizedResult();
-
-            foreach (string key in Request.Form.Keys) {
-                if (key.StartsWith("Checkbox.") && Request.Form[key] == "true") {
-                    int roleId = Convert.ToInt32(key.Substring("Checkbox.".Length));
-                    _roleService.DeleteRole(roleId);
-                }
-            }
-            return RedirectToAction("Index");
-        }
-
         public ActionResult Create() {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles")))
+            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles"))) {
                 return new HttpUnauthorizedResult();
+            }
 
-            var model = new RoleCreateViewModel { FeaturePermissions = _roleService.GetInstalledPermissions() };
+            var model = new RoleCreateViewModel {FeaturePermissions = _roleService.GetInstalledPermissions()};
             return View(model);
         }
 
         [HttpPost, ActionName("Create")]
         public ActionResult CreatePOST() {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles")))
+            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles"))) {
                 return new HttpUnauthorizedResult();
+            }
 
             var viewModel = new RoleCreateViewModel();
             TryUpdateModel(viewModel);
 
-            if(String.IsNullOrEmpty(viewModel.Name)) {
+            if (String.IsNullOrEmpty(viewModel.Name)) {
                 ModelState.AddModelError("Name", T("Role name can't be empty"));
             }
 
@@ -84,8 +72,8 @@ namespace Coevery.Roles.Controllers {
             }
 
             if (!ModelState.IsValid) {
-                viewModel.FeaturePermissions = _roleService.GetInstalledPermissions();
-                return View(viewModel);
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return ErrorResult();
             }
 
             _roleService.CreateRole(viewModel.Name);
@@ -93,30 +81,35 @@ namespace Coevery.Roles.Controllers {
                 if (key.StartsWith("Checkbox.") && Request.Form[key] == "true") {
                     string permissionName = key.Substring("Checkbox.".Length);
                     _roleService.CreatePermissionForRole(viewModel.Name,
-                                                            permissionName);
+                        permissionName);
                 }
             }
-            return RedirectToAction("Index");
+
+            role = _roleService.GetRoleByName(viewModel.Name);
+            return Json(new {id = role.Id});
         }
 
         public ActionResult Edit(int id) {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles")))
+            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles"))) {
                 return new HttpUnauthorizedResult();
+            }
 
             var role = _roleService.GetRole(id);
             if (role == null) {
                 return HttpNotFound();
             }
 
-            var model = new RoleEditViewModel { Name = role.Name, Id = role.Id, 
-                                                RoleCategoryPermissions = _roleService.GetInstalledPermissions(),
-                                                CurrentPermissions = _roleService.GetPermissionsForRole(id)};
+            var model = new RoleEditViewModel {
+                Name = role.Name, Id = role.Id,
+                RoleCategoryPermissions = _roleService.GetInstalledPermissions(),
+                CurrentPermissions = _roleService.GetPermissionsForRole(id)
+            };
 
             var simulation = UserSimulation.Create(role.Name);
             model.EffectivePermissions = model.RoleCategoryPermissions
                 .SelectMany(group => group.Value)
                 .Where(permission => _authorizationService.TryCheckAccess(permission, simulation, null))
-                .Select(permission=>permission.Name)
+                .Select(permission => permission.Name)
                 .Distinct()
                 .ToList();
 
@@ -124,10 +117,10 @@ namespace Coevery.Roles.Controllers {
         }
 
         [HttpPost, ActionName("Edit")]
-        [FormValueRequired("submit.Save")]
         public ActionResult EditSavePOST(int id) {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles")))
+            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles"))) {
                 return new HttpUnauthorizedResult();
+            }
 
             var viewModel = new RoleEditViewModel();
             TryUpdateModel(viewModel);
@@ -142,11 +135,12 @@ namespace Coevery.Roles.Controllers {
             }
 
             if (!ModelState.IsValid) {
-                return Edit(id);
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                return ErrorResult();
             }
 
             // Save
-            List<string> rolePermissions = new List<string>();
+            var rolePermissions = new List<string>();
             foreach (string key in Request.Form.Keys) {
                 if (key.StartsWith("Checkbox.") && Request.Form[key] == "true") {
                     string permissionName = key.Substring("Checkbox.".Length);
@@ -156,24 +150,16 @@ namespace Coevery.Roles.Controllers {
             _roleService.UpdateRole(viewModel.Id, viewModel.Name, rolePermissions);
 
             Services.Notifier.Information(T("Your Role has been saved."));
-            return RedirectToAction("Edit", new { id });
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        [HttpPost, ActionName("Edit")]
-        [FormValueRequired("submit.Delete")]
-        public ActionResult EditDeletePOST(int id) {
-            return Delete(id, null);
-        }
+        private ContentResult ErrorResult() {
+            Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            var temp = (from values in ModelState
+                from error in values.Value.Errors
+                select error.ErrorMessage).ToArray();
 
-        [HttpPost]
-        public ActionResult Delete(int id, string returnUrl) {
-            if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage roles")))
-                return new HttpUnauthorizedResult();
-
-            _roleService.DeleteRole(id);
-            Services.Notifier.Information(T("Role was successfully deleted."));
-
-            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
+            return Content(string.Concat(temp));
         }
     }
 }
