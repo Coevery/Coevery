@@ -74,7 +74,7 @@ namespace Coevery.Entities.Handlers {
 
         private void CreateEntity(EntityMetadataPart part) {
             _contentDefinitionManager.AlterTypeDefinition(part.Name, builder => {
-                var entitySetting = _settingService.ParseSetting(part.EntitySetting);
+                var entitySetting = part.EntitySetting;
                 builder.DisplayedAs(part.DisplayName);
                 foreach (var key in entitySetting.Keys) {
                     builder.WithSetting(key, entitySetting[key]);
@@ -98,7 +98,7 @@ namespace Coevery.Entities.Handlers {
 
         private void UpdateEntity(EntityMetadataPart previousEntity, EntityMetadataPart entity) {
             _contentDefinitionManager.AlterTypeDefinition(entity.Name, builder => {
-                var entitySetting = _settingService.ParseSetting(entity.EntitySetting);
+                var entitySetting = entity.EntitySetting;
                 foreach (var key in entitySetting.Keys) {
                     builder.WithSetting(key, entitySetting[key]);
                 }

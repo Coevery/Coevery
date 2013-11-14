@@ -87,7 +87,7 @@ namespace Coevery.Entities.Services {
                 isValid = false;
             }
             var hasDuplicateEntities = (from entity in entities
-                let tSetting = _settingService.ParseSetting(entity.EntitySetting)
+                let tSetting = entity.EntitySetting
                 where tSetting != null
                       && (tSetting.ContainsKey("CollectionName") && tSetting["CollectionName"] == collectionName)
                       && (tSetting.ContainsKey("CollectionDisplayName") && tSetting["CollectionDisplayName"] == collectionDisplayName)
@@ -114,7 +114,7 @@ namespace Coevery.Entities.Services {
                 isValid = false;
             }
             var hasDuplicateEntities = (from entity in entities
-                let tSetting = _settingService.ParseSetting(entity.EntitySetting)
+                let tSetting = entity.EntitySetting
                 where tSetting["CollectionName"] == collectionName ||
                       tSetting["CollectionDisplayName"] == collectionDisplayName
                 select entity).Any();
@@ -157,7 +157,7 @@ namespace Coevery.Entities.Services {
             var entityDraft = Services.ContentManager.New<EntityMetadataPart>("EntityMetadata");
             entityDraft.DisplayName = sourceModel.DisplayName;
             entityDraft.Name = sourceModel.Name;
-            entityDraft.EntitySetting = _settingService.CompileSetting(sourceModel.Settings);
+            entityDraft.EntitySetting = sourceModel.Settings;
 
             var field = new FieldMetadataRecord {
                 Name = sourceModel.FieldName,

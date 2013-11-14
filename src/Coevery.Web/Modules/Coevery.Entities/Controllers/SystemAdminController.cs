@@ -144,7 +144,7 @@ namespace Coevery.Entities.Controllers {
             var viewModel = new EditTypeViewModel {
                 Name = entity.Name,
                 DisplayName = entity.DisplayName,
-                Settings = _settingService.ParseSetting(entity.EntitySetting)
+                Settings = entity.EntitySetting
             };
             return View(viewModel);
         }
@@ -164,7 +164,7 @@ namespace Coevery.Entities.Controllers {
                 return new HttpStatusCodeResult(HttpStatusCode.MethodNotAllowed);
             }
             entity.DisplayName = viewModel.DisplayName;
-            entity.EntitySetting = _settingService.CompileSetting(viewModel.Settings);
+            entity.EntitySetting = viewModel.Settings;
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
