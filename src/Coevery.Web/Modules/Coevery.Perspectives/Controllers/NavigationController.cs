@@ -46,7 +46,11 @@ namespace Coevery.Perspectives.Controllers {
             var menuEntitys = _menuService.GetMenuParts(id).Select(CreateMenuItemEntries)
                 .OrderBy(menuPartEntry => menuPartEntry.Position, new FlatPositionComparer()).ToList();
             var query = from menuEntry in menuEntitys
-                        select new { Id = menuEntry.ContentItem.Id, DisplayName = menuEntry.Text, Description = menuEntry.Description };
+                        select new {
+                            Id = menuEntry.ContentItem.Id, 
+                            DisplayName = menuEntry.Text, 
+                            Description = menuEntry.Description,
+                        };
 
             var totalRecords = query.Count();
             return new {

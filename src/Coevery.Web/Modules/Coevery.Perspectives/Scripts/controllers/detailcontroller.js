@@ -45,11 +45,17 @@ define(['core/app/detourService',
                   formatoptions: { hasView: false }
               }];
 
-          $scope.gridOptions = {
+          var gridOptions = {
               url: "api/perspectives/Navigation?id=" + perpectiveId,
-              colModel: navigationColumnDefs
-          };
-          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+              colModel: navigationColumnDefs,
+              ExpandColumn: "DisplayName",
+              treeGrid: true,
+              treeGridModel: "adjacency",
+              ExpandColClick: false
+      };
+          angular.extend(gridOptions, $rootScope.defaultGridOptions);
+          gridOptions.multiselect = false;
+          $scope.gridOptions = gridOptions;
 
           $scope.addNavigationItem = function () {
               $state.transitionTo('CreateNavigationItem', { Id: perpectiveId });

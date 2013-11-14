@@ -24,5 +24,10 @@ namespace Coevery.Perspectives.Models
             get { return Record.Position; }
             set { Record.Position = value; }
         }
+
+        public int CurrentLevel {
+            get { return Record.CurrentLevel; }
+            set { Record.CurrentLevel = value; }
+        }
     }
 }
