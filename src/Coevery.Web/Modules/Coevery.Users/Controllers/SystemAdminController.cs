@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Web.Http;
 using System.Web.Mvc;
 using Coevery.ContentManagement;
 using Coevery.Core.Settings.Models;
@@ -72,7 +71,7 @@ namespace Coevery.Users.Controllers {
             return View((object) model);
         }
 
-        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Create")]
+        [HttpPost, ActionName("Create")]
         public ActionResult CreatePOST(UserCreateViewModel createModel) {
             if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage users"))) {
                 return new HttpUnauthorizedResult();
@@ -102,14 +101,11 @@ namespace Coevery.Users.Controllers {
                     null, null, true));
             }
 
+            Services.ContentManager.UpdateEditor(user, this);
+
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
+                return ErrorResult();
             }
 
             return Json(new {id = user.Id});
@@ -131,7 +127,7 @@ namespace Coevery.Users.Controllers {
             return View((object) model);
         }
 
-        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Edit")]
+        [HttpPost, ActionName("Edit")]
         public ActionResult EditPOST(int id) {
             if (!Services.Authorizer.Authorize(StandardPermissions.SiteOwner, T("Not authorized to manage users"))) {
                 return new HttpUnauthorizedResult();
@@ -163,11 +159,7 @@ namespace Coevery.Users.Controllers {
 
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
+                return ErrorResult();
             }
 
             Services.ContentManager.Publish(user.ContentItem);
@@ -241,6 +233,15 @@ namespace Coevery.Users.Controllers {
 
         public void AddModelError(string key, LocalizedString errorMessage) {
             ModelState.AddModelError(key, errorMessage.ToString());
+        }
+
+        private ContentResult ErrorResult() {
+            Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            var temp = (from values in ModelState
+                from error in values.Value.Errors
+                select error.ErrorMessage).ToArray();
+
+            return Content(string.Concat(temp));
         }
     }
 }

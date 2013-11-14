@@ -73,10 +73,7 @@ namespace Coevery.Roles.Controllers {
 
             if (!ModelState.IsValid) {
                 Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
+                return ErrorResult();
             }
 
             _roleService.CreateRole(viewModel.Name);
@@ -139,10 +136,7 @@ namespace Coevery.Roles.Controllers {
 
             if (!ModelState.IsValid) {
                 Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
-                return Content(string.Concat(temp));
+                return ErrorResult();
             }
 
             // Save
@@ -157,6 +151,15 @@ namespace Coevery.Roles.Controllers {
 
             Services.Notifier.Information(T("Your Role has been saved."));
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        private ContentResult ErrorResult() {
+            Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            var temp = (from values in ModelState
+                from error in values.Value.Errors
+                select error.ErrorMessage).ToArray();
+
+            return Content(string.Concat(temp));
         }
     }
 }
