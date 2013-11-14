@@ -51,8 +51,9 @@ define(['core/app/detourService',
               ExpandColumn: "DisplayName",
               treeGrid: true,
               treeGridModel: "adjacency",
+              tree_root_level: 1,
               ExpandColClick: false
-      };
+          };
           angular.extend(gridOptions, $rootScope.defaultGridOptions);
           gridOptions.multiselect = false;
           $scope.gridOptions = gridOptions;
