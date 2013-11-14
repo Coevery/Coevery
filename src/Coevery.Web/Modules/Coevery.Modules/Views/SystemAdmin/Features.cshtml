@@ -1,0 +1,56 @@
+﻿@using Coevery.Modules.Models
+
+    <header id="page-title" class="ng-scope">
+        <h1 class="pull-left" style="background-image: none;">Features Management <span>search or switch the feature's status</span></h1>
+    </header>
+    <section id="main-content" style="margin-top: 47px;" class="ng-scope">
+        <div id="page-actions" class="clearfix">
+            <btn-actions>
+                <div class="input-append">
+                    <input type="text" id="input15" data-ng-model="featurename" data-feature-filter placeholder="@T("Query By Feature Name")">
+                    <button type="button" class="btn">
+                        <i class="icol-magnifier"></i>
+                    </button>
+                   @* <div class="btn-group"  style="margin-left: 20px;">
+                        <button class="btn"><i class="icol-arrow-right"></i> ExeAction</button>
+                        <button class="btn dropdown-toggle" data-toggle="dropdown" ><span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:void(0)" data-ng-click="submit('@Enum.GetName(typeof(FeaturesBulkAction),FeaturesBulkAction.Enable)')"><i class="icol-accept"></i> @T("Enable").ToString()</a></li>
+                            <li><a href="javascript:void(0)" data-ng-click="submit('@Enum.GetName(typeof(FeaturesBulkAction),FeaturesBulkAction.Disable)')"><i class="icol-delete"></i>@T("Disable").ToString()</a></li>
+                        </ul>
+                    </div>*@
+                </div>
+            </btn-actions>
+        </div>
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("Features"),
+            FormMethod.Post,
+            new {@class = "form-horizontal edit-mode", @name = "myForm"})) {
+            @Html.Hidden("submit.BulkExecute")
+            @Html.Hidden("bulkAction")
+            @Html.Hidden("featureIds")
+            @Html.Hidden("force", true)
+            <div class="category" data-ng-repeat="category in categories">
+                <legend id="" style="margin:5px;"><h4>{{category.CategoryName.Text}}</h4></legend>
+                    <div class="row-fluid" style="padding-bottom: 20px;">
+                        <div data-ng-repeat="feature in category.Features" id="{{feature.FeatureId.replace('.','-')}}" class="span4 widget" style="margin:8px 7px;" title="{{feature.FeatureName}} is {{feature.FeatureState}}">
+                            <div data-feature-selector class="widget-header" style="{{feature.TitleStyle}}">
+                                <span class="title">{{feature.FeatureName}}</span>
+                                <input name="featureIds" type="checkbox" style="margin: 0px;float:right;clear:both;"></input>
+                            </div>
+                            <div class="widget-content" style="padding:2px; height:100px; overflow:hidden;">
+                                <p title="{{feature.FeatureDescription}}">{{feature.FeatureDescription}}</p>
+                                <p>
+                                    @T("Depends on:")<a style="margin-left:5px;" data-ng-repeat="dependency in feature.Dependencies" href="javascript:void(0)" data-ng-click="jump('{{dependency.Descriptor.Id.replace('.','-')}}')"> {{dependency.Descriptor.Name}} </a>
+                                </p>
+                            </div>
+                            <div class="toolbar btn-toolbar" style="text-align:right;min-height:29px;">
+                                <div class="btn-group">
+                                    <span data-cobusy="'featureaction'" data-ng-show="feature.FeatureAction.IsShow" class='btn' data-ng-click="action('{{feature.FeatureId}}')"><i class='{{feature.FeatureAction.Iconclass}}'></i> {{feature.FeatureAction.Content.Text}} </span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            }
+    </section>
+    

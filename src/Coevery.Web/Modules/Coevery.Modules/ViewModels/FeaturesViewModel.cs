@@ -7,11 +7,5 @@ namespace Coevery.Modules.ViewModels {
         public FeaturesBulkAction BulkAction { get; set; }
     }
 
-    public enum FeaturesBulkAction {
-        None,
-        Enable,
-        Disable,
-        Update,
-        Toggle
-    }
+    
 }

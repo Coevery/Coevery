@@ -211,6 +211,10 @@
       <Project>{d10ad48f-407d-4db5-a328-173ec7cb010f}</Project>
       <Name>Coevery.Roles</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Coevery.Themes\Coevery.Themes.csproj">
+      <Project>{cde24a24-01d3-403c-84b9-37722e18dfb7}</Project>
+      <Name>Coevery.Themes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content-Menu.Edit.cshtml" />
