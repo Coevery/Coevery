@@ -183,7 +183,7 @@ namespace Coevery.Entities.Services {
                 return "Invalid id";
             }
             foreach (var field in entity.FieldMetadataRecords) {
-                _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, _settingService.ParseSetting(field.Settings));
+                _contentDefinitionEditorEvents.FieldDeleted(field.ContentFieldDefinitionRecord.Name, field.Name, _settingService.ParseSetting(field.Settings));
             }
             var hasPublished = entity.HasPublished();
 
@@ -255,7 +255,7 @@ namespace Coevery.Entities.Services {
                 return false;
             }
 
-            _contentDefinitionEditorEvents.CustomDeleteAction(field.ContentFieldDefinitionRecord.Name, field.Name, _settingService.ParseSetting(field.Settings));
+            _contentDefinitionEditorEvents.FieldDeleted(field.ContentFieldDefinitionRecord.Name, field.Name, _settingService.ParseSetting(field.Settings));
             entity.FieldMetadataRecords.Remove(field);
             return true;
         }

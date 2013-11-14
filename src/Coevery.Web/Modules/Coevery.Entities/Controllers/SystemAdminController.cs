@@ -184,7 +184,7 @@ namespace Coevery.Entities.Controllers {
                 Name = entity.Name,
                 DisplayName = entity.DisplayName,
                 HasPublished = entity.HasPublished(),
-                Settings = _settingService.ParseSetting(entity.EntitySetting)
+                Settings = entity.EntitySetting
             };
 
             return View(viewModel);

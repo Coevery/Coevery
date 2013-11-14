@@ -64,7 +64,7 @@ namespace Coevery.OptionSet.Settings {
             }
         }
 
-        public override void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {
+        public override void FieldDeleted(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {
             if (fieldType != "OptionSetField") {
                 return;
             }
