@@ -7,7 +7,7 @@ define(['core/app/detourService'], function(detour) {
                 var entityName = $stateParams.Id;
                 $scope.$parent.fieldInfo = null;
                 
-                $scope.$on('wizzardGoNext', function (event, context) {
+                $scope.$on('wizardGoNext', function (event, context) {
                     if ($scope.fieldType) {
                         context.stateParams = {
                             Id: entityName,

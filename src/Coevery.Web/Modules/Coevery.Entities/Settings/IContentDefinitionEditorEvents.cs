@@ -11,7 +11,7 @@ namespace Coevery.Entities.Settings {
         IEnumerable<TemplateViewModel> FieldTypeDescriptor();
         void UpdateFieldSettings(string fieldType, string fieldName, SettingsDictionary settingsDictionary, IUpdateModel updateModel);
         void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary);
-        void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary);
+        void FieldDeleted(string fieldType, string fieldName, SettingsDictionary settingsDictionary);
 
         IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition);
         IEnumerable<TemplateViewModel> TypePartEditor(ContentTypePartDefinition definition);
@@ -33,7 +33,7 @@ namespace Coevery.Entities.Settings {
 
         public virtual void UpdateFieldSettings(ContentPartFieldDefinitionBuilder builder, SettingsDictionary settingsDictionary) {}
 
-        public virtual void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {}
+        public virtual void FieldDeleted(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {}
 
         public virtual IEnumerable<TemplateViewModel> TypeEditor(ContentTypeDefinition definition) {
             return Enumerable.Empty<TemplateViewModel>();

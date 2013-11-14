@@ -16,41 +16,45 @@
         <div class="span12">
             <div class="form-horizontal no-border">
                 @using (Html.BeginFormAntiForgeryPost(Html.ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post,
-                                                              new { @class = "edit-mode", id = "myForm" }))
-                {
+                                                              new { @class = "edit-mode", id = "myForm" })) {
                     @Html.ValidationSummary()
                     <fieldset>
                         <legend>General Information</legend>
                         <section class="data-row control-group">
-                            <label class="control-label" for="inputName">Name</label>
-                            <div class="controls">
-                                <span class="control-label" style="text-align: left;">@T(Model.Name)</span>
+                            <div class="span6">
+                                <label class="control-label required" for="DisplayName">@T("Display Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12", required = "" })
+                                </div>
+                                <meta itemprop="DisplayName" content="@Model.DisplayName" />
                             </div>
-                            <meta itemprop="Id" content="@Model.Name" />
-                            @Html.HiddenFor(m => m.Name)
+                            <div class="span6">
+                                <label class="control-label" for="inputName">Name</label>
+                                <div class="controls">
+                                    <span class="control-label" style="text-align: left;">@T(Model.Name)</span>
+                                </div>
+                                <meta itemprop="Id" content="@Model.Name" />
+                                @Html.HiddenFor(m => m.Name)
+                            </div>
                         </section>
                         <section class="data-row control-group">
-                            <label class="control-label required" for="DisplayName">Display Name</label>
-                            <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "span12" ,required=""})
+
+                            <div class="span6">
+                                <label class="control-label required">@T("Plural Display Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new { @class = "span12 required" })
+                                    <span class="help-block">@T("Display name of the type's collection.")</span>
+                                </div>
                             </div>
-                            <meta itemprop="DisplayName" content="@Model.DisplayName" />
+                            <div class="span6">
+                                <label class="control-label required">@T("Plural Name")</label>
+                                <div class="controls errortips">
+                                    @Html.TextBoxFor(m => m.Settings["CollectionName"], new { @class = "span12 required safename" })
+                                    <span class="help-block">@T("Technical name of the type's collection.")</span>
+                                </div>
+                            </div>
                         </section>
 
-                        <section class="data-row control-group">
-                            <label class="control-label required" >@T("Plural Name")</label>
-                            <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.Settings["CollectionName"], new { @class = "span12 required safename" })
-                                <span class="help-block">@T("Technical name of the type's collection.")</span>
-                            </div>
-                        </section>
-                        <section class="data-row control-group">
-                            <label class="control-label required" >@T("Plural Display Name")</label>
-                            <div class="controls errortips">
-                                @Html.TextBoxFor(m => m.Settings["CollectionDisplayName"], new { @class = "span12 required" })
-                                <span class="help-block">@T("Display name of the type's collection.")</span>
-                            </div>
-                        </section>
                     </fieldset>
                 }
             </div>

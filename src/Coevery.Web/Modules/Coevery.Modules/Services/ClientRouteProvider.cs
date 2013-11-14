@@ -22,22 +22,18 @@ namespace Coevery.Modules.Services
                 });
 
             builder.Describe("Modules.Installed")
-             .Configure(descriptor =>
-             {
+             .Configure(descriptor => {
                  descriptor.Url = "/Modules/Installed";
              })
-             .View(view =>
-             {
+             .View(view => {
                  view.Name = "@";
              });
 
             builder.Describe("Modules.Recipes")
-             .Configure(descriptor =>
-             {
+             .Configure(descriptor => {
                  descriptor.Url = "/Modules/Recipes";
              })
-             .View(view =>
-             {
+             .View(view => {
                  view.Name = "@";
              });
         }

@@ -179,13 +179,15 @@ namespace Coevery.Entities.Controllers {
                 return HttpNotFound();
             }
 
-            return View(new EntityDetailViewModel {
+            var viewModel = new EntityDetailViewModel {
                 Id = entity.Id,
                 Name = entity.Name,
                 DisplayName = entity.DisplayName,
                 HasPublished = entity.HasPublished(),
-                PublishTip = "Works when the entity has been published."
-            });
+                Settings = entity.EntitySetting
+            };
+
+            return View(viewModel);
         }
 
         #endregion

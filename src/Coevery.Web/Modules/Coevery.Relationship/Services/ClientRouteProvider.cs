@@ -64,9 +64,6 @@ namespace Coevery.Relationship.Services {
                     view.Controller = "EditManyToManyCtrl";
                     view.AddDependencies(ToAbsoluteScriptUrl, new [] {"controllers/editmanytomanycontroller"});
                 });
-
-            builder.Describe("Root.Menu.View")
-                .View(view => view.AddDependencies(ToAbsoluteScriptUrl, "controllers/relatedentitylistcontroller"));
         }
     }
 
@@ -77,7 +74,7 @@ namespace Coevery.Relationship.Services {
         }
 
         public override void Discover(ClientRouteTableBuilder builder) {
-            builder.Describe("View")
+            builder.Describe("Root.Menu.View")
                 .View(view => view.AddDependencies(ToAbsoluteScriptUrl, "controllers/relatedentitylistcontroller"));
         }
     }

@@ -21,7 +21,7 @@
     Script.Include("directives/filter-directive.js");
     Script.Include("directives/jqGrid-directive.js");
     Script.Include("directives/picklist-directive.js");
-    Script.Include("directives/wizzard-directive.js");
+    Script.Include("directives/wizard-directive.js");
     Script.Include("directives/dependency-directive.js");
     Script.Include("controllers/agGridCtrl.js");
     Script.Require("ui_bootstrap");
@@ -29,7 +29,7 @@
     Script.Require("promisetracker");
     Script.Include("directives/cobusy-directive.js");
 }
-<div data-loading-indicator id="loading">Loading...</div>
+<div data-loading-indicator id="loading">@T("Loading...")</div>
 <section class="ng-cloak" data-ui-view>
 </section>
 @using (Script.Foot()) {

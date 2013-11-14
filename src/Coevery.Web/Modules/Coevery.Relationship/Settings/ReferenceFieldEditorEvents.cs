@@ -82,7 +82,7 @@ namespace Coevery.Relationship.Settings {
             }
         }
 
-        public override void CustomDeleteAction(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {
+        public override void FieldDeleted(string fieldType, string fieldName, SettingsDictionary settingsDictionary) {
             if (fieldType != "ReferenceField") {
                 return;
             }

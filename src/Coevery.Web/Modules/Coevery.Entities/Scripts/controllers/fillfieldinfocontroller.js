@@ -25,13 +25,13 @@ define(['core/app/detourService'], function(detour) {
                     return true;
                 };
 
-                $scope.$on('wizzardGoBack', function(event, context) {
+                $scope.$on('wizardGoBack', function(event, context) {
                     context.stateParams = {
                         Id: entityName
                     };
                 });
 
-                $scope.$on('wizzardGoNext', function(event, context) {
+                $scope.$on('wizardGoNext', function(event, context) {
                     if (!checkValid($("#field-info-form"))) {
                         context.cancel = true;
                         return;
