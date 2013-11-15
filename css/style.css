@@ -90,7 +90,7 @@ header h2{
     float: left;
     display: block;
     width: 64px;
-    height: 64px;
+    height: 42px;
     margin-left: 12px;
     background:url(../images/contact_sprite.png) no-repeat 2px -154px;
 }
