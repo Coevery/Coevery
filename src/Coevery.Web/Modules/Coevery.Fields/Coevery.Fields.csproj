@@ -78,8 +78,16 @@
     <Compile Include="Services\DependencyExtension.cs" />
     <Compile Include="Services\IFieldDependencyService.cs" />
     <Compile Include="Services\FieldDependencyService.cs" />
-    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
-    <Content Include="Styles\bootstrap-datetimepicker.min.css" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js">
+      <DependentUpon>bootstrap-datetimepicker.js</DependentUpon>
+    </Content>
+    <Content Include="Styles\bootstrap-datetimepicker.css">
+      <DependentUpon>bootstrap-datetimepicker.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\bootstrap-datetimepicker.min.css">
+      <DependentUpon>bootstrap-datetimepicker.less</DependentUpon>
+    </Content>
     <Content Include="Styles\media-gallery-admin.css" />
     <Content Include="Styles\datetime.css" />
     <Content Include="Styles\Images\move.gif" />
@@ -280,10 +288,21 @@
     <Content Include="Views\DefinitionTemplates\MultilineTextFieldSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\DateTimePickerLocalization.cshtml" />
+    <Content Include="Views\BootstrapDatePickerLocalization.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\BootstrapDatePickerLocalization.cshtml" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js.map">
+      <DependentUpon>bootstrap-datetimepicker.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\bootstrap-datetimepicker.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\mixins.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
