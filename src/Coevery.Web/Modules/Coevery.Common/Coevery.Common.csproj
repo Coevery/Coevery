@@ -113,6 +113,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CoreShapes.cs" />
+    <Compile Include="Drivers\LayoutStringDriver.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
     <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
@@ -262,6 +263,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LayoutString.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LayoutString.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -84,7 +84,6 @@ namespace Coevery.Common.Controllers {
             }
 
             dynamic model = Services.ContentManager.BuildEditor(contentItem);
-            model.Layout = GetLayout(contentItem);
 
             // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
             return View((object) model);
@@ -155,7 +154,7 @@ namespace Coevery.Common.Controllers {
             }
 
             dynamic model = Services.ContentManager.BuildEditor(contentItem);
-            model.Layout = GetLayout(contentItem);
+     
             // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
             return View((object) model);
         }
@@ -177,7 +176,6 @@ namespace Coevery.Common.Controllers {
             }
 
             dynamic model = Services.ContentManager.BuildDisplay(contentItem);
-            model.Layout = GetLayout(contentItem);
             return View(model);
         }
 
@@ -244,14 +242,6 @@ namespace Coevery.Common.Controllers {
 
             // return this.RedirectLocal(returnUrl, () => RedirectToAction("Edit", new RouteValueDictionary { { "Id", contentItem.Id } }));
             return new HttpStatusCodeResult(HttpStatusCode.OK);
-        }
-
-        private string GetLayout(ContentItem contentItem) {
-            var contentTypeDefinition = contentItem.TypeDefinition;
-            string layout = contentTypeDefinition.Settings.ContainsKey("Layout")
-                ? contentTypeDefinition.Settings["Layout"]
-                : null;
-            return layout;
         }
 
         bool IUpdateModel.TryUpdateModel<TModel>(TModel model, string prefix, string[] includeProperties, string[] excludeProperties) {
