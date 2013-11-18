@@ -7,6 +7,7 @@ using System.Net;
 using System.Web.Mvc;
 using Coevery.Common.Extensions;
 using Coevery.Common.Models;
+using Coevery.Core.Common.ViewModels;
 using Coevery.Perspectives.Models;
 using Coevery.Perspectives.Services;
 using Coevery.Perspectives.ViewModels;
@@ -51,7 +52,11 @@ namespace Coevery.Perspectives.Controllers {
         public ILogger Logger { get; set; }
 
         public ActionResult List(string id) {
-            return View();
+            return View(new GridRowSortSettingViewModel {
+                Url = "api/Perspectives/Perspective/PostReorderInfo",
+                Method = "Post",
+                Handler = string.Empty
+            });
         }
 
 
@@ -100,11 +105,14 @@ namespace Coevery.Perspectives.Controllers {
 
         public ActionResult Detail(int id) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
-            PerspectiveViewModel model = new PerspectiveViewModel();
+            var model = new PerspectiveViewModel();
             model.Id = contentItem.As<PerspectivePart>().Id;
             model.Title = contentItem.As<PerspectivePart>().Title;
             model.Description = contentItem.As<PerspectivePart>().Description;
             model.Position = contentItem.As<PerspectivePart>().Position;
+            model.RowSortSetting.Url = "api/Perspectives/Navigation/PostReorderInfo";
+            model.RowSortSetting.Method = "Post";
+            model.RowSortSetting.Handler = "generatePosition";
             return View(model);
         }
 
@@ -192,47 +200,6 @@ namespace Coevery.Perspectives.Controllers {
             }
             return Json(new {id = moduleMenuPart.ContentItem.Id});
         }
-
-        [HttpPost, ActionName("Reordering")]
-        public ActionResult Reordering(string ids) {
-            try {
-                var perspectiveIds = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                var pos = 0;
-                foreach (var perspectiveId in perspectiveIds)
-                {
-                    var contentItem = _contentManager.Get(Convert.ToInt32(perspectiveId), VersionOptions.DraftRequired);
-                    contentItem.As<PerspectivePart>().Position = pos++;
-                    _contentManager.Publish(contentItem);
-                }
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
-            }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, ex.Message);
-            }
-        }
-
-
-        [HttpPost, ActionName("ReorderingNavigationItem")]
-        public ActionResult ReorderingNavigationItem(string ids)
-        {
-            try
-            {
-                var navigationItemIds = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                var pos = 1;
-                foreach (var navigationItemId in navigationItemIds)
-                {
-                    var contentItem = _contentManager.Get(Convert.ToInt32(navigationItemId), VersionOptions.DraftRequired);
-                    contentItem.As<MenuPart>().MenuPosition = pos.ToString();
-                    _contentManager.Publish(contentItem);
-                    pos++;
-                }
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
-            }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.ExpectationFailed, ex.Message);
-            }
-        }
+    
     }
 }

@@ -76,6 +76,13 @@ namespace Coevery.jQuery {
             // jquer Color Box
             manifest.DefineScript("jQueryColorBox").SetUrl("jquery.colorbox.min.js", "jquery.colorbox.js").SetVersion("1.4.10").SetDependencies("jQuery");
             manifest.DefineStyle("jQueryColorBox").SetUrl("colorbox.css").SetVersion("1.4.10");
+
+            // jqGrid
+            manifest.DefineScript("jqGrid").SetUrl("jquery.jqGrid.min.js", "jquery.jqGrid.src.js").SetDependencies("jQuery");
+            manifest.DefineScript("GridPagination").SetUrl("jquery.simplePagination.js").SetDependencies("jQuery");
+            manifest.DefineScript("jqGrid_Localization").SetUrl("i18n/grid.locale-en.js").SetDependencies("jQuery");
+            manifest.DefineStyle("jqGrid").SetUrl("ui.jqgrid.css");
+            manifest.DefineStyle("NgGridStyle").SetUrl("grid.css");
         }
     }
 }

@@ -15,7 +15,7 @@
     gridz = angular.module("coevery.grid", []);
 
     gridz.directive("agGrid", [
-        "$rootScope", "$compile", "logger","$http", function ($rootScope, $compile, logger,$http) {
+        "$rootScope", "$compile", "logger", "$http", function ($rootScope, $compile, logger, $http) {
             var link;
             link = function ($scope, $element, attrs, gridCtrl) {
                 var alias, initializeGrid, loadGrid;
@@ -25,10 +25,12 @@
                     $scope[alias] = gridCtrl;
                 }
                 initializeGrid = function (gridOptions) {
-                    var $grid, isInitial=true;
+                    var $grid, isInitial = true;
                     //logger.info("Initializing the grid");
                     $grid = $element.find("table.gridz");
-                    gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+                    if (!gridOptions.treeGrid) {
+                        gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+                    }
 
                     gridOptions.loadBeforeSend = function (xhr, settings) {
                         if (isInitial) {
@@ -43,30 +45,91 @@
 
                         var width, pager;
                         width = $element.parent().width() - 1;
-                        pager = $(gridOptions.pager + '_center');
-                        if (pager.find(".custom-pager").length === 0) {
-                            var pagerOption = {
-                                items: $grid.getGridParam("records"),
-                                itemsOnPage: $grid.getGridParam("rowNum"),
-                                currentPage: $grid.getGridParam("page"),
-                                onPageClick: function(pageNumber, event) {
-                                    if (!event) {
-                                        return;
-                                    }
-                                    event.preventDefault();
-                                    $grid.setGridParam({
-                                        page: pageNumber
-                                    });
-                                    $grid.trigger("reloadGrid");
-                                },
-                                //cssStyle: 'compact-theme'
-                            };
-                            if (width < 560) {
-                                pagerOption.displayedPages = 3;
+                        if (!gridOptions.treeGrid) {
+                            pager = $(gridOptions.pager + '_center');
+                            if (pager.find(".custom-pager").length === 0) {
+                                var pagerOption = {
+                                    items: $grid.getGridParam("records"),
+                                    itemsOnPage: $grid.getGridParam("rowNum"),
+                                    currentPage: $grid.getGridParam("page"),
+                                    onPageClick: function (pageNumber, event) {
+                                        if (!event) {
+                                            return;
+                                        }
+                                        event.preventDefault();
+                                        $grid.setGridParam({
+                                            page: pageNumber
+                                        });
+                                        $grid.trigger("reloadGrid");
+                                    },
+                                    //cssStyle: 'compact-theme'
+                                };
+                                if (width < 560) {
+                                    pagerOption.displayedPages = 3;
+                                }
+                                pager.append("<section class='custom-pager pagination'></section>");
+                                pager.find("section").pagination(pagerOption);
                             }
-                            pager.append("<section class='custom-pager pagination'></section>");
-                            pager.find("section").pagination(pagerOption);
                         }
+                        //Set row sortable
+                        if (attrs.agGridDrag) {
+                            var settings = JSON.parse(attrs.agGridDrag);
+                            $.cookie = function () {
+                                return null;
+                            };
+                            if (!gridOptions.treeGrid) {
+                                $grid.jqGrid('sortableRows', {
+                                    update: function (event, ui) {
+                                        var postData = [];
+                                        if (!settings.Handler) {
+                                            gridCtrl.getParam("data").forEach(function (item, index) {
+                                                postData.push(item._id_);
+                                            });
+                                        }
+                                        //$grid.find("tr[id]").each(function (i, item) {
+                                        //    postData.ids.push($(item).attr("id"));
+                                        //});
+                                        $http({
+                                            url: settings.Url,
+                                            method: settings.Method,
+                                            data: postData
+                                        }).then(function () {
+                                            logger.success('Reordering succeeded.');
+                                        }, function (response) {
+                                            logger.error('Reordering Failed');
+                                        });
+                                    }
+                                });
+                            } else {
+                                $grid.tableDrag({
+                                    draggableClass: 'jqgrow',
+                                    idAttr: gridOptions.rowIdName,
+                                });
+                                $grid.on("tabledrag:dragrow", function (event, param) {
+                                });
+                                $grid.on("tabledrag:droprow", function (event, param) {
+                                    var xindent = param.currentMouseCoords.x - param.dragObject.initMouseCoords.x;
+                                    if (Math.abs(xindent) > gridOptions.dragSensitivity) {
+                                        if (xindent > 0) {
+                                            var record = $grid.getLocalRow(param.rowObject.rowId);
+                                            record.level++;
+                                            var parent = $(param.rowObject.element).prev().attr("id");
+                                            record.parent = parent;
+                                            record.Description = "fgff";
+                                            $grid.setTreeRow(param.rowObject.rowId, record);
+                                            var parentRecord = $grid.getLocalRow(parent);
+                                            parentRecord.isLeaf = false;
+                                            $grid.setTreeRow(parent, parentRecord);
+                                        } else {
+                                            
+                                        }
+                                    }
+                                });
+
+                                $element.find("tbody:first").disableSelection();
+                            }
+                        }
+
                         $grid.setGridWidth(width);
                         if (isInitial) {
                             $element.show();
@@ -104,27 +167,6 @@
 
                     $grid.jqGrid(gridOptions);
 
-                    if (attrs.agGridDrag != undefined) {
-                        $grid.jqGrid('sortableRows', {
-                            update: function () {
-                                var form = $("form[name=myForm]");
-                                var postData = form.serialize() + "&ids=";
-                                $grid.find("tr[id]").each(function (i, item) {
-                                    postData += $(item).attr("id")+",";
-                                });
-                                $http({
-                                    url: form.attr('action'),
-                                    method: form.attr('method'),
-                                    data: postData,
-                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
-                                }).then(function() {
-                                    logger.success('Reordering succeeded.');
-                                }, function(response) {
-                                    logger.error('Reordering Failed');
-                                });
-                            }
-                        });
-                    }
                     /*
                     adds listener to resize grid to parent container when window is resized.
                     This will work for reponsive and fluid layouts
@@ -211,16 +253,3 @@
     });
 
 })();
-
-/*Abandoned Code
-            $grid.on("click.view-action", ".view-action", function(event) {
-                event.preventDefault();
-                var id;
-                id = $(this).attr("data-id");
-                $scope.$on("ViewAction", function(subevent, args) {
-                    subevent.preventDefault();
-                    $scope.view(args);
-                });
-                $rootScope.$broadcast("ViewAction", id);
-            });
-*/

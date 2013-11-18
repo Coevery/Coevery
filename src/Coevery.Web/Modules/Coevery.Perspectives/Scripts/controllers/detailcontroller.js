@@ -5,7 +5,7 @@ define(['core/app/detourService',
             detour.registerController([
       'PerspectiveDetailCtrl',
       ['$rootScope', '$timeout', '$scope', 'logger', '$state', '$stateParams',
-          '$resource', 
+          '$resource',
           'perspectiveDataService',
           'navigationDataService',
       function ($rootScope, $timeout, $scope, logger, $state, $stateParams, $resource, perspectiveDataService, navigationDataService) {
@@ -31,31 +31,28 @@ define(['core/app/detourService',
               var result = i18n.t(str);
               return result;
           };
-          
-          var navigationColumnDefs = [
-              { name: 'Id', label: t('Id'), hidden: true },
-              {
-                  name: 'DisplayName', label: t('DisplayName'), 
+
+          var navigationColumnDefs = [{
+                  name: 'Id', label: t('Id'), hidden: true
+              }, {
+                  name: 'DisplayName',
+                  label: t('DisplayName'),
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
-              },
-              {
-                  name: 'Description', label: t('Description'),
-                  formatter: $rootScope.cellLinkTemplate,
-                  formatoptions: { hasView: false }
-              }];
+              }, { name: 'Description', label: t('Description') }];
 
           var gridOptions = {
               url: "api/perspectives/Navigation?id=" + perpectiveId,
               colModel: navigationColumnDefs,
-              ExpandColumn: "DisplayName",
-              treeGrid: true,
-              treeGridModel: "adjacency",
-              tree_root_level: 1,
-              ExpandColClick: false
+              //ExpandColumn: "DisplayName",
+              //treeGrid: true,
+              //treeGridModel: "adjacency",
+              //tree_root_level: 1,
+              //ExpandColClick: false
           };
           angular.extend(gridOptions, $rootScope.defaultGridOptions);
           gridOptions.multiselect = false;
+          gridOptions.sortable = false;
           $scope.gridOptions = gridOptions;
 
           $scope.addNavigationItem = function () {
@@ -63,7 +60,7 @@ define(['core/app/detourService',
           };
 
           $scope.edit = function (navigationId) {
-              $state.transitionTo('EditNavigationItem', {Id:perpectiveId, NId: navigationId });
+              $state.transitionTo('EditNavigationItem', { Id: perpectiveId, NId: navigationId });
           };
 
           $scope.view = $scope.edit;
@@ -71,7 +68,7 @@ define(['core/app/detourService',
           $scope.editPerspective = function () {
               $state.transitionTo('PerspectiveEdit', { Id: perpectiveId });
           };
-          
+
 
           $scope.delete = function (navigationId) {
               perspectiveDataService.delete({ Id: navigationId }, function () {
@@ -98,5 +95,5 @@ define(['core/app/detourService',
               }).trigger('reloadGrid');
           };
       }]
-    ]);
-});
+            ]);
+        });

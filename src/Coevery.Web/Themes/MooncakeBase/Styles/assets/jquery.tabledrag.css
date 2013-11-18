@@ -1,0 +1,50 @@
+/**
+ * @file
+ * Plugin styles.
+ * Copied verbatim from Drupal core, system module.
+ * @license GPL V2 
+ */
+
+body.drag {
+  cursor: move;
+}
+.draggable a.tabledrag-handle {
+  cursor: move;
+  float: left; /* LTR */
+  height: 1.7em;
+  margin-left: -1em; /* LTR */
+  overflow: hidden;
+  text-decoration: none;
+}
+a.tabledrag-handle:hover {
+  text-decoration: none;
+}
+a.tabledrag-handle .handle {
+  background: url(draggable.png) no-repeat 6px 9px;
+  height: 13px;
+  margin: -0.4em 0.5em; /* LTR */
+  padding: 0.42em 0.5em; /* LTR */
+  width: 13px;
+}
+a.tabledrag-handle-hover .handle {
+  background-position: 6px -11px;
+}
+div.indentation {
+  float: left; /* LTR */
+  height: 1.7em;
+  margin: -0.4em 0.2em -0.4em -0.4em; /* LTR */
+  padding: 0.42em 0 0.42em 0.6em; /* LTR */
+  width: 20px;
+}
+div.tree-child {
+  background: url(tree.png) no-repeat 11px center; /* LTR */
+}
+div.tree-child-last {
+  background: url(tree-bottom.png) no-repeat 11px center; /* LTR */
+}
+div.tree-child-horizontal {
+  background: url(tree.png) no-repeat -11px center;
+}
+.tabledrag-toggle-weight-wrapper {
+  text-align: right; /* LTR */
+}

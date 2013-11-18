@@ -12,10 +12,6 @@
     Style.Include("picklist.css");
     Style.Include("plugins/select2/select2.css");
     Style.Include("plugins/bootstrap-select/bootstrap-select.min.css");
-    /*jqGrid css files
-    ------------------------------*/
-    Style.Include("plugins/ui.jqgrid.css");
-    Style.Include("grid.css");
 
     Script.Require("require");
     Script.Require("jQuery");
@@ -32,10 +28,15 @@
     Script.Include("plugins/bootstrap-select/bootstrap-select.min.js");
     /*jqGrid js files
     ------------------------------*/
-    Script.Include("plugins/jquery.jqGrid.min.js");
-    Script.Include("plugins/jquery.jqGrid.src.js");
-    Script.Include("plugins/i18n/grid.locale-en.js");
-    Script.Include("js/jquery.simplePagination.js");
+    Script.Require("jqGrid");
+    Script.Require("jqGrid_Localization");
+    Script.Require("GridPagination");
+    Script.Include("plugins/jqGrid.tabledrag.js");
+    /*jqGrid css files
+   ------------------------------*/
+    Style.Require("jqGrid");
+    Style.Require("NgGridStyle");
+    Style.Include("assets/jquery.tabledrag.css");
 
     Style.Require("Bootstrap_Datetimepicker");
     Script.Require("Bootstrap_Datetimepicker");

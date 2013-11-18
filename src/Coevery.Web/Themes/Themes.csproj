@@ -80,7 +80,6 @@
     <Content Include="MooncakeBase\Scripts\js\demo\wysiwyg.js" />
     <Content Include="MooncakeBase\Scripts\js\docs.js" />
     <Content Include="MooncakeBase\Scripts\js\dropdown.js" />
-    <Content Include="MooncakeBase\Scripts\js\jquery.simplePagination.js" />
     <Content Include="MooncakeBase\Scripts\js\libs\bootstrap.js" />
     <Content Include="MooncakeBase\Scripts\js\libs\bootstrap.min.js" />
     <Content Include="MooncakeBase\Scripts\js\libs\excanvas.js" />
@@ -573,13 +572,17 @@
     <Content Include="MooncakeBase\Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
     <Content Include="MooncakeBase\Scripts\plugins\bootstrap-select\bootstrap-select.js" />
     <Content Include="MooncakeBase\Scripts\plugins\bootstrap-select\bootstrap-select.min.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\i18n\grid.locale-en.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\jquery.jqGrid.min.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\jquery.jqGrid.src.js" />
+    <Content Include="MooncakeBase\Scripts\plugins\jqGrid.tabledrag.js" />
+    <Content Include="MooncakeBase\Scripts\plugins\jqGrid.tabledrag_pending.js" />
+    <Content Include="MooncakeBase\Scripts\plugins\jQuery.tabledrag.js" />
     <Content Include="MooncakeBase\Scripts\plugins\select2\select2.js" />
     <Content Include="MooncakeBase\Scripts\plugins\select2\select2.min.js" />
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.js" />
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.min.js" />
+    <Content Include="MooncakeBase\Styles\assets\draggable.png" />
+    <Content Include="MooncakeBase\Styles\assets\jquery.tabledrag.css" />
+    <Content Include="MooncakeBase\Styles\assets\tree-bottom.png" />
+    <Content Include="MooncakeBase\Styles\assets\tree.png" />
     <Content Include="MooncakeBase\Styles\bootstrap\bootstrap-responsive.css" />
     <Content Include="MooncakeBase\Styles\bootstrap\bootstrap-responsive.min.css" />
     <Content Include="MooncakeBase\Styles\bootstrap\bootstrap.css" />
@@ -601,7 +604,6 @@
     <Content Include="MooncakeBase\Styles\fonts\icomoon\license.txt" />
     <Content Include="MooncakeBase\Styles\fonts\icomoon\style.css" />
     <Content Include="MooncakeBase\Styles\form.css" />
-    <Content Include="MooncakeBase\Styles\grid.css" />
     <Content Include="MooncakeBase\Styles\icons.css" />
     <Content Include="MooncakeBase\Styles\images\%402x\layout\content-bg-plain-gt1200.png" />
     <Content Include="MooncakeBase\Styles\images\%402x\layout\content-bg-plain.png" />
@@ -1953,7 +1955,6 @@
     <Content Include="MooncakeBase\Styles\plugins\select2\select2.png" />
     <Content Include="MooncakeBase\Styles\plugins\select2\select2x2.png" />
     <Content Include="MooncakeBase\Styles\plugins\select2\spinner.gif" />
-    <Content Include="MooncakeBase\Styles\plugins\ui.jqgrid.css" />
     <Content Include="MooncakeBase\Styles\site-systemAdmin.css" />
     <Content Include="MooncakeBase\Styles\site.css" />
     <Content Include="MooncakeBase\Styles\table.css" />
@@ -2134,6 +2135,7 @@
   <ItemGroup>
     <Content Include="Mooncake\Scripts\Web.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -18,9 +18,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
                   formatoptions: { hasView: true }
               },
               {
-                  name: 'Description', label: t('Description'),
-                  formatter: $rootScope.cellLinkTemplate,
-                  formatoptions: { hasView: false }
+                  name: 'Description', label: t('Description')
               }];
 
           $scope.gridOptions = {

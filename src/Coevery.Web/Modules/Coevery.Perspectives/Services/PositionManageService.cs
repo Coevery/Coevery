@@ -8,14 +8,14 @@ using Coevery.Perspectives.Models;
 
 namespace Coevery.Perspectives.Services {
     public class PositionTreeModel {
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
         public string ParentPosition { get; set; }
         public int Level { get; set; }
         public bool IsLeaf { get; set; }
         public bool Expanded { get; set; }
     }
     public interface IPositionManageService : IDependency {
-
+        PositionTreeModel ParseMenuPostion(string position, int perspectiveId);
     }
     public class PositionManageService : IPositionManageService {
         private readonly IContentManager _contentManager;
@@ -42,15 +42,13 @@ namespace Coevery.Perspectives.Services {
             }
             var parentMenu = GetMenuItemFromPosition(parentPosition);
             return new PositionTreeModel {
-                ParentId = parentMenu.Id,
+                ParentId = parentMenu != null ? parentMenu.Id : (int?)null,
                 ParentPosition = parentPosition,
                 Level = currentLevel,
-                IsLeaf = currentLevel == perspective.CurrentLevel,
+                IsLeaf = perspective.CurrentLevel<=1 || currentLevel == perspective.CurrentLevel,
                 Expanded = true,
             };
         }
-
-
 
         private MenuPart GetMenuItemFromPosition(string position) {
             if (string.IsNullOrWhiteSpace(position)) {

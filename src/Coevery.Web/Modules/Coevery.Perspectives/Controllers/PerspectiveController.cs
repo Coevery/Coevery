@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using Coevery.ContentManagement;
 using Coevery.Core.Navigation.Models;
@@ -66,6 +68,23 @@ namespace Coevery.Perspectives.Controllers {
                 select new {Id = menuEntry.ContentItem.Id, DisplayName = menuEntry.Text,};
             var queryList = query.ToList();
             return queryList;
+        }
+
+        public object PostReorderInfo([FromBody]IEnumerable<int> ids) {
+            try {
+                var pos = 0;
+                foreach (var perspectiveId in ids) {
+                    var contentItem = _contentManager.Get<PerspectivePart>(perspectiveId);
+                    if (contentItem == null) {
+                        throw new ArgumentNullException();
+                    }
+                    contentItem.Position = pos++;
+                }
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex) {
+                return Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed,ex.Message);
+            }
         }
 
         public void Delete(int id) {
