@@ -1,6 +1,4 @@
 ﻿@using Coevery.Core.Shapes.Localization
-@using System.Globalization
-
 @{
     
     // prevent the shape from being rendered twice in a page
@@ -10,16 +8,12 @@
 
     WorkContext.SetState("BootstrapDatePickerLocalization", new object());
 
-    var cultureInfo = CultureInfo.GetCultureInfo(WorkContext.CurrentCulture);
-
     var dateTimeLocalization = WorkContext.Resolve<IDateTimeLocalization>();
     var monthNames = FormatJsList(dateTimeLocalization.MonthNames.Text);
     var monthNamesShort = FormatJsList(dateTimeLocalization.MonthNamesShort.Text);
     var dayNames = FormatJsList(dateTimeLocalization.DayNames.Text);
     var dayNamesShort = FormatJsList(dateTimeLocalization.DayNamesShort.Text);
     var dayNamesMin = FormatJsList(dateTimeLocalization.DayNamesMin.Text);
-
-    var dateFormat = dateTimeLocalization.ShortDateFormat.Text;
 }
 
 @functions {
@@ -31,18 +25,17 @@
 }
 <script type="text/javascript">
     //<![CDATA[
-    $(function () {
-        $.fn.datetimepicker.dates['localization'] = {
+    (function() {
+        $.fn.datetimepicker.dates[''] = {
             days: [@Html.Raw(dayNames)],
             daysShort: [@Html.Raw(dayNamesShort)],
             daysMin: [@Html.Raw(dayNamesMin)],
             months: [@Html.Raw(monthNames)],
             monthsShort: [@Html.Raw(monthNamesShort)],
         };
-        $.fn.datetimepicker.defaults.language = 'localization';
-        $.fn.datetimepicker.defaults.format_date = '@HttpUtility.JavaScriptStringEncode(dateFormat)';
-        $.fn.datetimepicker.defaults.weekStart = @dateTimeLocalization.FirstDay;
-        $.fn.datetimepicker.defaults.pickTime_date = false;
-    })
+        debugger;
+        alert("sss");
+        $.fn.datetimepicker.defaults.language = '';
+    })();
     //]]>
 </script>

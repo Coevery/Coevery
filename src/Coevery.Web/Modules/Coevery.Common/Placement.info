@@ -3,4 +3,6 @@
   <Match DisplayType="Detail" ContentType="ProjectionPage">
     <Place Parts_Title="-" />
   </Match>
+  <Place LayoutString="Content:1" />
+  <Place LayoutString_Edit="Content:1" />
 </Placement>
