@@ -70,8 +70,7 @@ namespace Coevery.Entities.Services {
         #region Entity Related
 
         public IEnumerable<EntityMetadataPart> GetRawEntities() {
-            return Services.ContentManager.Query<EntityMetadataPart, EntityMetadataRecord>()
-                .ForVersion(VersionOptions.Latest).List();
+            return Services.ContentManager.Query<EntityMetadataPart, EntityMetadataRecord>().ForVersion(VersionOptions.Latest).OrderBy(d => d.Name).List();
         }
 
         //todo: use ModelState to check error in one function

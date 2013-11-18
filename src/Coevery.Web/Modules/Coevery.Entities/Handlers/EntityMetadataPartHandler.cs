@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Linq;
 using Coevery.Common.Services;
 using Coevery.Common.Extensions;
 using Coevery.ContentManagement.MetaData.Models;
+using Coevery.Data.Migration.Schema;
 using Coevery.Entities.Events;
 using Coevery.Entities.Models;
 using Coevery.ContentManagement;
@@ -90,8 +92,15 @@ namespace Coevery.Entities.Handlers {
 
             _schemaUpdateService.CreateTable(part.Name, context => {
                 foreach (var fieldMetadataRecord in part.FieldMetadataRecords) {
+                    var settings = _settingService.ParseSetting(fieldMetadataRecord.Settings);
+                    string lengthStr;
+                    Action<CreateColumnCommand> columnAction = null;
+                    if (settings.TryGetValue("TextFieldSettings.MaxLength", out lengthStr))
+                    {
+                        columnAction = x => x.WithLength(Convert.ToInt32(lengthStr));
+                    }
                     context.FieldColumn(fieldMetadataRecord.Name,
-                        fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
+                        fieldMetadataRecord.ContentFieldDefinitionRecord.Name, columnAction);
                 }
             });
         }
@@ -122,7 +131,13 @@ namespace Coevery.Entities.Handlers {
                     needUpdateFields.Add(fieldMetadataRecord);
                 } else {
                     AddField(entity.Name, fieldMetadataRecord);
-                    _schemaUpdateService.CreateColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
+                    var settings = _settingService.ParseSetting(fieldMetadataRecord.Settings);
+                    string lengthStr;
+                    var length = 0;
+                    if (settings.TryGetValue("TextFieldSettings.MaxLength", out lengthStr)) {
+                        length = Convert.ToInt32(lengthStr);
+                    }
+                    _schemaUpdateService.CreateColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
                 }
             }
 
@@ -135,6 +150,12 @@ namespace Coevery.Entities.Handlers {
                         _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
                     }));
                 record.Settings = _settingService.CompileSetting(settings);
+                //
+                string lengthStr;
+                if (settings.TryGetValue("TextFieldSettings.MaxLength", out lengthStr)) {
+                    var length = Convert.ToInt32(lengthStr);
+                    _schemaUpdateService.AlterColumn(entity.Name, fieldMetadataRecord.Name, length);
+                }
             }
             _entityEvents.OnUpdating(entity.Name);
         }
