@@ -26,12 +26,10 @@
                                                           FormMethod.Post, new { @class = "form-horizontal", @name = "myForm" })) {
                     @Html.ValidationSummary()
                     // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
-
-
-                    Output.Write(Model.Layout);
+                 
+                    @Display(Model.Content)
                 }
             </section>
         </div>
     </section>
 </section>
-@Display(Model)

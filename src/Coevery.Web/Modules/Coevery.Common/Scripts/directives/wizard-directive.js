@@ -1,9 +1,9 @@
-angular.module('coevery.wizzard', [])
-    .directive('coWizzard', function($compile, $dialog, $state) {
+angular.module('coevery.wizard', [])
+    .directive('coWizard', function($compile, $dialog, $state) {
         return {
             template: '<div class="hide" ui-view></div>',
             replace: true,
-            scope: { options: '=wizzardOptions' },
+            scope: { options: '=wizardOptions' },
             link: function(scope, element, attrs) {
                 var template = $('<div class="modal-header"><button type="button" class="close">&times;</button><h3></h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn">Back</button><button class="btn">Next</button><button class="btn btn-primary">Save</button></div>'),
                     templateContent = template.filter('.modal-body'),
@@ -43,7 +43,7 @@ angular.module('coevery.wizzard', [])
 
                 scope.$watch('dialog._open', function(newValue, oldValue) {
                     if (newValue == false && oldValue == true) {
-                        closeWizzard();
+                        closeWizard();
                     }
                 });
 
@@ -54,7 +54,7 @@ angular.module('coevery.wizzard', [])
                 }
 
                 function bindTemplateEvents() {
-                    closeBtn.click(closeWizzard);
+                    closeBtn.click(closeWizard);
                     backBtn.click(handlePrevious);
                     nextBtn.click(handleNext);
                     saveBtn.click(handleSave);
@@ -65,7 +65,7 @@ angular.module('coevery.wizzard', [])
                     templateContent.append(element.children());
                 }
 
-                function closeWizzard() {
+                function closeWizard() {
                     closeFunc();
                     scope.dialog.close();
                     scope.dialog = null;
@@ -81,7 +81,7 @@ angular.module('coevery.wizzard', [])
                 function handlePrevious() {
                     if (index > 0) {
                         var context = {};
-                        scope.$broadcast('wizzardGoBack', context);
+                        scope.$broadcast('wizardGoBack', context);
                         if (context.cancel) {
                             return;
                         }
@@ -92,7 +92,7 @@ angular.module('coevery.wizzard', [])
                 function handleNext() {
                     if (index < states.length - 1) {
                         var context = {};
-                        scope.$broadcast('wizzardGoNext', context);
+                        scope.$broadcast('wizardGoNext', context);
                         if (context.cancel) {
                             return;
                         }
@@ -103,11 +103,11 @@ angular.module('coevery.wizzard', [])
                 function handleSave() {
                     if (index == states.length - 1) {
                         var context = {};
-                        scope.$broadcast('wizzardComplete', context);
+                        scope.$broadcast('wizardComplete', context);
                         if (context.cancel) {
                             return;
                         }
-                        closeWizzard();
+                        closeWizard();
                         completeFunc && completeFunc();
                     }
                 }

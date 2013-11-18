@@ -113,6 +113,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CoreShapes.cs" />
+    <Compile Include="Drivers\LayoutStringDriver.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
     <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
@@ -163,7 +164,7 @@
     <Content Include="Scripts\directives\angularjs-i18next-directive.js" />
     <Content Include="Scripts\directives\cobusy-directive.js" />
     <Content Include="Scripts\directives\dependency-directive.js" />
-    <Content Include="Scripts\directives\wizzard-directive.js" />
+    <Content Include="Scripts\directives\wizard-directive.js" />
     <Content Include="Scripts\directives\picklist-directive.js" />
     <Content Include="Scripts\i18n\resources-locale_en-us.json" />
     <Content Include="Scripts\i18n\resources-locale_zh-cn.json" />
@@ -262,6 +263,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LayoutString.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LayoutString.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

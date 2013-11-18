@@ -10,14 +10,14 @@ define(['core/app/detourService'], function(detour) {
                 $scope.fieldInfo = $scope.$parent.fieldInfo;
                 $scope.addInLayout = true;
 
-                $scope.$on('wizzardGoBack', function(event, context) {
+                $scope.$on('wizardGoBack', function(event, context) {
                     context.stateParams = {
                         Id: entityName,
                         FieldTypeName: fieldType
                     };
                 });
 
-                $scope.$on('wizzardComplete', function(event, context) {
+                $scope.$on('wizardComplete', function(event, context) {
                     $http({
                         url: $scope.fieldInfo.formAction,
                         method: $scope.fieldInfo.formMethod,

@@ -54,18 +54,18 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 $scope.refreshTab();
 
                 //Dialog action
-                $scope.wizzardOptions = {
+                $scope.wizardOptions = {
                     states: [
                         'EntityDetail.Fields.Create',
                         'EntityDetail.Fields.CreateFillInfo',
                         'EntityDetail.Fields.CreateConfirmInfo'
                     ],
                     title: 'Add new Field',
-                    closeFunc: closeWizzard,
+                    closeFunc: closeWizard,
                     completeFunc: completeFunc
                 };
 
-                function closeWizzard() {
+                function closeWizard() {
                     $state.transitionTo('EntityDetail.Fields', { Id: entityName });
                 }
 
