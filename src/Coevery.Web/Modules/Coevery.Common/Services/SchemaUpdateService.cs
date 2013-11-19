@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using Coevery.Common.Providers;
 using NHibernate.Dialect;
@@ -42,7 +43,8 @@ namespace Coevery.Common.Services {
 
     public interface ISchemaUpdateService : IDependency {
         void CreateTable(string tableName, Action<CreateTableContext> action = null);
-        void CreateColumn(string tableName, string columnName, string columnType);
+        void CreateColumn(string tableName, string columnName, string columnType, int length = 0);
+        void AlterColumn(string tableName, string columnName, int length = 0);
         void DropColumn(string tableName, string columnName);
         void DropTable(string tableName);
         void CreateCustomTable(string tableName, Action<CreateTableCommand> table);
@@ -142,7 +144,7 @@ namespace Coevery.Common.Services {
             _schemaBuilder.DropTable(tableName);
         }
 
-        public void CreateColumn(string tableName, string columnName, string columnType) {
+        public void CreateColumn(string tableName, string columnName, string columnType, int length = 0) {
             string formatedTableName = string.Format(TableFormat, tableName);
             bool result = CheckTableColumnExists(formatedTableName, columnName);
             if (result) {
@@ -153,8 +155,29 @@ namespace Coevery.Common.Services {
                 type = Nullable.GetUnderlyingType(type);
             }
             var dbType = SchemaUtils.ToDbType(type);
+            Action<ColumnCommand> columnAction = null;
+            if (length > 0) {
+                columnAction = x => x.WithLength(length);
+            }
             _schemaBuilder.AlterTable(string.Format(TableFormat, tableName),
-                table => table.AddColumn(columnName, dbType));
+                table => table.AddColumn(columnName, dbType, columnAction));
+            GenerationDynmicAssembly();
+        }
+
+        public void AlterColumn(string tableName, string columnName, int length = 0)
+        {
+            string formatedTableName = string.Format(TableFormat, tableName);
+            bool result = CheckTableColumnExists(formatedTableName, columnName);
+            if (!result)
+            {
+                return;
+            }
+            Action<ColumnCommand> columnAction = null;
+            if (length > 0) {
+                columnAction = x => x.WithType(DbType.String).WithLength(length);
+            }
+            _schemaBuilder.AlterTable(string.Format(TableFormat, tableName),
+                table => table.AlterColumn(columnName, columnAction));
             GenerationDynmicAssembly();
         }
 
