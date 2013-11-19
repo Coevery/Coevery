@@ -90,7 +90,7 @@ namespace Coevery.ContentManagement.FieldStorage.InfosetStorage {
                 fieldElement.Value = value ?? "";
             }
             else {
-                fieldElement.SetAttributeValue(XmlConvert.EncodeLocalName(valueName), value ?? "");
+                fieldElement.SetAttributeValue(XmlConvert.EncodeName(valueName), value);
             }
         }
     }

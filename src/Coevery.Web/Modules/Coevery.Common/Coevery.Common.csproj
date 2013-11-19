@@ -113,7 +113,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CoreShapes.cs" />
-    <Compile Include="Drivers\LayoutStringDriver.cs" />
+    <Compile Include="Drivers\DynamicEntityPartDriver.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
     <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
@@ -225,7 +225,9 @@
     <Content Include="Views\EditorTemplates\Parts.ModuleMenuItem.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Placement.info" />
+    <Content Include="Placement.info">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
@@ -265,10 +267,34 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LayoutString.Edit.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Header.Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LayoutString.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Actions.Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Actions.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Header.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Layout.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Actions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Header.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Layout.Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

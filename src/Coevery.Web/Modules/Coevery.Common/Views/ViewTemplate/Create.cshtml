@@ -1,35 +1,11 @@
-﻿@using Coevery.ContentManagement
-@using Coevery.Utility.Extensions
-@{
-    ContentItem contentItem = Model.ContentItem;
-    var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
-    var typeName = contentItem.TypeDefinition.Name;
-}
-
-<section ng-controller="GeneralDetailCtrl" >
-    <header id="page-title">
-        <h1 class="pull-left">@typeDisplayName <span>@T("create a new {0}",typeDisplayName)</span></h1>
-    </header>
-
-    <section id="main-content">
-        <div id="page-actions" class="clearfix">
+﻿@Display(Model.Header)
+<section id="main-content">
+    <div id="page-actions" class="clearfix">
+        @if (Model.Actions != null) {
             <btn-actions>
-                <button class="btn btn-small" ng-click="exit()">@T("Back")</button>
-                <button class="btn btn-small btn-primary" data-cobusy="'saveentity'" data-ng-click="saveAndView()">@T("Save")</button>
-                <button class="btn btn-small btn-primary" data-cobusy="'saveentity'" data-ng-click="saveAndBack()">@T("Save & Back")</button>
+                @Display(Model.Actions)
             </btn-actions>
-        </div>
-
-        <div class="row-fluid">
-            <section class="edit-mode span12">
-                @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", new { Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"] }),
-                                                          FormMethod.Post, new { @class = "form-horizontal", @name = "myForm" })) {
-                    @Html.ValidationSummary()
-                    // Model is a Shape, calling Display() so that it is rendered using the most specific template for its Shape type
-                 
-                    @Display(Model.Content)
-                }
-            </section>
-        </div>
-    </section>
+        }
+    </div>
+    @Display(Model.Content)
 </section>

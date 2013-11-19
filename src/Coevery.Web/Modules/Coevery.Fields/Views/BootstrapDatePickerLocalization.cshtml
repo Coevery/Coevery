@@ -25,7 +25,7 @@
 }
 <script type="text/javascript">
     //<![CDATA[
-    (function() {
+    $(function() {
         $.fn.datetimepicker.dates[''] = {
             days: [@Html.Raw(dayNames)],
             daysShort: [@Html.Raw(dayNamesShort)],
@@ -33,9 +33,7 @@
             months: [@Html.Raw(monthNames)],
             monthsShort: [@Html.Raw(monthNamesShort)],
         };
-        debugger;
-        alert("sss");
         $.fn.datetimepicker.defaults.language = '';
-    })();
+    });
     //]]>
 </script>

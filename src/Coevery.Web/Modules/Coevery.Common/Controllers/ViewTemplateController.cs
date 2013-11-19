@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Coevery;
 using Coevery.Common.Extensions;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Aspects;
@@ -83,9 +80,7 @@ namespace Coevery.Common.Controllers {
                 }
             }
 
-            dynamic model = Services.ContentManager.BuildEditor(contentItem);
-
-            // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
+            dynamic model = Services.ContentManager.BuildEditor(contentItem, "CreatePage");
             return View((object) model);
         }
 
@@ -153,9 +148,7 @@ namespace Coevery.Common.Controllers {
                 return new HttpUnauthorizedResult();
             }
 
-            dynamic model = Services.ContentManager.BuildEditor(contentItem);
-     
-            // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
+            dynamic model = Services.ContentManager.BuildEditor(contentItem, "EditPage");
             return View((object) model);
         }
 
@@ -176,7 +169,7 @@ namespace Coevery.Common.Controllers {
             }
 
             dynamic model = Services.ContentManager.BuildDisplay(contentItem);
-            return View(model);
+            return View((object) model);
         }
 
         [HttpPost]
