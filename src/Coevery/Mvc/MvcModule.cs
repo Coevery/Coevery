@@ -18,12 +18,11 @@ namespace Coevery.Mvc {
     public class MvcModule : Module {
 
         protected override void Load(ContainerBuilder moduleBuilder) {
-            moduleBuilder.RegisterType<FilterResolvingActionInvoker>().As<IActionInvoker>().InstancePerDependency();
             moduleBuilder.RegisterType<ShellRoute>().InstancePerDependency();
 
-            moduleBuilder.Register(ctx => HttpContextBaseFactory(ctx)).As<HttpContextBase>().InstancePerDependency();
-            moduleBuilder.Register(ctx => RequestContextFactory(ctx)).As<RequestContext>().InstancePerDependency();
-            moduleBuilder.Register(ctx => UrlHelperFactory(ctx)).As<UrlHelper>().InstancePerDependency();
+            moduleBuilder.Register(HttpContextBaseFactory).As<HttpContextBase>().InstancePerDependency();
+            moduleBuilder.Register(RequestContextFactory).As<RequestContext>().InstancePerDependency();
+            moduleBuilder.Register(UrlHelperFactory).As<UrlHelper>().InstancePerDependency();
         }
 
         private static bool IsRequestValid() {

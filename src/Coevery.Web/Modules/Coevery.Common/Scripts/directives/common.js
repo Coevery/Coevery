@@ -1,5 +1,5 @@
 angular.module('coevery.common', [])
-    .directive("coDeleteButton", ['$compile', '$parse', function ($compile, $parse) {
+    .directive("coDeleteButton", ['$compile', '$parse', function($compile, $parse) {
         return {
             restrict: "A",
             scope: { confirmMessage: '@confirmMessage', deleteAction: '@deleteAction' },
@@ -41,10 +41,10 @@ angular.module('coevery.common', [])
             }
         };
     }])
-    .directive('helperText', function () {
+    .directive('helperText', function() {
         return {
             restrict: 'A',
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 element.attr('rel', 'popover');
                 element.attr('data-html', 'true');
                 element.attr('data-placement', 'top');
@@ -54,49 +54,49 @@ angular.module('coevery.common', [])
                 icon.className = "icon-question-sign popoverTipIcon";
                 icon.id = "popoverIcon";
                 element.parents("div").first().get(0).appendChild(icon);
-                $(icon).mouseover(function () {
+                $(icon).mouseover(function() {
                     element.popover('show');
                     element.focus();
                 });
 
-                $(icon).mouseout(function () {
+                $(icon).mouseout(function() {
                     element.popover('destroy');
                     element.blur();
                 });
             }
         };
     })
-    .directive('featureFilter', function () {
-    return {
-        restrict: "A",
-        link: function (scope) {
-            scope.$watch(function() {
-                return scope.featurename;
-            }, function (newval) {
-                if (newval==undefined) return;
-                $("div.category:hidden").show();
-                $(".row-fluid > div").each(function(i, item) {
-                    if ($(item).find(".title").text().toLowerCase().indexOf(newval.toLowerCase()) >= 0) {
-                        $(item).show();
-                    } else {
-                        $(item).hide();
-                    }
-                });
-                $("div.category:not(:has(.row-fluid > div:visible))").hide();
-            });
-        }
-    };
-    })
-    .directive('featureSelector', function () {
+    .directive('featureFilter', function() {
         return {
             restrict: "A",
-            link: function (scope, element) {
+            link: function(scope) {
+                scope.$watch(function() {
+                    return scope.featurename;
+                }, function(newval) {
+                    if (newval == undefined) return;
+                    $("div.category:hidden").show();
+                    $(".row-fluid > div").each(function(i, item) {
+                        if ($(item).find(".title").text().toLowerCase().indexOf(newval.toLowerCase()) >= 0) {
+                            $(item).show();
+                        } else {
+                            $(item).hide();
+                        }
+                    });
+                    $("div.category:not(:has(.row-fluid > div:visible))").hide();
+                });
+            }
+        };
+    })
+    .directive('featureSelector', function() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
                 var checkbox = element.find(":checkbox:first");
-                checkbox.on('click', function (e) {
+                checkbox.on('click', function(e) {
                     setcss();
                     e.stopPropagation();
                 });
-                element.on('click', function () {
+                element.on('click', function() {
                     checkbox.get(0).checked = !checkbox.get(0).checked;
                     setcss();
                 });
@@ -111,24 +111,37 @@ angular.module('coevery.common', [])
             }
         };
     })
-    .directive('loadingIndicator', function () {
+    .directive('loadingIndicator', function() {
         return {
             restrict: "A",
-            link: function (scope, element) {
+            link: function(scope, element) {
                 // hide the element initially
                 element.hide();
 
-                scope.$on('_START_REQUEST_', function () {
+                scope.$on('_START_REQUEST_', function() {
                     // got the request start notification, show the element
                     element.show();
                 });
 
-                scope.$on('_END_REQUEST_', function () {
+                scope.$on('_END_REQUEST_', function() {
                     // got the request end notification, hide the element
                     element.hide();
                 });
             }
         };
+    })
+    .directive('coDatetimePicker', function () {
+        return {
+            restrict: "A",
+            link: function (scope, element, attrs) {
+                if (attrs.coDatetimePicker == 'date') {
+                    $(element).datetimepicker({ pickTime: false });
+                } else {
+                    $(element).datetimepicker({ pickDate: false });
+                }
+            }
+        };
     });
+    
 
 

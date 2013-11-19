@@ -4,9 +4,7 @@ using Coevery.Data;
 
 namespace Coevery.Core.Navigation.Handlers {
     public class MenuWidgetPartHandler : ContentHandler {
-        public MenuWidgetPartHandler(IRepository<MenuWidgetPartRecord> repository) {
-            Filters.Add(StorageFilter.For(repository));
-
+        public MenuWidgetPartHandler() {
             OnInitializing<MenuWidgetPart>((context, part) => { part.StartLevel = 1; });
         }
     }

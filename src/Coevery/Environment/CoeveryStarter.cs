@@ -28,6 +28,7 @@ using Coevery.FileSystems.WebSite;
 using Coevery.Logging;
 using Coevery.Mvc;
 using Coevery.Mvc.DataAnnotations;
+using Coevery.Mvc.Filters;
 using Coevery.Mvc.ViewEngines.Razor;
 using Coevery.Mvc.ViewEngines.ThemeAwareness;
 using Coevery.Services;
@@ -144,6 +145,7 @@ namespace Coevery.Environment {
             }
 
             ControllerBuilder.Current.SetControllerFactory(new CoeveryControllerFactory());
+            FilterProviders.Providers.Add(new CoeveryFilterProvider());
 
             GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerSelector), new DefaultCoeveryWebApiHttpControllerSelector(GlobalConfiguration.Configuration));
             GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new DefaultCoeveryWebApiHttpHttpControllerActivator(GlobalConfiguration.Configuration));

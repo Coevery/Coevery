@@ -302,7 +302,7 @@
         $(MSBuildProjectDirectory)\**\*.hgignore;
         $(MSBuildProjectDirectory)\**\*.hg*\**\*;
         $(LibFolder)\nunit\addins\**\*;
-        " />
+        " Exclude="$(MSBuildProjectDirectory)\src\Coevery.Azure\Coevery.Azure.CloudService\*Content\**\*" />
 
       <Zip-Stage Include="$(StageFolder)\**\*" />
 

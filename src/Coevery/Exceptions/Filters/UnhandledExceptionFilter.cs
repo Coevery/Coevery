@@ -43,13 +43,8 @@ namespace Coevery.Exceptions.Filters {
                         filterContext.ExceptionHandled = true;
 
                         // inform exception filters of the exception that was suppressed
-                        var filterInfo = new FilterInfo();
-                        foreach (var filterProvider in _filterProviders.Value) {
-                            filterProvider.AddFilters(filterInfo);
-                        }
-
                         var exceptionContext = new ExceptionContext(filterContext.Controller.ControllerContext, filterContext.Exception);
-                        foreach (var exceptionFilter in filterInfo.ExceptionFilters) {
+                        foreach (var exceptionFilter in _filterProviders.Value.OfType<IExceptionFilter>()) {
                             exceptionFilter.OnException(exceptionContext);
                         }
 
