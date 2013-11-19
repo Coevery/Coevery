@@ -33,26 +33,30 @@ define(['core/app/detourService',
           };
 
           var navigationColumnDefs = [{
-                  name: 'Id', label: t('Id'), hidden: true
-              }, {
-                  name: 'DisplayName',
-                  label: t('DisplayName'),
-                  formatter: $rootScope.cellLinkTemplate,
-                  formatoptions: { hasView: true }
-              }, { name: 'Description', label: t('Description') }];
+              name: 'Id', label: t('Id'), key: true,
+          }, {
+              name: 'DisplayName',
+              label: t('DisplayName'),
+              formatter: $rootScope.cellLinkTemplate,
+              formatoptions: { hasView: true }
+          }, { name: 'Description', label: t('Description'), },
+              { name: 'Parent', label: t('Parent'), },
+              { name: 'Weight', label: t('Weight'), },
+              { name: 'Level', label: t('Level'), },
+              { name: 'LeafOnly', label: t('Leaf Only'), }
+          ];
 
           var gridOptions = {
               url: "api/perspectives/Navigation?id=" + perpectiveId,
               colModel: navigationColumnDefs,
-              //ExpandColumn: "DisplayName",
-              //treeGrid: true,
-              //treeGridModel: "adjacency",
-              //tree_root_level: 1,
-              //ExpandColClick: false
+              rowIdName: 'Id',
+              nestedDrag: true,
+              initialLevel: 1
           };
           angular.extend(gridOptions, $rootScope.defaultGridOptions);
           gridOptions.multiselect = false;
           gridOptions.sortable = false;
+          gridOptions.jsonReader.id = "";
           $scope.gridOptions = gridOptions;
 
           $scope.addNavigationItem = function () {

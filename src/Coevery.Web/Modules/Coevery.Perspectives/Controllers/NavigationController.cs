@@ -57,11 +57,9 @@ namespace Coevery.Perspectives.Controllers {
                             DisplayName = menuEntry.Text, 
                             Description = menuEntry.Description,
                             Parent = treeInfo.ParentId,
-                            Weight = 0,
-                            level = treeInfo.Level,
-                            isLeaf = treeInfo.IsLeaf,
-                            parent = treeInfo.ParentId,
-                            expanded = treeInfo.Expanded
+                            Weight = treeInfo.Order,
+                            Level = treeInfo.Level,
+                            LeafOnly = treeInfo.IsLeaf
                         };
 
             var totalRecords = query.Count();

@@ -573,8 +573,6 @@
     <Content Include="MooncakeBase\Scripts\plugins\bootstrap-select\bootstrap-select.js" />
     <Content Include="MooncakeBase\Scripts\plugins\bootstrap-select\bootstrap-select.min.js" />
     <Content Include="MooncakeBase\Scripts\plugins\jqGrid.tabledrag.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\jqGrid.tabledrag_pending.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\jQuery.tabledrag.js" />
     <Content Include="MooncakeBase\Scripts\plugins\select2\select2.js" />
     <Content Include="MooncakeBase\Scripts\plugins\select2\select2.min.js" />
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.js" />

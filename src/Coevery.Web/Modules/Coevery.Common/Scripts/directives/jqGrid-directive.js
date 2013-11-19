@@ -74,10 +74,8 @@
                         //Set row sortable
                         if (attrs.agGridDrag) {
                             var settings = JSON.parse(attrs.agGridDrag);
-                            $.cookie = function () {
-                                return null;
-                            };
-                            if (!gridOptions.treeGrid) {
+                            
+                            if (!gridOptions.nestedDrag) {
                                 $grid.jqGrid('sortableRows', {
                                     update: function (event, ui) {
                                         var postData = [];
@@ -101,29 +99,16 @@
                                     }
                                 });
                             } else {
+                                $.cookie = function () {
+                                    return null;
+                                };
                                 $grid.tableDrag({
-                                    draggableClass: 'jqgrow',
-                                    idAttr: gridOptions.rowIdName,
-                                });
-                                $grid.on("tabledrag:dragrow", function (event, param) {
-                                });
-                                $grid.on("tabledrag:droprow", function (event, param) {
-                                    var xindent = param.currentMouseCoords.x - param.dragObject.initMouseCoords.x;
-                                    if (Math.abs(xindent) > gridOptions.dragSensitivity) {
-                                        if (xindent > 0) {
-                                            var record = $grid.getLocalRow(param.rowObject.rowId);
-                                            record.level++;
-                                            var parent = $(param.rowObject.element).prev().attr("id");
-                                            record.parent = parent;
-                                            record.Description = "fgff";
-                                            $grid.setTreeRow(param.rowObject.rowId, record);
-                                            var parentRecord = $grid.getLocalRow(parent);
-                                            parentRecord.isLeaf = false;
-                                            $grid.setTreeRow(parent, parentRecord);
-                                        } else {
-                                            
-                                        }
-                                    }
+                                    tableId: alias,
+                                    initialLevel: 1,
+                                    group: {
+                                        columnName: 'Level',
+                                        depthLimit: 3, // child element depth, start from 1, 0 means no limit
+                                    },
                                 });
 
                                 $element.find("tbody:first").disableSelection();

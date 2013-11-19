@@ -11,6 +11,7 @@ namespace Coevery.Perspectives.Services {
         public int? ParentId { get; set; }
         public string ParentPosition { get; set; }
         public int Level { get; set; }
+        public int Order { get; set; }
         public bool IsLeaf { get; set; }
         public bool Expanded { get; set; }
     }
@@ -31,13 +32,17 @@ namespace Coevery.Perspectives.Services {
             }
             var lastPosition = menu.MenuPosition.LastIndexOf('.');
             int currentLevel;
+            int weight;
             string parentPosition;
             if (lastPosition < 0) {
                 currentLevel = 1;
                 parentPosition = null;
+                int.TryParse(position, out weight);
             }
             else {
-                currentLevel = menu.MenuPosition.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Length;
+                var positions = menu.MenuPosition.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+                currentLevel = positions.Length;
+                int.TryParse(positions.Last(), out weight);
                 parentPosition = menu.MenuPosition.Substring(0, lastPosition);
             }
             var parentMenu = GetMenuItemFromPosition(parentPosition);
@@ -45,6 +50,7 @@ namespace Coevery.Perspectives.Services {
                 ParentId = parentMenu != null ? parentMenu.Id : (int?)null,
                 ParentPosition = parentPosition,
                 Level = currentLevel,
+                Order = weight,
                 IsLeaf = perspective.CurrentLevel<=1 || currentLevel == perspective.CurrentLevel,
                 Expanded = true,
             };
