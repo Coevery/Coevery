@@ -1,37 +1,31 @@
 ﻿@model Coevery.Fields.Settings.DatetimeFieldSettings
+@using System.Globalization
+@using Coevery.Core.Shapes.Localization
 @using Coevery.Fields.Settings;
+
+@{
+
+    var cultureInfo = CultureInfo.GetCultureInfo(WorkContext.CurrentCulture);
+    var dateTimeLocalization = WorkContext.Resolve<IDateTimeLocalization>();
+
+    Func<DateTime?, string> FormatTime = date => date != null ? date.Value.ToString(dateTimeLocalization.ShortTimeFormat.Text, cultureInfo) : null;
+}
 
 <section class="control-group data-row">
     <label class="control-label">
         Default Value
     </label>
-    <div class="controls input-prepend errortips">
+    <div class="controls input-prepend errortips" data-co-datetime-picker="time">
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
-        @Html.TextBoxFor(d => d.DefaultValue, new { @class = "date" })
+        <input class="date" type="text"
+           id="@Html.FieldIdFor(m => m.DefaultValue)"
+           name="@Html.FieldNameFor(m => m.DefaultValue)"
+           value="@FormatTime(Model.DefaultValue)"
+           data-format="@dateTimeLocalization.ShortTimeFormat.Text"
+           data-date-weekstart="@dateTimeLocalization.FirstDay" />
     </div>
 </section>
-@Display.DateTimePickerLocalization()
-<script>
-    $(function () {
-        var defaultDate = $("#@Html.FieldIdFor(m => m.DefaultValue)");
-            if (defaultDate.length != 0) {
-                defaultDate.parent().datetimepicker();
-                @if (Model.DefaultValue.HasValue) {
-            <text>var date = new Date('@Model.DefaultValue.Value'); defaultDate.parent().data('datetimepicker').setLocalDate(date);</text> }
-            }
-            //$(".add-on").click(function () {
-            //    setTimeout(function () {
-            //        $(".bootstrap-datetimepicker-widget").offset(function (index, coords) {
-            //            var result = { top: 0, left: 0 };
-            //            result.left = coords.left;
-            //            result.top = $(".input-prepend").offset().top -
-            //                    $(".bootstrap-datetimepicker-widget").outerHeight(true) - 4;
-            //            return result;
-            //        });
-            //    }, 0);
-            //});
-        });
-</script>
+@Display(New.DateTimePickerLocalization())
 

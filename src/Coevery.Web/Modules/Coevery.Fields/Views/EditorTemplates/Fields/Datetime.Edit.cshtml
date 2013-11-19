@@ -13,7 +13,7 @@
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls input-prepend errortips">
+<div class="control controls input-prepend errortips" data-co-datetime-picker="time">
     <span class="add-on">
         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
     </span>
@@ -28,10 +28,4 @@
     @Html.ValidationMessageFor(m => m.Value)
 </div>
 
-@Display.BootstrapDatePickerLocalization()
-
-<script type="text/javascript">
-    $(function () {
-        $("#@Html.FieldIdFor(m => m.Value)").parent().datetimepicker({ pickDate: false });
-    });
-</script>
+@Display(New.BootstrapDatePickerLocalization())

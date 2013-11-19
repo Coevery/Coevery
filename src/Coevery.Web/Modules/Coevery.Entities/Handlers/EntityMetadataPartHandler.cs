@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Linq;
 using Coevery.Common.Services;
 using Coevery.Common.Extensions;
 using Coevery.ContentManagement.MetaData.Models;
+using Coevery.Data.Migration.Schema;
 using Coevery.Entities.Events;
 using Coevery.Entities.Models;
 using Coevery.ContentManagement;
@@ -90,8 +92,10 @@ namespace Coevery.Entities.Handlers {
 
             _schemaUpdateService.CreateTable(part.Name, context => {
                 foreach (var fieldMetadataRecord in part.FieldMetadataRecords) {
+                    var length = GetMaxLength(fieldMetadataRecord.Settings);
+                    Action<CreateColumnCommand> columnAction = x => x.WithLength(length);
                     context.FieldColumn(fieldMetadataRecord.Name,
-                        fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
+                        fieldMetadataRecord.ContentFieldDefinitionRecord.Name, columnAction);
                 }
             });
         }
@@ -122,7 +126,8 @@ namespace Coevery.Entities.Handlers {
                     needUpdateFields.Add(fieldMetadataRecord);
                 } else {
                     AddField(entity.Name, fieldMetadataRecord);
-                    _schemaUpdateService.CreateColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
+                    var length = GetMaxLength(fieldMetadataRecord.Settings);
+                    _schemaUpdateService.CreateColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
                 }
             }
 
@@ -135,8 +140,22 @@ namespace Coevery.Entities.Handlers {
                         _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
                     }));
                 record.Settings = _settingService.CompileSetting(settings);
+
+                var length = GetMaxLength(fieldMetadataRecord.Settings);
+                _schemaUpdateService.AlterColumn(entity.Name, fieldMetadataRecord.Name, length);
             }
             _entityEvents.OnUpdating(entity.Name);
+        }
+
+        private int? GetMaxLength(string settings) {
+            var settingDictionary = _settingService.ParseSetting(settings);
+            string maxLengthSetting;
+            if (settingDictionary.TryGetValue("TextFieldSettings.MaxLength", out maxLengthSetting)) {
+                int length;
+                if (int.TryParse(maxLengthSetting, out length))
+                    return length;
+            }
+            return null;
         }
 
         private void AddField(string entityName, FieldMetadataRecord field, bool needEvent = true) {

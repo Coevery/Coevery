@@ -8,6 +8,12 @@ namespace Coevery.Common {
                     var shape = displaying.Shape;
                     shape.Metadata.Alternates.Add("Content_Edit__Default");
                 });
+
+            builder.Describe("Content")
+                .OnDisplaying(displaying => {
+                    var shape = displaying.Shape;
+                    shape.Metadata.Alternates.Add("Content__Default");
+                });
         }
     }
 }

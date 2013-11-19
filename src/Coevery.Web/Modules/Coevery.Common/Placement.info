@@ -3,6 +3,20 @@
   <Match DisplayType="Detail" ContentType="ProjectionPage">
     <Place Parts_Title="-" />
   </Match>
-  <Place LayoutString="Content:1" />
-  <Place LayoutString_Edit="Content:1" />
+  
+  <Match DisplayType="CreatePage">
+    <Place Parts_DynamicEntity_Header="Header:1;Alternate=Parts_DynamicEntity_Header_Create" />
+    <Place Parts_DynamicEntity_Actions="Actions:1;Alternate=Parts_DynamicEntity_Actions_Create" />
+    <Place Parts_DynamicEntity_Layout="Content:1;Alternate=Parts_DynamicEntity_Layout_Create" />
+  </Match>
+  
+  <Match DisplayType="EditPage">
+    <Place Parts_DynamicEntity_Header="Header:1;Alternate=Parts_DynamicEntity_Header_Edit" />
+    <Place Parts_DynamicEntity_Actions="Actions:1;Alternate=Parts_DynamicEntity_Actions_Edit" />
+    <Place Parts_DynamicEntity_Layout="Content:1;Alternate=Parts_DynamicEntity_Layout_Edit" />
+  </Match>
+  
+  <Place Parts_DynamicEntity_Header="Header:1" />
+  <Place Parts_DynamicEntity_Actions="Actions:1" />
+  <Place Parts_DynamicEntity_Layout="Content:1" />
 </Placement>

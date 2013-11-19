@@ -1,0 +1,16 @@
+﻿@using Coevery.ContentManagement
+@{
+    ContentItem contentItem = Model.ContentItem;
+    var typeName = contentItem.TypeDefinition.Name;
+}
+
+<div class="row-fluid">
+    <section class="edit-mode span12">
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("Create", "ViewTemplate", new {Id = typeName, ReturnUrl = Request.QueryString["ReturnUrl"]}),
+            FormMethod.Post, new {@class = "form-horizontal", @name = "myForm"})) {
+            @Html.ValidationSummary()
+
+            Output.Write(Model.Layout);
+        }
+    </section>
+</div>

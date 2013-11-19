@@ -12,8 +12,8 @@ namespace Coevery.Environment.Extensions.Compilers {
 
             // NOTE: This code could be used to define a compilation flag with the current Orchar version 
             // but it's not compatible with Medium Trust
-            // var coeveryVersion = new AssemblyName(typeof(IDependency).Assembly.FullName).Version;
-            // _codeCompilerType.CompilerParameters.CompilerOptions += string.Format("/define:COEVERY_{0}_{1}", coeveryVersion.Major, coeveryVersion.Minor);
+            var coeveryVersion = new AssemblyName(typeof(IDependency).Assembly.FullName).Version;
+            _codeCompilerType.CompilerParameters.CompilerOptions += string.Format("/define:COEVERY_{0}_{1}", coeveryVersion.Major, coeveryVersion.Minor);
         }
 
         public ICoeveryHostContainer HostContainer { get; set; }
