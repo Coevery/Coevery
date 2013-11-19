@@ -61,7 +61,7 @@ namespace Coevery.ContentManagement {
             return context.Shape;
         }
 
-        public dynamic BuildEditor(IContent content, string groupId) {
+        public dynamic BuildEditor(IContent content, string displayType, string groupId) {
             var contentTypeDefinition = content.ContentItem.TypeDefinition;
             string stereotype;
             if (!contentTypeDefinition.Settings.TryGetValue("Stereotype", out stereotype))
@@ -71,12 +71,13 @@ namespace Coevery.ContentManagement {
 
             dynamic itemShape = CreateItemShape(actualShapeType);
             itemShape.ContentItem = content.ContentItem;
+            itemShape.Metadata.DisplayType = displayType;
 
             // adding an alternate for [Stereotype]_Edit__[ContentType] e.g. Content-Menu.Edit
             ((IShape)itemShape).Metadata.Alternates.Add(actualShapeType + "__" + content.ContentItem.ContentType);
             
             var context = new BuildEditorContext(itemShape, content, groupId, _shapeFactory);
-            BindPlacement(context, null, stereotype);
+            BindPlacement(context, displayType, stereotype);
 
             _handlers.Value.Invoke(handler => handler.BuildEditor(context), Logger);
 

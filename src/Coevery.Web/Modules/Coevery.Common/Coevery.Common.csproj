@@ -113,16 +113,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CoreShapes.cs" />
-    <Compile Include="Drivers\ViewPagePartDriver.cs" />
-    <Compile Include="Drivers\EditPagePartDriver.cs" />
-    <Compile Include="Drivers\CreatePagePartDriver.cs" />
+    <Compile Include="Drivers\DynamicEntityPartDriver.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
     <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
     <Compile Include="Extensions\CoeveryStringExtension.cs" />
-    <Compile Include="Models\ViewPagePart.cs" />
-    <Compile Include="Models\EditPagePart.cs" />
-    <Compile Include="Models\CreatePagePart.cs" />
     <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Providers\IDynamicAssemblyBuilder.cs" />
     <Compile Include="Routes.cs" />
@@ -272,34 +267,34 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\CreatePage.Header.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Header.Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\CreatePage.Actions.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Actions.Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\CreatePage.Layout.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Actions.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\EditPage.Actions.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Header.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\EditPage.Header.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Layout.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\EditPage.Layout.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Actions.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\ViewPage.Actions.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\ViewPage.Header.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts\ViewPage.Layout.cshtml" />
+    <Content Include="Views\Parts\DynamicEntity.Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content-Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\DynamicEntity.Layout.Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
