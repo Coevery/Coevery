@@ -1,0 +1,10 @@
+﻿@using Coevery.ContentManagement
+@using Coevery.Utility.Extensions
+@{
+    ContentItem contentItem = Model.Item;
+    var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
+}
+
+<header id="page-title">
+    <h1 class="pull-left">@Html.ItemDisplayText(contentItem) <span>@T("view {0}", typeDisplayName) </span></h1>
+</header>

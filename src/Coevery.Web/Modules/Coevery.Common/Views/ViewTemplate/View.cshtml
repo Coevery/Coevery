@@ -1,38 +1,11 @@
-﻿@using Coevery.ContentManagement
-@using Coevery.Utility.Extensions
-
-@{
-    ContentItem contentItem = Model.ContentItem;
-    var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
-}
-
-<section data-ng-controller="GeneralViewCtrl">
-    <header id="page-title">
-        <h1 class="pull-left">@Html.ItemDisplayText(contentItem) <span>@T("view {0}",typeDisplayName) </span></h1>
-    </header>
-    <section id="main-content">
-        <div id="page-actions" class="clearfix">
+﻿@Display(Model.Header)
+<section id="main-content">
+    <div id="page-actions" class="clearfix">
+        @if (Model.Actions != null) {
             <btn-actions>
-                <button class="btn btn-small" ng-click="exit()">@T("Back")</button>
-                <button class="btn btn-small" ng-click="edit()">
-                    <i class="icon-edit"></i>&nbsp;@T("Edit")
-                </button>
+                @Display(Model.Actions)
             </btn-actions>
-        </div>
-        
-        @Display(Model.Content)
-
-@*        <section class="row-fluid related-list">
-            <header>
-                <h5>History</h5>
-            </header>
-            <div class="gridStyle" data-ng-grid="historiesOptions"></div>
-        </section>*@
-    </section>
+        }
+    </div>
+    @Display(Model.Content)
 </section>
-
-<script>
-    $(function () {
-        $('.page-actions').affix({ offset: { top: 71 } });
-    });
-</script>

@@ -113,11 +113,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CoreShapes.cs" />
-    <Compile Include="Drivers\LayoutStringDriver.cs" />
+    <Compile Include="Drivers\ViewPagePartDriver.cs" />
+    <Compile Include="Drivers\EditPagePartDriver.cs" />
+    <Compile Include="Drivers\CreatePagePartDriver.cs" />
     <Compile Include="Events\IDynamicTypeGenerationEvents.cs" />
     <Compile Include="Extensions\CoeveryContentExtension.cs" />
     <Compile Include="Extensions\CoeveryHtmlExtensions.cs" />
     <Compile Include="Extensions\CoeveryStringExtension.cs" />
+    <Compile Include="Models\ViewPagePart.cs" />
+    <Compile Include="Models\EditPagePart.cs" />
+    <Compile Include="Models\CreatePagePart.cs" />
     <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Providers\IDynamicAssemblyBuilder.cs" />
     <Compile Include="Routes.cs" />
@@ -225,7 +230,9 @@
     <Content Include="Views\EditorTemplates\Parts.ModuleMenuItem.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Placement.info" />
+    <Content Include="Placement.info">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
@@ -265,10 +272,34 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LayoutString.Edit.cshtml" />
+    <Content Include="Views\Parts\CreatePage.Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\LayoutString.cshtml" />
+    <Content Include="Views\Parts\CreatePage.Actions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\CreatePage.Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\EditPage.Actions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\EditPage.Header.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\EditPage.Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\ViewPage.Actions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\ViewPage.Header.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\ViewPage.Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Content-Default.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

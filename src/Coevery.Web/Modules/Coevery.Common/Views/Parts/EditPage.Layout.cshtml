@@ -1,0 +1,10 @@
+﻿<div class="row-fluid">
+    <section class="edit-mode span12">
+        @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", "ViewTemplate", new {ReturnUrl = Request.QueryString["ReturnUrl"]}),
+            FormMethod.Post, new {@name = "myForm", @ng_submit = "save()", @class = "form-horizontal"})) {
+            @Html.ValidationSummary()
+
+            Output.Write(Model.Layout);
+        }
+    </section>
+</div>

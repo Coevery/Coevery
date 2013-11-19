@@ -1,11 +1,9 @@
-﻿using System;
-using Coevery.ContentManagement.MetaData;
-using Coevery.Core.Contents.Extensions;
+﻿using Coevery.ContentManagement.MetaData;
 using Coevery.Data.Migration;
 
 namespace Coevery.Common {
     public class Migrations : DataMigrationImpl {
-        public int Create() { 
+        public int Create() {
             SchemaBuilder.CreateTable("ModuleMenuItemPartRecord",
                 table => table
                     .ContentPartRecord()
@@ -22,7 +20,7 @@ namespace Coevery.Common {
                 .WithSetting("Stereotype", "MenuItem")
                 );
 
-           return 1;
+            return 1;
         }
 
         public int UpdateFrom1() {
@@ -49,6 +47,13 @@ namespace Coevery.Common {
         public int UpdateFrom3() {
             SchemaBuilder.AlterTable("ModuleMenuItemPartRecord", table => table.AddColumn<string>("IconClass"));
             return 4;
+        }
+
+        public int UpdateFrom4() {
+            ContentDefinitionManager.AlterTypeDefinition("CreatePage", cfg => cfg.WithPart("CreatePagePart"));
+            ContentDefinitionManager.AlterTypeDefinition("EditPage", cfg => cfg.WithPart("EditPagePart"));
+            ContentDefinitionManager.AlterTypeDefinition("ViewPage", cfg => cfg.WithPart("ViewPagePart"));
+            return 5;
         }
     }
 }

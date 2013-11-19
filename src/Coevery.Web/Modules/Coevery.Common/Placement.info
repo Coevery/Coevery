@@ -3,6 +3,13 @@
   <Match DisplayType="Detail" ContentType="ProjectionPage">
     <Place Parts_Title="-" />
   </Match>
-  <Place LayoutString="Content:1" />
-  <Place LayoutString_Edit="Content:1" />
+  <Place Parts_CreatePage_Header="Header:1" />
+  <Place Parts_CreatePage_Actions="Actions:1" />
+  <Place Parts_CreatePage_Layout="Content:1" />
+  <Place Parts_EditPage_Header="Header:1" />
+  <Place Parts_EditPage_Actions="Actions:1" />
+  <Place Parts_EditPage_Layout="Content:1" />
+  <Place Parts_ViewPage_Header="Header:1" />
+  <Place Parts_ViewPage_Actions="Actions:1" />
+  <Place Parts_ViewPage_Layout="Content:1" />
 </Placement>
