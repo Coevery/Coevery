@@ -46,8 +46,6 @@
     
    
     WorkContext.Layout.Header.Add(New.Branding(), "5"); // Site name and link to the home page
-    WorkContext.Layout.Footer.Add(New.BadgeOfHonor(), "5"); // Powered by Coevery
-    WorkContext.Layout.Footer.Add(New.User(), "10"); // Login and dashboard links
 
     /* Last bit of code to prep the layout wrapper
     ***************************************************************/
@@ -186,6 +184,10 @@
         </div>
     </div>
 </div>
+
+@if (Model.Footer != null) {
+    @Zone(Model.Footer)
+}
 
 <footer>
     <p class="pull-left">Powered by Coevery - <a href="http://www.novasoftware.com">http://www.novasoftware.com</a></p>

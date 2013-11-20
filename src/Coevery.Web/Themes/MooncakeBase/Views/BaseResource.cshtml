@@ -32,10 +32,9 @@
     Script.Include("plugins/bootstrap-select/bootstrap-select.min.js");
     /*jqGrid js files
     ------------------------------*/
-    Script.Include("plugins/jquery.jqGrid.min.js");
-    Script.Include("plugins/jquery.jqGrid.src.js");
-    Script.Include("plugins/i18n/grid.locale-en.js");
-    Script.Include("js/jquery.simplePagination.js");
+    Script.Require("simplePagination");
+    Script.Require("jqGrid");
+    Script.Require("jqGrid_i18n");
 
     Style.Require("Bootstrap_Datetimepicker");
     Script.Require("Bootstrap_Datetimepicker");

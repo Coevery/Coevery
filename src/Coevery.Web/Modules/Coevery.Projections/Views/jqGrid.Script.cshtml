@@ -1,0 +1,20 @@
+﻿@using System.Globalization
+
+@functions {
+
+    string FindNearestCulture(string culture)
+    {
+        // try parent culture if any
+        var cultureInfo = CultureInfo.GetCultureInfo(culture);
+        if (cultureInfo.Parent.Name != culture)
+        {
+            var selectedCulture = FindNearestCulture(cultureInfo.Parent.Name);
+            if (selectedCulture != null)
+            {
+                return selectedCulture;
+            }
+        }
+        return null;
+    }
+
+}

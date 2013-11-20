@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Linq;
 using Coevery.UI.Resources;
 
 namespace Coevery.jQuery {
@@ -73,9 +75,19 @@ namespace Coevery.jQuery {
             manifest.DefineScript("jQueryIFrameTransport").SetUrl("jquery.iframe-transport.min.js", "jquery.iframe-transport.js").SetVersion("1.6.1").SetDependencies("jQuery");
             manifest.DefineScript("jQueryFileUpload").SetUrl("jquery.fileupload.min.js", "jquery.fileupload.js").SetVersion("1.6.1").SetDependencies("jQueryIFrameTransport").SetDependencies("jQueryUI_Widget");
 
-            // jquer Color Box
+            // jquery Color Box
             manifest.DefineScript("jQueryColorBox").SetUrl("jquery.colorbox.min.js", "jquery.colorbox.js").SetVersion("1.4.10").SetDependencies("jQuery");
             manifest.DefineStyle("jQueryColorBox").SetUrl("colorbox.css").SetVersion("1.4.10");
+
+            // jqGrid
+            manifest.DefineScript("jqGrid").SetUrl("jqGrid/jquery.jqGrid.min.js", "jqGrid/jquery.jqGrid.src.js").SetVersion("4.5.4").SetDependencies("jQuery");
+            var cultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Select(c => c.TwoLetterISOLanguageName).ToList();
+            cultures.Add("zh-CN");
+            cultures.Add("zh-TW");
+
+            manifest.DefineScript("jqGrid_i18n").SetUrl("jqGrid/i18n/grid.locale.js").SetVersion("4.5.4").SetDependencies("jqGrid").SetCultures(cultures.ToArray());
+
+            manifest.DefineScript("simplePagination").SetUrl("jquery.simplePagination.js").SetVersion("1.6").SetDependencies("jQuery");
         }
     }
 }

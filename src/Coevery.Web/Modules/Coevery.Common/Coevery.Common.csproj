@@ -160,7 +160,6 @@
     <Content Include="Scripts\app\detourService.js" />
     <Content Include="Scripts\app\logger.js" />
     <Content Include="Scripts\app\main.js" />
-    <Content Include="Scripts\controllers\agGridCtrl.js" />
     <Content Include="Scripts\controllers\navigationcontroller.js" />
     <Content Include="Scripts\controllers\subviewgridcontroller.js" />
     <Content Include="Scripts\controllers\viewcontroller.js" />

@@ -89,7 +89,9 @@
     <Compile Include="Common\Models\IdentityPart.cs" />
     <Compile Include="Common\ResourceManifest.cs" />
     <Compile Include="Common\Routes.cs" />
+    <Compile Include="Common\Services\AutoLoadResourceFilter.cs" />
     <Compile Include="Common\Services\DynamicRelationshipService.cs" />
+    <Compile Include="Common\Services\IAutoLoadResourceRegister.cs" />
     <Compile Include="Common\Services\IdentifierResolverSelector.cs" />
     <Compile Include="Common\Services\XmlRpcHandler.cs" />
     <Compile Include="Common\DateEditor\DateEditorViewModel.cs" />

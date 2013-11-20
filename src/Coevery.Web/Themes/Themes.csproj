@@ -80,7 +80,6 @@
     <Content Include="MooncakeBase\Scripts\js\demo\wysiwyg.js" />
     <Content Include="MooncakeBase\Scripts\js\docs.js" />
     <Content Include="MooncakeBase\Scripts\js\dropdown.js" />
-    <Content Include="MooncakeBase\Scripts\js\jquery.simplePagination.js" />
     <Content Include="MooncakeBase\Scripts\js\libs\bootstrap.js" />
     <Content Include="MooncakeBase\Scripts\js\libs\bootstrap.min.js" />
     <Content Include="MooncakeBase\Scripts\js\libs\excanvas.js" />
@@ -573,9 +572,6 @@
     <Content Include="MooncakeBase\Scripts\jui\timepicker\localization\jquery-ui-timepicker-zh-TW.js" />
     <Content Include="MooncakeBase\Scripts\plugins\bootstrap-select\bootstrap-select.js" />
     <Content Include="MooncakeBase\Scripts\plugins\bootstrap-select\bootstrap-select.min.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\i18n\grid.locale-en.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\jquery.jqGrid.min.js" />
-    <Content Include="MooncakeBase\Scripts\plugins\jquery.jqGrid.src.js" />
     <Content Include="MooncakeBase\Scripts\plugins\select2\select2.js" />
     <Content Include="MooncakeBase\Scripts\plugins\select2\select2.min.js" />
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.js" />

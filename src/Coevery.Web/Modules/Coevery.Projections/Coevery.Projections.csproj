@@ -218,6 +218,7 @@
     <Compile Include="Providers\SortCriteria\MemberBindingSortCriteria.cs" />
     <Compile Include="Providers\SortCriteria\RandomSortCriterion.cs" />
     <Compile Include="Providers\SortCriteria\SortOrderFormProvider.cs" />
+    <Compile Include="Services\AutoLoadResourceProvider.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\CustomMemberBindingProvider.cs" />
@@ -387,6 +388,9 @@
     <Content Include="Views\Property\Edit.cshtml" />
     <Content Include="Views\SortCriterion\Add.cshtml" />
     <Content Include="Views\SortCriterion\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\jqGrid.Script.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

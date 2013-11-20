@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Linq;
 using Coevery.UI.Resources;
 
 namespace Coevery.AngularJS {
@@ -7,6 +9,9 @@ namespace Coevery.AngularJS {
 
             manifest.DefineScript("angular").SetUrl("angular.min.js", "angular.js").SetVersion("1.2.0-rc.2")
                 .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js", true);
+
+            var cultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Select(c => c.Name).ToArray();
+            manifest.DefineScript("angular_i18n").SetUrl("i18n/angular-locale.js").SetCultures(cultures);
 
             manifest.DefineScript("angularResource").SetUrl("angular-resource.min.js", "angular-resource.js").SetVersion("1.2.0-rc.2")
                 .SetCdn("//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min.js", "//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.js", true);
