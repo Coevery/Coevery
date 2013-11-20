@@ -1,38 +1,44 @@
 ﻿(function () {
-    var AgGridCtrl, gridz;
-
-    gridz = angular.module("coevery.grid");
-
-    gridz.controller("AgGridCtrl", AgGridCtrl = (function () {
-
-        AgGridCtrl.$inject = ["$q", /*"hasSearchFilters", */"flatten"];
-
-        function AgGridCtrl($q, /*hasSearchFilters,*/ flatten) {
-            this.$q = $q;
-            //this.hasSearchFilters = hasSearchFilters;
-            this.flatten = flatten;
+    function setIdValue(element, baseValue) {
+        var alias, index = 0;
+        alias = baseValue || "gridz";
+        while ($('#' + alias).length !== 0) {
+            alias = alias + index.toString(10);
+            index++;
         }
+        element.find("table.gridz").attr("id", alias);
+        element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
+    }
 
-        AgGridCtrl.prototype.registerGridElement = function ($grid) {
+    var gridz;
+
+    gridz = angular.module("coevery.grid", []);
+    
+    gridz.controller("AgGridCtrl", ["$q", "flatten", function ($q, flatten) {
+
+        this.$q = $q;
+        this.flatten = flatten;
+
+        this.registerGridElement = function ($grid) {
             return this.$grid = $grid;
         };
 
-        AgGridCtrl.prototype.getGridId = function () {
+        this.getGridId = function () {
             return this.$grid.attr("id");
         };
 
-        AgGridCtrl.prototype.getSelectedRowIds = function () {
+        this.getSelectedRowIds = function () {
             return this.getParam("selarrrow");
         };
 
-        AgGridCtrl.prototype.getPageRows = function () {
+        this.getPageRows = function () {
             return this.getParam("rowNum");
         };
-        AgGridCtrl.prototype.getCurrentPage = function () {
+        this.getCurrentPage = function () {
             return this.getParam("page");
         };
 
-        AgGridCtrl.prototype.reload = function (callback) {
+        this.reload = function (callback) {
             if (!callback) {
                 callback = angular.noop;
             }
@@ -40,20 +46,20 @@
             return this.$grid.one("jqGridAfterLoadComplete", callback);
         };
 
-        AgGridCtrl.prototype.getParam = function (name) {
+        this.getParam = function (name) {
             return this.$grid.getGridParam(name);
         };
 
-        AgGridCtrl.prototype.setParam = function (params) {
+        this.setParam = function (params) {
             return this.$grid.setGridParam(params);
         };
 
-        AgGridCtrl.prototype.updateRow = function (id, data) {
+        this.updateRow = function (id, data) {
             this.$grid.setRowData(id, this.flatten(data));
             return this._flashRow(id);
         };
 
-        AgGridCtrl.prototype.addRow = function (id, data, position) {
+        this.addRow = function (id, data, position) {
             if (!position) {
                 position = "first";
             }
@@ -61,11 +67,11 @@
             return this._flashRow(id);
         };
 
-        AgGridCtrl.prototype.hasRow = function (id) {
+        this.hasRow = function (id) {
             return !!this.$grid.getInd(id);
         };
 
-        AgGridCtrl.prototype.saveRow = function (id, data) {
+        this.saveRow = function (id, data) {
             if (this.hasRow(id)) {
                 return this.updateRow(id, data);
             } else {
@@ -73,14 +79,14 @@
             }
         };
 
-        AgGridCtrl.prototype.removeRow = function (id) {
+        this.removeRow = function (id) {
             var _this = this;
             return this._flashRow(id, function () {
                 return _this.$grid.delRowData(id);
             });
         };
 
-        AgGridCtrl.prototype.isColumnHidden = function (columnId) {
+        this.isColumnHidden = function (columnId) {
             var column;
             column = _.findWhere(this._getColModel(), {
                 name: columnId
@@ -88,14 +94,14 @@
             return !column ? column.hidden : void 0;
         };
 
-        AgGridCtrl.prototype.toggleColumn = function (columnId) {
+        this.toggleColumn = function (columnId) {
             var showOrHide;
             showOrHide = this.isColumnHidden(columnId) ? "showCol" : "hideCol";
             this.$grid.jqGrid(showOrHide, columnId);
             return this._triggerResize();
         };
 
-        AgGridCtrl.prototype.columnChooser = function (options) {
+        this.columnChooser = function (options) {
             var _this = this;
             if (!options) {
                 options = {};
@@ -113,15 +119,15 @@
             return this.$grid.jqGrid("columnChooser", options);
         };
 
-        AgGridCtrl.prototype._getColModel = function () {
+        this._getColModel = function () {
             return this.$grid.jqGrid("getGridParam", "colModel");
         };
 
-        AgGridCtrl.prototype._triggerResize = function () {
+        this._triggerResize = function () {
             return this.$grid.trigger("resize");
         };
 
-        AgGridCtrl.prototype._flashRow = function (id, complete) {
+        this._flashRow = function (id, complete) {
             var $row;
             if (!complete) {
                 complete = angular.noop;
@@ -136,27 +142,7 @@
             });
         };
 
-        return AgGridCtrl;
-
-    })());
-
-}).call(this);
-
-(function () {
-    function setIdValue(element, baseValue) {
-        var alias, index = 0;
-        alias = baseValue || "gridz";
-        while ($('#' + alias).length !== 0) {
-            alias = alias + index.toString(10);
-            index++;
-        }
-        element.find("table.gridz").attr("id", alias);
-        element.find("div.gridz-pager").attr("id", "" + alias + "-pager");
-    }
-
-    var gridz;
-
-    gridz = angular.module("coevery.grid", []);
+    }]);
 
     gridz.directive("agGrid", [
         "$rootScope", "$compile", "logger","$http", function ($rootScope, $compile, logger,$http) {
@@ -169,8 +155,8 @@
                     $scope[alias] = gridCtrl;
                 }
                 initializeGrid = function (gridOptions) {
-                    var $grid, isInitial=true;
-                    //logger.info("Initializing the grid");
+                    var $grid, isInitial = true;
+                    debugger;
                     $grid = $element.find("table.gridz");
                     gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
 
@@ -355,16 +341,3 @@
     });
 
 })();
-
-/*Abandoned Code
-            $grid.on("click.view-action", ".view-action", function(event) {
-                event.preventDefault();
-                var id;
-                id = $(this).attr("data-id");
-                $scope.$on("ViewAction", function(subevent, args) {
-                    subevent.preventDefault();
-                    $scope.view(args);
-                });
-                $rootScope.$broadcast("ViewAction", id);
-            });
-*/
