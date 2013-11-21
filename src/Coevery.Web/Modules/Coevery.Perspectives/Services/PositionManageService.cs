@@ -2,11 +2,13 @@
 using System.Linq;
 using Coevery.ContentManagement;
 using Coevery.Core.Navigation.Models;
-using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
 using Coevery.Perspectives.Models;
 
 namespace Coevery.Perspectives.Services {
+    public interface IPositionManageService : IDependency {
+        PositionTreeModel ParseMenuPostion(string position, int perspectiveId);
+    }
 
     public class PositionManageService : IPositionManageService {
         private readonly IContentManager _contentManager;

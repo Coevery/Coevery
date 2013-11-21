@@ -9,6 +9,7 @@ using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
 using Coevery.Localization;
 using Coevery.Perspectives.Models;
+using Coevery.Perspectives.Services;
 using Coevery.UI;
 using Coevery.UI.Navigation;
 using Newtonsoft.Json.Linq;
