@@ -68,7 +68,8 @@ namespace Coevery.Entities.Handlers {
         private void OnPublishing(PublishContentContext context, EntityMetadataPart part) {
             if (context.PreviousItemVersionRecord == null) {
                 CreateEntity(part);
-            } else {
+            }
+            else {
                 var previousEntity = _contentManager.Get<EntityMetadataPart>(context.Id);
                 UpdateEntity(previousEntity, part);
             }
@@ -124,7 +125,8 @@ namespace Coevery.Entities.Handlers {
             foreach (var fieldMetadataRecord in entity.FieldMetadataRecords) {
                 if (fieldMetadataRecord.OriginalId != 0) {
                     needUpdateFields.Add(fieldMetadataRecord);
-                } else {
+                }
+                else {
                     AddField(entity.Name, fieldMetadataRecord);
                     var length = GetMaxLength(fieldMetadataRecord.Settings);
                     _schemaUpdateService.CreateColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
@@ -142,7 +144,7 @@ namespace Coevery.Entities.Handlers {
                 record.Settings = _settingService.CompileSetting(settings);
 
                 var length = GetMaxLength(fieldMetadataRecord.Settings);
-                _schemaUpdateService.AlterColumn(entity.Name, fieldMetadataRecord.Name, length);
+                _schemaUpdateService.AlterColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
             }
             _entityEvents.OnUpdating(entity.Name);
         }
@@ -152,8 +154,9 @@ namespace Coevery.Entities.Handlers {
             string maxLengthSetting;
             if (settingDictionary.TryGetValue("TextFieldSettings.MaxLength", out maxLengthSetting)) {
                 int length;
-                if (int.TryParse(maxLengthSetting, out length))
+                if (int.TryParse(maxLengthSetting, out length)) {
                     return length;
+                }
             }
             return null;
         }

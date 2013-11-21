@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using Coevery.Common.Providers;
 using NHibernate.Dialect;
-using Coevery;
 using Coevery.Data;
 using Coevery.Data.Migration.Interpreters;
 using Coevery.Data.Migration.Schema;
@@ -25,7 +23,7 @@ namespace Coevery.Common.Services {
 
         public void FieldColumn(string fieldName, string fieldTypeName, Action<CreateColumnCommand> column = null) {
             var type = _dynamicAssemblyBuilder.GetFieldType(fieldTypeName);
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 type = Nullable.GetUnderlyingType(type);
             }
             var dbType = SchemaUtils.ToDbType(type);
@@ -44,7 +42,7 @@ namespace Coevery.Common.Services {
     public interface ISchemaUpdateService : IDependency {
         void CreateTable(string tableName, Action<CreateTableContext> action = null);
         void CreateColumn(string tableName, string columnName, string columnType, int? length = null);
-        void AlterColumn(string tableName, string columnName, int? length = null);
+        void AlterColumn(string tableName, string columnName, string columnType, int? length = null);
         void DropColumn(string tableName, string columnName);
         void DropTable(string tableName);
         void CreateCustomTable(string tableName, Action<CreateTableCommand> table);
@@ -62,7 +60,6 @@ namespace Coevery.Common.Services {
             IDynamicAssemblyBuilder dynamicAssemblyBuilder,
             ISessionFactoryHolder sessionFactoryHolder,
             ShellSettings shellSettings,
-            ISessionLocator sessionLocator,
             IEnumerable<ICommandInterpreter> commandInterpreters,
             IReportsCoordinator reportsCoordinator) {
             _dynamicAssemblyBuilder = dynamicAssemblyBuilder;
@@ -144,34 +141,36 @@ namespace Coevery.Common.Services {
             _schemaBuilder.DropTable(tableName);
         }
 
-        public void CreateColumn(string tableName, string columnName, string columnType, int? length = null)
-        {
+        public void CreateColumn(string tableName, string columnName, string columnType, int? length = null) {
             string formatedTableName = string.Format(TableFormat, tableName);
             bool result = CheckTableColumnExists(formatedTableName, columnName);
             if (result) {
                 return;
             }
             var type = _dynamicAssemblyBuilder.GetFieldType(columnType);
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 type = Nullable.GetUnderlyingType(type);
             }
             var dbType = SchemaUtils.ToDbType(type);
             Action<ColumnCommand> columnAction = x => x.WithLength(length);
-            _schemaBuilder.AlterTable(string.Format(TableFormat, tableName),
+            _schemaBuilder.AlterTable(formatedTableName,
                 table => table.AddColumn(columnName, dbType, columnAction));
             GenerationDynmicAssembly();
         }
 
-        public void AlterColumn(string tableName, string columnName, int? length = null)
-        {
+        public void AlterColumn(string tableName, string columnName, string columnType, int? length = null) {
             string formatedTableName = string.Format(TableFormat, tableName);
             bool result = CheckTableColumnExists(formatedTableName, columnName);
-            if (!result)
-            {
+            if (!result) {
                 return;
             }
-            Action<ColumnCommand> columnAction = x => x.WithLength(length);
-            _schemaBuilder.AlterTable(string.Format(TableFormat, tableName),
+            var type = _dynamicAssemblyBuilder.GetFieldType(columnType);
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+                type = Nullable.GetUnderlyingType(type);
+            }
+            var dbType = SchemaUtils.ToDbType(type);
+            Action<ColumnCommand> columnAction = x => x.WithType(dbType).WithLength(length);
+            _schemaBuilder.AlterTable(formatedTableName,
                 table => table.AlterColumn(columnName, columnAction));
             GenerationDynmicAssembly();
         }
