@@ -19,7 +19,6 @@
             var link;
             link = function ($scope, $element, attrs, gridCtrl) {
                 var alias, initializeGrid, loadGrid;
-                gridCtrl.registerGridElement($element.find("table.gridz"));
                 alias = attrs.agGridName;
                 if (alias) {
                     $scope[alias] = gridCtrl;
@@ -80,13 +79,8 @@
                                     update: function (event, ui) {
                                         var postData = [];
                                         if (!settings.Handler) {
-                                            gridCtrl.getParam("data").forEach(function (item, index) {
-                                                postData.push(item._id_);
-                                            });
+                                            postData = $grid.find("tbody:first").sortable("toArray");
                                         }
-                                        //$grid.find("tr[id]").each(function (i, item) {
-                                        //    postData.ids.push($(item).attr("id"));
-                                        //});
                                         $http({
                                             url: settings.Url,
                                             method: settings.Method,
@@ -107,7 +101,7 @@
                                     initialLevel: 1,
                                     group: {
                                         columnName: 'Level',
-                                        depthLimit: 3, // child element depth, start from 1, 0 means no limit
+                                        depthLimit: 3, /* child element depth, start from 1, 0 means no limit, actrual depth will be +1 deeper than that*/
                                     },
                                 });
 
@@ -181,11 +175,15 @@
                     $grid = $element.find("table.gridz");
                     if (gridOptions.needReloading === true) {
                         gridOptions.needReloading = false;
-
+                        $grid.setGridParam({
+                            data:[]
+                        });
                         $grid.GridDestroy($grid.attr("id"));
                         $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
                         setIdValue($element, attrs.agGridName);
                     }
+                    $grid = $element.find("table.gridz");
+                    gridCtrl.registerGridElement($grid);
                     initializeGrid(gridOptions);
                 };
                 return $scope.$watch(attrs.agGrid, loadGrid);

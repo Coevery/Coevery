@@ -33,7 +33,7 @@ define(['core/app/detourService',
           };
 
           var navigationColumnDefs = [{
-              name: 'Id', label: t('Id'), key: true,
+              name: 'Id', label: t('Id'), key: true, sortable: false
           }, {
               name: 'DisplayName',
               label: t('DisplayName'),
@@ -73,13 +73,36 @@ define(['core/app/detourService',
               $state.transitionTo('PerspectiveEdit', { Id: perpectiveId });
           };
 
+          $scope.saveDeployment = function () {
+              var postdata = [];
+              var getPosition = function (parent, order) {
+                  if (!parent) {
+                      return order;
+                  }
+                  var parentRecord = $scope.navigationList.getRow(parent);
+                  return getPosition(parentRecord.Parent, parentRecord.Weight) + "." + order;
+              };
+              $scope.navigationList.getParam("data").forEach(function (element, index, array) {
+                  var position = getPosition(element.Parent, element.Weight);
+                  postdata.push({
+                      NavigationId: element.Id,
+                      Position: position.toString()
+                  });
+              });
+              navigationDataService.save( { id: perpectiveId, Positions: postdata }, function (data) {
+                  logger.success(t('Save layout successful.'));
+                  $scope.getAllNavigationdata(true);
+              }, function (response) {
+                  logger.error(t('Failed to save layout:' + response.data.Message));
+              });
+          };
 
           $scope.delete = function (navigationId) {
               perspectiveDataService.delete({ Id: navigationId }, function () {
                   $scope.getAllNavigationdata();
-                  logger.success('Delete the navigation successful.');
+                  logger.success(t('Delete the navigation successful.'));
               }, function (result) {
-                  logger.error('Failed to delete the navigation:' + result);
+                  logger.error(t('Failed to delete the navigation:' + result));
               });
           };
 
@@ -93,8 +116,16 @@ define(['core/app/detourService',
           };
 
 
-          $scope.getAllNavigationdata = function () {
-              $("#navigationList").jqGrid('setGridParam', {
+          $scope.getAllNavigationdata = function (needReconstruct) {
+              if (needReconstruct) {
+                  var reloadOptions = {
+                      needReloading: true
+                  };
+                  angular.extend(reloadOptions, gridOptions);
+                  $scope.gridOptions = reloadOptions;
+                  return;
+              }
+              $scope.navigationList.jqGrid('setGridParam', {
                   datatype: "json"
               }).trigger('reloadGrid');
           };

@@ -36,7 +36,8 @@ namespace Coevery.Perspectives.Controllers {
 
         // GET api/perspective/perspective
         public object Get(int page, int rows) {
-            IEnumerable<PerspectivePart> menus = Services.ContentManager.Query<PerspectivePart, PerspectivePartRecord>().OrderBy(x => x.Position).ForType("Menu").List();
+            IEnumerable<PerspectivePart> menus = Services.ContentManager.Query<PerspectivePart, PerspectivePartRecord>()
+                .OrderBy(x => x.Position).ForType("Menu").List();
             var query = from menu in menus
                 select new {Id = menu.Id, DisplayName = menu.Title,Description=menu.Description};
             var totalRecords = query.Count();

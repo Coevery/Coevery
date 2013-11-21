@@ -52,7 +52,9 @@
             this.$grid.setRowData(id, this.flatten(data));
             return this._flashRow(id);
         };
-
+        AgGridCtrl.prototype.getRow = function (id) {
+            return this.$grid.getLocalRow(id);
+        };
         AgGridCtrl.prototype.addRow = function (id, data, position) {
             if (!position) {
                 position = "first";

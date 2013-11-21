@@ -578,7 +578,6 @@
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.js" />
     <Content Include="MooncakeBase\Scripts\uniform\jquery.uniform.min.js" />
     <Content Include="MooncakeBase\Styles\assets\draggable.png" />
-    <Content Include="MooncakeBase\Styles\assets\jquery.tabledrag.css" />
     <Content Include="MooncakeBase\Styles\assets\tree-bottom.png" />
     <Content Include="MooncakeBase\Styles\assets\tree.png" />
     <Content Include="MooncakeBase\Styles\bootstrap\bootstrap-responsive.css" />
@@ -1933,6 +1932,7 @@
     <Content Include="MooncakeBase\Styles\images\user.jpg" />
     <Content Include="MooncakeBase\Styles\images\vlabels.png" />
     <Content Include="MooncakeBase\Styles\images\white_tiles.png" />
+    <Content Include="MooncakeBase\Styles\jquery.tabledrag.css" />
     <Content Include="MooncakeBase\Styles\layout-base.css" />
     <Content Include="MooncakeBase\Styles\layout-coevery.css" />
     <Content Include="MooncakeBase\Styles\layout-systemAdmin.css" />

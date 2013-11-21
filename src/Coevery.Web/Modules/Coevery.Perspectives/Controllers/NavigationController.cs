@@ -10,8 +10,10 @@ using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
 using Coevery.Localization;
 using Coevery.Perspectives.Services;
+using Coevery.Perspectives.ViewModels;
 using Coevery.UI;
 using Coevery.UI.Navigation;
+using Newtonsoft.Json.Linq;
 
 namespace Coevery.Perspectives.Controllers {
     public class NavigationController : ApiController {
@@ -71,18 +73,16 @@ namespace Coevery.Perspectives.Controllers {
             };
         }
 
-        public object PostReorderInfo([FromBody]IEnumerable<string> positions) {
+        public object PostReorderInfo([FromBody]JObject positions) {
             try {
-                var navigationItemIds = positions;
-                var pos = 1;
-                foreach (var navigationItemId in navigationItemIds) {
-                    var contentItem = Services.ContentManager.Get(Convert.ToInt32(navigationItemId));
+                var navigationItemIds = positions["Positions"].ToArray();
+                foreach (var navigationItem in navigationItemIds) {
+                    var contentItem = Services.ContentManager.Get(navigationItem["NavigationId"].Value<int>());
                     if (contentItem == null) {
                         throw new ArgumentNullException();
                     }
-                    contentItem.As<MenuPart>().MenuPosition = pos.ToString();
+                    contentItem.As<MenuPart>().MenuPosition = navigationItem["Position"].Value<string>();
                     Services.ContentManager.Publish(contentItem);
-                    pos++;
                 }
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }

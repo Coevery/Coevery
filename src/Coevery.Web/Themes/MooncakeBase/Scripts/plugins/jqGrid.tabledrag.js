@@ -14,12 +14,16 @@
         return '[aria-describedby="' + tabeId + '_' + columnName + '"]';
     }
     
-    function treeDisplay(settings) {
-        $('tr.' + settings.draggableClass, this).each(function () {
+    function columnValueSelector(selector,value) {
+        return 'td'+ selector + '[title="'+ (value || '') + '"]';
+    }
+
+    function treeDisplay(settings, element) {
+        $('tr.' + settings.draggableClass, element).each(function () {
             var row = $(this);
             var field = $(getColumnSelector(settings.tableId, settings.group.columnName), row);
             if (field.length) {
-                for (var i = 1, len = parseInt(field.text(), 10) - settings.initialLevel ; i < len; i++) {
+                for (var i = 1, len = parseInt(field.text(), 10) - settings.initialLevel ; i <= len; i++) {
                     $('td:first', row).prepend(Drupal.theme('tableDragIndentation'));
                 }
             }
@@ -50,7 +54,7 @@
             var table = new Drupal.tableDrag(this, settings);
 
             // Indent each row.
-            treeDisplay(settings);
+            treeDisplay(settings,this);
         });
     };
 
@@ -408,6 +412,7 @@
         // Drop row functionality shared between mouseup and blur events.
         if (self.rowObject != null) {
             var droppedRow = self.rowObject.element;
+
             // The row is already in the right place so we just release it.
             if (self.rowObject.changed == true) {
                 // Update the fields in the dropped row.
@@ -426,9 +431,8 @@
                     self.changed = true;
                 }
             }
-
             if (self.indentEnabled) {
-                self.rowObject.removeIndentClasses();
+                self.removeIndentClasses();
             }
             if (self.oldRowElement) {
                 $(self.oldRowElement).removeClass('drag-previous');
@@ -545,7 +549,7 @@
      *   DOM object for the row that was just dropped.
      */
     Drupal.tableDrag.prototype.updateFields = function (changedRow) {
-        for (var group in { group: 1, weight: 1, parent: 1 }) {
+        for (var group in { group: 1, parent: 1, weight: 1 }) {
             // Each group may have a different setting for relationship, so we find
             // the source rows for each separately.
             this.updateField(changedRow, group);
@@ -641,35 +645,51 @@
             var sourceClass = getColumnSelector(this.tableSettings.tableId, (rowSettings.relationship == 'parent' ? rowSettings.sourceColumnName : rowSettings.columnName));
             var sourceElement = $(sourceClass, sourceRow);
             var table = $(this.table);
-            var siblings;
-            var record;
             var weight;
             var weightColumnName = this.tableSettings.weight.columnName;
             switch (rowSettings.action) {
                 case 'depth':
                     // Get the depth of the target row.
-                    record = table.getLocalRow(this.rowObject.rowId);
-                    var newLevel = $('.indentation', sourceElement.closest('tr')).length + this.tableSettings.initialLevel;
+                    var record = table.getLocalRow($(changedRow).attr("id"));
+                    var originalLevel = record[this.tableSettings.group.columnName];
+                    var originalParent = record[this.tableSettings.parent.columnName];
+                    var newLevel = $('.indentation', changedRow).length + this.tableSettings.initialLevel;   
+                    record[this.tableSettings.group.columnName] = newLevel;
                     targetElement.text(newLevel);
                     targetElement.attr("title", newLevel);
+                    //update previous level's row
+                    var levelSelector = targetClass;
+                    var parentSelector = getColumnSelector(this.tableSettings.tableId, this.tableSettings.parent.columnName);
+                    var previousLevelRow = $("tr." + this.tableSettings.draggableClass, this.table).not(changedRow)
+                        .has(columnValueSelector(parentSelector, originalParent))
+                        .has(columnValueSelector(levelSelector, originalLevel)).get(0);
 
-                    record[rowSettings.columnName] = newLevel;
+                    if (previousLevelRow) {
+                        this.updateField(previousLevelRow, 'weight');
+                    }
                     break;
                 case 'match':
                     // Update the value.
-                    record = table.getLocalRow(this.rowObject.rowId);
-                    record[this.tableSettings.parent.columnName] = sourceElement.attr("title");
-                    targetElement.text(record[this.tableSettings.parent.columnName]);
-                    targetElement.attr("title", record[this.tableSettings.parent.columnName]);
+                    var parentValue = sourceElement.attr("title");
+                    var currentrecord = table.getLocalRow($(changedRow).attr("id"));
+                    currentrecord[this.tableSettings.parent.columnName] = parentValue;
+                    targetElement.text(parentValue);
+                    targetElement.attr("title", parentValue);
                     break;
                 case 'order':
-                    siblings = this.rowObject.findSiblings(rowSettings);
+                    var siblings;
+                    if (changedRow != this.rowObject.element) {
+                        var currentRow = new this.row(changedRow, 'mouse', this.indentEnabled, this.maxDepth, true, this.tableSettings.draggableClass);
+                        siblings = currentRow.findSiblings(rowSettings);
+                    } else {
+                        siblings = this.rowObject.findSiblings(rowSettings);
+                    }
                     weight = 1;
                     // Assume a numeric input field.
                     $(targetClass, siblings).each(function () {
                         var id = $(this).parent("tr").attr("id");
-                        record = table.getLocalRow(id);
-                        record[weightColumnName] = weight;
+                        var temprecord = table.getLocalRow(id);
+                        temprecord[weightColumnName] = weight;
                         $(this).text(weight);
                         $(this).attr("title", weight);
                         weight++;
@@ -1012,9 +1032,10 @@
     /**
      * Remove indentation helper classes from the current row group.
      */
-    Drupal.tableDrag.prototype.row.prototype.removeIndentClasses = function () {
-        for (var n in this.children) {
-            $('.indentation', this.children[n])
+    Drupal.tableDrag.prototype.removeIndentClasses = function () {
+        var tdList = $("tr." + this.tableSettings.draggableClass + " td:first-child", this.table).has("div.indentation");
+        for (var n = 0 ; n < tdList.length; n++) {
+            $('.indentation', tdList[n])
               .removeClass('tree-child')
               .removeClass('tree-child-first')
               .removeClass('tree-child-last')
