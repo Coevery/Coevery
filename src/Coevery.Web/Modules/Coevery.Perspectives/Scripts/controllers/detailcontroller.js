@@ -56,7 +56,6 @@ define(['core/app/detourService',
           angular.extend(gridOptions, $rootScope.defaultGridOptions);
           gridOptions.multiselect = false;
           gridOptions.sortable = false;
-          gridOptions.jsonReader.id = "";
           $scope.gridOptions = gridOptions;
 
           $scope.addNavigationItem = function () {
@@ -75,6 +74,7 @@ define(['core/app/detourService',
 
           $scope.saveDeployment = function () {
               var postdata = [];
+              var depth = 1;
               var getPosition = function (parent, order) {
                   if (!parent) {
                       return order;
@@ -83,13 +83,15 @@ define(['core/app/detourService',
                   return getPosition(parentRecord.Parent, parentRecord.Weight) + "." + order;
               };
               $scope.navigationList.getParam("data").forEach(function (element, index, array) {
+                  var currentLevel = element.Level;
+                  depth = currentLevel > depth ? currentLevel : depth;
                   var position = getPosition(element.Parent, element.Weight);
                   postdata.push({
                       NavigationId: element.Id,
                       Position: position.toString()
                   });
               });
-              navigationDataService.save( { id: perpectiveId, Positions: postdata }, function (data) {
+              navigationDataService.save( { Id: perpectiveId, Positions: postdata, Depth: depth }, function (data) {
                   logger.success(t('Save layout successful.'));
                   $scope.getAllNavigationdata(true);
               }, function (response) {

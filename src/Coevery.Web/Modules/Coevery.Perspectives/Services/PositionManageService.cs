@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Coevery.ContentManagement;
 using Coevery.Core.Navigation.Models;
+using Coevery.Core.Navigation.Services;
+using Coevery.Core.Navigation.ViewModels;
 using Coevery.Perspectives.Models;
 
 namespace Coevery.Perspectives.Services {
-    public class PositionTreeModel {
-        public int? ParentId { get; set; }
-        public string ParentPosition { get; set; }
-        public int Level { get; set; }
-        public int Order { get; set; }
-        public bool IsLeaf { get; set; }
-        public bool Expanded { get; set; }
-    }
-    public interface IPositionManageService : IDependency {
-        PositionTreeModel ParseMenuPostion(string position, int perspectiveId);
-    }
+
     public class PositionManageService : IPositionManageService {
         private readonly IContentManager _contentManager;
         public PositionManageService(IContentManager contentManager) {

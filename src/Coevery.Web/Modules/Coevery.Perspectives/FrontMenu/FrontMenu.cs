@@ -13,14 +13,13 @@ using Coevery.UI.Navigation;
 using Coevery.ContentManagement;
 using System.Linq;
 
-namespace Coevery.Perspectives.FrontMenu
-{
+namespace Coevery.Perspectives.FrontMenu {
     public class FrontMenu : INavigationProvider {
         private readonly IMenuService _menuService;
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
 
         public FrontMenu(
-            ICoeveryServices coeveryServices, 
+            ICoeveryServices coeveryServices,
             IContentDefinitionExtension contentDefinitionExtension,
             IMenuService menuService) {
             _contentDefinitionExtension = contentDefinitionExtension;
@@ -46,24 +45,25 @@ namespace Coevery.Perspectives.FrontMenu
                             menu.Url(url);
                             menu.Content(c);
                             menu.IdHint(c.Id.ToString(CultureInfo.InvariantCulture));
-                            int menuIdex = 0;
                             var subMenus = _menuService.GetMenuParts(c.Id)
                                 .OrderBy(menuPartEntry => menuPartEntry.MenuPosition, new FlatPositionComparer())
                                 .ToList();
                             foreach (var subMenu in subMenus) {
                                 var subMenuCotent = subMenu;
                                 var menuItemEntity = CreateMenuItemEntries(subMenu, url);
+                                if (!subMenu.Is<ModuleMenuItemPart>()) {
+                                    menu.Add(T(menuItemEntity.Text), menuItemEntity.Position, item => item
+                                        .Url(menuItemEntity.Url)
+                                        .Content(subMenuCotent)
+                                        .IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)));
+                                    continue;
+                                }
                                 var moduleMenuItem = subMenu.As<ModuleMenuItemPart>();
-                                var position = (++menuIdex).ToString(CultureInfo.InvariantCulture);
-                                if (moduleMenuItem != null) {
-                                    menu.Add(T(menuItemEntity.Text), position, item =>
-                                        item.Url(menuItemEntity.Url).Content(subMenuCotent).IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)),
-                                        new List<string>() {moduleMenuItem.IconClass});
-                                }
-                                else {
-                                    menu.Add(T(menuItemEntity.Text), position, item =>
-                                        item.Url(menuItemEntity.Url).Content(subMenuCotent).IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)));
-                                }
+                                menu.Add(T(menuItemEntity.Text), menuItemEntity.Position, item => item
+                                    .Url(menuItemEntity.Url)
+                                    .Content(subMenuCotent)
+                                    .IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)),
+                                    new List<string>() {moduleMenuItem.IconClass});
                             }
                         });
             });
@@ -73,14 +73,13 @@ namespace Coevery.Perspectives.FrontMenu
             string urlFormat = parentUrl + "/{0}";
             string url;
 
-            if (menuPart.Is<ModuleMenuItemPart>())
-            {
+            if (menuPart.Is<ModuleMenuItemPart>()) {
                 var urlName = _contentDefinitionExtension.GetEntityNames(
                     menuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord.Name).CollectionName;
                 url = string.Format(urlFormat, urlName);
-            }
-            else
-            {
+            } 
+            //@todo: add process for other category of navigation item
+            else {
                 url = string.Format(urlFormat, menuPart.MenuText);
             }
 
