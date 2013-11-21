@@ -10,9 +10,11 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
               return result;
           };
 
-          var metadataColumnDefs = [              
+          var metadataColumnDefs = [
               {
-                  name: 'Name', label: 'Name',
+                  name: 'Name',
+                  label: 'Name',
+                  key: true,
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
               },

@@ -155,7 +155,6 @@
                 }
                 initializeGrid = function (gridOptions) {
                     var $grid, isInitial = true;
-                    debugger;
                     $grid = $element.find("table.gridz");
                     if (!gridOptions.treeGrid) {
                         gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");

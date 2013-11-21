@@ -57,8 +57,8 @@ namespace Coevery.Common.Controllers {
             if (string.IsNullOrEmpty(id)) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
+            var typeName = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
+            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(typeName);
             var contentItem = Services.ContentManager.New("ListViewPage");
             contentItem.As<TitlePart>().Title = typeDefinition.Settings["CollectionDisplayName"];
             var model = Services.ContentManager.BuildDisplay(contentItem);

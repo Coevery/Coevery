@@ -30,12 +30,13 @@ namespace Coevery.Projections.Controllers {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
 
-            var firstColumn = new JObject();
-            firstColumn["name"] = "ContentId";
-            firstColumn["label"] = T("Content Id").Text;
-            firstColumn["hidden"] = true;
+            var keyColumn = new JObject();
+            keyColumn["name"] = "ContentId";
+            keyColumn["label"] = T("Content Id").Text;
+            keyColumn["hidden"] = true;
+            keyColumn["key"] = true;
 
-            var columns = new List<JObject> { firstColumn };
+            var columns = new List<JObject> { keyColumn };
             var properties = GetDescriptors(viewId).Select(x => x.Property).ToList();
             foreach (var property in properties) {
                 var column = new JObject();
