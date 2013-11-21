@@ -157,7 +157,6 @@
     <Compile Include="Navigation\Services\DefaultMenuManager.cs" />
     <Compile Include="Navigation\Services\IMenuManager.cs" />
     <Compile Include="Navigation\Services\DefaultMenuProvider.cs" />
-    <Compile Include="Navigation\Services\IPositionManageService.cs" />
     <Compile Include="Navigation\Services\NavigationManager.cs" />
     <Compile Include="Navigation\Settings\AdminMenuPartTypeSettings.cs" />
     <Compile Include="Contents\ViewModels\ListContentsViewModel.cs" />

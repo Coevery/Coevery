@@ -18,7 +18,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
               },
-              { name: 'Id', label: 'Id', hidden: true, sorttype: 'int' },
+              { name: 'Id', label: t('Id'), hidden: true, sorttype: 'int' },
               { name: 'DisplayName', label: t('Display Name') },
               { name: 'Modified', label: t('Has Unpublished Modification') },
               { name: 'HasPublished', label: t('Has Ever Published') }
