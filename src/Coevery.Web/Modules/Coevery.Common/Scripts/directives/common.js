@@ -111,6 +111,46 @@ angular.module('coevery.common', [])
             }
         };
     })
+    .config(['$httpProvider', function($httpProvider) {
+        var $http;
+        $httpProvider.responseInterceptors.push(['$q', '$injector', function($q, $injector) {
+            var rootScope;
+
+            function success(response) {
+                // get $http via $injector because of circular dependency problem
+                $http = $http || $injector.get('$http');
+                // don't send notification until all requests are complete
+                if ($http.pendingRequests.length < 1) {
+                    // get $rootScope via $injector because of circular dependency problem
+                    rootScope = rootScope || $injector.get('$rootScope');
+                    // send a notification requests are complete
+                    rootScope.$broadcast('_END_REQUEST_');
+                }
+                return response;
+            }
+
+            function error(response) {
+                // get $http via $injector because of circular dependency problem
+                $http = $http || $injector.get('$http');
+                // don't send notification until all requests are complete
+                if ($http.pendingRequests.length < 1) {
+                    // get $rootScope via $injector because of circular dependency problem
+                    rootScope = rootScope || $injector.get('$rootScope');
+                    // send a notification requests are complete
+                    rootScope.$broadcast('_END_REQUEST_');
+                }
+                return $q.reject(response);
+            }
+
+            return function(promise) {
+                // get $rootScope via $injector because of circular dependency problem
+                rootScope = rootScope || $injector.get('$rootScope');
+                // send notification a request has started
+                rootScope.$broadcast('_START_REQUEST_');
+                return promise.then(success, error);
+            };
+        }]);
+    }])
     .directive('loadingIndicator', function() {
         return {
             restrict: "A",
@@ -130,10 +170,10 @@ angular.module('coevery.common', [])
             }
         };
     })
-    .directive('coDatetimePicker', function () {
+    .directive('coDatetimePicker', function() {
         return {
             restrict: "A",
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 if (attrs.coDatetimePicker == 'date') {
                     $(element).datetimepicker({ pickTime: false });
                 } else {
@@ -142,6 +182,3 @@ angular.module('coevery.common', [])
             }
         };
     });
-    
-
-

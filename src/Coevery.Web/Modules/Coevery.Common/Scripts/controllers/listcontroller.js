@@ -1,8 +1,8 @@
 ﻿define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function (detour) {
     detour.registerController([
         'GeneralListCtrl',
-        ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$state', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
-            function ($rootScope, $scope, $parse, $http, logger, $compile, $state, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
+        ['$rootScope', '$scope', '$parse', '$http', '$q', '$resource', 'logger', '$compile', '$state', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
+            function ($rootScope, $scope, $parse, $http, $q, $resource, logger, $compile, $state, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
                 var navigationId = $stateParams.NavigationId;
                 var moduleName = $stateParams.Module;
                 $scope.isInit = true;
@@ -34,54 +34,61 @@
                 };
 
                 // fetch view columns
-                $scope.FetchViewColumns = function (viewId) {
+                $scope.FetchViewColumns = function(viewId) {
                     if (viewId <= 0) return;
                     if (viewId === $scope.currentViewId) return;
                     var needGridReloading = true;
                     $scope.currentViewId = viewId;
                     $location.search("ViewId", viewId);
+
+                    var gridOptions = angular.extend({}, $rootScope.defaultGridOptions, {
+                        datatype: "local",
+                        rowNum: pageSize,
+                        rowList: pageSizes,
+                        totalServerItems: 0,
+                        pagingOptions: {
+                            pageSizes: [50, 100, 200],
+                            pageSize: pageSize,
+                            currentPage: 1
+                        }
+                    });
+
                     var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function () {
                         $.each(gridColumns, function (index, value) {
                             if (value.formatter) {
                                 value.formatter = $rootScope[value.formatter];
                             }
                         });
-                        $scope.columnDefs = gridColumns;
-                        if (!$scope.isInit && !needGridReloading) {
-                            $scope.getPagedDataAsync();
-                        } else {
-                            var gridOptions = {
-                                url: 'api/projections/entity/' + moduleName,
-                                mtype: "post",
-                                postData: getPostData(),
-                                rowNum: pageSize,
-                                rowList: pageSizes,
-                                needReloading: needGridReloading && !$scope.isInit,
-                                page: currentPage,
-                                colModel: $scope.columnDefs,
-                                loadComplete: function (data) {
-                                    currentPage = data.page;
-                                    pageSize = data.records;
-                                    if (currentFilterGroupId === 0) {
-                                        $scope.filterDescription = data.filterDescription;
-                                    }
-                                    $scope.$apply();
-                                },
-                                loadError: function (xhr, status, error) {
-                                    logger.error("Failed to fetched records for " + moduleName + ":\n" + error);
-                                }
-                            };
-                            angular.extend(gridOptions, $rootScope.defaultGridOptions);
-                            $scope.gridOptions = gridOptions;
-                            $scope.isInit = false;
-                        }
-                    }, function (response) {
+                    }, function(response) {
                         logger.error("Failed to fetched columns");
+                    });
+                    
+                    var entityDataService = $resource('api/Projections/entity/:contentType',
+                        { contentType: '@contentType' },
+                        { query: { method: 'POST' } });
+                    
+                    var dataResults = entityDataService.query(angular.extend(getPostData(), { contentType: moduleName }));
+                   
+                    $q.all([gridColumns.$promise, dataResults.$promise]).then(function () {
+                        $scope.gridOptions = angular.extend(gridOptions, {
+                            data: dataResults.rows,
+                            totalServerItems: dataResults.totalRecords,
+                            colModel: gridColumns
+                        });
+                    }, function (reason) {
+                        logger.error("Failed to fetched records for " + moduleName + ":\n" + reason);
                     });
                 };
 
                 $scope.Refresh = function () {
-                    $scope.getPagedDataAsync();
+                    var entityDataService = $resource('api/Projections/entity/:contentType',
+                        { contentType: '@contentType' },
+                        { query: { method: 'POST' } });
+                    var parameters = angular.extend(getPostData(), { contentType: moduleName });
+                    var dataResults = entityDataService.query(parameters, function () {
+                        $scope.gridOptions.data = dataResults.rows;
+                    });
+                    //$scope.getPagedDataAsync();
                 };
 
                 // init views

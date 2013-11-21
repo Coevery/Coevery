@@ -148,154 +148,190 @@
         "$rootScope", "$compile", "logger","$http", function ($rootScope, $compile, logger,$http) {
             var link;
             link = function ($scope, $element, attrs, gridCtrl) {
-                var alias, initializeGrid, loadGrid;
-                gridCtrl.registerGridElement($element.find("table.gridz"));
-                alias = attrs.agGridName;
-                if (alias) {
-                    $scope[alias] = gridCtrl;
-                }
-                initializeGrid = function (gridOptions) {
-                    var $grid, isInitial = true;
-                    debugger;
-                    $grid = $element.find("table.gridz");
-                    gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+                //var alias, initializeGrid, loadGrid;
+                //gridCtrl.registerGridElement($element.find("table.gridz"));
+                //alias = attrs.agGridName;
+                //if (alias) {
+                //    $scope[alias] = gridCtrl;
+                //}
+                //initializeGrid = function (gridOptions) {
+                //    var $grid, isInitial = true;
+                //    debugger;
+                //    $grid = $element.find("table.gridz");
+                //    gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
 
-                    gridOptions.loadBeforeSend = function (xhr, settings) {
-                        if (isInitial) {
-                            $element.hide();
-                        }
-                        $http.pendingRequests.unshift("jqGrid");
-                        $rootScope.$broadcast('_START_REQUEST_');
-                        return true;
+                //    gridOptions.loadBeforeSend = function (xhr, settings) {
+                //        if (isInitial) {
+                //            $element.hide();
+                //        }
+                //        $http.pendingRequests.unshift("jqGrid");
+                //        $rootScope.$broadcast('_START_REQUEST_');
+                //        return true;
+                //    },
+                //    gridOptions.gridComplete = function () {
+                //        $compile($grid)($scope);
+
+                //        var width, pager;
+                //        width = $element.parent().width() - 1;
+                //        pager = $(gridOptions.pager + '_center');
+                //        if (pager.find(".custom-pager").length === 0) {
+                //            var pagerOption = {
+                //                items: $grid.getGridParam("records"),
+                //                itemsOnPage: $grid.getGridParam("rowNum"),
+                //                currentPage: $grid.getGridParam("page"),
+                //                onPageClick: function(pageNumber, event) {
+                //                    if (!event) {
+                //                        return;
+                //                    }
+                //                    event.preventDefault();
+                //                    $grid.setGridParam({
+                //                        page: pageNumber
+                //                    });
+                //                    $grid.trigger("reloadGrid");
+                //                },
+                //                //cssStyle: 'compact-theme'
+                //            };
+                //            if (width < 560) {
+                //                pagerOption.displayedPages = 3;
+                //            }
+                //            pager.append("<section class='custom-pager pagination'></section>");
+                //            pager.find("section").pagination(pagerOption);
+                //        }
+                //        $grid.setGridWidth(width);
+                //        if (isInitial) {
+                //            $element.show();
+                //            isInitial = false;
+                //        }
+                //        $http.pendingRequests.shift();
+                //        $rootScope.$broadcast('_END_REQUEST_');
+                //        return $grid;
+                //    };
+
+                //    gridOptions.onPaging = function (pageOption) {
+                //        if (pageOption === "records") {
+                //            $(gridOptions.pager).find(".custom-pager")
+                //                .pagination('updateItemsOnPage', $(".ui-pg-selbox :selected").val());
+                //        }
+                //    };
+
+                //    gridOptions.onSelectRow = function () {
+                //        $scope.$apply(function () {
+                //            $scope.selectedRow = null;
+                //            $scope.selectedItems = gridCtrl.getSelectedRowIds();
+                //            if ($scope.selectedItems.length === 1 && !!gridOptions.rowIdName) {
+                //                $scope.selectedRow = gridCtrl.getParam("data").filter(function (element) {
+                //                    return element[gridOptions.rowIdName].toString() === $scope.selectedItems[0];
+                //                });
+                //            }
+                //        });
+                //    };
+
+                //    gridOptions.onSelectAll = function () {
+                //        $scope.$apply(function () {
+                //            $scope.selectedItems = gridCtrl.getSelectedRowIds();
+                //        });
+                //    };
+
+                //    $grid.jqGrid(gridOptions);
+
+                //    if (attrs.agGridDrag != undefined) {
+                //        $grid.jqGrid('sortableRows', {
+                //            update: function () {
+                //                var form = $("form[name=myForm]");
+                //                var postData = form.serialize() + "&ids=";
+                //                $grid.find("tr[id]").each(function (i, item) {
+                //                    postData += $(item).attr("id")+",";
+                //                });
+                //                $http({
+                //                    url: form.attr('action'),
+                //                    method: form.attr('method'),
+                //                    data: postData,
+                //                    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
+                //                }).then(function() {
+                //                    logger.success('Reordering succeeded.');
+                //                }, function(response) {
+                //                    logger.error('Reordering Failed');
+                //                });
+                //            }
+                //        });
+                //    }
+                //    /*
+                //    adds listener to resize grid to parent container when window is resized.
+                //    This will work for reponsive and fluid layouts
+                //    */
+
+                //    function responsiveResize() {
+                //        var gboxId = "#gbox_" + ($grid.attr("id"));
+                //        return $(window).on("resize", function (event, ui) {
+                //            var curWidth, parWidth, w;
+                //            parWidth = $(gboxId).parent().width();
+                //            curWidth = $(gboxId).width();
+                //            w = parWidth - 1;
+                //            if (Math.abs(w - curWidth) > 2) {
+                //                $grid.setGridWidth(w);
+                //            }
+                //        });
+                //    }
+
+                //    responsiveResize();
+                //};
+
+                //var loadGrid = function (gridOptions) {
+                //    if (!gridOptions) {
+                //        return;
+                //    }
+                //    $element.find('table').jqGrid(gridOptions);
+                //    var $grid;
+                //    $grid = $element.find("table.gridz");
+                //    if (gridOptions.needReloading === true) {
+                //        gridOptions.needReloading = false;
+
+                //        $grid.GridDestroy($grid.attr("id"));
+                //        $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
+                //        setIdValue($element, attrs.agGridName);
+                //    }
+                //    initializeGrid(gridOptions);
+                //};
+
+                var defaultOptions = {
+                    onSortCol: function(index, iCol, sortorder) {
+
                     },
-                    gridOptions.gridComplete = function () {
-                        $compile($grid)($scope);
-
-                        var width, pager;
-                        width = $element.parent().width() - 1;
-                        pager = $(gridOptions.pager + '_center');
-                        if (pager.find(".custom-pager").length === 0) {
-                            var pagerOption = {
-                                items: $grid.getGridParam("records"),
-                                itemsOnPage: $grid.getGridParam("rowNum"),
-                                currentPage: $grid.getGridParam("page"),
-                                onPageClick: function(pageNumber, event) {
-                                    if (!event) {
-                                        return;
-                                    }
-                                    event.preventDefault();
-                                    $grid.setGridParam({
-                                        page: pageNumber
-                                    });
-                                    $grid.trigger("reloadGrid");
-                                },
-                                //cssStyle: 'compact-theme'
-                            };
-                            if (width < 560) {
-                                pagerOption.displayedPages = 3;
-                            }
-                            pager.append("<section class='custom-pager pagination'></section>");
-                            pager.find("section").pagination(pagerOption);
-                        }
-                        $grid.setGridWidth(width);
-                        if (isInitial) {
-                            $element.show();
-                            isInitial = false;
-                        }
-                        $http.pendingRequests.shift();
-                        $rootScope.$broadcast('_END_REQUEST_');
-                        return $grid;
-                    };
-
-                    gridOptions.onPaging = function (pageOption) {
-                        if (pageOption === "records") {
-                            $(gridOptions.pager).find(".custom-pager")
-                                .pagination('updateItemsOnPage', $(".ui-pg-selbox :selected").val());
-                        }
-                    };
-
-                    gridOptions.onSelectRow = function () {
-                        $scope.$apply(function () {
-                            $scope.selectedRow = null;
-                            $scope.selectedItems = gridCtrl.getSelectedRowIds();
-                            if ($scope.selectedItems.length === 1 && !!gridOptions.rowIdName) {
-                                $scope.selectedRow = gridCtrl.getParam("data").filter(function (element) {
-                                    return element[gridOptions.rowIdName].toString() === $scope.selectedItems[0];
-                                });
-                            }
-                        });
-                    };
-
-                    gridOptions.onSelectAll = function () {
-                        $scope.$apply(function () {
-                            $scope.selectedItems = gridCtrl.getSelectedRowIds();
-                        });
-                    };
-
-                    $grid.jqGrid(gridOptions);
-
-                    if (attrs.agGridDrag != undefined) {
-                        $grid.jqGrid('sortableRows', {
-                            update: function () {
-                                var form = $("form[name=myForm]");
-                                var postData = form.serialize() + "&ids=";
-                                $grid.find("tr[id]").each(function (i, item) {
-                                    postData += $(item).attr("id")+",";
-                                });
-                                $http({
-                                    url: form.attr('action'),
-                                    method: form.attr('method'),
-                                    data: postData,
-                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
-                                }).then(function() {
-                                    logger.success('Reordering succeeded.');
-                                }, function(response) {
-                                    logger.error('Reordering Failed');
-                                });
-                            }
-                        });
+                    onSelectRow: function (rowid, status, e) {
+                        
                     }
-                    /*
-                    adds listener to resize grid to parent container when window is resized.
-                    This will work for reponsive and fluid layouts
-                    */
-
-                    function responsiveResize() {
-                        var gboxId = "#gbox_" + ($grid.attr("id"));
-                        return $(window).on("resize", function (event, ui) {
-                            var curWidth, parWidth, w;
-                            parWidth = $(gboxId).parent().width();
-                            curWidth = $(gboxId).width();
-                            w = parWidth - 1;
-                            if (Math.abs(w - curWidth) > 2) {
-                                $grid.setGridWidth(w);
-                            }
-                        });
-                    }
-
-                    responsiveResize();
                 };
 
-                loadGrid = function (gridOptions) {
-                    if (!gridOptions) {
-                        return;
-                    }
-                    var $grid;
-                    $grid = $element.find("table.gridz");
-                    if (gridOptions.needReloading === true) {
-                        gridOptions.needReloading = false;
+                var optionWatcher = function(options) {
+                    if (!options) return;
 
-                        $grid.GridDestroy($grid.attr("id"));
-                        $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
-                        setIdValue($element, attrs.agGridName);
-                    }
-                    initializeGrid(gridOptions);
+                    var grid = $element.find('table').jqGrid(options);
+
+                    $scope.$parent.$watch(attrs.agGrid + '.colModel', function (a, o) {
+                        if (!a || a == o) return;
+                        grid.setGridParam({ colModel: a }).trigger('reloadGrid');
+                    }, true);
+
+                    var dataWatcher = function(a, o) {
+                        if (!a || a == o) return;
+                        var results = $.extend([], a);
+                        grid.setGridParam({ data: results }).trigger('reloadGrid');
+                    };
+                    $scope.$parent.$watch(attrs.agGrid + '.data', dataWatcher);
+                    var pager = $element.find('.pagination');
+                    pager.pagination({itemsOnPage: options.pagingOptions.pageSize });
+                    var pageWatcher = function(a) {
+                        pager.pagination("updateItems", a);
+                    };
+                    $scope.$parent.$watch(attrs.agGrid + '.totalServerItems', pageWatcher,true);
                 };
-                return $scope.$watch(attrs.agGrid, loadGrid);
+
+                $scope.$parent.$watch(attrs.agGrid, optionWatcher);
             };
             return {
+                scope: true,
                 restrict: "A",
-                template: "<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>",
+                template: "<table class=\"gridz\"></table>\n<div class=\"pagination\"></div>",
                 compile: function (element, attrs) {
                     setIdValue(element, attrs.agGridName);
                     return {
