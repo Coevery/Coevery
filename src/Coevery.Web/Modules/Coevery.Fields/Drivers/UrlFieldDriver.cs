@@ -1,12 +1,10 @@
 ﻿using System;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Handlers;
 using Coevery.Fields.Fields;
 using Coevery.Fields.Settings;
 using Coevery.Localization;
-using Coevery.Utility.Extensions;
 
 namespace Coevery.Fields.Drivers {
     public class UrlFieldDriver : ContentFieldDriver<UrlField> {
@@ -48,7 +46,11 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Editor(ContentPart part, UrlField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<UrlFieldSettings>();
-                var hasValue = !string.IsNullOrWhiteSpace(field.Value);
+
+                bool hasValue = !string.IsNullOrWhiteSpace(field.Value);
+                if (settings.IsUnique && hasValue) {
+                    HandleUniqueValue(part, field, updater);
+                }
                 if (settings.Required && !hasValue) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
@@ -70,6 +72,23 @@ namespace Coevery.Fields.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context.Member(null, typeof(string), null, T("The value of the field."));
+        }
+
+
+        private void HandleUniqueValue(ContentPart part, UrlField field, IUpdateModel updater) {
+            var recordType = part.GetType().GetProperty("Record").PropertyType;
+            Action<IAliasFactory> alias = x => x.ContentPartRecord(recordType);
+            Action<IHqlExpressionFactory> notCurrentItem = x => x.Not(y => y.Eq("ContentItemRecord", part.Id));
+            Action<IHqlExpressionFactory> predicate = x => x.And(notCurrentItem, y => y.Eq(field.Name, field.Value));
+
+            var count = Services.ContentManager.HqlQuery()
+                .ForType(part.TypeDefinition.Name)
+                .Where(alias, predicate)
+                .Count();
+
+            if (count > 0) {
+                updater.AddModelError(GetPrefix(field, part), T("The field {0} value must be unique.", T(field.DisplayName)));
+            }
         }
     }
 }

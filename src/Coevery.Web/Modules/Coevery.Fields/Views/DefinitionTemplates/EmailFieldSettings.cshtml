@@ -1,11 +1,21 @@
 ﻿@model Coevery.Fields.Settings.EmailFieldSettings
-@using Coevery.Fields.Settings;
 
 <section class="control-group data-row">
-        <label class="control-label" for="textLength">
-            Dafault Value
+    <label class="control-label" for="textLength">
+        @T("Dafault Value")
+    </label>
+    <div class="controls errortips">
+        @Html.TextBoxFor(m => m.DefaultValue, new {@class = "span12 email txtemail"})
+    </div>
+</section>
+<section class="data-row control-group">
+    <label class="control-label">
+        @T("Options")
+    </label>
+    <div class="controls">
+        <label class="checkbox">               
+            @Html.CheckBoxFor(m => m.IsUnique)
+            @T("Is Unique")
         </label>
-        <div class="controls errortips">
-            @Html.TextBoxFor(m => m.DefaultValue, new { @class = "span12 email txtemail" })
-        </div>
+    </div>
 </section>

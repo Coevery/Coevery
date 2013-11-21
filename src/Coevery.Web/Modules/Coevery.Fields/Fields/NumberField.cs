@@ -1,5 +1,4 @@
-﻿using System;
-using Coevery.ContentManagement;
+﻿using Coevery.ContentManagement;
 using Coevery.ContentManagement.FieldStorage;
 
 namespace Coevery.Fields.Fields

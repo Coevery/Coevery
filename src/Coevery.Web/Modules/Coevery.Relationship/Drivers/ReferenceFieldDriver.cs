@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Coevery.Relationship.Fields;
 using Coevery.Relationship.Settings;
 using Coevery.Relationship.Models;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Handlers;
@@ -92,6 +91,9 @@ namespace Coevery.Relationship.Drivers {
             if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
 
+                if (settings.IsUnique && viewModel.ContentId.HasValue) {
+                    HandleUniqueValue(part, field, viewModel.ContentId, updater);
+                }
                 if (settings.Required && viewModel.ContentId <= 0) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
@@ -110,6 +112,22 @@ namespace Coevery.Relationship.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context.Member(null, typeof(int?), null, T("The content item id referenced by this field."));
+        }
+
+        private void HandleUniqueValue(ContentPart part, ReferenceField field, int? value, IUpdateModel updater) {
+            var recordType = part.GetType().GetProperty("Record").PropertyType;
+            Action<IAliasFactory> alias = x => x.ContentPartRecord(recordType);
+            Action<IHqlExpressionFactory> notCurrentItem = x => x.Not(y => y.Eq("ContentItemRecord", part.Id));
+            Action<IHqlExpressionFactory> predicate = x => x.And(notCurrentItem, y => y.Eq(field.Name, value));
+
+            var count = Services.ContentManager.HqlQuery()
+                .ForType(part.TypeDefinition.Name)
+                .Where(alias, predicate)
+                .Count();
+
+            if (count > 0) {
+                updater.AddModelError(GetPrefix(field, part), T("The field {0} value must be unique.", T(field.DisplayName)));
+            }
         }
     }
 }

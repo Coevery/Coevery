@@ -1,12 +1,10 @@
 ﻿using System;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Handlers;
 using Coevery.Fields.Fields;
 using Coevery.Fields.Settings;
 using Coevery.Localization;
-using Coevery.Utility.Extensions;
 
 namespace Coevery.Fields.Drivers {
     public class DateFieldDriver : ContentFieldDriver<DateField> {

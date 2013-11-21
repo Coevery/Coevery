@@ -20,6 +20,7 @@ namespace Coevery.Fields.Settings {
             if (updateModel.TryUpdateModel(model, "PhoneFieldSettings", null, null)) {
                 UpdateSettings(model, settingsDictionary, "PhoneFieldSettings");
                 settingsDictionary["PhoneFieldSettings.DefaultValue"] = model.DefaultValue;
+                settingsDictionary["PhoneFieldSettings.IsUnique"] = model.IsUnique.ToString();
             }
         }
 
@@ -32,6 +33,7 @@ namespace Coevery.Fields.Settings {
             if (model != null) {
                 UpdateSettings(model, builder, "PhoneFieldSettings");
                 builder.WithSetting("PhoneFieldSettings.DefaultValue", model.DefaultValue);
+                builder.WithSetting("PhoneFieldSettings.IsUnique", model.IsUnique.ToString());
             }
         }
 

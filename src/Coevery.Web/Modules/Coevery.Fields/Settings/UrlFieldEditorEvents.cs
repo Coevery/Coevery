@@ -20,6 +20,7 @@ namespace Coevery.Fields.Settings {
             if (updateModel.TryUpdateModel(model, "UrlFieldSettings", null, null)) {
                 UpdateSettings(model, settingsDictionary, "UrlFieldSettings");
                 settingsDictionary["UrlFieldSettings.DefaultValue"] = model.DefaultValue;
+                settingsDictionary["UrlFieldSettings.IsUnique"] = model.IsUnique.ToString();
             }
         }
 
@@ -32,6 +33,7 @@ namespace Coevery.Fields.Settings {
             if (model != null) {
                 UpdateSettings(model, builder, "UrlFieldSettings");
                 builder.WithSetting("UrlFieldSettings.DefaultValue", model.DefaultValue);
+                builder.WithSetting("UrlFieldSettings.IsUnique", model.IsUnique.ToString());
             }
         }
 

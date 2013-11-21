@@ -20,6 +20,7 @@ namespace Coevery.Fields.Settings {
             if (updateModel.TryUpdateModel(model, "EmailFieldSettings", null, null)) {
                 UpdateSettings(model, settingsDictionary, "EmailFieldSettings");
                 settingsDictionary["EmailFieldSettings.DefaultValue"] = model.DefaultValue;
+                settingsDictionary["EmailFieldSettings.IsUnique"] = model.IsUnique.ToString();
             }
         }
 
@@ -32,6 +33,7 @@ namespace Coevery.Fields.Settings {
             if (model != null) {
                 UpdateSettings(model, builder, "EmailFieldSettings");
                 builder.WithSetting("EmailFieldSettings.DefaultValue", model.DefaultValue);
+                builder.WithSetting("EmailFieldSettings.IsUnique", model.IsUnique.ToString());
             }
         }
 

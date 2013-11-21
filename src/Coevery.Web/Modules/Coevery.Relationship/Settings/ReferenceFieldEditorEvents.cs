@@ -62,6 +62,7 @@ namespace Coevery.Relationship.Settings {
                 settingsDictionary["ReferenceFieldSettings.DisplayAsLink"] = model.DisplayAsLink.ToString();
                 settingsDictionary["ReferenceFieldSettings.QueryId"] = model.QueryId.ToString(CultureInfo.InvariantCulture);
                 settingsDictionary["ReferenceFieldSettings.RelationshipId"] = model.RelationshipId.ToString(CultureInfo.InvariantCulture);
+                settingsDictionary["ReferenceFieldSettings.IsUnique"] = model.IsUnique.ToString();
             }
         }
 
@@ -79,6 +80,7 @@ namespace Coevery.Relationship.Settings {
                 builder.WithSetting("ReferenceFieldSettings.RelationshipName", model.RelationshipName);
                 builder.WithSetting("ReferenceFieldSettings.RelationshipId", model.RelationshipId.ToString(CultureInfo.InvariantCulture));
                 builder.WithSetting("ReferenceFieldSettings.QueryId", model.QueryId.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("ReferenceFieldSettings.IsUnique", model.IsUnique.ToString());
             }
         }
 

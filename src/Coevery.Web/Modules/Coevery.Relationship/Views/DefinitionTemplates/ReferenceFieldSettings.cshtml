@@ -1,5 +1,4 @@
-﻿
-@using System.Web.Mvc.Html
+﻿@using System.Web.Mvc.Html
 @using Coevery.Mvc.Html
 @using Coevery.Relationship.Settings
 @model ReferenceFieldSettings
@@ -11,7 +10,7 @@
     }
 }
 <section class="control-group data-row">
-    <label class="control-label required" for="@Html.FieldIdFor(m => m.ContentTypeName)"> Primary Entity </label>
+    <label class="control-label required" for="@Html.FieldIdFor(m => m.ContentTypeName)">@T("Primary Entity")</label>
     <div class="controls errortips">
         <select id="@Html.FieldIdFor(m => m.ContentTypeName)" @disabled name="@Html.FieldNameFor(m => m.ContentTypeName)" class="span12" required="">
             @foreach (var item in Model.ContentTypeList) {
@@ -22,19 +21,24 @@
 </section>
 <section class="control-group data-row">
     <label class="control-label required">
-        Relation Name
+        @T("Relation Name")
     </label>
     <div class="controls errortips">
-        <input type="text" class="span12" required="" name="@Html.NameFor(m=>m.RelationshipName)" value="@Model.RelationshipName" @disabled />
+        <input type="text" class="span12" required="" name="@Html.NameFor(m => m.RelationshipName)" value="@Model.RelationshipName" @disabled />
     </div>
 </section>
 <section class="control-group data-row">
     <label class="control-label">
+        @T("Options")
     </label>
     <div class="controls">
         <label class="checkbox">
             @Html.CheckBoxFor(m => m.DisplayAsLink)
-            Display as link
+            @T("Display as link")
+        </label>
+        <label class="checkbox">               
+            @Html.CheckBoxFor(m => m.IsUnique)
+            @T("Is Unique")
         </label>
     </div>
 </section>
@@ -42,9 +46,5 @@
     @Html.HiddenFor(model => model.RelationshipId)
     @Html.HiddenFor(m => m.QueryId)
     @Html.HiddenFor(m => m.ContentTypeName)
-    @Html.HiddenFor(model=>model.RelationshipName)
+    @Html.HiddenFor(model => model.RelationshipName)
 }
-
-
-
-

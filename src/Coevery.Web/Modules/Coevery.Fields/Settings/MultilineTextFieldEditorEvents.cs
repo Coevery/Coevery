@@ -22,6 +22,7 @@ namespace Coevery.Fields.Settings {
                 settingsDictionary["MultilineTextFieldSettings.RowNumber"] = model.RowNumber.ToString();
                 settingsDictionary["MultilineTextFieldSettings.MaxLength"] = model.MaxLength.ToString();
                 settingsDictionary["MultilineTextFieldSettings.PlaceHolderText"] = model.PlaceHolderText;
+                settingsDictionary["MultilineTextFieldSettings.IsUnique"] = model.IsUnique.ToString();
             }
         }
 
@@ -35,6 +36,7 @@ namespace Coevery.Fields.Settings {
                 builder.WithSetting("MultilineTextFieldSettings.RowNumber", model.RowNumber.ToString());
                 builder.WithSetting("MultilineTextFieldSettings.MaxLength", model.MaxLength.ToString());
                 builder.WithSetting("MultilineTextFieldSettings.PlaceHolderText", model.PlaceHolderText);
+                builder.WithSetting("MultilineTextFieldSettings.IsUnique", model.IsUnique.ToString());
             }
         }
 

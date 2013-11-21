@@ -1,19 +1,29 @@
 ﻿@model Coevery.Fields.Settings.TextFieldSettings
-@using Coevery.Fields.Settings;
 
 <section class="control-group data-row">
     <label class="control-label" for="textLength">
-        Length
+        @T("Length")
     </label>
     <div class="controls">
-        @Html.TextBoxFor(m => m.MaxLength, new { @class = "span12" })
+        @Html.TextBoxFor(m => m.MaxLength, new {@class = "span12"})
     </div>
 </section>
 <section class="control-group data-row">
     <label class="control-label" for="placeHolderText">
-        Place Holder Text
+        @T("Place Holder Text")
     </label>
     <div class="controls">
-        @Html.TextBoxFor(m => m.PlaceHolderText, new { @class = "span12" })
+        @Html.TextBoxFor(m => m.PlaceHolderText, new {@class = "span12"})
+    </div>
+</section>
+<section class="data-row control-group">
+    <label class="control-label">
+        @T("Options")
+    </label>
+    <div class="controls">
+        <label class="checkbox">               
+            @Html.CheckBoxFor(m => m.IsUnique)
+            @T("Is Unique")
+        </label>
     </div>
 </section>

@@ -1,12 +1,11 @@
-﻿
-using Coevery.Entities.Settings;
+﻿using Coevery.Entities.Settings;
 
 namespace Coevery.Fields.Settings {
     public class EmailFieldSettings : FieldSettings {
         public string DefaultValue { get; set; }
+        public bool IsUnique { get; set; }
 
-        public EmailFieldSettings()
-        {
+        public EmailFieldSettings() {
             DefaultValue = null;
         }
     }

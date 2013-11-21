@@ -21,6 +21,7 @@ namespace Coevery.Fields.Settings {
                 UpdateSettings(model, settingsDictionary, "TextFieldSettings");
                 settingsDictionary["TextFieldSettings.MaxLength"] = model.MaxLength.ToString();
                 settingsDictionary["TextFieldSettings.PlaceHolderText"] = model.PlaceHolderText;
+                settingsDictionary["TextFieldSettings.IsUnique"] = model.IsUnique.ToString();
             }
         }
 
@@ -34,6 +35,7 @@ namespace Coevery.Fields.Settings {
                 builder.WithSetting("TextFieldSettings.IsDisplayField", model.IsDisplayField.ToString());
                 builder.WithSetting("TextFieldSettings.MaxLength", model.MaxLength.ToString());
                 builder.WithSetting("TextFieldSettings.PlaceHolderText", model.PlaceHolderText);
+                builder.WithSetting("TextFieldSettings.IsUnique", model.IsUnique.ToString());
             }
         }
 

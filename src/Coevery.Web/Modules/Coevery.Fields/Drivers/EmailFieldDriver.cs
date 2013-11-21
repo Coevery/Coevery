@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Handlers;
 using Coevery.Fields.Fields;
 using Coevery.Fields.Settings;
 using Coevery.Localization;
-using Coevery.Utility.Extensions;
 
 namespace Coevery.Fields.Drivers {
     public class EmailFieldDriver : ContentFieldDriver<EmailField> {
         public ICoeveryServices Services { get; set; }
         private const string TemplateName = "Fields/Email.Edit";
+
         private const string Pattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|"
-                                 + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
-                                 + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+                                       + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
+                                       + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
 
         public EmailFieldDriver(ICoeveryServices services) {
             Services = services;
@@ -51,7 +50,11 @@ namespace Coevery.Fields.Drivers {
         protected override DriverResult Editor(ContentPart part, EmailField field, IUpdateModel updater, dynamic shapeHelper) {
             if (updater.TryUpdateModel(field, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<EmailFieldSettings>();
+
                 var hasValue = !string.IsNullOrWhiteSpace(field.Value);
+                if (settings.IsUnique && hasValue) {
+                    HandleUniqueValue(part, field, updater);
+                }
                 if (settings.Required && !hasValue) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
@@ -73,6 +76,22 @@ namespace Coevery.Fields.Drivers {
 
         protected override void Describe(DescribeMembersContext context) {
             context.Member(null, typeof(string), null, T("The value of the field."));
+        }
+
+        private void HandleUniqueValue(ContentPart part, EmailField field, IUpdateModel updater) {
+            var recordType = part.GetType().GetProperty("Record").PropertyType;
+            Action<IAliasFactory> alias = x => x.ContentPartRecord(recordType);
+            Action<IHqlExpressionFactory> notCurrentItem = x => x.Not(y => y.Eq("ContentItemRecord", part.Id));
+            Action<IHqlExpressionFactory> predicate = x => x.And(notCurrentItem, y => y.Eq(field.Name, field.Value));
+
+            var count = Services.ContentManager.HqlQuery()
+                .ForType(part.TypeDefinition.Name)
+                .Where(alias, predicate)
+                .Count();
+
+            if (count > 0) {
+                updater.AddModelError(GetPrefix(field, part), T("The field {0} value must be unique.", T(field.DisplayName)));
+            }
         }
     }
 }
