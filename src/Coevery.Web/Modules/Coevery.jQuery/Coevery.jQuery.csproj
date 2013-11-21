@@ -103,6 +103,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Styles\colorbox.css" />
+    <Content Include="Styles\grid.css" />
     <Content Include="Styles\images\colorbox\border.png" />
     <Content Include="Styles\images\colorbox\controls.png" />
     <Content Include="Styles\images\colorbox\loading.gif" />
@@ -226,6 +227,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Styles\ui.jqgrid.css" />
     <Content Include="Styles\Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.Core.Navigation.Models;
 using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
 using Coevery.Localization;
+using Coevery.Perspectives.Services;
+using Coevery.Perspectives.ViewModels;
 using Coevery.UI;
 using Coevery.UI.Navigation;
+using Newtonsoft.Json.Linq;
 
 namespace Coevery.Perspectives.Controllers {
     public class NavigationController : ApiController {
+        private readonly IPositionManageService _positionManager;
         private readonly IMenuService _menuService;
         private readonly INavigationManager _navigationManager;
 
         public NavigationController(IMenuService menuService,
             ICoeveryServices coeveryServices,
+            IPositionManageService positionManager,
             INavigationManager navigationManager) {
             Services = coeveryServices;
             _menuService = menuService;
+            _positionManager = positionManager;
             _navigationManager = navigationManager;
             T = NullLocalizer.Instance;
         }
@@ -46,7 +53,16 @@ namespace Coevery.Perspectives.Controllers {
             var menuEntitys = _menuService.GetMenuParts(id).Select(CreateMenuItemEntries)
                 .OrderBy(menuPartEntry => menuPartEntry.Position, new FlatPositionComparer()).ToList();
             var query = from menuEntry in menuEntitys
-                        select new { Id = menuEntry.ContentItem.Id, DisplayName = menuEntry.Text, Description = menuEntry.Description };
+                        let treeInfo = _positionManager.ParseMenuPostion(menuEntry.Position,id)
+                        select new {
+                            Id = menuEntry.ContentItem.Id, 
+                            DisplayName = menuEntry.Text, 
+                            Description = menuEntry.Description,
+                            Parent = treeInfo.ParentId,
+                            Weight = treeInfo.Order,
+                            Level = treeInfo.Level,
+                            LeafOnly = treeInfo.IsLeaf
+                        };
 
             var totalRecords = query.Count();
             return new {
@@ -55,6 +71,24 @@ namespace Coevery.Perspectives.Controllers {
                 records = totalRecords,
                 rows = query
             };
+        }
+
+        public object PostReorderInfo([FromBody]JObject positions) {
+            try {
+                var navigationItemIds = positions["Positions"].ToArray();
+                foreach (var navigationItem in navigationItemIds) {
+                    var contentItem = Services.ContentManager.Get(navigationItem["NavigationId"].Value<int>());
+                    if (contentItem == null) {
+                        throw new ArgumentNullException();
+                    }
+                    contentItem.As<MenuPart>().MenuPosition = navigationItem["Position"].Value<string>();
+                    Services.ContentManager.Publish(contentItem);
+                }
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex) {
+                return Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed, ex.Message);
+            }
         }
 
         public void Delete(int id) {

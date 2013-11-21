@@ -1,7 +1,7 @@
 ﻿@using Coevery.ContentManagement
 @using Coevery.Utility.Extensions
 @{
-    ContentItem contentItem = Model.Item;
+    ContentItem contentItem = Model.ContentItem;
     var typeDisplayName = contentItem.TypeDefinition.DisplayName ?? contentItem.ContentType.CamelFriendly();
 }
 

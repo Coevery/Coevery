@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using Coevery.ContentManagement.Records;
 using Coevery.Data.Conventions;
 
@@ -13,5 +14,6 @@ namespace Coevery.Perspectives.Models
         public virtual string Description { get; set; }
 
         public virtual int Position { get; set; }
+        public virtual int CurrentLevel { get; set; }
     }
 }

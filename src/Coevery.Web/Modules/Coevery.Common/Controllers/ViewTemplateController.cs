@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Coevery;
 using Coevery.Common.Extensions;
-using Coevery.Common.Models;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Aspects;
 using Coevery.ContentManagement.MetaData;
@@ -84,14 +80,8 @@ namespace Coevery.Common.Controllers {
                 }
             }
 
-            dynamic itemShape = Services.ContentManager.BuildEditor(contentItem);
-
-            var page = Services.ContentManager.New<CreatePagePart>("CreatePage");
-            page.Item = contentItem;
-            var model = Services.ContentManager.BuildEditor(page);
-            model.Content.Add(itemShape);
-
-            return View(model);
+            dynamic model = Services.ContentManager.BuildEditor(contentItem, "CreatePage");
+            return View((object) model);
         }
 
         private ActionResult CreatableTypeList(int? containerId) {
@@ -158,14 +148,7 @@ namespace Coevery.Common.Controllers {
                 return new HttpUnauthorizedResult();
             }
 
-            dynamic itemShape = Services.ContentManager.BuildEditor(contentItem);
-
-            var page = Services.ContentManager.New<EditPagePart>("EditPage");
-            page.Item = contentItem;
-            var model = Services.ContentManager.BuildEditor(page);
-            model.Content.Add(itemShape);
-
-            // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
+            dynamic model = Services.ContentManager.BuildEditor(contentItem, "EditPage");
             return View((object) model);
         }
 
@@ -185,13 +168,8 @@ namespace Coevery.Common.Controllers {
                 return HttpNotFound();
             }
 
-            dynamic itemShape = Services.ContentManager.BuildDisplay(contentItem);
-
-            var page = Services.ContentManager.New<ViewPagePart>("ViewPage");
-            page.Item = contentItem;
-            var model = Services.ContentManager.BuildDisplay(page);
-            model.Content.Add(itemShape);
-            return View(model);
+            dynamic model = Services.ContentManager.BuildDisplay(contentItem);
+            return View((object) model);
         }
 
         [HttpPost]

@@ -632,8 +632,8 @@ namespace Coevery.ContentManagement {
             return _contentDisplay.Value.BuildDisplay(content, displayType, groupId);
         }
 
-        public dynamic BuildEditor(IContent content, string groupId = "") {
-            return _contentDisplay.Value.BuildEditor(content, groupId);
+        public dynamic BuildEditor(IContent content, string displayType = "", string groupId = "") {
+            return _contentDisplay.Value.BuildEditor(content, displayType, groupId);
         }
 
         public dynamic UpdateEditor(IContent content, IUpdateModel updater, string groupId = "") {

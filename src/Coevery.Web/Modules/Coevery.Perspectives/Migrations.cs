@@ -33,5 +33,13 @@ namespace Coevery.Perspectives {
 
             return 1;
         }
+
+        public int UpdateFrom1() {
+            SchemaBuilder.AlterTable("PerspectivePartRecord",
+                table=>table
+                    .AddColumn<int>("CurrentLevel") 
+                );
+            return 2;
+        }
     }
 }

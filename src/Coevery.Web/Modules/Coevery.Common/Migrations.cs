@@ -55,5 +55,18 @@ namespace Coevery.Common {
             ContentDefinitionManager.AlterTypeDefinition("ViewPage", cfg => cfg.WithPart("ViewPagePart"));
             return 5;
         }
+
+        public int UpdateFrom5() {
+            ContentDefinitionManager.DeletePartDefinition("CreatePagePart");
+            ContentDefinitionManager.DeleteTypeDefinition("CreatePage");
+
+            ContentDefinitionManager.DeletePartDefinition("EditPagePart");
+            ContentDefinitionManager.DeleteTypeDefinition("EditPage");
+
+            ContentDefinitionManager.DeletePartDefinition("ViewPagePart");
+            ContentDefinitionManager.DeleteTypeDefinition("ViewPage");
+
+            return 6;
+        }
     }
 }

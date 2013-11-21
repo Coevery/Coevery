@@ -1,6 +1,6 @@
 ﻿define(['core/app/formdesignerservice', 'core/directives/common'], function () {
     'use strict';
-    
+
     coevery.value('$anchorScroll', angular.noop);
 
     coevery.run(['$rootScope', '$couchPotato', '$stateParams', '$templateCache',
@@ -30,7 +30,7 @@
                 lowerCaseLng: true,
                 ns: 'resources-locale'
             };
-            
+
             if (!String.prototype.format) {
                 String.prototype.format = function () {
                     var args = arguments;
@@ -50,18 +50,18 @@
                     '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
                     'delete-action="delete(\'{0}\')" title="Delete"></span>{2}</section>' +
                     '<div>{1}</div> </div>';
-                var viewStyle = cellvalue, defaultStyle='';
+                var viewStyle = cellvalue, defaultStyle = '';
                 if (!options.colModel.formatoptions) {
                     return template.format(options.rowId, viewStyle, '');
                 }
                 if (options.colModel.formatoptions.hasView) {
                     viewStyle = '<a class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
                         cellvalue + '</a>';
-                } 
+                }
                 if (options.colModel.formatoptions.hasDefault) {
                     defaultStyle = '<span class="icon-tags" data-ng-click="setDefault(\'' + options.rowId + '\')" title="Set Default"></span>';
                 }
-                return template.format(options.rowId, viewStyle, defaultStyle);
+                return template.format(options.rowId, viewStyle, defaultStyle );
             };
 
             $rootScope.defaultGridOptions = {

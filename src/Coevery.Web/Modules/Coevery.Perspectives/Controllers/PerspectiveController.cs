@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using Coevery.ContentManagement;
 using Coevery.Core.Navigation.Models;
@@ -34,7 +36,8 @@ namespace Coevery.Perspectives.Controllers {
 
         // GET api/perspective/perspective
         public object Get(int page, int rows) {
-            IEnumerable<PerspectivePart> menus = Services.ContentManager.Query<PerspectivePart, PerspectivePartRecord>().OrderBy(x => x.Position).ForType("Menu").List();
+            IEnumerable<PerspectivePart> menus = Services.ContentManager.Query<PerspectivePart, PerspectivePartRecord>()
+                .OrderBy(x => x.Position).ForType("Menu").List();
             var query = from menu in menus
                 select new {Id = menu.Id, DisplayName = menu.Title,Description=menu.Description};
             var totalRecords = query.Count();
@@ -66,6 +69,23 @@ namespace Coevery.Perspectives.Controllers {
                 select new {Id = menuEntry.ContentItem.Id, DisplayName = menuEntry.Text,};
             var queryList = query.ToList();
             return queryList;
+        }
+
+        public object PostReorderInfo([FromBody]IEnumerable<int> ids) {
+            try {
+                var pos = 0;
+                foreach (var perspectiveId in ids) {
+                    var contentItem = _contentManager.Get<PerspectivePart>(perspectiveId);
+                    if (contentItem == null) {
+                        throw new ArgumentNullException();
+                    }
+                    contentItem.Position = pos++;
+                }
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex) {
+                return Request.CreateErrorResponse(HttpStatusCode.ExpectationFailed,ex.Message);
+            }
         }
 
         public void Delete(int id) {

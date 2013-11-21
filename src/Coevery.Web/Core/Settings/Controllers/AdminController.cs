@@ -37,7 +37,7 @@ namespace Coevery.Core.Settings.Controllers {
             dynamic model;
             var site = _siteService.GetSiteSettings();
             if (!string.IsNullOrWhiteSpace(groupInfoId)) {
-                model = Services.ContentManager.BuildEditor(site, groupInfoId);
+                model = Services.ContentManager.BuildEditor(site, groupId: groupInfoId);
 
                 if (model == null)
                     return HttpNotFound();

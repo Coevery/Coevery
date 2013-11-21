@@ -145,11 +145,10 @@
     }]);
 
     gridz.directive("agGrid", [
-        "$rootScope", "$compile", "logger","$http", function ($rootScope, $compile, logger,$http) {
+        "$rootScope", "$compile", "logger", "$http", function ($rootScope, $compile, logger, $http) {
             var link;
             link = function ($scope, $element, attrs, gridCtrl) {
                 var alias, initializeGrid, loadGrid;
-                gridCtrl.registerGridElement($element.find("table.gridz"));
                 alias = attrs.agGridName;
                 if (alias) {
                     $scope[alias] = gridCtrl;
@@ -158,7 +157,9 @@
                     var $grid, isInitial = true;
                     debugger;
                     $grid = $element.find("table.gridz");
-                    gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+                    if (!gridOptions.treeGrid) {
+                        gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+                    }
 
                     gridOptions.loadBeforeSend = function (xhr, settings) {
                         if (isInitial) {
@@ -173,30 +174,71 @@
 
                         var width, pager;
                         width = $element.parent().width() - 1;
-                        pager = $(gridOptions.pager + '_center');
-                        if (pager.find(".custom-pager").length === 0) {
-                            var pagerOption = {
-                                items: $grid.getGridParam("records"),
-                                itemsOnPage: $grid.getGridParam("rowNum"),
-                                currentPage: $grid.getGridParam("page"),
-                                onPageClick: function(pageNumber, event) {
-                                    if (!event) {
-                                        return;
-                                    }
-                                    event.preventDefault();
-                                    $grid.setGridParam({
-                                        page: pageNumber
-                                    });
-                                    $grid.trigger("reloadGrid");
-                                },
-                                //cssStyle: 'compact-theme'
-                            };
-                            if (width < 560) {
-                                pagerOption.displayedPages = 3;
+                        if (!gridOptions.treeGrid) {
+                            pager = $(gridOptions.pager + '_center');
+                            if (pager.find(".custom-pager").length === 0) {
+                                var pagerOption = {
+                                    items: $grid.getGridParam("records"),
+                                    itemsOnPage: $grid.getGridParam("rowNum"),
+                                    currentPage: $grid.getGridParam("page"),
+                                    onPageClick: function (pageNumber, event) {
+                                        if (!event) {
+                                            return;
+                                        }
+                                        event.preventDefault();
+                                        $grid.setGridParam({
+                                            page: pageNumber
+                                        });
+                                        $grid.trigger("reloadGrid");
+                                    },
+                                    //cssStyle: 'compact-theme'
+                                };
+                                if (width < 560) {
+                                    pagerOption.displayedPages = 3;
+                                }
+                                pager.append("<section class='custom-pager pagination'></section>");
+                                pager.find("section").pagination(pagerOption);
                             }
-                            pager.append("<section class='custom-pager pagination'></section>");
-                            pager.find("section").pagination(pagerOption);
                         }
+                        //Set row sortable
+                        if (attrs.agGridDrag) {
+                            var settings = JSON.parse(attrs.agGridDrag);
+                            
+                            if (!gridOptions.nestedDrag) {
+                                $grid.jqGrid('sortableRows', {
+                                    update: function (event, ui) {
+                                        var postData = [];
+                                        if (!settings.Handler) {
+                                            postData = $grid.find("tbody:first").sortable("toArray");
+                                        }
+                                        $http({
+                                            url: settings.Url,
+                                            method: settings.Method,
+                                            data: postData
+                                        }).then(function () {
+                                            logger.success('Reordering succeeded.');
+                                        }, function (response) {
+                                            logger.error('Reordering Failed');
+                                        });
+                                    }
+                                });
+                            } else {
+                                $.cookie = function () {
+                                    return null;
+                                };
+                                $grid.tableDrag({
+                                    tableId: alias,
+                                    initialLevel: 1,
+                                    group: {
+                                        columnName: 'Level',
+                                        depthLimit: 3, /* child element depth, start from 1, 0 means no limit, actrual depth will be +1 deeper than that*/
+                                    },
+                                });
+
+                                $element.find("tbody:first").disableSelection();
+                            }
+                        }
+
                         $grid.setGridWidth(width);
                         if (isInitial) {
                             $element.show();
@@ -234,27 +276,6 @@
 
                     $grid.jqGrid(gridOptions);
 
-                    if (attrs.agGridDrag != undefined) {
-                        $grid.jqGrid('sortableRows', {
-                            update: function () {
-                                var form = $("form[name=myForm]");
-                                var postData = form.serialize() + "&ids=";
-                                $grid.find("tr[id]").each(function (i, item) {
-                                    postData += $(item).attr("id")+",";
-                                });
-                                $http({
-                                    url: form.attr('action'),
-                                    method: form.attr('method'),
-                                    data: postData,
-                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
-                                }).then(function() {
-                                    logger.success('Reordering succeeded.');
-                                }, function(response) {
-                                    logger.error('Reordering Failed');
-                                });
-                            }
-                        });
-                    }
                     /*
                     adds listener to resize grid to parent container when window is resized.
                     This will work for reponsive and fluid layouts
@@ -284,11 +305,15 @@
                     $grid = $element.find("table.gridz");
                     if (gridOptions.needReloading === true) {
                         gridOptions.needReloading = false;
-
+                        $grid.setGridParam({
+                            data:[]
+                        });
                         $grid.GridDestroy($grid.attr("id"));
                         $element.html("<table class=\"gridz\"></table>\n<div class=\"gridz-pager\"></div>");
                         setIdValue($element, attrs.agGridName);
                     }
+                    $grid = $element.find("table.gridz");
+                    gridCtrl.registerGridElement($grid);
                     initializeGrid(gridOptions);
                 };
                 return $scope.$watch(attrs.agGrid, loadGrid);
