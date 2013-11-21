@@ -11,6 +11,7 @@ using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Core.Common.Models;
 using Coevery.Core.Containers.Models;
 using Coevery.Core.Contents;
+using Coevery.Core.Title.Models;
 using Coevery.Mvc;
 using Coevery.Core.Contents.Settings;
 using Coevery.Localization;
@@ -57,9 +58,10 @@ namespace Coevery.Common.Controllers {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(id);
             var contentItem = Services.ContentManager.New("ListViewPage");
+            contentItem.As<TitlePart>().Title = typeDefinition.Settings["CollectionDisplayName"];
             var model = Services.ContentManager.BuildDisplay(contentItem);
-
             return View(model);
         }
 
