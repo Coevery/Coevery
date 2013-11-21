@@ -56,7 +56,6 @@ define(['core/app/detourService',
           angular.extend(gridOptions, $rootScope.defaultGridOptions);
           gridOptions.multiselect = false;
           gridOptions.sortable = false;
-          gridOptions.jsonReader.id = "";
           $scope.gridOptions = gridOptions;
 
           $scope.addNavigationItem = function () {
