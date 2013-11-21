@@ -88,6 +88,9 @@ namespace Coevery.jQuery {
             manifest.DefineScript("jqGrid_i18n").SetUrl("jqGrid/i18n/grid.locale.js").SetVersion("4.5.4").SetDependencies("jqGrid").SetCultures(cultures.ToArray());
 
             manifest.DefineScript("simplePagination").SetUrl("jquery.simplePagination.js").SetVersion("1.6").SetDependencies("jQuery");
+
+            manifest.DefineStyle("jqGrid").SetUrl("ui.jqgrid.css");
+            manifest.DefineStyle("jqGridCustom").SetUrl("grid.css");
         }
     }
 }
