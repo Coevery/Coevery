@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Coevery.ContentManagement;
 using Coevery.Core.Navigation.Models;
@@ -14,10 +15,10 @@ namespace Coevery.Perspectives.Services {
         private readonly IContentManager _contentManager;
         public PositionManageService(IContentManager contentManager) {
             _contentManager = contentManager;
-        }
+        } 
 
         public PositionTreeModel ParseMenuPostion(string position, int perspectiveId) {
-            var menu = GetMenuItemFromPosition(position);
+            var menu = GetMenuPartFromPosition(position);
             var perspective = _contentManager.Get<PerspectivePart>(perspectiveId);
             if (menu == null || perspective == null) {
                 return null;
@@ -37,7 +38,7 @@ namespace Coevery.Perspectives.Services {
                 int.TryParse(positions.Last(), out weight);
                 parentPosition = menu.MenuPosition.Substring(0, lastPosition);
             }
-            var parentMenu = GetMenuItemFromPosition(parentPosition);
+            var parentMenu = GetMenuPartFromPosition(parentPosition);
             return new PositionTreeModel {
                 ParentId = parentMenu != null ? parentMenu.Id : (int?)null,
                 ParentPosition = parentPosition,
@@ -47,7 +48,7 @@ namespace Coevery.Perspectives.Services {
             };
         }
 
-        private MenuPart GetMenuItemFromPosition(string position) {
+        private MenuPart GetMenuPartFromPosition(string position) {
             if (string.IsNullOrWhiteSpace(position)) {
                 return null;
             }

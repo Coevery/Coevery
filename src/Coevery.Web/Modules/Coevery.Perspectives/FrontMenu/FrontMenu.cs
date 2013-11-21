@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Coevery.Common.Extensions;
 using Coevery.Common.Models;
@@ -41,32 +42,57 @@ namespace Coevery.Perspectives.FrontMenu {
                 builder.AddImageSet(c.Title)
                     .Add(T(c.Title), c.Position.ToString(),
                         menu => {
-                            string url = string.Format("#/{0}", c.Id);
+                            var url = string.Format("#/{0}", c.Id);
                             menu.Url(url);
                             menu.Content(c);
                             menu.IdHint(c.Id.ToString(CultureInfo.InvariantCulture));
                             var subMenus = _menuService.GetMenuParts(c.Id)
                                 .OrderBy(menuPartEntry => menuPartEntry.MenuPosition, new FlatPositionComparer())
+                                .Where(menuPartEntry =>
+                                    menuPartEntry.MenuPosition.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
                                 .ToList();
                             foreach (var subMenu in subMenus) {
-                                var subMenuCotent = subMenu;
-                                var menuItemEntity = CreateMenuItemEntries(subMenu, url);
-                                if (!subMenu.Is<ModuleMenuItemPart>()) {
-                                    menu.Add(T(menuItemEntity.Text), menuItemEntity.Position, item => item
-                                        .Url(menuItemEntity.Url)
-                                        .Content(subMenuCotent)
-                                        .IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)));
-                                    continue;
-                                }
-                                var moduleMenuItem = subMenu.As<ModuleMenuItemPart>();
-                                menu.Add(T(menuItemEntity.Text), menuItemEntity.Position, item => item
-                                    .Url(menuItemEntity.Url)
-                                    .Content(subMenuCotent)
-                                    .IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture)),
-                                    new List<string>() {moduleMenuItem.IconClass});
+                                AddChildMenuItem(subMenu, url, ref menu);
                             }
                         });
             });
+        }
+
+        private static int GetLevel(string position) {
+            var orderList = position.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            return orderList.Length;
+        }
+
+        private IEnumerable<MenuPart> GetChildMenuParts(string position) {
+            var rawList = Services.ContentManager.Query<MenuPart, MenuPartRecord>()
+                .Where(menu => menu.MenuPosition.StartsWith(position + "."))
+                .ForPart<MenuPart>().List();
+            return rawList == null || !rawList.Any() ? null : rawList.Where(menu => GetLevel(menu.MenuPosition) == GetLevel(position) + 1)
+                .OrderBy(menuPartEntry => menuPartEntry.MenuPosition, new FlatPositionComparer());
+        }
+
+        private void AddChildMenuItem(MenuPart childMenu, string baseUrl, ref NavigationItemBuilder builder) {
+            var subMenuCotent = childMenu;
+            var menuItemEntity = CreateMenuItemEntries(childMenu, baseUrl);
+            Action<NavigationItemBuilder> addChildrenAction = item => {
+                item.Url(menuItemEntity.Url)
+                    .Content(subMenuCotent)
+                    .IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture));
+                var grandChildMenus = GetChildMenuParts(subMenuCotent.MenuPosition);
+                if (grandChildMenus == null) {
+                    return;
+                }
+                foreach (var grandChildMenu in grandChildMenus) {
+                    AddChildMenuItem(grandChildMenu, baseUrl, ref item);
+                }
+            };
+            if (!childMenu.Is<ModuleMenuItemPart>()) {
+                builder.Add(T(menuItemEntity.Text), menuItemEntity.Position, addChildrenAction);
+            } else {
+                var moduleMenuItem = childMenu.As<ModuleMenuItemPart>();
+                builder.Add(T(menuItemEntity.Text), menuItemEntity.Position, addChildrenAction,
+                    new List<string> { moduleMenuItem.IconClass });
+            }
         }
 
         private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart, string parentUrl) {
@@ -77,8 +103,8 @@ namespace Coevery.Perspectives.FrontMenu {
                 var urlName = _contentDefinitionExtension.GetEntityNames(
                     menuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord.Name).CollectionName;
                 url = string.Format(urlFormat, urlName);
-            } 
-            //@todo: add process for other category of navigation item
+            }
+                //@todo: add process for other category of navigation item
             else {
                 url = string.Format(urlFormat, menuPart.MenuText);
             }

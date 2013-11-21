@@ -60,7 +60,7 @@ namespace Coevery.Perspectives.Controllers {
                             Parent = treeInfo.ParentId,
                             Weight = treeInfo.Order,
                             Level = treeInfo.Level,
-                            LeafOnly = treeInfo.IsLeaf
+                            IsLeaf = treeInfo.IsLeaf
                         };
 
             var totalRecords = query.Count();
