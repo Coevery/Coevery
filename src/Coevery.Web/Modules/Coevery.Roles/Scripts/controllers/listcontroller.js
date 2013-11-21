@@ -2,18 +2,13 @@
 define(['core/app/detourService', 'Modules/Coevery.Roles/Scripts/services/roledataservice'], function(detour) {
     detour.registerController([
         'RoleListCtrl',
-        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'roleDataService',
+        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'roleDataService','$i18next',
             function($rootScope, $scope, logger, $state, $stateParams, roleDataService) {
-                var t = function(str) {
-                    var result = i18n.t(str);
-                    return result;
-                };
-
                 var columnDefs = [
-                    { name: 'Id', label: t('Id'), hidden: true },
+                    { name: 'Id', label: $i18next('Id'), hidden: true },
                     {
                         name: 'Name',
-                        label: t('Name'),
+                        label: $i18next('Name'),
                         formatter: $rootScope.cellLinkTemplate,
                         formatoptions: { hasView: true }
                     }
@@ -43,9 +38,9 @@ define(['core/app/detourService', 'Modules/Coevery.Roles/Scripts/services/roleda
                     if (!id) return;
                     roleDataService.delete({ id: id }, function() {
                         $scope.getAllRoles();
-                        logger.success('Delete the role successful.');
+                        logger.success($i18next('Delete the role successful.'));
                     }, function(result) {
-                        logger.error('Failed to delete the role:' + result.data);
+                        logger.error($i18next('Failed to delete the role:') + result.data);
                     });
                 };
 

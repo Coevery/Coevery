@@ -2,23 +2,18 @@
 define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services/perspectivedataservice'], function (detour) {
     detour.registerController([
       'PerspectiveListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'perspectiveDataService',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, perspectiveDataService) {
-
-          var t = function (str) {
-              var result = i18n.t(str);
-              return result;
-          };
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'perspectiveDataService', '$i18next',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, perspectiveDataService, $i18next) {
 
           var perspectiveColumnDefs = [
-              { name: 'Id', label: t('Id'), hidden: true , key: true, sortable: false},
+              { name: 'Id', label: $i18next('Id'), hidden: true, key: true, sortable: false },
               {
-                  name: 'DisplayName', label: t('DisplayName'), 
+                  name: 'DisplayName', label: $i18next('DisplayName'),
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
               },
               {
-                  name: 'Description', label: t('Description')
+                  name: 'Description', label: $i18next('Description')
               }];
 
           $scope.gridOptions = {
@@ -32,9 +27,9 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
               //$scope.perspectiveId = id;
               perspectiveDataService.delete({ id: id }, function () {
                   $scope.getAllPerspective();
-                  logger.success('Delete the perspective successful.');
+                  logger.success($i18next('Delete the perspective successful.'));
               }, function (result) {
-                  logger.error('Failed to delete the perspective:' + result.data.Message);
+                  logger.error($i18next('Failed to delete the perspective:') + result.data.Message);
               });
           };
 
@@ -58,4 +53,3 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
       }]
     ]);
 });
-//@ sourceURL=Coevery.Perspectives/listcontroller.js

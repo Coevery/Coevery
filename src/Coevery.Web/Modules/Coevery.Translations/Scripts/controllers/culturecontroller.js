@@ -2,48 +2,26 @@
 define(['core/app/detourService', 'Modules/Coevery.Translations/Scripts/services/columnDefinitionService'], function (detour) {
     detour.registerController([
       'TranslationCultureCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'moduleColumnDefinitionService',
-          function ($rootScope, $scope, logger, $state, $stateParams, moduleColumnDefinitionService) {
+      ['$rootScope', '$scope', 'logger', '$state', '$stateParams', '$i18next',
+          function ($rootScope, $scope, logger, $state, $stateParams, $i18next) {
               var culture = $stateParams.Id;
 
-              var t = function (str) {
-                  var result = i18n.t(str);
-                  return result;
-              };
-
               $scope.FetchDefinitionViews = function () {
-                  var gridColumns = moduleColumnDefinitionService.query("", function () {
-                      $.each(gridColumns, function (index, value) {
-                          if (value.formatter) {
-                              value.formatter = $rootScope[value.formatter];
-                          }
-                      });
+                  var metadataColumnDefs = [
+                      { name: 'Path', label: $i18next('Path'), hidden: true },
+                      { name: 'Module', label: $i18next('Module'), formatoptions: { hasView: true } },
+                      { name: 'Total', label: $i18next('Total') },
+                      { name: 'Translated', label: $i18next('Translated') },
+                      { name: 'Missing', label: $i18next('Missing') }
+                  ];
 
-                      //get data form API, then render by the gridColumns
-                      //culture(string culture,int page,int rows)
-                      $scope.gridOptions = {
-                          url: "api/Translations/Culture?culture=" + culture,
-                          colModel: gridColumns,
-                      };
-
-                      angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+                  $scope.gridOptions = angular.extend({}, $rootScope.defaultGridOptions, {
+                      url: "api/Translations/Culture?culture=" + culture,
+                      colModel: metadataColumnDefs
                   });
               };
 
               $scope.FetchDefinitionViews();
-
-              var metadataColumnDefs = [
-                  { name: 'Path', label: 'Path', hidden: true },
-                  {
-                      name: 'Module',
-                      label: t('Module'),
-                      formatter: $rootScope.cellLinkTemplateWithoutDelete,
-                      formatoptions: { hasView: true }
-                  },
-                  { name: 'Total', label: t('Total') },
-                  { name: 'Translated', label: t('Translated') },
-                  { name: 'Missing', label: t('Missing') }
-              ];
 
               //For grid refresh btn.
               $scope.getAllMetadata = function () {

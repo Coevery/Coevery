@@ -38,6 +38,8 @@ namespace Coevery.AngularJS {
 
             manifest.DefineScript("i18next").SetUrl("i18next-1.6.3.min.js", "i18next-1.6.3.js").SetVersion("1.6.3");
 
+            manifest.DefineScript("ng_i18next").SetUrl("ng-i18next.min.js", "ng-i18next.js").SetVersion("0.2.8");
+
             manifest.DefineScript("ui_utils").SetUrl("ui-utils.min.js", "ui-utils.js").SetVersion("0.0.3").SetDependencies("angular");
 
             manifest.DefineScript("ui_bootstrap").SetUrl("ui-bootstrap-tpls-0.4.0.js", "ui-bootstrap-tpls-0.4.0.js").SetVersion("0.4.0").SetDependencies("angular");

@@ -1,8 +1,8 @@
 ﻿define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'GeneralDetailCtrl',
-      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http','$parse',
-      function ($timeout, $rootScope, $scope, $q, logger, $state, $http, $parse) {
+      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http','$parse', '$i18next',
+      function ($timeout, $rootScope, $scope, $q, logger, $state, $http, $parse, $i18next) {
           var navigationId = $rootScope.$stateParams.NavigationId;
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
@@ -23,10 +23,10 @@
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   tracker: 'saveentity'
               }).then(function (response) {
-                  logger.success('Save succeeded.');
+                  logger.success($i18next('Save succeeded.'));
                   return response;
               }, function (reason) {
-                  logger.error('Save Failed： ' + reason.data);
+                  logger.error($i18next('Save Failed： ') + reason.data);
               });
               return promise;
           };
@@ -58,9 +58,6 @@
           };
 
           $scope.exit = function () {
-              //if(window.history.length>1)
-              //    window.history.back();
-              //else
               $state.transitionTo('Root.Menu.List', { NavigationId: navigationId, Module: moduleName });
           };
 

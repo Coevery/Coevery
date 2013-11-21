@@ -45,7 +45,6 @@
     <Content Include="Scripts\controllers\importcontroller.js" />
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\controllers\searchcontroller.js" />
-    <Content Include="Scripts\services\columnDefinitionService.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CultureController.cs" />
@@ -134,6 +133,9 @@
       <Project>{9916839c-39fc-4ceb-a5af-89ca7e87119f}</Project>
       <Name>Coevery.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

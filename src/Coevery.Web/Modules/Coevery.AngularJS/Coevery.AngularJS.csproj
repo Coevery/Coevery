@@ -317,6 +317,8 @@
     <Content Include="Scripts\ng-grid-2.0.6.min.js" />
     <Content Include="Scripts\ng-grid-flexible-height.js" />
     <Content Include="Scripts\ng-grid-row-selection.js" />
+    <Content Include="Scripts\ng-i18next.js" />
+    <Content Include="Scripts\ng-i18next.min.js" />
     <Content Include="Scripts\promise-tracker.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\require.min.js" />

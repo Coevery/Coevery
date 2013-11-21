@@ -67,40 +67,5 @@ namespace Coevery.Translations.Controllers
                 rows = query
             };
         }
-
-        public HttpResponseMessage GetModuleColumns()
-        {
-            var firstColumn = new JObject();
-            firstColumn["name"] = "Path";
-            firstColumn["label"] = "Path";
-            firstColumn["hidden"] = true;
-
-            var secondColumn = new JObject();
-            secondColumn["name"] = "Module";
-            secondColumn["label"] = T("Module").Text;
-            var formatOpt = new JObject();
-            formatOpt["hasView"] = true;
-            secondColumn["formatter"] = "cellLinkTemplateWithoutDelete";
-            secondColumn["formatoptions"] = formatOpt;
-
-            var thirdColumn = new JObject();
-            thirdColumn["name"] = "Total";
-            thirdColumn["label"] = T("Total").Text;
-
-            var fourthColumn = new JObject();
-            fourthColumn["name"] = "Translated";
-            fourthColumn["label"] = T("Translated").Text;
-
-            var fifthColumn = new JObject();
-            fifthColumn["name"] = "Missing";
-            fifthColumn["label"] = T("Missing").Text;
-
-            var columns = new List<JObject> { firstColumn, secondColumn, thirdColumn, fourthColumn, fifthColumn };
-
-            var json = JsonConvert.SerializeObject(columns);
-            var message = new HttpResponseMessage { Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json") };
-
-            return message;
-        }
     }
 }

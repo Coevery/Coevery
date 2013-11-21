@@ -2,24 +2,14 @@
 define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'TranslationExportCtrl',
-      ['$rootScope', '$scope', 'logger', '$state',
-      function ($rootScope, $scope, logger, $state) {
-
-          var t = function (str) {
-              var result = i18n.t(str);
-              return result;
-          };
-
+      ['$rootScope', '$scope', 'logger', '$state', '$i18next',
+      function ($rootScope, $scope, logger, $state, $i18next) {
           var metadataColumnDefs = [
-              { name: 'Culture', label: t('Culture'), hidden: true },
-              {
-                  name: 'CultureDisplay', label: 'CultureDisplay',
-                  formatter: $rootScope.cellLinkTemplateWithoutDelete,
-                  formatoptions: { hasView: true }
-              },
-              { name: 'Translatable', label: t('Translatable') },
-              { name: 'Translated', label: t('Translated') },
-              { name: 'Missing', label: t('Missing') }
+              { name: 'Culture', label: $i18next('Culture'), hidden: true },
+              { name: 'CultureDisplay', label: $i18next('CultureDisplay') },
+              { name: 'Translatable', label: $i18next('Translatable') },
+              { name: 'Translated', label: $i18next('Translated') },
+              { name: 'Missing', label: $i18next('Missing') }
           ];
 
           //get data form API, then render by the metadataColumnDefs

@@ -43,7 +43,6 @@ namespace Coevery.Perspectives.Services {
                 ParentPosition = parentPosition,
                 Level = currentLevel,
                 Order = weight,
-                IsLeaf = perspective.CurrentLevel<=1 || currentLevel == perspective.CurrentLevel,
                 Expanded = true,
             };
         }

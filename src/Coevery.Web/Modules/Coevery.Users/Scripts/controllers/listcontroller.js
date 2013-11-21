@@ -2,23 +2,19 @@
 define(['core/app/detourService', 'Modules/Coevery.Users/Scripts/services/userdataservice'], function(detour) {
     detour.registerController([
         'UserListCtrl',
-        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'userDataService', '$http',
-            function($rootScope, $scope, logger, $state, $stateParams, userDataService, $http) {
-                var t = function(str) {
-                    var result = i18n.t(str);
-                    return result;
-                };
+        ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'userDataService', '$http', '$i18next',
+            function ($rootScope, $scope, logger, $state, $stateParams, userDataService, $http, $i18next) {
 
                 var columnDefs = [
-                    { name: 'Id', label: t('Id'), hidden: true },
+                    { name: 'Id', label: $i18next('Id'), hidden: true },
                     {
                         name: 'UserName',
-                        label: t('User Name'),
+                        label: $i18next('User Name'),
                         formatter: $rootScope.cellLinkTemplate,
                         formatoptions: { hasView: true }
                     },
-                    { name: 'Email', label: t('Email') },
-                    { name: 'RegistrationStatus', label: t('Registration Status') }
+                    { name: 'Email', label: $i18next('Email') },
+                    { name: 'RegistrationStatus', label: $i18next('Registration Status') }
                 ];
 
                 $scope.gridOptions = {
@@ -59,10 +55,10 @@ define(['core/app/detourService', 'Modules/Coevery.Users/Scripts/services/userda
                         tracker: 'disableUser'
                     }).then(function(response) {
                         $scope.getAllUsers();
-                        logger.success('Disable succeeded');
+                        logger.success($i18next('Disable succeeded'));
                         return response;
                     }, function(reason) {
-                        logger.error('Disable Failed： ' + reason.data);
+                        logger.error($i18next('Disable Failed： ') + reason.data);
                     });
                 };
 
@@ -71,9 +67,9 @@ define(['core/app/detourService', 'Modules/Coevery.Users/Scripts/services/userda
                     if (!id) return;
                     userDataService.delete({ id: id }, function() {
                         $scope.getAllUsers();
-                        logger.success('Delete the user successful.');
+                        logger.success($i18next('Delete the user successful.'));
                     }, function(result) {
-                        logger.error('Failed to delete the user:' + result.data);
+                        logger.error($i18next('Failed to delete the user:') + result.data);
                     });
                 };
 

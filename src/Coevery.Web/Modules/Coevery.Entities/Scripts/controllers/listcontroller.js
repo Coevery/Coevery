@@ -3,12 +3,8 @@
 define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/entitydataservice'], function (detour) {
     detour.registerController([
       'EntityListCtrl',
-      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'entityDataService', '$http',
-      function ($rootScope, $scope, logger, $state, $resource, $stateParams, entityDataService, $http) {
-          var t = function (str) {
-              var result = i18n.t(str);
-              return result;
-          };
+      ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'entityDataService', '$http', '$i18next',
+      function ($rootScope, $scope, logger, $state, $resource, $stateParams, entityDataService, $http, $i18next) {
 
           var metadataColumnDefs = [
               {
@@ -18,10 +14,10 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                   formatter: $rootScope.cellLinkTemplate,
                   formatoptions: { hasView: true }
               },
-              { name: 'Id', label: t('Id'), hidden: true, sorttype: 'int' },
-              { name: 'DisplayName', label: t('Display Name') },
-              { name: 'Modified', label: t('Has Unpublished Modification') },
-              { name: 'HasPublished', label: t('Has Ever Published') }
+              { name: 'Id', label: $i18next('Id'), hidden: true, sorttype: 'int' },
+              { name: 'DisplayName', label: $i18next('Display Name') },
+              { name: 'Modified', label: $i18next('Has Unpublished Modification') },
+              { name: 'HasPublished', label: $i18next('Has Ever Published') }
           ];
 
           $scope.gridOptions = {

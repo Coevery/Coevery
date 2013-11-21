@@ -9,12 +9,9 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 $scope.selectedItems = [];
                 var entityName = $stateParams.Id;
                 var fieldColumnDefs = [
-                    { name: 'Name', label: 'Field Name', formatter: $rootScope.cellLinkTemplate, key:true },
                     { name: 'Id', label: 'Id', hidden: true },
-                    {
-                        name: 'DisplayName',
-                        label: 'Field Label'
-                    },
+                    { name: 'Name', label: 'Field Name', formatter: $rootScope.cellLinkTemplate, key: true },
+                    { name: 'DisplayName', label: 'Field Label' },
                     { name: 'FieldType', label: 'Field Type' },
                     { name: 'Type', label: 'Type' },
                     { name: 'ControlField', label: 'Control Field' }

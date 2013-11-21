@@ -17,12 +17,6 @@
             $rootScope.$on('$viewContentLoaded', function () {
                
             });
-
-            $rootScope.i18nextOptions = {
-                resGetPath: 'i18n/__ns_____lng__.json',
-                lowerCaseLng: true,
-                ns: 'resources-locale'
-            };
             
             if (!String.prototype.format) {
                 String.prototype.format = function () {
