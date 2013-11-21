@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,8 +8,7 @@ using Coevery.Core.Navigation.Models;
 using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
 using Coevery.Localization;
-using Coevery.Perspectives.Services;
-using Coevery.Perspectives.ViewModels;
+using Coevery.Perspectives.Models;
 using Coevery.UI;
 using Coevery.UI.Navigation;
 using Newtonsoft.Json.Linq;
@@ -73,9 +71,14 @@ namespace Coevery.Perspectives.Controllers {
             };
         }
 
-        public object PostReorderInfo([FromBody]JObject positions) {
+        public object PostReorderInfo([FromBody]JObject positions, int id) {
             try {
                 var navigationItemIds = positions["Positions"].ToArray();
+                var perspective = Services.ContentManager.Get<PerspectivePart>(id);
+                if (perspective == null) {
+                    throw new ArgumentNullException();
+                }
+                perspective.CurrentLevel = positions["Depth"].Value<int>();
                 foreach (var navigationItem in navigationItemIds) {
                     var contentItem = Services.ContentManager.Get(navigationItem["NavigationId"].Value<int>());
                     if (contentItem == null) {

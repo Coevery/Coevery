@@ -87,10 +87,10 @@
     <Compile Include="Models\PerspectivePartRecord.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
+    <Compile Include="Services\PositionManageService.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Services\IPlacementService.cs" />
     <Compile Include="Services\PlacementService.cs" />
-    <Compile Include="Services\PositionManageService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
     <Compile Include="Settings\NavigationTypeSettings.cs" />
     <Compile Include="Settings\PlacementSettings.cs" />
