@@ -6,7 +6,7 @@ define(['core/app/detourService', 'Modules/Coevery.Users/Scripts/services/userda
             function ($rootScope, $scope, logger, $state, $stateParams, userDataService, $http, $i18next) {
 
                 var columnDefs = [
-                    { name: 'Id', label: $i18next('Id'), hidden: true },
+                    { name: 'Id', label: $i18next('Id'), hidden: true, key:true },
                     {
                         name: 'UserName',
                         label: $i18next('User Name'),

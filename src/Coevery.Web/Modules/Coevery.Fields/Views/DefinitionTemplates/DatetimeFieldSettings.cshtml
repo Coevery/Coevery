@@ -19,7 +19,7 @@
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
-        <input class="date" type="text"
+        <input class="time" type="text"
            id="@Html.FieldIdFor(m => m.DefaultValue)"
            name="@Html.FieldNameFor(m => m.DefaultValue)"
            value="@FormatTime(Model.DefaultValue)"
@@ -27,5 +27,5 @@
            data-date-weekstart="@dateTimeLocalization.FirstDay" />
     </div>
 </section>
-@Display(New.DateTimePickerLocalization())
+@Display(New.BootstrapDatePickerLocalization())
 

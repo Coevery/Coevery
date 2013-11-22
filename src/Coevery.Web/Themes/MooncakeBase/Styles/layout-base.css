@@ -37,11 +37,10 @@ body {
     margin-right:0px;
 }
 
-.date
-{
-     width:100%;
-    margin-left:0px;
-    margin-right:0px;
+.date, .time {
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 .input-prepend

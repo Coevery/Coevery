@@ -3,9 +3,9 @@ define(['core/app/detourService', 'Modules/Coevery.Roles/Scripts/services/roleda
     detour.registerController([
         'RoleListCtrl',
         ['$rootScope', '$scope', 'logger', '$state', '$stateParams', 'roleDataService','$i18next',
-            function($rootScope, $scope, logger, $state, $stateParams, roleDataService) {
+            function ($rootScope, $scope, logger, $state, $stateParams, roleDataService, $i18next) {
                 var columnDefs = [
-                    { name: 'Id', label: $i18next('Id'), hidden: true },
+                    { name: 'Id', label: $i18next('Id'), hidden: true, key: true },
                     {
                         name: 'Name',
                         label: $i18next('Name'),
