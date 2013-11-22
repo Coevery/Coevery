@@ -149,7 +149,7 @@
     }]);
 
     gridz.directive("agGrid", [
-        "$rootScope", "$compile", "logger", "$http", function ($rootScope, $compile, logger, $http) {
+        "$rootScope", "$compile", "logger", "$http", '$i18next', function ($rootScope, $compile, logger, $http, $i18next) {
             var link;
             link = function ($scope, $element, attrs, gridCtrl) {
                 var alias, initializeGrid, loadGrid;
@@ -181,6 +181,8 @@
                             pager = $(gridOptions.pager + '_center');
                             if (pager.find(".custom-pager").length === 0) {
                                 var pagerOption = {
+                                    prevText: $i18next('Prev'),
+                                    nextText: $i18next('Next'),
                                     items: $grid.getGridParam("records"),
                                     itemsOnPage: $grid.getGridParam("rowNum"),
                                     currentPage: $grid.getGridParam("page"),

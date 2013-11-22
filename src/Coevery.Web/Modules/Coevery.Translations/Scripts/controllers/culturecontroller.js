@@ -1,5 +1,5 @@
 ﻿'use strict';
-define(['core/app/detourService', 'Modules/Coevery.Translations/Scripts/services/columnDefinitionService'], function (detour) {
+define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'TranslationCultureCtrl',
       ['$rootScope', '$scope', 'logger', '$state', '$stateParams', '$i18next',
@@ -8,7 +8,7 @@ define(['core/app/detourService', 'Modules/Coevery.Translations/Scripts/services
 
               $scope.FetchDefinitionViews = function () {
                   var metadataColumnDefs = [
-                      { name: 'Path', label: $i18next('Path'), hidden: true },
+                      { name: 'Path', label: $i18next('Path'), hidden: true, key: true },
                       { name: 'Module', label: $i18next('Module'), formatoptions: { hasView: true } },
                       { name: 'Total', label: $i18next('Total') },
                       { name: 'Translated', label: $i18next('Translated') },

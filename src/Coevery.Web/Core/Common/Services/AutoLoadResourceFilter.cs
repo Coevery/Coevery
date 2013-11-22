@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Coevery.DisplayManagement;
+using Coevery.DisplayManagement.Shapes;
 using Coevery.Mvc.Filters;
 
 namespace Coevery.Core.Common.Services
@@ -30,9 +31,10 @@ namespace Coevery.Core.Common.Services
                 return;
 
             var ctx = _workContextAccessor.GetContext();
-            var footer = ctx.Layout.Footer;
-            var resource = _autoLoadResourceProviders.SelectMany<IAutoLoadResourceProvider, dynamic>(x => x.GetResources(_shapeFactory));
-            footer.AddRange(resource);
+            var resources = _autoLoadResourceProviders.SelectMany<IAutoLoadResourceProvider, dynamic>(x => x.GetResources(_shapeFactory));
+            foreach (var o in resources) {
+                ctx.Layout.Footer.Add(o);
+            }
         }
 
         public void OnResultExecuted(ResultExecutedContext filterContext) {

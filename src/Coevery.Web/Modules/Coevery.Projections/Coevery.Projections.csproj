@@ -234,6 +234,7 @@
     <Compile Include="Services\IQueryService.cs" />
     <Compile Include="Services\ISortCriteriaProvider.cs" />
     <Compile Include="Services\ISortService.cs" />
+    <Compile Include="Services\JavascriptLocalizationResourceProvider.cs" />
     <Compile Include="Services\LayoutProvider.cs" />
     <Compile Include="Services\ProjectionManager.cs" />
     <Compile Include="Services\ProjectionService.cs" />
@@ -391,6 +392,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\jqGrid.Script.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Projection.JavascriptLocalizationResource.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

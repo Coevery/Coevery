@@ -4,13 +4,14 @@
       
         angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvider) {
             var translations = {
-                'Delete Confirm': '@T("Delete Confirm")',
-                'No': '@T("No")',
-                'Yes': '@T("Yes")'
+                'Prev': '@T("Prev")',
+                'Next': '@T("Next")'
             };
             var resources = {
                 dev: { translation: translations }
             };
+            
+            debugger;
             $.extend(true, $i18nextProvider.options, { resStore: resources });
         }]);
 

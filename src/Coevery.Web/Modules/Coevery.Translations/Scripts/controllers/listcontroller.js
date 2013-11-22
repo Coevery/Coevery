@@ -7,7 +7,7 @@ define(['core/app/detourService'], function (detour) {
 
           $scope.FetchDefinitionViews = function() {
               var columnDefs = [
-                  { name: 'Culture', label: $i18next('Culture'), hidden: true },
+                  { name: 'Culture', label: $i18next('Culture'), hidden: true, key: true },
                   {
                       name: 'CultureDisplay',
                       label: $i18next('Culture'),
