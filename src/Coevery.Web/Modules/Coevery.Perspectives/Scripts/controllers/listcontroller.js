@@ -16,12 +16,14 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
                   name: 'Description', label: $i18next('Description')
               }];
 
-          $scope.gridOptions = {
+          var gridOptions = {
               url: "api/perspectives/Perspective",
               colModel: perspectiveColumnDefs
           };
 
-          angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+          angular.extend(gridOptions, $rootScope.defaultGridOptions);
+          gridOptions.multiselect = false;
+          $scope.gridOptions = gridOptions;
 
           $scope.delete = function (id) {
               //$scope.perspectiveId = id;

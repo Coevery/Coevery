@@ -38,7 +38,7 @@ define(['core/app/detourService',
                             { name: 'Parent', label: $i18next('Parent'), },
                             { name: 'Weight', label: $i18next('Weight'), },
                             { name: 'Level', label: $i18next('Level'), },
-                            { name: 'LeafOnly', label: $i18next('Leaf Only'), }
+                            { name: 'IsLeaf', label: $i18next('Is Leaf'), }
                         ];
 
                         var gridOptions = {

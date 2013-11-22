@@ -59,6 +59,10 @@
             return this._flashRow(id);
         };
 
+        this.getRow = function (rowId, flag) {
+            return this.$grid.getLocalRow(rowId, flag);
+        };
+
         this.addRow = function (id, data, position) {
             if (!position) {
                 position = "first";

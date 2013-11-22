@@ -5,6 +5,7 @@ using Coevery.DisplayManagement.Descriptors;
 using Coevery.Mvc;
 using Coevery.Mvc.ClientRoute;
 using Coevery.UI.Navigation;
+using NHibernate.Linq;
 
 namespace Coevery.Common {
     public class CoreShapes : IShapeTableProvider {
@@ -23,11 +24,6 @@ namespace Coevery.Common {
             var routes = _clientRouteTableManager.GetRouteTable(isFrontEnd);
             var result = Display.ClientBootstrapScript(IsFrontEnd: isFrontEnd, Routes: routes);
             Output.Write(result);
-        }
-
-        [Shape]
-        public void PerspectiveMenuList(dynamic Display, IEnumerable<MenuItem> Shape, TextWriter Output) {
-            
         }
 
         [Shape]
