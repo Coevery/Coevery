@@ -88,7 +88,7 @@ define(['core/app/detourService',
                             });
                             navigationDataService.save({ Id: perpectiveId, Positions: postdata, Depth: depth }, function(data) {
                                 logger.success($i18next('Save layout successful.'));
-                                $scope.getAllNavigationdata(true);
+                                $scope.getAllNavigationdata();
                             }, function(response) {
                                 logger.error($i18next('Failed to save layout:' + response.data.Message));
                             });
@@ -122,9 +122,10 @@ define(['core/app/detourService',
                                 $scope.gridOptions = reloadOptions;
                                 return;
                             }
-                            $scope.navigationList.jqGrid('setGridParam', {
+                            $scope.navigationList.setParam({
                                 datatype: "json"
-                            }).trigger('reloadGrid');
+                            });
+                            $scope.navigationList.reload();
                         };
                     }]
             ]);

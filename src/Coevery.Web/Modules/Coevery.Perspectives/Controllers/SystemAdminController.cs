@@ -30,12 +30,14 @@ namespace Coevery.Perspectives.Controllers {
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
         private readonly INavigationManager _navigationManager;
+        private readonly IPositionManageService _positionManager;
 
         public SystemAdminController(
             ICoeveryServices coeveryServices,
             IContentDefinitionService contentDefinitionService,
             IContentDefinitionExtension contentDefinitionExtension,
             IRepository<ContentTypeDefinitionRecord> contentTypeDefinitionRepository,
+            IPositionManageService positionManager,
             IContentManager contentManager,
             INavigationManager navigationManager) {
             Services = coeveryServices;
@@ -44,6 +46,7 @@ namespace Coevery.Perspectives.Controllers {
             _contentTypeDefinitionRepository = contentTypeDefinitionRepository;
             _contentManager = contentManager;
             _navigationManager = navigationManager;
+            _positionManager = positionManager;
             T = NullLocalizer.Instance;
         }
 
@@ -141,7 +144,7 @@ namespace Coevery.Perspectives.Controllers {
         [HttpPost, ActionName("EditNavigationItem")]
         public ActionResult EditNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model) {
             var pluralContentTypeName = _contentDefinitionExtension.GetEntityNames(model.EntityName);
-
+            var menu = _contentManager.Get<PerspectivePart>(perspectiveId);
             var contentItem = _contentManager.Get(navigationId, VersionOptions.DraftRequired);
             
             //Used as the module id of front end
@@ -151,6 +154,7 @@ namespace Coevery.Perspectives.Controllers {
             contentItem.As<MenuPart>().Description = model.Description;
             _contentManager.Publish(contentItem);
 
+            menu.CurrentLevel = _positionManager.GetPositionLevel(contentItem.As<MenuPart>().MenuPosition);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
@@ -184,7 +188,7 @@ namespace Coevery.Perspectives.Controllers {
             var moduleMenuPart = Services.ContentManager.New<MenuPart>("ModuleMenuItem");
 
             // load the menu
-            var menu = Services.ContentManager.Get(perspectiveId);
+            var menu = Services.ContentManager.Get<PerspectivePart>(perspectiveId);
 
             moduleMenuPart.MenuText = pluralContentTypeName.CollectionDisplayName;
             moduleMenuPart.MenuPosition = Position.GetNext(_navigationManager.BuildMenu(menu));
@@ -198,6 +202,7 @@ namespace Coevery.Perspectives.Controllers {
             if (!moduleMenuPart.ContentItem.Has<IPublishingControlAspect>() && !moduleMenuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable) {
                 _contentManager.Publish(moduleMenuPart.ContentItem);
             }
+            menu.CurrentLevel = _positionManager.GetPositionLevel(moduleMenuPart.MenuPosition);
             return Json(new {id = moduleMenuPart.ContentItem.Id});
         }
     

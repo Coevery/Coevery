@@ -11,6 +11,7 @@ using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Core.Common.Models;
 using Coevery.Core.Containers.Models;
 using Coevery.Core.Contents;
+using Coevery.Core.Navigation.Models;
 using Coevery.Core.Title.Models;
 using Coevery.Mvc;
 using Coevery.Core.Contents.Settings;
@@ -83,14 +84,14 @@ namespace Coevery.Common.Controllers {
             }
 
             dynamic model = Services.ContentManager.BuildEditor(contentItem, "CreatePage");
-            return View((object) model);
+            return View((object)model);
         }
 
         private ActionResult CreatableTypeList(int? containerId) {
             dynamic viewModel = Services.New.ViewModel(ContentTypes: GetCreatableTypes(containerId.HasValue), ContainerId: containerId);
 
             // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-            return View("CreatableTypeList", (object) viewModel);
+            return View("CreatableTypeList", (object)viewModel);
         }
 
         private IEnumerable<ContentTypeDefinition> GetCreatableTypes(bool andContainable) {
@@ -120,10 +121,10 @@ namespace Coevery.Common.Controllers {
             if (!ModelState.IsValid) {
                 ModelState.AddModelError("CreateError", T("The creation didn't change model state.").ToString());
                 Services.TransactionManager.Cancel();
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
                 return Content(string.Concat(temp));
             }
 
@@ -136,7 +137,7 @@ namespace Coevery.Common.Controllers {
                 return this.RedirectLocal(returnUrl);
             }
 
-            return Json(new {Id = contentItem.Id});
+            return Json(new { Id = contentItem.Id });
         }
 
         public ActionResult Edit(int id) {
@@ -151,7 +152,7 @@ namespace Coevery.Common.Controllers {
             }
 
             dynamic model = Services.ContentManager.BuildEditor(contentItem, "EditPage");
-            return View((object) model);
+            return View((object)model);
         }
 
         [HttpPost, ActionName("Edit")]
@@ -171,7 +172,7 @@ namespace Coevery.Common.Controllers {
             }
 
             dynamic model = Services.ContentManager.BuildDisplay(contentItem);
-            return View((object) model);
+            return View((object)model);
         }
 
         [HttpPost]
@@ -216,10 +217,10 @@ namespace Coevery.Common.Controllers {
             if (!ModelState.IsValid) {
                 Services.TransactionManager.Cancel();
                 // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 var temp = (from values in ModelState
-                    from error in values.Value.Errors
-                    select error.ErrorMessage).ToArray();
+                            from error in values.Value.Errors
+                            select error.ErrorMessage).ToArray();
                 return Content(string.Concat(temp));
             }
 

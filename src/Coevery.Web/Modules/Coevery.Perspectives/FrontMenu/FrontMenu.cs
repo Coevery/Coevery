@@ -47,12 +47,12 @@ namespace Coevery.Perspectives.FrontMenu {
                             menu.Content(c);
                             menu.IdHint(c.Id.ToString(CultureInfo.InvariantCulture));
                             var subMenus = _menuService.GetMenuParts(c.Id)
-                                .OrderBy(menuPartEntry => menuPartEntry.MenuPosition, new FlatPositionComparer())
-                                .Where(menuPartEntry =>
-                                    menuPartEntry.MenuPosition.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
+                                .OrderBy(menuPartEntry => menuPartEntry.MenuPosition, new FlatPositionComparer()).ToList();
+                            var childMenus = subMenus.Where(menuPartEntry =>
+                                menuPartEntry.MenuPosition.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
                                 .ToList();
-                            foreach (var subMenu in subMenus) {
-                                AddChildMenuItem(subMenu, url, ref menu);
+                            foreach (var childMenu in childMenus) {
+                                AddChildMenuItem(childMenu, url, subMenus, ref menu);
                             }
                         });
             });
@@ -63,27 +63,24 @@ namespace Coevery.Perspectives.FrontMenu {
             return orderList.Length;
         }
 
-        private IEnumerable<MenuPart> GetChildMenuParts(string position) {
-            var rawList = Services.ContentManager.Query<MenuPart, MenuPartRecord>()
-                .Where(menu => menu.MenuPosition.StartsWith(position + "."))
-                .ForPart<MenuPart>().List();
-            return rawList == null || !rawList.Any() ? null : rawList.Where(menu => GetLevel(menu.MenuPosition) == GetLevel(position) + 1)
-                .OrderBy(menuPartEntry => menuPartEntry.MenuPosition, new FlatPositionComparer());
+        private IEnumerable<MenuPart> GetChildMenuParts(string position, IEnumerable<MenuPart> subMenuParts) {
+            var rawList = subMenuParts.Where(menu => menu.MenuPosition.StartsWith(position + "."));
+            return !rawList.Any() ? null : rawList.Where(menu => GetLevel(menu.MenuPosition) == GetLevel(position) + 1);
         }
 
-        private void AddChildMenuItem(MenuPart childMenu, string baseUrl, ref NavigationItemBuilder builder) {
+        private void AddChildMenuItem(MenuPart childMenu, string baseUrl, IEnumerable<MenuPart> subMenuParts, ref NavigationItemBuilder builder) {
             var subMenuCotent = childMenu;
             var menuItemEntity = CreateMenuItemEntries(childMenu, baseUrl);
             Action<NavigationItemBuilder> addChildrenAction = item => {
                 item.Url(menuItemEntity.Url)
                     .Content(subMenuCotent)
                     .IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture));
-                var grandChildMenus = GetChildMenuParts(subMenuCotent.MenuPosition);
+                var grandChildMenus = GetChildMenuParts(subMenuCotent.MenuPosition, subMenuParts);
                 if (grandChildMenus == null) {
                     return;
                 }
                 foreach (var grandChildMenu in grandChildMenus) {
-                    AddChildMenuItem(grandChildMenu, baseUrl, ref item);
+                    AddChildMenuItem(grandChildMenu, baseUrl, subMenuParts, ref item);
                 }
             };
             if (!childMenu.Is<ModuleMenuItemPart>()) {

@@ -1,22 +1,42 @@
 ﻿@using Coevery.UI.Navigation
+@using log4net.Core
 @using NHibernate.Linq
 
 @{
     var perspectives = Model.ItemList;
+    int selectedPerspective = Model.DefaultSelected;
 }
 @if (perspectives.Length > 1) {
     <div id="nav-selector">
-        <div class="dropdown">
+        <div class="dropdown" data-ng-init="setcurrmenu('@perspectives[selectedPerspective].IdHint','@perspectives[selectedPerspective].Text.Text')">
             <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                <span data-label-placement title="{{currentMenu.Text.Text}}">{{currentMenu.Text.Text}}</span><b class="caret"></b>
+                <span data-label-placement title="{{currentMenuText}}">{{currentMenuText}}</span><b class="caret"></b>
             </a>
-            <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel" data-ng-init="menus=@Json.Encode(Model)">
-                <li data-ng-repeat="menu in menus" data-ng-class="{active: $uiRoute}" data-ui-route="{{menu.Href}}/?.*">
-                    <a href="{{menu.Href}}" title="{{menu.Text.Text}}" data-ng-click="setcurrmenu({{menu.IdHint}})">
-                        <label><strong>{{menu.Text.Text}}</strong></label>
-                    </a>
-                </li>
+            <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
+                @foreach (MenuItem menu in perspectives) {
+                    <li data-ng-class="{active: $uiRoute}" data-ui-route="@menu.Href/?.*">
+                        <a href="@menu.Href" title="@menu.Text.Text" 
+                            data-ng-click="setcurrmenu('@menu.IdHint','@menu.Text.Text')">
+                            <label><strong>@menu.Text.Text</strong></label>
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
 }
+
+<nav id="navigation">
+    @if (perspectives.Length > 0) {
+        foreach (MenuItem perspective in perspectives) {
+            if (!perspective.Items.Any()) {
+                continue;
+            }
+            <ul class="menu-level-0" data-ng-show="currentMenuId=='@perspective.IdHint'">
+                @foreach (var navigation in perspective.Items) {
+                    @Display.NavigationItem(Item: navigation, Level: 1)
+                }
+            </ul>
+        }
+    }
+</nav>

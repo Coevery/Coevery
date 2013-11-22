@@ -10,7 +10,7 @@ namespace Coevery.Common.Services {
             var navigationView = new ClientViewDescriptor() {
                 Name = "menulist@",
                 TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = '" + ModuleBasePath + @"ViewTemplate/MenuList';
+                        var url = '" + ModuleBasePath + @"ViewTemplate/MenuList/'+ $stateParams.NavigationId;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]",
                 Controller = "NavigationCtrl"

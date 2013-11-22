@@ -7,7 +7,7 @@ define(['core/app/detourService',
                 ['$rootScope', '$scope', 'logger', '$state', '$resource', '$stateParams', 'projectionDataService', '$i18next',
                     function($rootScope, $scope, logger, $state, $resource, $stateParams, projectionDataService, $i18next) {
                         var columnDefs = [
-                            { name: 'ContentId', label: $i18next('Content Id'), hidden: true },
+                            { name: 'ContentId', label: $i18next('Content Id'), hidden: true ,key:true},
                             {
                                 name: 'DisplayName',
                                 label: $i18next('Display Name'),
