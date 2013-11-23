@@ -129,7 +129,7 @@ namespace Coevery.Perspectives.Controllers {
             model.IconClass = contentItem.As<ModuleMenuItemPart>().IconClass;
             model.Description = contentItem.As<MenuPart>().Description;
             model.Entities = metadataTypes.Select(item => new SelectListItem {
-                Text = item.Name,
+                Text = item.DisplayName,
                 Value = item.Name,
                 Selected = item.Name == model.EntityName
             }).ToList();
@@ -162,7 +162,7 @@ namespace Coevery.Perspectives.Controllers {
             var perspectiveItem = _contentManager.Get(id, VersionOptions.Latest);
             model.Title = perspectiveItem.As<PerspectivePart>().Title;
             model.Entities = metadataTypes.Select(item => new SelectListItem {
-                Text = item.Name,
+                Text = item.DisplayName,
                 Value = item.Name,
                 Selected = item.Name == model.EntityName
             }).ToList();
