@@ -318,23 +318,7 @@
                         grid.setGridParam({ data: results }).trigger('reloadGrid');
                     };
                     $scope.$parent.$watch(attrs.agGrid + '.data', dataWatcher);
-                    
-                    // pager
-                    var pager = $element.find('.pagination');
-                    pager.pagination({
-                        itemsOnPage: options.pagingOptions.pageSize,
-                        items: options.pagingOptions.totalServerItems,
-                        onPageClick: function (pageNumber, evt) {
-                            options.pagingOptions.currentPage = pageNumber;
-                        }
-                    });
-                    var pageWatcher = function (a) {
-                        $scope.pagingOptions = a;
-                        pager.pagination("updateItems", a.totalServerItems);
-                        pager.pagination("updateItemsOnPage", a.pageSize);
-                        pager.pagination("drawPage ", a.currentPage);
-                    };
-                    $scope.$parent.$watch(attrs.agGrid + '.pagingOptions', pageWatcher);
+                    $scope.pagingOptions = options.pagingOptions;
                 };
 
                 $scope.$parent.$watch(attrs.agGrid, optionWatcher);
@@ -360,9 +344,25 @@
             scope: false,
             compile: function () {
                 return {
-                    pre: function ($scope, iElement) {
+                    post: function ($scope, iElement) {
                         if (iElement.children().length === 0) {
-                            iElement.append($compile($templateCache.get($scope.gridId + 'footerTemplate.html'))($scope));
+                            var footerHtml = $compile($templateCache.get('footerTemplate.html'))($scope);
+                            iElement.append(footerHtml);
+                            // pager
+                            var pager = iElement.find('.pagination');
+                            pager.pagination({
+                                onPageClick: function(pageNumber, evt) {
+                                    $scope.pagingOptions.currentPage = pageNumber;
+                                },
+                                cssStyle: ''
+                            });
+                            var pageWatcher = function (a) {
+                                if (!a) return;
+                                pager.pagination("updateItems", a.totalServerItems);
+                                pager.pagination("updateItemsOnPage", 2); //a.pageSize
+                                pager.pagination("drawPage", a.currentPage);
+                            };
+                            $scope.$watch('pagingOptions', pageWatcher);
                         }
                     }
                 };
@@ -373,18 +373,18 @@
 
     gridz.run(["$templateCache", function($templateCache) {
         $templateCache.put("footerTemplate.html",
-                "<div ng-show=\"showFooter\" class=\"ngFooterPanel\" ng-class=\"{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}\" ng-style=\"footerStyle()\">" +
+                "<div class=\"ngFooterPanel\" ng-class=\"{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}\" ng-style=\"footerStyle()\">" +
                 "    <div class=\"ngTotalSelectContainer\" >" +
                 "        <div class=\"ngFooterTotalItems\" ng-class=\"{'ngNoMultiSelect': !multiSelect}\" >" +
-                "            <span class=\"ngLabel\">{{i18n.ngTotalItemsLabel}} {{maxRows()}}</span><span ng-show=\"filterText.length > 0\" class=\"ngLabel\">({{i18n.ngShowingItemsLabel}} {{totalFilteredItemsLength()}})</span>" +
+                "            <span class=\"ngLabel\">11 - 20 of 91 items</span>" +
                 "        </div>" +
                 "        <div class=\"ngFooterSelectedItems\" ng-show=\"multiSelect\">" +
                 "            <span class=\"ngLabel\">{{i18n.ngSelectedItemsLabel}} {{selectedItems.length}}</span>" +
                 "        </div>" +
                 "    </div>" +
                 "    <div style=\"float: right; margin-top: 10px;\">" +
-                "        <div class=\"pagination\"></div>" +
-                "        <div style=\"float:right; margin-right: 10px;\" class=\"ngRowCountPicker\">" +
+                "        <div style=\"float:left; margin-right: 10px; margin-top:0; margin-bottom:0;\" class=\"pagination\"></div>" +
+                "        <div style=\"float:left; margin-right: 10px;\" class=\"ngRowCountPicker\">" +
                 "            <select style=\"float: left;height: 27px; width: 100px\" ng-model=\"pagingOptions.pageSize\" >" +
                 "                <option ng-repeat=\"size in pagingOptions.pageSizes\">{{size}}</option>" +
                 "            </select>" +

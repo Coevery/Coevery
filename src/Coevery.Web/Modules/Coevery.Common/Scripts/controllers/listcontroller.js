@@ -18,7 +18,7 @@
                 var currentPage = parseInt($location.$$search.Page, 10);
                 if (!currentPage) currentPage = 1;
                 var pageSize = parseInt($location.$$search.Rows, 10);
-                if (!pageSize || pageSizes.indexOf(pageSize) < 0) pageSize = 50;
+                if (!pageSize || pageSizes.indexOf(pageSize) < 0) pageSize = 2;
 
                 var getPostData = function () {
                     return {
@@ -88,7 +88,6 @@
                     var dataResults = entityDataService.query(parameters, function () {
                         $scope.gridOptions.data = dataResults.rows;
                     });
-                    //$scope.getPagedDataAsync();
                 };
 
                 // init views
