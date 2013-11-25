@@ -5,28 +5,30 @@
 @{
     var perspectives = Model.ItemList;
     int selectedPerspective = Model.DefaultSelected;
+    var noPerspectiveSelectorClass = perspectives == null || perspectives.Length <= 1 ? "no-perspective" : "";
 }
-@if (perspectives.Length > 1) {
-    <div id="nav-selector">
-        <div class="dropdown" data-ng-init="setcurrmenu('@perspectives[selectedPerspective].IdHint','@perspectives[selectedPerspective].Text.Text')">
-            <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                <span data-label-placement title="{{currentMenuText}}">{{currentMenuText}}</span><b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
-                @foreach (MenuItem menu in perspectives) {
-                    <li data-ng-class="{active: $uiRoute}" data-ui-route="@menu.Href/?.*">
-                        <a href="@menu.Href" title="@menu.Text.Text" 
-                            data-ng-click="setcurrmenu('@menu.IdHint','@menu.Text.Text')">
-                            <label><strong>@menu.Text.Text</strong></label>
-                        </a>
-                    </li>
-                }
-            </ul>
-        </div>
+@if (perspectives.Length >= 1) {
+    <div id="nav-selector" class="@noPerspectiveSelectorClass" data-ng-init="setcurrmenu('@perspectives[selectedPerspective].IdHint','@perspectives[selectedPerspective].Text.Text')">
+        @if (perspectives.Length > 1) {
+            <div class="dropdown">
+                <a id="selector" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                    <span data-label-placement title="{{currentMenuText}}">{{currentMenuText}}</span><b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu bullet" role="menu" aria-labelledby="dLabel">
+                    @foreach (MenuItem menu in perspectives) {
+                        <li data-ng-class="{active: $uiRoute}" data-ui-route="@menu.Href/?.*">
+                            <a href="@menu.Href" title="@menu.Text.Text" 
+                               data-ng-click="setcurrmenu('@menu.IdHint','@menu.Text.Text')">
+                                <label><strong>@menu.Text.Text</strong></label>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
 }
-
-<nav id="navigation">
+<nav id="navigation" class="@noPerspectiveSelectorClass">
     @if (perspectives.Length > 0) {
         foreach (MenuItem perspective in perspectives) {
             if (!perspective.Items.Any()) {
