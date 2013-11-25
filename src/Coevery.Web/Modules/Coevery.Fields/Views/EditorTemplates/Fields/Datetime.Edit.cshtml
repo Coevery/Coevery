@@ -9,19 +9,19 @@
     var cultureInfo = CultureInfo.GetCultureInfo(WorkContext.CurrentCulture);
     var dateTimeLocalization = WorkContext.Resolve<IDateTimeLocalization>();
 
-    Func<DateTime?, string> FormatTime = date => date != null ? date.Value.ToString(dateTimeLocalization.ShortTimeFormat.Text, cultureInfo) : null;
+    Func<DateTime?, string> FormatDateTime = date => date != null ? date.Value.ToString(dateTimeLocalization.LongDateTimeFormat.Text, cultureInfo) : null;
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
-<div class="control controls input-prepend errortips" data-co-datetime-picker="time">
+<div class="control controls input-prepend errortips" data-co-datetime-picker="datetime">
     <span class="add-on">
         <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
     </span>
     <input class="date" type="text"
            id="@Html.FieldIdFor(m => m.Value)"
            name="@Html.FieldNameFor(m => m.Value)"
-           value="@FormatTime(Model.Value)"
-           data-format="@dateTimeLocalization.ShortTimeFormat.Text"
+           value="@FormatDateTime(Model.Value)"
+           data-format="@dateTimeLocalization.LongDateTimeFormat.Text"
            data-date-weekstart="@dateTimeLocalization.FirstDay"
            @if (required != null) { <text> required data-msg-required="Please fill this field!" </text>   }
            @if (!string.IsNullOrWhiteSpace(settings.HelpText)) { <text> helper:text='@settings.HelpText' </text>   } />

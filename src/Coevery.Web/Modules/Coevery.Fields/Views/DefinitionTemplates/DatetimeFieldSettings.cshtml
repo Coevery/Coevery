@@ -8,23 +8,23 @@
     var cultureInfo = CultureInfo.GetCultureInfo(WorkContext.CurrentCulture);
     var dateTimeLocalization = WorkContext.Resolve<IDateTimeLocalization>();
 
-    Func<DateTime?, string> FormatTime = date => date != null ? date.Value.ToString(dateTimeLocalization.ShortTimeFormat.Text, cultureInfo) : null;
+    Func<DateTime?, string> FormatDateTime = date => date != null ? date.Value.ToString(dateTimeLocalization.LongDateTimeFormat.Text, cultureInfo) : null;
 }
 
 <section class="control-group data-row">
     <label class="control-label">
         Default Value
     </label>
-    <div class="controls input-prepend errortips" data-co-datetime-picker="time">
+    <div class="controls input-prepend errortips" data-co-datetime-picker="datetime">
         <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
         <input class="time" type="text"
-           id="@Html.FieldIdFor(m => m.DefaultValue)"
-           name="@Html.FieldNameFor(m => m.DefaultValue)"
-           value="@FormatTime(Model.DefaultValue)"
-           data-format="@dateTimeLocalization.ShortTimeFormat.Text"
-           data-date-weekstart="@dateTimeLocalization.FirstDay" />
+               id="@Html.FieldIdFor(m => m.DefaultValue)"
+               name="@Html.FieldNameFor(m => m.DefaultValue)"
+               value="@FormatDateTime(Model.DefaultValue)"
+               data-format="@dateTimeLocalization.LongDateTimeFormat.Text"
+               data-date-weekstart="@dateTimeLocalization.FirstDay" />
     </div>
 </section>
 @Display(New.BootstrapDatePickerLocalization())
