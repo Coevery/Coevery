@@ -305,7 +305,7 @@
                 var optionWatcher = function(options) {
                     if (!options) return;
 
-                    var grid = $element.find('table').jqGrid(options);
+                    var grid = $element.find('table').jqGrid(angular.extend({}, defaultOptions, options));
 
                     $scope.$parent.$watch(attrs.agGrid + '.colModel', function (a, o) {
                         if (!a || a == o) return;
@@ -318,12 +318,23 @@
                         grid.setGridParam({ data: results }).trigger('reloadGrid');
                     };
                     $scope.$parent.$watch(attrs.agGrid + '.data', dataWatcher);
+                    
+                    // pager
                     var pager = $element.find('.pagination');
-                    pager.pagination({itemsOnPage: options.pagingOptions.pageSize });
-                    var pageWatcher = function(a) {
-                        pager.pagination("updateItems", a);
+                    pager.pagination({
+                        itemsOnPage: options.pagingOptions.pageSize,
+                        items: options.pagingOptions.totalServerItems,
+                        onPageClick: function (pageNumber, evt) {
+                            options.pagingOptions.currentPage = pageNumber;
+                        }
+                    });
+                    var pageWatcher = function (a) {
+                        $scope.pagingOptions = a;
+                        pager.pagination("updateItems", a.totalServerItems);
+                        pager.pagination("updateItemsOnPage", a.pageSize);
+                        pager.pagination("drawPage ", a.currentPage);
                     };
-                    $scope.$parent.$watch(attrs.agGrid + '.totalServerItems', pageWatcher,true);
+                    $scope.$parent.$watch(attrs.agGrid + '.pagingOptions', pageWatcher);
                 };
 
                 $scope.$parent.$watch(attrs.agGrid, optionWatcher);
@@ -331,7 +342,7 @@
             return {
                 scope: true,
                 restrict: "A",
-                template: "<table class=\"gridz\"></table>\n<div class=\"pagination\"></div>",
+                template: "<table class=\"gridz\"></table>\n<div ag-grid-footer></div>",
                 compile: function (element, attrs) {
                     setIdValue(element, attrs.agGridName);
                     return {
@@ -343,6 +354,45 @@
             };
         }
     ]);
+    
+    gridz.directive('agGridFooter', ['$compile', '$templateCache', function ($compile, $templateCache) {
+        var ngGridFooter = {
+            scope: false,
+            compile: function () {
+                return {
+                    pre: function ($scope, iElement) {
+                        if (iElement.children().length === 0) {
+                            iElement.append($compile($templateCache.get($scope.gridId + 'footerTemplate.html'))($scope));
+                        }
+                    }
+                };
+            }
+        };
+        return ngGridFooter;
+    }]);
+
+    gridz.run(["$templateCache", function($templateCache) {
+        $templateCache.put("footerTemplate.html",
+                "<div ng-show=\"showFooter\" class=\"ngFooterPanel\" ng-class=\"{'ui-widget-content': jqueryUITheme, 'ui-corner-bottom': jqueryUITheme}\" ng-style=\"footerStyle()\">" +
+                "    <div class=\"ngTotalSelectContainer\" >" +
+                "        <div class=\"ngFooterTotalItems\" ng-class=\"{'ngNoMultiSelect': !multiSelect}\" >" +
+                "            <span class=\"ngLabel\">{{i18n.ngTotalItemsLabel}} {{maxRows()}}</span><span ng-show=\"filterText.length > 0\" class=\"ngLabel\">({{i18n.ngShowingItemsLabel}} {{totalFilteredItemsLength()}})</span>" +
+                "        </div>" +
+                "        <div class=\"ngFooterSelectedItems\" ng-show=\"multiSelect\">" +
+                "            <span class=\"ngLabel\">{{i18n.ngSelectedItemsLabel}} {{selectedItems.length}}</span>" +
+                "        </div>" +
+                "    </div>" +
+                "    <div style=\"float: right; margin-top: 10px;\">" +
+                "        <div class=\"pagination\"></div>" +
+                "        <div style=\"float:right; margin-right: 10px;\" class=\"ngRowCountPicker\">" +
+                "            <select style=\"float: left;height: 27px; width: 100px\" ng-model=\"pagingOptions.pageSize\" >" +
+                "                <option ng-repeat=\"size in pagingOptions.pageSizes\">{{size}}</option>" +
+                "            </select>" +
+                "        </div>" +
+                "    </div>" +
+                "</div>"
+        );
+    }]);
 
     gridz.value("flatten", function (target, opts) {
         var delimiter, getKey, output, step;

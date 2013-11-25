@@ -223,7 +223,6 @@
     <Compile Include="Services\CompareContentService.cs" />
     <Compile Include="Services\CustomMemberBindingProvider.cs" />
     <Compile Include="Services\FieldIndexService.cs" />
-    <Compile Include="Services\GridService.cs" />
     <Compile Include="Services\IFieldIndexService.cs" />
     <Compile Include="Services\IFilterProvider.cs" />
     <Compile Include="Services\IMemberBindingProvider.cs" />

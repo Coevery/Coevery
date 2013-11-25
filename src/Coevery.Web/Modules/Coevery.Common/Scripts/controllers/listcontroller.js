@@ -43,13 +43,11 @@
 
                     var gridOptions = angular.extend({}, $rootScope.defaultGridOptions, {
                         datatype: "local",
-                        rowNum: pageSize,
-                        rowList: pageSizes,
-                        totalServerItems: 0,
                         pagingOptions: {
                             pageSizes: [50, 100, 200],
                             pageSize: pageSize,
-                            currentPage: 1
+                            currentPage: 1,
+                            totalServerItems:0,
                         }
                     });
 
@@ -72,7 +70,9 @@
                     $q.all([gridColumns.$promise, dataResults.$promise]).then(function () {
                         $scope.gridOptions = angular.extend(gridOptions, {
                             data: dataResults.rows,
-                            totalServerItems: dataResults.totalRecords,
+                            pagingOptions: angular.extend(gridOptions.pagingOptions, {
+                                totalServerItems: dataResults.totalRecords
+                            }),
                             colModel: gridColumns
                         });
                     }, function (reason) {

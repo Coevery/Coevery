@@ -1,9 +1,9 @@
 ﻿namespace Coevery.Common.ViewModels {
     public class ListQueryModel {
         public int Rows { get; set; }
-        public int Page { get; set; } 
-        public string Sidx { get; set; }
-        public string Sord { get; set; }
+        public int Page { get; set; }
+        public string  SortBy { get; set; }
+        public string Sort { get; set; }
         public int ViewId { get; set; }
         public int FilterGroupId { get; set; }
         public FilterData[] Filters { get; set; }
