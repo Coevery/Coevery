@@ -14,7 +14,7 @@ define(['core/app/detourService'], function (detour) {
                 });
 
                 var relationshipColumnDefs = [
-                    { name: 'ContentId', label: 'Content Id', hidden: true },
+                    { name: 'ContentId', label: 'Content Id', hidden: true, key: true },
                     {
                         name: 'Name', label: 'Relationship Name',
                         formatter: $rootScope.cellLinkTemplate,
