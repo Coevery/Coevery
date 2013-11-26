@@ -68,5 +68,11 @@ namespace Coevery.Common {
 
             return 6;
         }
+
+        public int UpdateFrom6() {
+            ContentDefinitionManager.AlterTypeDefinition("ModuleMenuItem", cfg => cfg
+                .DisplayedAs("Entity Navigation"));
+            return 7;
+        }
     }
 }

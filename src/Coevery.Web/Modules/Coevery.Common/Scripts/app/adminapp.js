@@ -38,24 +38,35 @@
             }
 
             $rootScope.cellLinkTemplate = function (cellvalue, options, rowObject) {
-                var template = '<div class="gridCellText">' +
-                    '<section class="row-actions hide">' +
-                    '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
-                    '<span class="icon-remove" co-delete-button confirm-message="You really want to delete this row?" ' +
-                    'delete-action="delete(\'{0}\')" title="Delete"></span>{2}</section>' +
-                    '<div>{1}</div> </div>';
-                var viewStyle = cellvalue, defaultStyle = '';
-                if (!options.colModel.formatoptions) {
-                    return template.format(options.rowId, viewStyle, '');
+                var template = '<div class=\"gridCellText\">{0}<div>{1}</div></div>';
+                var cellbuttonTemplate = '<section class=\"row-actions hide\">' +
+                        '<span class=\"icon-edit\" data-ng-click=\"edit(\'{0}\')\" title=\"Edit\"></span>' +
+                        '<span class=\"icon-remove\" co-delete-button confirm-message=\"You really want to delete this row?\" ' +
+                        'delete-action=\"delete(\'{0}\')\" title=\"Delete\"></span>{1}</section>';
+                var viewStyle = cellvalue, param = [options.rowId], defaultStyle = '',
+                    foramtOptions = options.colModel.formatoptions, result;
+                if (!foramtOptions) {
+                    result = template.format(cellbuttonTemplate.format(options.rowId, ''), viewStyle);
+                    return result;
                 }
-                if (options.colModel.formatoptions.hasView) {
-                    viewStyle = '<a class="btn-link" data-ng-click="view(\'' + options.rowId + '\')"> ' +
+                if (foramtOptions.hasView) {
+                    viewStyle = '<a class=\"btn-link\" data-ng-click=\"view(\'{0}\')\"> ' +
                         cellvalue + '</a>';
                 }
-                if (options.colModel.formatoptions.hasDefault) {
-                    defaultStyle = '<span class="icon-tags" data-ng-click="setDefault(\'' + options.rowId + '\')" title="Set Default"></span>';
+                //'paramAttrs' define the param attributes passed to the edit and delete function
+                if (!!foramtOptions.paramAttrs) {
+                    param = [];
+                    for (var index = 0; index < foramtOptions.paramAttrs.length; index++) {
+                        param.push(rowObject[foramtOptions.paramAttrs[index]]);
+                    }
                 }
-                return template.format(options.rowId, viewStyle, defaultStyle );
+                if (!!foramtOptions.hasDefault) {
+                    defaultStyle = '<span class=\"icon-tags\" data-ng-click=\"setDefault(\'' + options.rowId + '\')\" title=\"Set Default\"></span>';
+                }
+                result = !!foramtOptions.noCellButton
+                    ? template.format('', viewStyle.format(param.join('\',\'')))
+                    : template.format(cellbuttonTemplate.format(param.join('\'\,\''), defaultStyle), viewStyle.format(param.join('\'\,\'')));
+                return result;
             };
 
             $rootScope.defaultGridOptions = {

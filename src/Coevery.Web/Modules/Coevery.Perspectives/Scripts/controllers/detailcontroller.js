@@ -32,8 +32,11 @@ define(['core/app/detourService',
                             name: 'DisplayName',
                             label: $i18next('DisplayName'),
                             formatter: $rootScope.cellLinkTemplate,
-                            formatoptions: { hasView: true }
-                        }, { name: 'Description', label: $i18next('Description'), },
+                            //'paramAttrs' define the param attributes passed to the edit and delete function 
+                            formatoptions: { hasView: true, paramAttrs: ['Id', 'NavigationType'] }
+                        }, { name: 'Type', label: $i18next('Type'), },
+                            { name: 'Description', label: $i18next('Description'), },
+                            { name: 'NavigationType', label: $i18next('NavigationType'), hidden: true },
                             { name: 'Parent', label: $i18next('Parent'), hidden: true },
                             { name: 'Weight', label: $i18next('Weight'), hidden: true },
                             { name: 'Level', label: $i18next('Level'), hidden: true },
@@ -55,12 +58,12 @@ define(['core/app/detourService',
                         gridOptions.sortable = false;
                         $scope.gridOptions = gridOptions;
 
-                        $scope.addNavigationItem = function () {
-                            $state.transitionTo('CreateNavigationItem', { Id: perpectiveId });
+                        $scope.addNavigationItem = function (type) {
+                            $state.transitionTo('CreateNavigationItem', { Id: perpectiveId, Type: type});
                         };
 
-                        $scope.edit = function (navigationId) {
-                            $state.transitionTo('EditNavigationItem', { Id: perpectiveId, NId: navigationId });
+                        $scope.edit = function (id,type) {
+                            $state.transitionTo('EditNavigationItem', { Id: perpectiveId, NId: id, Type: type });
                         };
 
                         $scope.view = $scope.edit;
@@ -96,8 +99,8 @@ define(['core/app/detourService',
                             });
                         };
 
-                        $scope.delete = function (navigationId) {
-                            perspectiveDataService.delete({ Id: navigationId }, function () {
+                        $scope.delete = function (id,type) {
+                            perspectiveDataService.delete({ Id: id }, function () {
                                 $scope.getAllNavigationdata();
                                 logger.success($i18next('Delete the navigation successful.'));
                             }, function (result) {

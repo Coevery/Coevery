@@ -94,7 +94,7 @@ namespace Coevery.Perspectives.FrontMenu {
 
         private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart, string parentUrl) {
             string urlFormat = parentUrl + "/{0}";
-            string url;
+            string url="";
 
             if (menuPart.Is<ModuleMenuItemPart>()) {
                 var urlName = _contentDefinitionExtension.GetEntityNames(
@@ -102,8 +102,8 @@ namespace Coevery.Perspectives.FrontMenu {
                 url = string.Format(urlFormat, urlName);
             }
                 //@todo: add process for other category of navigation item
-            else {
-                url = string.Format(urlFormat, menuPart.MenuText);
+            else if(menuPart.Is<MenuItemPart>()){
+                url = menuPart.As<MenuItemPart>().Url;
             }
 
             return new MenuItemEntry {

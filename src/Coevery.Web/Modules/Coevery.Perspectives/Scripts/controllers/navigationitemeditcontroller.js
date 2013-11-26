@@ -43,7 +43,7 @@ define(['core/app/detourService'], function (detour) {
                    var getter = $parse('id');
                    var id = getter(response.data);
                    if(id)
-                       $state.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId: id });
+                       $state.transitionTo('EditNavigationItem', { Id: $stateParams.Id, NId: id, Type: response.data.type });
                });
            };
            

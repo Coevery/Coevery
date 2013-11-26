@@ -92,7 +92,6 @@
     <Compile Include="Services\IPlacementService.cs" />
     <Compile Include="Services\PlacementService.cs" />
     <Compile Include="Services\SystemAdminMenu.cs" />
-    <Compile Include="Settings\NavigationTypeSettings.cs" />
     <Compile Include="Settings\PlacementSettings.cs" />
     <Compile Include="ViewModels\CreatePartViewModel.cs" />
     <Compile Include="ViewModels\EditFieldViewModel.cs" />
@@ -144,7 +143,6 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\SystemAdmin\Create.cshtml" />
   </ItemGroup>

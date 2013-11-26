@@ -56,7 +56,9 @@ namespace Coevery.Perspectives.Controllers {
                         select new {
                             Id = menuEntry.ContentItem.Id, 
                             DisplayName = menuEntry.Text, 
+                            Type = menuEntry.ContentItem.TypeDefinition.DisplayName,
                             Description = menuEntry.Description,
+                            NavigationType = menuEntry.ContentItem.ContentType,
                             Parent = treeInfo.ParentId,
                             Weight = treeInfo.Order,
                             Level = treeInfo.Level,

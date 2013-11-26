@@ -7,6 +7,7 @@ using System.Net;
 using System.Web.Mvc;
 using Coevery.Common.Extensions;
 using Coevery.Common.Models;
+using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Core.Common.ViewModels;
 using Coevery.Perspectives.Models;
 using Coevery.Perspectives.Services;
@@ -80,9 +81,10 @@ namespace Coevery.Perspectives.Controllers {
             contentItem.As<PerspectivePart>().Title = model.Title;
             contentItem.As<PerspectivePart>().Description = model.Description;
             contentItem.As<PerspectivePart>().Position = currPos;
+            contentItem.As<PerspectivePart>().CurrentLevel = 0;
             _contentManager.Create(contentItem, VersionOptions.Draft);
             _contentManager.Publish(contentItem);
-            return Json(new {id = contentItem.Id});
+            return Json(new { id = contentItem.Id });
         }
 
 
@@ -108,103 +110,158 @@ namespace Coevery.Perspectives.Controllers {
 
         public ActionResult Detail(int id) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
-            var model = new PerspectiveViewModel();
-            model.Id = contentItem.As<PerspectivePart>().Id;
-            model.Title = contentItem.As<PerspectivePart>().Title;
-            model.Description = contentItem.As<PerspectivePart>().Description;
-            model.Position = contentItem.As<PerspectivePart>().Position;
-            model.RowSortSetting.Url = "api/Perspectives/Navigation/PostReorderInfo";
-            model.RowSortSetting.Method = "Post";
-            model.RowSortSetting.Handler = "generatePosition";
+            var model = new PerspectiveViewModel {
+                Id = contentItem.As<PerspectivePart>().Id,
+                Title = contentItem.As<PerspectivePart>().Title,
+                Description = contentItem.As<PerspectivePart>().Description,
+                Position = contentItem.As<PerspectivePart>().Position,
+                NavigationTypeList = new List<ContentTypeDefinition>()
+            };
+            foreach (var type in PerspectiveViewModel.NavigationTypes) {
+                var temp = _contentManager.GetContentTypeDefinitions().FirstOrDefault(definition => definition.Name == type);
+                if (temp != null) {
+                    model.NavigationTypeList.Add(temp);
+                }
+            }
             return View(model);
         }
 
-        public ActionResult EditNavigationItem(int id) {
-            NavigationViewModel model = new NavigationViewModel();
-
-            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+        public ActionResult EditNavigationItem(int id, string type) {
             var contentItem = _contentManager.Get(id, VersionOptions.Latest);
-            model.EntityName = _contentDefinitionExtension.GetEntityNameFromCollectionName(
-                contentItem.As<MenuPart>().MenuText, true);
             var menuId = contentItem.As<MenuPart>().Record.MenuId;
             var perspectiveItem = _contentManager.Get(menuId, VersionOptions.Latest);
-            model.Title = perspectiveItem.As<PerspectivePart>().Title;
-            model.IconClass = contentItem.As<ModuleMenuItemPart>().IconClass;
-            model.Description = contentItem.As<MenuPart>().Description;
-            model.Entities = metadataTypes.Select(item => new SelectListItem {
-                Text = item.DisplayName,
-                Value = item.Name,
-                Selected = item.Name == model.EntityName
-            }).ToList();
-            model.NavigationId = id;
-            model.PrespectiveId = menuId;
+            var model = new NavigationViewModel {
+                NavigationId = id,
+                PrespectiveId = menuId,
+                Type = type,
+                Description = contentItem.As<MenuPart>().Description,
+                Title = perspectiveItem.As<PerspectivePart>().Title
+            };
+            switch (type) {
+                case "MenuItem":
+                    model.Url = contentItem.As<MenuItemPart>().Url;
+                    model.EntityName = contentItem.As<MenuPart>().MenuText;
+                    break;
+                default:
+                    var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+                    model.EntityName = _contentDefinitionExtension.GetEntityNameFromCollectionName(
+                        contentItem.As<MenuPart>().MenuText, true);
+                    model.IconClass = contentItem.As<ModuleMenuItemPart>().IconClass;
+                    model.Entities = metadataTypes.Select(item => new SelectListItem {
+                        Text = item.DisplayName,
+                        Value = item.Name,
+                        Selected = item.Name == model.EntityName
+                    }).ToList();
+                    break;
+            }
             return View(model);
         }
 
         [HttpPost, ActionName("EditNavigationItem")]
-        public ActionResult EditNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model) {
-            var pluralContentTypeName = _contentDefinitionExtension.GetEntityNames(model.EntityName);
+        public ActionResult EditNavigationItemPOST(int perspectiveId, int navigationId, string type, NavigationViewModel model) {
             var menu = _contentManager.Get<PerspectivePart>(perspectiveId);
             var contentItem = _contentManager.Get(navigationId, VersionOptions.DraftRequired);
-            
+
             //Used as the module id of front end
-            contentItem.As<MenuPart>().MenuText = pluralContentTypeName.CollectionDisplayName;
-            contentItem.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
-            contentItem.As<ModuleMenuItemPart>().IconClass = model.IconClass;
+            switch (type) {
+                case "MenuItem":
+                    Uri myUri;
+                    if (!Uri.TryCreate(model.Url, UriKind.RelativeOrAbsolute, out myUri)) {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Content(T("Invalid url!").ToString());
+                    }
+                    contentItem.As<MenuPart>().MenuText = model.EntityName;
+                    contentItem.As<MenuItemPart>().Url = model.Url;
+                    break;
+                default:
+                    if (string.IsNullOrWhiteSpace(model.IconClass)) {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Content(T("Icon is required.").ToString());
+                    }
+                    var pluralContentTypeName = _contentDefinitionExtension.GetEntityNames(model.EntityName);
+
+                    contentItem.As<MenuPart>().MenuText = pluralContentTypeName.CollectionDisplayName;
+                    contentItem.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
+                    contentItem.As<ModuleMenuItemPart>().IconClass = model.IconClass;
+                    break;
+            }
             contentItem.As<MenuPart>().Description = model.Description;
             _contentManager.Publish(contentItem);
 
             menu.CurrentLevel = _positionManager.GetPositionLevel(contentItem.As<MenuPart>().MenuPosition);
+            _contentManager.Publish(menu.ContentItem);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
-        public ActionResult CreateNavigationItem(int id) {
-            NavigationViewModel model = new NavigationViewModel();
-            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
-            if(metadataTypes==null)
-                metadataTypes=new List<EditTypeViewModel>();
+        public ActionResult CreateNavigationItem(int id, string type) {
+
             var perspectiveItem = _contentManager.Get(id, VersionOptions.Latest);
-            model.Title = perspectiveItem.As<PerspectivePart>().Title;
-            model.Entities = metadataTypes.Select(item => new SelectListItem {
-                Text = item.DisplayName,
-                Value = item.Name,
-                Selected = item.Name == model.EntityName
-            }).ToList();
-            model.NavigationId = 0;
-            model.PrespectiveId = id;
+            var model = new NavigationViewModel {
+                Type = type,
+                Title = perspectiveItem.As<PerspectivePart>().Title,
+                PrespectiveId = id,
+            };
+            model.Type = type;
+            switch (type) {
+                case "MenuItem":
+                    break;
+                default:
+                    var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+                    if (metadataTypes == null)
+                        break;
+                    model.Entities = metadataTypes.Select(item => new SelectListItem {
+                        Text = item.DisplayName,
+                        Value = item.Name,
+                        Selected = item.Name == model.EntityName
+                    }).ToList();
+                    model.NavigationId = 0;
+                    break;
+            }
             return View(model);
         }
 
         [HttpPost, ActionName("CreateNavigationItem")]
-        public ActionResult CreateNavigationItemPOST(int perspectiveId, int navigationId, NavigationViewModel model) {
-            var pluralContentTypeName = _contentDefinitionExtension.GetEntityNames(model.EntityName);
-
-            if (string.IsNullOrWhiteSpace(model.IconClass)) {
-                Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                return Content(T("Icon is required.").ToString());
-            }
-
+        public ActionResult CreateNavigationItemPOST(int perspectiveId, int navigationId, string type, NavigationViewModel model) {
             //add
-            var moduleMenuPart = Services.ContentManager.New<MenuPart>("ModuleMenuItem");
+            var moduleMenuPart = Services.ContentManager.New<MenuPart>(type);
 
             // load the menu
             var menu = Services.ContentManager.Get<PerspectivePart>(perspectiveId);
 
-            moduleMenuPart.MenuText = pluralContentTypeName.CollectionDisplayName;
+            switch (type) {
+                case "MenuItem":
+                    Uri myUri;
+                    if (!Uri.TryCreate(model.Url, UriKind.RelativeOrAbsolute, out myUri)) {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Content(T("Invalid url!").ToString());
+                    }
+                    moduleMenuPart.MenuText = model.EntityName;
+                    moduleMenuPart.As<MenuItemPart>().Url = model.Url;
+                    break;
+                default:
+                    if (string.IsNullOrWhiteSpace(model.IconClass)) {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Content(T("Icon is required.").ToString());
+                    }
+                    var pluralContentTypeName = _contentDefinitionExtension.GetEntityNames(model.EntityName);
+
+                    moduleMenuPart.MenuText = pluralContentTypeName.CollectionDisplayName;
+                    moduleMenuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
+                    moduleMenuPart.As<ModuleMenuItemPart>().IconClass = model.IconClass;
+                    break;
+            }
             moduleMenuPart.MenuPosition = Position.GetNext(_navigationManager.BuildMenu(menu));
             moduleMenuPart.Menu = menu;
-            moduleMenuPart.MenuText = pluralContentTypeName.CollectionDisplayName;
+            moduleMenuPart.Description = model.Description;
 
-            moduleMenuPart.As<ModuleMenuItemPart>().ContentTypeDefinitionRecord = _contentTypeDefinitionRepository.Table.FirstOrDefault(x => x.Name == model.EntityName);
-            moduleMenuPart.As<ModuleMenuItemPart>().IconClass = model.IconClass;
-            moduleMenuPart.As<MenuPart>().Description = model.Description;
             Services.ContentManager.Create(moduleMenuPart);
             if (!moduleMenuPart.ContentItem.Has<IPublishingControlAspect>() && !moduleMenuPart.ContentItem.TypeDefinition.Settings.GetModel<ContentTypeSettings>().Draftable) {
                 _contentManager.Publish(moduleMenuPart.ContentItem);
             }
             menu.CurrentLevel = _positionManager.GetPositionLevel(moduleMenuPart.MenuPosition);
-            return Json(new {id = moduleMenuPart.ContentItem.Id});
+            _contentManager.Publish(menu.ContentItem);
+            return Json(new { id = moduleMenuPart.ContentItem.Id, type = model.Type });
         }
-    
+
     }
 }

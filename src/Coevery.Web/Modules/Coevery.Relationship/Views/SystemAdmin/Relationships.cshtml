@@ -4,11 +4,11 @@
         <div class="btn-group">
             <button data-ng-disabled="isPublished=='False'" title='@T("Works when the entity has been published.")'
                 class="btn btn-small btn-success dropdown-toggle" data-toggle="dropdown">
-                <i class="icon-plus"></i>&nbsp;Add <span class="caret"></span>
+                <i class="icon-plus"></i>&nbsp;@T("Add") <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a ng-click="createOneToMany()"><i class="icon-plus"></i>One-to-Many Relationship</a></li>
-                <li><a ng-click="createManyToMany()"><i class="icon-plus"></i>Many-to-Many Relationship</a></li>
+                <li><label data-ng-click="createOneToMany()"><i class="icon-plus"></i>&nbsp;@T("One-to-Many Relationship")</label></li>
+                <li><label data-ng-click="createManyToMany()"><i class="icon-plus"></i>&nbsp;@T("Many-to-Many Relationship")</label></li>
             </ul>
         </div>
     </div>

@@ -160,7 +160,7 @@
                 initializeGrid = function (gridOptions) {
                     var $grid, isInitial = true;
                     $grid = $element.find("table.gridz");
-                    if (!gridOptions.treeGrid) {
+                    if (!gridOptions.treeGrid && !gridOptions.nestedDrag) {
                         gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
                     }
 
@@ -177,7 +177,7 @@
 
                         var width, pager;
                         width = $element.parent().width() - 1;
-                        if (!gridOptions.treeGrid) {
+                        if (!gridOptions.treeGrid && !gridOptions.nestedDrag) {
                             pager = $(gridOptions.pager + '_center');
                             if (pager.find(".custom-pager").length === 0) {
                                 var pagerOption = {
@@ -206,8 +206,8 @@
                             }
                         }
                         //Set row sortable
-                        if (attrs.agGridDrag) {
-                            var settings = JSON.parse(attrs.agGridDrag);
+                        if (typeof attrs.agGridDrag !== 'undefined') {
+                            var settings = !!attrs.agGridDrag ? JSON.parse(attrs.agGridDrag) : null;
                             
                             if (!gridOptions.nestedDrag) {
                                 $grid.jqGrid('sortableRows', {
@@ -228,9 +228,6 @@
                                     }
                                 });
                             } else {
-                                $.cookie = function () {
-                                    return null;
-                                };
                                 $grid.tableDrag({
                                     tableId: alias,
                                     initialLevel: 1,
@@ -239,7 +236,7 @@
                                         depthLimit: 3, /* child element depth, start from 1, 0 means no limit, actrual depth will be +1 deeper than that*/
                                     },
                                 });
-
+                                $grid.find("tr:last-child").css("border-bottom", "solid 1px #D2D2D2");
                                 $element.find("tbody:first").disableSelection();
                             }
                         }

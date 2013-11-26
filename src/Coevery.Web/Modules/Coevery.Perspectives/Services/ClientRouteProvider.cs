@@ -52,21 +52,21 @@ namespace Coevery.Perspectives.Services
 
             builder.Describe("CreateNavigationItem")
                 .Configure(descriptor => {
-                    descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create";
+                    descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/Create/{Type:[0-9a-zA-Z]+}";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateNavigationItem/' + params.Id;}";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"CreateNavigationItem/' + params.Id + '?type=' + params.Type;}";
                     view.Controller = "NavigationItemEditCtrl";
                     view.AddDependencies(ToAbsoluteScriptUrl, new string[] { "controllers/navigationitemeditcontroller" });
                 });
 
             builder.Describe("EditNavigationItem")
                 .Configure(descriptor => {
-                    descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{NId:[0-9a-zA-Z]+}";
+                    descriptor.Url = "/Perspectives/{Id:[0-9a-zA-Z]+}/Navigation/{Type:[0-9a-zA-Z]+}/{NId:[0-9a-zA-Z]+}";
                 })
                 .View(view => {
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                                                var url = '" + ModuleBasePath + @"EditNavigationItem/' + $stateParams.NId; 
+                                                var url = '" + ModuleBasePath + @"EditNavigationItem/' + $stateParams.NId + '?type=' + $stateParams.Type; 
                                                 return $http.get(url).then(function(response) { return response.data; });
                                           }]";
                     view.Controller = "NavigationItemEditCtrl";
