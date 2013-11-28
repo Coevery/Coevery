@@ -723,6 +723,7 @@
     doAction: function(e) {
       e.stopPropagation();
       e.preventDefault();
+      this._unset = false;
       if (!this._date) this._date = UTCDate(1970, 0, 0, 0, 0, 0, 0);
       var action = $(e.currentTarget).data('action');
       var rv = this.actions[action].apply(this, arguments);
@@ -1094,7 +1095,7 @@
     pickDate: true,
     pickTime: true,
     pick12HourFormat: false,
-    pickSeconds: true,
+    pickSeconds: false,
     startDate: -Infinity,
     endDate: Infinity,
     collapse: true
