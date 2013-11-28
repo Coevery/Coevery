@@ -1,36 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using Coevery.Localization;
-using Coevery.Tokens;
-using Coevery.UI.Notify;
+using Coevery.Logging;
 using Coevery.Workflows.Models;
 using Coevery.Workflows.Services;
 
 namespace Coevery.Workflows.Activities {
-    public class NotificationActivity : Task {
-        private readonly INotifier _notifier;
+    public class LoggingActivity : Task {
 
-        public NotificationActivity(INotifier notifier) {
-            _notifier = notifier;
+        public LoggingActivity() {
             T = NullLocalizer.Instance;
         }
 
+        public ILogger Logger { get; set; }
         public Localizer T { get; set; }
 
         public override string Name {
-            get { return "Notify"; }
+            get { return "Logging"; }
         }
 
         public override LocalizedString Category {
-            get { return T("Notification"); }
+            get { return T("Diagnostics"); }
         }
 
         public override LocalizedString Description {
-            get { return T("Display a message.");  }
+            get { return T("Creates an entry in the application's logs.");  }
         }
 
         public override string Form {
-            get { return "ActivityNotify"; }
+            get { return "ActivityLog"; }
         }
 
         public override IEnumerable<LocalizedString> GetPossibleOutcomes(WorkflowContext workflowContext, ActivityContext activityContext) {
@@ -38,12 +36,12 @@ namespace Coevery.Workflows.Activities {
         }
 
         public override IEnumerable<LocalizedString> Execute(WorkflowContext workflowContext, ActivityContext activityContext) {
-            var notification = activityContext.GetState<string>("Notification");
+            var levelString = activityContext.GetState<string>("Level");
             var message = activityContext.GetState<string>("Message");
 
-            NotifyType notificationType;
-            Enum.TryParse(notification, true, out notificationType);
-            _notifier.Add(notificationType, T(message));
+            LogLevel level;
+            Enum.TryParse(levelString, true, out level);
+            Logger.Log(level, null, message);
 
             yield return T("Done");
         }

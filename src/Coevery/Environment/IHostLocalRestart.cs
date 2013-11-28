@@ -34,11 +34,11 @@ namespace Coevery.Environment {
         }
 
         void IShellSettingsManagerEventHandler.Saved(ShellSettings settings) {
-            TouchFile();
+            //TouchFile();
         }
 
         void IShellDescriptorManagerEventHandler.Changed(ShellDescriptor descriptor, string tenant) {
-            TouchFile();
+            //TouchFile();
         }
 
         private void TouchFile() {

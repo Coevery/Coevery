@@ -77,7 +77,10 @@ namespace Coevery.Environment {
             RegisterVolatileProvider<DefaultVirtualPathProvider, IVirtualPathProvider>(builder);
             
 
-            builder.RegisterType<DefaultCoeveryHost>().As<ICoeveryHost>().As<IEventHandler>().Named<IEventHandler>(typeof(IShellSettingsManagerEventHandler).Name).SingleInstance();
+            builder.RegisterType<DefaultCoeveryHost>().As<ICoeveryHost>().As<IEventHandler>()
+                .Named<IEventHandler>(typeof(IShellSettingsManagerEventHandler).Name)
+                .Named<IEventHandler>(typeof(IShellDescriptorManagerEventHandler).Name)
+                .SingleInstance();
             {
                 builder.RegisterType<ShellSettingsManager>().As<IShellSettingsManager>().SingleInstance();
 

@@ -245,6 +245,7 @@
     <Compile Include="Environment\Extensions\ICriticalErrorProvider.cs" />
     <Compile Include="Environment\ICoeveryFrameworkAssemblies.cs" />
     <Compile Include="Environment\IWorkContextEvents.cs" />
+    <Compile Include="Environment\State\ContextState.cs" />
     <Compile Include="Environment\ViewsBackgroundCompilation.cs" />
     <Compile Include="Environment\Warmup\WarmupUtility.cs" />
     <Compile Include="Environment\WorkContextImplementation.cs" />
@@ -287,11 +288,11 @@
     <Compile Include="Mvc\DataAnnotations\LocalizedModelValidatorProvider.cs" />
     <Compile Include="Mvc\DataAnnotations\LocalizedRequiredAttribute.cs" />
     <Compile Include="Mvc\Extensions\RouteExtension.cs" />
-    <Compile Include="Mvc\Filters\CoeveryFilterProvider.cs" />
     <Compile Include="Mvc\FormValueRequiredAttribute.cs" />
     <Compile Include="Mvc\HttpContextWorkContext.cs" />
     <Compile Include="Mvc\Extensions\ControllerExtensions.cs" />
     <Compile Include="Mvc\ICoeveryViewPage.cs" />
+    <Compile Include="Mvc\Routes\HubRoute.cs" />
     <Compile Include="Mvc\ShapeResult.cs" />
     <Compile Include="Mvc\Spooling\HtmlStringWriter.cs" />
     <Compile Include="Mvc\ViewEngines\Razor\IRazorCompilationEvents.cs" />
@@ -887,6 +888,7 @@
     <Compile Include="Mvc\MvcModule.cs" />
     <Compile Include="Mvc\Html\HtmlHelperExtensions.cs" />
     <Compile Include="Mvc\Filters\FilterProvider.cs" />
+    <Compile Include="Mvc\Filters\CoeveryFilterProvider.cs" />
     <Compile Include="Mvc\ModelBinders\ModelBinderPublisher.cs" />
     <Compile Include="Mvc\ModelBinders\IModelBinderProvider.cs" />
     <Compile Include="Mvc\ModelBinders\IModelBinderPublisher.cs" />
