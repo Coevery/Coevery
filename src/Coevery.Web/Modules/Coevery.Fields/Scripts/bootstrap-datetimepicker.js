@@ -1095,7 +1095,7 @@
     pickDate: true,
     pickTime: true,
     pick12HourFormat: false,
-    pickSeconds: false,
+    pickSeconds: true,
     startDate: -Infinity,
     endDate: Infinity,
     collapse: true

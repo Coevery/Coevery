@@ -137,7 +137,7 @@ angular.module('coevery.common', [])
                 if (attrs.coDatetimePicker == 'date') {
                     $(element).datetimepicker({ pickTime: false });
                 } else {
-                    $(element).datetimepicker({ });
+                    $(element).datetimepicker({ pickSeconds: false });
                 }
             }
         };
