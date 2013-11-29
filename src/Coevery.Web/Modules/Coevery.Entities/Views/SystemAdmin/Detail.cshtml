@@ -12,7 +12,7 @@
             <button class="btn btn-small" data-ng-click="publish()">
                 Publish
             </button>
-            <button type="button" class="btn btn-small" co-delete-button data-confirm-message="@T("You really want to delete this entity?") delete-action="delete(@Model.Id)">
+            <button type="button" class="btn btn-small" co-delete-button data-confirm-message="@T("You really want to delete this entity?")" delete-action="delete(@Model.Id)">
                 <i class="icon-remove"></i>&nbsp;Delete
             </button>
             <button type="button" data-ng-disabled="isPublished=='False'"
