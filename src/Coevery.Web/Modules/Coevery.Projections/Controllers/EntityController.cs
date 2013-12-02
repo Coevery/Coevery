@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
+using System.Management.Instrumentation;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.UI.WebControls;
 using Coevery.Common.Extensions;
 using Coevery.Common.Services;
 using Coevery.Common.ViewModels;
+using Coevery.ContentManagement.FieldStorage;
 using Coevery.Projections.Services;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NHibernate.Linq;
 using Coevery.ContentManagement;
@@ -203,12 +207,56 @@ namespace Coevery.Projections.Controllers {
                             };
                             var shape = d.Descriptor.Property(fieldContext, contentItem);
                             string text = (shape == null) ? string.Empty : shape.ToString();
-                            var filedName = d.Property.GetFiledName();
-                            result[filedName] = text;
+                            var fieldName = d.Property.GetFieldName();
+                            result[fieldName] = text;
                         });
+                    if (layout.Category == "Grids" && layout.Type == "Tree") {
+                        var parentFieldName = FormParametersHelper.FromString(layout.State)["ParentField"].GetFieldName();
+                        var parentValue = GetParentId(contentItem, parentFieldName);
+                        result["parent"] = parentValue;
+                        result["expanded"] = true;
+                    }
                     return result;
                 }).ToList();
-            return layoutComponents;
+            return layoutComponents.Select(record => {
+                record["level"] = GetLevel(layoutComponents, record["parent"].Value<int?>());
+                record["isLeaf"] = IsLeaf(layoutComponents, record["ContentId"].Value<int>());
+                return record;
+            });
+        }
+
+        private static bool IsLeaf(IEnumerable<JObject> contentItems, int currentId) {
+            return !contentItems.Any(record => {
+                var currentParent = record["parent"].Value<int?>();
+                return currentParent.HasValue && currentParent.Value == currentId;
+            });
+        }
+
+        private static int GetLevel(IEnumerable<JObject> contentItems, int? parentId) {
+            var currentId = parentId;
+            var level = 0;
+            while (currentId.HasValue) {
+                var parentItem = contentItems.FirstOrDefault(item => item["ContentId"].Value<int>() == currentId.Value);
+                if (parentItem == null) {
+                    throw new JsonReaderException();
+                }
+                currentId = parentItem["parent"].Value<int?>();
+                level++;
+            }
+            return level;
+        }
+
+        private static int? GetParentId(ContentItem contentItem, string parentFieldName) {
+            var entityPart = contentItem.Parts
+                            .FirstOrDefault(p => p.PartDefinition.Name == contentItem.ContentType.ToPartName());
+            if (entityPart == null) {
+                throw new InstanceNotFoundException("Entity part not found!");
+            }
+            var parentField = entityPart.Fields.FirstOrDefault(f => f.Name == parentFieldName);
+            if (parentField == null) {
+                throw new InstanceNotFoundException("Parent field not found!");
+            }
+            return parentField.Storage.Get<int?>();
         }
     }
 }

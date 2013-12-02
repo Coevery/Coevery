@@ -42,8 +42,8 @@ define(['core/app/detourService',
 
                         };
 
-                        $scope.add = function() {
-                            $state.transitionTo('ProjectionCreate', { EntityName: $stateParams.Id });
+                        $scope.add = function(category,type) {
+                            $state.transitionTo('ProjectionCreate', { EntityName: $stateParams.Id, Category: category, Type: type });
                         };
 
                         $scope.edit = function(id) {

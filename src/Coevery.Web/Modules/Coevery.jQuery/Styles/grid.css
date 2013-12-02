@@ -157,6 +157,10 @@ div.gridCellText {
     position: relative;
 }
 
+.ui-jqgrid div.tree-wrap {
+    z-index: 10;
+}
+
 .ui-jqgrid div.tree-leaf {
     margin: 6px 0;
 }

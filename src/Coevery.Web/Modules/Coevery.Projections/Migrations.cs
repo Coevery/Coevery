@@ -16,9 +16,9 @@ namespace Coevery.Projections {
         private readonly Dialect _dialect;
         private readonly IRepository<MemberBindingRecord> _memberBindingRepository;
 
-        public Migrations(ISessionFactoryHolder sessionFactoryHolder, 
+        public Migrations(ISessionFactoryHolder sessionFactoryHolder,
             ShellSettings shellSettings,
-            IRepository<MemberBindingRecord> memberBindingRepository){
+            IRepository<MemberBindingRecord> memberBindingRepository) {
             _shellSettings = shellSettings;
             var configuration = sessionFactoryHolder.GetConfiguration();
             _dialect = Dialect.GetDialect(configuration.Properties);
@@ -209,24 +209,21 @@ namespace Coevery.Projections {
 
             // Default Model Bindings - CommonPartRecord
 
-            _memberBindingRepository.Create(new MemberBindingRecord
-            {
+            _memberBindingRepository.Create(new MemberBindingRecord {
                 Type = typeof(CommonPartRecord).FullName,
                 Member = "CreatedUtc",
                 DisplayName = T("Creation date").Text,
                 Description = T("When the content item was created").Text
             });
 
-            _memberBindingRepository.Create(new MemberBindingRecord
-            {
+            _memberBindingRepository.Create(new MemberBindingRecord {
                 Type = typeof(CommonPartRecord).FullName,
                 Member = "ModifiedUtc",
                 DisplayName = T("Modification date").Text,
                 Description = T("When the content item was modified").Text
             });
 
-            _memberBindingRepository.Create(new MemberBindingRecord
-            {
+            _memberBindingRepository.Create(new MemberBindingRecord {
                 Type = typeof(CommonPartRecord).FullName,
                 Member = "PublishedUtc",
                 DisplayName = T("Publication date").Text,
@@ -235,8 +232,7 @@ namespace Coevery.Projections {
 
             // Default Model Bindings - TitlePartRecord
 
-            _memberBindingRepository.Create(new MemberBindingRecord
-            {
+            _memberBindingRepository.Create(new MemberBindingRecord {
                 Type = typeof(TitlePartRecord).FullName,
                 Member = "Title",
                 DisplayName = T("Title Part Title").Text,
@@ -245,8 +241,7 @@ namespace Coevery.Projections {
 
             // Default Model Bindings - BodyPartRecord
 
-            _memberBindingRepository.Create(new MemberBindingRecord
-            {
+            _memberBindingRepository.Create(new MemberBindingRecord {
                 Type = typeof(BodyPartRecord).FullName,
                 Member = "Text",
                 DisplayName = T("Body Part Text").Text,
@@ -351,8 +346,8 @@ namespace Coevery.Projections {
 
             return 3;
         }
-        
-         public int UpdateFrom3() {
+
+        public int UpdateFrom3() {
             SchemaBuilder.CreateTable("EntityFilterRecord",
                 table => table
                     .Column<int>("Id", c => c.PrimaryKey().Identity())
@@ -363,5 +358,13 @@ namespace Coevery.Projections {
             return 4;
         }
 
+
+        public int UpdateFrom4() {
+            SchemaBuilder.ExecuteSql(string.Format(@" UPDATE {0}Coevery_Projections_LayoutRecord
+                                                      SET Category = '{1}', Type = '{2}'
+                                                      WHERE Category = 'Html' AND Type = 'ngGrid'"
+                , DataTablePrefix(), "Grids", "Default"));
+            return 5;
+        }
     }
 }
