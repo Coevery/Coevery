@@ -218,11 +218,12 @@ namespace Coevery.Projections.Controllers {
                     }
                     return result;
                 }).ToList();
-            return layoutComponents.Select(record => {
+            return layout.Category == "Grids" && layout.Type == "Tree" ? layoutComponents.Select(record => {
                 record["level"] = GetLevel(layoutComponents, record["parent"].Value<int?>());
                 record["isLeaf"] = IsLeaf(layoutComponents, record["ContentId"].Value<int>());
                 return record;
-            });
+            })
+            : layoutComponents;
         }
 
         private static bool IsLeaf(IEnumerable<JObject> contentItems, int currentId) {

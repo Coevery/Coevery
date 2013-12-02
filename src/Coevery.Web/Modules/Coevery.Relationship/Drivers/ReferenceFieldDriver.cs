@@ -2,8 +2,11 @@
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Web.Mvc;
+using Coevery.Data;
 using Coevery.Relationship.Fields;
+using Coevery.Relationship.Records;
 using Coevery.Relationship.Settings;
 using Coevery.Relationship.Models;
 using Coevery.ContentManagement;
@@ -24,15 +27,18 @@ namespace Coevery.Relationship.Drivers {
     public class ReferenceFieldDriver : ContentFieldDriver<ReferenceField> {
         private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
+        private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         public ICoeveryServices Services { get; set; }
         private const string TemplateName = "Fields/Reference.Edit";
 
         public ReferenceFieldDriver(
             ICoeveryServices services,
             IContentManager contentManager,
+            IRepository<OneToManyRelationshipRecord> oneToManyRepository,
             IProjectionManager projectionManager) {
             Services = services;
             _contentManager = contentManager;
+            _oneToManyRepository = oneToManyRepository;
             _projectionManager = projectionManager;
             T = NullLocalizer.Instance;
         }
@@ -90,6 +96,15 @@ namespace Coevery.Relationship.Drivers {
             var viewModel = new ReferenceFieldViewModel();
             if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
+                var relation = _oneToManyRepository.Get(settings.RelationshipId);
+                if (relation.DeleteOption == (byte)OneToManyDeleteOption.CascadingDelete && viewModel.ContentId.HasValue) {
+                    var parent = _contentManager.Get(viewModel.ContentId.Value);
+                    var parentPart = parent.Parts.FirstOrDefault(p => p.PartDefinition.Name == parent.ContentType + "Part");
+                    if (parentPart == null) {
+                        throw new InstanceNotFoundException("Entity not found!");
+                    }
+                    //@todo: and cascade all delete orphan here
+                }
 
                 if (settings.IsUnique && viewModel.ContentId.HasValue) {
                     HandleUniqueValue(part, field, viewModel.ContentId, updater);
