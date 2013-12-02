@@ -17,10 +17,10 @@ namespace Coevery.Projections.Services
 
             builder.Describe("ProjectionCreate")
                 .Configure(descriptor => {
-                    descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/Create";
+                    descriptor.Url = "/Projections/{EntityName:[0-9a-zA-Z]+}/Create/{Category:[0-9a-zA-Z]+}/{Type:[0-9a-zA-Z]+}";
                 })
                 .View(view => {
-                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"Create/' + params.EntityName;}";
+                    view.TemplateUrl = "function(params) { return '" + ModuleBasePath + @"Create/' + params.EntityName + '?category='+ params.Category +'&type=' + params.Type;}";
                     view.Controller = "ProjectionDetailCtrl";
                     view.AddDependencies(ToAbsoluteScriptUrl, new[] { "controllers/detailcontroller" });
                 });

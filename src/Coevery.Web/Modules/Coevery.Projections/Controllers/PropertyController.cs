@@ -40,7 +40,7 @@ namespace Coevery.Projections.Controllers {
             var properties = GetDescriptors(viewId).Select(x => x.Property).ToList();
             foreach (var property in properties) {
                 var column = new JObject();
-                var filedName = property.GetFiledName();
+                var filedName = property.GetFieldName();
                 column["name"] = filedName;
                 column["label"] = T(property.Description).Text;
                 if (property.LinkToContent) {

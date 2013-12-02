@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using Coevery.Common.Extensions;
 using Coevery.Entities.Services;
+using Coevery.Forms.Services;
 using Coevery.Projections.Services;
 using Coevery.Projections.ViewModels;
-using Coevery;
 using Coevery.Mvc;
 using Coevery.Localization;
 using Coevery.Security;
@@ -18,15 +19,21 @@ namespace Coevery.Projections.Controllers {
         private readonly IProjectionService _projectionService;
         private readonly IContentMetadataService _contentMetadataService;
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
+        private readonly IProjectionManager _projectionManager;
+        private readonly IFormManager _formManager;
 
         public SystemAdminController(
             ICoeveryServices services,
             IContentMetadataService contentMetadataService,
             IContentDefinitionExtension contentDefinitionExtension,
+            IFormManager formManager,
+            IProjectionManager projectionManager,
             IProjectionService projectionService) {
             _contentDefinitionExtension = contentDefinitionExtension;
             _contentMetadataService = contentMetadataService;
             _projectionService = projectionService;
+            _projectionManager = projectionManager;
+            _formManager = formManager;
             Services = services;
             T = NullLocalizer.Instance;
         }
@@ -35,10 +42,16 @@ namespace Coevery.Projections.Controllers {
         public Localizer T { get; set; }
 
         public ActionResult List(string id) {
-            return View(new Dictionary<string, string> { { "PublishTip", T("Works when the entity has been published.").Text } });
+            var model = new EntityViewListModel {
+                PublishTip = T("Works when the entity has been published.").Text,
+                Layouts = _projectionManager.DescribeLayouts()
+                    .SelectMany(type => type.Descriptors)
+                    .Where(type => type.Category == "Grids")
+            };
+            return View(model);
         }
 
-        public ActionResult Create(string id) {
+        public ActionResult Create(string id, string category, string type) {
             var entityName = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
             if (entityName != null) {
                 id = entityName;
@@ -50,8 +63,16 @@ namespace Coevery.Projections.Controllers {
             var viewModel = new ProjectionEditViewModel {
                 ItemContentType = id.ToPartName(),
                 DisplayName = string.Empty,
-                Fields = _projectionService.GetFieldDescriptors(id,-1)
+                Fields = _projectionService.GetFieldDescriptors(id, -1),
+                Layout = _projectionManager.DescribeLayouts()
+                    .SelectMany(descr => descr.Descriptors)
+                    .FirstOrDefault(descr => descr.Category == category && descr.Type == type),
             };
+            if (viewModel.Layout == null) {
+                return HttpNotFound();
+            }
+            viewModel.Form = _formManager.Build(viewModel.Layout.Form) ?? Services.New.EmptyForm();
+            viewModel.Form.Fields = viewModel.Fields;
             return View("Edit", viewModel);
         }
 
@@ -66,8 +87,17 @@ namespace Coevery.Projections.Controllers {
 
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
-        public ActionResult EditPOST(int id, ProjectionEditViewModel viewModel, string returnUrl) {
-            viewModel.ItemContentType = viewModel.ItemContentType;
+        public ActionResult EditPost(int id, ProjectionEditViewModel viewModel, string returnUrl) {
+            viewModel.Layout = _projectionManager.DescribeLayouts()
+                    .SelectMany(descr => descr.Descriptors)
+                    .FirstOrDefault(descr => descr.Category == viewModel.Layout.Category && descr.Type == viewModel.Layout.Type);
+            if (viewModel.Layout == null) {
+                return HttpNotFound();
+            }
+            _formManager.Validate(new ValidatingContext { FormName = viewModel.Layout.Form, ModelState = ModelState, ValueProvider = ValueProvider });
+            if (!ModelState.IsValid) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var viewid = _projectionService.EditPost(id, viewModel, viewModel.PickedFields);
             return Json(new { id = viewid });
         }

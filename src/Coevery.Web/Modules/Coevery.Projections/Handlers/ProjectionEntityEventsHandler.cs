@@ -10,12 +10,15 @@ namespace Coevery.Projections.Handlers {
     public class ProjectionEntityEventsHandler : IEntityEvents {
         private readonly IProjectionService _projectionService;
         private readonly IContentManager _contentManager;
+        private readonly IProjectionManager _projectionManager;
 
         public ProjectionEntityEventsHandler(
             IProjectionService projectionService,
+            IProjectionManager projectionManager,
             IContentManager contentManager) {
             _projectionService = projectionService;
             _contentManager = contentManager;
+            _projectionManager = projectionManager;
         }
 
         public void OnCreated(string entityName) {
@@ -23,8 +26,10 @@ namespace Coevery.Projections.Handlers {
             var viewModel = new ProjectionEditViewModel {
                 ItemContentType = entityName.ToPartName(),
                 DisplayName = entityName + " DefaultView",
-                PageRowCount = 50,
-                IsDefault = true
+                IsDefault = true,
+                Layout = _projectionManager.DescribeLayouts()
+                    .SelectMany(descr => descr.Descriptors)
+                    .FirstOrDefault(descr => descr.Category == "Grids" && descr.Type == "Default")
             };
             _projectionService.EditPost(0, viewModel, fields);
         }

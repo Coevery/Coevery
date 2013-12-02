@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.WebParts;
 using Coevery.Common.Extensions;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Aspects;
 using Coevery.ContentManagement.MetaData;
 using Coevery.ContentManagement.MetaData.Models;
+using Coevery.ContentManagement.Records;
 using Coevery.Core.Common.Models;
 using Coevery.Core.Containers.Models;
 using Coevery.Core.Contents;
@@ -60,7 +62,18 @@ namespace Coevery.Common.Controllers {
             }
             var typeName = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
             var typeDefinition = _contentDefinitionManager.GetTypeDefinition(typeName);
-            var contentItem = Services.ContentManager.New("ListViewPage");
+            var contentItem = Services.ContentManager.Query("ListViewPage")
+                .ForVersion(VersionOptions.Latest).List().FirstOrDefault(item => {
+                    var listViewPart = item.Parts.FirstOrDefault(part => part.PartDefinition.Name == "ListViewPart");
+                    if (listViewPart == null) {
+                        return false;
+                    }
+                    return (bool) (listViewPart.GetType().GetProperty("IsDefault").GetValue(listViewPart, null))
+                           && (string) (listViewPart.GetType().GetProperty("ItemContentType").GetValue(listViewPart, null)) == typeName;
+                });
+            if (contentItem == null) {
+                return HttpNotFound();
+            }
             contentItem.As<TitlePart>().Title = typeDefinition.Settings["CollectionDisplayName"];
             var model = Services.ContentManager.BuildDisplay(contentItem);
             return View(model);
