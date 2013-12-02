@@ -3,6 +3,7 @@ using Coevery.Core.Common.Models;
 using Coevery.Core.Contents.Extensions;
 using Coevery.Core.Title.Models;
 using Coevery.Localization;
+using Coevery.Projections.Services;
 using NHibernate.Dialect;
 using Coevery.ContentManagement.MetaData;
 using Coevery.Data;
@@ -15,14 +16,17 @@ namespace Coevery.Projections {
         private readonly ShellSettings _shellSettings;
         private readonly Dialect _dialect;
         private readonly IRepository<MemberBindingRecord> _memberBindingRepository;
+        private readonly IProjectionService _projectionService;
 
         public Migrations(ISessionFactoryHolder sessionFactoryHolder,
             ShellSettings shellSettings,
+            IProjectionService projectionService,
             IRepository<MemberBindingRecord> memberBindingRepository) {
             _shellSettings = shellSettings;
             var configuration = sessionFactoryHolder.GetConfiguration();
             _dialect = Dialect.GetDialect(configuration.Properties);
             _memberBindingRepository = memberBindingRepository;
+            _projectionService = projectionService;
             T = NullLocalizer.Instance;
         }
 
@@ -358,12 +362,8 @@ namespace Coevery.Projections {
             return 4;
         }
 
-
         public int UpdateFrom4() {
-            SchemaBuilder.ExecuteSql(string.Format(@" UPDATE {0}Coevery_Projections_LayoutRecord
-                                                      SET Category = '{1}', Type = '{2}'
-                                                      WHERE Category = 'Html' AND Type = 'ngGrid'"
-                , DataTablePrefix(), "Grids", "Default"));
+            _projectionService.UpdateDataBaseLayout();
             return 5;
         }
     }

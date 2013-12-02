@@ -10,5 +10,6 @@ namespace Coevery.Projections.Services {
         ProjectionEditViewModel GetProjectionViewModel(int id);
         string UpdateViewOnEntityAltering(string entityName);
         int EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFields);
+        void UpdateDataBaseLayout();
     }
 }
