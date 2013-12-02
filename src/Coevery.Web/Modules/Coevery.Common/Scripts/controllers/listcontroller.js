@@ -117,9 +117,9 @@
 
                 /*Grid methods*/
                 $scope.delete = function (id) {
-                    var deleteRelationship = id || $scope.selectedItems.length > 0 ? $scope.selectedItems : null;
+                    var deleteRelationship = id || ($scope.selectedItems.length > 0 ? $scope.selectedItems : null);
 
-                    if (!deleteRelationship) {
+                    if (!deleteRelationship || deleteRelationship.length == 0) {
                         logger.error('No data selected.');
                         return;
                     }

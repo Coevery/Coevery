@@ -5,6 +5,7 @@ using System.Linq;
 using System.Management.Instrumentation;
 using Coevery.Common.Extensions;
 using Coevery.Core.Common.ViewModels;
+using Coevery.Data;
 using Coevery.Entities.Services;
 using Coevery.Projections.Descriptors.Layout;
 using Coevery.Projections.Models;
@@ -25,12 +26,14 @@ namespace Coevery.Projections.Services {
         private readonly IEnumerable<IFieldToPropertyStateProvider> _fieldToPropertyStateProviders;
         private readonly IFormManager _formManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IRepository<LayoutRecord> _layoutRepository;
 
         public ProjectionService(
             ICoeveryServices services,
             IProjectionManager projectionManager,
             IContentManager contentManager,
             IFormManager formManager,
+            IRepository<LayoutRecord> layoutRepository,
             IEnumerable<IFieldToPropertyStateProvider> fieldToPropertyStateProviders,
             IContentDefinitionManager contentDefinitionManager) {
             _projectionManager = projectionManager;
@@ -39,6 +42,7 @@ namespace Coevery.Projections.Services {
             _fieldToPropertyStateProviders = fieldToPropertyStateProviders;
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
+            _layoutRepository = layoutRepository;
             T = NullLocalizer.Instance;
         }
 
@@ -117,6 +121,23 @@ namespace Coevery.Projections.Services {
                     new[] { state, GetLayoutState(projection.QueryPartRecord.Id, layout.Properties.Count, layout.Description) }));
             }
             return null;
+        }
+
+        public void UpdateDataBaseLayout() {
+            var layouts = _layoutRepository.Fetch(record => record.Category == "Html" && record.Type == "ngGrid");
+            foreach (var layoutRecord in layouts) {
+                var voidDictionary = new Dictionary<string, string> {
+                    {"PageRowCount", "50"},
+                    {"SortedBy", string.Empty},
+                    {"SortMode", string.Empty}
+                };
+                layoutRecord.Category = DefaultLayoutCategory;
+                layoutRecord.Type = DefaultLayoutType;
+                layoutRecord.State = FormParametersHelper.ToString(MergeDictionary(
+                    new[] { FormParametersHelper.FromString(layoutRecord.State), voidDictionary }
+                    ));
+                _layoutRepository.Update(layoutRecord);
+            }
         }
 
         public int EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds) {
