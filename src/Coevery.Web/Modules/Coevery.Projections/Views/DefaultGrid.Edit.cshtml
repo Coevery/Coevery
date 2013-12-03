@@ -1,0 +1,48 @@
+﻿@using System.Collections
+@using Coevery.Core.Common.ViewModels
+
+@{
+    IDictionary<string,string> settings = Model.State;
+    IEnumerable<PicklistItemViewModel> fields = Model.Fields;
+    List<SelectListItem> sortedBy = fields.Select(c => new SelectListItem { Value =c.Value, Selected = (c.Value == settings["SortedBy"]), Text = c.Text }).ToList();
+
+    var sortMode = new List<SelectListItem> {
+        new SelectListItem { Selected = settings["SortMode"] == "Desc", Text = "Desc" },
+        new SelectListItem { Selected = settings["SortMode"] == "Asc", Text = "Asc" }
+    };
+
+    var pageRowCount = new List<SelectListItem> {
+        new SelectListItem { Selected = settings["PageRowCount"] == "50", Text = "50" },
+        new SelectListItem { Selected = settings["PageRowCount"] == "100", Text = "100" },
+        new SelectListItem { Selected = settings["PageRowCount"] == "200", Text = "200" }
+    };
+}
+
+<div class="row-fluid">
+    <div class="span12 form-container edit-mode">
+        <div class="form-horizontal no-border">
+            <fieldset>
+                <legend>
+                    <h5>@T("Default Grid Settings")</h5>
+                </legend>
+                <section class="data-row control-group">
+                    <div class="span10">
+                        <label class="control-label ">@T("Sorted By")</label>
+                        <div class="controls">
+                            @Html.DropDownList("State[SortedBy]", sortedBy, string.Empty, new { @class = "span6", @id = "sortby" })
+                            @Html.DropDownList("State[SortMode]", sortMode, string.Empty, new { @class = "span3", @id = "sortmode" })
+                        </div>
+                    </div>
+                </section>
+                <section class="data-row control-group">
+                    <div class="span6">
+                        <label class="control-label">@T("Page Row Count")</label>
+                        <div class="controls">
+                            @Html.DropDownList("State[PageRowCount]", pageRowCount, null, new { @class = "span12", @id = "pageRowCount" })
+                        </div>
+                    </div>
+                </section>
+            </fieldset>
+        </div>
+    </div>
+</div>

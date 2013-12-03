@@ -106,7 +106,7 @@ namespace Coevery.Relationship.Controllers {
                 RelatedEntity = oneToMany.Relationship.RelatedEntity.Name,
                 RelatedListLabel = oneToMany.RelatedListLabel,
                 ShowRelatedList = oneToMany.ShowRelatedList,
-                ColumnFieldList = oneToMany.RelatedListProjection.LayoutRecord.Properties.Select(x => x.GetFiledName()).ToArray(),
+                ColumnFieldList = oneToMany.RelatedListProjection.LayoutRecord.Properties.Select(x => x.GetFieldName()).ToArray(),
                 Fields = fields
             });
         }
@@ -199,8 +199,8 @@ namespace Coevery.Relationship.Controllers {
                 ShowRelatedList = manyToMany.ShowRelatedList,
                 PrimaryFields = primaryFields,
                 RelatedFields = relatedFields,
-                PrimaryColumnList = manyToMany.PrimaryListProjection.LayoutRecord.Properties.Select(x => x.GetFiledName()).ToArray(),
-                RelatedColumnList = manyToMany.RelatedListProjection.LayoutRecord.Properties.Select(x => x.GetFiledName()).ToArray()
+                PrimaryColumnList = manyToMany.PrimaryListProjection.LayoutRecord.Properties.Select(x => x.GetFieldName()).ToArray(),
+                RelatedColumnList = manyToMany.RelatedListProjection.LayoutRecord.Properties.Select(x => x.GetFieldName()).ToArray()
             });
         }
 

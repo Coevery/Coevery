@@ -162,6 +162,8 @@
                     $grid = $element.find("table.gridz");
                     if (!gridOptions.treeGrid && !gridOptions.nestedDrag) {
                         gridOptions.pager = '#' + ($element.find(".gridz-pager").attr("id") || "gridz-pager");
+                    } else {
+                        gridOptions.pager = "";
                     }
 
                     gridOptions.loadBeforeSend = function (xhr, settings) {
@@ -204,7 +206,12 @@
                                 pager.append("<section class='custom-pager pagination'></section>");
                                 pager.find("section").pagination(pagerOption);
                             }
+                        } else if (gridOptions.treeGrid) {
+                            $grid.find("tr:last-child").css("border-bottom", "solid 1px #D2D2D2");
+                            $grid.SortTree(1);
                         }
+                        
+
                         //Set row sortable
                         if (typeof attrs.agGridDrag !== 'undefined') {
                             var settings = !!attrs.agGridDrag ? JSON.parse(attrs.agGridDrag) : null;
@@ -316,6 +323,10 @@
                     }
                     $grid = $element.find("table.gridz");
                     gridCtrl.registerGridElement($grid);
+                    if (!!attrs.importedOptions) {
+                        var importedOptions = JSON.parse(attrs.importedOptions);
+                        angular.extend(gridOptions, importedOptions);
+                    }
                     initializeGrid(gridOptions);
                 };
                 return $scope.$watch(attrs.agGrid, loadGrid);

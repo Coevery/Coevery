@@ -198,8 +198,11 @@
     <Compile Include="PropertyEditors\NumericPropertyEditor.cs" />
     <Compile Include="Providers\Filters\ContentTypesFilter.cs" />
     <Compile Include="Providers\Filters\MemberBindingFilter.cs" />
+    <Compile Include="Providers\Layouts\Grid\DefaultGridLayoutForms.cs" />
+    <Compile Include="Providers\Layouts\Grid\DefaultGridLayout.cs" />
     <Compile Include="Providers\Layouts\GridLayout.cs" />
     <Compile Include="Providers\Layouts\GridLayoutForms.cs" />
+    <Compile Include="Providers\Layouts\Grid\TreeGridLayoutForms.cs" />
     <Compile Include="Providers\Layouts\LayoutShapes.cs" />
     <Compile Include="Providers\Layouts\ListLayout.cs" />
     <Compile Include="Providers\Layouts\ListLayoutForms.cs" />
@@ -208,6 +211,7 @@
     <Compile Include="Providers\Layouts\RawShapes.cs" />
     <Compile Include="Providers\Layouts\ShapeLayout.cs" />
     <Compile Include="Providers\Layouts\ShapeLayoutForms.cs" />
+    <Compile Include="Providers\Layouts\Grid\TreeGridLayout.cs" />
     <Compile Include="Providers\Properties\ContentFieldProperties.cs" />
     <Compile Include="Providers\Properties\ContentProperties.cs" />
     <Compile Include="Providers\Properties\CustomValueProperties.cs" />
@@ -251,6 +255,7 @@
     <Compile Include="ViewModels\BindingEditViewModel.cs" />
     <Compile Include="ViewModels\BindingIndexViewModel.cs" />
     <Compile Include="ViewModels\BindingSelectViewModel.cs" />
+    <Compile Include="ViewModels\EntityViewListModel.cs" />
     <Compile Include="ViewModels\FieldFilterViewModel.cs" />
     <Compile Include="ViewModels\FilterAddViewModel.cs" />
     <Compile Include="ViewModels\FilterEditViewModel.cs" />
@@ -395,6 +400,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Projection.JavascriptLocalizationResource.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TreeGrid.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefaultGrid.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefaultGrid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TreeGrid.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

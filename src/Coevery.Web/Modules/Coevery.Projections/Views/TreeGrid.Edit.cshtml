@@ -1,0 +1,38 @@
+﻿@using Coevery.Core.Common.ViewModels
+
+@{
+    IDictionary<string,string> settings = Model.State;
+    IEnumerable<PicklistItemViewModel> fields = Model.Fields;
+    List<SelectListItem> parentList = fields.Select(c => new SelectListItem { Value = c.Value, Selected = (c.Value == settings["ParentField"]), Text = c.Text }).ToList();
+    List<SelectListItem> expandList = fields.Select(c => new SelectListItem { Value = c.Value, Selected = (c.Value == settings["ExpandField"]), Text = c.Text }).ToList();
+}
+
+<div class="row-fluid">
+    <div class="span12 form-container edit-mode">
+        <div class="form-horizontal no-border">
+            <fieldset>
+                <legend>
+                    <h5>@T("Tree Grid Settings")</h5>
+                </legend>
+                <section class="data-row control-group">
+                    <div class="span6">
+                        <label class="control-label required">@T("Expand Field")</label>
+                        <div class="controls errortips">
+                            @Html.DropDownList("State[ExpandField]", expandList, null, new { @class = "span12 required", @id = "expandField" })
+                            <span class="help-block">@T("The field where the tree graph will be displayed.")</span>
+                        </div>
+                    </div>
+                </section>
+                <section class="data-row control-group">
+                    <div class="span6">
+                        <label class="control-label required">@T("Parent Field")</label>
+                        <div class="controls errortips">
+                            @Html.DropDownList("State[ParentField]", parentList, null, new { @class = "span12 required", @id = "parentField" })
+                            <span class="help-block">@T("The value of the parent field should refer to the id of the record, i.e. the id of the entity instance.")</span>
+                        </div>
+                    </div>
+                </section>
+            </fieldset>
+        </div>
+    </div>
+</div>
