@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Configuration;
 using Coevery.Caching;
+using Coevery.Data;
 using Coevery.Environment.AutofacUtil;
 using Coevery.Environment.Configuration;
 using Coevery.Environment.Extensions;
@@ -119,6 +120,7 @@ namespace Coevery.Environment {
 
             builder.RegisterType<RunningShellTable>().As<IRunningShellTable>().SingleInstance();
             builder.RegisterType<DefaultCoeveryShell>().As<ICoeveryShell>().InstancePerMatchingLifetimeScope("shell");
+            builder.RegisterType<SessionConfigurationCache>().As<ISessionConfigurationCache>().InstancePerMatchingLifetimeScope("shell");
 
             registrations(builder);
 

@@ -52,7 +52,7 @@ namespace Coevery.Mvc.Routes {
 
                 preloading.Add(routeDescriptor.Name, routeDescriptor.Route);
             }
-                
+
 
             using (_routeCollection.GetWriteLock()) {
                 // existing routes are removed while the collection is briefly inaccessable
@@ -66,17 +66,17 @@ namespace Coevery.Mvc.Routes {
                     var defaultSessionState = SessionStateBehavior.Default;
 
                     ExtensionDescriptor extensionDescriptor = null;
-                    if(routeDescriptor.Route is Route) {
+                    if (routeDescriptor.Route is Route) {
                         object extensionId;
                         var route = routeDescriptor.Route as Route;
-                        if(route.DataTokens != null && route.DataTokens.TryGetValue("area", out extensionId) || 
+                        if (route.DataTokens != null && route.DataTokens.TryGetValue("area", out extensionId) ||
                            route.Defaults != null && route.Defaults.TryGetValue("area", out extensionId)) {
-                            extensionDescriptor = _extensionManager.GetExtension(extensionId.ToString()); 
+                            extensionDescriptor = _extensionManager.GetExtension(extensionId.ToString());
                         }
                     }
-                    else if(routeDescriptor.Route is IRouteWithArea) {
+                    else if (routeDescriptor.Route is IRouteWithArea) {
                         var route = routeDescriptor.Route as IRouteWithArea;
-                        extensionDescriptor = _extensionManager.GetExtension(route.Area); 
+                        extensionDescriptor = _extensionManager.GetExtension(route.Area);
                     }
 
                     if (extensionDescriptor != null) {
@@ -87,7 +87,7 @@ namespace Coevery.Mvc.Routes {
                     }
 
                     // Route-level setting overrides module-level setting (from manifest).
-                    var sessionStateBehavior = routeDescriptor.SessionState == SessionStateBehavior.Default ? defaultSessionState : routeDescriptor.SessionState ;
+                    var sessionStateBehavior = routeDescriptor.SessionState == SessionStateBehavior.Default ? defaultSessionState : routeDescriptor.SessionState;
 
                     var shellRoute = new ShellRoute(routeDescriptor.Route, _shellSettings, _workContextAccessor, _runningShellTable) {
                         IsHttpRoute = routeDescriptor is HttpRouteDescriptor,
@@ -102,11 +102,11 @@ namespace Coevery.Mvc.Routes {
                             return false;
                         }
 
-                        return routeDescriptor.Priority == hubRoute.Priority && hubRoute.Area.Equals(area, StringComparison.OrdinalIgnoreCase);
+                        return routeDescriptor.Priority == hubRoute.Priority && hubRoute.Area.Equals(area, StringComparison.OrdinalIgnoreCase) && hubRoute.Name == routeDescriptor.Name;
                     }) as HubRoute;
 
                     if (matchedHubRoute == null) {
-                        matchedHubRoute = new HubRoute(area, routeDescriptor.Priority, _runningShellTable);
+                        matchedHubRoute = new HubRoute(routeDescriptor.Name, area, routeDescriptor.Priority, _runningShellTable);
 
                         int index;
                         for (index = 0; index < _routeCollection.Count; index++) {
@@ -118,7 +118,7 @@ namespace Coevery.Mvc.Routes {
                                 break;
                             }
                         }
-                        
+
                         _routeCollection.Insert(index, matchedHubRoute);
                     }
 

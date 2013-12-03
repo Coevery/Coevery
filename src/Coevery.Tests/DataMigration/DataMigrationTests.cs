@@ -34,8 +34,9 @@ namespace Coevery.Tests.DataMigration {
         private ISession _session;
         private ITransactionManager _transactionManager;
 
-        [TestFixtureSetUp]
-        public void CreateDb() {
+        [SetUp]
+        public void CreateDb()
+        {
             var databaseFileName = System.IO.Path.GetTempFileName();
             _sessionFactory = DataUtility.CreateSessionFactory(
                 databaseFileName,
@@ -45,8 +46,11 @@ namespace Coevery.Tests.DataMigration {
                 typeof(ContentTypeRecord));
         }
 
-        public void InitDb() {
-            foreach ( var record in _repository.Fetch(m => m != null) ) {
+        [TearDown]
+        public void InitDb()
+        {
+            foreach (var record in _repository.Fetch(m => m != null))
+            {
                 _repository.Delete(record);
             }
             _repository.Flush();
