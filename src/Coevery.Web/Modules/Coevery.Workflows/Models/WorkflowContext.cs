@@ -3,6 +3,7 @@ using System.Linq;
 using Coevery.ContentManagement;
 using Coevery.Forms.Services;
 using Coevery.Localization;
+using Newtonsoft.Json.Linq;
 
 namespace Coevery.Workflows.Models {
     public class WorkflowContext {
@@ -29,17 +30,21 @@ namespace Coevery.Workflows.Models {
             }
         }
 
-        public void SetState<T>(string key, T value) {
-            State[key] = value;
+        public void SetState<T>(string key, T value)
+        {
+            State[key] = JToken.FromObject(value);
             SerializeState();
         }
 
-        public T GetState<T>(string key) {
-            if (State == null) {
+        public T GetState<T>(string key)
+        {
+            if (State == null)
+            {
                 return default(T);
             }
 
-            return (T)State[key];
+            var value = State[key];
+            return value != null ? value.ToObject<T>() : default(T);
         }
 
         public object GetState(string key) {

@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
+using Castle.Core;
 using Coevery.Environment;
 using Coevery.Environment.Configuration;
 ﻿using Coevery.Environment.Extensions;
@@ -51,18 +52,13 @@ namespace Coevery.Mvc.Routes {
 
                 preloading.Add(routeDescriptor.Name, routeDescriptor.Route);
             }
-                
+
 
             using (_routeCollection.GetWriteLock()) {
                 // existing routes are removed while the collection is briefly inaccessable
-                var cropArray = _routeCollection
-                    .OfType<ShellRoute>()
-                    .Where(sr => sr.ShellSettingsName == _shellSettings.Name)
-                    .ToArray();
-
-                foreach(var crop in cropArray) {
-                    _routeCollection.Remove(crop);
-                }
+                _routeCollection
+                    .OfType<HubRoute>()
+                    .ForEach(x => x.ReleaseShell(_shellSettings));
 
                 // new routes are added
                 foreach (var routeDescriptor in routesArray) {
@@ -70,17 +66,17 @@ namespace Coevery.Mvc.Routes {
                     var defaultSessionState = SessionStateBehavior.Default;
 
                     ExtensionDescriptor extensionDescriptor = null;
-                    if(routeDescriptor.Route is Route) {
+                    if (routeDescriptor.Route is Route) {
                         object extensionId;
                         var route = routeDescriptor.Route as Route;
-                        if(route.DataTokens != null && route.DataTokens.TryGetValue("area", out extensionId) || 
+                        if (route.DataTokens != null && route.DataTokens.TryGetValue("area", out extensionId) ||
                            route.Defaults != null && route.Defaults.TryGetValue("area", out extensionId)) {
-                            extensionDescriptor = _extensionManager.GetExtension(extensionId.ToString()); 
+                            extensionDescriptor = _extensionManager.GetExtension(extensionId.ToString());
                         }
                     }
-                    else if(routeDescriptor.Route is IRouteWithArea) {
+                    else if (routeDescriptor.Route is IRouteWithArea) {
                         var route = routeDescriptor.Route as IRouteWithArea;
-                        extensionDescriptor = _extensionManager.GetExtension(route.Area); 
+                        extensionDescriptor = _extensionManager.GetExtension(route.Area);
                     }
 
                     if (extensionDescriptor != null) {
@@ -91,21 +87,42 @@ namespace Coevery.Mvc.Routes {
                     }
 
                     // Route-level setting overrides module-level setting (from manifest).
-                    var sessionStateBehavior = routeDescriptor.SessionState == SessionStateBehavior.Default ? defaultSessionState : routeDescriptor.SessionState ;
+                    var sessionStateBehavior = routeDescriptor.SessionState == SessionStateBehavior.Default ? defaultSessionState : routeDescriptor.SessionState;
 
                     var shellRoute = new ShellRoute(routeDescriptor.Route, _shellSettings, _workContextAccessor, _runningShellTable) {
                         IsHttpRoute = routeDescriptor is HttpRouteDescriptor,
                         SessionState = sessionStateBehavior
                     };
 
-                    try {
-                        _routeCollection.Add(routeDescriptor.Name, shellRoute);
+                    var area = extensionDescriptor == null ? "" : extensionDescriptor.Id;
+
+                    var matchedHubRoute = _routeCollection.FirstOrDefault(x => {
+                        var hubRoute = x as HubRoute;
+                        if (hubRoute == null) {
+                            return false;
+                        }
+
+                        return routeDescriptor.Priority == hubRoute.Priority && hubRoute.Area.Equals(area, StringComparison.OrdinalIgnoreCase) && hubRoute.Name == routeDescriptor.Name;
+                    }) as HubRoute;
+
+                    if (matchedHubRoute == null) {
+                        matchedHubRoute = new HubRoute(routeDescriptor.Name, area, routeDescriptor.Priority, _runningShellTable);
+
+                        int index;
+                        for (index = 0; index < _routeCollection.Count; index++) {
+                            var hubRoute = _routeCollection[index] as HubRoute;
+                            if (hubRoute == null) {
+                                continue;
+                            }
+                            if (hubRoute.Priority < matchedHubRoute.Priority) {
+                                break;
+                            }
+                        }
+
+                        _routeCollection.Insert(index, matchedHubRoute);
                     }
-                    catch(ArgumentException) {
-                        // Named routes can be added multiple times in the case of a module
-                        // loaded in multiple tenants. There is no way to ensure a named route
-                        // is already registered, thus catching the specific exception.
-                    }
+
+                    matchedHubRoute.Add(shellRoute, _shellSettings);
                 }
             }
         }

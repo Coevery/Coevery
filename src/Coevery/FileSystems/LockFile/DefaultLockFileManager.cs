@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using Coevery.FileSystems.AppData;
 using Coevery.Services;
@@ -26,7 +27,7 @@ namespace Coevery.FileSystems.LockFile {
                     return false;
                 }
 
-                lockFile = new LockFile(_appDataFolder, path, _clock.UtcNow.ToString(), _rwLock);
+                lockFile = new LockFile(_appDataFolder, path, _clock.UtcNow.ToString(CultureInfo.InvariantCulture), _rwLock);
                 return true;
             }
             catch {

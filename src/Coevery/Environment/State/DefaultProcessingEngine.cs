@@ -12,12 +12,15 @@ namespace Coevery.Environment.State {
     public class DefaultProcessingEngine : Component, IProcessingEngine {
         private readonly IShellContextFactory _shellContextFactory;
         private readonly Func<ICoeveryHost> _coeveryHost;
-        private readonly IList<Entry> _entries = new List<Entry>();
+
+        private readonly ContextState<IList<Entry>> _entries;
 
 
         public DefaultProcessingEngine(IShellContextFactory shellContextFactory, Func<ICoeveryHost> coeveryHost) {
             _shellContextFactory = shellContextFactory;
             _coeveryHost = coeveryHost;
+
+            _entries = new ContextState<IList<Entry>>("DefaultProcessingEngine.Entries", () => new List<Entry>());
         }
 
         public string AddTask(ShellSettings shellSettings, ShellDescriptor shellDescriptor, string eventName, Dictionary<string, object> parameters) {
@@ -33,10 +36,8 @@ namespace Coevery.Environment.State {
                 eventName, 
                 entry.ProcessId,
                 shellSettings.Name);
-            lock (_entries) {
-                _entries.Add(entry);
-                return entry.ProcessId;
-            }
+            _entries.GetState().Add(entry);
+            return entry.ProcessId;
         }
 
 
@@ -52,18 +53,16 @@ namespace Coevery.Environment.State {
 
 
         public bool AreTasksPending() {
-            lock (_entries)
-                return _entries.Any();
+            return _entries.GetState().Any();
         }
 
         public void ExecuteNextTask() {
+
             Entry entry;
-            lock (_entries) {
-                if (!_entries.Any())
-                    return;
-                entry = _entries.First();
-                _entries.Remove(entry);
-            }
+            if (!_entries.GetState().Any())
+                return;
+            entry = _entries.GetState().First();
+            _entries.GetState().Remove(entry);
             Execute(entry);
         }
 

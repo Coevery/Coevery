@@ -137,8 +137,6 @@ namespace Coevery.Data.Migration {
                     else {
                         dataMigrationRecord.Version = current;
                     }
-
-                    _transactionManager.RequireNew();
                 }
                 catch (Exception e) {
                     Logger.Error(e, "Error while running migration version {0} for {1}", current, feature);
