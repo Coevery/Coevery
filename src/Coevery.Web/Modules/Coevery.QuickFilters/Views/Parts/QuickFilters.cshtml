@@ -1,0 +1,45 @@
+﻿@using Coevery.DisplayManagement
+@using Coevery.Projections.Descriptors.Filter
+@{
+    IList<FilterDescriptor> filters = Model.Filters;
+}
+<div data-ng-controller="quickFilterController" id="quickFilter">
+    @foreach (var filter in filters) {
+        <form data-type="@filter.Type">
+            <label>@filter.Name.Text</label>
+            @Display(New.Create(string.Format("QuickFilter_{0}", filter.Form),
+                Arguments.From(new object[] {filter.Type}, new[] {"FilterType"})))
+        </form>
+    }
+    <button class="btn btn-small" data-ng-click="applyFilter()">Apply</button>
+</div>
+
+<script>
+    function quickFilterController($scope) {
+        $scope.args = {
+            Type: '@Model.ContentTypeName'
+        };
+        $scope.applyFilter = function() {
+            $scope.contentList.setParam({
+                postData: {
+                    ViewId: $scope.currentViewId,
+                    Filters: getFilters()
+                }
+            });
+            $scope.contentList.reload();
+        };
+
+        function getFilters() {
+            var forms = $('#quickFilter').find('form');
+            var filters = [];
+            $.each(forms, function() {
+                var form = $(this);
+                filters.push({
+                    Type: form.data('type'),
+                    FormData: form.serializeArray()
+                });
+            });
+            return filters;
+        }
+    }
+</script>
