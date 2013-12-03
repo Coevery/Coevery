@@ -22,16 +22,17 @@ namespace Coevery.Projections.Handlers {
         }
 
         public void OnCreated(string entityName) {
-            var fields = _projectionService.GetFieldDescriptors(entityName,-1).Select(x => x.Value);
+            var fields = _projectionService.GetFieldDescriptors(entityName,-1);
             var viewModel = new ProjectionEditViewModel {
                 ItemContentType = entityName.ToPartName(),
                 DisplayName = entityName + " DefaultView",
                 IsDefault = true,
                 Layout = _projectionManager.DescribeLayouts()
                     .SelectMany(descr => descr.Descriptors)
-                    .FirstOrDefault(descr => descr.Category == "Grids" && descr.Type == "Default")
+                    .FirstOrDefault(descr => descr.Category == "Grids" && descr.Type == "Default"),
+                Fields = fields
             };
-            _projectionService.EditPost(0, viewModel, fields);
+            _projectionService.EditPost(0, viewModel, fields.Select(f=>f.Value));
         }
 
         public void OnUpdating(string entityName) {
