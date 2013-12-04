@@ -2,20 +2,28 @@
 @using Coevery.Core.Common.ViewModels
 
 @{
-    IDictionary<string,string> settings = Model.State;
+    IDictionary<string, string> settings = Model.State;
     IEnumerable<PicklistItemViewModel> fields = Model.Fields;
-    List<SelectListItem> sortedBy = fields.Select(c => new SelectListItem { Value =c.Value, Selected = (c.Value == settings["SortedBy"]), Text = c.Text }).ToList();
 
-    var sortMode = new List<SelectListItem> {
-        new SelectListItem { Selected = settings["SortMode"] == "Desc", Text = "Desc" },
-        new SelectListItem { Selected = settings["SortMode"] == "Asc", Text = "Asc" }
-    };
+    List<SelectListItem> sortedBy = null, sortMode = null, pageRowCount = null;
+    if (fields != null && fields.Any() && settings.ContainsKey("SortedBy")) {
+        sortedBy = fields.Select(c => new SelectListItem { Value = c.Value, Selected = (c.Value == settings["SortedBy"]), Text = c.Text }).ToList();
+    }
 
-    var pageRowCount = new List<SelectListItem> {
-        new SelectListItem { Selected = settings["PageRowCount"] == "50", Text = "50" },
-        new SelectListItem { Selected = settings["PageRowCount"] == "100", Text = "100" },
-        new SelectListItem { Selected = settings["PageRowCount"] == "200", Text = "200" }
-    };
+    if (settings.ContainsKey("SortMode")) {
+        sortMode = new List<SelectListItem> {
+            new SelectListItem {Selected = settings["SortMode"] == "Desc", Text = "Desc"},
+            new SelectListItem {Selected = settings["SortMode"] == "Asc", Text = "Asc"}
+        };
+    }
+
+    if (settings.ContainsKey("PageRowCount")) {
+        pageRowCount = new List<SelectListItem> {
+            new SelectListItem {Selected = settings["PageRowCount"] == "50", Text = "50"},
+            new SelectListItem {Selected = settings["PageRowCount"] == "100", Text = "100"},
+            new SelectListItem {Selected = settings["PageRowCount"] == "200", Text = "200"}
+        };
+    }
 }
 
 <div class="row-fluid">

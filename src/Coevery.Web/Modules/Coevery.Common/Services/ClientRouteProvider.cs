@@ -56,13 +56,13 @@ namespace Coevery.Common.Services {
             builder.Describe("Root.Menu.Create")
                 .Configure(descriptor =>
                 {
-                    descriptor.Url = "/{Module:[a-zA-Z]+}/Create";
+                    descriptor.Url = "/{Module:[a-zA-Z]+}/Create?Params";
                 })
                 .View(view =>
                 {
                     view.Name = "@";
                     view.TemplateProvider = @"['$http', '$stateParams', function ($http, $stateParams) {
-                        var url = '" + BasePath + @"' + $stateParams.Module + '/ViewTemplate/Create/' + $stateParams.Module;
+                        var url = '" + BasePath + @"' + $stateParams.Module + '/ViewTemplate/Create/' + $stateParams.Module + '?paramsString=' + $stateParams.Params;
                         return $http.get(url).then(function (response) { return response.data; });
                     }]";
                     view.Controller = "GeneralDetailCtrl";

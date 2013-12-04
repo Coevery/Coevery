@@ -96,7 +96,7 @@ namespace Coevery.Projections.Services {
             viewModel.Form = _formManager.Build(viewModel.Layout.Form) ?? Services.New.EmptyForm();
             viewModel.State = FormParametersHelper.FromString(layout.State);
             viewModel.Form.Fields = viewModel.Fields;
-            viewModel.Form.State = viewModel.State;
+            viewModel.Form.State = MergeDictionary(new[] { (Dictionary<string,string>)viewModel.Form.State, viewModel.State });
 
             return viewModel;
         }
