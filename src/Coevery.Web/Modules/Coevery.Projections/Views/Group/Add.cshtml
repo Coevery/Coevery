@@ -1,0 +1,24 @@
+﻿@model Coevery.Projections.ViewModels.GroupAddViewModel
+
+@{
+    Layout.Title = T("Add a Grouping Property");
+}
+
+@if (!Model.Properties.Any())
+{
+    <h3>@T("There are no currently available properties")</h3>
+}
+
+<table class="items">
+    <thead>
+        <tr>
+            <th scope="col" style="width:300px">@T("Name")</th>
+        </tr>
+    </thead>
+    @foreach (var property in Model.Properties)
+    {
+        <tr>
+            <td>@Html.ActionLink(property.DisplayText, "Edit", new { id = Model.Id, propertyId = property.PropertyRecordId })</td>
+        </tr>
+    }
+</table>

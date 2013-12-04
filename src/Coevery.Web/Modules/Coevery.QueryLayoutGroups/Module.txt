@@ -1,0 +1,10 @@
+﻿Name: Coevery.QueryLayoutGroups
+AntiForgery: enabled
+Author: The Coevery Team
+Website: http://coeveryproject.net
+Version: 1.0
+CoeveryVersion: 1.0
+Description: Description for the module
+Features:
+    Coevery.QueryLayoutGroups:
+        Description: Description for feature Coevery.QueryLayoutGroups.

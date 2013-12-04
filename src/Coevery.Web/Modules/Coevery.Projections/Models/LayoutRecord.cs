@@ -26,7 +26,7 @@ namespace Coevery.Projections.Models {
         public virtual IList<PropertyRecord> Properties { get; set; }
 
         [CascadeAllDeleteOrphan, Aggregate]
-        public virtual PropertyRecord GroupProperty { get; set; }
+        public virtual IList<LayoutGroupRecord> Groups { get; set; }
 
         public enum Displays {
             Content,

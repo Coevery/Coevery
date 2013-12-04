@@ -1,8 +1,8 @@
-﻿define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/columndefinitionservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function (detour) {
+﻿define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/gridcolumndataservice', 'core/services/viewdefinitionservice', 'core/services/filterdefinitionservice'], function (detour) {
     detour.registerController([
         'GeneralListCtrl',
-        ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$state', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService', 'viewDefinitionService', 'filterDefinitionService',
-            function ($rootScope, $scope, $parse, $http, logger, $compile, $state, $stateParams, $location, commonDataService, columnDefinitionService, viewDefinitionService, filterDefinitionService) {
+        ['$rootScope', '$scope', '$parse', '$http', 'logger', '$compile', '$state', '$stateParams', '$location', 'commonDataService', 'gridColumnDataService', 'viewDefinitionService', 'filterDefinitionService',
+            function ($rootScope, $scope, $parse, $http, logger, $compile, $state, $stateParams, $location, commonDataService, gridColumnDataService, viewDefinitionService, filterDefinitionService) {
                 var navigationId = $stateParams.NavigationId;
                 var moduleName = $stateParams.Module;
                 $scope.isInit = true;
@@ -10,7 +10,6 @@
                 $scope.currentViewId = 0;
                 $scope.moduleName = moduleName;
                 $scope.definitionViews = [];
-                $scope.columnDefs = [];
                 $rootScope.moduleName = moduleName;
 
                 //init pagingoption
@@ -40,13 +39,13 @@
                     var needGridReloading = true;
                     $scope.currentViewId = viewId;
                     $location.search("ViewId", viewId);
-                    var gridColumns = columnDefinitionService.query({ contentType: moduleName, viewId: viewId }, function () {
-                        $.each(gridColumns, function (index, value) {
+                    var gridColumnQuery = gridColumnDataService.get({ contentType: moduleName, viewId: viewId }, function () {
+                        $.each(gridColumnQuery.colModel, function (index, value) {
                             if (value.formatter) {
                                 value.formatter = $rootScope[value.formatter];
                             }
                         });
-                        $scope.columnDefs = gridColumns;
+                        
                         if (!$scope.isInit && !needGridReloading) {
                             $scope.getPagedDataAsync();
                         } else {
@@ -58,7 +57,6 @@
                                 rowList: pageSizes,
                                 needReloading: needGridReloading && !$scope.isInit,
                                 page: currentPage,
-                                colModel: $scope.columnDefs,
                                 loadComplete: function (data) {
                                     currentPage = data.page;
                                     pageSize = data.records;
@@ -71,8 +69,8 @@
                                     logger.error("Failed to fetched records for " + moduleName + ":\n" + error);
                                 }
                             };
-                            angular.extend(gridOptions, $rootScope.defaultGridOptions);
-                            $scope.gridOptions = gridOptions;
+                            
+                            $scope.gridOptions = angular.extend({}, $rootScope.defaultGridOptions, gridOptions, gridColumnQuery);
                             $scope.isInit = false;
                         }
                     }, function (response) {

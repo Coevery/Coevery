@@ -6,7 +6,7 @@
 @helper AddLayoutButton(LayoutDescriptor type) {
     <li>
         <label data-ng-click="add('@type.Category','@type.Type')">
-            <i class="icon-plus"></i>&nbsp;@T("Add " + type.Type + " Grid Layout")
+            <i class="icon-plus"></i>&nbsp;@T("Add {0} Grid Layout", type.Type)
         </label>
     </li>
 }
@@ -14,8 +14,8 @@
 <div class="btn-toolbar">
     <div class="btn-group">
         <button class="btn btn-small btn-success dropdown-toggle" data-toggle="dropdown"
-                data-ng-disabled="isPublished=='False'" title='@T(Model.PublishTip)'>
-            <i class="icon-plus"></i>&nbsp;Add 
+                data-ng-disabled="isPublished=='False'" title="@T("Works when the entity has been published.")">
+            <i class="icon-plus"></i>&nbsp;Add <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
             @foreach (var layoutType in Model.Layouts) {
@@ -23,8 +23,8 @@
             }
         </ul>
     </div>
-    <button class="btn btn-small" data-ng-click="getAll()" 
-            data-ng-disabled="isPublished=='False'" title='@T(Model.PublishTip)'>
+    <button class="btn btn-small" data-ng-click="getAll()"
+            data-ng-disabled="isPublished=='False'" title="@T("Works when the entity has been published.")">
         <i class="icon-refresh"></i>&nbsp;Refresh
     </button>
     <div class="btn-group" data-ng-show="selectedItems.length > 0">

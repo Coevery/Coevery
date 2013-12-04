@@ -152,8 +152,7 @@ namespace Coevery.Projections.Controllers {
                 Display = layoutRecord.Display,
                 DisplayType = String.IsNullOrWhiteSpace(layoutRecord.DisplayType) ? "Summary" : layoutRecord.DisplayType,
                 Layout = layoutDescriptor, 
-                Form = form,
-                GroupPropertyId = layoutRecord.GroupProperty == null ? 0 : layoutRecord.GroupProperty.Id
+                Form = form
             };
             
             // bind form with existing values
@@ -183,6 +182,16 @@ namespace Coevery.Projections.Controllers {
             }
 
             viewModel.Properties = fieldEntries.OrderBy(f => f.Position);
+            viewModel.Groups = layoutRecord.Groups.Select(g => {
+                var groupEntry = new PropertyGroupEntry();
+                var fieldEntry = fieldEntries.FirstOrDefault(f => f.PropertyRecordId == g.GroupProperty.Id);
+                groupEntry.DisplayText = fieldEntry == null ? string.Empty : fieldEntry.DisplayText;
+                groupEntry.Position = g.Position;
+                groupEntry.Sort = g.Sort;
+                groupEntry.LayoutGroupRecordId = g.Id;
+                groupEntry.GroupPropertyId = g.GroupProperty.Id;
+                return groupEntry;
+            }).OrderBy(g => g.Position).ToList();
 
             #endregion
 
@@ -212,7 +221,7 @@ namespace Coevery.Projections.Controllers {
                 layoutRecord.Description = model.Description;
                 layoutRecord.Display = model.Display;
                 layoutRecord.DisplayType = model.DisplayType;
-                layoutRecord.GroupProperty = layoutRecord.Properties.FirstOrDefault(x => x.Id == model.GroupPropertyId);
+                //layoutRecord.GroupProperty = layoutRecord.Properties.FirstOrDefault(x => x.Id == model.GroupPropertyId);
 
                 Services.Notifier.Information(T("Layout Saved"));
 

@@ -95,7 +95,8 @@ namespace Coevery.Projections.Drivers {
                                             new XElement("Properties", layout.Properties.Select(GetPropertyXml)),
 
                                             // Group
-                                            new XElement("Group", GetPropertyXml(layout.GroupProperty))
+                                            //new XElement("Group", GetPropertyXml(layout.GroupProperty))
+                                            new XElement("Groups", layout.Groups.Select(GetLayoutGroupXml))
                             );
                     })
                 )
@@ -174,7 +175,7 @@ namespace Coevery.Projections.Drivers {
                     State = state,
                     Type = type,
                     Properties = layout.Element("Properties").Elements("Property").Select(GetProperty).ToList(),
-                    GroupProperty = GetProperty(layout.Element("Group").Element("Property"))
+                    Groups = layout.Element("Groups").Elements("Group").Select(GetLayoutGroup).ToList()
                 };
             })) {
                 part.Record.Layouts.Add(item);
@@ -257,6 +258,30 @@ namespace Coevery.Projections.Drivers {
                 TrimOnWordBoundary = Convert.ToBoolean(property.Attribute("TrimOnWordBoundary").Value),
                 TrimWhiteSpace = Convert.ToBoolean(property.Attribute("TrimWhiteSpace").Value),
                 ZeroIsEmpty = Convert.ToBoolean(property.Attribute("ZeroIsEmpty").Value),
+            };
+        }
+
+        private XElement GetLayoutGroupXml(LayoutGroupRecord group) {
+            if (group == null) {
+                return null;
+            }
+
+            return new XElement("Group",
+                new XAttribute("Position", group.Position),
+                new XAttribute("Sort", group.Sort ?? ""),
+                new XElement("GroupProperty", GetPropertyXml(group.GroupProperty))
+                );
+        }
+
+        private LayoutGroupRecord GetLayoutGroup(XElement group) {
+            if (group == null) {
+                return null;
+            }
+
+            return new LayoutGroupRecord {
+                Position = Convert.ToInt32(group.Attribute("Position").Value),
+                Sort = group.Attribute("Sort").Value,
+                GroupProperty = GetProperty(group.Element("GroupProperty").Element("Property"))
             };
         }
     }

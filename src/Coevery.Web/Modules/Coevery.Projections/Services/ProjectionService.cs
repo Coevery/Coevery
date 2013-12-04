@@ -19,21 +19,19 @@ using Coevery.UI.Notify;
 
 namespace Coevery.Projections.Services {
     public class ProjectionService : IProjectionService {
-        private const string DefaultLayoutCategory = "Grids";
-        private const string DefaultLayoutType = "Default";
+        public const string DefaultLayoutCategory = "Grids";
+        public const string DefaultLayoutType = "Default";
         private readonly IProjectionManager _projectionManager;
         private readonly IContentManager _contentManager;
         private readonly IEnumerable<IFieldToPropertyStateProvider> _fieldToPropertyStateProviders;
         private readonly IFormManager _formManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IRepository<LayoutRecord> _layoutRepository;
 
         public ProjectionService(
             ICoeveryServices services,
             IProjectionManager projectionManager,
             IContentManager contentManager,
             IFormManager formManager,
-            IRepository<LayoutRecord> layoutRepository,
             IEnumerable<IFieldToPropertyStateProvider> fieldToPropertyStateProviders,
             IContentDefinitionManager contentDefinitionManager) {
             _projectionManager = projectionManager;
@@ -42,7 +40,6 @@ namespace Coevery.Projections.Services {
             _fieldToPropertyStateProviders = fieldToPropertyStateProviders;
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
-            _layoutRepository = layoutRepository;
             T = NullLocalizer.Instance;
         }
 
@@ -121,23 +118,6 @@ namespace Coevery.Projections.Services {
                     new[] { state, GetLayoutState(projection.QueryPartRecord.Id, layout.Properties.Count, layout.Description) }));
             }
             return null;
-        }
-
-        public void UpdateDataBaseLayout() {
-            var layouts = _layoutRepository.Fetch(record => record.Category == "Html" && record.Type == "ngGrid");
-            foreach (var layoutRecord in layouts) {
-                var voidDictionary = new Dictionary<string, string> {
-                    {"PageRowCount", "50"},
-                    {"SortedBy", string.Empty},
-                    {"SortMode", string.Empty}
-                };
-                layoutRecord.Category = DefaultLayoutCategory;
-                layoutRecord.Type = DefaultLayoutType;
-                layoutRecord.State = FormParametersHelper.ToString(MergeDictionary(
-                    new[] { FormParametersHelper.FromString(layoutRecord.State), voidDictionary }
-                    ));
-                _layoutRepository.Update(layoutRecord);
-            }
         }
 
         public int EditPost(int id, ProjectionEditViewModel viewModel, IEnumerable<string> pickedFileds) {

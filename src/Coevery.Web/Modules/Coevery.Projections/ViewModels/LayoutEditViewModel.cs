@@ -28,13 +28,23 @@ namespace Coevery.Projections.ViewModels {
 
         public IEnumerable<PropertyEntry> Properties { get; set; }
 
-        public int GroupPropertyId { get; set; }
+        public IEnumerable<PropertyGroupEntry> Groups { get; set; }
     }
     
     public class PropertyEntry {
         public int PropertyRecordId { get; set; }
         public string Category { get; set; }
         public string Type { get; set; }
+        public string DisplayText { get; set; }
+        public int Position { get; set; }
+    }
+
+    public class PropertyGroupEntry
+    {
+        public int LayoutGroupRecordId { get; set; }
+        public int GroupPropertyId { get; set; }
+
+        public string Sort { get; set; }
         public string DisplayText { get; set; }
         public int Position { get; set; }
     }

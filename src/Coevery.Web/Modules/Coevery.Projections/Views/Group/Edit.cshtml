@@ -1,0 +1,37 @@
+﻿@model GroupEditViewModel
+@using Coevery.Projections.Models;
+@using Coevery.Projections.ViewModels;
+           
+@{
+    Script.Require("jQuery");
+    Layout.Title = T("Edit Grouping Property - {0}", Model.Property.Name);
+}
+
+@Html.ValidationSummary()
+
+<h2>@Model.Property.Name</h2>
+<span class="hint">@Model.Property.Description</span>
+
+@using (Html.BeginFormAntiForgeryPost()) {
+
+    @* Field settings *@
+    <fieldset>
+        <div data-controllerid="{EnabledByInputId}">
+            @Html.LabelFor(m => m.Sort, T("Sort"))
+            <div>
+                @Html.RadioButton(Html.FieldIdFor(m => m.Sort), "asc", string.IsNullOrEmpty(Model.Sort) || Model.Sort == "asc")<span>@T("Sort ascending")</span>
+            </div>
+            <div>
+                @Html.RadioButton(Html.FieldIdFor(m => m.Sort), "desc", Model.Sort == "desc")<span>@T("Sort descending")</span>
+            </div>
+            @Html.ValidationMessageFor(m=>m.Sort)
+            <span class="hint">@T("The direction the field will be sorted by.")</span>
+        </div>
+
+    </fieldset>
+
+    <fieldset>
+        <button class="primaryAction button" type="submit">@T("Save")</button>
+        @Html.ActionLink(T("Cancel").Text, "Edit", "Layout", new { id = Model.Id }, new { @class = "primaryAction button" })
+    </fieldset>
+}

@@ -101,9 +101,11 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\OptionSetController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
+    <Compile Include="Controllers\PropertyController.cs" />
     <Compile Include="Controllers\ReferenceController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
-    <Compile Include="Controllers\PropertyController.cs" />
+    <Compile Include="Controllers\GridColumnController.cs" />
     <Compile Include="Controllers\SortCriteriaController.cs" />
     <Compile Include="Descriptors\Filter\DescribeFilterContext.cs" />
     <Compile Include="Descriptors\Filter\DescribeFilterFor.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="Descriptors\Filter\FilterDescriptor.cs" />
     <Compile Include="Descriptors\Layout\DescribeLayoutContext.cs" />
     <Compile Include="Descriptors\Layout\DescribeLayoutFor.cs" />
+    <Compile Include="Models\LayoutGroupRecord.cs" />
     <Compile Include="Providers\Filters\ContentPartRecordsForm.cs" />
     <Compile Include="Providers\Filters\EagerFetchFilter.cs" />
     <Compile Include="Descriptors\Layout\LayoutComponentResult.cs" />
@@ -228,6 +231,7 @@
     <Compile Include="Services\CustomMemberBindingProvider.cs" />
     <Compile Include="Services\FieldIndexService.cs" />
     <Compile Include="Services\GridService.cs" />
+    <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\IFieldIndexService.cs" />
     <Compile Include="Services\IFilterProvider.cs" />
     <Compile Include="Services\IMemberBindingProvider.cs" />
@@ -260,11 +264,13 @@
     <Compile Include="ViewModels\FilterAddViewModel.cs" />
     <Compile Include="ViewModels\FilterEditViewModel.cs" />
     <Compile Include="ViewModels\FilterViewModel.cs" />
+    <Compile Include="ViewModels\GroupEditViewModel.cs" />
     <Compile Include="ViewModels\LayoutAddViewModel.cs" />
     <Compile Include="ViewModels\LayoutEditViewModel.cs" />
     <Compile Include="ViewModels\NavigationQueryPartEditViewModel.cs" />
     <Compile Include="ViewModels\ProjectionEditViewModel.cs" />
     <Compile Include="ViewModels\ProjectionPartEditViewModel.cs" />
+    <Compile Include="ViewModels\GroupAddViewModel.cs" />
     <Compile Include="ViewModels\PropertyAddViewModel.cs" />
     <Compile Include="ViewModels\PropertyEditViewModel.cs" />
     <Compile Include="ViewModels\SortCriteriaAddViewModel.cs" />
@@ -274,7 +280,6 @@
     <Content Include="Scripts\controllers\listcontroller.js" />
     <Content Include="Scripts\datetime-editor-filter.js" />
     <Content Include="Scripts\numeric-editor-filter.js" />
-    <Content Include="Scripts\services\propertydataservice.js" />
     <Content Include="Scripts\services\projectiondataservice.js" />
     <Content Include="Styles\admin-projections.css" />
     <Content Include="Styles\datetime-editor-filter.css" />
@@ -412,6 +417,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TreeGrid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Group\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Group\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

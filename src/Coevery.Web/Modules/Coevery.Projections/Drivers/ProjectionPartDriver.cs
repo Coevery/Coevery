@@ -181,35 +181,38 @@ namespace Coevery.Projections.Drivers {
                         LayoutRecord = layout,
                     };
 
-                    if (layout.GroupProperty != null) {
-                        var groupPropertyId = layout.GroupProperty.Id;
-                        var display = _displayHelperFactory.CreateHelper(new ViewContext { HttpContext = _workContextAccessor.GetContext().HttpContext }, new ViewDataContainer());
+                    //if (layout.GroupProperty != null)
+                    //{
+                    //    var groupPropertyId = layout.GroupProperty.Id;
+                    //    var display = _displayHelperFactory.CreateHelper(new ViewContext { HttpContext = _workContextAccessor.GetContext().HttpContext }, new ViewDataContainer());
 
-                        // index by PropertyWrapper shape
-                        var groups = layoutComponents.GroupBy(
-                            x => {
-                                var propertyShape = ((IEnumerable<dynamic>)x.Properties.Items).First(p => ((PropertyRecord)p.Property).Id == groupPropertyId);
-                                
-                                // clear the wrappers, as they shouldn't be needed to generate the grouping key itself
-                                // otherwise the DisplayContext.View is null, and throws an exception if a wrapper is rendered (#18558)
-                                ((IShape)propertyShape).Metadata.Wrappers.Clear();
+                    //    // index by PropertyWrapper shape
+                    //    var groups = layoutComponents.GroupBy(
+                    //        x =>
+                    //        {
+                    //            var propertyShape = ((IEnumerable<dynamic>)x.Properties.Items).First(p => ((PropertyRecord)p.Property).Id == groupPropertyId);
 
-                                string key = Convert.ToString(display(propertyShape));
-                                return key;
-                            }).Select(x => new { Key = x.Key, Components = x });
+                    //            // clear the wrappers, as they shouldn't be needed to generate the grouping key itself
+                    //            // otherwise the DisplayContext.View is null, and throws an exception if a wrapper is rendered (#18558)
+                    //            ((IShape)propertyShape).Metadata.Wrappers.Clear();
 
-                        var list = Services.New.List();
-                        foreach (var group in groups) {
+                    //            string key = Convert.ToString(display(propertyShape));
+                    //            return key;
+                    //        }).Select(x => new { Key = x.Key, Components = x });
 
-                            var localResult = layoutDescriptor.Render(renderLayoutContext, group.Components);
-                            // add the Context to the shape
-                            localResult.Context(renderLayoutContext);
+                    //    var list = Services.New.List();
+                    //    foreach (var group in groups)
+                    //    {
 
-                            list.Add(Services.New.LayoutGroup(Key: new MvcHtmlString(group.Key), List: localResult));
-                        }
+                    //        var localResult = layoutDescriptor.Render(renderLayoutContext, group.Components);
+                    //        // add the Context to the shape
+                    //        localResult.Context(renderLayoutContext);
 
-                        return list;
-                    }
+                    //        list.Add(Services.New.LayoutGroup(Key: new MvcHtmlString(group.Key), List: localResult));
+                    //    }
+
+                    //    return list;
+                    //}
 
 
                     var layoutResult = layoutDescriptor.Render(renderLayoutContext, layoutComponents);

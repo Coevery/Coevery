@@ -1,9 +1,9 @@
 ﻿'use strict';
-define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice', 'Modules/Coevery.Projections/Scripts/services/propertydataservice'], function (detour) {
+define(['core/app/detourService', 'Modules/Coevery.Projections/Scripts/services/projectiondataservice'], function (detour) {
     detour.registerController([
         'ProjectionDetailCtrl',
-        ['$rootScope', '$scope', '$timeout', 'logger', '$state', '$stateParams', '$resource', '$http', 'projectionDataService', 'propertyDataService', '$parse', '$q',
-            function ($rootScope, $scope, $timeout, logger, $state, $stateParams, $resource, $http, projectionDataService, propertyDataService, $parse, $q) {
+        ['$rootScope', '$scope', '$timeout', 'logger', '$state', '$stateParams', '$resource', '$http', 'projectionDataService', '$parse', '$q',
+            function ($rootScope, $scope, $timeout, logger, $state, $stateParams, $resource, $http, projectionDataService, $parse, $q) {
                 var name = $stateParams.Id;
                 var deferred = $q.defer();
                 var isInit = true;

@@ -9,7 +9,6 @@ using Coevery.Projections.Descriptors.Layout;
 
 namespace Coevery.Projections.ViewModels {
     public class EntityViewListModel {
-        public string PublishTip { get; set; }
         public IEnumerable<LayoutDescriptor> Layouts { get; set; }
     }
 }

@@ -200,6 +200,10 @@
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
       <Name>Coevery.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tools\Coevery\Coevery.csproj">
+      <Project>{33b1bc8d-e292-4972-a363-22056b207156}</Project>
+      <Name>Coevery</Name>
+    </ProjectReference>
     <ProjectReference Include="Core\Coevery.Core.csproj">
       <Project>{9916839c-39fc-4ceb-a5af-89ca7e87119f}</Project>
       <Name>Coevery.Core</Name>

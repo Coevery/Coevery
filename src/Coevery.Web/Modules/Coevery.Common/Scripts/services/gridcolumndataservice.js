@@ -7,9 +7,9 @@ define(['core/app/detourService'], function (detour) {
 
     //Although this is an AngularJS factory I prefer the term "service" for data operations
     detour.registerFactory([
-       'columnDefinitionService',
+       'gridColumnDataService',
        ['$rootScope', '$resource', function ($rootScope, $resource) {
-           return $resource('api/Projections/Property/:contentType',
+           return $resource('api/Projections/GridColumn/:contentType',
                { contentType: '@contentType' },
                { update: { method: 'PUT' } });
        }]

@@ -1,7 +1,10 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Coevery.Core.Common.Models;
 using Coevery.Core.Contents.Extensions;
 using Coevery.Core.Title.Models;
+using Coevery.Forms.Services;
 using Coevery.Localization;
 using Coevery.Projections.Services;
 using NHibernate.Dialect;
@@ -16,17 +19,17 @@ namespace Coevery.Projections {
         private readonly ShellSettings _shellSettings;
         private readonly Dialect _dialect;
         private readonly IRepository<MemberBindingRecord> _memberBindingRepository;
-        private readonly IProjectionService _projectionService;
+        private readonly IRepository<LayoutRecord> _layoutRepository;
 
         public Migrations(ISessionFactoryHolder sessionFactoryHolder,
             ShellSettings shellSettings,
-            IProjectionService projectionService,
-            IRepository<MemberBindingRecord> memberBindingRepository) {
+            IRepository<MemberBindingRecord> memberBindingRepository, 
+            IRepository<LayoutRecord> layoutRepository) {
             _shellSettings = shellSettings;
             var configuration = sessionFactoryHolder.GetConfiguration();
             _dialect = Dialect.GetDialect(configuration.Properties);
             _memberBindingRepository = memberBindingRepository;
-            _projectionService = projectionService;
+            _layoutRepository = layoutRepository;
             T = NullLocalizer.Instance;
         }
 
@@ -363,8 +366,38 @@ namespace Coevery.Projections {
         }
 
         public int UpdateFrom4() {
-            _projectionService.UpdateDataBaseLayout();
+            var layouts = _layoutRepository.Fetch(record => record.Type == "ngGrid");
+            foreach (var layoutRecord in layouts) {
+                var state = FormParametersHelper.FromString(layoutRecord.State);
+                if (!state.ContainsKey("PageRowCount")) {
+                    state["PageRowCount"] = "50";
+                }
+                if (!state.ContainsKey("SortedBy")) {
+                    state["SortedBy"] = string.Empty;
+                }
+                if (!state.ContainsKey("SortMode")) {
+                    state["SortMode"] = string.Empty;
+                }
+
+                layoutRecord.Category = ProjectionService.DefaultLayoutCategory;
+                layoutRecord.Type = ProjectionService.DefaultLayoutType;
+                layoutRecord.State = FormParametersHelper.ToString(state);
+                _layoutRepository.Update(layoutRecord);
+            }
             return 5;
+        }
+
+        public int UpdateFrom5()
+        {
+            SchemaBuilder.CreateTable("LayoutGroupRecord",
+                table => table
+                    .Column<int>("Id", c => c.PrimaryKey().Identity())
+                    .Column<int>("Position")
+                    .Column<string>("Sort")
+                    .Column<int>("LayoutRecord_id")
+                    .Column<int>("GroupProperty_id")
+                );
+            return 6;
         }
     }
 }

@@ -43,7 +43,6 @@ namespace Coevery.Projections.Controllers {
 
         public ActionResult List(string id) {
             var model = new EntityViewListModel {
-                PublishTip = T("Works when the entity has been published.").Text,
                 Layouts = _projectionManager.DescribeLayouts()
                     .SelectMany(type => type.Descriptors)
                     .Where(type => type.Category == "Grids")
