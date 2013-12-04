@@ -3,7 +3,6 @@ using Coevery.Data.Migration;
 
 namespace Coevery.OptionSet {
     public class Migrations : DataMigrationImpl {
-
         public int Create() {
             SchemaBuilder.CreateTable("OptionSetPartRecord", table => table
                 .ContentPartRecord()
@@ -42,6 +41,13 @@ namespace Coevery.OptionSet {
                 );
 
             return 3;
+        }
+
+        public int UpdateFrom3() {
+            SchemaBuilder.AlterTable("OptionItemContainerPartRecord",
+                table => table.AddColumn<int>("ContentItemRecord_id"));
+
+            return 4;
         }
     }
 }

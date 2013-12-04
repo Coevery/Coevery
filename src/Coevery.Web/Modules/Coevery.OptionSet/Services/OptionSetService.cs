@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Coevery.OptionSet.Models;
 using Coevery.OptionSet.ViewModels;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Aspects;
 using Coevery.ContentManagement.MetaData;
@@ -68,7 +67,7 @@ namespace Coevery.OptionSet.Services {
                 .FirstOrDefault();
         }
 
-        
+
         public void DeleteOptionSet(OptionSetPart taxonomy) {
             _contentManager.Remove(taxonomy.ContentItem);
 
@@ -115,7 +114,7 @@ namespace Coevery.OptionSet.Services {
 
         public IEnumerable<OptionItemPart> GetOptionItemsForContentItem(int contentItemId, string field = null) {
             return String.IsNullOrEmpty(field)
-                ? _optionItemContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.ContentItemRecord.Id == contentItemId).Select(t => GetOptionItem(t.OptionItemRecord.Id))
+                ? _optionItemContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.Id == contentItemId).Select(t => GetOptionItem(t.OptionItemRecord.Id))
                 : _optionItemContentItemRepository.Fetch(x => x.OptionItemContainerPartRecord.Id == contentItemId && x.Field == field).Select(t => GetOptionItem(t.OptionItemRecord.Id));
         }
 
@@ -175,23 +174,22 @@ namespace Coevery.OptionSet.Services {
                 .Select((t, i) => i)
                 .OrderByDescending(i => i)
                 .ToList();
-            
-            foreach(var x in fieldIndexes) {
+
+            foreach (var x in fieldIndexes) {
                 termsPart.OptionItems.RemoveAt(x);
             }
-            
+
             // adding new terms list
-            foreach(var term in terms) {
-                termsPart.OptionItems.Add( 
+            foreach (var term in terms) {
+                termsPart.OptionItems.Add(
                     new OptionItemContentItem {
-                        OptionItemContainerPartRecord = termsPart.Record, 
+                        OptionItemContainerPartRecord = termsPart.Record,
                         OptionItemRecord = term.Record, Field = field
                     });
             }
         }
 
         public IContentQuery<OptionItemContainerPart, OptionItemContainerPartRecord> GetContentItemsQuery(OptionItemPart term, string fieldName = null) {
-
             var query = _contentManager
                 .Query<OptionItemContainerPart, OptionItemContainerPartRecord>()
                 .WithQueryHints(new QueryHints().ExpandRecords<TitlePartRecord, CommonPartRecord>());
@@ -205,12 +203,12 @@ namespace Coevery.OptionSet.Services {
                 query = query.Where(
                     tpr => tpr.OptionItems.Any(tr =>
                         tr.Field == fieldName
-                         && (tr.OptionItemRecord.Id == term.Id)));
+                        && (tr.OptionItemRecord.Id == term.Id)));
             }
 
             return query;
         }
-        
+
         public IEnumerable<IContent> GetContentItems(OptionItemPart term, int skip = 0, int count = 0, string fieldName = null) {
             return GetContentItemsQuery(term, fieldName)
                 .Join<CommonPartRecord>()

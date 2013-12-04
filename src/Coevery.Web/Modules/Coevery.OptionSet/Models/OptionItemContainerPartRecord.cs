@@ -3,7 +3,7 @@ using Coevery.ContentManagement.Records;
 using Coevery.Data.Conventions;
 
 namespace Coevery.OptionSet.Models {
-    public class OptionItemContainerPartRecord : ContentPartRecord {
+    public class OptionItemContainerPartRecord : ContentPartVersionRecord {
         public OptionItemContainerPartRecord() {
             OptionItems = new List<OptionItemContentItem>();
         }
