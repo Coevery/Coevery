@@ -11,6 +11,7 @@
                 $scope.moduleName = moduleName;
                 $scope.definitionViews = [];
                 $rootScope.moduleName = moduleName;
+                $scope.dataCanModify = true;
 
                 //init pagingoption
                 var pageSizes = [50, 100, 200];
