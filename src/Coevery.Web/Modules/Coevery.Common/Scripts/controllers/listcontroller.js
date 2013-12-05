@@ -290,6 +290,7 @@
                         var form = $(this);
                         filters.push({
                             Type: form.data('Type'),
+                            Category: form.data('Category'),
                             FormData: form.serializeArray()
                         });
                     });

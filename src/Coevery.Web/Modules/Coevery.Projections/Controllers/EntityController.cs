@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -113,8 +111,7 @@ namespace Coevery.Projections.Controllers {
             IList<FilterRecord> filterRecords;
             filterDescription = string.Empty;
             if (model.FilterGroupId == 0) {
-                var filterDescriptors = _projectionManager.DescribeFilters()
-                    .Where(x => x.Category == entityName.ToPartName() + "ContentFields")
+                var allDescriptors = _projectionManager.DescribeFilters()
                     .SelectMany(x => x.Descriptors).ToList();
                 filterRecords = new List<FilterRecord>();
                 if (model.IsRelationList) {
@@ -123,14 +120,15 @@ namespace Coevery.Projections.Controllers {
                             {"Operator","MatchesAny"},
                             {"Value",model.CurrentItem.ToString("D")}
                         };
+                        string category = entityName.ToPartName() + "ContentFields";
                         var relationFilter = new FilterRecord {
-                            Category = entityName.ToPartName() + "ContentFields",
+                            Category = category,
                             Type = entityName.ToPartName() + "." + model.RelationId + ".",
                             State = FormParametersHelper.ToString(settings),
                             Description = "Only show entries related to current item."
                         };
                         filterRecords.Add(relationFilter);
-                        var descriptor = filterDescriptors.First(x => x.Type == relationFilter.Type);
+                        var descriptor = allDescriptors.First(x => x.Category == category && x.Type == relationFilter.Type);
                         filterDescription += descriptor.Display(new FilterContext { State = FormParametersHelper.ToDynamic(relationFilter.State) }).Text;
                     }
                 }
@@ -140,7 +138,7 @@ namespace Coevery.Projections.Controllers {
                         continue;
                     }
                     var record = new FilterRecord {
-                        Category = entityName.ToPartName() + "ContentFields",
+                        Category = filter.Category,
                         Type = filter.Type,
                     };
                     var dictionary = new Dictionary<string, string>();
@@ -154,7 +152,7 @@ namespace Coevery.Projections.Controllers {
                     }
                     record.State = FormParametersHelper.ToString(dictionary);
                     filterRecords.Add(record);
-                    var descriptor = filterDescriptors.First(x => x.Type == filter.Type);
+                    var descriptor = allDescriptors.First(x => x.Category == filter.Category && x.Type == filter.Type);
                     filterDescription += descriptor.Display(new FilterContext {State = FormParametersHelper.ToDynamic(record.State)}).Text;
                 }
             }
