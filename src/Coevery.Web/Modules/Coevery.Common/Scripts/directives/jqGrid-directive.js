@@ -153,7 +153,7 @@
             var link;
             link = function ($scope, $element, attrs, gridCtrl) {
                 var alias, initializeGrid, loadGrid;
-                alias = $element.find("table.gridz").attr("id");
+                alias = attrs.agGridName;
                 if (alias) {
                     $scope[alias] = gridCtrl;
                 }
