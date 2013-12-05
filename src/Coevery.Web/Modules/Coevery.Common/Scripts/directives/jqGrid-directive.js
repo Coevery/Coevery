@@ -207,8 +207,8 @@
                                 pager.find("section").pagination(pagerOption);
                             }
                         } else if (gridOptions.treeGrid) {
-                            $grid.find("tr:last-child").css("border-bottom", "solid 1px #D2D2D2");
                             $grid.SortTree(1);
+                            $grid.find("tr:last-child").css("border-bottom", "solid 1px #D2D2D2");
                         }
                         
 
