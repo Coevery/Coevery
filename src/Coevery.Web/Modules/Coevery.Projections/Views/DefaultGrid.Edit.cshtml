@@ -2,7 +2,7 @@
 @using Coevery.Core.Common.ViewModels
 
 @{
-    IDictionary<string, string> settings = Model.State;
+    IDictionary<string,string> settings = Model.State;
     IEnumerable<PicklistItemViewModel> fields = Model.Fields;
 
     List<SelectListItem> sortedBy = null, sortMode = null, pageRowCount = null;

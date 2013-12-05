@@ -1,13 +1,10 @@
-﻿using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Coevery.Common.Extensions;
 using Coevery.Projections.Services;
 using Coevery.Projections.ViewModels;
 
-namespace Coevery.Projections.Controllers
-{
+namespace Coevery.Projections.Controllers {
     public class FilterFieldsController : Controller {
         private readonly IProjectionManager _projectionManager;
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
@@ -34,6 +31,7 @@ namespace Coevery.Projections.Controllers
                 new FieldFilterViewModel {
                     DisplayName = filter.Name.Text,
                     FormName = filter.Form,
+                    Category = category,
                     Type = filter.Type
                 }).ToList();
             return Json(fieldFilters, JsonRequestBehavior.AllowGet);
