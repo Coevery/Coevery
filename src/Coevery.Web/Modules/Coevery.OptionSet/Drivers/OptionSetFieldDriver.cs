@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Coevery.Common.Extensions;
 using Coevery.OptionSet.Fields;
 using Coevery.OptionSet.Helpers;
 using Coevery.OptionSet.Models;
@@ -9,7 +8,6 @@ using Coevery.OptionSet.Services;
 using Coevery.OptionSet.Settings;
 using Coevery.OptionSet.ViewModels;
 using JetBrains.Annotations;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Handlers;
@@ -24,7 +22,7 @@ namespace Coevery.OptionSet.Drivers {
         public ICoeveryServices Services { get; set; }
 
         public OptionSetFieldDriver(
-            ICoeveryServices services, 
+            ICoeveryServices services,
             IOptionSetService optionSetService,
             IRepository<OptionItemContentItem> repository) {
             _optionSetService = optionSetService;
@@ -41,8 +39,8 @@ namespace Coevery.OptionSet.Drivers {
         private static string GetDifferentiator(OptionSetField field, ContentPart part) {
             return field.Name;
         }
-        protected override DriverResult Display(ContentPart part, OptionSetField field, string displayType, dynamic shapeHelper) {
 
+        protected override DriverResult Display(ContentPart part, OptionSetField field, string displayType, dynamic shapeHelper) {
             return ContentShape("Fields_OptionSetField", GetDifferentiator(field, part),
                 () => {
                     var settings = field.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
@@ -60,7 +58,12 @@ namespace Coevery.OptionSet.Drivers {
         protected override DriverResult Editor(ContentPart part, OptionSetField field, dynamic shapeHelper) {
             return ContentShape("Fields_OptionSetField_Edit", GetDifferentiator(field, part), () => {
                 var settings = field.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
-                var appliedTerms = _optionSetService.GetOptionItemsForContentItem(part.ContentItem.Id, field.Name).Distinct(new TermPartComparer()).ToDictionary(t => t.Id, t => t);
+                int id = part.ContentItem.VersionRecord != null
+                    ? part.ContentItem.VersionRecord.Id
+                    : 0;
+
+                var appliedTerms = _optionSetService.GetOptionItemsForContentItem(id, field.Name)
+                    .Distinct(new TermPartComparer()).ToDictionary(t => t.Id, t => t);
                 var optionSet = _optionSetService.GetOptionSet(settings.OptionSetId);
                 var optionItems = optionSet != null
                     ? _optionSetService.GetOptionItems(optionSet.Id).Where(t => !string.IsNullOrWhiteSpace(t.Name)).Select(t => t.CreateTermEntry()).ToList()
@@ -68,10 +71,9 @@ namespace Coevery.OptionSet.Drivers {
 
                 optionItems.ForEach(t => t.IsChecked = appliedTerms.ContainsKey(t.Id));
 
-                var viewModel = new OptionSetFieldViewModel
-                {
+                var viewModel = new OptionSetFieldViewModel {
                     Name = field.Name,
-                    DisplayName =  field.DisplayName,
+                    DisplayName = field.DisplayName,
                     OptionItems = optionItems,
                     Settings = settings,
                     SingleTermId = optionItems.Where(t => t.IsChecked).Select(t => t.Id).FirstOrDefault(),
@@ -83,9 +85,9 @@ namespace Coevery.OptionSet.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, OptionSetField field, IUpdateModel updater, dynamic shapeHelper) {
-            var viewModel = new OptionSetFieldViewModel { OptionItems = new List<OptionItemEntry>() };
-            
-            if(updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null)) {
+            var viewModel = new OptionSetFieldViewModel {OptionItems = new List<OptionItemEntry>()};
+
+            if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null)) {
                 var checkedTerms = viewModel.OptionItems
                     .Where(t => (t.IsChecked || t.Id == viewModel.SingleTermId))
                     .Select(t => GetOrCreateTerm(t, viewModel.OptionSetId, field))
@@ -95,8 +97,9 @@ namespace Coevery.OptionSet.Drivers {
                 if (settings.Required && !checkedTerms.Any()) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
-                else
+                else {
                     _optionSetService.UpdateTerms(part.ContentItem, checkedTerms, field.Name);
+                }
             }
 
             return Editor(part, field, shapeHelper);
@@ -119,10 +122,10 @@ namespace Coevery.OptionSet.Drivers {
             }
 
             var terms = termIdentities
-                            .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
-                            .Select(context.GetItemFromSession)
-                            .Where(contentItem => contentItem != null)
-                            .ToList();
+                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(context.GetItemFromSession)
+                .Where(contentItem => contentItem != null)
+                .ToList();
 
             _optionSetService.UpdateTerms(part.ContentItem, terms.Select(x => x.As<OptionItemPart>()), field.Name);
         }
@@ -155,7 +158,6 @@ namespace Coevery.OptionSet.Drivers {
             context
                 .Member(null, typeof(string), null, T("The option value of the field."));
         }
-
     }
 
     internal class TermPartComparer : IEqualityComparer<OptionItemPart> {
