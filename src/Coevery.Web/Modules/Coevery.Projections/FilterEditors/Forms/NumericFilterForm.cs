@@ -50,11 +50,20 @@ namespace Coevery.Projections.FilterEditors.Forms {
             decimal min, max;
 
             if (op == NumericOperator.Between || op == NumericOperator.NotBetween) {
-                min = Decimal.Parse(Convert.ToString(formState.Min), CultureInfo.InvariantCulture);
-                max = Decimal.Parse(Convert.ToString(formState.Max), CultureInfo.InvariantCulture);
+                string minVal = formState.Min;
+                string maxVal = formState.Max;
+                if (string.IsNullOrWhiteSpace(minVal) || string.IsNullOrWhiteSpace(maxVal)) {
+                    return null;
+                }
+                min = Decimal.Parse(minVal, CultureInfo.InvariantCulture);
+                max = Decimal.Parse(maxVal, CultureInfo.InvariantCulture);
             }
             else {
-                min = max = Decimal.Parse(Convert.ToString(formState.Value), CultureInfo.InvariantCulture);
+                string val = formState.Value;
+                if (string.IsNullOrWhiteSpace(val)) {
+                    return null;
+                }
+                min = max = Decimal.Parse(val, CultureInfo.InvariantCulture);
             }
 
             switch (op) {

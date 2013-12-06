@@ -49,11 +49,13 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {
-            var op = (ReferenceOperator) Enum.Parse(typeof (ReferenceOperator), (string) formState.Operator);
             string value = formState.Value;
-            var items = value != null
-                ? value.Split('&').Select(int.Parse).ToArray()
-                : new[] {0};
+            if (string.IsNullOrWhiteSpace(value)) {
+                return null;
+            }
+
+            var op = (ReferenceOperator) Enum.Parse(typeof(ReferenceOperator), (string) formState.Operator);
+            var items = value.Split('&').Select(int.Parse).ToArray();
             switch (op) {
                 case ReferenceOperator.MatchesAny:
                     return x => x.In(property, items);

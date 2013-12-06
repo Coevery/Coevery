@@ -48,11 +48,20 @@ namespace Coevery.Projections.FilterEditors.Forms {
 
             // Are those dates or time spans
             if (op == DateTimeOperator.Between || op == DateTimeOperator.NotBetween) {
-                min = DateTime.Parse((string)formState.Min);
-                max = DateTime.Parse((string)formState.Max);
+                string minVal = formState.Min;
+                string maxVal = formState.Max;
+                if (string.IsNullOrWhiteSpace(minVal) || string.IsNullOrWhiteSpace(maxVal)) {
+                    return null;
+                }
+                min = DateTime.Parse(minVal);
+                max = DateTime.Parse(maxVal);
             }
             else {
-                min = max = DateTime.Parse((string)formState.Value);
+                string val = formState.Value;
+                if (string.IsNullOrWhiteSpace(val)) {
+                    return null;
+                }
+                min = max = DateTime.Parse(val);
             }
             min = min.ToUniversalTime();
             max = max.ToUniversalTime();
@@ -94,7 +103,7 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
-            var op = (DateTimeOperator) Enum.Parse(typeof (DateTimeOperator), Convert.ToString(formState.Operator));
+            var op = (DateTimeOperator)Enum.Parse(typeof(DateTimeOperator), Convert.ToString(formState.Operator));
             string value = Convert.ToString(formState.Value);
             string min = Convert.ToString(formState.Min);
             string max = Convert.ToString(formState.Max);

@@ -47,8 +47,13 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {
-            var op = (StringOperator)Enum.Parse(typeof(StringOperator), Convert.ToString(formState.Operator));
-            object value = Convert.ToString(formState.Value);
+            string value = formState.Value;
+
+            if (string.IsNullOrWhiteSpace(value)) {
+                return null;
+            }
+
+            var op = (StringOperator) Enum.Parse(typeof(StringOperator), Convert.ToString(formState.Operator));
 
             switch (op) {
                 case StringOperator.Equals:

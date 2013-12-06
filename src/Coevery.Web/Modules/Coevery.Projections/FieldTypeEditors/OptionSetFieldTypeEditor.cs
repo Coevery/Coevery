@@ -21,11 +21,13 @@ namespace Coevery.Projections.FieldTypeEditors {
         }
 
         public override void ApplyFilter(FilterContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
-            var op = (OptionSetOperator) Enum.Parse(typeof (OptionSetOperator), (string) context.State.Operator);
             string value = context.State.Value;
-            var valueArr = value != null
-                ? value.Split('&').Select(int.Parse).ToArray()
-                : new[] {0};
+            if (string.IsNullOrWhiteSpace(value)) {
+                return;
+            }
+
+            var op = (OptionSetOperator)Enum.Parse(typeof(OptionSetOperator), (string)context.State.Operator);
+            var valueArr = value.Split('&').Select(int.Parse).ToArray();
             switch (op) {
                 case OptionSetOperator.MatchesAny:
                     Action<IAliasFactory> selectorAny = alias => alias.ContentPartRecord<OptionItemContainerPartRecord>().Property("OptionItems", "opits").Property("OptionItemRecord", "opcpr");
@@ -49,7 +51,7 @@ namespace Coevery.Projections.FieldTypeEditors {
             }
         }
 
-        public override void ApplySortCriterion(Coevery.Projections.Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) { }
+        public override void ApplySortCriterion(Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {}
 
         public override string FormName {
             get { return OptionSetFilterForm.FormName; }
@@ -64,7 +66,7 @@ namespace Coevery.Projections.FieldTypeEditors {
         }
 
         public override Action<IAliasFactory> GetFilterRelationship(string aliasName) {
-            return x => x.ContentPartRecord<FieldIndexPartRecord>().Property("StringFieldIndexRecords", aliasName);;
+            return x => x.ContentPartRecord<FieldIndexPartRecord>().Property("StringFieldIndexRecords", aliasName);
         }
     }
 }
