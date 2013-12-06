@@ -5,11 +5,14 @@
     @foreach (var field in fields) {
         var filter = field.Filter;
         <form data-type="@filter.Type">
-            <label>@filter.Name.Text</label>
-            @Display(field)
+            <div class="field-editor">
+                @filter.Name.Text
+                @Display(field)
+            </div>
         </form>
     }
-    <button class="btn btn-small" data-ng-click="applyFilter()">Apply</button>
+    <button class="btn btn-small btn-primary" data-ng-click="applyFilter()">@T("Apply")</button>
+    <button class="btn btn-small" data-ng-click="clearFilter()">@T("Clear")</button>
 </div>
 
 <script>
@@ -19,6 +22,16 @@
                 postData: {
                     ViewId: $scope.currentViewId,
                     Filters: getFilters()
+                }
+            });
+            $scope.contentList.reload();
+        };
+        
+        $scope.clearFilter = function () {
+            $scope.contentList.setParam({
+                postData: {
+                    ViewId: $scope.currentViewId,
+                    Filters: []
                 }
             });
             $scope.contentList.reload();
