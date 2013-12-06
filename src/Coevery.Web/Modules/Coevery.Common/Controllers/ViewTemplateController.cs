@@ -24,6 +24,7 @@ using Coevery.Mvc.Html;
 using Coevery.UI.Notify;
 using Coevery.Utility.Extensions;
 using Coevery.UI.Navigation;
+using Newtonsoft.Json.Linq;
 
 namespace Coevery.Common.Controllers {
     public class ViewTemplateController : Controller, IUpdateModel {
@@ -79,7 +80,13 @@ namespace Coevery.Common.Controllers {
             return View(model);
         }
 
-        public ActionResult Create(string id, int? containerId) {
+        public ActionResult Create(string id, string paramsString) {
+            int? containerId = null;
+            int tempContainer;
+            if (int.TryParse(paramsString, out tempContainer)) {
+                containerId = tempContainer;
+            }
+
             if (string.IsNullOrEmpty(id)) {
                 return CreatableTypeList(containerId);
             }
@@ -96,7 +103,8 @@ namespace Coevery.Common.Controllers {
                 }
             }
 
-            dynamic model = Services.ContentManager.BuildEditor(contentItem, "CreatePage");
+            var model = Services.ContentManager.BuildEditor(contentItem, "CreatePage");
+            model.AdditionalParams = paramsString;
             return View((object)model);
         }
 

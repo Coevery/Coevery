@@ -207,8 +207,8 @@
                                 pager.find("section").pagination(pagerOption);
                             }
                         } else if (gridOptions.treeGrid) {
-                            $grid.find("tr:last-child").css("border-bottom", "solid 1px #D2D2D2");
                             $grid.SortTree(1);
+                            $grid.find("tr:last-child").css("border-bottom", "solid 1px #D2D2D2");
                         }
                         
 
@@ -265,16 +265,26 @@
                         }
                     };
 
-                    gridOptions.onSelectRow = function () {
-                        $scope.$apply(function () {
-                            $scope.selectedRow = null;
-                            $scope.selectedItems = gridCtrl.getSelectedRowIds();
-                            if ($scope.selectedItems.length === 1 && !!gridOptions.rowIdName) {
-                                $scope.selectedRow = gridCtrl.getParam("data").filter(function (element) {
-                                    return element[gridOptions.rowIdName].toString() === $scope.selectedItems[0];
-                                });
-                            }
-                        });
+                    gridOptions.beforeSelectRow = function (rowId, e) {
+                        if (!gridOptions.multiselect || gridOptions.treeGrid) {
+                            $scope.$apply(function() {
+                                $scope.selectedRow = $grid.getLocalRow(rowId);
+                                $scope.selectedItems = [rowId];
+                            });
+                        }
+                        return true;
+                    };
+
+                    gridOptions.onSelectRow = function (rowid, status) {
+                        if (gridOptions.multiselect && !gridOptions.treeGrid) {
+                            $scope.$apply(function() {
+                                $scope.selectedRow = null;
+                                $scope.selectedItems = gridCtrl.getSelectedRowIds();
+                                if ($scope.selectedItems.length === 1 && !!gridOptions.rowIdName) {
+                                    $scope.selectedRow = $grid.getLocalRow(rowid);
+                                }
+                            });
+                        }
                     };
 
                     gridOptions.onSelectAll = function () {
