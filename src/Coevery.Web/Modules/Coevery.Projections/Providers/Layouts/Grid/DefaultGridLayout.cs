@@ -36,9 +36,9 @@ namespace Coevery.Projections.Providers.Layouts.Grid {
 
         public dynamic RenderLayout(LayoutContext context, IEnumerable<LayoutComponentResult> layoutComponentResults) {
             
-            int pageRowCount = Convert.ToInt32(context.State["PageRowCount"]);
-            string sortedBy = context.State["SortedBy"];
-            string sortMode = context.State["SortMode"];
+            //int pageRowCount = Convert.ToInt32(context.State["PageRowCount"]);
+            //string sortedBy = context.State["SortedBy"];
+            //string sortMode = context.State["SortMode"];
 
             return Shape.DefaultGrid();
         }
