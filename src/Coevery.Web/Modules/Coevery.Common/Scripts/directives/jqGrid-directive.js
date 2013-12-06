@@ -267,7 +267,7 @@
 
                     gridOptions.beforeSelectRow = function (rowId, e) {
                         if (!gridOptions.multiselect || gridOptions.treeGrid) {
-                            $scope.$parent.$apply(function () {
+                            $scope.$apply(function () {
                                 $scope.selectedRow = $grid.getLocalRow(rowId);
                                 $scope.selectedItems = [rowId];
                             });

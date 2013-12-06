@@ -80,6 +80,7 @@
                 };
 
                 $scope.Refresh = function () {
+                    $scope.selectedItems = [];
                     $scope.getPagedDataAsync();
                 };
 
@@ -132,7 +133,6 @@
                         $scope.Refresh();
                         logger.success('Delete the ' + moduleName + ' successful.');
                         $scope.entityId = [];
-                        $scope.selectedItems = [];
                     }, function () {
                         logger.error('Failed to delete the lead.');
                     });
