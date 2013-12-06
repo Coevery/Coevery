@@ -35,7 +35,7 @@ namespace Coevery.Projections.FilterEditors.Forms {
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
             var op = (ReferenceOperator)Enum.Parse(typeof(ReferenceOperator), (string)formState.Operator);
             string value = formState.Value;
-            var items = value != null
+            var items = !string.IsNullOrWhiteSpace(value)
                 ? value.Split('&').Select(int.Parse).ToArray()
                 : new int[] {};
             fieldName = fieldName.Split('.')[1];
@@ -54,7 +54,7 @@ namespace Coevery.Projections.FilterEditors.Forms {
                 return null;
             }
 
-            var op = (ReferenceOperator) Enum.Parse(typeof(ReferenceOperator), (string) formState.Operator);
+            var op = (ReferenceOperator)Enum.Parse(typeof(ReferenceOperator), (string)formState.Operator);
             var items = value.Split('&').Select(int.Parse).ToArray();
             switch (op) {
                 case ReferenceOperator.MatchesAny:

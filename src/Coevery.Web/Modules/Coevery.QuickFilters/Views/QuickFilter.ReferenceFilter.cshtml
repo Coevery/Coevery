@@ -1,15 +1,33 @@
 ﻿@{
+    bool isMultiple = Model.IsMultiple;
     var guid = Guid.NewGuid().ToString();
 }
 @Html.Hidden("Operator", "MatchesAny")
-<select id="@guid" name="Value" class="hide" data-live-search="true" data-style="btn-small" multiple>
-    @foreach (var item in Model.ListItems) {
-        <option value="@item.Value">@item.Text</option>
-    }
-</select>
 
-<script>
-    $(function() {
-        $('#@guid').selectpicker();
-    });
-</script>
+@if (!isMultiple) {
+    <select id="@guid" name="Value" class="hide" data-style="btn-small">
+        <option value="">@T("Nothing")</option>
+        @foreach (var item in Model.ListItems) {
+            <option value="@item.Value">@item.Text</option>
+        }
+    </select>
+
+    <script>
+        $(function() {
+            $('#@guid').selectpicker();
+        });
+    </script>
+}
+else {
+    <select id="@guid" name="Value" class="hide" data-live-search="true" data-style="btn-small" multiple>
+        @foreach (var item in Model.ListItems) {
+            <option value="@item.Value">@item.Text</option>
+        }
+    </select>
+
+    <script>
+        $(function() {
+            $('#@guid').selectpicker();
+        });
+    </script>
+}
