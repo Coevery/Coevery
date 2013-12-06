@@ -1,14 +1,12 @@
-﻿@using Coevery.DisplayManagement
-@using Coevery.Projections.Descriptors.Filter
-@{
-    IList<FilterDescriptor> filters = Model.Filters;
+﻿@{
+    IEnumerable<dynamic> fields = Model.Fields;
 }
 <div data-ng-controller="quickFilterController" id="quickFilter">
-    @foreach (var filter in filters) {
+    @foreach (var field in fields) {
+        var filter = field.Filter;
         <form data-type="@filter.Type">
             <label>@filter.Name.Text</label>
-            @Display(New.Create(string.Format("QuickFilter_{0}", filter.Form),
-                Arguments.From(new object[] {filter.Type}, new[] {"FilterType"})))
+            @Display(field)
         </form>
     }
     <button class="btn btn-small" data-ng-click="applyFilter()">Apply</button>
@@ -16,9 +14,6 @@
 
 <script>
     function quickFilterController($scope) {
-        $scope.args = {
-            Type: '@Model.ContentTypeName'
-        };
         $scope.applyFilter = function() {
             $scope.contentList.setParam({
                 postData: {

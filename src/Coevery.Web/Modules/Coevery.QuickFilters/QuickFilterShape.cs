@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using Coevery.Common.Extensions;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData;
 using Coevery.DisplayManagement.Descriptors;
 using Coevery.OptionSet.Services;
+using Coevery.Projections.Descriptors.Filter;
 using Coevery.Projections.Services;
 
 namespace Coevery.QuickFilters {
@@ -27,27 +27,11 @@ namespace Coevery.QuickFilters {
         }
 
         public void Discover(ShapeTableBuilder builder) {
-            builder.Describe("Parts_QuickFilters")
-                .OnDisplaying(displaying => {
-                    var shape = displaying.Shape;
-                    string partName = ((string)shape.ContentTypeName).ToPartName();
-                    string[] fields = shape.Fields;
-                    fields = fields.Select(x => string.Format("{0}.{1}.", partName, x)).ToArray();
-                    string category = partName + "ContentFields";
-
-                    var filters = _projectionManager.DescribeFilters()
-                        .Where(x => x.Category == category)
-                        .SelectMany(x => x.Descriptors)
-                        .Where(x => fields.Contains(x.Type))
-                        .ToList();
-
-                    shape.Filters = filters;
-                });
-
             builder.Describe("QuickFilter_ReferenceFilter")
                 .OnDisplaying(displaying => {
                     var shape = displaying.Shape;
-                    string filterType = shape.FilterType;
+                    FilterDescriptor filter = shape.Filter;
+                    string filterType = filter.Type;
                     var args = filterType.Split('.');
                     string partName = args[0];
                     string fieldName = args[1];
@@ -73,7 +57,8 @@ namespace Coevery.QuickFilters {
             builder.Describe("QuickFilter_OptionSetFilter")
                 .OnDisplaying(displaying => {
                     var shape = displaying.Shape;
-                    string filterType = shape.FilterType;
+                    FilterDescriptor filter = shape.Filter;
+                    string filterType = filter.Type;
                     var args = filterType.Split('.');
                     string partName = args[0];
                     string fieldName = args[1];
