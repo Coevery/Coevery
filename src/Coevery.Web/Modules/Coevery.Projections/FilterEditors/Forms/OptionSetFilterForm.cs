@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Coevery.ContentManagement;
 using Coevery.DisplayManagement;
 using Coevery.Forms.Services;
 using Coevery.Localization;
@@ -39,9 +38,9 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
-            var op = (OptionSetOperator) Enum.Parse(typeof (OptionSetOperator), Convert.ToString(formState.Operator));
+            var op = (OptionSetOperator)Enum.Parse(typeof(OptionSetOperator), Convert.ToString(formState.Operator));
             string value = formState.Value;
-            var items = value != null
+            var items = !string.IsNullOrWhiteSpace(value)
                 ? value.Split('&').Select(int.Parse).ToArray()
                 : new int[] {};
             fieldName = fieldName.Split('.')[1];

@@ -1,15 +1,12 @@
 ﻿using System;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Localization;
 using Coevery.Projections.Descriptors.Filter;
 using Coevery.Projections.Descriptors.SortCriterion;
-using Coevery.Projections.FieldTypeEditors;
 using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.FieldTypeEditors {
-
     public delegate void Filter(FilterContext context, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field);
 
     public delegate void Sort(SortCriterionContext context, IFieldTypeEditor fieldTypeEditor, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field);
@@ -21,7 +18,6 @@ namespace Coevery.Projections.FieldTypeEditors {
     }
 
     public abstract class ConcreteFieldTypeEditorBase : IConcreteFieldTypeEditor {
-
         public abstract bool CanHandle(string fieldTypeName, Type storageType);
 
         public virtual void ApplyFilter(FilterContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
@@ -32,6 +28,10 @@ namespace Coevery.Projections.FieldTypeEditors {
 
             // generate the predicate based on the editor which has been used
             Action<IHqlExpressionFactory> predicate = GetFilterPredicate(context.State);
+
+            if (predicate == null) {
+                return;
+            }
 
             // combines the predicate with a filter on the specific property name of the storage, as implemented in FieldIndexService
             Action<IHqlExpressionFactory> andPredicate = x => x.And(y => y.Eq("PropertyName", propertyName), predicate);
@@ -75,5 +75,4 @@ namespace Coevery.Projections.FieldTypeEditors {
 
         public abstract Action<IAliasFactory> GetFilterRelationship(string aliasName);
     }
-
 }

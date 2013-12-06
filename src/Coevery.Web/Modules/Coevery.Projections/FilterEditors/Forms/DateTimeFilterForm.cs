@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Coevery.ContentManagement;
 using Coevery.DisplayManagement;
-using Coevery.Environment.Extensions;
 using Coevery.Forms.Services;
 using Coevery.Localization;
 
@@ -44,16 +43,25 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property, DateTime now, bool asTicks = false) {
-            var op = (DateTimeOperator) Enum.Parse(typeof (DateTimeOperator), Convert.ToString(formState.Operator));
+            var op = (DateTimeOperator)Enum.Parse(typeof(DateTimeOperator), Convert.ToString(formState.Operator));
             DateTime min, max;
 
             // Are those dates or time spans
             if (op == DateTimeOperator.Between || op == DateTimeOperator.NotBetween) {
-                min = DateTime.Parse((string) formState.Min);
-                max = DateTime.Parse((string) formState.Max);
+                string minVal = formState.Min;
+                string maxVal = formState.Max;
+                if (string.IsNullOrWhiteSpace(minVal) || string.IsNullOrWhiteSpace(maxVal)) {
+                    return null;
+                }
+                min = DateTime.Parse(minVal);
+                max = DateTime.Parse(maxVal);
             }
             else {
-                min = max = DateTime.Parse((string) formState.Value);
+                string val = formState.Value;
+                if (string.IsNullOrWhiteSpace(val)) {
+                    return null;
+                }
+                min = max = DateTime.Parse(val);
             }
             min = min.ToUniversalTime();
             max = max.ToUniversalTime();

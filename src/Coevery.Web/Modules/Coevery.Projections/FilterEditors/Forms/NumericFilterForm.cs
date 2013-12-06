@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Web.Mvc;
 using Coevery.ContentManagement;
 using Coevery.DisplayManagement;
-using Coevery.Environment.Extensions;
 using Coevery.Forms.Services;
 using Coevery.Localization;
 
@@ -46,37 +45,46 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static Action<IHqlExpressionFactory> GetFilterPredicate(dynamic formState, string property) {
-            var op = (Coevery.Projections.FilterEditors.Forms.NumericOperator) Enum.Parse(typeof (Coevery.Projections.FilterEditors.Forms.NumericOperator), Convert.ToString(formState.Operator));
+            var op = (NumericOperator)Enum.Parse(typeof(NumericOperator), Convert.ToString(formState.Operator));
 
             decimal min, max;
 
-            if (op == Coevery.Projections.FilterEditors.Forms.NumericOperator.Between || op == Coevery.Projections.FilterEditors.Forms.NumericOperator.NotBetween) {
-                min = Decimal.Parse(Convert.ToString(formState.Min), CultureInfo.InvariantCulture);
-                max = Decimal.Parse(Convert.ToString(formState.Max), CultureInfo.InvariantCulture);
+            if (op == NumericOperator.Between || op == NumericOperator.NotBetween) {
+                string minVal = formState.Min;
+                string maxVal = formState.Max;
+                if (string.IsNullOrWhiteSpace(minVal) || string.IsNullOrWhiteSpace(maxVal)) {
+                    return null;
+                }
+                min = Decimal.Parse(minVal, CultureInfo.InvariantCulture);
+                max = Decimal.Parse(maxVal, CultureInfo.InvariantCulture);
             }
             else {
-                min = max = Decimal.Parse(Convert.ToString(formState.Value), CultureInfo.InvariantCulture);
+                string val = formState.Value;
+                if (string.IsNullOrWhiteSpace(val)) {
+                    return null;
+                }
+                min = max = Decimal.Parse(val, CultureInfo.InvariantCulture);
             }
 
             switch (op) {
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.LessThan:
+                case NumericOperator.LessThan:
                     return x => x.Lt(property, max);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.LessThanEquals:
+                case NumericOperator.LessThanEquals:
                     return x => x.Le(property, max);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.Equals:
+                case NumericOperator.Equals:
                     if (min == max) {
                         return x => x.Eq(property, min);
                     }
                     return y => y.And(x => x.Ge(property, min), x => x.Le(property, max));
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.NotEquals:
-                    return min == max ? (Action<IHqlExpressionFactory>) (x => x.Not(y => y.Eq(property, min))) : (y => y.Or(x => x.Lt(property, min), x => x.Gt(property, max)));
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.GreaterThan:
+                case NumericOperator.NotEquals:
+                    return min == max ? (Action<IHqlExpressionFactory>)(x => x.Not(y => y.Eq(property, min))) : (y => y.Or(x => x.Lt(property, min), x => x.Gt(property, max)));
+                case NumericOperator.GreaterThan:
                     return x => x.Gt(property, min);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.GreaterThanEquals:
+                case NumericOperator.GreaterThanEquals:
                     return x => x.Ge(property, min);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.Between:
+                case NumericOperator.Between:
                     return y => y.And(x => x.Ge(property, min), x => x.Le(property, max));
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.NotBetween:
+                case NumericOperator.NotBetween:
                     return y => y.Or(x => x.Lt(property, min), x => x.Gt(property, max));
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -84,28 +92,28 @@ namespace Coevery.Projections.FilterEditors.Forms {
         }
 
         public static LocalizedString DisplayFilter(string fieldName, dynamic formState, Localizer T) {
-            var op = (Coevery.Projections.FilterEditors.Forms.NumericOperator) Enum.Parse(typeof (Coevery.Projections.FilterEditors.Forms.NumericOperator), Convert.ToString(formState.Operator));
+            var op = (NumericOperator)Enum.Parse(typeof(NumericOperator), Convert.ToString(formState.Operator));
             string value = Convert.ToString(formState.Value);
             string min = Convert.ToString(formState.Min);
             string max = Convert.ToString(formState.Max);
             fieldName = fieldName.Split('.')[1];
 
             switch (op) {
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.LessThan:
+                case NumericOperator.LessThan:
                     return T("{0} is less than {1}", fieldName, value);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.LessThanEquals:
+                case NumericOperator.LessThanEquals:
                     return T("{0} is less or equal than {1}", fieldName, value);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.Equals:
+                case NumericOperator.Equals:
                     return T("{0} equals {1}", fieldName, value);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.NotEquals:
+                case NumericOperator.NotEquals:
                     return T("{0} is not equal to {1}", fieldName, value);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.GreaterThan:
+                case NumericOperator.GreaterThan:
                     return T("{0} is greater than {1}", fieldName, value);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.GreaterThanEquals:
+                case NumericOperator.GreaterThanEquals:
                     return T("{0} is greater or equal than {1}", fieldName, value);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.Between:
+                case NumericOperator.Between:
                     return T("{0} is between {1} and {2}", fieldName, min, max);
-                case Coevery.Projections.FilterEditors.Forms.NumericOperator.NotBetween:
+                case NumericOperator.NotBetween:
                     return T("{0} is not between {1} and {2}", fieldName, min, max);
             }
 
