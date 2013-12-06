@@ -118,7 +118,7 @@
                 $scope.delete = function (id) {
                     var deleteRelationship = id || ($scope.selectedItems.length > 0 ? $scope.selectedItems : null);
 
-                    if (!deleteRelationship || deleteRelationship.length == 0) {
+                    if (!deleteRelationship) {
                         logger.error('No data selected.');
                         return;
                     }

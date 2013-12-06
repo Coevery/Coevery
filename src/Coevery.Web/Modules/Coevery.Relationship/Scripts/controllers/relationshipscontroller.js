@@ -47,7 +47,7 @@ define(['core/app/detourService'], function (detour) {
                 };
                 $scope.edit = function () {
                     defer.promise.then(function () {
-                        var params = $scope.selectedRow[0];
+                        var params = $scope.selectedRow;
                         if (!params) {
                             logger.error("No relation selected!");
                         }
