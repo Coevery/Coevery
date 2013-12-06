@@ -267,9 +267,9 @@
 
                     gridOptions.beforeSelectRow = function (rowId, e) {
                         if (!gridOptions.multiselect || gridOptions.treeGrid) {
-                            $rootScope.$apply(function () {
-                                $rootScope.selectedRow = $grid.getLocalRow(rowId);
-                                $rootScope.selectedItems = [rowId];
+                            $scope.$parent.$apply(function () {
+                                $scope.selectedRow = $grid.getLocalRow(rowId);
+                                $scope.selectedItems = [rowId];
                             });
                         }
                         return true;
@@ -277,19 +277,19 @@
 
                     gridOptions.onSelectRow = function (rowid, status) {
                         if (gridOptions.multiselect && !gridOptions.treeGrid) {
-                            $rootScope.$apply(function () {
-                                $rootScope.selectedRow = null;
-                                $rootScope.selectedItems = gridCtrl.getSelectedRowIds();
-                                if ($rootScope.selectedItems.length === 1 && !!gridOptions.rowIdName) {
-                                    $rootScope.selectedRow = $grid.getLocalRow(rowid);
+                            $scope.$apply(function() {
+                                $scope.selectedRow = null;
+                                $scope.selectedItems = gridCtrl.getSelectedRowIds();
+                                if ($scope.selectedItems.length === 1 && !!gridOptions.rowIdName) {
+                                    $scope.selectedRow = $grid.getLocalRow(rowid);
                                 }
                             });
                         }
                     };
 
                     gridOptions.onSelectAll = function () {
-                        $rootScope.$apply(function () {
-                            $rootScope.selectedItems = gridCtrl.getSelectedRowIds();
+                        $scope.$apply(function () {
+                            $scope.selectedItems = gridCtrl.getSelectedRowIds();
                         });
                     };
 
