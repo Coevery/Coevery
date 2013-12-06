@@ -14,7 +14,7 @@ namespace Coevery.OptionSet.Projections {
         }
 
         public override object GetValue(ContentItem contentItem, ContentField field) {
-            var optionItems = _optionSetService.GetOptionItemsForContentItem(contentItem.Id, field.Name).ToList();
+            var optionItems = _optionSetService.GetOptionItemsForContentItem(contentItem.VersionRecord.Id, field.Name).ToList();
 
             var value = string.Join(", ", optionItems.Select(t => t.Name).ToArray());
             return value;
