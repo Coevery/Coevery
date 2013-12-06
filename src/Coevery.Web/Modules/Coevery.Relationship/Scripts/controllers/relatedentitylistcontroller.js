@@ -1,10 +1,10 @@
 ﻿'use strict';
 
-define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/columndefinitionservice'], function (detour) {
+define(['core/app/detourService', 'core/services/entitydataservice', 'core/services/gridcolumndataservice'], function (detour) {
     detour.registerController([
       'RelatedEntityListCtrl',
-      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', '$location', 'commonDataService', 'columnDefinitionService',
-      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, $location, commonDataService, columnDefinitionService) {
+      ['$rootScope', '$scope', '$parse', 'logger', '$state', '$resource', '$stateParams', '$location', 'commonDataService', 'gridColumnDataService',
+      function ($rootScope, $scope, $parse, logger, $state, $resource, $stateParams, $location, commonDataService, gridColumnDataService) {
 
           $scope.toolButtonDisplay = false;
           $scope.isInit = true;
@@ -40,24 +40,22 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
           }, true);
 
           $scope.getRelatedData = function () {
-              var gridColumns = columnDefinitionService.query({ contentType: $scope.entityTypeName, viewId: $scope.viewId }, function() {
-                  $.each(gridColumns, function (index, value) {
+              var gridColumnQuery = gridColumnDataService.get({ contentType: $scope.entityTypeName, viewId: $scope.viewId }, function () {
+                  $.each(gridColumnQuery.colModel, function (index, value) {
                       if (value.formatter) {
                           value.formatter = $rootScope[value.formatter];
                       }
                   });
-                  $scope.columnDefs = gridColumns;
                   if (!$scope.isInit) {
                       $scope.getPagedDataAsync();
                   } else {
-                      $scope.gridOptions = {
+                      var gridOptions = {
                           url: 'api/projections/entity/' + $scope.entityTypeName,
                           mtype: "post",
                           postData: getPostData(),
                           rowNum: pageSize,
                           rowList: pageSizes,
                           page: currentPage,
-                          colModel: $scope.columnDefs,
                           loadComplete: function (data) {
                               currentPage = data.page;
                               pageSize = data.records;
@@ -66,7 +64,8 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
                               logger.error("Failed to fetched records for " + $scope.entityTypeName + ":\n" + error);
                           }
                       };
-                      angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
+
+                      $scope.gridOptions = angular.extend({}, $rootScope.defaultGridOptions, gridOptions, gridColumnQuery);
                   }
               }, function() {
               });
