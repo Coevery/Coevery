@@ -138,8 +138,9 @@
                     });
                 };
 
-                $scope.add = function () {
-                    $state.transitionTo('Root.Menu.Create', { NavigationId: navigationId, Module: moduleName });
+                $scope.add = function (params) {
+                    var temp = !params ? 'ggg' : params;
+                    $state.transitionTo('Root.Menu.Create', { NavigationId: navigationId, Module: moduleName, Params: temp });
                 };
 
                 $scope.edit = function (id) {

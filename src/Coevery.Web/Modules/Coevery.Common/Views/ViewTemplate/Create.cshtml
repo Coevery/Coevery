@@ -1,4 +1,8 @@
-﻿@Display(Model.Header)
+﻿@{
+    Model.Content.AdditionalParams = Model.AdditionalParams;
+}
+
+@Display(Model.Header)
 <section id="main-content">
     <div id="page-actions" class="clearfix">
         @if (Model.Actions != null) {
