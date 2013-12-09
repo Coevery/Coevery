@@ -164,3 +164,18 @@
     margin-right: 0em;
     margin-left: 0em;
 }
+
+.quick-filter-content {
+    margin-bottom: 20px;
+}
+
+.quick-filter-form {
+    margin-bottom: 5px;
+}
+
+.quick-filter-label {
+    display: inline-block;
+    margin-top: 4px;
+    margin-right: 4px;
+    vertical-align: top;
+}

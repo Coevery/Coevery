@@ -1,14 +1,12 @@
 ﻿@{
     IEnumerable<dynamic> fields = Model.Fields;
 }
-<div data-ng-controller="quickFilterController" id="quickFilter">
+<div data-ng-controller="quickFilterController" id="quickFilter" class="quick-filter-content">
     @foreach (var field in fields) {
         var filter = field.Filter;
-        <form data-type="@filter.Type">
-            <div class="field-editor">
-                @filter.Name.Text
-                @Display(field)
-            </div>
+        <form data-type="@filter.Type" class="quick-filter-form">
+            <span class="quick-filter-label">@filter.Name.Text</span>
+            @Display(field)
         </form>
     }
     <button class="btn btn-small btn-primary" data-ng-click="applyFilter()">@T("Apply")</button>
@@ -26,8 +24,8 @@
             });
             $scope.contentList.reload();
         };
-        
-        $scope.clearFilter = function () {
+
+        $scope.clearFilter = function() {
             $scope.contentList.setParam({
                 postData: {
                     ViewId: $scope.currentViewId,
@@ -44,6 +42,7 @@
                 var form = $(this);
                 filters.push({
                     Type: form.data('type'),
+                    Category: '@Model.PartName' + 'ContentFields',
                     FormData: form.serializeArray()
                 });
             });
