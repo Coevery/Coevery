@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Coevery.Common.Extensions;
 using Coevery.Entities.Events;
 using Coevery.Projections.Models;
@@ -22,7 +23,7 @@ namespace Coevery.Projections.Handlers {
         }
 
         public void OnCreated(string entityName) {
-            var fields = _projectionService.GetFieldDescriptors(entityName,-1);
+            var fields = _projectionService.GetFieldDescriptors(entityName, -1);
             var viewModel = new ProjectionEditViewModel {
                 ItemContentType = entityName.ToPartName(),
                 DisplayName = entityName + " DefaultView",
@@ -30,9 +31,12 @@ namespace Coevery.Projections.Handlers {
                 Layout = _projectionManager.DescribeLayouts()
                     .SelectMany(descr => descr.Descriptors)
                     .FirstOrDefault(descr => descr.Category == "Grids" && descr.Type == "Default"),
-                Fields = fields
+                Fields = fields,
+                State = new Dictionary<string, string> {
+                    { "PageRowCount","50" }, { "SortedBy",string.Empty }, { "SortedBy",string.Empty }
+                }
             };
-            _projectionService.EditPost(0, viewModel, fields.Select(f=>f.Value));
+            _projectionService.EditPost(0, viewModel, fields.Select(f => f.Value));
         }
 
         public void OnUpdating(string entityName) {
