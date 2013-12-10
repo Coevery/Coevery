@@ -33,7 +33,7 @@ namespace Coevery.Projections.Handlers {
                     .FirstOrDefault(descr => descr.Category == "Grids" && descr.Type == "Default"),
                 Fields = fields,
                 State = new Dictionary<string, string> {
-                    { "PageRowCount","50" }, { "SortedBy",string.Empty }, { "SortedBy",string.Empty }
+                    { "PageRowCount","50" }, { "SortedBy",string.Empty }, { "SortMode",string.Empty }
                 }
             };
             _projectionService.EditPost(0, viewModel, fields.Select(f => f.Value));
