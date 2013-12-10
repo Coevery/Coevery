@@ -4,7 +4,6 @@ using System.Management.Instrumentation;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.UI.WebControls;
 using Coevery.Common.Extensions;
 using Coevery.Common.Services;
 using Coevery.Common.ViewModels;
@@ -64,12 +63,12 @@ namespace Coevery.Projections.Controllers {
             }
             id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
             string filterDescription = null;
-            
+
             return GetFilteredRecords(id, part, out filterDescription, model, p => {
                 _gridService.GenerateSortCriteria(id, model.Sidx, model.Sord, p.Record.QueryPartRecord.Id);
                 var totalRecords = _projectionManager.GetCount(p.Record.QueryPartRecord.Id);
                 var pageSize = model.Rows;
-                var totalPages = (int) Math.Ceiling((float) totalRecords/(float) pageSize);
+                var totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
                 var pager = new Pager(Services.WorkContext.CurrentSite, model.Page, pageSize);
                 var records = GetLayoutComponents(p, pager.GetStartIndex(), pager.PageSize);
 
@@ -121,8 +120,8 @@ namespace Coevery.Projections.Controllers {
                 if (model.IsRelationList) {
                     if (model.RelationType == "OneToMany") {
                         var settings = new Dictionary<string, string> {
-                            {"Operator","MatchesAny"},
-                            {"Value",model.CurrentItem.ToString("D")}
+                            {"Operator", "MatchesAny"},
+                            {"Value", model.CurrentItem.ToString("D")}
                         };
                         string category = entityName.ToPartName() + "ContentFields";
                         var relationFilter = new FilterRecord {
@@ -133,12 +132,12 @@ namespace Coevery.Projections.Controllers {
                         };
                         filterRecords.Add(relationFilter);
                         var descriptor = allDescriptors.First(x => x.Category == category && x.Type == relationFilter.Type);
-                        filterDescription += descriptor.Display(new FilterContext { State = FormParametersHelper.ToDynamic(relationFilter.State) }).Text;
+                        filterDescription += descriptor.Display(new FilterContext {State = FormParametersHelper.ToDynamic(relationFilter.State)}).Text;
                     }
                 }
 
                 foreach (var filter in model.Filters) {
-                    if (filter.FormData.Length == 0) {
+                    if (filter.FormData == null || filter.FormData.Length == 0) {
                         continue;
                     }
                     var record = new FilterRecord {
@@ -221,7 +220,7 @@ namespace Coevery.Projections.Controllers {
                 record["isLeaf"] = IsLeaf(layoutComponents, record["ContentId"].Value<int>());
                 return record;
             })
-            : layoutComponents;
+                : layoutComponents;
         }
 
         private static bool IsLeaf(IEnumerable<JObject> contentItems, int currentId) {
@@ -247,7 +246,7 @@ namespace Coevery.Projections.Controllers {
 
         private static int? GetParentId(ContentItem contentItem, string parentFieldName) {
             var entityPart = contentItem.Parts
-                            .FirstOrDefault(p => p.PartDefinition.Name == contentItem.ContentType.ToPartName());
+                .FirstOrDefault(p => p.PartDefinition.Name == contentItem.ContentType.ToPartName());
             if (entityPart == null) {
                 throw new InstanceNotFoundException("Entity part not found!");
             }
