@@ -399,5 +399,11 @@ namespace Coevery.Projections {
                 );
             return 6;
         }
+
+        public int UpdateFrom6() {
+            SchemaBuilder.AlterTable("PropertyRecord", 
+                table => table.AlterColumn("Type", col => col.WithType(DbType.String).WithLength(1023) ));
+            return 7;
+        }
     }
 }
