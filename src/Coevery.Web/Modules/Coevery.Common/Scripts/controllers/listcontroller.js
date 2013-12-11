@@ -139,7 +139,7 @@
                 };
 
                 $scope.add = function (params) {
-                    var temp = !params ? 'ggg' : params;
+                    var temp = !params ? '' : params;
                     $state.transitionTo('Root.Menu.Create', { NavigationId: navigationId, Module: moduleName, Params: temp });
                 };
 
