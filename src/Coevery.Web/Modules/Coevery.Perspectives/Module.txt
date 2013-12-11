@@ -7,3 +7,4 @@ CoeveryVersion: 1.6
 Description: Perspectives for Coevery CRM
 Dependencies: Coevery.Common, Coevery.Autoroute
 Category: Coevery
+Priority: 20

@@ -121,7 +121,6 @@
     <Compile Include="Models\GridRequestModel.cs" />
     <Compile Include="Providers\IDynamicAssemblyBuilder.cs" />
     <Compile Include="Routes.cs" />
-    <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
     <Compile Include="Handlers\ModuleMenuItemPartHandler.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -193,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Providers\Layouts\" />
+    <Folder Include="Views\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Coevery\Coevery.Framework.csproj">
@@ -218,9 +218,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content-Menu.Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts.ModuleMenuItem.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Placement.info">

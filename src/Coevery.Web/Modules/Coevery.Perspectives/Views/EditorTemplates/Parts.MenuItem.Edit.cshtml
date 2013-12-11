@@ -1,0 +1,8 @@
+﻿@model Coevery.Core.Navigation.Models.MenuItemPart
+
+<section class="data-row control-group">
+    <label class="control-label required">@T("Url")</label>
+    <div class="controls errortips">
+        @Html.TextBoxFor(model => model.Url, new { @class = "span12", required = "" })
+    </div>
+</section>

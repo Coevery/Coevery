@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace Coevery.Common.ViewModels {
     public class ModuleMenuItemEditViewModel {
-        public int ContenTypeId { get; set; }
-        public ModuleMenuItemPart Part { get; set; }
-        public IEnumerable<SelectListItem> ContentTypes { get; set; }
+        public string EntityName { get; set; }
+        public string IconClass { get; set; }
+        public IEnumerable<SelectListItem> Entities { get; set; }
     }
 }

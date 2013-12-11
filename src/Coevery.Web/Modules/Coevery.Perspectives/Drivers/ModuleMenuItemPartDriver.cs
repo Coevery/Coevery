@@ -1,8 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System.Globalization;
+using System.Web.Mvc;
 using Coevery.Common.Models;
 using Coevery.Common.ViewModels;
+using Coevery.Perspectives.Services;
 using JetBrains.Annotations;
-using Coevery;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.Core.Navigation;
@@ -12,40 +13,49 @@ using Coevery.Localization;
 using Coevery.Security;
 using System.Linq;
 
-namespace Coevery.Common.Drivers {
+namespace Coevery.Perspectives.Drivers {
     [UsedImplicitly]
     public class ModuleMenuItemPartDriver : ContentPartDriver<ModuleMenuItemPart> {
         private readonly IAuthorizationService _authorizationService;
         private readonly IWorkContextAccessor _workContextAccessor;
         private readonly IRepository<ContentTypeDefinitionRecord> _contentTypeRepository;
+        private readonly IContentDefinitionService _contentDefinitionService;
 
         public ModuleMenuItemPartDriver(
             IContentManager contentManager,
             IAuthorizationService authorizationService,
             IWorkContextAccessor workContextAccessor,
-            IRepository<ContentTypeDefinitionRecord> contentTypeRepository) {
+            IRepository<ContentTypeDefinitionRecord> contentTypeRepository, 
+            IContentDefinitionService contentDefinitionService) {
             _authorizationService = authorizationService;
             _workContextAccessor = workContextAccessor;
             _contentTypeRepository = contentTypeRepository;
+            _contentDefinitionService = contentDefinitionService;
 
             T = NullLocalizer.Instance;
         }
 
         public Localizer T { get; set; }
 
+        protected override string Prefix {
+            get {
+                return "ModuleMenuItemPart";
+            }
+        }
+
         protected override DriverResult Editor(ModuleMenuItemPart part, dynamic shapeHelper) {
-            var contentTypes = _contentTypeRepository.Fetch(t => !t.Hidden).ToList();
-            var selectLists = contentTypes.Select(t => new SelectListItem {
-                Selected = part.Record.ContentTypeDefinitionRecord != null && part.Record.ContentTypeDefinitionRecord.Id.Equals(t.Id),
-                Text = t.Name,
-                Value = t.Id.ToString()
+            var metadataTypes = _contentDefinitionService.GetUserDefinedTypes();
+            var selectLists = metadataTypes.Select(t => new SelectListItem {
+                Selected = part.ContentTypeDefinitionRecord != null && part.ContentTypeDefinitionRecord.Name == t.Name,
+                Text = t.DisplayName,
+                Value = t.Name
             });
             return ContentShape("Parts_ModuleMenuItem_Edit",
                 () => {
                     var model = new ModuleMenuItemEditViewModel() {
-                        ContenTypeId = part.Record.ContentTypeDefinitionRecord == null ? -1 : part.Record.ContentTypeDefinitionRecord.Id,
-                        Part = part,
-                        ContentTypes = selectLists
+                        EntityName = part.ContentTypeDefinitionRecord == null ? null : part.ContentTypeDefinitionRecord.Name,
+                        IconClass = part.IconClass,
+                        Entities = selectLists
                     };
                     return shapeHelper.EditorTemplate(TemplateName: "Parts.ModuleMenuItem.Edit", Model: model, Prefix: Prefix);
                 });
@@ -60,12 +70,16 @@ namespace Coevery.Common.Drivers {
             var model = new ModuleMenuItemEditViewModel();
 
             if (updater.TryUpdateModel(model, Prefix, null, null)) {
-                var contentTypeRecord = _contentTypeRepository.Get(model.ContenTypeId);
+                var contentTypeRecord = _contentTypeRepository.Table.FirstOrDefault(t => t.Name == model.EntityName);
                 if (contentTypeRecord == null) {
                     updater.AddModelError("ContentTypeId", T("You must select a ContentType Item"));
                 }
+                if (string.IsNullOrEmpty(model.IconClass)) {
+                    updater.AddModelError("IconClass", T("Icon is required."));
+                }
                 else {
-                    part.Record.ContentTypeDefinitionRecord = contentTypeRecord;
+                    part.ContentTypeDefinitionRecord = contentTypeRecord;
+                    part.IconClass = model.IconClass;
                 }
             }
 

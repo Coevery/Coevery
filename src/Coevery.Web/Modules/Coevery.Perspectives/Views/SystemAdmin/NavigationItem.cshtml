@@ -1,0 +1,72 @@
+﻿@using Coevery.Core.Navigation.Models
+@using Coevery.ContentManagement
+@using Coevery.Localization
+
+@{
+    string title = Model.Title;
+    MenuPart contentPart = ((ContentItem)Model.ContentItem).As<MenuPart>();
+}
+
+@helper DisplaySection(string labelClass, string divClass, LocalizedString displayName, HtmlString customElement)
+{
+    <section class="data-row control-group">
+        <label class="control-label @labelClass">@displayName</label>
+        <div class="controls @divClass">
+            @customElement
+        </div>
+    </section>
+}
+
+<header id="page-title">
+    <h1 class="pull-left">@T("Navigation Item Detail") <span>@T("show navigation item detail information")</span></h1>
+</header>
+
+<section id="main-content" style="margin-top: 47px">
+    <div id="page-actions" class="clearfix">
+        <btn-actions>
+            <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
+            <button type="button" class="btn btn-small btn-primary" data-cobusy="'savenavigationitem'" data-ng-click="saveAndView()">Save</button>
+            <button class="btn btn-small btn-primary" data-cobusy="'savenavigationitem'" data-ng-click="saveAndBack()">Save & Back</button>
+        </btn-actions>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="form-horizontal no-border">
+                @using (Html.BeginFormAntiForgeryPost(ViewContext.HttpContext.Request.Url.PathAndQuery, FormMethod.Post, 
+                    new {@class = "form-horizontal edit-mode", @name = "myForm", @ng_submit = "save()"})) {
+                    <fieldset>
+                        <legend>@T("General Information")</legend>
+                        <section class="data-row control-group">
+                            <label class="control-label">@T("Title")</label>
+                            <div class="controls">
+                                @Html.TextBox("Title", title, new {@readonly = "readonly", @class = "span12"})
+                                @Html.Hidden("MenuPart.CurrentMenuId", contentPart.Menu.Id)
+                                @Html.Hidden("MenuPart.OnMenu", true)
+                            </div>
+                        </section>
+                        <section class="data-row control-group">
+                            <label class="control-label required">@T("Display Name")</label>
+                            <div class="controls errortips">
+                                @*@Html.TextBoxFor(m => m.MenuText, new {@class = "span12"})*@
+                                @Html.TextBox("MenuPart.MenuText",contentPart.MenuText,new {@class = "span12", required = ""})
+                            </div>
+                        </section>
+
+                        @Display(Model.Content)
+
+                        <section class="data-row control-group">
+                            <label class="control-label">@T("Description")</label>
+                            <div class="controls">
+                                @*@Html.TextAreaFor(m => m.Description, new {@class = "span12"})*@
+                                @Html.TextArea("MenuPart.Description",contentPart.Description,new {@class = "span12"})
+                            </div>
+                        </section>
+                    </fieldset>
+                }
+                
+            </div>
+        </div>
+    </div>
+</section>
+

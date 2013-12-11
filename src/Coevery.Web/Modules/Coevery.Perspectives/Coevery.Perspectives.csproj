@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Drivers\ModuleMenuItemPartDriver.cs" />
     <Compile Include="Drivers\PerspectiveDriver.cs" />
     <Compile Include="Extensions\PerspectiveExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="ViewModels\EditPartViewModel.cs" />
     <Compile Include="ViewModels\EditTypePartViewModel.cs" />
     <Compile Include="ViewModels\EditTypeViewModel.cs" />
-    <Compile Include="ViewModels\NavigationViewModel.cs" />
     <Compile Include="ViewModels\PerspectiveViewModel.cs" />
     <Content Include="Scripts\controllers\detailcontroller.js" />
     <Content Include="Scripts\controllers\editcontroller.js" />
@@ -147,9 +147,6 @@
     <Content Include="Views\SystemAdmin\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\EditNavigationItem.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\SystemAdmin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -159,10 +156,16 @@
     <Content Include="Views\SystemAdmin\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SystemAdmin\CreateNavigationItem.cshtml" />
+    <Content Include="Views\SystemAdmin\NavigationItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\SystemAdmin\SelectIconClass.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.MenuItem.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.ModuleMenuItem.Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

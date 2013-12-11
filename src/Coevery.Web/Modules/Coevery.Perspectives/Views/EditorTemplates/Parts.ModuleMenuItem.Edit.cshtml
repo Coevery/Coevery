@@ -1,0 +1,20 @@
+﻿@model Coevery.Common.ViewModels.ModuleMenuItemEditViewModel
+
+<section class="data-row control-group">
+    <label class="control-label required">@T("Entity")</label>
+    <div class="controls errortips">
+        @Html.DropDownListFor(m=>m.EntityName, Model.Entities, new { id = "EntityName", required = "" })
+    </div>
+</section>
+
+<section class="data-row control-group">
+    <label class="control-label required">@T("Icon")</label>
+    <div class="controls errortips">
+        <i id="showIconClass" class="@Model.IconClass"></i>
+        <button type="button" class="btn btn-small" data-ng-click="openDialog()">Select</button>
+        @Html.HiddenFor(m => m.IconClass, new { id = "hfIconClass", required = "" })
+    </div>
+    <div modal="dialogSelectIcons" close="closeDialog()" options="opts" class="ng-cloak">
+        @Html.Partial("SelectIconClass")
+    </div>
+</section>
