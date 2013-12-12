@@ -1,0 +1,59 @@
+﻿@using System.Web.UI.WebControls
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "gvDataBinding";
+        settings.CallbackRouteValues = new { Area = "Coevery.CRM.Convertor", Controller = "Home", Action = "IndexPartial" };
+        settings.Width = Unit.Percentage(100);
+
+        settings.ClientSideEvents.BeginCallback = "grid_BeginCallback";
+        
+        settings.Styles.Header.HorizontalAlign = HorizontalAlign.Center;
+        settings.Settings.GridLines = System.Web.UI.WebControls.GridLines.Horizontal;
+        settings.SettingsBehavior.AllowDragDrop = false;
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        settings.SettingsLoadingPanel.Mode = GridViewLoadingPanelMode.ShowAsPopup;
+        
+        settings.Columns.Add("Symbol", "Symbol", MVCxGridViewColumnType.TextBox);
+        settings.Columns.Add(column => {
+            column.FieldName = "Price";
+            column.Caption = "Price";
+            column.Width = 120;
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            column.PropertiesEdit.DisplayFormatString = "0.00";
+        });
+        settings.Columns.Add(column => {
+            column.FieldName = "Change";
+            column.Caption = "Change";
+            column.Width = 120;
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            column.SetDataItemTemplateContent(c => {
+                var text = ((Decimal)DataBinder.Eval(c.DataItem, "Change")).ToString("P");
+                var imageUrl = Url.Content(string.Format("~/Content/GridView/{0}.gif", ((Decimal)DataBinder.Eval(c.DataItem, "Change")) >= 0 ? "Up" : "Down"));
+                ViewContext.Writer.Write("<img alt='' src='" + imageUrl + "' style='border: 0; margin: 2px 4px;' />" + text);
+            });
+        });
+        settings.Columns.Add(column => {
+            column.FieldName = "DayMax";
+            column.Caption = "Day Max";
+            column.Width = 120;
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            column.PropertiesEdit.DisplayFormatString = "0.00";
+        });
+        settings.Columns.Add(column => {
+            column.FieldName = "DayMin";
+            column.Caption = "Day Min";
+            column.Width = 120;
+            column.ColumnType = MVCxGridViewColumnType.TextBox;
+            column.PropertiesEdit.DisplayFormatString = "0.00";
+        });
+        settings.Columns.Add(column => {
+            column.FieldName = "LastUpdated";
+            column.Caption = "Last Updated";
+            column.Width = 120;
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            column.CellStyle.HorizontalAlign = HorizontalAlign.Right;
+            column.PropertiesEdit.DisplayFormatString = "HH:mm:ss";
+        });
+    }).Bind(Model).GetHtml()
