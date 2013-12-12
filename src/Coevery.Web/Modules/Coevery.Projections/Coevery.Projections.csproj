@@ -272,6 +272,7 @@
     <Compile Include="ViewModels\ProjectionPartEditViewModel.cs" />
     <Compile Include="ViewModels\GroupAddViewModel.cs" />
     <Compile Include="ViewModels\PropertyAddViewModel.cs" />
+    <Compile Include="ViewModels\PropertyDescriptorViewModel.cs" />
     <Compile Include="ViewModels\PropertyEditViewModel.cs" />
     <Compile Include="ViewModels\SortCriteriaAddViewModel.cs" />
     <Compile Include="ViewModels\SortCriteriaEditViewModel.cs" />
