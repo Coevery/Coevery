@@ -15,11 +15,7 @@ namespace Coevery.Mvc.ClientRoute
 
         public string Url { get; set; }
 
-        //public string TemplateUrl { get; set; }
-
-        //public string TemplateProvider { get; set; }
-
-        //public string Controller { get; set; }
+        public int? Priority { get; set; }
 
         public List<ClientViewDescriptor> Views {
             get { return _views; }

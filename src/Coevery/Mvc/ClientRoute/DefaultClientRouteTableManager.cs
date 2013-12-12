@@ -61,7 +61,7 @@ namespace Coevery.Mvc.ClientRoute
                 routes.Add(descriptor);
             }
 
-            routes = routes.OrderBy(item => new Regex(@"\.").Matches(item.RouteName).Count).ToList();
+            routes = routes.OrderBy(item => new Regex(@"\.").Matches(item.RouteName).Count).ThenByDescending(item => item.Priority).ToList();
             return routes;
         }
     }
