@@ -136,8 +136,6 @@ namespace Coevery.Common.Controllers {
                 return new HttpUnauthorizedResult();
             }
 
-            Services.ContentManager.Create(contentItem, VersionOptions.Draft);
-
             Services.ContentManager.UpdateEditor(contentItem, this);
             if (!ModelState.IsValid) {
                 ModelState.AddModelError("CreateError", T("The creation didn't change model state.").ToString());
@@ -149,6 +147,7 @@ namespace Coevery.Common.Controllers {
                 return Content(string.Concat(temp));
             }
 
+            Services.ContentManager.Create(contentItem, VersionOptions.Draft);
             conditionallyPublish(contentItem);
 
             Services.Notifier.Information(string.IsNullOrWhiteSpace(contentItem.TypeDefinition.DisplayName)
