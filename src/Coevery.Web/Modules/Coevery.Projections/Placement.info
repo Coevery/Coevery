@@ -1,4 +1,5 @@
 ﻿<Placement>
+  <Place Parts_ListView_Header="Header:1"/>
   <Place Parts_ListView_FilterContent="Content:1"/>
   <Place Parts_ListView="Content:2"/>
   <Place Parts_ListView_Buttons="Actions:2"/>
@@ -7,5 +8,6 @@
   <Place Parts_ListView_Search="Sidebar:4"/>
   <Match DisplayType="Detail" ContentType="ListViewPage">
     <Place Parts_ProjectionPart_List="-" />
+    <Place Parts_Title="-"/>
   </Match>
 </Placement>

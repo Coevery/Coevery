@@ -62,7 +62,6 @@ namespace Coevery.Common.Controllers {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var typeName = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
-            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(typeName);
             var contentItem = Services.ContentManager.Query("ListViewPage")
                 .ForVersion(VersionOptions.Latest).List().FirstOrDefault(item => {
                     var listViewPart = item.Parts.FirstOrDefault(part => part.PartDefinition.Name == "ListViewPart");
@@ -75,7 +74,6 @@ namespace Coevery.Common.Controllers {
             if (contentItem == null) {
                 return HttpNotFound();
             }
-            contentItem.As<TitlePart>().Title = typeDefinition.Settings["CollectionDisplayName"];
             var model = Services.ContentManager.BuildDisplay(contentItem);
             return View(model);
         }

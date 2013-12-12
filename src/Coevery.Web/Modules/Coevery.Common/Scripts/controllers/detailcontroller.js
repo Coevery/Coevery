@@ -30,6 +30,8 @@
               var promise = $scope.save();
               promise && promise.then(function(response) {
                   logger.success($i18next('Save succeeded.'));
+                      return;
+                  }
                   var getter = $parse('Id');
                   var Id = getter(response.data);
                   if (Id)
