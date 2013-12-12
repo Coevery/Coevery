@@ -1,7 +1,7 @@
 ﻿define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'GeneralDetailCtrl',
-      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http','$parse', '$i18next',
+      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http', '$parse', '$i18next',
       function ($timeout, $rootScope, $scope, $q, logger, $state, $http, $parse, $i18next) {
           var navigationId = $rootScope.$stateParams.NavigationId;
           var moduleName = $rootScope.$stateParams.Module;
@@ -22,29 +22,30 @@
                   data: form.serialize() + '&submit.Save=Save',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   tracker: 'saveentity'
-              }).then(function (response) {
-                  logger.success($i18next('Save succeeded.'));
-                  return response;
-              }, function (reason) {
-                  logger.error($i18next('Save Failed： ') + reason.data);
               });
               return promise;
           };
 
-          $scope.saveAndView = function () {
+          $scope.saveAndView = function() {
               var promise = $scope.save();
-              promise && promise.then(function (response) {
+              promise && promise.then(function(response) {
+                  logger.success($i18next('Save succeeded.'));
                   var getter = $parse('Id');
                   var Id = getter(response.data);
                   if (Id)
                       $state.transitionTo('Root.Menu.Detail', { NavigationId: navigationId, Module: moduleName, Id: Id });
+              }, function(reason) {
+                  logger.error($i18next('Save Failed： ') + reason.data);
               });
           };
 
           $scope.saveAndBack = function () {
               var promise = $scope.save();
               promise && promise.then(function () {
+                  logger.success($i18next('Save succeeded.'));
                   $scope.exit();
+              }, function (reason) {
+                  logger.error($i18next('Save Failed： ') + reason.data);
               });
           };
 
@@ -64,7 +65,7 @@
 
 
           $scope.$on('$viewContentLoaded', function () {
-              
+
           });
       }]
     ]);
