@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Xml.Linq;
 using Coevery.Common.Services;
 using Coevery.Common.Extensions;
-using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Data.Migration.Schema;
 using Coevery.Entities.Events;
 using Coevery.Entities.Models;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Handlers;
 using Coevery.ContentManagement.MetaData;
-using Coevery.ContentManagement.MetaData.Services;
 using Coevery.Data;
 using Coevery.Entities.Services;
-using Coevery.Logging;
 using IContentDefinitionEditorEvents = Coevery.Entities.Settings.IContentDefinitionEditorEvents;
 
 namespace Coevery.Entities.Handlers {
@@ -173,9 +168,10 @@ namespace Coevery.Entities.Handlers {
 
             // update field settings
             _contentDefinitionManager.AlterPartDefinition(entityName.ToPartName(), builder =>
-                builder.WithField(field.Name, fieldBuilder =>
-                    _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings))
-                );
+                builder.WithField(field.Name, fieldBuilder => {
+                    fieldBuilder.WithDisplayName(settings["DisplayName"]);
+                    _contentDefinitionEditorEvents.UpdateFieldSettings(fieldBuilder, settings);
+                }));
 
             field.Settings = _settingService.CompileSetting(settings);
 

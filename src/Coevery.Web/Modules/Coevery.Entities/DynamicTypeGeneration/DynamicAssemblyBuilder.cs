@@ -148,6 +148,7 @@ namespace Coevery.Entities.DynamicTypeGeneration {
 
         private string GetAssemblyDirectory() {
             var virtualPath = _virtualPathProvider.Combine("~/Modules/" + AssemblyName, "bin");
+            _virtualPathProvider.CreateDirectory(virtualPath);
             return _virtualPathProvider.MapPath(virtualPath);
         }
 

@@ -110,5 +110,9 @@
                 $("#groupValidationPart").val("");
             }
         });
+        
+        if ($(".groupValidationHelper input:checked").length > 0) {
+            $("#groupValidationPart").val("true");
+        }
     });
 </script>

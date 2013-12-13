@@ -1,7 +1,7 @@
 angular.module('coevery.filter', [])
     .directive('filterEditor', function($compile) {
         return {
-            template: '<form class="filterCreatorContent span12"><div class="btn-group field-selector"><button class="btn btn-small dropdown-toggle" data-toggle="dropdown">{{fieldTitle}}&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu"><li ng-repeat="field in fieldFilters"><a href="" ng-click="showFilterEditor(field)">{{field.DisplayName}}</a></li></ul></div><div class="field-editor"></div><span class="close deleteBtn" ng-click="delete()">x</span></form>',
+            template: '<form class="filterCreatorContent span12 filter-form"><div class="btn-group field-selector"><button class="btn btn-small dropdown-toggle" data-toggle="dropdown">{{fieldTitle}}&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu"><li ng-repeat="field in fieldFilters"><a href="" ng-click="showFilterEditor(field)">{{field.DisplayName}}</a></li></ul></div><div class="field-editor"></div><span class="close deleteBtn" ng-click="delete()">x</span></form>',
             replace: true,
             restrict: 'E',
             transclude: true,

@@ -297,7 +297,7 @@
                 }
 
                 function getFilters() {
-                    var forms = $('.filterCreatorWrap').find('form');
+                    var forms = $('form.filter-form');
                     var filters = [];
                     $.each(forms, function () {
                         var form = $(this);
