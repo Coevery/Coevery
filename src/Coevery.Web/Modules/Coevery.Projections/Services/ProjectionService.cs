@@ -7,6 +7,7 @@ using Coevery.Common.Extensions;
 using Coevery.Core.Common.ViewModels;
 using Coevery.Entities.Services;
 using Coevery.Projections.Models;
+using Coevery.Projections.PropertyEditors;
 using Coevery.Projections.ViewModels;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData;
@@ -21,7 +22,6 @@ namespace Coevery.Projections.Services {
         public const string DefaultLayoutType = "Default";
         private readonly IProjectionManager _projectionManager;
         private readonly IContentManager _contentManager;
-        private readonly IEnumerable<IFieldToPropertyStateProvider> _fieldToPropertyStateProviders;
         private readonly IFormManager _formManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
@@ -30,12 +30,10 @@ namespace Coevery.Projections.Services {
             IProjectionManager projectionManager,
             IContentManager contentManager,
             IFormManager formManager,
-            IEnumerable<IFieldToPropertyStateProvider> fieldToPropertyStateProviders,
             IContentDefinitionManager contentDefinitionManager) {
             _projectionManager = projectionManager;
             _contentManager = contentManager;
             _formManager = formManager;
-            _fieldToPropertyStateProviders = fieldToPropertyStateProviders;
             Services = services;
             _contentDefinitionManager = contentDefinitionManager;
             T = NullLocalizer.Instance;
@@ -116,7 +114,7 @@ namespace Coevery.Projections.Services {
                         Type = field.Type,
                         Text = field.Description
                     }).ToArray();
-                UpdateLayoutProperties(entityName.ToPartName(), ref layout, settingName, pickedFileds);
+                UpdateLayoutProperties(entityName.ToPartName(), layout, settingName, pickedFileds);
                 var state = FormParametersHelper.FromString(layout.State);
                 layout.State = FormParametersHelper.ToString(MergeDictionary(
                     new[] {state, GetLayoutState(projection.QueryPartRecord.Id, layout.Properties.Count, layout.Description)}));
@@ -125,6 +123,7 @@ namespace Coevery.Projections.Services {
         }
 
         public int EditPost(int id, ProjectionEditViewModel viewModel) {
+
             ListViewPart listViewPart;
             ProjectionPart projectionPart;
             QueryPart queryPart;
@@ -169,7 +168,7 @@ namespace Coevery.Projections.Services {
             listViewPart.VisableTo = viewModel.VisableTo;
             listViewPart.As<TitlePart>().Title = viewModel.DisplayName;
             listViewPart.IsDefault = viewModel.IsDefault;
-            queryPart.Name = "Query for Public View";
+            queryPart.Name = listViewPart.ItemContentType + " - " + viewModel.DisplayName;
 
             //Post Selected Fields
             var layoutRecord = projectionPart.Record.LayoutRecord;
@@ -177,7 +176,7 @@ namespace Coevery.Projections.Services {
             var category = viewModel.ItemContentType + "ContentFields";
             const string settingName = "TextFieldSettings.IsDisplayField";
             try {
-                UpdateLayoutProperties(viewModel.ItemContentType, ref layoutRecord, settingName, viewModel.PickedFields);
+                UpdateLayoutProperties(viewModel.ItemContentType, layoutRecord, settingName, viewModel.PickedFields);
             }
             catch (Exception exception) {
                 Services.Notifier.Add(NotifyType.Error, T(exception.Message));
@@ -204,27 +203,17 @@ namespace Coevery.Projections.Services {
             return listViewPart.Id;
         }
 
-        private void UpdateLayoutProperties(string partName, ref LayoutRecord layout, string settingName, IEnumerable<PropertyDescriptorViewModel> pickedFileds) {
-            var allFields = _contentDefinitionManager.GetPartDefinition(partName).Fields.ToList();
-            const string fieldTypeFormat = "{0}.{1}.";
+        private void UpdateLayoutProperties(string partName, LayoutRecord layout, string settingName, IEnumerable<PropertyDescriptorViewModel> pickedFileds) {
+
             layout.Properties.Clear();
             foreach (var property in pickedFileds) {
-                var field = allFields.FirstOrDefault(c =>
-                    string.Format(fieldTypeFormat, partName, c.Name) == property.Type);
-                if (field == null) {
-                    continue;
-                }
-                var fieldStateProvider = _fieldToPropertyStateProviders.FirstOrDefault(provider => provider.CanHandle(field.FieldDefinition.Name));
-                if (fieldStateProvider == null) {
-                    throw new NotSupportedException("The field type \"" + field.FieldDefinition.Name + "\" is not supported!");
-                }
+
                 var propertyRecord = new PropertyRecord {
                     Category = property.Category,
                     Type = property.Type,
                     Description = property.Text,
                     Position = layout.Properties.Count,
-                    State = fieldStateProvider.GetPropertyState(field.FieldDefinition.Name, property.Type, field.Settings),
-                    LinkToContent = field.Settings.ContainsKey(settingName) && bool.Parse(field.Settings[settingName])
+                    State = FormParametersHelper.ToString(new Dictionary<string,string>())
                 };
                 layout.Properties.Add(propertyRecord);
             }

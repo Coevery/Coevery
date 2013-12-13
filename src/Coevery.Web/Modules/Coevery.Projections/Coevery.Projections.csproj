@@ -136,7 +136,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FieldTypeEditors\BooleanFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\DecimalFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\FieldTypeEditorAdaptor.cs" />
+    <Compile Include="FieldTypeEditors\FieldTypeEditorAdapterr.cs" />
     <Compile Include="FieldTypeEditors\FieldTypeEditorModule.cs" />
     <Compile Include="FieldTypeEditors\FloatFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\IFieldTypeEditor.cs" />

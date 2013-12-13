@@ -54,15 +54,12 @@ namespace Coevery.Fields.Drivers {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is required.", T(field.DisplayName)));
                     return Editor(part, field, shapeHelper);
                 }
-                if (field.Value.HasValue) {
-                    field.Value = Math.Round(field.Value.Value,settings.DecimalPlaces);
-                    var intPart = decimal.Floor(field.Value.Value);
-                    var decPart = field.Value.Value - intPart;
-                    if (intPart.ToString().Length > settings.Length) {
-                        updater.AddModelError(GetPrefix(field, part), T("The integer part of field {0} is overlength.", T(field.DisplayName)));
+                if (field.Value.HasValue && Math.Round(field.Value.Value, settings.DecimalPlaces) != field.Value.Value) {
+                    if (settings.DecimalPlaces == 0) {
+                        updater.AddModelError(GetPrefix(field, part), T("The field {0} must be an integer", field.DisplayName));
                     }
-                    if (decPart.ToString().Length > settings.DecimalPlaces + 2) {
-                        updater.AddModelError(GetPrefix(field, part), T("The decimal part of field {0} is overlength.", T(field.DisplayName)));
+                    else {
+                        updater.AddModelError(GetPrefix(field, part), T("Invalid number of digits for {0}, max allowed: {1}", field.DisplayName, settings.DecimalPlaces));
                     }
                 }
             }

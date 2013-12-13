@@ -69,9 +69,10 @@
     <Compile Include="Controllers\FieldDependencyController.cs" />
     <Compile Include="Drivers\MultilineTextFieldDriver.cs" />
     <Compile Include="Fields\MultilineTextField.cs" />
-    <Compile Include="Projections\NumericTypeStateProvider.cs" />
-    <Compile Include="Projections\DefaultFieldStateProvider.cs" />
-    <Compile Include="Projections\DatetimeTypeStateProvider.cs" />
+    <Compile Include="Projections\CurrencyFieldFormatProvider.cs" />
+    <Compile Include="Projections\DateFieldFormatProvider.cs" />
+    <Compile Include="Projections\DatetimeFieldFormatProvider.cs" />
+    <Compile Include="Projections\NumericFieldFormatProvider.cs" />
     <Compile Include="Projections\DatetimeTypeValueProvider.cs" />
     <Compile Include="Records\FieldDependencyRecord.cs" />
     <Compile Include="ResourceManifest.cs" />

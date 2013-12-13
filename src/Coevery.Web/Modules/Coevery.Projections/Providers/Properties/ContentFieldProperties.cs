@@ -110,7 +110,7 @@ namespace Coevery.Projections.Providers.Properties {
             }
 
             // call specific formatter rendering
-            return _propertyFormater.Format(storageType, value, context.State);
+            return _propertyFormater.Format(f, storageType, value, context.State);
         }
 
         public LocalizedString DisplayFilter(PropertyContext context, ContentPartDefinition part, ContentPartFieldDefinition fieldDefinition, string storageName) {
