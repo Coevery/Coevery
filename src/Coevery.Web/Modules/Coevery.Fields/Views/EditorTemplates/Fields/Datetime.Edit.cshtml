@@ -9,7 +9,7 @@
     var cultureInfo = CultureInfo.GetCultureInfo(WorkContext.CurrentCulture);
     var dateTimeLocalization = WorkContext.Resolve<IDateTimeLocalization>();
 
-    Func<DateTime?, string> FormatDateTime = date => date != null ? date.Value.ToString(dateTimeLocalization.LongDateTimeFormat.Text, cultureInfo) : null;
+    Func<DateTime?, string> FormatDateTime = date => date != null ? date.Value.ToString("g", cultureInfo) : null;
 }
 
 <label class="control-label title @required" for="@Html.FieldIdFor(m => m.Value)">@Model.DisplayName</label>
