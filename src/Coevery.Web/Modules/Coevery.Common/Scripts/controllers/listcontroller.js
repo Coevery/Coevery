@@ -84,6 +84,17 @@
                     $scope.getPagedDataAsync();
                 };
 
+                $scope.$on("grid.refresh", function (event) {
+                    event.stopPropagation();
+                    $scope.Refresh();
+                });
+                
+                $scope.$on("version.change", function (event,arg) {
+                    event.stopPropagation();
+                    $scope.dataCanModify = arg;
+                    $scope.Refresh();
+                });
+
                 // init views
                 $scope.FetchDefinitionViews = function () {
                     var views = viewDefinitionService.query({ contentType: moduleName }, function () {
@@ -114,6 +125,8 @@
                 };
 
                 $scope.FetchDefinitionViews();
+
+
 
                 /*Grid methods*/
                 $scope.delete = function (id) {

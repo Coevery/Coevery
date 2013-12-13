@@ -1,21 +1,29 @@
 ﻿@{
     IEnumerable<dynamic> fields = Model.Fields;
 }
-<div data-ng-controller="quickFilterController" id="quickFilter" class="quick-filter-content">
-    @foreach (var field in fields) {
-        var filter = field.Filter;
-        <form data-type="@filter.Type" class="quick-filter-form">
-            <span class="quick-filter-label">@filter.Name.Text</span>
-            @Display(field)
-        </form>
-    }
-    <button class="btn btn-small btn-primary" data-ng-click="applyFilter()">@T("Apply")</button>
-    <button class="btn btn-small" data-ng-click="clearFilter()">@T("Clear")</button>
+<div data-ng-controller="quickFilterController" id="quickFilter" class="quick-filter-content well clearfix"
+    style="border: 1px solid #DDD;">
+    <div class="row-fluid">
+        @foreach (var field in fields) {
+            var filter = field.Filter;
+            <div class="span4">
+                <form data-type="@filter.Type" class="quick-filter-form clearfix" style="margin:0">
+                    <span class="quick-filter-label">@filter.Name.Text</span>
+                    @Display(field)
+                </form>
+            </div>
+        }
+        <div class="span4 ">
+            <div class="clearfix">
+                <span class="quick-filter-label">@T("版本")</span>
+                @Display(Model.VersionButton)
+            </div>
+        </div>
+    </div>
 </div>
-
 <script>
     function quickFilterController($scope) {
-        $scope.applyFilter = function() {
+        $scope.applyFilter = function () {
             $scope.contentList.setParam({
                 postData: {
                     ViewId: $scope.currentViewId,
@@ -25,7 +33,7 @@
             $scope.contentList.reload();
         };
 
-        $scope.clearFilter = function() {
+        $scope.clearFilter = function () {
             $scope.contentList.setParam({
                 postData: {
                     ViewId: $scope.currentViewId,
@@ -38,13 +46,15 @@
         function getFilters() {
             var forms = $('#quickFilter').find('form');
             var filters = [];
-            $.each(forms, function() {
-                var form = $(this);
-                filters.push({
-                    Type: form.data('type'),
-                    Category: '@Model.PartName' + 'ContentFields',
-                    FormData: form.serializeArray()
-                });
+            $.each(forms, function () {
+                if ($(this).attr("id") != 'versionForm') {
+                    var form = $(this);
+                    filters.push({
+                        Type: form.data('type'),
+                        Category: '@Model.PartName' + 'ContentFields',
+                        FormData: form.serializeArray()
+                    });
+                }
             });
             return filters;
         }
