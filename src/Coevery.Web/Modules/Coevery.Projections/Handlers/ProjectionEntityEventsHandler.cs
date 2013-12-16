@@ -23,7 +23,8 @@ namespace Coevery.Projections.Handlers {
         }
 
         public void OnCreated(string entityName) {
-            var fields = _projectionService.GetFieldDescriptors(entityName, -1);
+            var fields = _projectionService.GetFieldDescriptors(entityName, -1).ToArray();
+
             var viewModel = new ProjectionEditViewModel {
                 ItemContentType = entityName.ToPartName(),
                 DisplayName = entityName + " DefaultView",
@@ -32,11 +33,16 @@ namespace Coevery.Projections.Handlers {
                     .SelectMany(descr => descr.Descriptors)
                     .FirstOrDefault(descr => descr.Category == "Grids" && descr.Type == "Default"),
                 Fields = fields,
+                PickedFields = fields.Select(f => new PropertyDescriptorViewModel {
+                    Category = f.Category,
+                    Type = f.Value,
+                    Text = f.Text
+                }),
                 State = new Dictionary<string, string> {
-                    { "PageRowCount","50" }, { "SortedBy",string.Empty }, { "SortMode",string.Empty }
+                    {"PageRowCount", "50"}, {"SortedBy", string.Empty}, {"SortMode", string.Empty}
                 }
             };
-            _projectionService.EditPost(0, viewModel, fields.Select(f => f.Value));
+            _projectionService.EditPost(0, viewModel);
         }
 
         public void OnUpdating(string entityName) {

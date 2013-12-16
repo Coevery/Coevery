@@ -83,6 +83,7 @@
     <Compile Include="Models\OneToManyRelationshipModel.cs" />
     <Compile Include="Models\ReferenceFieldViewModel.cs" />
     <Compile Include="Models\RelationshipModel.cs" />
+    <Compile Include="Projections\ReferenceFieldProperties.cs" />
     <Compile Include="Projections\ReferenceFieldValueProvider.cs" />
     <Compile Include="Records\ManyToManyRelationshipRecord.cs" />
     <Compile Include="Records\OneToManyRelationshipRecord.cs" />

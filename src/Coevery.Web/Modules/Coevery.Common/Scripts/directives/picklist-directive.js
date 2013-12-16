@@ -84,10 +84,15 @@
                 '<span style="margin-left: 3px;">{{targetItem.Text}}</span>' +
                 '<div class="pull-right"><button class="btn-link" type="button" ng-click="targetItem.Selected=false">Remove</button>' +
                 '</div></li></ul></div></div></div> ' +
-                '<select multiple="multiple" style="display:none;" ng-attr-name="{{ selectName }}" ng-attr-id="{{selectId}}">' +
-                '<option ng-repeat="option in sourceList | filter: { Selected: true } | orderBy:\'+Order\'" ng-attr-value="{{ option.Value }}" selected=true> ' +
-                '{{ option.Text }}</option>' +
-                '</select></div></div>',
+                //'<select multiple="multiple" style="display:none;" ng-attr-id="{{selectId}}">' +
+                //'<option ng-repeat="option in sourceList | filter: { Selected: true } | orderBy:\'+Order\'" ng-attr-value="{{ option.Value }}" selected=true> ' +
+                //'{{ option.Text }}</option>' +
+                //'</select>' +
+                '<div class="hide" ng-repeat="option in sourceList | filter: { Selected: true } | orderBy:\'+Order\'">' +
+                '<input type="hidden" ng-attr-name="{{selectName + \'[\' + $index + \'].Category\'}}" ng-attr-value="{{ option.Category }}" />' +
+                '<input type="hidden" ng-attr-name="{{selectName + \'[\' + $index + \'].Type\'}}" ng-attr-value="{{ option.Value }}" />' +
+                '<input type="hidden" ng-attr-name="{{selectName + \'[\' + $index + \'].Text\'}}" ng-attr-value="{{ option.Text }}" />' +
+                '</div></div></div>',
             compile: function (element, attrs) {
                 return {
                     post: link

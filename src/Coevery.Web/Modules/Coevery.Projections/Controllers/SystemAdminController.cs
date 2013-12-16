@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Coevery.Common.Extensions;
@@ -88,17 +84,17 @@ namespace Coevery.Projections.Controllers {
         [FormValueRequired("submit.Save")]
         public ActionResult EditPost(int id, ProjectionEditViewModel viewModel, string returnUrl) {
             viewModel.Layout = _projectionManager.DescribeLayouts()
-                    .SelectMany(descr => descr.Descriptors)
-                    .FirstOrDefault(descr => descr.Category == viewModel.Layout.Category && descr.Type == viewModel.Layout.Type);
+                .SelectMany(descr => descr.Descriptors)
+                .FirstOrDefault(descr => descr.Category == viewModel.Layout.Category && descr.Type == viewModel.Layout.Type);
             if (viewModel.Layout == null) {
                 return HttpNotFound();
             }
-            _formManager.Validate(new ValidatingContext { FormName = viewModel.Layout.Form, ModelState = ModelState, ValueProvider = ValueProvider });
+            _formManager.Validate(new ValidatingContext {FormName = viewModel.Layout.Form, ModelState = ModelState, ValueProvider = ValueProvider});
             if (!ModelState.IsValid) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var viewid = _projectionService.EditPost(id, viewModel, viewModel.PickedFields);
-            return Json(new { id = viewid });
+            var viewid = _projectionService.EditPost(id, viewModel);
+            return Json(new {id = viewid});
         }
     }
 }

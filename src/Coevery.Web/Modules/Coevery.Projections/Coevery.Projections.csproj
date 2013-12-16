@@ -136,7 +136,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FieldTypeEditors\BooleanFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\DecimalFieldTypeEditor.cs" />
-    <Compile Include="FieldTypeEditors\FieldTypeEditorAdaptor.cs" />
+    <Compile Include="FieldTypeEditors\FieldTypeEditorAdapterr.cs" />
     <Compile Include="FieldTypeEditors\FieldTypeEditorModule.cs" />
     <Compile Include="FieldTypeEditors\FloatFieldTypeEditor.cs" />
     <Compile Include="FieldTypeEditors\IFieldTypeEditor.cs" />
@@ -272,6 +272,7 @@
     <Compile Include="ViewModels\ProjectionPartEditViewModel.cs" />
     <Compile Include="ViewModels\GroupAddViewModel.cs" />
     <Compile Include="ViewModels\PropertyAddViewModel.cs" />
+    <Compile Include="ViewModels\PropertyDescriptorViewModel.cs" />
     <Compile Include="ViewModels\PropertyEditViewModel.cs" />
     <Compile Include="ViewModels\SortCriteriaAddViewModel.cs" />
     <Compile Include="ViewModels\SortCriteriaEditViewModel.cs" />
