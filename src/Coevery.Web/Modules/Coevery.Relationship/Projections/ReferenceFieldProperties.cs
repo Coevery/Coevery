@@ -25,6 +25,7 @@ namespace Coevery.Relationship.Projections {
         private readonly IEnumerable<IContentFieldValueProvider> _contentFieldValueProviders;
         private readonly IPropertyFormater _propertyFormater;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IContentManager _contentManager;
 
         public ReferenceFieldProperties(
             IContentDefinitionExtension contentDefinitionExtension,
@@ -32,13 +33,15 @@ namespace Coevery.Relationship.Projections {
             IEnumerable<IFieldTypeEditor> fieldTypeEditors,
             IPropertyFormater propertyFormater,
             IEnumerable<IContentFieldValueProvider> contentFieldValueProviders,
-            IContentDefinitionManager contentDefinitionManager) {
+            IContentDefinitionManager contentDefinitionManager, 
+            IContentManager contentManager) {
             _contentDefinitionExtension = contentDefinitionExtension;
             _contentFieldDrivers = contentFieldDrivers;
             _fieldTypeEditors = fieldTypeEditors;
             _propertyFormater = propertyFormater;
             _contentFieldValueProviders = contentFieldValueProviders;
             _contentDefinitionManager = contentDefinitionManager;
+            _contentManager = contentManager;
 
             T = NullLocalizer.Instance;
         }
@@ -76,7 +79,14 @@ namespace Coevery.Relationship.Projections {
                                     type: parentPart.Name + "." + parentField.Name + "." + localField.Name + "." + storageName ?? "",
                                     name: new LocalizedString(parentField.DisplayName + "." + localField.DisplayName + (displayName != null ? ":" + displayName.Text : "")),
                                     description: description ?? T("{0} property for {1}", storageName, localField.DisplayName),
-                                    property: (context, contentItem) => Render(context, contentItem, fieldTypeEditor, storageName, storageType, parentPart, localField),
+                                    property: (context, contentItem) => {
+                                        var parentFieldValue = GetReferenceFieldValue(contentItem, storageName, parentPart, parentField);
+                                        if (parentFieldValue.HasValue) {
+                                            var referenceContentItem = _contentManager.Get(parentFieldValue.Value);
+                                            return Render(context, referenceContentItem, fieldTypeEditor, storageName, storageType, referencePart, localField);
+                                        }
+                                        return string.Empty;
+                                    },
                                     display: context => DisplayFilter(context, parentPart, localField, storageName),
                                     form: _propertyFormater.GetForm(storageType)
                                     );
@@ -121,7 +131,22 @@ namespace Coevery.Relationship.Projections {
             }
 
             // call specific formatter rendering
-            return _propertyFormater.Format(storageType, value, context.State);
+            return _propertyFormater.Format(f, storageType, value, context.State);
+        }
+
+        public int? GetReferenceFieldValue(ContentItem contentItem, string storageName, ContentPartDefinition part, ContentPartFieldDefinition field) {
+            var p = contentItem.Parts.FirstOrDefault(x => x.PartDefinition.Name == part.Name);
+
+            if (p == null) {
+                return null;
+            }
+
+            var f = p.Fields.FirstOrDefault(x => x.Name == field.Name);
+
+            if (f == null) {
+                return null;
+            }
+            return f.Storage.Get<int?>(storageName);
         }
 
         public LocalizedString DisplayFilter(PropertyContext context, ContentPartDefinition part, ContentPartFieldDefinition fieldDefinition, string storageName) {
