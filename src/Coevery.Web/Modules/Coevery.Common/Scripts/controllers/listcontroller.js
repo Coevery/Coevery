@@ -92,7 +92,6 @@
                 $scope.$on("version.change", function (event,arg) {
                     event.stopPropagation();
                     $scope.dataCanModify = arg;
-                    $scope.Refresh();
                 });
 
                 // init views
