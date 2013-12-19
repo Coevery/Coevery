@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <version>1.0.3</version>
+  <version>1.1.0</version>
   <title>Coevery CRM</title>
-  <updated>2013-10-9T16:30:00Z</updated>
+  <updated>2013-12-19T16:30:00Z</updated>
   <author>
     <name>nova software coporation coevery crm team</name>
   </author>
@@ -29,13 +29,13 @@
 	  <keywordId>SQL</keywordId>
     </keywords>
 
-    <version>1.0.3</version>
+    <version>1.1.0</version>
     <images>
       <icon>https://raw.github.com/Coevery/Coevery/gh-pages/Coevery.png</icon>
     </images>
     
-    <updated>2013-10-9T16:30:00Z</updated>
-    <published>2013-10-9T16:30:00Z</published>
+    <updated>2013-12-19T16:30:00Z</updated>
+    <published>2013-12-19T16:30:00Z</published>
 
     <author>
       <name>nova software coporation coevery crm team</name>
@@ -57,10 +57,10 @@
 
         <installerFile>
           <!-- size of the package in KBs -->
-          <fileSize>28363</fileSize>
-          <installerURL>https://github.com/Coevery/Coevery/releases/download/v1.0.3-alpha/Coevery.zip</installerURL>
+          <fileSize>32298</fileSize>
+          <installerURL>https://github.com/Coevery/Coevery/releases/download/v1.1.0-alpha/Coevery1.1.0.zip</installerURL>
           <!-- SHA of the package file for signature verification -->
-          <sha1>27774fb59536e78df9995751a5b954abc0872738</sha1>
+          <sha1>B5A7AB761C8C598AC93BD925F758DA9E037EB64B</sha1>
         </installerFile>
         <msDeploy>
           <startPage>
