@@ -1,4 +1,5 @@
 ﻿using System;
+using Coevery.ContentManagement;
 using Coevery.Projections.ModelBinding;
 
 namespace Coevery.Projections.PropertyEditors {
@@ -6,7 +7,7 @@ namespace Coevery.Projections.PropertyEditors {
     /// Coordinated all available <see cref="IPropertyEditor"/> to apply specific formatting on a model binding property
     /// </summary>
     public interface IPropertyFormater : IDependency {
-        
+
         /// <summary>
         /// Returns the form for a specific type
         /// </summary>
@@ -16,5 +17,7 @@ namespace Coevery.Projections.PropertyEditors {
         /// Formats the value based on the Form state, for a specific type
         /// </summary>
         dynamic Format(Type type, object value, dynamic formState);
+
+        dynamic Format(ContentField field, Type type, object value, dynamic formState);
     }
 }

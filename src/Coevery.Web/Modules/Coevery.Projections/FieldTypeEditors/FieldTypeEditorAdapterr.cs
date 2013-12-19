@@ -4,11 +4,11 @@ using Coevery.Localization;
 using Coevery.Projections.FieldTypeEditors;
 
 namespace Coevery.Projections.FieldTypeEditors {
-    internal class FieldTypeEditorAdaptor : ConcreteFieldTypeEditorBase {
+    internal class FieldTypeEditorAdapterr : ConcreteFieldTypeEditorBase {
         private readonly IFieldTypeEditor _editor;
         public Filter Filter { get; set; }
 
-        public FieldTypeEditorAdaptor(IFieldTypeEditor editor) {
+        public FieldTypeEditorAdapterr(IFieldTypeEditor editor) {
             _editor = editor;
         }
 
