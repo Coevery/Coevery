@@ -86,6 +86,7 @@
     <Compile Include="DynamicTypeGeneration\DynamicAssemblyBuilder.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicFieldDefinition.cs" />
     <Compile Include="DynamicTypeGeneration\DynamicTypeDefinition.cs" />
+    <Compile Include="Events\IEntityDataEvents.cs" />
     <Compile Include="Events\IEntityEvents.cs" />
     <Compile Include="Events\IFieldEvents.cs" />
     <Compile Include="Extensions\ContentDefinitionServiceExtension.cs" />

@@ -145,8 +145,8 @@
                         $scope.Refresh();
                         logger.success('Delete the ' + moduleName + ' successful.');
                         $scope.entityId = [];
-                    }, function () {
-                        logger.error('Failed to delete the lead.');
+                    }, function (reason) {
+                        logger.error(reason.data.Message);
                     });
                 };
 
