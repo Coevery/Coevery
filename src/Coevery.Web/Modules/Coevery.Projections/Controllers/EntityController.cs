@@ -8,6 +8,7 @@ using Coevery.Common.Extensions;
 using Coevery.Common.Services;
 using Coevery.Common.ViewModels;
 using Coevery.ContentManagement.FieldStorage;
+using Coevery.Entities.Events;
 using Coevery.Projections.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -31,6 +32,7 @@ namespace Coevery.Projections.Controllers {
         private readonly IRepository<FilterRecord> _filterRepository;
         private readonly IRepository<FilterGroupRecord> _filterGroupRepository;
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
+        private readonly IEntityDataEvents _entityDataEvents;
 
         public EntityController(
             IContentManager iContentManager,
@@ -40,7 +42,8 @@ namespace Coevery.Projections.Controllers {
             ITokenizer tokenizer,
             IGridService gridService,
             IRepository<FilterRecord> filterRepository,
-            IRepository<FilterGroupRecord> filterGroupRepository) {
+            IRepository<FilterGroupRecord> filterGroupRepository,
+            IEntityDataEvents entityDataEvents) {
             _contentManager = iContentManager;
             Services = coeveryServices;
             _contentDefinitionExtension = contentDefinitionExtension;
@@ -49,6 +52,7 @@ namespace Coevery.Projections.Controllers {
             _gridService = gridService;
             _filterRepository = filterRepository;
             _filterGroupRepository = filterGroupRepository;
+            _entityDataEvents = entityDataEvents;
         }
 
         public ICoeveryServices Services { get; private set; }
@@ -102,12 +106,22 @@ namespace Coevery.Projections.Controllers {
             }
         }
 
-        public void Delete(string contentId) {
+        public HttpResponseMessage Delete(string contentId) {
             var idList = contentId.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+            string errorMessage = string.Empty;
             foreach (var idItem in idList) {
                 var contentItem = _contentManager.Get(int.Parse(idItem), VersionOptions.Latest);
+                var context = new DeletingEntityDataContext {ContentItem = contentItem};
+                _entityDataEvents.OnDeleting(context);
+                if (context.IsCancel) {
+                    errorMessage += context.ErrorMessage;
+                    continue;
+                }
                 _contentManager.Remove(contentItem);
             }
+            return errorMessage == string.Empty
+                ? Request.CreateResponse(HttpStatusCode.OK)
+                : Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
         }
 
         private IList<FilterRecord> CreateFilters(string entityName, ListQueryModel model, out string filterDescription) {
