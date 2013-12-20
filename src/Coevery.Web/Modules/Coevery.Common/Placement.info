@@ -8,12 +8,14 @@
     <Place Parts_DynamicEntity_Header="Header:1;Alternate=Parts_DynamicEntity_Header_Create" />
     <Place Parts_DynamicEntity_Actions="Actions:1;Alternate=Parts_DynamicEntity_Actions_Create" />
     <Place Parts_DynamicEntity_Layout="Content:1;Alternate=Parts_DynamicEntity_Layout_Create" />
+    <Place Content_SaveButton="-"/>
   </Match>
   
   <Match DisplayType="EditPage">
     <Place Parts_DynamicEntity_Header="Header:1;Alternate=Parts_DynamicEntity_Header_Edit" />
     <Place Parts_DynamicEntity_Actions="Actions:1;Alternate=Parts_DynamicEntity_Actions_Edit" />
     <Place Parts_DynamicEntity_Layout="Content:1;Alternate=Parts_DynamicEntity_Layout_Edit" />
+    <Place Content_SaveButton="-"/>
   </Match>
   
   <Place Parts_DynamicEntity_Header="Header:1" />

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Coevery.DisplayManagement.Shapes
+@{
     Model.Content.AdditionalParams = Model.AdditionalParams;
 }
 
@@ -13,3 +14,5 @@
     </div>
     @Display(Model.Content)
 </section>
+
+@Display(Model.Sidebar)
