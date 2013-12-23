@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Dynamic;
 using System.Globalization;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Web.Mvc;
-using Coevery.Data;
 using Coevery.Relationship.Fields;
-using Coevery.Relationship.Records;
 using Coevery.Relationship.Settings;
 using Coevery.Relationship.Models;
 using Coevery.ContentManagement;
@@ -16,29 +12,18 @@ using Coevery.Localization;
 using Coevery.Projections.Services;
 
 namespace Coevery.Relationship.Drivers {
-    public class StateObject : DynamicObject {
-        public override bool TryGetMember(
-            GetMemberBinder binder, out object result) {
-            result = binder.Name;
-            return true;
-        }
-    }
-
     public class ReferenceFieldDriver : ContentFieldDriver<ReferenceField> {
         private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
-        private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
         public ICoeveryServices Services { get; set; }
         private const string TemplateName = "Fields/Reference.Edit";
 
         public ReferenceFieldDriver(
             ICoeveryServices services,
             IContentManager contentManager,
-            IRepository<OneToManyRelationshipRecord> oneToManyRepository,
             IProjectionManager projectionManager) {
             Services = services;
             _contentManager = contentManager;
-            _oneToManyRepository = oneToManyRepository;
             _projectionManager = projectionManager;
             T = NullLocalizer.Instance;
         }
@@ -96,15 +81,6 @@ namespace Coevery.Relationship.Drivers {
             var viewModel = new ReferenceFieldViewModel();
             if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
-                var relation = _oneToManyRepository.Get(settings.RelationshipId);
-                if (relation.DeleteOption == (byte)OneToManyDeleteOption.CascadingDelete && viewModel.ContentId.HasValue) {
-                    var parent = _contentManager.Get(viewModel.ContentId.Value);
-                    var parentPart = parent.Parts.FirstOrDefault(p => p.PartDefinition.Name == parent.ContentType + "Part");
-                    if (parentPart == null) {
-                        throw new InstanceNotFoundException("Entity not found!");
-                    }
-                    //@todo: and cascade all delete orphan here
-                }
 
                 if (settings.IsUnique && viewModel.ContentId.HasValue) {
                     HandleUniqueValue(part, field, viewModel.ContentId, updater);
@@ -118,7 +94,7 @@ namespace Coevery.Relationship.Drivers {
         }
 
         protected override void Importing(ContentPart part, ReferenceField field, ImportContentContext context) {
-            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v), () => field.Value = (int?) null);
+            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v), () => field.Value = (int?)null);
         }
 
         protected override void Exporting(ContentPart part, ReferenceField field, ExportContentContext context) {
