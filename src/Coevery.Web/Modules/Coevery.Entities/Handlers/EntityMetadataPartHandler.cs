@@ -23,6 +23,7 @@ namespace Coevery.Entities.Handlers {
         private readonly ISchemaUpdateService _schemaUpdateService;
         private readonly IFieldEvents _fieldEvents;
         private readonly IContentDefinitionEditorEvents _contentDefinitionEditorEvents;
+        private readonly IEnumerable<IFieldGenerationProvider> _fieldGenerationProviders;
 
         public EntityMetadataPartHandler(
             IRepository<EntityMetadataRecord> entityMetadataRepository,
@@ -33,7 +34,8 @@ namespace Coevery.Entities.Handlers {
             IEntityEvents entityEvents,
             ISchemaUpdateService schemaUpdateService,
             IFieldEvents fieldEvents,
-            IContentDefinitionEditorEvents contentDefinitionEditorEvents) {
+            IContentDefinitionEditorEvents contentDefinitionEditorEvents,
+            IEnumerable<IFieldGenerationProvider> fieldGenerationProviders) {
             _fieldMetadataRepository = fieldMetadataRepository;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
@@ -42,6 +44,7 @@ namespace Coevery.Entities.Handlers {
             _schemaUpdateService = schemaUpdateService;
             _fieldEvents = fieldEvents;
             _contentDefinitionEditorEvents = contentDefinitionEditorEvents;
+            _fieldGenerationProviders = fieldGenerationProviders;
 
             Filters.Add(StorageFilter.For(entityMetadataRepository));
             OnVersioning<EntityMetadataPart>(OnVersioning);
@@ -88,9 +91,10 @@ namespace Coevery.Entities.Handlers {
 
             _schemaUpdateService.CreateTable(part.Name, context => {
                 foreach (var fieldMetadataRecord in part.FieldMetadataRecords) {
+                    var columnName = GetColumnName(fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
                     var length = GetMaxLength(fieldMetadataRecord.Settings);
                     Action<CreateColumnCommand> columnAction = x => x.WithLength(length);
-                    context.FieldColumn(fieldMetadataRecord.Name,
+                    context.FieldColumn(columnName,
                         fieldMetadataRecord.ContentFieldDefinitionRecord.Name, columnAction);
                 }
             });
@@ -124,7 +128,8 @@ namespace Coevery.Entities.Handlers {
                 else {
                     AddField(entity.Name, fieldMetadataRecord);
                     var length = GetMaxLength(fieldMetadataRecord.Settings);
-                    _schemaUpdateService.CreateColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
+                    var columnName = GetColumnName(fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
+                    _schemaUpdateService.CreateColumn(entity.Name, columnName, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
                 }
             }
 
@@ -139,7 +144,8 @@ namespace Coevery.Entities.Handlers {
                 record.Settings = _settingService.CompileSetting(settings);
 
                 var length = GetMaxLength(fieldMetadataRecord.Settings);
-                _schemaUpdateService.AlterColumn(entity.Name, fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
+                var columnName = GetColumnName(fieldMetadataRecord.Name, fieldMetadataRecord.ContentFieldDefinitionRecord.Name);
+                _schemaUpdateService.AlterColumn(entity.Name, columnName, fieldMetadataRecord.ContentFieldDefinitionRecord.Name, length);
             }
             _entityEvents.OnUpdating(entity.Name);
         }
@@ -178,6 +184,12 @@ namespace Coevery.Entities.Handlers {
             if (needEvent) {
                 _fieldEvents.OnCreated(entityName, field.Name, bool.Parse(settings["AddInLayout"]));
             }
+        }
+
+        private string GetColumnName(string fieldName, string fieldTypeName) {
+            return _fieldGenerationProviders
+                .Invoke(x => x.GenerateColumnName(fieldName, fieldTypeName), Logger)
+                .First(x => x != null);
         }
     }
 }

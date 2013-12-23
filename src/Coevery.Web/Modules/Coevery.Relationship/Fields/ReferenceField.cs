@@ -11,8 +11,8 @@ namespace Coevery.Relationship.Fields {
             get { return _contentItem; }
         }
 
-        public int? Value {
-            get { return Storage.Get<int?>(); }
+        public object Value {
+            get { return Storage.Get<object>(); }
             set { Storage.Set(value); }
         }
 

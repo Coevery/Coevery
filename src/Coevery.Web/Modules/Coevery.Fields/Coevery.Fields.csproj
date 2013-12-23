@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Controllers\FieldDependencyController.cs" />
     <Compile Include="Drivers\MultilineTextFieldDriver.cs" />
+    <Compile Include="DynamicTypeGeneration\TextFieldGenerationProvider.cs" />
     <Compile Include="Fields\MultilineTextField.cs" />
     <Compile Include="Projections\CurrencyFieldFormatProvider.cs" />
     <Compile Include="Projections\DateFieldFormatProvider.cs" />

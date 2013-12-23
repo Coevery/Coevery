@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Web.Mvc;
+using Coevery.Common.Extensions;
 using Coevery.Data;
 using Coevery.Relationship.Fields;
 using Coevery.Relationship.Records;
@@ -28,8 +29,9 @@ namespace Coevery.Relationship.Drivers {
         private readonly IContentManager _contentManager;
         private readonly IProjectionManager _projectionManager;
         private readonly IRepository<OneToManyRelationshipRecord> _oneToManyRepository;
-        public ICoeveryServices Services { get; set; }
         private const string TemplateName = "Fields/Reference.Edit";
+
+        public ICoeveryServices Services { get; set; }
 
         public ReferenceFieldDriver(
             ICoeveryServices services,
@@ -63,11 +65,11 @@ namespace Coevery.Relationship.Drivers {
 
         protected override DriverResult Display(ContentPart part, ReferenceField field, string displayType, dynamic shapeHelper) {
             var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
-            int? value = field.Value;
-            string title = value.HasValue
-                ? _contentManager.GetItemMetadata(field.ContentItem).DisplayText
-                : string.Empty;
-
+            //int? value = field.Value;
+            //string title = value.HasValue
+            //    ? _contentManager.GetItemMetadata(field.ContentItem).DisplayText
+            //    : string.Empty;
+            var title = string.Empty;
             return ContentShape("Fields_Reference", GetDifferentiator(field, part),
                 () => shapeHelper.Fields_Reference(DisplayAsLink: settings.DisplayAsLink, ContentField: field, Title: title));
         }
@@ -79,11 +81,11 @@ namespace Coevery.Relationship.Drivers {
                 .Select(c => new SelectListItem {
                     Text = Services.ContentManager.GetItemMetadata(c).DisplayText,
                     Value = c.Id.ToString(CultureInfo.InvariantCulture),
-                    Selected = field.Value == c.Id
+                    Selected = field.Value == c
                 }).ToList();
 
             var model = new ReferenceFieldViewModel {
-                ContentId = field.Value,
+                //ContentId = field.Value,
                 Field = field,
                 ItemList = new SelectList(contentItems, "Value", "Text", field.Value)
             };
@@ -97,14 +99,14 @@ namespace Coevery.Relationship.Drivers {
             if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null)) {
                 var settings = field.PartFieldDefinition.Settings.GetModel<ReferenceFieldSettings>();
                 var relation = _oneToManyRepository.Get(settings.RelationshipId);
-                if (relation.DeleteOption == (byte)OneToManyDeleteOption.CascadingDelete && viewModel.ContentId.HasValue) {
-                    var parent = _contentManager.Get(viewModel.ContentId.Value);
-                    var parentPart = parent.Parts.FirstOrDefault(p => p.PartDefinition.Name == parent.ContentType + "Part");
-                    if (parentPart == null) {
-                        throw new InstanceNotFoundException("Entity not found!");
-                    }
-                    //@todo: and cascade all delete orphan here
-                }
+                //if (relation.DeleteOption == (byte)OneToManyDeleteOption.CascadingDelete && viewModel.ContentId.HasValue) {
+                //    var parent = _contentManager.Get(viewModel.ContentId.Value);
+                //    var parentPart = parent.Parts.FirstOrDefault(p => p.PartDefinition.Name == parent.ContentType + "Part");
+                //    if (parentPart == null) {
+                //        throw new InstanceNotFoundException("Entity not found!");
+                //    }
+                //    //@todo: and cascade all delete orphan here
+                //}
 
                 if (settings.IsUnique && viewModel.ContentId.HasValue) {
                     HandleUniqueValue(part, field, viewModel.ContentId, updater);
@@ -112,17 +114,26 @@ namespace Coevery.Relationship.Drivers {
                 if (settings.Required && viewModel.ContentId <= 0) {
                     updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
                 }
-                field.Value = viewModel.ContentId;
+
+                if (viewModel.ContentId != null) {
+                    var t = _contentManager.Get(viewModel.ContentId.Value);
+                    string partName = relation.Relationship.PrimaryEntity.Name.ToPartName();
+                    var primaryPart = t.Parts.First(x => x.PartDefinition.Name == partName);
+                    var property = primaryPart.GetType().GetProperty("Record");
+                    var tt = property.GetValue(primaryPart, null);
+                    field.Value = tt;
+                }
+                //field.Value = viewModel.ContentId;
             }
             return Editor(part, field, shapeHelper);
         }
 
         protected override void Importing(ContentPart part, ReferenceField field, ImportContentContext context) {
-            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v), () => field.Value = (int?) null);
+            //context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Value", v => field.Value = int.Parse(v), () => field.Value = (int?)null);
         }
 
         protected override void Exporting(ContentPart part, ReferenceField field, ExportContentContext context) {
-            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value.HasValue ? field.Value.Value.ToString(CultureInfo.InvariantCulture) : String.Empty);
+            //context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Value", field.Value.HasValue ? field.Value.Value.ToString(CultureInfo.InvariantCulture) : String.Empty);
         }
 
         protected override void Describe(DescribeMembersContext context) {

@@ -98,6 +98,7 @@
     <Compile Include="Permissions.cs" />
     <Compile Include="Services\ClientRouteProvider.cs" />
     <Compile Include="Services\ContentDefinitionService.cs" />
+    <Compile Include="Services\IFieldGenerationProvider.cs" />
     <Compile Include="Services\IContentDefinitionService.cs" />
     <Compile Include="Services\IContentFieldFormatProvider.cs" />
     <Compile Include="Services\IContentFieldValueProvider.cs" />

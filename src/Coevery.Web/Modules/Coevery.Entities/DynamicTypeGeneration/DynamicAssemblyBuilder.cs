@@ -1,6 +1,7 @@
 ﻿using Coevery.Common.Events;
 using Coevery.Common.Extensions;
 using Coevery.Common.Providers;
+using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Core.Common.Drivers;
 using Coevery.Core.Common.Handlers;
 using System;
@@ -12,36 +13,42 @@ using Coevery.ContentManagement;
 using Coevery.ContentManagement.Drivers;
 using Coevery.ContentManagement.Records;
 using Coevery.Data;
+using Coevery.Entities.Services;
 using Coevery.FileSystems.VirtualPath;
 using Coevery.ContentManagement.Handlers;
+using Coevery.Logging;
 
-namespace Coevery.Entities.DynamicTypeGeneration {   
-
+namespace Coevery.Entities.DynamicTypeGeneration {
     public class DynamicAssemblyBuilder : IDynamicAssemblyBuilder {
         internal const string AssemblyName = "Coevery.DynamicTypes";
         private readonly IVirtualPathProvider _virtualPathProvider;
         private readonly IEnumerable<IContentFieldDriver> _contentFieldDrivers;
         private readonly IDynamicTypeGenerationEvents _dynamicTypeGenerationEvents;
         private readonly IContentDefinitionExtension _contentDefinitionExtension;
+        private readonly IEnumerable<IFieldGenerationProvider> _fieldGenerationProviders;
+        private readonly Dictionary<string, TypeBuilder> _typeBuilders = new Dictionary<string, TypeBuilder>();
 
         public DynamicAssemblyBuilder(
             IVirtualPathProvider virtualPathProvider,
             IEnumerable<IContentFieldDriver> contentFieldDrivers,
             IContentDefinitionExtension contentDefinitionExtension,
-            IDynamicTypeGenerationEvents dynamicTypeGenerationEvents) {
+            IDynamicTypeGenerationEvents dynamicTypeGenerationEvents,
+            IEnumerable<IFieldGenerationProvider> fieldGenerationProviders) {
             _virtualPathProvider = virtualPathProvider;
             _contentFieldDrivers = contentFieldDrivers;
             _dynamicTypeGenerationEvents = dynamicTypeGenerationEvents;
+            _fieldGenerationProviders = fieldGenerationProviders;
             _contentDefinitionExtension = contentDefinitionExtension;
+            Logger = NullLogger.Instance;
         }
+
+        public ILogger Logger { get; set; }
 
         public Type GetFieldType(string fieldNameType) {
             var drivers = _contentFieldDrivers.Where(x => x.GetFieldInfo().Any(fi => fi.FieldTypeName == fieldNameType)).ToList();
             Type defaultType = typeof(string);
             var membersContext = new DescribeMembersContext(
-                        (storageName, storageType, displayName, description) => {
-                            defaultType = storageType;
-                        });
+                (storageName, storageType, displayName, description) => { defaultType = storageType; });
             foreach (var driver in drivers) {
                 driver.Describe(membersContext);
             }
@@ -53,13 +60,8 @@ namespace Coevery.Entities.DynamicTypeGeneration {
             // except for those parts with the same name as a type (implicit type's part or a mistake)
             var userDefinedParts = _contentDefinitionExtension
                 .ListUserDefinedPartDefinitions()
-                .Select(cpd => new DynamicTypeDefinition {
-                    Name = cpd.Name.RemovePartSuffix(),
-                    Fields = cpd.Fields.Select(f => new DynamicFieldDefinition {
-                        Name = f.Name,
-                        Type = GetFieldType(f.FieldDefinition.Name)
-                    })
-                }).ToList();
+                .Where(x => x.Fields.Any())
+                .ToList();
 
             if (userDefinedParts.Any()) {
                 Build(userDefinedParts);
@@ -68,34 +70,43 @@ namespace Coevery.Entities.DynamicTypeGeneration {
             return false;
         }
 
-        public void Build(IEnumerable<DynamicTypeDefinition> typeDefinitions) {
-            var assemblyBuidler = BuildAssembly();
-            var moduleBuidler = BuildModule(assemblyBuidler);
+        public void Build(List<ContentPartDefinition> typeDefinitions) {
+            _typeBuilders.Clear();
+            var assemblyBuilder = BuildAssembly();
+            var moduleBuilder = BuildModule(assemblyBuilder);
             foreach (var definition in typeDefinitions) {
-                if (!definition.Fields.Any()) continue;
-                var typeBuidler = BuildType(definition, moduleBuidler);
-                var fieldBuilders = BuildFields(definition, typeBuidler).ToList();
-                BuildEmptyCtor(typeBuidler);
-                BuildCtor(typeBuidler, fieldBuilders);
-                BuildProperties(definition, typeBuidler, fieldBuilders, false);
-                Type type = typeBuidler.CreateType();
+                var typeBuilder = BuildType(definition.Name, moduleBuilder);
+                _typeBuilders.Add(definition.Name, typeBuilder);
+            }
 
-                var partTypeBuidler = BuildPartType(definition, moduleBuidler, type);
-                var partFieldBuilders = BuildFields(definition, partTypeBuidler).ToList();
-                BuildPartEmptyCtor(partTypeBuidler, type);
-                BuildCtor(partTypeBuidler, partFieldBuilders);
-                BuildProperties(definition, partTypeBuidler, partFieldBuilders, true);
+            foreach (var definition in typeDefinitions) {
+                var typeBuilder = _typeBuilders[definition.Name];
+                foreach (var field in definition.Fields) {
+                    ContentPartFieldDefinition localField = field;
+                    ContentPartDefinition localDefinition = definition;
+                    _fieldGenerationProviders.Invoke(x => x.GenerateProperty(typeBuilder, localDefinition, localField, _typeBuilders), Logger);
+                }
+            }
+
+            foreach (var definition in typeDefinitions) {
+                string typeName = definition.Name;
+                var typeBuilder = _typeBuilders[typeName];
+                Type type = typeBuilder.CreateType();
+
+                var partTypeBuidler = BuildPartType(typeName, moduleBuilder, type);
+                BuildPartProperties(partTypeBuidler, type);
                 var contentPartType = partTypeBuidler.CreateType();
 
-                var driverTypeBuidler = BuildDriverType(definition, moduleBuidler, contentPartType);
+                var driverTypeBuidler = BuildDriverType(typeName, moduleBuilder, contentPartType);
                 driverTypeBuidler.CreateType();
 
-                var handlerTypeBuidler = BuildHandlerType(definition, moduleBuidler, type);
+                var handlerTypeBuidler = BuildHandlerType(typeName, moduleBuilder, type);
                 BuildHandlerCtor(handlerTypeBuidler, type);
                 handlerTypeBuidler.CreateType();
             }
-            _dynamicTypeGenerationEvents.OnBuilded(moduleBuidler);
-            assemblyBuidler.Save(AssemblyName + ".dll");
+
+            _dynamicTypeGenerationEvents.OnBuilded(moduleBuilder);
+            assemblyBuilder.Save(AssemblyName + ".dll");
         }
 
         private static void BuildHandlerCtor(TypeBuilder typBuilder, Type type) {
@@ -106,14 +117,14 @@ namespace Coevery.Entities.DynamicTypeGeneration {
                 MethodAttributes.SpecialName |
                 MethodAttributes.RTSpecialName,
                 CallingConventions.Standard,
-                new Type[1] { paramGenericType });
+                new Type[1] {paramGenericType});
 
             var generator = ctorBuilder.GetILGenerator();
             generator.Emit(OpCodes.Ldarg_0);
             generator.Emit(OpCodes.Ldarg_1);
             Type contentType = typeof(DynamicContentsHandler<>);
             var genericContentType = contentType.MakeGenericType(type);
-            var baseCtorInfo = genericContentType.GetConstructor(new Type[1] { paramGenericType });
+            var baseCtorInfo = genericContentType.GetConstructor(new Type[1] {paramGenericType});
             generator.Emit(OpCodes.Call, baseCtorInfo);
             generator.Emit(OpCodes.Ret);
         }
@@ -135,12 +146,62 @@ namespace Coevery.Entities.DynamicTypeGeneration {
             generator.Emit(OpCodes.Ret);
         }
 
+        private static void BuildPartProperties(TypeBuilder partTypeBuilder, Type recordType) {
+            var properties = recordType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+            foreach (var propertyInfo in properties) {
+                var propertyName = propertyInfo.Name;
+                var propertyType = propertyInfo.PropertyType;
+
+                partTypeBuilder.DefineField("_" + propertyName, propertyType,
+                    FieldAttributes.Private | FieldAttributes.InitOnly);
+
+                var propBuilder = partTypeBuilder.DefineProperty(
+                    propertyName, PropertyAttributes.HasDefault, propertyType, Type.EmptyTypes);
+
+                // Build Get prop
+                var getMethBuilder = partTypeBuilder.DefineMethod(
+                    "get_" + propertyName, MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig,
+                    propertyType, Type.EmptyTypes);
+
+                var generator = getMethBuilder.GetILGenerator();
+                MethodInfo getRecord = partTypeBuilder.BaseType.GetProperty("Record").GetGetMethod();
+                MethodInfo getMi = partTypeBuilder.BaseType.GetProperty("Record").PropertyType.GetProperty(propertyName).GetGetMethod();
+                generator.DeclareLocal(propertyType);
+                generator.Emit(OpCodes.Ldarg_0);
+                generator.Emit(OpCodes.Call, getRecord);
+                generator.Emit(OpCodes.Callvirt, getMi);
+                generator.Emit(OpCodes.Stloc_0);
+                Label targetInstruction = generator.DefineLabel();
+                generator.Emit(OpCodes.Br_S, targetInstruction);
+                generator.MarkLabel(targetInstruction);
+                generator.Emit(OpCodes.Ldloc_0);
+                generator.Emit(OpCodes.Ret);
+
+                propBuilder.SetGetMethod(getMethBuilder);
+
+                // Build Set prop
+                var setMethBuilder = partTypeBuilder.DefineMethod(
+                    "set_" + propertyName, MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig,
+                    typeof(void), new[] {propertyType});
+
+                generator = setMethBuilder.GetILGenerator();
+                MethodInfo rmi = partTypeBuilder.BaseType.GetProperty("Record").GetGetMethod();
+                MethodInfo setMi = partTypeBuilder.BaseType.GetProperty("Record").PropertyType.GetProperty(propertyName).GetSetMethod();
+                generator.Emit(OpCodes.Ldarg_0);
+                generator.Emit(OpCodes.Call, rmi);
+                generator.Emit(OpCodes.Ldarg_1);
+                generator.Emit(OpCodes.Call, setMi);
+                generator.Emit(OpCodes.Ret);
+
+                propBuilder.SetSetMethod(setMethBuilder);
+            }
+        }
 
         private AssemblyBuilder BuildAssembly() {
             AppDomain aDomain = AppDomain.CurrentDomain;
 
             // Build the assembly
-            var asmName = new AssemblyName { Name = AssemblyName };
+            var asmName = new AssemblyName {Name = AssemblyName};
             var directory = GetAssemblyDirectory();
             var asmBuilder = aDomain.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.RunAndSave, directory);
             return asmBuilder;
@@ -159,76 +220,76 @@ namespace Coevery.Entities.DynamicTypeGeneration {
             return modBuilder;
         }
 
-        private static TypeBuilder BuildType(DynamicTypeDefinition definition, ModuleBuilder modBuilder) {
+        private static TypeBuilder BuildType(string name, ModuleBuilder modBuilder) {
             // Build the type
-            var typeName = string.Format("{0}.{1}.{2}PartRecord", AssemblyName, "Records", definition.Name);
+            var typeName = string.Format("{0}.{1}.{2}Record", AssemblyName, "Records", name);
             var typBuilder = modBuilder.DefineType(typeName,
-                                                   TypeAttributes.Public |
-                                                   TypeAttributes.Class |
-                                                   TypeAttributes.AutoClass |
-                                                   TypeAttributes.AnsiClass |
-                                                   TypeAttributes.BeforeFieldInit |
-                                                   TypeAttributes.AutoLayout, typeof(ContentPartVersionRecord));
+                TypeAttributes.Public |
+                TypeAttributes.Class |
+                TypeAttributes.AutoClass |
+                TypeAttributes.AnsiClass |
+                TypeAttributes.BeforeFieldInit |
+                TypeAttributes.AutoLayout, typeof(ContentPartVersionRecord));
             return typBuilder;
         }
 
-        private static TypeBuilder BuildPartType(DynamicTypeDefinition definition, ModuleBuilder modBuilder, Type type) {
+        private static TypeBuilder BuildPartType(string name, ModuleBuilder modBuilder, Type type) {
             // Build the type
-            var typeName = string.Format("{0}.{1}.{2}Part", AssemblyName, "Records", definition.Name);
+            var typeName = string.Format("{0}.{1}.{2}", AssemblyName, "Records", name);
             Type contentType = typeof(ContentPart<>);
             var genericContentType = contentType.MakeGenericType(type);
             var typBuilder = modBuilder.DefineType(typeName,
-                                                   TypeAttributes.Public |
-                                                   TypeAttributes.Class |
-                                                   TypeAttributes.AutoClass |
-                                                   TypeAttributes.AnsiClass |
-                                                   TypeAttributes.BeforeFieldInit |
-                                                   TypeAttributes.AutoLayout, genericContentType);
+                TypeAttributes.Public |
+                TypeAttributes.Class |
+                TypeAttributes.AutoClass |
+                TypeAttributes.AnsiClass |
+                TypeAttributes.BeforeFieldInit |
+                TypeAttributes.AutoLayout, genericContentType);
             return typBuilder;
         }
 
-        private static TypeBuilder BuildDriverType(DynamicTypeDefinition definition, ModuleBuilder modBuilder, Type type) {
+        private static TypeBuilder BuildDriverType(string name, ModuleBuilder modBuilder, Type type) {
             // Build the type
-            var typeName = string.Format("{0}.{1}.{2}PartDriver", AssemblyName, "Records", definition.Name);
+            var typeName = string.Format("{0}.{1}.{2}Driver", AssemblyName, "Records", name);
             Type driverType = typeof(DynamicContentsDriver<>);
             var genericContentType = driverType.MakeGenericType(type);
             var typBuilder = modBuilder.DefineType(typeName,
-                                                   TypeAttributes.Public |
-                                                   TypeAttributes.Class |
-                                                   TypeAttributes.AutoClass |
-                                                   TypeAttributes.AnsiClass |
-                                                   TypeAttributes.BeforeFieldInit |
-                                                   TypeAttributes.AutoLayout, genericContentType);
+                TypeAttributes.Public |
+                TypeAttributes.Class |
+                TypeAttributes.AutoClass |
+                TypeAttributes.AnsiClass |
+                TypeAttributes.BeforeFieldInit |
+                TypeAttributes.AutoLayout, genericContentType);
             return typBuilder;
         }
 
-        private static TypeBuilder BuildHandlerType(DynamicTypeDefinition definition, ModuleBuilder modBuilder, Type type) {
+        private static TypeBuilder BuildHandlerType(string name, ModuleBuilder modBuilder, Type type) {
             // Build the type
-            var typeName = string.Format("{0}.{1}.{2}PartHandler", AssemblyName, "Records", definition.Name);
+            var typeName = string.Format("{0}.{1}.{2}Handler", AssemblyName, "Records", name);
             Type contentType = typeof(DynamicContentsHandler<>);
             var genericContentType = contentType.MakeGenericType(type);
             var typBuilder = modBuilder.DefineType(typeName,
-                                                   TypeAttributes.Public |
-                                                   TypeAttributes.Class |
-                                                   TypeAttributes.AutoClass |
-                                                   TypeAttributes.AnsiClass |
-                                                   TypeAttributes.BeforeFieldInit |
-                                                   TypeAttributes.AutoLayout, genericContentType);
+                TypeAttributes.Public |
+                TypeAttributes.Class |
+                TypeAttributes.AutoClass |
+                TypeAttributes.AnsiClass |
+                TypeAttributes.BeforeFieldInit |
+                TypeAttributes.AutoLayout, genericContentType);
             return typBuilder;
         }
 
         private static IEnumerable<FieldBuilder> BuildFields(DynamicTypeDefinition definition, TypeBuilder typBuilder) {
             return definition.Fields.Select(field => typBuilder.DefineField("_" + field.Name, field.Type,
-                                                                            FieldAttributes.Private | FieldAttributes.InitOnly));
+                FieldAttributes.Private | FieldAttributes.InitOnly));
         }
 
         private static void BuildEmptyCtor(TypeBuilder typBuilder) {
             var ctorBuilder = typBuilder.DefineConstructor(
-              MethodAttributes.Public |
-              MethodAttributes.SpecialName |
-              MethodAttributes.RTSpecialName,
-              CallingConventions.Standard,
-              new Type[0]);
+                MethodAttributes.Public |
+                MethodAttributes.SpecialName |
+                MethodAttributes.RTSpecialName,
+                CallingConventions.Standard,
+                new Type[0]);
 
             var generator = ctorBuilder.GetILGenerator();
             generator.Emit(OpCodes.Ldarg_0);
@@ -238,7 +299,7 @@ namespace Coevery.Entities.DynamicTypeGeneration {
         }
 
         private static void BuildCtor(TypeBuilder typBuilder,
-                                      List<FieldBuilder> fieldBuilders) {
+            List<FieldBuilder> fieldBuilders) {
             Type[] ctorParams = fieldBuilders.Select(f => f.FieldType).ToArray();
             var ctorBuilder = typBuilder.DefineConstructor(
                 MethodAttributes.Public |
@@ -274,8 +335,8 @@ namespace Coevery.Entities.DynamicTypeGeneration {
         }
 
         private static void BuildProperties(DynamicTypeDefinition definition,
-                                            TypeBuilder typBuilder,
-                                            List<FieldBuilder> fieldBuilders, bool userParanet) {
+            TypeBuilder typBuilder,
+            List<FieldBuilder> fieldBuilders, bool userParanet) {
             var fields = definition.Fields.ToList();
             for (int i = 0; i < fields.Count; i++) {
                 var propBuilder = typBuilder.DefineProperty(
@@ -311,7 +372,7 @@ namespace Coevery.Entities.DynamicTypeGeneration {
                 // Build Set prop
                 var setMethBuilder = typBuilder.DefineMethod(
                     "set_" + fields[i].Name, MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig,
-                    typeof(void), new[] { fieldBuilders[i].FieldType });
+                    typeof(void), new[] {fieldBuilders[i].FieldType});
                 generator = setMethBuilder.GetILGenerator();
                 if (userParanet) {
                     MethodInfo rmi = typBuilder.BaseType.GetProperty("Record").GetGetMethod();

@@ -25,14 +25,14 @@ namespace Coevery.Entities.Extensions {
 
         public IEnumerable<ContentTypeDefinition> ListUserDefinedTypeDefinitions() {
             var metaEntities = _contentManager.Query<EntityMetadataPart>(VersionOptions.Latest)
-                                              .List();
+                .List();
             if (metaEntities == null || !metaEntities.Any()) {
                 return Enumerable.Empty<ContentTypeDefinition>();
             }
             return from type in _contentDefinitionManager.ListTypeDefinitions()
-                   from entity in metaEntities
-                   where entity.Name == type.Name
-                   select type;
+                from entity in metaEntities
+                where entity.Name == type.Name
+                select type;
         }
 
         public EntityNames GetEntityNames(string entityName) {
@@ -54,12 +54,10 @@ namespace Coevery.Entities.Extensions {
         public string GetEntityNameFromCollectionName(string collectionname, bool isDisplayName) {
             var entity = _contentDefinitionManager.ListTypeDefinitions().Where(type => {
                 var setting = type.Settings;
-                if (isDisplayName && setting.ContainsKey("CollectionDisplayName"))
-                {
+                if (isDisplayName && setting.ContainsKey("CollectionDisplayName")) {
                     return setting["CollectionDisplayName"] == collectionname;
                 }
-                if (!isDisplayName && setting.ContainsKey("CollectionName"))
-                {
+                if (!isDisplayName && setting.ContainsKey("CollectionName")) {
                     return setting["CollectionName"] == collectionname;
                 }
                 return false;
@@ -70,15 +68,13 @@ namespace Coevery.Entities.Extensions {
         public IEnumerable<ContentPartDefinition> ListUserDefinedPartDefinitions() {
             var types = ListUserDefinedTypeDefinitions();
             if (types == null || !types.Any()) {
-                return null;
+                return Enumerable.Empty<ContentPartDefinition>();
             }
-            var result = from type in types
-                         from partRelation in type.Parts
-                         let part = partRelation.PartDefinition
-                         where part.Name == type.Name.ToPartName()
-                         select part;
-            return result.Any() ? result : null;
+            return from type in types
+                from partRelation in type.Parts
+                let part = partRelation.PartDefinition
+                where part.Name == type.Name.ToPartName()
+                select part;
         }
-
     }
 }
