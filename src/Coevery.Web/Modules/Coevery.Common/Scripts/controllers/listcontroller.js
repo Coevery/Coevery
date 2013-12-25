@@ -79,14 +79,14 @@
                     });
                 };
 
-                $scope.Refresh = function () {
+                $scope.refresh = function () {
                     $scope.selectedItems = [];
                     $scope.getPagedDataAsync();
                 };
 
                 $scope.$on("grid.refresh", function (event) {
                     event.stopPropagation();
-                    $scope.Refresh();
+                    $scope.refresh();
                 });
                 
                 $scope.$on("version.change", function (event,arg) {
