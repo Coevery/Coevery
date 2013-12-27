@@ -45,10 +45,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\autofac\Autofac.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -76,18 +72,6 @@
     <ProjectReference Include="..\..\..\Coevery\Coevery.Framework.csproj">
       <Project>{2d1d92bb-4555-4cbe-8d0e-63563d6ce4c6}</Project>
       <Name>Coevery.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coevery.Common\Coevery.Common.csproj">
-      <Project>{9F68EB9E-D609-4DFA-85B6-1F642DB80E6D}</Project>
-      <Name>Coevery.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coevery.Forms\Coevery.Forms.csproj">
-      <Project>{642A49D7-8752-4177-80D6-BFBBCFAD3DE0}</Project>
-      <Name>Coevery.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Coevery.OptionSet\Coevery.OptionSet.csproj">
-      <Project>{816560FF-2267-4CA1-8E24-635431F8D8C8}</Project>
-      <Name>Coevery.OptionSet</Name>
     </ProjectReference>
     <ProjectReference Include="..\Coevery.Projections\Coevery.Projections.csproj">
       <Project>{c8ea0d61-05ba-404f-b658-f75db9de2d61}</Project>

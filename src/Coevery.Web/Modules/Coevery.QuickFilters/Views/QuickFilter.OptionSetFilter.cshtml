@@ -6,31 +6,26 @@
 @if (!isMultiple) {
     @Html.Hidden("Operator", "MatchesAny")
     <select id="@guid" name="Value" class="hide" data-style="btn-small" 
-        data-ng-model="@type.Replace(".", string.Empty)" data-ng-change="applyFilter()">
+            data-ng-model="@type.Replace(".", string.Empty)" data-ng-change="applyFilter()">
         <option value="">&nbsp;</option>
-        @foreach (var item in Model.ListItems) {
-            <option value="@item.Value">@item.Text</option>
-        }
     </select>
-
-    <script>
-        $(function() {
-            $('#@guid').selectpicker();
-        });
-    </script>
 }
 else {
     @Html.Hidden("Operator", "MatchesAny")
     <select data-ng-model="@type.Replace(".", string.Empty)" data-ng-change="applyFilter()"
-         id="@guid" name="Value" class="hide" data-live-search="true" data-style="btn-small" multiple>
-        @foreach (var item in Model.ListItems) {
-            <option value="@item.Value">@item.Text</option>
-        }
+            id="@guid" name="Value" class="hide" data-live-search="true" data-style="btn-small" multiple>
     </select>
-
-    <script>
-        $(function() {
-            $('#@guid').selectpicker();
-        });
-    </script>
 }
+<script>
+    $(function() {
+        var element = $('#@guid');
+        element.selectpicker();
+        var url = 'api/Projections/OptionSet/@Model.PartName?fieldName=@Model.FieldName';
+        $.get(url).then(function(response) {
+            $.each(response, function() {
+                element.append('<option value="' + this.Id + '">' + this.DisplayText + '</option>');
+            });
+            element.selectpicker('refresh');
+        });
+    });
+</script>
