@@ -1,9 +1,0 @@
-﻿Name: Coevery.QuickFilters
-AntiForgery: enabled
-Author: The Coevery Team
-Website: http://coeveryproject.net
-Version: 1.0
-CoeveryVersion: 1.0
-Description: Provide the quick filters
-Category: Coevery
-Dependencies: Coevery.Projections

@@ -12,8 +12,8 @@ angular.module('coevery.filter', [])
                     : { Type: scope.fieldFilters[0].Type, Category: scope.fieldFilters[0].Category, State: {} };
 
                 scope.args = args;
-                element.data('Type', args.Type);
-                element.data('Category', args.Category);
+                element.data('type', args.Type);
+                element.data('category', args.Category);
                 
                 var fieldFilter;
                 $.each(scope.fieldFilters, function() {
@@ -35,8 +35,8 @@ angular.module('coevery.filter', [])
                     editor.empty();
                     scope.fieldTitle = field.DisplayName;
                     scope.args.Type = field.Type;
-                    element.data('Type', field.Type);
-                    element.data('Category', field.Category);
+                    element.data('type', field.Type);
+                    element.data('category', field.Category);
                     editor.append($('script[type="text/ng-template"]#' + field.FormName).text());
                     $compile(editor.children())(scope);
                 };

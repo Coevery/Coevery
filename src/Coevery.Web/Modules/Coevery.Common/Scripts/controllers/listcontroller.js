@@ -301,8 +301,8 @@
                     $.each(forms, function () {
                         var form = $(this);
                         filters.push({
-                            Type: form.data('Type'),
-                            Category: form.data('Category'),
+                            Type: form.data('type'),
+                            Category: form.data('category'),
                             FormData: form.serializeArray()
                         });
                     });
