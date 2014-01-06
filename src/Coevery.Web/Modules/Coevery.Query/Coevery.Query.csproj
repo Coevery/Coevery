@@ -45,9 +45,17 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=1.3.0.733, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\nhibernate\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\nhibernate\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -84,10 +92,15 @@
       <Project>{6F759635-13D7-4E94-BCC9-80445D63F117}</Project>
       <Name>Coevery.Tokens</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Coevery.Users\Coevery.Users.csproj">
+      <Project>{79aed36e-abd0-4747-93d3-8722b042454b}</Project>
+      <Name>Coevery.Users</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Migrations.cs" />
+    <Compile Include="Models\ProjectionAutoMappingOverride.cs" />
     <Compile Include="Models\UserProjectionRecord.cs" />
     <Compile Include="Providers\SecurityQueryCriteriaProvider.cs" />
     <Compile Include="Providers\FormQueryCriteriaProvider.cs" />
