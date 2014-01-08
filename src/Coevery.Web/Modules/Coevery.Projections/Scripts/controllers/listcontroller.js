@@ -27,7 +27,7 @@ define(['core/app/detourService',
                             $state.transitionTo('EntityDetail.Fields', { Id: $stateParams.Id });
                         };
 
-                        $scope.delete = function(id) {
+                        $scope['delete'] = function (id) {
                             var deleteView = id || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                             if (!deleteView) return;
                             projectionDataService.delete({ Id: deleteView }, function() {

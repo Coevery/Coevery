@@ -23,7 +23,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     colModel: fieldColumnDefs
                 };
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
-                $scope.delete = function() {
+                $scope['delete'] = function () {
                     var deleteField = $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!deleteField) return;
                     fieldDataService.delete({ name: deleteField, entityName: entityName }, function() {

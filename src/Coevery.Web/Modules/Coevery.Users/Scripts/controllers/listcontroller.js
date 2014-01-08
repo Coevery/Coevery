@@ -62,7 +62,7 @@ define(['core/app/detourService', 'Modules/Coevery.Users/Scripts/services/userda
                     });
                 };
 
-                $scope.delete = function() {
+                $scope['delete'] = function () {
                     var id = $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!id) return;
                     userDataService.delete({ id: id }, function() {

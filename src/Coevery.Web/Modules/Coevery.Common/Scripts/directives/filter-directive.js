@@ -41,7 +41,7 @@ angular.module('coevery.filter', [])
                     $compile(editor.children())(scope);
                 };
 
-                scope.delete = function() {
+                scope['delete'] = function () {
                     element.remove();
                 };
             }
