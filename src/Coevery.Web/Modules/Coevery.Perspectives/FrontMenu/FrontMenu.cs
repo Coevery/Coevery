@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using Coevery.Common.Extensions;
 using Coevery.Common.Models;
+using Coevery.Core.Contents;
 using Coevery.Core.Navigation.Models;
 using Coevery.Core.Navigation.Services;
 using Coevery.Core.Navigation.ViewModels;
-using Coevery.Core.Title.Models;
 using Coevery.Localization;
 using Coevery.Perspectives.Models;
+using Coevery.Security.Permissions;
 using Coevery.UI;
 using Coevery.UI.Navigation;
 using Coevery.ContentManagement;
@@ -49,7 +50,7 @@ namespace Coevery.Perspectives.FrontMenu {
                             var subMenus = _menuService.GetMenuParts(c.Id)
                                 .OrderBy(menuPartEntry => menuPartEntry.MenuPosition, new FlatPositionComparer()).ToList();
                             var childMenus = subMenus.Where(menuPartEntry =>
-                                menuPartEntry.MenuPosition.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).Length == 1)
+                                menuPartEntry.MenuPosition.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries).Length == 1)
                                 .ToList();
                             foreach (var childMenu in childMenus) {
                                 AddChildMenuItem(childMenu, url, subMenus, ref menu);
@@ -59,7 +60,7 @@ namespace Coevery.Perspectives.FrontMenu {
         }
 
         private static int GetLevel(string position) {
-            var orderList = position.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            var orderList = position.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
             return orderList.Length;
         }
 
@@ -69,32 +70,44 @@ namespace Coevery.Perspectives.FrontMenu {
         }
 
         private void AddChildMenuItem(MenuPart childMenu, string baseUrl, IEnumerable<MenuPart> subMenuParts, ref NavigationItemBuilder builder) {
-            var subMenuCotent = childMenu;
+            var subMenuContent = childMenu;
             var menuItemEntity = CreateMenuItemEntries(childMenu, baseUrl);
-            Action<NavigationItemBuilder> addChildrenAction = item => {
-                item.Url(menuItemEntity.Url)
-                    .Content(subMenuCotent)
-                    .IdHint(subMenuCotent.Id.ToString(CultureInfo.InvariantCulture));
-                var grandChildMenus = GetChildMenuParts(subMenuCotent.MenuPosition, subMenuParts);
-                if (grandChildMenus == null) {
-                    return;
-                }
-                foreach (var grandChildMenu in grandChildMenus) {
-                    AddChildMenuItem(grandChildMenu, baseUrl, subMenuParts, ref item);
-                }
-            };
+
             if (!childMenu.Is<ModuleMenuItemPart>()) {
-                builder.Add(T(menuItemEntity.Text), menuItemEntity.Position, addChildrenAction);
-            } else {
+                builder.Add(T(menuItemEntity.Text), menuItemEntity.Position,
+                    item => Build(subMenuContent, menuItemEntity, baseUrl, subMenuParts, item));
+            }
+            else {
                 var moduleMenuItem = childMenu.As<ModuleMenuItemPart>();
-                builder.Add(T(menuItemEntity.Text), menuItemEntity.Position, addChildrenAction,
-                    new List<string> { moduleMenuItem.IconClass });
+                var typeDefinition = Services.ContentManager.New(moduleMenuItem.ContentTypeDefinitionRecord.Name).TypeDefinition;
+                var permission = DynamicPermissions.CreateDynamicPermission(DynamicPermissions.PermissionTemplates[Permissions.ViewContent.Name], typeDefinition);
+                builder.Add(T(menuItemEntity.Text), menuItemEntity.Position,
+                    item => Build(subMenuContent, menuItemEntity, baseUrl, subMenuParts, item, permission),
+                    new List<string> {moduleMenuItem.IconClass});
+            }
+        }
+
+        private void Build(MenuPart subMenuContent, MenuItemEntry menuItemEntity, string baseUrl, IEnumerable<MenuPart> subMenuParts, NavigationItemBuilder item, Permission permission = null) {
+            item.Url(menuItemEntity.Url)
+                .Content(subMenuContent)
+                .IdHint(subMenuContent.Id.ToString(CultureInfo.InvariantCulture));
+
+            if (permission != null) {
+                item.Permission(permission);
+            }
+
+            var grandChildMenus = GetChildMenuParts(subMenuContent.MenuPosition, subMenuParts);
+            if (grandChildMenus == null) {
+                return;
+            }
+            foreach (var grandChildMenu in grandChildMenus) {
+                AddChildMenuItem(grandChildMenu, baseUrl, subMenuParts, ref item);
             }
         }
 
         private MenuItemEntry CreateMenuItemEntries(MenuPart menuPart, string parentUrl) {
             string urlFormat = parentUrl + "/{0}";
-            string url="";
+            string url = "";
 
             if (menuPart.Is<ModuleMenuItemPart>()) {
                 var urlName = _contentDefinitionExtension.GetEntityNames(
@@ -102,7 +115,7 @@ namespace Coevery.Perspectives.FrontMenu {
                 url = string.Format(urlFormat, urlName);
             }
                 //@todo: add process for other category of navigation item
-            else if(menuPart.Is<MenuItemPart>()){
+            else if (menuPart.Is<MenuItemPart>()) {
                 url = menuPart.As<MenuItemPart>().Url;
             }
 
