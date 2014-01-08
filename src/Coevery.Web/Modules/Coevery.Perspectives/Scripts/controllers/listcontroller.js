@@ -25,7 +25,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
           gridOptions.multiselect = false;
           $scope.gridOptions = gridOptions;
 
-          $scope.delete = function (id) {
+          $scope['delete'] = function (id) {
               //$scope.perspectiveId = id;
               perspectiveDataService.delete({ id: id }, function () {
                   $scope.getAllPerspective();

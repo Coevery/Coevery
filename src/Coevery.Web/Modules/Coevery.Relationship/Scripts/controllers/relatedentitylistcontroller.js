@@ -76,7 +76,7 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
               $scope.getPagedDataAsync();
           };
 
-          $rootScope.delete = function (id) {
+          $rootScope['delete'] = function (id) {
               var deleteRelationship = id || $scope.selectedItems.length > 0 ? $scope.selectedItems : null;
               if (!deleteRelationship) {
                   logger.error('No data selected.');

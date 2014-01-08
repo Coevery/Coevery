@@ -33,7 +33,7 @@ angular.module('coevery.common', [])
                     });
                 }
 
-                scope.delete = function(event) {
+                scope['delete'] = function (event) {
                     $(modal).modal('hide');
                     var fn = $parse('$parent.' + scope.deleteAction);
                     fn(scope, { $event: event });

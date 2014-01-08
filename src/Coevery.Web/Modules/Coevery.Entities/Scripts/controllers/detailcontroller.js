@@ -19,7 +19,7 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                     $state.transitionTo('EntityEdit', { Id: $stateParams.Id });
                 };
 
-                $scope.delete = function (id) {
+                $scope['delete'] = function (id) {
                     entityDataService.delete({ name: id }, function () {
                         $state.transitionTo('EntityList');
                         logger.success("Delete the entity successful.");

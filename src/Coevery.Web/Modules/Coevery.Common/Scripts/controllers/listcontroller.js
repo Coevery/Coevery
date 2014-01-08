@@ -128,7 +128,7 @@
 
 
                 /*Grid methods*/
-                $scope.delete = function (id) {
+                $scope['delete'] = function (id) {
                     var deleteRelationship = id || ($scope.selectedItems.length > 0 ? $scope.selectedItems : null);
 
                     if (!deleteRelationship) {

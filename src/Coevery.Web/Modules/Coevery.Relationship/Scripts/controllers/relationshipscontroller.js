@@ -58,7 +58,7 @@ define(['core/app/detourService'], function (detour) {
                         }
                     });
                 };
-                $scope.delete = function (contentId) {
+                $scope['delete'] = function (contentId) {
                     var deleteRelationship = contentId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!deleteRelationship) return;
                     

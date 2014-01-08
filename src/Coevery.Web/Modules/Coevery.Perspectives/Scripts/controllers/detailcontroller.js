@@ -99,7 +99,7 @@ define(['core/app/detourService',
                             });
                         };
 
-                        $scope.delete = function (id,type) {
+                        $scope['delete'] = function (id, type) {
                             perspectiveDataService.delete({ Id: id }, function () {
                                 $scope.getAllNavigationdata();
                                 logger.success($i18next('Delete the navigation successful.'));

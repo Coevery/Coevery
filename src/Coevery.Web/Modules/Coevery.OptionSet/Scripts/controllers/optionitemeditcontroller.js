@@ -84,7 +84,7 @@ define(['core/app/detourService'], function(detour) {
                         });
                 }
 
-                $scope.delete = function (itemId) {
+                $scope['delete'] = function (itemId) {
                     var deleteItem = itemId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!deleteItem) return;
                     optionItemDataService.delete({ Id: deleteItem }, function () {
