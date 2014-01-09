@@ -19,7 +19,7 @@ namespace Coevery.Projections.Services {
         PropertyDescriptor GetProperty(string category, string type);
 
         IEnumerable<ContentItem> GetContentItems(int queryId, int skip = 0, int count = 0, string contentTypeName = null);
-        int GetCount(int queryId);
+        int GetCount(int queryId, string contentTypeName = null);
     }
 
 }

@@ -11,11 +11,9 @@ using Coevery.Projections.Descriptors.Filter;
 using Coevery.Projections.Descriptors.Layout;
 using Coevery.Projections.Descriptors.SortCriterion;
 using Coevery.Projections.Models;
-using Coevery.Tokens;
 
 namespace Coevery.Projections.Services {
     public class ProjectionManager : IProjectionManager{
-        private readonly ITokenizer _tokenizer;
         private readonly IEnumerable<IFilterProvider> _filterProviders;
         private readonly IEnumerable<ISortCriterionProvider> _sortCriterionProviders;
         private readonly IEnumerable<ILayoutProvider> _layoutProviders;
@@ -24,16 +22,13 @@ namespace Coevery.Projections.Services {
         private readonly IRepository<QueryPartRecord> _queryRepository;
         private readonly IEnumerable<IQueryCriteriaProvider> _queryCriteriaProviders;
 
-        public ProjectionManager(
-            ITokenizer tokenizer,
-            IEnumerable<IFilterProvider> filterProviders,
+        public ProjectionManager(IEnumerable<IFilterProvider> filterProviders,
             IEnumerable<ISortCriterionProvider> sortCriterionProviders,
             IEnumerable<ILayoutProvider> layoutProviders,
             IEnumerable<IPropertyProvider> propertyProviders,
             IContentManager contentManager,
             IRepository<QueryPartRecord> queryRepository, 
             IEnumerable<IQueryCriteriaProvider> queryCriteriaProviders) {
-            _tokenizer = tokenizer;
             _filterProviders = filterProviders;
             _sortCriterionProviders = sortCriterionProviders;
             _layoutProviders = layoutProviders;
@@ -106,7 +101,7 @@ namespace Coevery.Projections.Services {
                 .FirstOrDefault(x => x.Category == category && x.Type == type);
         }
 
-        public int GetCount(int queryId) {
+        public int GetCount(int queryId, string contentTypeName = null) {
 
             var queryRecord = _queryRepository.Get(queryId);
 
@@ -116,8 +111,7 @@ namespace Coevery.Projections.Services {
 
             // aggregate the result for each group query
 
-            return GetContentQueries(queryRecord, Enumerable.Empty<SortCriterionRecord>())
-                .Sum(contentQuery => contentQuery.Count());
+            return GetContentQuery(queryRecord, contentTypeName).Count();
         }
 
         public IEnumerable<ContentItem> GetContentItems(int queryId, int skip = 0, int count = 0, string contentTypeName = null) {
@@ -129,19 +123,7 @@ namespace Coevery.Projections.Services {
                 throw new ArgumentException("queryId");
             }
 
-            var contentQuery = _contentManager.HqlQuery().ForVersion(VersionOptions.Published);
-
-            foreach (var criteriaProvider in _queryCriteriaProviders) {
-                var context = new QueryContext {
-                    Query = contentQuery,
-                    QueryPartRecord = queryRecord,
-                    ContentTypeName = contentTypeName
-                };
-
-                criteriaProvider.Apply(context);
-
-                contentQuery = context.Query;
-            }
+            var contentQuery = GetContentQuery(queryRecord, contentTypeName);
 
             // iterate over each sort criteria to apply the alterations to the query object
             foreach (var sortCriterion in queryRecord.SortCriteria) {
@@ -170,71 +152,22 @@ namespace Coevery.Projections.Services {
             return contentQuery.Slice(skip, count);
         }
 
-        public IEnumerable<IHqlQuery> GetContentQueries(QueryPartRecord queryRecord, IEnumerable<SortCriterionRecord> sortCriteria) {
-            var availableFilters = DescribeFilters().ToList();
-            var availableSortCriteria = DescribeSortCriteria().ToList();
+        public IHqlQuery GetContentQuery(QueryPartRecord queryRecord, string contentTypeName) {
+            var contentQuery = _contentManager.HqlQuery().ForVersion(VersionOptions.Published);
+            
+            foreach (var criteriaProvider in _queryCriteriaProviders) {
+                var context = new QueryContext {
+                    Query = contentQuery,
+                    QueryPartRecord = queryRecord,
+                    ContentTypeName = contentTypeName
+                };
 
-            // pre-executing all groups 
-            foreach (var group in queryRecord.FilterGroups) {
+                criteriaProvider.Apply(context);
 
-                var contentQuery = _contentManager.HqlQuery().ForVersion(VersionOptions.Published);
+                contentQuery = context.Query;
+            }
 
-                // iterate over each filter to apply the alterations to the query object
-                foreach (var filter in group.Filters) {
-                    var tokenizedState = _tokenizer.Replace(filter.State, new Dictionary<string, object>());
-                    var filterContext = new FilterContext {
-                        Query = contentQuery,
-                        State = FormParametersHelper.ToDynamic(tokenizedState)
-                    };
-
-                    string category = filter.Category;
-                    string type = filter.Type;
-
-                    // look for the specific filter component
-                    var descriptor = availableFilters
-                        .SelectMany(x => x.Descriptors)
-                        .FirstOrDefault(x => x.Category == category && x.Type == type);
-
-                    // ignore unfound descriptors
-                    if (descriptor == null) {
-                        continue;
-                    }
-
-                    // apply alteration
-                    descriptor.Filter(filterContext);
-
-                    contentQuery = filterContext.Query;
-                }
-
-                // iterate over each sort criteria to apply the alterations to the query object
-                foreach (var sortCriterion in sortCriteria) {
-                    var sortCriterionContext = new SortCriterionContext {
-                        Query = contentQuery,
-                        State = FormParametersHelper.ToDynamic(sortCriterion.State)
-                    };
-
-                    string category = sortCriterion.Category;
-                    string type = sortCriterion.Type;
-
-                    // look for the specific filter component
-                    var descriptor = availableSortCriteria
-                        .SelectMany(x => x.Descriptors)
-                        .FirstOrDefault(x => x.Category == category && x.Type == type);
-
-                    // ignore unfound descriptors
-                    if (descriptor == null) {
-                        continue;
-                    }
-
-                    // apply alteration
-                    descriptor.Sort(sortCriterionContext);
-
-                    contentQuery = sortCriterionContext.Query;
-                }
-
-
-                yield return contentQuery;
-            }            
+            return contentQuery;
         }
     }
 }
