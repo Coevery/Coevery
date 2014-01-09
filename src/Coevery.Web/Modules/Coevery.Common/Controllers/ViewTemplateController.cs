@@ -62,7 +62,11 @@ namespace Coevery.Common.Controllers {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var typeName = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
-            var contentItem = Services.ContentManager.Query("ListViewPage")
+            var contentItem = Services.ContentManager.New(typeName);
+            if (!Services.Authorizer.Authorize(Permissions.ViewContent, contentItem, T("Cannot view content"))) {
+                return new HttpUnauthorizedResult();
+            }
+            contentItem = Services.ContentManager.Query("ListViewPage")
                 .ForVersion(VersionOptions.Latest).List().FirstOrDefault(item => {
                     var listViewPart = item.Parts.FirstOrDefault(part => part.PartDefinition.Name == "ListViewPart");
                     if (listViewPart == null) {
