@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
 using System.Linq;
+using Coevery.Common.Extensions;
 using Coevery.Entities.Services;
 using Coevery.Relationship.Records;
 using Coevery.Relationship.Services;
@@ -26,9 +25,10 @@ namespace Coevery.Relationship.Drivers {
             if (dynamicParts.Any()) {
                 string contentType = part.ContentItem.ContentType;
                 var relationships = GetRelationships(contentType).ToList();
-                if (relationships.Any())
+                if (relationships.Any()) {
                     return ContentShape("RelatedEntityList",
                         () => shapeHelper.RelatedEntityList(Relationships: relationships));
+                }
             }
 
             return null;
@@ -47,9 +47,9 @@ namespace Coevery.Relationship.Drivers {
                     if (oneToMany.ShowRelatedList) {
                         yield return new RelatedEntityViewModel {
                             RelationId = _relationshipService.GetReferenceField(record.RelatedEntity.Name, record.Name),
-                            RelationType = "OneToMany",
                             Label = oneToMany.RelatedListLabel,
                             RelatedEntityName = _settingService.ParseSetting(record.RelatedEntity.Settings)["CollectionName"],
+                            RelatedPartName = record.RelatedEntity.Name.ToPartName(),
                             ProjectionId = oneToMany.RelatedListProjection.Id
                         };
                     }
@@ -65,7 +65,6 @@ namespace Coevery.Relationship.Drivers {
                     if (showList) {
                         yield return new RelatedEntityViewModel {
                             RelationId = record.Name,
-                            RelationType = "ManyToMany",
                             Label = label,
                             RelatedEntityName = relatedEntityName,
                             ProjectionId = projectionId

@@ -38,6 +38,7 @@ namespace Coevery.Projections.Controllers {
                 foreach (var filterRecord in entityFilterRecord.FilterGroupRecord.Filters) {
                     var filter = new JObject();
                     filter["Type"] = filterRecord.Type;
+                    filter["Category"] = filterRecord.Category;
                     filter["State"] = FormParametersHelper.ToDynamic(filterRecord.State);
                     filters.Add(filter);
                 }
@@ -63,7 +64,7 @@ namespace Coevery.Projections.Controllers {
                     continue;
                 }
                 var record = new FilterRecord {
-                    Category = id.ToPartName() + "ContentFields",
+                    Category = filter.Category,
                     Type = filter.Type,
                 };
                 var dictionary = new Dictionary<string, string>();

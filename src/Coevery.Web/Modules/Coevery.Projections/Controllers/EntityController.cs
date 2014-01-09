@@ -66,45 +66,42 @@ namespace Coevery.Projections.Controllers {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
             id = _contentDefinitionExtension.GetEntityNameFromCollectionName(id);
-            string filterDescription = null;
 
-            return GetFilteredRecords(id, part, out filterDescription, model, p => {
-                _gridService.GenerateSortCriteria(id, model.Sidx, model.Sord, p.Record.QueryPartRecord.Id);
-                var totalRecords = _projectionManager.GetCount(p.Record.QueryPartRecord.Id);
-                var pageSize = model.Rows;
-                var totalPages = (int)Math.Ceiling((float)totalRecords / (float)pageSize);
-                var pager = new Pager(Services.WorkContext.CurrentSite, model.Page, pageSize);
-                var records = GetLayoutComponents(p, pager.GetStartIndex(), pager.PageSize);
+            _gridService.GenerateSortCriteria(id, model.Sidx, model.Sord, part.Record.QueryPartRecord.Id);
+            var totalRecords = _projectionManager.GetCount(part.Record.QueryPartRecord.Id);
+            var pageSize = model.Rows;
+            var totalPages = (int) Math.Ceiling((float) totalRecords / (float) pageSize);
+            var pager = new Pager(Services.WorkContext.CurrentSite, model.Page, pageSize);
+            var records = GetLayoutComponents(part, pager.GetStartIndex(), pager.PageSize);
 
-                return new {
-                    totalPages = totalPages,
-                    page = model.Page,
-                    totalRecords = totalRecords,
-                    rows = records,
-                    filterDescription = filterDescription
-                };
-            });
+            return new {
+                totalPages = totalPages,
+                page = model.Page,
+                totalRecords = totalRecords,
+                rows = records,
+                //filterDescription = string.Empty
+            };
         }
 
-        private object GetFilteredRecords(string id, ProjectionPart part, out string filterDescription, ListQueryModel model, Func<ProjectionPart, object> query) {
-            model.Filters = model.Filters ?? new FilterData[] {};
+        //private object GetFilteredRecords(string id, ProjectionPart part, out string filterDescription, ListQueryModel model, Func<ProjectionPart, object> query) {
+        //    model.Filters = model.Filters ?? new FilterData[] {};
 
-            var filterRecords = CreateFilters(id, model, out filterDescription);
-            var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
-            filterRecords.ForEach(filters.Add);
-            try {
-                return query(part);
-            }
+        //    var filterRecords = CreateFilters(id, model, out filterDescription);
+        //    var filters = part.Record.QueryPartRecord.FilterGroups.First().Filters;
+        //    filterRecords.ForEach(filters.Add);
+        //    try {
+        //        return query(part);
+        //    }
 
-            finally {
-                foreach (var record in filterRecords) {
-                    filters.Remove(record);
-                    if (model.FilterGroupId == 0) {
-                        _filterRepository.Delete(record);
-                    }
-                }
-            }
-        }
+        //    finally {
+        //        foreach (var record in filterRecords) {
+        //            filters.Remove(record);
+        //            if (model.FilterGroupId == 0) {
+        //                _filterRepository.Delete(record);
+        //            }
+        //        }
+        //    }
+        //}
 
         public HttpResponseMessage Delete(string contentId) {
             var idList = contentId.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
@@ -124,60 +121,60 @@ namespace Coevery.Projections.Controllers {
                 : Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
         }
 
-        private IList<FilterRecord> CreateFilters(string entityName, ListQueryModel model, out string filterDescription) {
-            IList<FilterRecord> filterRecords;
-            filterDescription = string.Empty;
-            if (model.FilterGroupId == 0) {
-                var allDescriptors = _projectionManager.DescribeFilters()
-                    .SelectMany(x => x.Descriptors).ToList();
-                filterRecords = new List<FilterRecord>();
-                if (model.IsRelationList) {
-                    if (model.RelationType == "OneToMany") {
-                        var settings = new Dictionary<string, string> {
-                            {"Operator", "MatchesAny"},
-                            {"Value", model.CurrentItem.ToString("D")}
-                        };
-                        string category = entityName.ToPartName() + "ContentFields";
-                        var relationFilter = new FilterRecord {
-                            Category = category,
-                            Type = entityName.ToPartName() + "." + model.RelationId + ".",
-                            State = FormParametersHelper.ToString(settings),
-                            Description = "Only show entries related to current item."
-                        };
-                        filterRecords.Add(relationFilter);
-                        var descriptor = allDescriptors.First(x => x.Category == category && x.Type == relationFilter.Type);
-                        filterDescription += descriptor.Display(new FilterContext {State = FormParametersHelper.ToDynamic(relationFilter.State)}).Text;
-                    }
-                }
+        //private IList<FilterRecord> CreateFilters(string entityName, ListQueryModel model, out string filterDescription) {
+        //    IList<FilterRecord> filterRecords;
+        //    filterDescription = string.Empty;
+        //    if (model.FilterGroupId == 0) {
+        //        var allDescriptors = _projectionManager.DescribeFilters()
+        //            .SelectMany(x => x.Descriptors).ToList();
+        //        filterRecords = new List<FilterRecord>();
+        //        if (model.IsRelationList) {
+        //            if (model.RelationType == "OneToMany") {
+        //                var settings = new Dictionary<string, string> {
+        //                    {"Operator", "MatchesAny"},
+        //                    {"Value", model.CurrentItem.ToString("D")}
+        //                };
+        //                string category = entityName.ToPartName() + "ContentFields";
+        //                var relationFilter = new FilterRecord {
+        //                    Category = category,
+        //                    Type = entityName.ToPartName() + "." + model.RelationId + ".",
+        //                    State = FormParametersHelper.ToString(settings),
+        //                    Description = "Only show entries related to current item."
+        //                };
+        //                filterRecords.Add(relationFilter);
+        //                var descriptor = allDescriptors.First(x => x.Category == category && x.Type == relationFilter.Type);
+        //                filterDescription += descriptor.Display(new FilterContext {State = FormParametersHelper.ToDynamic(relationFilter.State)}).Text;
+        //            }
+        //        }
 
-                foreach (var filter in model.Filters) {
-                    if (filter.FormData == null || filter.FormData.Length == 0) {
-                        continue;
-                    }
-                    var record = new FilterRecord {
-                        Category = filter.Category,
-                        Type = filter.Type,
-                    };
-                    var dictionary = new Dictionary<string, string>();
-                    foreach (var data in filter.FormData) {
-                        if (dictionary.ContainsKey(data.Name)) {
-                            dictionary[data.Name] += "&" + data.Value;
-                        }
-                        else {
-                            dictionary.Add(data.Name, data.Value);
-                        }
-                    }
-                    record.State = FormParametersHelper.ToString(dictionary);
-                    filterRecords.Add(record);
-                    var descriptor = allDescriptors.First(x => x.Category == filter.Category && x.Type == filter.Type);
-                    filterDescription += descriptor.Display(new FilterContext {State = FormParametersHelper.ToDynamic(record.State)}).Text;
-                }
-            }
-            else {
-                filterRecords = _filterGroupRepository.Get(model.FilterGroupId).Filters;
-            }
-            return filterRecords;
-        }
+        //        foreach (var filter in model.Filters) {
+        //            if (filter.FormData == null || filter.FormData.Length == 0) {
+        //                continue;
+        //            }
+        //            var record = new FilterRecord {
+        //                Category = filter.Category,
+        //                Type = filter.Type,
+        //            };
+        //            var dictionary = new Dictionary<string, string>();
+        //            foreach (var data in filter.FormData) {
+        //                if (dictionary.ContainsKey(data.Name)) {
+        //                    dictionary[data.Name] += "&" + data.Value;
+        //                }
+        //                else {
+        //                    dictionary.Add(data.Name, data.Value);
+        //                }
+        //            }
+        //            record.State = FormParametersHelper.ToString(dictionary);
+        //            filterRecords.Add(record);
+        //            var descriptor = allDescriptors.First(x => x.Category == filter.Category && x.Type == filter.Type);
+        //            filterDescription += descriptor.Display(new FilterContext {State = FormParametersHelper.ToDynamic(record.State)}).Text;
+        //        }
+        //    }
+        //    else {
+        //        filterRecords = _filterGroupRepository.Get(model.FilterGroupId).Filters;
+        //    }
+        //    return filterRecords;
+        //}
 
         private ProjectionPart GetProjectionPartRecord(int viewId) {
             if (viewId == -1) {

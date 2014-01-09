@@ -18,7 +18,7 @@ namespace Coevery.Projections.Services {
         LayoutDescriptor GetLayout(string category, string type);
         PropertyDescriptor GetProperty(string category, string type);
 
-        IEnumerable<ContentItem> GetContentItems(int queryId, int skip = 0, int count = 0);
+        IEnumerable<ContentItem> GetContentItems(int queryId, int skip = 0, int count = 0, string contentTypeName = null);
         int GetCount(int queryId);
     }
 

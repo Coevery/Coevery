@@ -22,6 +22,7 @@ namespace Coevery.Projections.Services {
         private readonly IEnumerable<IPropertyProvider> _propertyProviders;
         private readonly IContentManager _contentManager;
         private readonly IRepository<QueryPartRecord> _queryRepository;
+        private readonly IEnumerable<IQueryCriteriaProvider> _queryCriteriaProviders;
 
         public ProjectionManager(
             ITokenizer tokenizer,
@@ -30,7 +31,8 @@ namespace Coevery.Projections.Services {
             IEnumerable<ILayoutProvider> layoutProviders,
             IEnumerable<IPropertyProvider> propertyProviders,
             IContentManager contentManager,
-            IRepository<QueryPartRecord> queryRepository) {
+            IRepository<QueryPartRecord> queryRepository, 
+            IEnumerable<IQueryCriteriaProvider> queryCriteriaProviders) {
             _tokenizer = tokenizer;
             _filterProviders = filterProviders;
             _sortCriterionProviders = sortCriterionProviders;
@@ -38,6 +40,7 @@ namespace Coevery.Projections.Services {
             _propertyProviders = propertyProviders;
             _contentManager = contentManager;
             _queryRepository = queryRepository;
+            _queryCriteriaProviders = queryCriteriaProviders;
             T = NullLocalizer.Instance;
         }
 
@@ -117,39 +120,33 @@ namespace Coevery.Projections.Services {
                 .Sum(contentQuery => contentQuery.Count());
         }
 
-        public IEnumerable<ContentItem> GetContentItems(int queryId, int skip = 0, int count = 0) {
+        public IEnumerable<ContentItem> GetContentItems(int queryId, int skip = 0, int count = 0, string contentTypeName = null) {
             var availableSortCriteria = DescribeSortCriteria().ToList();
 
             var queryRecord = _queryRepository.Get(queryId);
 
-            if(queryRecord == null) {
+            if (queryRecord == null) {
                 throw new ArgumentException("queryId");
             }
 
-            var contentItems = new List<ContentItem>();
+            var contentQuery = _contentManager.HqlQuery().ForVersion(VersionOptions.Published);
 
-            // aggregate the result for each group query
-            foreach(var contentQuery in GetContentQueries(queryRecord, queryRecord.SortCriteria)) {
-                contentItems.AddRange(contentQuery.Slice(skip, count));
+            foreach (var criteriaProvider in _queryCriteriaProviders) {
+                var context = new QueryContext {
+                    Query = contentQuery,
+                    QueryPartRecord = queryRecord,
+                    ContentTypeName = contentTypeName
+                };
+
+                criteriaProvider.Apply(context);
+
+                contentQuery = context.Query;
             }
-
-            if(queryRecord.FilterGroups.Count <= 1) {
-                return contentItems;
-            }
-
-            // re-executing the sorting with the cumulated groups
-            var ids = contentItems.Select(c => c.Id).ToArray();
-
-            if(ids.Length == 0) {
-                return Enumerable.Empty<ContentItem>();
-            }
-
-            var groupQuery = _contentManager.HqlQuery().Where(alias => alias.Named("ci"), x => x.InG("Id", ids));
 
             // iterate over each sort criteria to apply the alterations to the query object
             foreach (var sortCriterion in queryRecord.SortCriteria) {
                 var sortCriterionContext = new SortCriterionContext {
-                    Query = groupQuery,
+                    Query = contentQuery,
                     State = FormParametersHelper.ToDynamic(sortCriterion.State)
                 };
 
@@ -167,10 +164,10 @@ namespace Coevery.Projections.Services {
                 // apply alteration
                 descriptor.Sort(sortCriterionContext);
 
-                groupQuery = sortCriterionContext.Query;
+                contentQuery = sortCriterionContext.Query;
             }
 
-            return groupQuery.Slice(skip, count);
+            return contentQuery.Slice(skip, count);
         }
 
         public IEnumerable<IHqlQuery> GetContentQueries(QueryPartRecord queryRecord, IEnumerable<SortCriterionRecord> sortCriteria) {

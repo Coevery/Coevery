@@ -220,6 +220,8 @@
     <Compile Include="Providers\Properties\CustomValueProperties.cs" />
     <Compile Include="Providers\Properties\MemberBindingProperties.cs" />
     <Compile Include="Providers\PropertyEditors\CoeveryNumericPropertyEditor.cs" />
+    <Compile Include="Providers\QueryCriteria\FormQueryCriteria.cs" />
+    <Compile Include="Providers\QueryCriteria\PersistenceQueryCriteria.cs" />
     <Compile Include="Providers\SortCriteria\ContentFieldsSortCriteria.cs" />
     <Compile Include="Providers\Filters\ContentFieldsFilter.cs" />
     <Compile Include="Providers\SortCriteria\MemberBindingSortCriteria.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Services\IProjectionService.cs" />
     <Compile Include="Services\IPropertyProvider.cs" />
     <Compile Include="Services\IPropertyService.cs" />
+    <Compile Include="Services\IQueryCriteriaProvider.cs" />
     <Compile Include="Services\IQueryService.cs" />
     <Compile Include="Services\ISortCriteriaProvider.cs" />
     <Compile Include="Services\ISortService.cs" />

@@ -24,7 +24,7 @@
                     return {
                         ViewId: $scope.currentViewId,
                         FilterGroupId: currentFilterGroupId,
-                        Filters: getFilters()
+                        Filters: JSON.stringify(getFilters())
                     };
                 };
 
@@ -286,6 +286,7 @@
                         $.each(filters, function () {
                             addNewEditor({
                                 Type: this.Type,
+                                Category: this.Category,
                                 State: this.State
                             });
                         });
