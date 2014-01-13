@@ -59,10 +59,8 @@
           };
 
           $scope.exit = function () {
-              $state.transitionTo('Root.Menu.List', { NavigationId: navigationId, Module: moduleName });
+              window.history.back();
           };
-
-
 
           $scope.$on('$viewContentLoaded', function () {
 

@@ -33,12 +33,10 @@
                     };
                 };
 
-                $scope.exit = function () {
-                    //if (window.history.length > 1)
-                    //    window.history.back();
-                    //else
-                    $state.transitionTo('Root.Menu.List', { NavigationId: navigationId, Module: moduleName });
+                $scope.exit = function() {
+                    window.history.back();
                 };
+                
                 $scope.edit = function () {
                     $state.transitionTo('Root.Menu.Detail', { NavigationId: navigationId, Module: moduleName, Id: id });
                 };
