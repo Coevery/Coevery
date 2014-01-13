@@ -1,0 +1,10 @@
+Name: Mini Profiler
+AntiForgery: enabled
+Author: 42n, Daniel Dabrowski
+Website: http://orchardprofiler.codeplex.com/
+Version: 1.7.0.0
+OrchardVersion: 1.7
+Description: Module which delivers profiler functionality. Mvc Mini profiler (http://code.google.com/p/mvc-mini-profiler/) is used for collecting profile data. Poor Man's T-SQL Formatter (http://www.architectshack.com/PoorMansTSqlFormatter.ashx) is used for nicer SQL timing format. Source code is hosted on GitHub (https://github.com/TaoK/PoorMansTSqlFormatter). Versions started with 1.7.x.x are for Orchard 1.7 and versions started with 1.6.x.x are for Orchard 1.6
+FeatureDescription: Profiling web site using mvc mini profiler.
+Category: Developer
+Tags: Profiler, Profiling, mvc-mini-profiler
