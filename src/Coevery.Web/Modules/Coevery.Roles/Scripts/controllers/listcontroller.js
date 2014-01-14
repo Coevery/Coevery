@@ -36,7 +36,7 @@ define(['core/app/detourService', 'Modules/Coevery.Roles/Scripts/services/roleda
                 $scope['delete'] = function () {
                     var id = $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!id) return;
-                    roleDataService.delete({ id: id }, function() {
+                    roleDataService['delete']({ id: id }, function() {
                         $scope.getAllRoles();
                         logger.success($i18next('Delete the role successful.'));
                     }, function(result) {

@@ -62,7 +62,7 @@ define(['core/app/detourService'], function (detour) {
                     var deleteRelationship = contentId || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                     if (!deleteRelationship) return;
                     
-                    relationshipDataService.delete({ RelationshipId: deleteRelationship }, function () {
+                    relationshipDataService['delete']({ RelationshipId: deleteRelationship }, function () {
                         $scope.getAllRelationship();
                         logger.success("Delete the relationship successful.");
                     }, function (reason) {

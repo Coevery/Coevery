@@ -27,7 +27,7 @@ define(['core/app/detourService', 'Modules/Coevery.Perspectives/Scripts/services
 
           $scope['delete'] = function (id) {
               //$scope.perspectiveId = id;
-              perspectiveDataService.delete({ id: id }, function () {
+              perspectiveDataService['delete']({ id: id }, function () {
                   $scope.getAllPerspective();
                   logger.success($i18next('Delete the perspective successful.'));
               }, function (result) {

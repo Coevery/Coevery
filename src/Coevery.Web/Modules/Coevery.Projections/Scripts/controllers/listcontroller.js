@@ -30,7 +30,7 @@ define(['core/app/detourService',
                         $scope['delete'] = function (id) {
                             var deleteView = id || $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
                             if (!deleteView) return;
-                            projectionDataService.delete({ Id: deleteView }, function() {
+                            projectionDataService['delete']({ Id: deleteView }, function() {
                                 if ($scope.selectedItems.length != 0) {
                                     $scope.selectedItems.pop();
                                 }

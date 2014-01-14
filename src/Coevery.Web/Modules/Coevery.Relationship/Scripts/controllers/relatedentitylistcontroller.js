@@ -101,7 +101,7 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
                     } else {
                         ids = deleteRelationship.toString();
                     }
-                    commonDataService.delete({ contentId: ids }, function() {
+                    commonDataService['delete']({ contentId: ids }, function() {
                         $scope.Refresh();
                         logger.success('Delete the relationship successful.');
                         $scope.entityId = [];

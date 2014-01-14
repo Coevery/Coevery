@@ -141,7 +141,7 @@
                     } else {
                         ids = deleteRelationship.toString();
                     }
-                    commonDataService.delete({ contentId: ids }, function () {
+                    commonDataService['delete']({ contentId: ids }, function () {
                         $scope.Refresh();
                         logger.success('Delete the ' + moduleName + ' successful.');
                         $scope.entityId = [];
@@ -248,7 +248,7 @@
                     }
                     var index = $scope.definitionFilters.indexOf(filter);
                     $scope.definitionFilters.splice(index, 1);
-                    filterDefinitionService.delete({ filterId: filter.Id, contentType: moduleName });
+                    filterDefinitionService['delete']({ filterId: filter.Id, contentType: moduleName });
                 };
 
                 $scope.addNewFilterCondition = function () {

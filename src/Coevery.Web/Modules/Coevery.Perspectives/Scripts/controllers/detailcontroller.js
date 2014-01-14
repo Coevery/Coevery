@@ -27,15 +27,15 @@ define(['core/app/detourService',
                         var navigationColumnDefs = [{
                             name: 'Id',
                             label: $i18next('Id'),
-                            key: true,
+                            key: true
                         }, {
                             name: 'DisplayName',
                             label: $i18next('DisplayName'),
                             formatter: $rootScope.cellLinkTemplate,
                             //'paramAttrs' define the param attributes passed to the edit and delete function 
                             formatoptions: { hasView: true, paramAttrs: ['Id', 'NavigationType'] }
-                        }, { name: 'Type', label: $i18next('Type'), },
-                            { name: 'Description', label: $i18next('Description'), },
+                        }, { name: 'Type', label: $i18next('Type')},
+                            { name: 'Description', label: $i18next('Description')},
                             { name: 'NavigationType', label: $i18next('NavigationType'), hidden: true },
                             { name: 'Parent', label: $i18next('Parent'), hidden: true },
                             { name: 'Weight', label: $i18next('Weight'), hidden: true },
@@ -100,7 +100,7 @@ define(['core/app/detourService',
                         };
 
                         $scope['delete'] = function (id, type) {
-                            perspectiveDataService.delete({ Id: id }, function () {
+                            perspectiveDataService['delete']({ Id: id }, function () {
                                 $scope.getAllNavigationdata();
                                 logger.success($i18next('Delete the navigation successful.'));
                             }, function (result) {
@@ -109,7 +109,7 @@ define(['core/app/detourService',
                         };
 
                         $scope.deletePerspective = function () {
-                            perspectiveDataService.delete({ id: perpectiveId }, function () {
+                            perspectiveDataService['delete']({ id: perpectiveId }, function () {
                                 $scope.exit();
                                 logger.success($i18next('Delete the perspective successful.'));
                             }, function (result) {
