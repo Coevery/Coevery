@@ -1,28 +1,37 @@
 ﻿@using Coevery.UI.Navigation
-@using log4net.Core
 @{
     MenuItem navigation = Model.Item;
     int level = Model.Level;
     var idClass = "menu-id-" + navigation.IdHint;
     var levelClass = "menu-level-" + level;
     var iconClass = level == 1 ? "icos-eject" : "icos-play";
+    bool active = navigation.Position == "1";
+    bool isEmpty = string.IsNullOrWhiteSpace(navigation.Url);
+    bool hasChildren = navigation.Items.Any();
 }
 
-<li data-ng-class="{active: $uiRoute}" data-ui-route="@navigation.Href/?.*">
-    <span>
-        <a href="@navigation.Href" title="@navigation.Text.Text">
-            <i class="@string.Join(" ", navigation.Classes) vertical-middle"></i>
-            <span class="nav-title vertical-middle">@navigation.Text.Text </span>
-        </a>
-        @if (navigation.Items.Any()) {
-            <i class="@iconClass" data-toggle="collapse" data-target=".@idClass.@levelClass"></i>
-        }
-    </span>
-    @if (navigation.Items.Any()) {
-        <ul class="collapse in @levelClass @idClass">
-            @foreach (var child in navigation.Items) {
-                @Display.NavigationItem(Item: child, Level: level + 1)
+@if (!isEmpty || hasChildren) {
+    <li data-ng-class="{active: $uiRoute}" data-ui-route="@navigation.Href/?.*">
+        <span>
+            @if (isEmpty) {
+                <span class="nav-title vertical-middle">@navigation.Text.Text </span>
             }
-        </ul>
-    }
-</li>
+            else {
+                <a href="@navigation.Href" title="@navigation.Text.Text">
+                    <i class="@string.Join(" ", navigation.Classes) vertical-middle"></i>
+                    <span class="nav-title vertical-middle">@navigation.Text.Text </span>
+                </a>
+            }
+            @if (hasChildren) {
+                <i class="@iconClass @if (!active) {<text>collapsed</text>}" data-toggle="collapse" data-target=".@idClass.@levelClass"></i>
+            }
+        </span>
+        @if (hasChildren) {
+            <ul class="collapse @levelClass @idClass @if (active) {<text>in</text>}">
+                @foreach (var child in navigation.Items) {
+                    @Display.NavigationItem(Item: child, Level: level + 1)
+                }
+            </ul>
+        }
+    </li>
+}
