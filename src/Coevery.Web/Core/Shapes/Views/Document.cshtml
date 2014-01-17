@@ -13,6 +13,7 @@
     <meta charset="utf-8" />
     <title>@Html.Title(title, siteName)</title> 
     @Display(Model.Head)
+    @Script.Include("respond.js").UseCondition("lt IE 9");
     <script>(function(d){d.className="dyn"+d.className.substring(6,d.className.length);})(document.documentElement);</script> 
 </head> 
 <body>

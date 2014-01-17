@@ -2,6 +2,9 @@
 .view-mode {
 }
 
+img {
+    max-width: none\9 !important;
+}
     .view-mode header {
         margin: 0;
         border-bottom: 1px solid #ebaf59;
