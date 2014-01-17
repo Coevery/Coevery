@@ -39,6 +39,18 @@
             }]);
         coevery.config(['$httpProvider', function ($httpProvider) {
             var $http;
+            $httpProvider.interceptors.push(['$q', function ($q) {
+                return {
+                    request: function(config) {
+                        if (config.method === 'GET') {
+                            var sep = config.url.indexOf('?') === -1 ? '?' : '&';
+                            config.url = config.url + sep + '_=' + new Date().getTime();
+                        }
+
+                        return config || $q.when(config);
+                    }
+                };
+            }]);
             $httpProvider.responseInterceptors.push(['$q', '$injector',function($q, $injector) {
                 var rootScope;
 
