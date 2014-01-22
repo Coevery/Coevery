@@ -162,7 +162,7 @@ img {
 }
 
 @media (max-width: 767px) {
-    [fd-column] + [fd-column] {
+    .fd-column + .fd-column {
         margin-top: 16px;
     }
 }

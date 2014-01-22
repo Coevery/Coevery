@@ -196,3 +196,9 @@
 
 
 @tag.EndElement
+
+@using (Script.Head()) {
+    <script>
+        window.applicationBaseUrl = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Url.Content("~/")))';
+    </script>
+}

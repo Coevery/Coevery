@@ -51,7 +51,7 @@
                             $scope.getPagedDataAsync();
                         } else {
                             var gridOptions = {
-                                url: 'api/projections/entity/' + moduleName,
+                                url: applicationBaseUrl+'api/projections/entity/' + moduleName,
                                 mtype: "post",
                                 postData: getPostData(),
                                 rowNum: pageSize,
@@ -104,7 +104,7 @@
                         $scope.definitionViews = views;
                         var defaultViewId = $location.$$search.ViewId;
                         if (!defaultViewId) {
-                            views.forEach(function (value, index) {
+                            $.each(views, function (index, value) {
                                 if (value.Default) {
                                     defaultViewId = value.ContentId;
                                 }
@@ -195,7 +195,7 @@
                             Filters: getFilters()
                         };
 
-                        var url = 'api/Projections/Filter/' + moduleName;
+                        var url = applicationBaseUrl + 'api/Projections/Filter/' + moduleName;
                         $http.post(url, filter).then(function (response) {
                             $scope.definitionFilters = response.data;
                         }, function () {
@@ -269,7 +269,7 @@
                         loadEditors();
                         return;
                     }
-                    var url = 'Projections/FilterFields/GetFieldFilters/' + moduleName;
+                    var url = applicationBaseUrl + 'Projections/FilterFields/GetFieldFilters/' + moduleName;
                     $http.get(url).then(function (response) {
                         $scope.fieldFilters = response.data;
                         loadEditors();

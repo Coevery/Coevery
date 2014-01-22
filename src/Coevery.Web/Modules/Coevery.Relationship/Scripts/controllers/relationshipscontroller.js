@@ -5,7 +5,7 @@ define(['core/app/detourService'], function (detour) {
         'RelationshipsCtrl',
         ['$rootScope', '$scope', 'logger', '$state', '$q', '$resource', '$stateParams',
             function ($rootScope, $scope, logger, $state, $q, $resource, $stateParams) {
-                var relationshipDataService = $resource('api/relationship/Relationship');
+                var relationshipDataService = $resource(applicationBaseUrl + 'api/relationship/Relationship');
                 var defer = $q.defer();
                 $scope.$watch("selectedRow", function(newValue) {
                     if (newValue) {

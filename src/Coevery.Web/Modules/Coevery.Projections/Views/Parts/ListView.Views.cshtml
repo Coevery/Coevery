@@ -4,7 +4,7 @@
                     <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns({{view.ContentId}})" title="" style="cursor: pointer;">
+        <li ng-repeat="view in definitionViews" ng-click="FetchViewColumns()" title="" style="cursor: pointer;">
             <a>
                 <i ng-class="{'icol-accept':currentViewId ==view.ContentId,'viewUSelected': currentViewId !=view.ContentId}"></i>
                 {{view.DisplayName}}

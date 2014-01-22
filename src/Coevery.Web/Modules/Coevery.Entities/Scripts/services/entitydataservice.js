@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'entityDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            return $resource('api/entities/entity/:Name',
+            return $resource(applicationBaseUrl + 'api/entities/entity/:Name',
                 { Name: '@Name' },
                 {
                     update: { method: 'PUT' },

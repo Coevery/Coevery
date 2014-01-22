@@ -4,7 +4,7 @@
 </header>
 <section id="main-content" data-ng-init="metaId='@Model.Id';isPublished='@Model.HasPublished'">
     <div id="page-actions" class="clearfix">
-        <btn-actions>
+        <div btn-actions>
             <button type="button" class="btn btn-small" data-ng-click="exit()">Back</button>
             <button type="button" class="btn btn-small" data-ng-click="edit()">
                 <i class="icon-edit"></i>&nbsp;Edit
@@ -20,7 +20,7 @@
                 title="@T("Works when the entity has been published.")">
                 Form Designer
             </button>
-        </btn-actions>
+        </div>
     </div>
 
     <div class="row-fluid">

@@ -5,7 +5,7 @@
     </header>
     <section id="main-content" style="margin-top: 47px;" class="ng-scope">
         <div id="page-actions" class="clearfix">
-            <btn-actions>
+            <div btn-actions>
                 <div class="input-append">
                     <input type="text" id="input15" data-ng-model="featurename" data-feature-filter placeholder="@T("Query By Feature Name")">
                     <button type="button" class="btn">
@@ -20,7 +20,7 @@
                         </ul>
                     </div>*@
                 </div>
-            </btn-actions>
+            </div>
         </div>
         @using (Html.BeginFormAntiForgeryPost(Url.Action("Features"),
             FormMethod.Post,

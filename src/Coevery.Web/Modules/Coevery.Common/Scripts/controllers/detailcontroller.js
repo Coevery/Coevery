@@ -1,8 +1,8 @@
 ﻿define(['core/app/detourService'], function (detour) {
     detour.registerController([
       'GeneralDetailCtrl',
-      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http', '$parse', '$i18next',
-      function ($timeout, $rootScope, $scope, $q, logger, $state, $http, $parse, $i18next) {
+      ['$timeout', '$rootScope', '$scope', '$q', 'logger', '$state', '$http', '$parse', '$i18next','$window',
+      function ($timeout, $rootScope, $scope, $q, logger, $state, $http, $parse, $i18next, $window) {
           var navigationId = $rootScope.$stateParams.NavigationId;
           var moduleName = $rootScope.$stateParams.Module;
           $scope.moduleName = moduleName;
@@ -59,7 +59,8 @@
           };
 
           $scope.exit = function () {
-              window.history.back();
+              $rootScope.goBack();
+              //window.history.back();
           };
 
           $scope.$on('$viewContentLoaded', function () {

@@ -12,12 +12,12 @@
 </header>
 <section id="main-content">
     <div id="page-actions" class="clearfix">
-        <btn-actions>
+        <div btn-actions>
             <button class="btn btn-small" data-ng-click="exit()">Back</button>
             <button class="btn btn-primary btn-small" data-cobusy="'saveview'" data-ng-click="saveAndView()">@T("Save")</button>
             <button class="btn btn-primary btn-small" data-cobusy="'saveview'" data-ng-click="saveAndBack()">@T("Save & Back")</button>
             <button class="btn btn-small" data-ng-click="preview()">@T("Preview")</button>
-        </btn-actions>
+        </div>
     </div>
     @using (Html.BeginFormAntiForgeryPost(Url.Action("Edit", new {Id = Model.Id, ReturnUrl = Request.QueryString["ReturnUrl"]}),
         FormMethod.Post,

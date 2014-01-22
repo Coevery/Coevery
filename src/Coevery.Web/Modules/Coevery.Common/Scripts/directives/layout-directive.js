@@ -3,11 +3,11 @@ angular.module('coevery.layout', ['ng'])
         return {
             template: function (element) {
                 return $('.edit-mode:first').length
-                    ? '<fieldset fd-section class="data-section"><legend class="title">Section Title</legend><div ng-transclude></div></fieldset>'
-                    : '<section fd-section><header><span class="show-button"></span><h5 class="title">General Info</h5></header><div ng-transclude></div></section>';
+                    ? '<fieldset  class="data-section fd-section"><legend class="title">Section Title</legend><div ng-transclude></div></fieldset>'
+                    : '<section class="fd-section"><header><span class="show-button"></span><h5 class="title">General Info</h5></header><div ng-transclude></div></section>';
             },
             replace: true,
-            restrict: 'E',
+            restrict: 'A',
             transclude: true,
             link: function (scope, element, attrs) {
                 var sectionHeader = element.find('.title:first');
@@ -17,33 +17,33 @@ angular.module('coevery.layout', ['ng'])
     })
     .directive('fdRow', function () {
         return {
-            template: '<div fd-row class="data-row clearfix" ng-transclude></div>',
-            //replace: true,
-            restrict: 'E',
+            template: '<div class="data-row clearfix fd-row" ng-transclude></div>',
+            replace: false,
+            restrict: 'A',
             transclude: true,
             link: function (scope, element, attrs) {
-                element.find('[fd-field]:not(:empty)').length || element.remove();
+                element.find('.fd-field:not(:empty)').length || element.remove();
             }
         };
     })
     .directive('fdColumn', function () {
         return {
-            template: '<div fd-column ng-transclude></div>',
+            template: '<div class="fd-column" ng-transclude></div>',
             replace: true,
-            restrict: 'E',
+            restrict: 'A',
             transclude: true,
             link: function (scope, element, attrs) {
                 var row = element.parent(),
                     width;
                 if (row.hasClass('merged-row')
-                    || row.parents('[fd-section]').attr('section-columns') == 1) {
+                    || row.parents('.fd-section').attr('section-columns') == 1) {
                     width = 12;
                 } else {
-                    var widths = $.map(row.parents('[fd-section]:first').attr('section-columns-width').split(':'), function (n) {
+                    var widths = $.map(row.parents('.fd-section:first').attr('section-columns-width').split(':'), function (n) {
                         return parseInt(n);
                     });
 
-                    width = widths[row.children('[fd-column]').index(element)];
+                    width = widths[row.children('.fd-column').index(element)];
                 }
                 element.addClass('span' + width);
             }
@@ -53,24 +53,24 @@ angular.module('coevery.layout', ['ng'])
         return {
             template: function (element) {
                 return $('.edit-mode:first').length
-                    ? '<div fd-field class="control-group"></div>'
-                    : '<div fd-field></div>';
+                    ? '<div class="control-group fd-field"></div>'
+                    : '<div class="fd-field"></div>';
             },
             replace: true,
-            restrict: 'E',
+            restrict: 'A',
             link: function (scope, element, attrs) {
                 var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]');
-                element.html(template.text());
+                element.html(template.html());
                 $compile(element.children())(scope);
             }
         };
     })
     .directive('btnActions', function () {
         return {
-            template: '<div btn-actions ng-transclude ng-style="BtnActionLeft()" class="btn-toolbar pull-left"></div>',
+            template: '<div ng-transclude ng-style="BtnActionLeft()" class="btn-toolbar pull-left"></div>',
             replace: true,
             scope: {},
-            restrict: 'E',
+            restrict: 'A',
             transclude: true,
             controller: ['$scope', '$element', '$attrs', '$transclude', '$window', function ($scope, $element, $attrs, $transclude, $window) {
                 $scope.BtnActionLeft = function () {

@@ -14,7 +14,7 @@
     PlaceIndicator.prototype.show = function (row, columnIndex, isAbove) {
         var direction = isAbove ? 'top' : 'bottom',
             $row = $(row),
-            widths = getColumnWidths($row.parents('[fd-section]:first')),
+            widths = getColumnWidths($row.parents('.fd-section:first')),
             left = 0, leftPosition, width;
 
         for (var i = 0; i < columnIndex; i++) {
@@ -57,10 +57,10 @@
 
         if (movedRow.hasClass('merged-row') || containAbove) {
             rows = $($.merge($.makeArray(movedRow.prevUntil('.merged-row')).reverse(), movedRow.nextUntil('.merged-row')));
-            columnsCount = parseInt(movedRow.parents('[fd-section]').attr('section-columns'));
+            columnsCount = parseInt(movedRow.parents('.fd-section').attr('section-columns'));
             for (var j = 0; j < columnsCount; j++) {
-                columns = rows.find('[fd-column]:eq(' + j + ')');
-                fields = columns.children('[fd-field]');
+                columns = rows.find('.fd-column:eq(' + j + ')');
+                fields = columns.children('.fd-field');
                 for (var k = 0; k < fields.length; k++) {
                     $(columns[k]).append(fields[k]);
                 }
@@ -68,7 +68,7 @@
             if (rows.length) {
                 for (var l = rows.length - 1; l > 0; l--) {
                     row = $(rows[l]);
-                    if (row.find('[fd-field]').length) {
+                    if (row.find('.fd-field').length) {
                         break;
                     } else {
                         row.remove();
@@ -82,13 +82,13 @@
             containAbove || movedRow.remove();
         } else {
             rows = movedRow.nextUntil('.merged-row').andSelf();
-            columnIndex = movedRow.children('[fd-column]').index(movedColumn);
-            columns = rows.find('[fd-column]:eq(' + columnIndex + ')');
+            columnIndex = movedRow.children('.fd-column').index(movedColumn);
+            columns = rows.find('.fd-column:eq(' + columnIndex + ')');
             for (var i = 0; i < columns.length - 1; i++) {
                 $(columns[i]).append($(columns[i + 1]).children());
             }
             lastRow = rows.last();
-            if (lastRow.siblings().length && !lastRow.find('[fd-field]').length) {
+            if (lastRow.siblings().length && !lastRow.find('.fd-field').length) {
                 lastRow.remove();
             }
         }
@@ -114,7 +114,7 @@
     function getHelper() {
         var helper = $('<div class="" style="border:1px solid #ccc;"></div>'),
             item = $(this),
-            padding = item.is('[fd-field]') ? '10px' : '0 10px 20px 10px';
+            padding = item.is('.fd-field') ? '10px' : '0 10px 20px 10px';
 
         helper.height(item.height());
         helper.width(item.width());
@@ -144,17 +144,17 @@
     function createNewRow(columnCount) {
         var columnsString = '';
         for (var i = 0; i < columnCount; i++) {
-            columnsString += '<fd-column></fd-column>';
+            columnsString += '<div fd-column></div>';
         }
-        return $('<fd-row>' + columnsString + '</fd-row>');
+        return $('<div fd-row>' + columnsString + '</div>');
     }
 
     angular.module('coevery.formdesigner', ['ngResource'])
         .directive('fdToolsSection', function () {
             return {
-                template: '<p fd-tools-section fd-draggable class="alert alert-info"><span class="title" ng-transclude></span></p>',
+                template: '<p fd-draggable class="alert alert-info fd-tools-section"><span class="title" ng-transclude></span></p>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 transclude: true,
                 link: function (scope, element, attrs) {
                 }
@@ -162,9 +162,9 @@
         })
         .directive('fdToolsField', function () {
             return {
-                template: '<p fd-tools-field fd-draggable class="alert alert-info"><span class="title"></span></p>',
+                template: '<p fd-draggable class="alert alert-info fd-tools-field"><span class="title"></span></p>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     var titleElem = element.children();
                     titleElem.text(attrs.fieldDisplayName);
@@ -173,9 +173,9 @@
         })
         .directive('fdForm', function ($compile, $rootScope) {
             return {
-                template: '<div fd-form class="row-fluid"><section class="span12 edit-mode"><form class="form-horizontal" ng-transclude></form></section></div>',
+                template: '<div class="row-fluid fd-form"><section class="span12 edit-mode"><form class="form-horizontal" ng-transclude></form></section></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 transclude: true,
                 controller: function ($scope) {
                     inLayoutFields = [];
@@ -200,14 +200,14 @@
 
                         function setFieldsUsed(fields) {
                             for (var i = 0; i < fields.length; i++) {
-                                var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
+                                var fieldItem = $('.fd-tools-field[field-name=' + fields[i] + ']');
                                 fieldItem.hide();
                             }
                         }
 
                         function setFieldsUnused(fields) {
                             for (var i = 0; i < fields.length; i++) {
-                                var fieldItem = $('[fd-tools-field][field-name=' + fields[i] + ']');
+                                var fieldItem = $('.fd-tools-field[field-name=' + fields[i] + ']');
                                 fieldItem.show();
                             }
                         }
@@ -224,15 +224,15 @@
                 link: function (scope, element, attrs) {
                     var lastMarked = null;
                     element.find('form:first').droppable({
-                        accept: '[fd-section], [fd-tools-section]',
+                        accept: '.fd-section, .fd-tools-section',
                         tolerance: "pointer",
                         drop: function (event, ui) {
                             dragHandler = null;
-                            var markedSection = $(this).find('.marked, .markedAbove').filter('[fd-section]'),
+                            var markedSection = $(this).find('.marked, .markedAbove').filter('.fd-section'),
                                 dragItem;
 
-                            if (ui.draggable.is('[fd-tools-section]')) {
-                                dragItem = $('<fd-section></fd-section>');
+                            if (ui.draggable.is('.fd-tools-section')) {
+                                dragItem = $('<div fd-section></div>');
                                 copySectionProperties(ui.draggable, dragItem);
                                 $compile(dragItem)(scope);
                             } else {
@@ -276,7 +276,7 @@
                     }
 
                     function markSection(position) {
-                        var sections = element.find('[fd-section]');
+                        var sections = element.find('.fd-section');
                         if (!sections.length) {
                             lastMarked = element;
                             setMark(lastMarked, true);
@@ -306,9 +306,9 @@
         })
         .directive('fdSection', function ($compile, $rootScope) {
             return {
-                template: '<fieldset fd-draggable drag-handle="legend" fd-section><legend fd-hoverable class="clearfix"><div class="span12 title"></div><div class="tools"><fd-tool-property></fd-tool-property><fd-tool-remove></fd-tool-remove></div></legend><div fd-field-container ng-transclude></div></fieldset>',
+                template: '<fieldset fd-draggable drag-handle="legend" class="fd-section"><legend fd-hoverable class="clearfix"><div class="span12 title"></div><div class="tools"><div fd-tool-property></div><div fd-tool-remove></div></div></legend><div fd-field-container ng-transclude></div></fieldset>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 transclude: true,
                 link: function (scope, element, attrs) {
                     var id = newGuid(),
@@ -339,11 +339,11 @@
                             return;
                         }
                         var widths = getColumnWidths(element),
-                            rows = element.find('[fd-row]:not(.merged-row)'),
+                            rows = element.find('.fd-row:not(.merged-row)'),
                             columns, width;
 
                         for (var i = 0; i < columnsCount; i++) {
-                            columns = rows.find('[fd-column]:eq(' + i + ')');
+                            columns = rows.find('.fd-column:eq(' + i + ')');
                             width = widths[i];
                             columns.each(function () {
                                 removeSpanClass(this);
@@ -362,7 +362,7 @@
                     sectionHeader.find('.tools:first')[0].toolProperty = openPropertyDialog;
                     sectionHeader.find('.tools:first')[0].toolRemove = removeSection;
 
-                    if (!element.find('[fd-row]').length) {
+                    if (!element.find('.fd-row').length) {
                         var columnCount = parseInt(attrs.sectionColumns);
                         var emptyRow = createNewRow(columnCount);
                         element.find('[fd-field-container]:first').append(emptyRow);
@@ -376,7 +376,7 @@
                         var section = element,
                             newColumnCount = parseInt(newValue),
                             oldColumnCount = parseInt(oldValue),
-                            rows = section.find('[fd-row]'),
+                            rows = section.find('.fd-row'),
                             widths = getColumnWidths(section),
                             columns, width;
 
@@ -384,7 +384,7 @@
                             var addCount = newColumnCount - oldColumnCount;
                             rows = rows.filter(':not(.merged-row)');
                             for (var i = 0; i < oldColumnCount; i++) {
-                                columns = rows.find('[fd-column]:eq(' + i + ')');
+                                columns = rows.find('.fd-column:eq(' + i + ')');
                                 width = widths[i];
                                 columns.each(function () {
                                     removeSpanClass(this);
@@ -393,7 +393,7 @@
                             }
                             rows.each(function () {
                                 for (var j = 0; j < addCount; j++) {
-                                    var newColumn = ($('<fd-column></fd-column>'));
+                                    var newColumn = ($('<div fd-column></div>'));
                                     $(this).append(newColumn);
                                     $compile(newColumn)(scope);
                                 }
@@ -401,14 +401,14 @@
                         } else {
                             var mergedRows = rows.filter('.merged-row');
                             rows = rows.filter(':not(.merged-row)');
-                            var leftColumns = rows.find('[fd-column]:eq(0)'),
-                                leftEmptyColumns = leftColumns.filter(':not(:has([fd-field]))'),
+                            var leftColumns = rows.find('.fd-column:eq(0)'),
+                                leftEmptyColumns = leftColumns.filter(':not(:has(.fd-field))'),
                                 fields = $(),
                                 removeColumns = $();
 
                             for (var l = newColumnCount; l < oldColumnCount; l++) {
-                                columns = rows.find('[fd-column]:eq(' + l + ')');
-                                fields = $.merge(fields, columns.find('[fd-field]'));
+                                columns = rows.find('.fd-column:eq(' + l + ')');
+                                fields = $.merge(fields, columns.find('.fd-field'));
                                 removeColumns = $.merge(removeColumns, columns);
                             }
                             fields.each(function (i) {
@@ -418,11 +418,11 @@
                                     var newRow = createNewRow(newColumnCount);
                                     section.find('[fd-field-container]').append(newRow);
                                     $compile(newRow)(scope);
-                                    newRow.find('[fd-column]:eq(0)').append(this);
+                                    newRow.find('.fd-column:eq(0)').append(this);
                                 }
                             });
                             for (var k = 0; k < newColumnCount; k++) {
-                                columns = rows.find('[fd-column]:eq(' + k + ')');
+                                columns = rows.find('.fd-column:eq(' + k + ')');
                                 width = widths[k];
                                 columns.each(function () {
                                     removeSpanClass(this);
@@ -442,7 +442,7 @@
                         $.each(watchList, function () {
                             this();
                         });
-                        var fields = element.find('[fd-field]');
+                        var fields = element.find('.fd-field');
                         fields.each(function () {
                             this.removeField(true);
                         });
@@ -464,9 +464,9 @@
         })
         .directive('fdRow', function ($compile) {
             return {
-                template: '<div fd-row class="data-row clearfix" ng-transclude></div>',
+                template: '<div class="data-row clearfix fd-row" ng-transclude></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 transclude: true,
                 link: function (scope, element, attrs) {
                 }
@@ -474,9 +474,9 @@
         })
         .directive('fdColumn', function ($compile) {
             return {
-                template: '<div fd-column ng-transclude></div>',
+                template: '<div class="fd-column" ng-transclude></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 transclude: true,
                 link: function (scope, element, attrs) {
                     var row = element.parent(),
@@ -484,10 +484,10 @@
                     if (row.hasClass('merged-row')) {
                         width = 12;
                     } else {
-                        var section = row.parents('[fd-section]:first'),
+                        var section = row.parents('.fd-section:first'),
                             widths = getColumnWidths(section);
 
-                        width = widths[row.children('[fd-column]').index(element)];
+                        width = widths[row.children('.fd-column').index(element)];
                     }
                     element.addClass('span' + width);
                 }
@@ -495,9 +495,9 @@
         })
         .directive('fdField', function ($compile, $rootScope) {
             return {
-                template: '<div fd-field fd-hoverable fd-draggable></div>',
+                template: '<div class="fd-field" fd-hoverable fd-draggable></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     var id = newGuid();
                     attrs.$set('id', id);
@@ -516,13 +516,13 @@
                     }
                     inLayoutFields.push(attrs.fieldName);
 
-                    var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]').text();
+                    var template = $('script[type="text/ng-template"][id="' + attrs.fieldName + '.html"]').html();
                     element.html(template);
                     $compile(element.children())(scope);
                     var control = element.find('.control');
                     control.after('<div class="tools"></div>');
 
-                    var propertyItem = $('<fd-tool-property></fd-tool-property>');
+                    var propertyItem = $('<div fd-tool-property></div>');
                     element.find('.tools').append(propertyItem);
                     $compile(propertyItem)(scope);
                     element.find('.tools').hide();
@@ -543,12 +543,12 @@
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
 
-                        var columnCount = parseInt($(this).parents('[fd-section]:first').attr('section-columns'));
+                        var columnCount = parseInt($(this).parents('.fd-section:first').attr('section-columns'));
                         $(this).find('[fd-tool-column]').removeClass('merge split');
                         $(this).find('[fd-tool-column]').hide();
                         if (columnCount > 1) {
-                            var row = $(this).parents('[fd-row]');
-                            var fieldCount = row.find('[fd-field]').length;
+                            var row = $(this).parents('.fd-row');
+                            var fieldCount = row.find('.fd-field').length;
                             if (fieldCount == 1) {
                                 var className = row.hasClass('merged-row') ? 'split' : 'merge';
                                 $(this).find('[fd-tool-column]').addClass(className);
@@ -569,11 +569,11 @@
 
                     function createBlankSpace() {
                         element.append('<div class="span12">Blank Space</div><div class="tools"></div>');
-                        var removeItem = $('<fd-tool-remove></fd-tool-remove>');
+                        var removeItem = $('<div fd-tool-remove></div>');
                         element.find('.tools').append(removeItem);
                         $compile(removeItem)(scope);
                         element.find('.tools')[0].toolRemove = function (removeAll) {
-                            var column = element.parents('[fd-column]:first');
+                            var column = element.parents('.fd-column:first');
                             element.remove();
                             removeAll || adjustColumnsPosition(column, $compile, scope);
                         };
@@ -590,14 +590,14 @@
 
                     function createTextField() {
                         element.append('<div class="span12 text-content">Sample Text</div><div class="tools"></div>');
-                        var propertyItem = $('<fd-tool-property></fd-tool-property>');
+                        var propertyItem = $('<div fd-tool-property></div>');
                         element.find('.tools').append(propertyItem);
                         $compile(propertyItem)(scope);
-                        var removeItem = $('<fd-tool-remove></fd-tool-remove>');
+                        var removeItem = $('<div fd-tool-remove></div>');
                         element.find('.tools').append(removeItem);
                         $compile(removeItem)(scope);
                         element.find('.tools')[0].toolRemove = function (removeAll) {
-                            var column = element.parents('[fd-column]:first');
+                            var column = element.parents('.fd-column:first');
                             element.remove();
                             removeAll || adjustColumnsPosition(column, $compile, scope);
                         };
@@ -618,8 +618,8 @@
                     }
 
                     function columnToolHandler() {
-                        var row = element.parents('[fd-row]:first'),
-                            section = row.parents('[fd-section]:first'),
+                        var row = element.parents('.fd-row:first'),
+                            section = row.parents('.fd-section:first'),
                             columnsCount = parseInt(section.attr('section-columns')),
                             column = element.parent();
 
@@ -631,7 +631,7 @@
                             column.addClass('span' + firstWidth);
                             row.removeClass('merged-row');
                             for (var i = 1; i < columnsCount; i++) {
-                                var newColumn = $('<fd-column></fd-column>');
+                                var newColumn = $('<div fd-column></div>');
                                 row.append(newColumn);
                                 $compile(newColumn)(scope);
                             }
@@ -659,7 +659,7 @@
                     }
 
                     function removeField(removeAll) {
-                        var column = element.parents('[fd-column]:first'),
+                        var column = element.parents('.fd-column:first'),
                             field = element,
                             fieldIndex = $.inArray(field.attr('field-name'), inLayoutFields);
                         inLayoutFields.splice(fieldIndex, 1);
@@ -685,11 +685,11 @@
                                 var img = $('<img class="layout-image">');
                                 element.find('.title').prepend(img);
                             }
-                            element.find('[fd-tool-remove]').remove();
+                            element.find('.fd-tool-remove').remove();
                         } else {
                             element.find('.layout-image').remove();
 
-                            var removeItem = $('<fd-tool-remove></fd-tool-remove>');
+                            var removeItem = $('<div fd-tool-remove></div>');
                             element.find('.tools').append(removeItem);
                             $compile(removeItem)(scope);
                         }
@@ -705,9 +705,9 @@
         })
         .directive('fdToolRemove', function ($compile) {
             return {
-                template: '<div fd-tool-remove fd-hoverable class="remove" data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Remove"></div>',
+                template: '<div fd-hoverable class="remove fd-tool-remove" data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Remove"></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
@@ -724,9 +724,9 @@
         })
         .directive('fdToolProperty', function ($compile) {
             return {
-                template: '<div fd-tool-property fd-hoverable class="property" data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Properties"></div>',
+                template: '<div fd-hoverable class="property fd-tool-property" data-toggle="tooltip" data-delay="250" data-placement="bottom" title="Properties"></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     element[0].hoverOverHandler = function () {
                         $(this).addClass('highlight');
@@ -746,7 +746,7 @@
             return {
                 template: '<div id="fieldPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Field Properties</h3></div><div class="modal-body"><p><label class="checkbox"><input type="checkbox" ng-model="currentField.readonly"/><strong>Read-Only</strong></label></p><p><label class="checkbox"><input type="checkbox" ng-model="currentField.required"/><strong>Required</strong></label></p></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><button class="btn btn-primary">Ok</button></div></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     scope.$on('openFieldPropertiesDialog', function (event, currentField) {
                         scope.currentField = currentField;
@@ -770,7 +770,7 @@
             return {
                 template: '<div id="sectionPropertiesDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="myModalLabel">Section Properties</h3></div><div class="modal-body"><form class="form-horizontal"><div class="control-group"><label class="control-label">Section Title</label><div class="controls"><input type="text" ng-model="currentSection.title" /></div></div><div class="control-group"><label class="control-label">Section Layout</label><div class="controls"><label class="radio"><input type="radio" ng-model="currentSection.columns" value="1" />1-Columns                        </label><label class="radio"><input type="radio" ng-model="currentSection.columns" value="2" />2-Columns                        </label></div></div><div class="control-group" ng-show="currentSection.columns==2"><label class="control-label">Columns Width</label><div class="controls"><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="3:9" />25% + 75%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="4:8" />33% + 67%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="6:6" />50% + 50%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="8:4" />67% + 33%                        </label><label class="radio"><input type="radio" ng-model="currentSection.columnsWidth" value="9:3" />75% + 25%                        </label></div></div></form></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><button class="btn btn-primary">Ok</button></div></div>',
                 replace: true,
-                restrict: 'E',
+                restrict: 'A',
                 link: function (scope, element, attrs) {
                     scope.$on('openSectionPropertiesDialog', function (event, currentSection) {
                         scope.currentSection = currentSection;
@@ -791,14 +791,14 @@
                 restrict: 'A',
                 link: function (scope, element, attrs) {
                     element.droppable({
-                        accept: '[fd-field], [fd-tools-field]',
+                        accept: '.fd-field, .fd-tools-field',
                         tolerance: "pointer",
                         hoverClass: 'drop-hover',
                         drop: function (event, ui) {
                             dragHandler = null;
                             var dragItem;
-                            if (ui.draggable.is('[fd-tools-field]')) {
-                                dragItem = $('<fd-field></fd-field>');
+                            if (ui.draggable.is('.fd-tools-field')) {
+                                dragItem = $('<div fd-field></div>');
                                 dragItem.attr('field-text', ui.draggable.attr('field-text'));
                                 dragItem.attr('field-empty', ui.draggable.attr('field-empty'));
                                 dragItem.attr('field-required', ui.draggable.attr('required'));
@@ -810,18 +810,18 @@
                             }
 
                             var markedRow = placeIndicator.markedRow,
-                                markedRowColumns = placeIndicator.markedRow.children('[fd-column]'),
+                                markedRowColumns = placeIndicator.markedRow.children('.fd-column'),
                                 columnIndex = placeIndicator.columnIndex,
                                 markedColumn = $(markedRowColumns[columnIndex]),
                                 id = markedRow.hasClass('merged-row')
-                                    ? markedRow.find('[fd-field]').attr('id')
-                                    : markedColumn.children('[fd-field]').attr('id');
+                                    ? markedRow.find('.fd-field').attr('id')
+                                    : markedColumn.children('.fd-field').attr('id');
 
                             if (id == dragItem.attr('id')) {
                                 placeIndicator.hide();
                                 return;
                             }
-                            var dragRow = dragItem.parents('[fd-row]:first');
+                            var dragRow = dragItem.parents('.fd-row:first');
                             if (dragRow.hasClass('merged-row')) {
                                 placeIndicator.isAbove
                                     ? markedRow.before(dragRow)
@@ -832,12 +832,12 @@
                                         ? $()
                                         : markedRow.nextUntil('.merged-row').andSelf()
                                     : markedRow.nextUntil('.merged-row'),
-                                    columns = rows.find('[fd-column]:eq(' + columnIndex + ')'),
-                                    filledColumns = columns.has('[fd-field]:not(.dragging)'),
-                                    dragColumn = dragItem.parents('[fd-column]:first');
+                                    columns = rows.find('.fd-column:eq(' + columnIndex + ')'),
+                                    filledColumns = columns.has('.fd-field:not(.dragging)'),
+                                    dragColumn = dragItem.parents('.fd-column:first');
 
                                 if (filledColumns.length == columns.length) {
-                                    var columnCount = parseInt($(this).parents('[fd-section]:first').attr('section-columns')),
+                                    var columnCount = parseInt($(this).parents('.fd-section:first').attr('section-columns')),
                                         newRow = createNewRow(columnCount);
 
                                     rows.length
@@ -849,7 +849,7 @@
                                     columns.splice(columns.length, 0, newRow.children()[columnIndex]);
                                 }
 
-                                var fields = filledColumns.children('[fd-field]');
+                                var fields = filledColumns.children('.fd-field');
                                 fields.splice(0, 0, dragItem[0]);
                                 for (var i = 0; i < fields.length; i++) {
                                     $(columns[i]).append(fields[i]);
@@ -878,8 +878,8 @@
                     });
 
                     function markColumn(position) {
-                        var rows = element.children('[fd-row]'),
-                            widths = getColumnWidths(element.parents('[fd-section]:first')),
+                        var rows = element.children('.fd-row'),
+                            widths = getColumnWidths(element.parents('.fd-section:first')),
                             currentPosition = (position.x - rows.offset().left) / (rows.outerWidth() / 12),
                             columnIndex;
 
@@ -900,10 +900,10 @@
                                     : null;
 
                             if (result != null) {
-                                var column = row.find('[fd-column]:eq(' + columnIndex + ')'),
+                                var column = row.find('.fd-column:eq(' + columnIndex + ')'),
                                     above, markedRow, index, prevRow;
 
-                                if (column.children('[fd-field]').length) {
+                                if (column.children('.fd-field').length) {
                                     above = result && j == 0;
                                     index = result && j ? j - 1 : j;
                                     markedRow = $(rows[index]);
@@ -911,7 +911,7 @@
                                     above = false;
                                     markedRow = row;
                                 } else {
-                                    prevRow = row.prevAll('.merged-row,:has([fd-column]:eq(' + columnIndex + '):has([fd-field]))').first();
+                                    prevRow = row.prevAll('.merged-row,:has(.fd-column:eq(' + columnIndex + '):has(.fd-field))').first();
                                     above = !prevRow.length;
                                     markedRow = prevRow.length ? prevRow : rows.first();
                                 }
@@ -990,10 +990,10 @@
             return {
                 link: function (scope, element, attrs) {
                     element.click(function () {
-                        var sections = $('[fd-form]').find('[fd-section]');
+                        var sections = $('.fd-form').find('.fd-section');
                         var layoutObject = [];
                         sections.each(function () {
-                            if ($(this).find('[fd-field]').length) {
+                            if ($(this).find('.fd-field').length) {
                                 var columnCount = $(this).attr('section-columns'),
                                     width = $(this).attr('section-columns-width'),
                                     sectionTitle = $(this).attr('section-title'),
@@ -1003,7 +1003,7 @@
                                         SectionTitle: sectionTitle,
                                         Rows: []
                                     },
-                                    rows = $(this).find('[fd-row]');
+                                    rows = $(this).find('.fd-row');
 
                                 layoutObject.push(section);
                                 rows.each(function () {
@@ -1012,11 +1012,11 @@
                                         IsMerged: $(this).hasClass('merged-row')
                                     };
                                     section.Rows.push(row);
-                                    var columns = $(this).find('[fd-column]');
+                                    var columns = $(this).find('.fd-column');
                                     columns.each(function () {
                                         var column = {};
                                         row.Columns.push(column);
-                                        var field = $(this).find('[fd-field]');
+                                        var field = $(this).find('.fd-field');
                                         if (field.length) {
                                             column.Field = {
                                                 FieldName: field.attr('field-name'),
@@ -1045,10 +1045,10 @@
         })
         .directive('btnActions', function () {
             return {
-                template: '<div btn-actions ng-transclude ng-style="BtnActionLeft()" class="btn-toolbar pull-left"></div>',
+                template: '<div ng-transclude ng-style="BtnActionLeft()" class="btn-toolbar pull-left"></div>',
                 replace: true,
                 scope: {},
-                restrict: 'E',
+                restrict: 'A',
                 transclude: true,
                 controller: ['$scope', '$element', '$attrs', '$transclude', '$window', function ($scope, $element, $attrs, $transclude, $window) {
                     $scope.BtnActionLeft = function () {

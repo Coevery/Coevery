@@ -63,7 +63,7 @@ define(['core/app/detourService', 'core/services/entitydataservice', 'core/servi
                             $scope.getPagedDataAsync();
                         } else {
                             var gridOptions = {
-                                url: 'api/projections/entity/' + $scope.entityTypeName,
+                                url: applicationBaseUrl + 'api/projections/entity/' + $scope.entityTypeName,
                                 mtype: "post",
                                 postData: getPostData(),
                                 rowNum: pageSize,

@@ -9,10 +9,10 @@ define(['core/app/detourService'], function (detour) {
                 };
 
                 $scope.save = function() {
-                    var sections = $('[fd-form]').find('[fd-section]');
+                    var sections = $('.fd-form').find('.fd-section');
                     var layoutObject = [];
                     sections.each(function() {
-                        if ($(this).find('[fd-field]').length) {
+                        if ($(this).find('.fd-field').length) {
                             var columnCount = $(this).attr('section-columns'),
                                 width = $(this).attr('section-columns-width'),
                                 sectionTitle = $(this).attr('section-title'),
@@ -22,7 +22,7 @@ define(['core/app/detourService'], function (detour) {
                                     SectionTitle: sectionTitle,
                                     Rows: []
                                 },
-                                rows = $(this).find('[fd-row]');
+                                rows = $(this).find('.fd-row');
 
                             layoutObject.push(section);
                             rows.each(function() {
@@ -31,11 +31,11 @@ define(['core/app/detourService'], function (detour) {
                                     IsMerged: $(this).hasClass('merged-row')
                                 };
                                 section.Rows.push(row);
-                                var columns = $(this).find('[fd-column]');
+                                var columns = $(this).find('.fd-column');
                                 columns.each(function() {
                                     var column = { };
                                     row.Columns.push(column);
-                                    var field = $(this).find('[fd-field]');
+                                    var field = $(this).find('.fd-field');
                                     if (field.length) {
                                         column.Field = {
                                             FieldName: field.attr('field-name'),

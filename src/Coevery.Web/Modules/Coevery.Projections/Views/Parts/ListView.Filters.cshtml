@@ -6,7 +6,8 @@
     <ul class="dropdown-menu">
         <li data-ng-repeat="filter in definitionFilters" class="filter-label" data-ng-mouseenter="showRemoveIcon=true" data-ng-mouseleave="showRemoveIcon=false">
             <i data-ng-show="showRemoveIcon" class="icon-remove inline-icon" data-ng-click="deleteFilter(filter)"></i>
-            <a data-ng-click="loadFilter({{filter}})" title="{{filter.Title}}">
+            @* data-ng-click="loadFilter({{filter}})" title="{{filter.Title}}" *@
+            <a>
                 <i data-ng-class="{'icol-accept':currentFilter.Id == filter.Id,'viewUSelected': currentFilter.Id != filter.Id}"></i>
                 {{filter.Title}}
             </a>

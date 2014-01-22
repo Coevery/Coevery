@@ -1,17 +1,17 @@
-﻿[fd-row] {
+﻿.fd-row {
     position: relative;
 }
 
-[fd-form].markedAbove {
+.fd-form.markedAbove {
     border-top: 3px solid red;
 }
 
-[fd-section] {
+.fd-section {
     position: relative;
 }
 
-    [fd-section].marked:after,
-    [fd-section].markedAbove:after {
+    .fd-section.marked:after,
+    .fd-section.markedAbove:after {
         content: "";
         border-top: 3px solid red;
         display: block;
@@ -19,27 +19,27 @@
         width: 100%;
     }
 
-    [fd-section].marked:after {
+    .fd-section.marked:after {
         bottom: -5px;
     }
 
-    [fd-section].markedAbove:after {
+    .fd-section.markedAbove:after {
         top: -5px;
     }
 
-    [fd-section] legend > .tools {
+    .fd-section legend > .tools {
         top: 14px;
     }
 
-[fd-field] {
+.fd-field {
     position: relative;
 }
 
-    [fd-field].selected {
+    .fd-field.selected {
         background-color: #c7e7af;
     }
 
-[fd-form] form {
+.fd-form form {
     min-height: 50px;
 }
 

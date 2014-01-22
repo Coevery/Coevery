@@ -1,8 +1,8 @@
 ﻿define(['core/directives/common'], function () {
     'use strict';
 
-    coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato', '$http',
-        function ($rootScope, $state, $stateParams, $couchPotato) {
+    coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato', '$browser', '$location',
+        function ($rootScope, $state, $stateParams, $couchPotato, $browser, $location) {
             //"cheating" so that couchPotato is available in requirejs
             //define modules -- we want run-time registration of components
             //to take place within those modules because it allows
@@ -17,6 +17,26 @@
             $rootScope.$on('$viewContentLoaded', function () {
                
             });
+
+            var history = [];
+            var unsubstribeLocationChanged = $rootScope.$on('$locationChangeSuccess', function (evt, newUrl) {
+                history.push(newUrl);
+            });
+
+            $rootScope.goBack = function() {
+                if (history.length > 1) {
+                    history.pop();
+                    var url = history.pop();
+                    unsubstribeLocationChanged();
+                    var oldUrl = $browser.url();
+                    $location.$$parse(url);
+                    $browser.url(url, true);
+                    $rootScope.$broadcast('$locationChangeSuccess', $location.absUrl(), oldUrl);
+                    unsubstribeLocationChanged = $rootScope.$on('$locationChangeSuccess', function (evt, newUrl) {
+                        history.push(newUrl);
+                    });
+                }
+            };
             
             if (!String.prototype.format) {
                 String.prototype.format = function () {

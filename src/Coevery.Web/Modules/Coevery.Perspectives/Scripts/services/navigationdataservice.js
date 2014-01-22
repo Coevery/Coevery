@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'navigationDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            return $resource('api/perspectives/Navigation/:Id',
+            return $resource(applicationBaseUrl + 'api/perspectives/Navigation/:Id',
                 { Id: '@Id' },
                 { update: { method: 'PUT' } });
         }]

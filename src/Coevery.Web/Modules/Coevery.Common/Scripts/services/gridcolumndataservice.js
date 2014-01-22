@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
        'gridColumnDataService',
        ['$rootScope', '$resource', function ($rootScope, $resource) {
-           return $resource('api/Projections/GridColumn/:contentType',
+           return $resource(applicationBaseUrl+'api/Projections/GridColumn/:contentType',
                { contentType: '@contentType' },
                { update: { method: 'PUT' } });
        }]

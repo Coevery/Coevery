@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'perspectiveDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            return $resource('api/perspectives/Perspective/:Name',
+            return $resource(applicationBaseUrl + 'api/perspectives/Perspective/:Name',
                 { Name: '@Name' },
                 { update: { method: 'PUT' } });
         }]

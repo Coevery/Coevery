@@ -3,17 +3,17 @@
 }
 
 @foreach (var layoutSection in sectionList) {
-    <fd-section section-columns="@layoutSection.SectionColumns" section-columns-width="@layoutSection.SectionColumnsWidth" section-title="@layoutSection.SectionTitle">
+    <div fd-section section-columns="@layoutSection.SectionColumns" section-columns-width="@layoutSection.SectionColumnsWidth" section-title="@layoutSection.SectionTitle">
         @foreach (var row in layoutSection.Rows) {
-            <fd-row @if (row.IsMerged) { <text>class="merged-row"</text> }>
+            <div fd-row @if (row.IsMerged) { <text>class="merged-row"</text> }>
                 @foreach (var column in row.Columns) {
-                    <fd-column>
+                    <div fd-column>
                         @if (column.Field != null && column.Field.IsValid) {
-                            <fd-field field-name="@column.Field.FieldName"></fd-field>
+                            <div fd-field field-name="@column.Field.FieldName"></div>
                         }
-                    </fd-column>
+                    </div>
                 }
-            </fd-row>
+            </div>
         }
-    </fd-section>
+    </div>
 }

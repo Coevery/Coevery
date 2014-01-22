@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'navigationDataService',
         ['$rootScope', '$resource', function ($rootScope, $resource) {
-            return $resource('api/CoeveryCommon/Navigation');
+            return $resource(applicationBaseUrl + 'api/CoeveryCommon/Navigation');
         }]
     ]);
 });

@@ -47,7 +47,7 @@ namespace Coevery.FormDesigner.Controllers {
                 ? contentTypeDefinition.Settings["Layout"]
                 : string.Empty;
             layout = string.IsNullOrEmpty(layout)
-                ? "<fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"Sample Title\"><fd-row><fd-column></fd-column></fd-row></fd-section>"
+                ? "<div fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"Sample Title\"><div fd-row><div fd-column></div></div></div>"
                 : layout;
             var viewModel = Services.New.ViewModel();
             viewModel.Layout = layout;

@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'projectionDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            return $resource('api/projections/Projection/:Name',
+            return $resource(applicationBaseUrl + 'api/projections/Projection/:Name',
                 { Name: '@Name' },
                 { update: { method: 'PUT' } });
         }]

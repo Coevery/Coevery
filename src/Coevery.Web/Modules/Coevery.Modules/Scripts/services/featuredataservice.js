@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
         'featureDataService',
         ['$rootScope', '$resource', function($rootScope, $resource) {
-            return $resource('api/Modules/Feature',
+            return $resource(applicationBaseUrl + 'api/Modules/Feature',
             { update: { method: 'PUT' } });
         }]
     ]);
