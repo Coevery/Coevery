@@ -3,7 +3,7 @@
 @{
     RegisterLink(new LinkEntry {Type = "image/x-icon", Rel = "shortcut icon", Href = Url.Content("~/modules/coevery.themes/Content/coevery.ico")});
     Script.Include("html5.js").UseCondition("lt IE 9").AtHead();
-
+    
     string title = Convert.ToString(Model.Title);
     string siteName = Convert.ToString(WorkContext.CurrentSite.SiteName);
 }
@@ -13,16 +13,8 @@
     <meta charset="utf-8" />
     <title>@Html.Title(title, siteName)</title> 
     @Display(Model.Head)
-    @Script.Include("respond.js").UseCondition("lt IE 9");
-    <!--[if lte IE 8]>
-      <script>
-        document.createElement('fd-section');
-        document.createElement('fd-row');
-        document.createElement('fd-field');
-        document.createElement('fd-column');
+    @{Script.Include("respond.js").UseCondition("lt IE 9");}
 
-      </script>
-    <![endif]-->
     <script>(function(d){d.className="dyn"+d.className.substring(6,d.className.length);})(document.documentElement);</script> 
 </head> 
 <body>
