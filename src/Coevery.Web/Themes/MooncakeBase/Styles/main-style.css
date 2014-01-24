@@ -39,3 +39,287 @@
 ================================================== */
 @import url("lt-ie9.css");
 
+
+
+/* widget
+================================================== */
+@media (max-width: 979px)
+{
+
+    .summary-list > ul > li .key
+    {
+        width: auto;
+        display: block;
+        float: none;
+        padding-top: 5px;
+        padding-bottom: 0;
+    }
+
+    .summary-list > ul > li .val
+    {
+        padding-top: 0;
+        padding-bottom: 5px;
+        margin-left: 24px;
+        display: block;
+    }
+}
+
+@media (max-width: 767px)
+{
+    .news > ul > li .thumbnail
+    {
+        max-width: 250px;
+        margin: auto;
+        width: auto;
+        float: none;
+        margin-bottom: 10px;
+    }
+
+    .news > ul > li .info
+    {
+        margin-left: auto;
+    }
+
+    .news > ul > li .head h2 a
+    {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .goal .goal-header .info
+    {
+        border-right: 0;
+        border-bottom: 1px dotted #ccc;
+        margin-right: 0;
+    }
+
+    .goal .goal-header .info:last-child
+    {
+        border-bottom: 0;
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 480px)
+{
+    .widget > .widget-content
+    {
+        padding: 16px 20px;
+    }
+
+    .user-box .thumbnail
+    {
+        width: 150px;
+        margin: auto;
+        margin-bottom: 10px;
+        float: none;
+    }
+
+    .user-box .info
+    {
+        margin-left: 0;
+    }
+}
+
+
+/* form
+================================================== */
+
+@media (max-width: 767px) {
+    .row-fluid .controls-row [class*="span"], 
+    .row-fluid .controls-row [class*="span"] + [class*="span"]
+    {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .widget .form-container .form-horizontal .form-actions
+    {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .widget .form-container .form-horizontal .controls
+    {
+        margin-left: 0;
+    }
+}
+
+/* table
+================================================== */
+
+@media (max-width: 767px)
+{
+
+    .table-flipscroll th, 
+    .table td
+    {
+        margin: 0;
+        vertical-align: top;
+    }
+
+    .table-flipscroll
+    {
+        display: block;
+        position: relative;
+    }
+
+    .table-flipscroll thead
+    {
+        display: block;
+        float: left;
+    }
+
+    .table-flipscroll tbody
+    {
+        letter-spacing: -4px;
+        word-spacing: -4px;
+        display: block;
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-left: 1px solid #ccc;
+    }
+
+    .table-flipscroll thead tr
+    {
+        display: block;
+    }
+
+    .table-flipscroll th
+    {
+        display: block;
+        text-align: right;
+    }
+
+    .table-flipscroll thead tr th
+    {
+        border-top: 1px solid transparent;
+    }
+
+    .table-flipscroll thead tr td
+    {
+        border-top: 1px solid #ccc;
+    }
+
+    .table-flipscroll thead tr td:first-child, 
+    .table-flipscroll thead tr th:first-child, 
+    .table-flipscroll tbody tr td:first-child, 
+    .table-flipscroll tbody tr th:first-child
+    {
+        border-top: 0;
+    }
+
+    .table-flipscroll tbody tr
+    {
+        display: inline-block;
+        vertical-align: top;
+        border-left: 1px solid #ccc;
+        letter-spacing: normal;
+        word-spacing: normal;
+    }
+
+    .table-flipscroll tbody tr:first-child
+    {
+        border-left: 0;
+    }
+
+    .table-flipscroll td
+    {
+        display: block;
+        text-align: left;
+    }
+
+    .table-flipscroll th:first-child, 
+    .table td: first-child
+    {
+        border-top: none !important;
+    }
+
+    .table-flipscroll th:last-child
+    {
+        border-bottom: 1px solid transparent;
+    }
+
+    .table-flipscroll td:last-child
+    {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .table-bordered.table-flipscroll
+    {
+        border-left: 1px solid #ccc;
+    }
+
+    .table-bordered.table-flipscroll th, 
+    .table-bordered.table-flipscroll td
+    {
+        border-left: none;
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    .table-checkable.table-flipscroll thead th.checkbox-column:first-child
+    {
+        border-right: 0;
+    }
+
+    .table-checkable.table-flipscroll tbody td.checkbox-column:first-child
+    {
+        border-left: 0;
+    }
+}
+
+@media (max-width: 480px)
+{
+    .table-detail-view
+    {
+        table-layout: fixed !important;
+    }
+
+    .table-detail-view tbody tr th
+    {
+        width: auto;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+
+
+/* fullcalendar
+================================================== */
+@media (max-width: 767px)
+{
+    .fc-header .fc-header-left, 
+	.fc-header .fc-header-right, 
+	.fc-header .fc-header-center
+    {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+
+    .fc-header .fc-header-center
+    {
+        border: 1px solid #ccc;
+        border-width: 1px 0;
+    }
+
+    .fc-header .fc-header-title
+    {
+        text-align: center;
+        display: block;
+    }
+
+    .fc-header .fc-button-inner
+    {
+        border-left: 0;
+        border-right: 1px solid #ccc;
+    }
+}

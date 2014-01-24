@@ -1203,7 +1203,7 @@
 /* Media Queries
 ================================================== */
 
-@media (max-width: 979px)
+/*@media (max-width: 979px)
 {
 
     .summary-list > ul > li .key
@@ -1280,4 +1280,4 @@
     {
         margin-left: 0;
     }
-}
+}*/

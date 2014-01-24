@@ -406,7 +406,7 @@ table tr .action-col
 /* Responsive Tables (FlipScroll)
 ================================================== */
 
-@media (max-width: 767px)
+/*@media (max-width: 767px)
 {
 
     .table-flipscroll th, 
@@ -544,7 +544,7 @@ table tr .action-col
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-}
+}*/
 
 .table th.rightCell,
 .table td.rightCell {

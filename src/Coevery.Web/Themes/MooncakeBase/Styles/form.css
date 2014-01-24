@@ -237,7 +237,7 @@ label .required
 /* Media Queries
 ================================================== */
 
-@media (max-width: 767px) {
+/*@media (max-width: 767px) {
     .row-fluid .controls-row [class*="span"], 
     .row-fluid .controls-row [class*="span"] + [class*="span"]
     {
@@ -256,4 +256,4 @@ label .required
     {
         margin-left: 0;
     }
-}
+}*/
