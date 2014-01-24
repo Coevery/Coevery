@@ -60,7 +60,6 @@
 
           $scope.exit = function () {
               $rootScope.goBack();
-              //window.history.back();
           };
 
           $scope.$on('$viewContentLoaded', function () {

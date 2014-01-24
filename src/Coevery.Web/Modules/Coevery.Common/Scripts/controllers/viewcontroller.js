@@ -34,7 +34,7 @@
                 };
 
                 $scope.exit = function() {
-                    window.history.back();
+                    $rootScope.goBack();
                 };
                 
                 $scope.edit = function () {

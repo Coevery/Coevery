@@ -9,7 +9,7 @@ define(['core/app/detourService'], function (detour) {
     detour.registerFactory([
        'historyService',
        ['$rootScope', '$resource', function ($rootScope, $resource) {
-           return $resource('api/Projections/History/:contentId',
+           return $resource(applicationBaseUrl + 'api/Projections/History/:contentId',
                { contentId: '@ContentId' },
                { update: { method: 'PUT' } });
        }]
