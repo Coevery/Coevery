@@ -1,38 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Coevery.Caching;
 using Coevery.Common.Extensions;
+using Coevery.Data;
 using Coevery.Entities.Models;
-using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData;
 using Coevery.ContentManagement.MetaData.Models;
-using Coevery.Entities.Services;
 
 namespace Coevery.Entities.Extensions {
     public class ContentDefinitionExtension : IContentDefinitionExtension {
-        private readonly IContentManager _contentManager;
-        private readonly ISettingService _settingService;
+        private const string ContentDefinitionSignal = "ContentDefinitionManager";
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IRepository<EntityMetadataRecord> _entityMetadataRepository;
+        private readonly ICacheManager _cacheManager;
+        private readonly ISignals _signals;
 
         public ContentDefinitionExtension(
-            IContentManager contentManager,
-            ISettingService settingService,
-            IContentDefinitionManager contentDefinitionManager) {
-            _settingService = settingService;
-            _contentManager = contentManager;
+            IContentDefinitionManager contentDefinitionManager,
+            IRepository<EntityMetadataRecord> entityMetadataRepository,
+            ICacheManager cacheManager,
+            ISignals signals) {
             _contentDefinitionManager = contentDefinitionManager;
+            _entityMetadataRepository = entityMetadataRepository;
+            _cacheManager = cacheManager;
+            _signals = signals;
         }
 
         public IEnumerable<ContentTypeDefinition> ListUserDefinedTypeDefinitions() {
-            var metaEntities = _contentManager.Query<EntityMetadataPart>(VersionOptions.Latest)
-                                              .List();
-            if (metaEntities == null || !metaEntities.Any()) {
-                return Enumerable.Empty<ContentTypeDefinition>();
-            }
-            return from type in _contentDefinitionManager.ListTypeDefinitions()
-                   from entity in metaEntities
-                   where entity.Name == type.Name
-                   select type;
+            return _cacheManager.Get("UserContentTypeDefinitions", ctx => {
+                MonitorContentDefinitionSignal(ctx);
+
+                var metaEntities = _entityMetadataRepository.Table.Select(x => x.Name).Distinct().ToList();
+                if (metaEntities.Count == 0) {
+                    return Enumerable.Empty<ContentTypeDefinition>();
+                }
+
+                return (from type in _contentDefinitionManager.ListTypeDefinitions()
+                    where metaEntities.Contains(type.Name)
+                    select type).ToList();
+            });
+        }
+
+        public IEnumerable<ContentPartDefinition> ListUserDefinedPartDefinitions() {
+            return _cacheManager.Get("UserContentPartDefinitions", ctx => {
+                MonitorContentDefinitionSignal(ctx);
+
+                var metaEntities = _entityMetadataRepository.Table.Select(x => x.Name).Distinct().ToList();
+                if (metaEntities.Count == 0) {
+                    return Enumerable.Empty<ContentPartDefinition>();
+                }
+
+                return (from part in _contentDefinitionManager.ListPartDefinitions()
+                    where metaEntities.Contains(part.Name.RemovePartSuffix())
+                    select part).ToList();
+            });
         }
 
         public EntityNames GetEntityNames(string entityName) {
@@ -54,12 +75,10 @@ namespace Coevery.Entities.Extensions {
         public string GetEntityNameFromCollectionName(string collectionname, bool isDisplayName) {
             var entity = _contentDefinitionManager.ListTypeDefinitions().Where(type => {
                 var setting = type.Settings;
-                if (isDisplayName && setting.ContainsKey("CollectionDisplayName"))
-                {
+                if (isDisplayName && setting.ContainsKey("CollectionDisplayName")) {
                     return setting["CollectionDisplayName"] == collectionname;
                 }
-                if (!isDisplayName && setting.ContainsKey("CollectionName"))
-                {
+                if (!isDisplayName && setting.ContainsKey("CollectionName")) {
                     return setting["CollectionName"] == collectionname;
                 }
                 return false;
@@ -67,18 +86,8 @@ namespace Coevery.Entities.Extensions {
             return entity.Count() == 1 ? entity.First().Name : null;
         }
 
-        public IEnumerable<ContentPartDefinition> ListUserDefinedPartDefinitions() {
-            var types = ListUserDefinedTypeDefinitions();
-            if (types == null || !types.Any()) {
-                return null;
-            }
-            var result = from type in types
-                         from partRelation in type.Parts
-                         let part = partRelation.PartDefinition
-                         where part.Name == type.Name.ToPartName()
-                         select part;
-            return result.Any() ? result : null;
+        private void MonitorContentDefinitionSignal(AcquireContext<string> ctx) {
+            ctx.Monitor(_signals.When(ContentDefinitionSignal));
         }
-
     }
 }
