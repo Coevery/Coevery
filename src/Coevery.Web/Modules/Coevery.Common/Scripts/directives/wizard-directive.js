@@ -2,7 +2,8 @@ angular.module('coevery.wizard', [])
     .directive('coWizard', function($compile, $dialog, $state) {
         return {
             template: '<div class="hide" ui-view></div>',
-            replace: true,
+            replace: false,
+            restrict: 'A',
             scope: { options: '=wizardOptions' },
             link: function(scope, element, attrs) {
                 var template = $('<div class="modal-header"><button type="button" class="close">&times;</button><h3></h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn">Back</button><button class="btn">Next</button><button class="btn btn-primary">Save</button></div>'),
@@ -62,7 +63,7 @@ angular.module('coevery.wizard', [])
 
                 function addTemplateContent() {
                     templateContent.empty();
-                    templateContent.append(element.children());
+                    templateContent.append(element.find('[ui-view]').contents());
                 }
 
                 function closeWizard() {
