@@ -13,7 +13,7 @@ define(['core/app/detourService'], function(detour) {
                 });
 
                 var optionColumnDefs = [
-                    { name: 'Id', label: 'Id', sorttype:'int', hidden: true },
+                    { name: 'Id', label: 'Id', sorttype:'int', hidden: true, key: true },
                     {
                         name: 'Name', label: 'Value', 
                         formatter: $rootScope.cellLinkTemplate,
@@ -25,7 +25,6 @@ define(['core/app/detourService'], function(detour) {
 
                 $scope.gridOptions = {
                     url: "api/OptionSet/OptionItem/?optionSetId=" + $scope.optionSetId,
-                    rowIdName: "Id",
                     colModel: optionColumnDefs
                 };
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
