@@ -12,7 +12,17 @@
             </select>
         </div>
     </section>
-
+    <section class="data-row control-group">
+        <label class="control-label">
+            @T("Options")
+        </label>
+        <div class="controls">
+            <label class="checkbox">               
+                @Html.CheckBoxFor(m => m.IsUnique)
+                @T("Is Unique")
+            </label>
+        </div>
+    </section>
     @Html.HiddenFor(model => model.OptionSetId)
 </section>
 <div ui-view data-ng-init="optionSetId=@Model.OptionSetId">

@@ -27,6 +27,7 @@ namespace Coevery.OptionSet.Settings {
         public string Options { get; set; }
 
         public ListMode ListMode { get; set; }
+        public bool IsUnique { get; set; }
 
         public OptionSetFieldSettings() {
             ListMode = ListMode.Dropdown;

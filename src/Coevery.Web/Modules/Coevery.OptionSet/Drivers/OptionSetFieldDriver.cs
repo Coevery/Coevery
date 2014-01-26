@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Coevery.OptionSet.Fields;
 using Coevery.OptionSet.Helpers;
 using Coevery.OptionSet.Models;
@@ -94,11 +95,19 @@ namespace Coevery.OptionSet.Drivers {
                     .Where(t => t != null).ToList();
 
                 var settings = field.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
-                if (settings.Required && !checkedTerms.Any()) {
-                    updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+                bool hasValue = checkedTerms.Any();
+                bool continued = true;
+                if (settings.ListMode == ListMode.Dropdown && settings.IsUnique && hasValue) {
+                    int optionId = checkedTerms.First().Id;
+                    continued = HandleUniqueValue(part, field, updater, optionId);
                 }
-                else {
-                    _optionSetService.UpdateTerms(part.ContentItem, checkedTerms, field.Name);
+                if (continued) {
+                    if (settings.Required && !hasValue) {
+                        updater.AddModelError(GetPrefix(field, part), T("The field {0} is mandatory.", T(field.DisplayName)));
+                    }
+                    else {
+                        _optionSetService.UpdateTerms(part.ContentItem, checkedTerms, field.Name);
+                    }
                 }
             }
 
@@ -157,6 +166,19 @@ namespace Coevery.OptionSet.Drivers {
         protected override void Describe(DescribeMembersContext context) {
             context
                 .Member(null, typeof(string), null, T("The option value of the field."));
+        }
+
+        private bool HandleUniqueValue(ContentPart part, OptionSetField field, IUpdateModel updater, int optionId) {
+            var contains = Services.ContentManager.List<OptionItemContainerPart>(part.TypeDefinition.Name)
+                .Where(x => x.Id != part.Id)
+                .SelectMany(x => x.OptionItems)
+                .Any(x => x.Field == field.Name && x.OptionItemRecord.Id == optionId);
+
+            if (contains) {
+                updater.AddModelError(GetPrefix(field, part), T("The field {0} value must be unique.", T(field.DisplayName)));
+                return false;
+            }
+            return true;
         }
     }
 

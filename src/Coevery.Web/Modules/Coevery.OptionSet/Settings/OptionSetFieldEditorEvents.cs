@@ -48,6 +48,7 @@ namespace Coevery.OptionSet.Settings {
                 }
                 settingsDictionary["OptionSetFieldSettings.OptionSetId"] = model.OptionSetId.ToString("D");
                 settingsDictionary["OptionSetFieldSettings.ListMode"] = model.ListMode.ToString();
+                settingsDictionary["OptionSetFieldSettings.IsUnique"] = model.IsUnique.ToString();
             }
         }
 
@@ -61,6 +62,7 @@ namespace Coevery.OptionSet.Settings {
                 UpdateSettings(model, builder, "OptionSetFieldSettings");
                 builder.WithSetting("OptionSetFieldSettings.OptionSetId", model.OptionSetId.ToString());
                 builder.WithSetting("OptionSetFieldSettings.ListMode", model.ListMode.ToString());
+                builder.WithSetting("OptionSetFieldSettings.IsUnique", model.IsUnique.ToString());
             }
         }
 
