@@ -34,8 +34,8 @@
       <icon>https://raw.github.com/Coevery/Coevery/gh-pages/Coevery.png</icon>
     </images>
     
-    <updated>2013-12-19T16:30:00Z</updated>
-    <published>2013-12-19T16:30:00Z</published>
+    <updated>2014-1-27T16:30:00Z</updated>
+    <published>2014-1-27T16:30:00Z</published>
 
     <author>
       <name>nova software coporation coevery crm team</name>
@@ -57,10 +57,10 @@
 
         <installerFile>
           <!-- size of the package in KBs -->
-          <fileSize>32298</fileSize>
-          <installerURL>https://github.com/Coevery/Coevery/releases/download/v1.1.0-alpha/Coevery1.1.0.zip</installerURL>
+          <fileSize>30393</fileSize>
+          <installerURL>https://github.com/Coevery/Coevery/releases/download/v1.1.1-alpha/Coevery-1.1.1.zip</installerURL>
           <!-- SHA of the package file for signature verification -->
-          <sha1>B5A7AB761C8C598AC93BD925F758DA9E037EB64B</sha1>
+          <sha1>6ee731054ebeb28d57f520709b4568096b789b72</sha1>
         </installerFile>
         <msDeploy>
           <startPage>
