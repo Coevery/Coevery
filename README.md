@@ -2,11 +2,7 @@ Coevery
 =======
 
 ## Demo
-Demo site1: http://coevery.unmean.net   (sponsored by：[久永](https://github.com/Jiuyong))  
-User Name: admin  
-Password: 123456789 
-  
-Demo site2:  <http://coeverydemo.novasoftware.cn/> (Recommended)  
+Demo site:  <http://coeverydemo.novasoftware.cn/> (Recommended)  
 User Name: admin  
 Password: 123456789 
 
