@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Coevery.Common.Extensions;
 using Coevery.ContentManagement;
 using Coevery.Data;
 using Coevery.Forms.Services;
@@ -153,7 +154,8 @@ namespace Coevery.Projections.Services {
         }
 
         public IHqlQuery GetContentQuery(QueryPartRecord queryRecord, string contentTypeName) {
-            var contentQuery = _contentManager.HqlQuery().ForVersion(VersionOptions.Published);
+            var contentQuery = _contentManager.HqlQuery().ForVersion(VersionOptions.Published)
+                .Include(contentTypeName.ToPartName() + "Record");
             
             foreach (var criteriaProvider in _queryCriteriaProviders) {
                 var context = new QueryContext {
