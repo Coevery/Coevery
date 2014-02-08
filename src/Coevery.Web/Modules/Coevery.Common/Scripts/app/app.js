@@ -19,7 +19,7 @@
             });
 
             var history = [];
-            var unsubstribeLocationChanged = $rootScope.$on('$locationChangeSuccess', function (evt, newUrl) {
+            $rootScope.$on('$locationChangeSuccess', function (evt, newUrl) {
                 history.push(newUrl);
             });
 
@@ -27,14 +27,10 @@
                 if (history.length > 1) {
                     history.pop();
                     var url = history.pop();
-                    unsubstribeLocationChanged();
                     var oldUrl = $browser.url();
                     $location.$$parse(url);
                     $browser.url(url, true);
-                    $rootScope.$broadcast('$locationChangeSuccess', $location.absUrl(), oldUrl);
-                    unsubstribeLocationChanged = $rootScope.$on('$locationChangeSuccess', function (evt, newUrl) {
-                        history.push(newUrl);
-                    });
+                    $rootScope.$broadcast('$locationChangeSuccess', url, oldUrl);
                 }
             };
             
