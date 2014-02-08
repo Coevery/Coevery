@@ -7,6 +7,7 @@ using Coevery.ContentManagement;
 using Coevery.ContentManagement.MetaData.Models;
 using Coevery.Localization;
 using Coevery.Projections.Descriptors.Filter;
+using Coevery.Utility.Extensions;
 
 namespace Coevery.Projections.FieldTypeEditors {
     public class OptionSetFieldTypeEditor : ConcreteFieldTypeEditorBase {
@@ -51,7 +52,18 @@ namespace Coevery.Projections.FieldTypeEditors {
             }
         }
 
-        public override void ApplySortCriterion(Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {}
+        public override void ApplySortCriterion(Descriptors.SortCriterion.SortCriterionContext context, string storageName, Type storageType, ContentPartDefinition part, ContentPartFieldDefinition field) {
+            var ascending = (bool)context.State.Sort;
+            var propertyName = String.Join(".", part.Name, field.Name, storageName ?? "");
+            var safeName = propertyName.ToSafeName();
+            Action<IHqlExpressionFactory> predicate = y => y.Eq("PropertyName", propertyName);
+            Action<IAliasFactory> relationship = x => x.ContentPartRecord<FieldIndexPartRecord>().Property("StringFieldIndexRecords", safeName);
+           
+            context.Query = context.Query.Where(relationship, predicate);
+            context.Query = ascending
+                ? context.Query.OrderBy(relationship, x => x.Asc("Value"))
+                : context.Query.OrderBy(relationship, x => x.Desc("Value"));
+        }
 
         public override string FormName {
             get { return OptionSetFilterForm.FormName; }

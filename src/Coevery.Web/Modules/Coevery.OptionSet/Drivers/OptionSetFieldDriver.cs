@@ -94,6 +94,7 @@ namespace Coevery.OptionSet.Drivers {
                     .Select(t => GetOrCreateTerm(t, viewModel.OptionSetId, field))
                     .Where(t => t != null).ToList();
 
+                field.Value = string.Join(",", checkedTerms.Select(x => x.Id.ToString()).ToArray());
                 var settings = field.PartFieldDefinition.Settings.GetModel<OptionSetFieldSettings>();
                 bool hasValue = checkedTerms.Any();
                 bool continued = true;

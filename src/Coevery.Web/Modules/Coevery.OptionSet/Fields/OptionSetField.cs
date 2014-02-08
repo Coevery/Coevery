@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Coevery.Entities.Services;
+using Coevery.ContentManagement.FieldStorage;
 using Coevery.OptionSet.Models;
 using Coevery.ContentManagement;
 using Coevery.ContentManagement.Utilities;
@@ -20,6 +20,11 @@ namespace Coevery.OptionSet.Fields {
         /// </summary>
         public IEnumerable<OptionItemPart> OptionItems {
             get { return OptionItemsField.Value; }
+        }
+
+        public string Value {
+            get { return Storage.Get<string>(Name); }
+            set { Storage.Set(value ?? string.Empty); }
         }
     }
 }
