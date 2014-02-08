@@ -1,25 +1,25 @@
-﻿define(['core/directives/common'], function () {
+﻿define(['core/directives/common'], function() {
     'use strict';
 
     coevery.run(['$rootScope', '$state', '$stateParams', '$couchPotato', '$browser', '$location',
-        function ($rootScope, $state, $stateParams, $couchPotato, $browser, $location) {
+        function($rootScope, $state, $stateParams, $couchPotato, $browser, $location) {
             //"cheating" so that couchPotato is available in requirejs
             //define modules -- we want run-time registration of components
             //to take place within those modules because it allows
             //for them to have their own dependencies also be lazy-loaded.
             //this is what requirejs is good at.
             coevery.detour = $couchPotato;
-            
+
             $rootScope.$detour = $couchPotato;
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
-            $rootScope.$on('$viewContentLoaded', function () {
-               
+            $rootScope.$on('$viewContentLoaded', function() {
+
             });
 
             var history = [];
-            $rootScope.$on('$locationChangeSuccess', function (evt, newUrl) {
+            $rootScope.$on('$locationChangeSuccess', function(evt, newUrl) {
                 history.push(newUrl);
             });
 
@@ -31,22 +31,28 @@
                     $location.$$parse(url);
                     $browser.url(url, true);
                     $rootScope.$broadcast('$locationChangeSuccess', url, oldUrl);
+                } else {
+                    var navigationId = $stateParams.NavigationId;
+                    var moduleName = $stateParams.Module;
+                    if (navigationId && moduleName) {
+                        history.pop();
+                        $state.transitionTo('Root.Menu.List', { NavigationId: navigationId, Module: moduleName });
+                    }
                 }
             };
-            
+
             if (!String.prototype.format) {
-                String.prototype.format = function () {
+                String.prototype.format = function() {
                     var args = arguments;
-                    return this.replace(/\{(\d+)\}/g, function (match, number) {
+                    return this.replace(/\{(\d+)\}/g, function(match, number) {
                         return typeof args[number] !== 'undefined'
-                          ? args[number]
-                          : match
-                        ;
+                            ? args[number]
+                            : match;
                     });
                 };
             }
 
-            $rootScope.cellLinkTemplate = function (cellvalue, options, rowObject) {
+            $rootScope.cellLinkTemplate = function(cellvalue, options, rowObject) {
                 var template = '<div class="gridCellText">' +
                     '<section data-ng-show="dataCanModify" class="row-actions hide">' +
                     '<span class="icon-edit" data-ng-click="edit(\'{0}\')" title="Edit"></span>' +
@@ -93,8 +99,8 @@
 
 });
 
-$(function () {
-    $('body').on("submit", 'form', function (event) {
+$(function() {
+    $('body').on("submit", 'form', function(event) {
         event.preventDefault();
     });
 });
