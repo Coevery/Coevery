@@ -122,6 +122,7 @@ namespace Coevery.Common.Controllers {
         }
 
         [HttpPost, ActionName("Create")]
+        [ValidateInput(false)]
         [FormValueRequired("submit.Save")]
         public ActionResult CreatePOST(string id, string returnUrl) {
             return CreatePOST(id, returnUrl, contentItem => {
@@ -178,6 +179,7 @@ namespace Coevery.Common.Controllers {
         }
 
         [HttpPost, ActionName("Edit")]
+        [ValidateInput(false)]
         [FormValueRequired("submit.Save")]
         public ActionResult EditPOST(int id, string returnUrl) {
             return EditPOST(id, returnUrl, contentItem => {

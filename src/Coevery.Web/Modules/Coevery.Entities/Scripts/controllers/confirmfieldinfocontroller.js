@@ -26,7 +26,7 @@ define(['core/app/detourService'], function(detour) {
                     }).then(function() {
                         logger.success('success');
                     }, function(reason) {
-                        logger.error('Failed:\n' + reason.responseText);
+                        logger.error('Failed:\n' + reason.data);
                     });
                 });
             }]
