@@ -142,7 +142,7 @@
                         ids = deleteRelationship.toString();
                     }
                     commonDataService['delete']({ contentId: ids }, function () {
-                        $scope.Refresh();
+                        $scope.refresh();
                         logger.success('Delete the ' + moduleName + ' successful.');
                         $scope.entityId = [];
                     }, function (reason) {
