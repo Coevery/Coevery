@@ -57,10 +57,10 @@
 
         <installerFile>
           <!-- size of the package in KBs -->
-          <fileSize>30600</fileSize>
+          <fileSize>30596</fileSize>
           <installerURL>https://github.com/Coevery/Coevery/releases/download/v1.1.1-alpha/Coevery.zip</installerURL>
           <!-- SHA of the package file for signature verification -->
-          <sha1>3248601f3ec9ea1334dfe32e6c7ae932483ef9e4</sha1>
+          <sha1>3751578c557ca20f6ea4de3487c6366c3dc68cbe</sha1>
         </installerFile>
         <msDeploy>
           <startPage>
