@@ -10,19 +10,10 @@ namespace Coevery.Projections.Handlers
 {
     public class ListViewFieldHandler : IFieldEvents
     {
-        private readonly IRepository<ListViewPart> _listViewRepository;
-        private readonly IRepository<PropertyRecord> _propertyRepository;
-        private readonly IContentManager _contentManager;
 
-        public ListViewFieldHandler(IRepository<ListViewPart> listViewRepository, 
-            IRepository<PropertyRecord> propertyRepository, 
-            ICoeveryServices services,
-            IContentManager contentManager)
+        public ListViewFieldHandler(ICoeveryServices services)
         {
-            _listViewRepository = listViewRepository;
-            _propertyRepository = propertyRepository;
             Services = services;
-            _contentManager = contentManager;
         }
 
         public ICoeveryServices Services { get; private set; }
@@ -45,21 +36,6 @@ namespace Coevery.Projections.Handlers
                 deletedFields.ForEach(record => layout.Properties.Remove(record));
             }
 
-            //var projections = _contentManager.Query<ListViewPart, ListViewPartRecord>().Where(x => x.ItemContentType == entityName).List();
-            //foreach (var projection in projections)
-            //{
-            //    string type = string.Format("{0}.{1}.", entityName.ToPartName(), fieldName);
-            //    var filters = projection.FilterGroupRecord.Filters.Where(x => x.Type == type).ToList();
-            //    filters.ForEach(record => entityFilterRecord.FilterGroupRecord.Filters.Remove(record));
-            //    if (entityFilterRecord.FilterGroupRecord.Filters.Count == 0)
-            //    {
-            //        _entityFilterRepository.Delete(entityFilterRecord);
-            //    }
-            //    else
-            //    {
-            //        _entityFilterRepository.Update(entityFilterRecord);
-            //    }
-            //}
         }
     }
 }
