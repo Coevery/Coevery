@@ -24,9 +24,9 @@ define(['core/app/detourService', 'Modules/Coevery.Entities/Scripts/services/ent
                 };
                 angular.extend($scope.gridOptions, $rootScope.defaultGridOptions);
                 $scope['delete'] = function () {
-                    var deleteField = $scope.selectedItems.length > 0 ? $scope.selectedItems[0] : null;
+                    var deleteField = $scope.selectedItems.length > 0 ? $scope.selectedItems : null;
                     if (!deleteField) return;
-                    fieldDataService['delete']({ name: deleteField, entityName: entityName }, function() {
+                    fieldDataService['delete']({ name: deleteField, entityName: entityName }, function () {
                         $scope.selectedItems = [];
                         logger.success("Delete the field successful.");
                         $scope.getAllField();
