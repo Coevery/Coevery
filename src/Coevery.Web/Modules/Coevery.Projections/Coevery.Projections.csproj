@@ -113,6 +113,7 @@
     <Compile Include="Descriptors\Filter\FilterDescriptor.cs" />
     <Compile Include="Descriptors\Layout\DescribeLayoutContext.cs" />
     <Compile Include="Descriptors\Layout\DescribeLayoutFor.cs" />
+    <Compile Include="Handlers\ListViewFieldHandler.cs" />
     <Compile Include="Models\LayoutGroupRecord.cs" />
     <Compile Include="Providers\Filters\ContentPartRecordsForm.cs" />
     <Compile Include="Providers\Filters\EagerFetchFilter.cs" />
