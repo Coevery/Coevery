@@ -2,7 +2,8 @@
     detour.registerController([
         'NavigationCtrl',
         ['$scope', '$stateParams', 'logger',
-            function($scope, $stateParams, logger) {
+            function ($scope, $stateParams, logger) {
+                $('#navigation').perfectScrollbar();
                 var navigationId = $stateParams.NavigationId;
 
                 $scope.setcurrmenu = function (id, text) {

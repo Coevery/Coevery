@@ -52,9 +52,6 @@
         },
 
         bindEventHandlers: function () {
-            
-            $('#navigation').perfectScrollbar();
-            
             // Search and Dropdown-menu inputs
             $('#header #header-search .search-query')
 				.add($('.dropdown-menu')
