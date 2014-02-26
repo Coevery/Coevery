@@ -12,7 +12,7 @@
 }
 
 @if (!isEmpty || hasChildren) {
-    <li data-ng-class="{active: $uiRoute}" data-ui-route="@href">
+    <li @if (!isEmpty) {<text>data-ng-class="{active: $uiRoute}" data-ui-route="@href"</text> } >
         <span>
             @if (isEmpty) {
                 <span class="nav-title vertical-middle">@navigation.Text.Text </span>
