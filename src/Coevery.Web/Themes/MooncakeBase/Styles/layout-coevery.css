@@ -198,7 +198,7 @@ ul.menu-level-0 > li {
 }
 
 #wrapper #sidebar #navigation ul.menu-level-1 > li > span > a {
-    padding-left: 25px;
+    padding-left: 5px;
 }
 
 #wrapper #sidebar #navigation ul.menu-level-2 > li > span > a {
@@ -274,7 +274,7 @@ ul.menu-level-0 > li {
         #wrapper #sidebar #navigation ul > li > span {
             margin: 0;
             line-height: 1;
-            padding: 9px 0;
+            padding: 9px 4px 9px 30px;
             color: #333;
             display: block;
             border: 1px solid transparent;
@@ -296,6 +296,10 @@ ul.menu-level-0 > li {
                 cursor: pointer;
                 line-height: 1;
             }
+
+        #wrapper #sidebar #navigation ul > li > ul > li > span > a > i {
+            margin-left: -30px;
+        }
 
 #wrapper #sidebar #navigation > ul > li .nav-title {
     font-size: 11px;
