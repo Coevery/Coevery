@@ -274,7 +274,7 @@ ul.menu-level-0 > li {
         #wrapper #sidebar #navigation ul > li > span {
             margin: 0;
             line-height: 1;
-            padding: 9px 4px 9px 30px;
+            padding: 9px 4px 9px 32px;
             color: #333;
             display: block;
             border: 1px solid transparent;
@@ -298,7 +298,7 @@ ul.menu-level-0 > li {
             }
 
         #wrapper #sidebar #navigation ul > li > ul > li > span > a > i {
-            margin-left: -30px;
+            margin-left: -32px;
         }
 
 #wrapper #sidebar #navigation > ul > li .nav-title {
