@@ -141,6 +141,22 @@ angular.module('coevery.common', [])
                 }
             }
         };
+    })
+    .directive('coUpdateScrollbar', function () {
+        return {
+            restrict: "A",
+            link: function (scope, element, attrs) {
+                var navigation = $('#navigation');
+                var scrollbar = $('#navigation>.ps-scrollbar-y');
+                element.click(function() {
+                    setTimeout(function () {
+                        scrollbar.hide();
+                        navigation.perfectScrollbar('update');
+                        scrollbar.show();
+                    }, 300);
+                });
+            }
+        };
     });
     
 

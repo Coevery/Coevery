@@ -3,7 +3,11 @@
         'NavigationCtrl',
         ['$scope', '$stateParams', 'logger',
             function ($scope, $stateParams, logger) {
-                $('#navigation').perfectScrollbar();
+                var navigation = $('#navigation');
+                navigation.perfectScrollbar();
+                $(window).resize(function () {
+                    navigation.perfectScrollbar('update');
+                });
                 var navigationId = $stateParams.NavigationId;
 
                 $scope.setcurrmenu = function (id, text) {

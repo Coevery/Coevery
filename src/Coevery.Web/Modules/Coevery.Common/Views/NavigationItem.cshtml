@@ -8,10 +8,11 @@
     bool active = navigation.Position == "1";
     bool isEmpty = string.IsNullOrWhiteSpace(navigation.Url);
     bool hasChildren = navigation.Items.Any();
+    string href = @navigation.Href + "(/.*)?";
 }
 
 @if (!isEmpty || hasChildren) {
-    <li data-ng-class="{active: $uiRoute}" data-ui-route="@navigation.Href/?.*">
+    <li data-ng-class="{active: $uiRoute}" data-ui-route="@href">
         <span>
             @if (isEmpty) {
                 <span class="nav-title vertical-middle">@navigation.Text.Text </span>
@@ -23,7 +24,7 @@
                 </a>
             }
             @if (hasChildren) {
-                <i class="@iconClass @if (!active) {<text>collapsed</text>}" data-toggle="collapse" data-target=".@idClass.@levelClass"></i>
+                <i class="@iconClass @if (!active) {<text>collapsed</text>}" co-update-scrollbar data-toggle="collapse" data-target=".@idClass.@levelClass"></i>
             }
         </span>
         @if (hasChildren) {
