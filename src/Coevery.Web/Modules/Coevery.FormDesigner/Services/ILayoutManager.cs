@@ -41,7 +41,8 @@ namespace Coevery.FormDesigner.Services {
             }
             var row = field.Parent.Parent;
             field.Remove();
-            if (!row.Descendants("fd-field").Any()) {
+            if (!row.Attributes("fd-field").Any())
+            {
                 row.Remove();
             }
             typeDefinition.Settings["Layout"] = GetLayoutString(layout);
