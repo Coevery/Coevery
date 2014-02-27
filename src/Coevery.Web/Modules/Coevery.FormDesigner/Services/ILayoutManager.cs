@@ -31,8 +31,12 @@ namespace Coevery.FormDesigner.Services {
                 return;
             }
             var layout = GetLayoutElement(typeDefinition.Settings["Layout"]);
-            var field = layout.Descendants("fd-field").FirstOrDefault(x => x.Attribute("field-name").Value == fieldName);
-            if (field == null) {
+            var fields = from el in layout.Descendants("div")
+                        where (string)el.Attribute("field-name") == fieldName
+                        select el;
+            var field = fields.FirstOrDefault();
+            if (field == null)
+            {
                 return;
             }
             var row = field.Parent.Parent;
