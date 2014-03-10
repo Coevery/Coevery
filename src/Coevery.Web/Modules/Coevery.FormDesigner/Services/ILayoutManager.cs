@@ -34,6 +34,7 @@ namespace Coevery.FormDesigner.Services {
             var fields = from el in layout.Descendants("div")
                         where (string)el.Attribute("field-name") == fieldName
                         select el;
+
             var field = fields.FirstOrDefault();
             if (field == null)
             {
@@ -41,7 +42,7 @@ namespace Coevery.FormDesigner.Services {
             }
             var row = field.Parent.Parent;
             field.Remove();
-            if (!row.Attributes("fd-field").Any())
+            if (!row.Descendants().Attributes("fd-field").Any())
             {
                 row.Remove();
             }
