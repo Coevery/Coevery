@@ -63,11 +63,11 @@ namespace Coevery.Core.Shapes.Localization {
         }
 
         public LocalizedString ShortTimeFormat {
-            get { return T("HH:mm tt"); }
+            get { return T("HH:mm PP"); }
         }
 
         public LocalizedString LongDateTimeFormat {
-            get { return T("MM/dd/yyyy HH:mm tt"); }
+            get { return T("MM/dd/yyyy HH:mm PP"); }
         }
 
         public int FirstDay {
