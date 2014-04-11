@@ -100,7 +100,7 @@
     $(function() {
         //Validation
         $.validator.addMethod("safename", function(value) {
-            return (/^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value));
+            return /^[A-Za-z]([0-9]|[-_]|[A-Za-z]){0,127}$/.test(value) && 'id' != value.toLowerCase();
         }, "FieldName is not legal!");
         $.validator.classRuleSettings.safename = { safename: true };
 
