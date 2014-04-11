@@ -8,7 +8,7 @@
     var cultureInfo = CultureInfo.GetCultureInfo(WorkContext.CurrentCulture);
     var dateTimeLocalization = WorkContext.Resolve<IDateTimeLocalization>();
 
-    Func<DateTime?, string> FormatDateTime = date => date != null ? date.Value.ToString(dateTimeLocalization.LongDateTimeFormat.Text, cultureInfo) : null;
+    Func<DateTime?, string> FormatDateTime = date => date != null ? date.Value.ToString(T("MM/dd/yyyy HH:mm tt").Text, cultureInfo) : null;
 }
 
 <section class="control-group data-row">
