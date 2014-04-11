@@ -28,21 +28,21 @@ namespace Coevery.Entities.Controllers {
             var metadataTypes = _contentMetadataService.GetFieldsList(name);
 
             var query = from field in metadataTypes
-                        let fieldType = field.ContentFieldDefinitionRecord.Name
-                        let setting = _settingService.ParseSetting(field.Settings)
-                        select new {
-                            field.Name,
-                            field.Id,
-                            DisplayName = setting["DisplayName"],
-                            FieldType = fieldType.CamelFriendly(),
-                            Type = setting.GetModel<FieldSettings>(fieldType + "Settings").IsSystemField
-                                ? "System Field" : "User Field",
-                            ControllField = string.Empty
-                        };
+                let fieldType = field.ContentFieldDefinitionRecord.Name
+                let setting = _settingService.ParseSetting(field.Settings)
+                select new {
+                    field.Name,
+                    field.Id,
+                    DisplayName = setting["DisplayName"],
+                    FieldType = fieldType.CamelFriendly(),
+                    Type = setting.GetModel<FieldSettings>(fieldType + "Settings").IsSystemField
+                        ? "System Field" : "User Field",
+                    ControllField = string.Empty
+                };
 
             var totalRecords = query.Count();
             return new {
-                total = Convert.ToInt32(Math.Ceiling((double)totalRecords / rows)),
+                total = Convert.ToInt32(Math.Ceiling((double) totalRecords / rows)),
                 page = page,
                 records = totalRecords,
                 rows = query
@@ -50,13 +50,13 @@ namespace Coevery.Entities.Controllers {
         }
 
         // DELETE api/metadata/field/name
-        public virtual HttpResponseMessage Delete([FromUri]string[] name, string entityName)
-        {
+        public virtual HttpResponseMessage Delete([FromUri] string[] name, string entityName) {
             var state = true;
-            foreach (var n in name) {
-                var stateService = _contentMetadataService.DeleteField(n, entityName);
-                state = state && stateService;
 
+            var entity = _contentMetadataService.GetDraftEntity(entityName);
+            foreach (var n in name) {
+                var stateService = _contentMetadataService.DeleteField(n, entity);
+                state = state && stateService;
             }
             return state
                 ? Request.CreateResponse(HttpStatusCode.OK)

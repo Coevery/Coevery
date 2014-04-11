@@ -33,7 +33,7 @@ namespace Coevery.Entities.Services {
         string ConstructFieldName(string entityName, string displayName);
         bool CheckFieldCreationValid(EntityMetadataPart entity, string name, string displayName);
         void CreateField(EntityMetadataPart entity, AddFieldViewModel viewModel, IUpdateModel updateModel);
-        bool DeleteField(string filedName, string entityName);
+        bool DeleteField(string filedName, EntityMetadataPart entity);
         void UpdateField(FieldMetadataRecord record, string displayName, IUpdateModel updateModel);
     }
 
@@ -244,8 +244,7 @@ namespace Coevery.Entities.Services {
             record.Settings = _settingService.CompileSetting(settingsDictionary);
         }
 
-        public bool DeleteField(string fieldName, string entityName) {
-            var entity = GetDraftEntity(entityName);
+        public bool DeleteField(string fieldName, EntityMetadataPart entity) {
             if (entity == null) {
                 return false;
             }
