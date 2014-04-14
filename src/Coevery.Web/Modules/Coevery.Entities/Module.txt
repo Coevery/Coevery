@@ -6,4 +6,4 @@ Version: 1.0
 CoeveryVersion: 1.6
 Description: Entities for Coevery CRM
 Dependencies: Coevery.Common,Coevery.DynamicTypes
-Category: Coevery
+Category: Core

@@ -6,4 +6,4 @@ Version: 1.6
 CoeveryVersion: 1.4
 Description: Some content fields
 Dependencies: Coevery.Common
-Category: Coevery
+Category: Core

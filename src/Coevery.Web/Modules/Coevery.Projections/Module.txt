@@ -6,5 +6,5 @@ Version: 1.0
 CoeveryVersion: 1.6
 Description: Projecttions for Coevery CRM
 Dependencies: Coevery.Tokens, Coevery.Forms, Feeds, Title, Coevery.Common 
-Category: Coevery
+Category: Core
 Priority: 10
