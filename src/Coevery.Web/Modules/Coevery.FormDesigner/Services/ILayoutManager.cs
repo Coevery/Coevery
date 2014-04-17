@@ -59,7 +59,7 @@ namespace Coevery.FormDesigner.Services {
             }
             string layoutStr = typeDefinition.Settings.ContainsKey("Layout")
                 ? typeDefinition.Settings["Layout"]
-                : "<div fd-section section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"" + T("General Information") + "\"><div fd-row><div fd-column></div></div></div>";
+                : "<div fd-section=\"\" section-columns=\"1\" section-columns-width=\"6:6\" section-title=\"" + T("General Information") + "\"><div fd-row><div fd-column></div></div></div>";
             var layout = GetLayoutElement(layoutStr);
             var emptyColumn = layout.Descendants("div").Where(n => (string)n.Attribute("fd-column") == "").FirstOrDefault(x => !x.HasElements);
             if (emptyColumn == null)
